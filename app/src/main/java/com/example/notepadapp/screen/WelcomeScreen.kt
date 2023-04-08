@@ -17,19 +17,17 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.notepadapp.data.DataStoreRepository
 import com.example.notepadapp.navigation.Screen
 import com.example.notepadapp.util.OnBoardingPage
-//import com.example.notepadapp.viewmodel.WelcomeViewModel
 import com.google.accompanist.pager.*
 
 @ExperimentalAnimationApi
 @ExperimentalPagerApi
 @Composable
 fun WelcomeScreen(
-    navController: NavController,
-    //welcomeViewModel: WelcomeViewModel = hiltViewModel()
+    navController: NavController
 ) {
     val pages = listOf(
         OnBoardingPage.First,
@@ -60,7 +58,6 @@ fun WelcomeScreen(
             modifier = Modifier.weight(1f),
             pagerState = pagerState
         ) {
-            //welcomeViewModel.saveOnBoardingState(completed = true)
             navController.popBackStack()
             navController.navigate(Screen.Home.route)
         }

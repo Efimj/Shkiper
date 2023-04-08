@@ -1,8 +1,16 @@
 package com.example.notepadapp.ui.theme
 
 import androidx.compose.ui.graphics.Color
+import android.graphics.Color.parseColor as GraphicsColor
 
-val Blue200 = Color(0xFF73e8ff)
-val Blue500 = Color(0xFF29b6f6)
-val Blue700 = Color(0xFF0086c3)
-val Teal200 = Color(0xFF03DAC5)
+// Light colors
+val light_stroke = Color(GraphicsColor("#D2D2D2"))
+val light_background = Color(GraphicsColor("#FFFFFF"))
+val light_text = Color(GraphicsColor("#000000"))
+val light_text_secondary = Color(GraphicsColor("#5F5F5F"))
+
+// Dark colors
+val dark_stroke = Color(GraphicsColor("#404040"))
+val dark_background = Color(GraphicsColor("#0F0F0F"))
+val dark_text = Color(GraphicsColor("#FFFFFF"))
+val dark_text_secondary = Color(GraphicsColor("#676767"))
