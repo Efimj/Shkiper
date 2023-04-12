@@ -47,8 +47,8 @@ fun RoundedButton(
                 Text(
                     text = text,
                     color = CustomAppTheme.colors.text,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 16.sp,
                 )
             }
         }

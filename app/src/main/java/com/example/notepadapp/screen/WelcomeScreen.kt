@@ -18,7 +18,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.notepadapp.data.DataStoreRepository
 import com.example.notepadapp.navigation.Screen
 import com.example.notepadapp.util.OnBoardingPage
 import com.google.accompanist.pager.*

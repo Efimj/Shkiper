@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.google.accompanist.pager.ExperimentalPagerApi
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -17,11 +18,11 @@ import kotlinx.coroutines.launch
 @OptIn(DelicateCoroutinesApi::class)
 class SplashActivity  : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        val splashScreen = installSplashScreen()
+
         super.onCreate(savedInstanceState)
-       //setContentView(R.layout.splash_layout)
-//        setContent {
-//            SplashScreen()
-//        }
+
+        splashScreen.setKeepOnScreenCondition { true }
 
         GlobalScope.launch {
             delay(900)

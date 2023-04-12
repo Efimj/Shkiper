@@ -14,23 +14,23 @@ import com.example.notepadapp.viewmodel.ThemeViewModel
 
 @Composable
 fun HomeScreen() {
-    val viewModel = remember { ThemeViewModel() }
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-    ) {
-        Text(
-            modifier = Modifier.weight(1f),
-            text = viewModel.isDarkTheme.value.toString(),
-            fontSize = MaterialTheme.typography.h4.fontSize
-        )
-        RoundedButton(
-            modifier = Modifier.width(160.dp),
-            text = "s",
-            onClick = { viewModel.toggleTheme() },
-        )
-    }
+//    val viewModel = remember { ThemeViewModel() }
+//    Column(
+//        modifier = Modifier.fillMaxSize(),
+//        horizontalAlignment = Alignment.CenterHorizontally,
+//        verticalArrangement = Arrangement.Center,
+//    ) {
+//        Text(
+//            modifier = Modifier.weight(1f),
+//            text = viewModel.isDarkTheme.value.toString(),
+//            fontSize = MaterialTheme.typography.h4.fontSize
+//        )
+//        RoundedButton(
+//            modifier = Modifier.width(160.dp),
+//            text = "s",
+//            onClick = { viewModel.toggleTheme() },
+//        )
+//    }
 }
 
 @Composable

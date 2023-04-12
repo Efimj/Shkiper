@@ -1,5 +1,6 @@
 package com.example.notepadapp.ui.theme
 
+import android.util.Log
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
@@ -33,47 +34,24 @@ private val LightColorPalette = lightColors(
     onSurface = md_theme_dark_onSurface,
 )
 
-//@Composable
-//fun AppTheme(
-//    darkTheme: Boolean = isSystemInDarkTheme(),
-//    content: @Composable () -> Unit
-//) {
-//    val colors = if (darkTheme) {
-//        DarkColorPalette
-//    } else {
-//        LightColorPalette
-//    }
-//
-//    MaterialTheme(
-//        colors = colors,
-//        typography = Typography,
-//        shapes = Shapes,
-//        content = content
-//    )
-//}
+val LightThemeColors = ExtendedColors(
+    mainBackground = light_background,
+    stroke = light_stroke,
+    text = light_text,
+    textSecondary = light_text_secondary,
+)
 
-val LightThemeColors by lazy {
-    CustomColors(
-        mainBackground = light_background,
-        stroke = light_stroke,
-        text = light_text,
-        textSecondary = light_text_secondary,
-    )
-}
-
-val DarkThemeColors by lazy {
-    CustomColors(
-        mainBackground = dark_background,
-        stroke = dark_stroke,
-        text = dark_text,
-        textSecondary = dark_text_secondary,
-    )
-}
+val DarkThemeColors = ExtendedColors(
+    mainBackground = dark_background,
+    stroke = dark_stroke,
+    text = dark_text,
+    textSecondary = dark_text_secondary,
+)
 
 object CustomAppTheme {
-    val colors: CustomColors
+    val colors: ExtendedColors
         @Composable
-        get() = LocalCustomColors.current
+        get() = LocalExtendedColors.current
 //    val typography: Typography
 //        @Composable
 //        get() = MaterialTheme.typography
@@ -91,7 +69,7 @@ fun CustomAppTheme(
     val mdColors = if (darkTheme) DarkColorPalette else LightColorPalette
     val colors = if (darkTheme) DarkThemeColors else LightThemeColors
 
-    ProvideCustomColors(colors = colors) {
+    CompositionLocalProvider(LocalExtendedColors provides colors) {
         MaterialTheme(
             colors = mdColors,
             typography = Typography,

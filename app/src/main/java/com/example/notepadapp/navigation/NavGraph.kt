@@ -2,12 +2,11 @@ package com.example.notepadapp.navigation
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.notepadapp.screen.HomeScreen
-import com.example.notepadapp.screen.SplashScreen
+import com.example.notepadapp.screen.AppSettingsScreen
 import com.example.notepadapp.screen.WelcomeScreen
 import com.google.accompanist.pager.ExperimentalPagerApi
 
@@ -27,6 +26,9 @@ fun SetupNavGraph(
         }
         composable(route = Screen.Home.route) {
             HomeScreen()
+        }
+        composable(route = Screen.AppSettings.route) {
+            AppSettingsScreen()
         }
     }
 }

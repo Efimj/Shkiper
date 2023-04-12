@@ -1,19 +1,17 @@
 package com.example.notepadapp.ui.theme
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.graphics.Color
 
-internal val LocalCustomColors = staticCompositionLocalOf<CustomColors> { error("No CustomColors provided") }
-
-// Composable for custom provider
-@Composable
-fun ProvideCustomColors(
-    colors: CustomColors,
-    content: @Composable () -> Unit
-) {
-    val colorPalette = remember { colors }
-    colorPalette.update(colors)
-    CompositionLocalProvider(LocalCustomColors provides colorPalette, content = content)
+val LocalExtendedColors = staticCompositionLocalOf {
+    ExtendedColors(
+        mainBackground = Color.Unspecified,
+        stroke = Color.Unspecified,
+        text = Color.Unspecified,
+        textSecondary = Color.Unspecified,
+    )
 }
