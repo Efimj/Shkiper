@@ -13,5 +13,6 @@ val LocalExtendedColors = staticCompositionLocalOf {
         stroke = Color.Unspecified,
         text = Color.Unspecified,
         textSecondary = Color.Unspecified,
+        modalBackground = Color.Unspecified,
     )
 }

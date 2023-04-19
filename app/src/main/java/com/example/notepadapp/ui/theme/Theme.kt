@@ -39,6 +39,7 @@ val LightThemeColors = ExtendedColors(
     stroke = light_stroke,
     text = light_text,
     textSecondary = light_text_secondary,
+    modalBackground = light_modal_background,
 )
 
 val DarkThemeColors = ExtendedColors(
@@ -46,6 +47,7 @@ val DarkThemeColors = ExtendedColors(
     stroke = dark_stroke,
     text = dark_text,
     textSecondary = dark_text_secondary,
+    modalBackground = dark_modal_background,
 )
 
 object CustomAppTheme {

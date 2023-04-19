@@ -11,5 +11,6 @@ data class ExtendedColors(
     val mainBackground: Color,
     val stroke: Color,
     val text: Color,
-    val textSecondary: Color
+    val textSecondary: Color,
+    val modalBackground: Color,
 )

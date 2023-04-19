@@ -2,6 +2,7 @@ package com.example.notepadapp.ui.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -9,6 +10,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -21,12 +23,13 @@ fun RoundedButton(
     text: String? = null,
     icon: ImageVector? = null,
     onClick: () -> Unit,
+    shape: Shape = RoundedCornerShape(15.dp),
     content: @Composable (() -> Unit)? = null,
 ) {
     Button(
         modifier = modifier,
         onClick = onClick,
-        shape = RoundedCornerShape(15.dp),
+        shape = shape,
         colors = ButtonDefaults.buttonColors(backgroundColor = CustomAppTheme.colors.mainBackground),
         border = BorderStroke(1.dp, CustomAppTheme.colors.stroke),
         elevation = null

@@ -12,7 +12,6 @@ import com.example.notepadapp.navigation.Screen
 import com.example.notepadapp.navigation.SetupNavGraph
 import com.example.notepadapp.ui.theme.CustomAppTheme
 import com.example.notepadapp.util.ThemeUtil
-import com.example.notepadapp.viewmodel.ThemeViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,6 +22,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        ThemeUtil.isDarkTheme = ThemePreferenceManager(this).getSavedTheme()
         setContent {
             CustomAppTheme(darkTheme = ThemeUtil.isDarkTheme) {
                 val navController = rememberNavController()
