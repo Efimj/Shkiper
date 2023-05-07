@@ -1,6 +1,5 @@
 package com.example.notepadapp.ui.theme
 
-import android.util.Log
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
@@ -40,6 +39,7 @@ val LightThemeColors = ExtendedColors(
     text = light_text,
     textSecondary = light_text_secondary,
     modalBackground = light_modal_background,
+    active = light_active,
 )
 
 val DarkThemeColors = ExtendedColors(
@@ -48,6 +48,7 @@ val DarkThemeColors = ExtendedColors(
     text = dark_text,
     textSecondary = dark_text_secondary,
     modalBackground = dark_modal_background,
+    active = dark_active,
 )
 
 object CustomAppTheme {

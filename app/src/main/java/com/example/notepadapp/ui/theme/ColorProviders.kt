@@ -1,9 +1,5 @@
 package com.example.notepadapp.ui.theme
 
-import android.util.Log
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 
@@ -14,5 +10,6 @@ val LocalExtendedColors = staticCompositionLocalOf {
         text = Color.Unspecified,
         textSecondary = Color.Unspecified,
         modalBackground = Color.Unspecified,
+        active = Color.Unspecified,
     )
 }

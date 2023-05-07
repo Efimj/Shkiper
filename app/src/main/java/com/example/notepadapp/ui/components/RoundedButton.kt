@@ -2,7 +2,6 @@ package com.example.notepadapp.ui.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -24,14 +23,18 @@ fun RoundedButton(
     icon: ImageVector? = null,
     onClick: () -> Unit,
     shape: Shape = RoundedCornerShape(15.dp),
+    border: BorderStroke? = BorderStroke(1.dp, CustomAppTheme.colors.stroke),
+    colors: ButtonColors = ButtonDefaults.buttonColors(backgroundColor = CustomAppTheme.colors.mainBackground),
+    textColor: Color = CustomAppTheme.colors.text,
+    iconTint: Color = CustomAppTheme.colors.text,
     content: @Composable (() -> Unit)? = null,
 ) {
     Button(
         modifier = modifier,
         onClick = onClick,
         shape = shape,
-        colors = ButtonDefaults.buttonColors(backgroundColor = CustomAppTheme.colors.mainBackground),
-        border = BorderStroke(1.dp, CustomAppTheme.colors.stroke),
+        colors = colors,
+        border = border,
         elevation = null
     ) {
         if (content != null) {
@@ -41,7 +44,7 @@ fun RoundedButton(
                 Icon(
                     imageVector = icon,
                     contentDescription = null,
-                    tint = CustomAppTheme.colors.text,
+                    tint = iconTint,
                     modifier = Modifier.size(24.dp)
                 )
                 Spacer(Modifier.width(8.dp))
@@ -49,8 +52,9 @@ fun RoundedButton(
             if (text != null) {
                 Text(
                     text = text,
-                    color = CustomAppTheme.colors.text,
-                    fontWeight = FontWeight.Medium,
+                    letterSpacing = 0.sp,
+                    color = textColor,
+                    fontWeight = FontWeight.Normal,
                     fontSize = 16.sp,
                 )
             }
