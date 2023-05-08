@@ -37,16 +37,15 @@ fun HomeScreen(
                 .align(Alignment.BottomCenter)
         ) {
             RoundedButton(
-                text = "Text",
+                text = "Menu",
                 onClick = {
                     coroutineScope.launch {
                         bottomSheetState.show()
                     }
                 },
                 shape = RoundedCornerShape(topStart = 36.dp, topEnd = 36.dp),
-                modifier = Modifier.height(35.dp).width(160.dp)
+                modifier = Modifier.height(37.dp).width(160.dp).offset(y = 1.dp)
             )
-
         }
         // Нижний лист, который будет отображаться при нажатии на кнопку
         MainMenuBottomSheet(bottomSheetState, navController)

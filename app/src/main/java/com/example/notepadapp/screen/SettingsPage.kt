@@ -4,6 +4,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -17,12 +19,13 @@ import com.example.notepadapp.app_handlers.ThemePreferenceManager
 import com.example.notepadapp.ui.components.RoundedButton
 import com.example.notepadapp.ui.theme.CustomAppTheme
 import com.example.notepadapp.util.ThemeUtil
-
+import androidx.compose.foundation.Image
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun SettingsPage() {
     val themePreferenceManager = ThemePreferenceManager(LocalContext.current)
+    val themeModeIcon: ImageVector = if (ThemeUtil.isDarkTheme) Icons.Outlined.LightMode else Icons.Outlined.DarkMode
 
     Box(Modifier.fillMaxSize().background(CustomAppTheme.colors.mainBackground)) {
         LazyColumn(
@@ -40,15 +43,27 @@ fun SettingsPage() {
                 SettingsPageMenuElement(
                     "Application theme",
                     ThemeUtil.isDarkTheme.let { if (it) "Light" else "Dark" },
-                    null,
+                    themeModeIcon,
                     onClick = {
                         ThemeUtil.toggleTheme()
                         themePreferenceManager.saveTheme(ThemeUtil.isDarkTheme)
                     }
                 )
-                SettingsPageMenuElement("Save all notes locally", "Save", null, {})
-                SettingsPageMenuElement("Upload notes", "Upload", null, {})
-                SettingsPageMenuElement("Cloud storage", "Connected", null, {})
+                SettingsPageMenuElement(
+                    "Save all notes locally",
+                    "Save",
+                    Icons.Outlined.Download,
+                    {})
+                SettingsPageMenuElement(
+                    "Upload notes",
+                    "Upload",
+                    Icons.Outlined.Upload,
+                    {})
+                SettingsPageMenuElement(
+                    "Cloud storage",
+                    "Connect",
+                    Icons.Outlined.CloudOff,
+                    {})
                 Text(
                     color = CustomAppTheme.colors.text,
                     text = "Information",
@@ -57,14 +72,21 @@ fun SettingsPage() {
                     modifier = Modifier.padding(bottom = 12.dp)
                         .padding(top = 15.dp)
                 )
-                Text(
+                Row(Modifier.padding(horizontal = 20.dp).fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        imageVector = Icons.Outlined.Info,
+                        contentDescription = "Info",
+                        tint = CustomAppTheme.colors.textSecondary
+                    )
+                    Spacer(Modifier.width(10.dp))
+                    Text(
                     text = "All your information is stored locally on your device, clearing your browsing data may result in losing all your data. Therefore, before resetting, save the file with your data so as not to lose them.",
                     color = CustomAppTheme.colors.textSecondary,
                     fontSize = 16.sp,
                     lineHeight = 24.sp,
                     modifier = Modifier.fillMaxWidth()
-                        .padding(horizontal = 20.dp)
-                )
+                ) }
+
                 Spacer(modifier = Modifier.padding(bottom = 65.dp))
             }
         }
@@ -113,7 +135,7 @@ private fun SettingsPageMenuElement(
 @Composable
 @Preview(showBackground = true)
 fun SettingsScreenPreview() {
-    CustomAppTheme{
+    CustomAppTheme {
         SettingsPage()
     }
 }
