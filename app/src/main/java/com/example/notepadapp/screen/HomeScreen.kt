@@ -1,39 +1,59 @@
 package com.example.notepadapp.screen
 
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.rememberNavController
+import com.example.notepadapp.navigation.SetupHomePageNavGraph
+import com.example.notepadapp.navigation.UserPage
+import com.example.notepadapp.ui.components.MainMenuBottomSheet
 import com.example.notepadapp.ui.components.RoundedButton
+import com.example.notepadapp.ui.theme.CustomAppTheme
+import com.google.accompanist.pager.ExperimentalPagerApi
+import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterialApi::class, ExperimentalAnimationApi::class, ExperimentalPagerApi::class)
 @Composable
-fun HomeScreen() {
-//    val viewModel = remember { ThemeViewModel() }
-//    Column(
-//        modifier = Modifier.fillMaxSize(),
-//        horizontalAlignment = Alignment.CenterHorizontally,
-//        verticalArrangement = Arrangement.Center,
-//    ) {
-//        Text(
-//            modifier = Modifier.weight(1f),
-//            text = viewModel.isDarkTheme.value.toString(),
-//            fontSize = MaterialTheme.typography.h4.fontSize
-//        )
-//        RoundedButton(
-//            modifier = Modifier.width(160.dp),
-//            text = "s",
-//            onClick = { viewModel.toggleTheme() },
-//        )
-//    }
+fun HomeScreen(
+) {
+    val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
+    val coroutineScope = rememberCoroutineScope()
+    val navController = rememberNavController()
+
+
+    Box(Modifier.fillMaxSize().background(CustomAppTheme.colors.mainBackground)) {
+        Box(Modifier.fillMaxSize()){
+            SetupHomePageNavGraph(navController = navController, startDestination = UserPage.Notes.route)
+        }
+        Box(
+            Modifier
+                .align(Alignment.BottomCenter)
+        ) {
+            RoundedButton(
+                text = "Text",
+                onClick = {
+                    coroutineScope.launch {
+                        bottomSheetState.show()
+                    }
+                },
+                shape = RoundedCornerShape(topStart = 36.dp, topEnd = 36.dp),
+                modifier = Modifier.height(35.dp).width(160.dp)
+            )
+
+        }
+        // Нижний лист, который будет отображаться при нажатии на кнопку
+        MainMenuBottomSheet(bottomSheetState, navController)
+    }
 }
 
-@Composable
-@Preview(showBackground = true)
-fun HomeScreenPreview() {
-    HomeScreen()
-}
+
+
+
+

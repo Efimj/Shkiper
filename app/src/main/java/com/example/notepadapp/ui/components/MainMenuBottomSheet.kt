@@ -14,11 +14,14 @@ import androidx.navigation.NavHostController
 import com.example.notepadapp.navigation.AppScreen
 import com.example.notepadapp.navigation.UserPage
 import com.example.notepadapp.ui.theme.CustomAppTheme
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 @Composable
 @OptIn(ExperimentalMaterialApi::class)
 fun MainMenuBottomSheet(bottomSheetState: ModalBottomSheetState, navController: NavHostController) {
-    var lastButtonPressed by remember { mutableStateOf("Settings") }
+    var lastButtonPressed by remember { mutableStateOf("Notes") }
+    val coroutineScope = rememberCoroutineScope()
 
     ModalBottomSheetLayout(
         sheetBackgroundColor = CustomAppTheme.colors.mainBackground,
@@ -33,24 +36,24 @@ fun MainMenuBottomSheet(bottomSheetState: ModalBottomSheetState, navController: 
                     .padding(16.dp)
             ) {
                 MainMenuButton("Notes", isActive = lastButtonPressed == "Notes", onClick = {
-                    goToPage(navController, UserPage.Settings.route)
+                    goToPage(navController, UserPage.Notes.route, coroutineScope, bottomSheetState)
                     lastButtonPressed = "Notes"
                 })
                 Spacer(modifier = Modifier.height(8.dp))
                 MainMenuButton("Archive", isActive = lastButtonPressed == "Archive", onClick = {
-                    goToPage(navController, UserPage.Settings.route)
+                    goToPage(navController, UserPage.Settings.route, coroutineScope, bottomSheetState)
                     lastButtonPressed = "Archive"
                 })
                 Spacer(modifier = Modifier.height(8.dp))
                 MainMenuButton("Basket", isActive = lastButtonPressed == "Basket", onClick = {
-                    goToPage(navController, UserPage.Settings.route)
+                    goToPage(navController, UserPage.Settings.route, coroutineScope, bottomSheetState)
                     lastButtonPressed = "Basket"
                 })
                 Spacer(modifier = Modifier.height(8.dp))
                 MainMenuButton("Settings", isActive = lastButtonPressed == "Settings", onClick = {
-                    goToPage(navController, UserPage.Settings.route)
+                    goToPage(navController, UserPage.Settings.route, coroutineScope, bottomSheetState)
                     lastButtonPressed = "Settings"
-                    }
+                }
                 )
             }
         }
@@ -58,7 +61,13 @@ fun MainMenuBottomSheet(bottomSheetState: ModalBottomSheetState, navController: 
     }
 }
 
-private fun goToPage(navController: NavHostController, rout: String){
+@OptIn(ExperimentalMaterialApi::class)
+private fun goToPage(navController: NavHostController, rout: String,coroutineScope: CoroutineScope , modalBottomSheetState: ModalBottomSheetState) {
+    if (navController.currentDestination?.route == rout)
+        return
     navController.popBackStack()
     navController.navigate(rout)
+    coroutineScope.launch {
+        modalBottomSheetState.hide()
+    }
 }

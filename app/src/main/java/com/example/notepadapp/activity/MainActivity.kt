@@ -23,7 +23,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             CustomAppTheme(darkTheme = ThemeUtil.isDarkTheme) {
                 val navController = rememberNavController()
-                SetupAppNavGraph(navController = navController, startDestination = AppScreen.AppSettings.route)
+                SetupAppNavGraph(navController = navController, startDestination = AppScreen.Home.route)
             }
         }
     }

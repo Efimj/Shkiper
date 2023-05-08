@@ -14,7 +14,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.notepadapp.app_handlers.ThemePreferenceManager
-import com.example.notepadapp.ui.components.MainPageWithBottomSheetMenu
 import com.example.notepadapp.ui.components.RoundedButton
 import com.example.notepadapp.ui.theme.CustomAppTheme
 import com.example.notepadapp.util.ThemeUtil
@@ -22,7 +21,7 @@ import com.example.notepadapp.util.ThemeUtil
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun SettingsScreen() {
+fun SettingsPage() {
     val themePreferenceManager = ThemePreferenceManager(LocalContext.current)
 
     Box(Modifier.fillMaxSize().background(CustomAppTheme.colors.mainBackground)) {
@@ -115,6 +114,6 @@ private fun SettingsPageMenuElement(
 @Preview(showBackground = true)
 fun SettingsScreenPreview() {
     CustomAppTheme{
-        SettingsScreen()
+        SettingsPage()
     }
 }
