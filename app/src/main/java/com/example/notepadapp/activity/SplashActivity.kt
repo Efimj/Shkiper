@@ -1,5 +1,6 @@
 package com.example.notepadapp.activity
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -12,6 +13,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+@SuppressLint("CustomSplashScreen")
 @ExperimentalAnimationApi
 @ExperimentalPagerApi
 @AndroidEntryPoint

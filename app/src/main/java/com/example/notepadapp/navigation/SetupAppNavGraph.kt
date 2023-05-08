@@ -6,14 +6,15 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.notepadapp.screen.HomeScreen
-import com.example.notepadapp.screen.AppSettingsScreen
+import com.example.notepadapp.screen.SettingsScreen
 import com.example.notepadapp.screen.WelcomeScreen
+import com.example.notepadapp.ui.components.MainPageWithBottomSheetMenu
 import com.google.accompanist.pager.ExperimentalPagerApi
 
 @ExperimentalAnimationApi
 @ExperimentalPagerApi
 @Composable
-fun SetupNavGraph(
+fun SetupAppNavGraph(
     navController: NavHostController,
     startDestination: String
 ) {
@@ -21,14 +22,14 @@ fun SetupNavGraph(
         navController = navController,
         startDestination = startDestination
     ) {
-        composable(route = Screen.Welcome.route) {
+        composable(route = AppScreen.Welcome.route) {
             WelcomeScreen(navController = navController)
         }
-        composable(route = Screen.Home.route) {
+        composable(route = AppScreen.Home.route) {
             HomeScreen()
         }
-        composable(route = Screen.AppSettings.route) {
-            AppSettingsScreen()
+        composable(route = AppScreen.AppSettings.route) {
+            MainPageWithBottomSheetMenu()
         }
     }
 }

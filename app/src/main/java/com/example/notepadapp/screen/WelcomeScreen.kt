@@ -18,7 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.notepadapp.navigation.Screen
+import com.example.notepadapp.navigation.AppScreen
 import com.example.notepadapp.util.OnBoardingPage
 import com.google.accompanist.pager.*
 
@@ -58,7 +58,7 @@ fun WelcomeScreen(
             pagerState = pagerState
         ) {
             navController.popBackStack()
-            navController.navigate(Screen.Home.route)
+            navController.navigate(AppScreen.Home.route)
         }
     }
 }
