@@ -6,6 +6,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.example.notepadapp.app_handlers.ThemePreferenceManager
+import com.example.notepadapp.util.ThemeUtil
 import com.google.accompanist.pager.ExperimentalPagerApi
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.DelicateCoroutinesApi

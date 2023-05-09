@@ -6,8 +6,8 @@ import androidx.compose.ui.Alignment
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.notepadapp.screen.NotesPage
-import com.example.notepadapp.screen.SettingsPage
+import com.example.notepadapp.page.NotesPage
+import com.example.notepadapp.page.SettingsPage
 import com.google.accompanist.pager.ExperimentalPagerApi
 
 @ExperimentalAnimationApi
@@ -16,19 +16,19 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 fun SetupHomePageNavGraph(
     navController: NavHostController,
     startDestination: String
-)  {
+) {
     NavHost(
         navController = navController,
         startDestination = startDestination
     ) {
-        composable(route = UserPage.Settings.route) {
-            EnterAnimation {
-                SettingsPage()
-            }
-        }
         composable(route = UserPage.Notes.route) {
             EnterAnimation {
                 NotesPage()
+            }
+        }
+        composable(route = UserPage.Settings.route) {
+            EnterAnimation {
+                SettingsPage()
             }
         }
     }

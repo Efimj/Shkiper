@@ -10,6 +10,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.notepadapp.navigation.SetupHomePageNavGraph
 import com.example.notepadapp.navigation.UserPage
@@ -23,33 +24,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun HomeScreen(
 ) {
-    val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
-    val coroutineScope = rememberCoroutineScope()
-    val navController = rememberNavController()
-
-
-    Box(Modifier.fillMaxSize().background(CustomAppTheme.colors.mainBackground)) {
-        Box(Modifier.fillMaxSize()){
-            SetupHomePageNavGraph(navController = navController, startDestination = UserPage.Notes.route)
-        }
-        Box(
-            Modifier
-                .align(Alignment.BottomCenter)
-        ) {
-            RoundedButton(
-                text = "Menu",
-                onClick = {
-                    coroutineScope.launch {
-                        bottomSheetState.show()
-                    }
-                },
-                shape = RoundedCornerShape(topStart = 36.dp, topEnd = 36.dp),
-                modifier = Modifier.height(37.dp).width(160.dp).offset(y = 1.dp)
-            )
-        }
         // Нижний лист, который будет отображаться при нажатии на кнопку
-        MainMenuBottomSheet(bottomSheetState, navController)
-    }
+        MainMenuBottomSheet()
 }
 
 
