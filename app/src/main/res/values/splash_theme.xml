@@ -5,6 +5,7 @@
         <item name="android:colorPrimary">#ff1b49</item>
         <item name="android:colorPrimaryDark">#ff1b49</item>
         <item name="android:colorAccent">#ff1b49</item>
-        <item name="android:statusBarColor">#ff1b49</item>
+        <item name="android:statusBarColor">@color/splash_background</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 </resources>
