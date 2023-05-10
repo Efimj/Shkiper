@@ -5,6 +5,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.*
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 private val DarkColorPalette = darkColors(
     primary = md_theme_light_primary,
@@ -74,6 +75,10 @@ fun CustomAppTheme(
     val colors = if (darkTheme) DarkThemeColors else LightThemeColors
 
     CompositionLocalProvider(LocalExtendedColors provides colors) {
+        val systemUiController = rememberSystemUiController()
+        systemUiController.setSystemBarsColor(
+            color = colors.mainBackground
+        )
         MaterialTheme(
             colors = mdColors,
             typography = Typography,

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import com.example.notepadapp.ui.theme.CustomAppTheme
@@ -23,6 +24,7 @@ fun MainMenuButton(text: String, icon: ImageVector? = null, isActive: Boolean = 
             colors = ButtonDefaults.buttonColors(backgroundColor = CustomAppTheme.colors.active),
             textColor = dark_text,
             onClick = onClick,
+            iconTint = Color.White
         )
     }else{
         RoundedButton(

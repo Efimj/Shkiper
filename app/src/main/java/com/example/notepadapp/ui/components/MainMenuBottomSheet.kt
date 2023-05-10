@@ -4,6 +4,8 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -80,25 +82,37 @@ private fun BottomSheetContent(
             .fillMaxWidth()
             .padding(16.dp)
     ) {
-        MainMenuButton("Notes", isActive = lastButtonPressed == "Notes", onClick = {
-            goToPage(navController, UserPage.Notes.route, coroutineScope, bottomSheetState)
-            lastButtonPressed = "Notes"
-        })
+        MainMenuButton("Notes",
+            Icons.Outlined.AutoAwesomeMosaic,
+            isActive = lastButtonPressed == "Notes",
+            onClick = {
+                goToPage(navController, UserPage.Notes.route, coroutineScope, bottomSheetState)
+                lastButtonPressed = "Notes"
+            })
         Spacer(modifier = Modifier.height(8.dp))
-        MainMenuButton("Archive", isActive = lastButtonPressed == "Archive", onClick = {
-            goToPage(navController, UserPage.Settings.route, coroutineScope, bottomSheetState)
-            lastButtonPressed = "Archive"
-        })
+        MainMenuButton("Archive",
+            Icons.Outlined.Archive,
+            isActive = lastButtonPressed == "Archive",
+            onClick = {
+                goToPage(navController, UserPage.Settings.route, coroutineScope, bottomSheetState)
+                lastButtonPressed = "Archive"
+            })
         Spacer(modifier = Modifier.height(8.dp))
-        MainMenuButton("Basket", isActive = lastButtonPressed == "Basket", onClick = {
-            goToPage(navController, UserPage.Settings.route, coroutineScope, bottomSheetState)
-            lastButtonPressed = "Basket"
-        })
+        MainMenuButton("Basket",
+            Icons.Outlined.Delete,
+            isActive = lastButtonPressed == "Basket",
+            onClick = {
+                goToPage(navController, UserPage.Settings.route, coroutineScope, bottomSheetState)
+                lastButtonPressed = "Basket"
+            })
         Spacer(modifier = Modifier.height(8.dp))
-        MainMenuButton("Settings", isActive = lastButtonPressed == "Settings", onClick = {
-            goToPage(navController, UserPage.Settings.route, coroutineScope, bottomSheetState)
-            lastButtonPressed = "Settings"
-        }
+        MainMenuButton("Settings",
+            Icons.Outlined.Settings,
+            isActive = lastButtonPressed == "Settings",
+            onClick = {
+                goToPage(navController, UserPage.Settings.route, coroutineScope, bottomSheetState)
+                lastButtonPressed = "Settings"
+            }
         )
     }
 }
@@ -110,8 +124,10 @@ private fun goToPage(
     coroutineScope: CoroutineScope,
     modalBottomSheetState: ModalBottomSheetState
 ) {
-    if (navController.currentDestination?.route == rout)
+    if (navController.currentDestination?.route == rout){
+        coroutineScope.launch { modalBottomSheetState.hide() }
         return
+    }
     coroutineScope.launch { modalBottomSheetState.hide() }
     navController.navigate(rout)
 }

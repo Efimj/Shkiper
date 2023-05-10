@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.notepadapp.ui.theme.CustomAppTheme
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -52,7 +53,8 @@ fun NoteCard(
                     text = header,
                     maxLines = 5,
                     overflow = TextOverflow.Ellipsis,
-                    style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Bold)
+                    style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Bold),
+                    fontSize = 18.sp
                 )
             }
             if (!text.isNullOrEmpty() && !header.isNullOrEmpty())

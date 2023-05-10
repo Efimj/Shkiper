@@ -1,6 +1,7 @@
 package com.example.notepadapp.activity
 
 import android.os.Bundle
+import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -8,6 +9,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.toArgb
 import androidx.navigation.compose.rememberNavController
 import com.example.notepadapp.app_handlers.ThemePreferenceManager
 import com.example.notepadapp.navigation.AppScreen
@@ -29,6 +31,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             val navController = rememberNavController()
             CustomAppTheme(darkTheme = ThemeUtil.isDarkTheme) {
+
                 Box(Modifier.fillMaxSize().background(CustomAppTheme.colors.mainBackground)) {
                     SetupAppNavGraph(navController = navController, startDestination = AppScreen.Home.route)
                 }

@@ -85,4 +85,6 @@ dependencies {
     // Icons
     implementation "androidx.compose.material:material-icons-extended:${compose_version}"
 
+    // UI controller
+    implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanist_version"
 }
