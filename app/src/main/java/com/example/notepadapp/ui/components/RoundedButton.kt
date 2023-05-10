@@ -56,6 +56,7 @@ fun RoundedButton(
                     letterSpacing = 0.sp,
                     color = textColor,
                     fontWeight = FontWeight.Normal,
+                    style = MaterialTheme.typography.body1,
                     fontSize = 16.sp,
                 )
             }

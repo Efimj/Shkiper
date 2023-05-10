@@ -10,6 +10,7 @@ val light_text = Color(GraphicsColor("#000000"))
 val light_text_secondary = Color(GraphicsColor("#414141"))
 val light_modal_background = Color(0, 0, 0, (255 * 0.2).toInt())
 val light_active = Color(GraphicsColor("#433FFF"))
+val light_secondary_background = Color(GraphicsColor("#FFFFFF"))
 
 // Dark colors
 val dark_stroke = Color(GraphicsColor("#404040"))
@@ -18,4 +19,5 @@ val dark_text = Color(GraphicsColor("#FFFFFF"))
 val dark_text_secondary = Color(GraphicsColor("#959595"))
 val dark_modal_background = Color(0, 0, 0, (255 * 0.4).toInt())
 val dark_active = Color(GraphicsColor("#433FFF"))
+val dark_secondary_background = Color(GraphicsColor("#191919"))
 

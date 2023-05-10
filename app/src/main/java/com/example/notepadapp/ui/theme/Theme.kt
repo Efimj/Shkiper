@@ -5,7 +5,6 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.*
-import androidx.compose.ui.graphics.Color
 
 private val DarkColorPalette = darkColors(
     primary = md_theme_light_primary,
@@ -40,6 +39,7 @@ val LightThemeColors = ExtendedColors(
     textSecondary = light_text_secondary,
     modalBackground = light_modal_background,
     active = light_active,
+    secondaryBackground = light_secondary_background,
 )
 
 val DarkThemeColors = ExtendedColors(
@@ -49,6 +49,7 @@ val DarkThemeColors = ExtendedColors(
     textSecondary = dark_text_secondary,
     modalBackground = dark_modal_background,
     active = dark_active,
+    secondaryBackground = dark_secondary_background,
 )
 
 object CustomAppTheme {

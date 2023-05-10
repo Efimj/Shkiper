@@ -40,6 +40,7 @@ fun SettingsPage() {
                 text = "Settings",
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 20.sp,
+                style = MaterialTheme.typography.body1,
                 modifier = Modifier.padding(bottom = 12.dp).align(Alignment.CenterHorizontally)
             )
             SettingsPageMenuElement(
@@ -71,6 +72,7 @@ fun SettingsPage() {
                 text = "Information",
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 20.sp,
+                style = MaterialTheme.typography.body1,
                 modifier = Modifier.padding(bottom = 12.dp)
                     .padding(top = 15.dp)
                     .align(Alignment.CenterHorizontally)
@@ -87,6 +89,7 @@ fun SettingsPage() {
                     color = CustomAppTheme.colors.textSecondary,
                     fontSize = 16.sp,
                     lineHeight = 24.sp,
+                    style = MaterialTheme.typography.body1,
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -116,6 +119,7 @@ private fun SettingsPageMenuElement(
             Text(
                 color = CustomAppTheme.colors.text,
                 text = description,
+                style = MaterialTheme.typography.body1,
                 modifier = Modifier.align(Alignment.CenterEnd)
             )
         }
