@@ -15,15 +15,16 @@ import androidx.navigation.compose.rememberNavController
 import com.example.notepadapp.navigation.SetupHomePageNavGraph
 import com.example.notepadapp.navigation.UserPage
 import com.example.notepadapp.ui.theme.CustomAppTheme
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterialApi::class, ExperimentalAnimationApi::class)
 fun MainMenuBottomSheet() {
     val coroutineScope = rememberCoroutineScope()
-    val navController = rememberNavController()
+    val navController = rememberAnimatedNavController()
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
 
     ModalBottomSheetLayout(

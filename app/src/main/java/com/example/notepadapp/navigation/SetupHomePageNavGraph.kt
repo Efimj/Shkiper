@@ -1,56 +1,61 @@
 package com.example.notepadapp.navigation
 
 import androidx.compose.animation.*
-import androidx.compose.animation.core.MutableTransitionState
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import com.example.notepadapp.page.NotesPage
 import com.example.notepadapp.page.SettingsPage
-import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.navigation.animation.AnimatedNavHost
+import com.google.accompanist.navigation.animation.composable
+
 
 @ExperimentalAnimationApi
-@ExperimentalPagerApi
 @Composable
 fun SetupHomePageNavGraph(
     navController: NavHostController,
     startDestination: String
 ) {
-    NavHost(
+    AnimatedNavHost(
         navController = navController,
         startDestination = startDestination
     ) {
-        composable(route = UserPage.Notes.route) {
-            EnterAnimation {
-                NotesPage()
+        composable(
+            UserPage.Notes.route,
+            enterTransition = {
+                when (initialState.destination.route) {
+                    UserPage.Settings.route ->
+                        slideInVertically(initialOffsetY = { -40 }) + fadeIn()
+                    else -> null
+                }
+            },
+            exitTransition = {
+                when (targetState.destination.route) {
+                    UserPage.Settings.route ->
+                        slideOutVertically(targetOffsetY = {50}) + fadeOut()
+                    else -> null
+                }
             }
+        ) {
+            NotesPage()
         }
-        composable(route = UserPage.Settings.route) {
-            EnterAnimation {
-                SettingsPage()
+        composable(
+            route = UserPage.Settings.route,
+            enterTransition = {
+                when (initialState.destination.route) {
+                    UserPage.Notes.route ->
+                        slideInVertically(initialOffsetY = { -40 }) + fadeIn()
+                    else -> null
+                }
+            },
+            exitTransition = {
+                when (targetState.destination.route) {
+                    UserPage.Notes.route ->
+                        slideOutVertically(targetOffsetY = {50}) + fadeOut()
+                    else -> null
+                }
             }
+        ) {
+            SettingsPage()
         }
-    }
-}
-@Composable
-fun EnterAnimation(content: @Composable () -> Unit) {
-    var isVisible by remember { mutableStateOf(false) }
-
-    LaunchedEffect(Unit) {
-        isVisible = true
-    }
-
-    AnimatedVisibility(
-        visible = isVisible,
-        enter = slideInVertically(
-            initialOffsetY = { -40 }
-        ) + expandVertically(
-            expandFrom = Alignment.Top
-        ) + fadeIn(initialAlpha = 0.3f),
-        exit = slideOutVertically() + shrinkVertically() + fadeOut(),
-    ){
-        content()
     }
 }
