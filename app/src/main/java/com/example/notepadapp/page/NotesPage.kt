@@ -2,32 +2,21 @@ package com.example.notepadapp.page
 
 import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Card
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.example.notepadapp.ui.components.NoteCard
-import com.example.notepadapp.ui.theme.CustomAppTheme
+import com.example.notepadapp.ui.components.cards.NoteCard
+import com.example.notepadapp.ui.components.fields.SearchField
 
 data class Card(
     var title: String,
     val description: String,
     var isSelected: Boolean = false
 )
-
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -59,32 +48,38 @@ fun NotesPage() {
         Card("План поездки", "записи о дате, месте и бюджете планируемой поездки."),
         Card("Список цитат", "перечень любимых цитат, которые вдохновляют и мотивируют на достижение целей."),
     )
-
     val (selectedCardIndices, setSelectedCardIndices) = remember { mutableStateOf(setOf<Int>()) }
+    var search by remember { mutableStateOf("") }
+
 
     Box(Modifier.fillMaxSize()) {
-        LazyVerticalStaggeredGrid(
-            columns = staggeredGridCellsMode,
-            verticalItemSpacing = 10.dp,
-            horizontalArrangement = Arrangement.spacedBy(10.dp),
-            contentPadding = PaddingValues(10.dp, 20.dp, 10.dp, 100.dp),
-            content = {
-                items(noteCards.size) { index ->
-                    NoteCard(
-                        noteCards[index].title,
-                        noteCards[index].description,
-                        selected = index in selectedCardIndices,
-                        onClick = {
-                            if (selectedCardIndices.isNotEmpty())
+        Column (Modifier.padding(horizontal = 20.dp)){
+            SearchField(search = search, onValueChange = {
+                search = it
+            })
+            LazyVerticalStaggeredGrid(
+                columns = staggeredGridCellsMode,
+                verticalItemSpacing = 10.dp,
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                contentPadding = PaddingValues(0.dp, 20.dp, 0.dp, 100.dp),
+                content = {
+                    items(noteCards.size) { index ->
+                        NoteCard(
+                            noteCards[index].title,
+                            noteCards[index].description,
+                            selected = index in selectedCardIndices,
+                            onClick = {
+                                if (selectedCardIndices.isNotEmpty())
+                                    changeSelectedMode(selectedCardIndices, index, setSelectedCardIndices)
+                            },
+                            onLongClick = {
                                 changeSelectedMode(selectedCardIndices, index, setSelectedCardIndices)
-                        },
-                        onLongClick = {
-                            changeSelectedMode(selectedCardIndices, index, setSelectedCardIndices)
-                        })
-                }
-            },
-            modifier = Modifier.fillMaxSize()
-        )
+                            })
+                    }
+                },
+                modifier = Modifier.fillMaxSize()
+            )
+        }
     }
 }
 

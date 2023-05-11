@@ -1,4 +1,4 @@
-package com.example.notepadapp.ui.components
+package com.example.notepadapp.ui.components.buttons
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Spacer
