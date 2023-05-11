@@ -9,9 +9,11 @@ import androidx.compose.material.icons.outlined.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.notepadapp.navigation.SetupHomePageNavGraph
 import com.example.notepadapp.navigation.UserPage
 import com.example.notepadapp.ui.theme.CustomAppTheme
@@ -58,6 +60,11 @@ private fun MainPageLayout(
         ) {
             RoundedButton(
                 text = "Menu",
+                icon = navController.currentBackStackEntryAsState().value?.destination?.route?.let {
+                    getCurrentMenuIcon(
+                        it
+                    )
+                },
                 onClick = {
                     coroutineScope.launch {
                         bottomSheetState.show()
@@ -70,6 +77,19 @@ private fun MainPageLayout(
     }
 }
 
+private fun getCurrentMenuIcon(currentRoute: String): ImageVector? {
+    val currentButtonIcon = when (currentRoute) {
+        UserPage.Notes.route ->
+            Icons.Outlined.AutoAwesomeMosaic
+
+        UserPage.Settings.route ->
+            Icons.Outlined.Settings
+
+        else -> null
+    }
+    return currentButtonIcon
+}
+
 @Composable
 @OptIn(ExperimentalMaterialApi::class)
 private fun BottomSheetContent(
@@ -77,7 +97,8 @@ private fun BottomSheetContent(
     coroutineScope: CoroutineScope,
     bottomSheetState: ModalBottomSheetState
 ) {
-    var lastButtonPressed by remember { mutableStateOf("Notes") }
+    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -85,34 +106,30 @@ private fun BottomSheetContent(
     ) {
         MainMenuButton("Notes",
             Icons.Outlined.AutoAwesomeMosaic,
-            isActive = lastButtonPressed == "Notes",
+            isActive = currentRoute == UserPage.Notes.route,
             onClick = {
                 goToPage(navController, UserPage.Notes.route, coroutineScope, bottomSheetState)
-                lastButtonPressed = "Notes"
             })
         Spacer(modifier = Modifier.height(8.dp))
         MainMenuButton("Archive",
             Icons.Outlined.Archive,
-            isActive = lastButtonPressed == "Archive",
+            isActive = currentRoute == "",
             onClick = {
                 goToPage(navController, UserPage.Settings.route, coroutineScope, bottomSheetState)
-                lastButtonPressed = "Archive"
             })
         Spacer(modifier = Modifier.height(8.dp))
         MainMenuButton("Basket",
             Icons.Outlined.Delete,
-            isActive = lastButtonPressed == "Basket",
+            isActive = currentRoute == "",
             onClick = {
                 goToPage(navController, UserPage.Settings.route, coroutineScope, bottomSheetState)
-                lastButtonPressed = "Basket"
             })
         Spacer(modifier = Modifier.height(8.dp))
         MainMenuButton("Settings",
             Icons.Outlined.Settings,
-            isActive = lastButtonPressed == "Settings",
+            isActive = currentRoute == UserPage.Settings.route,
             onClick = {
                 goToPage(navController, UserPage.Settings.route, coroutineScope, bottomSheetState)
-                lastButtonPressed = "Settings"
             }
         )
     }
@@ -125,7 +142,7 @@ private fun goToPage(
     coroutineScope: CoroutineScope,
     modalBottomSheetState: ModalBottomSheetState
 ) {
-    if (navController.currentDestination?.route == rout){
+    if (navController.currentDestination?.route == rout) {
         coroutineScope.launch { modalBottomSheetState.hide() }
         return
     }
