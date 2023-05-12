@@ -6,22 +6,37 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.selection.LocalTextSelectionColors
+import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.runtime.*
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalTextToolbar
+import androidx.compose.ui.text.ParagraphIntrinsics
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.createFontFamilyResolver
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.notepadapp.ui.theme.CustomAppTheme
+
+
+private const val TEXT_SCALE_REDUCTION_INTERVAL = 0.9f
+private val CONTAINERSHAPE = RoundedCornerShape(15.dp)
 
 @Composable
 fun SearchField(
@@ -31,9 +46,8 @@ fun SearchField(
     onTrailingIconClick: () -> Unit = {},
 ) {
     val interactionSource = remember { MutableInteractionSource() }
-    val containerShape = RoundedCornerShape(15.dp)
-    val singleLine = true
     val enabled = true
+    val textStyle = MaterialTheme.typography.body1.copy(color = CustomAppTheme.colors.text)
     val visualTransformation = VisualTransformation.None
     val isTrailingIconVisible by remember {
         derivedStateOf {
@@ -47,47 +61,98 @@ fun SearchField(
         trailingIconColor = CustomAppTheme.colors.textSecondary,
         textColor = CustomAppTheme.colors.text,
         cursorColor = CustomAppTheme.colors.textSecondary,
-        unfocusedIndicatorColor = Color.Transparent,
-        disabledIndicatorColor = Color.Transparent,
-        focusedIndicatorColor = Color.Transparent,
         focusedLabelColor = CustomAppTheme.colors.textSecondary,
         unfocusedLabelColor = CustomAppTheme.colors.textSecondary,
     )
+    val maxFontSize = 20.sp
+    val minFontSize = 16.sp
 
-    BasicTextField(
-        value = search,
-        onValueChange = onValueChange,
-        interactionSource = interactionSource,
-        enabled = enabled,
-        singleLine = singleLine,
-        textStyle = MaterialTheme.typography.body1.copy(color = CustomAppTheme.colors.text),
-        cursorBrush = SolidColor(CustomAppTheme.colors.textSecondary),
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(
-                color = CustomAppTheme.colors.secondaryBackground,
-                shape = RoundedCornerShape(8.dp)
-            )
-            .clip(containerShape)
-            .height(50.dp)
-            .clip(containerShape)
-            .border(1.dp, CustomAppTheme.colors.stroke, containerShape)
-            .fillMaxWidth()
-            .padding(10.dp, 0.dp, 0.dp, 0.dp),
-    ) {
-        TextFieldDecorationBox(
-            search,
-            visualTransformation,
-            it,
-            singleLine,
-            enabled,
-            interactionSource,
-            isTrailingIconVisible,
-            onTrailingIconClick,
-            placeholder,
-            textFieldColors
+    val customTextSelectionColors = TextSelectionColors(
+        handleColor = CustomAppTheme.colors.stroke,
+        backgroundColor = CustomAppTheme.colors.stroke,
+    )
+    val focusManager = LocalFocusManager.current
+
+    BoxWithConstraints(modifier = Modifier.fillMaxWidth()) {
+        val shrunkFontSize = resizeFontSize(maxFontSize, search, textStyle, minFontSize, TEXT_SCALE_REDUCTION_INTERVAL)
+        CompositionLocalProvider(
+            LocalTextSelectionColors provides customTextSelectionColors,
+        ) {
+            BasicTextField(
+                value = search,
+                onValueChange = onValueChange,
+                interactionSource = interactionSource,
+                enabled = enabled,
+                singleLine = true,
+                textStyle = textStyle.copy(fontSize = shrunkFontSize),
+                cursorBrush = SolidColor(CustomAppTheme.colors.textSecondary),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Done,
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        focusManager.clearFocus()
+                    }
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(
+                        color = CustomAppTheme.colors.secondaryBackground,
+                        shape = RoundedCornerShape(8.dp)
+                    )
+                    .clip(CONTAINERSHAPE)
+                    .height(50.dp)
+                    .clip(CONTAINERSHAPE)
+                    .border(1.dp, CustomAppTheme.colors.stroke, CONTAINERSHAPE)
+                    .fillMaxWidth()
+                    .padding(10.dp, 0.dp, 0.dp, 0.dp),
+            ) {
+                TextFieldDecorationBox(
+                    search,
+                    visualTransformation,
+                    it,
+                    enabled,
+                    interactionSource,
+                    isTrailingIconVisible,
+                    onTrailingIconClick,
+                    placeholder,
+                    textFieldColors
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun BoxWithConstraintsScope.resizeFontSize(
+    maxFontSize: TextUnit,
+    search: String,
+    textStyle: TextStyle,
+    minFontSize: TextUnit,
+    TEXT_SCALE_REDUCTION_INTERVAL: Float
+): TextUnit {
+    var shrunkFontSize = maxFontSize
+    val calculateIntrinsics = @Composable {
+        ParagraphIntrinsics(
+            text = search,
+            style = textStyle.copy(fontSize = shrunkFontSize),
+            density = LocalDensity.current,
+            fontFamilyResolver = createFontFamilyResolver(LocalContext.current)
         )
     }
+
+    var intrinsics = calculateIntrinsics()
+    with(LocalDensity.current) {
+        val textFieldDefaultHorizontalPadding = 53.dp.toPx()
+        val maxInputWidth = maxWidth.toPx() - 2 * textFieldDefaultHorizontalPadding
+
+        while (minFontSize < shrunkFontSize && intrinsics.maxIntrinsicWidth > maxInputWidth) {
+            shrunkFontSize *= TEXT_SCALE_REDUCTION_INTERVAL
+            intrinsics = calculateIntrinsics()
+        }
+    }
+    return shrunkFontSize
 }
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -96,7 +161,6 @@ private fun TextFieldDecorationBox(
     search: String,
     visualTransformation: VisualTransformation,
     it: @Composable () -> Unit,
-    singleLine: Boolean,
     enabled: Boolean,
     interactionSource: MutableInteractionSource,
     isTrailingIconVisible: Boolean,
@@ -108,7 +172,7 @@ private fun TextFieldDecorationBox(
         value = search,
         visualTransformation = visualTransformation,
         innerTextField = it,
-        singleLine = singleLine,
+        singleLine = true,
         enabled = enabled,
         interactionSource = interactionSource,
         contentPadding = PaddingValues(0.dp),
