@@ -88,4 +88,7 @@ dependencies {
 
     // UI controller
     implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanist_version"
+
+    // livedata
+    implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
 }
