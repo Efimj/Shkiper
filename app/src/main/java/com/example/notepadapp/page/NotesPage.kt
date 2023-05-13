@@ -1,29 +1,29 @@
 package com.example.notepadapp.page
 
+import android.annotation.SuppressLint
 import android.content.res.Configuration
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
-import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Surface
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import com.example.notepadapp.ui.components.cards.NoteCard
 import com.example.notepadapp.ui.components.fields.SearchField
-import com.example.notepadapp.ui.components.layouts.NotesVerticalMasonry
+import kotlin.math.roundToInt
+
 
 data class Card(
     var title: String,
@@ -31,7 +31,8 @@ data class Card(
     var isSelected: Boolean = false
 )
 
-@OptIn(ExperimentalFoundationApi::class)
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun NotesPage() {
     val isPortrait = LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT
@@ -60,74 +61,77 @@ fun NotesPage() {
         Card("Список контактов", "перечень контактов, которые могут быть полезны в работе или личной жизни."),
         Card("План поездки", "записи о дате, месте и бюджете планируемой поездки."),
         Card("Список цитат", "перечень любимых цитат, которые вдохновляют и мотивируют на достижение целей."),
+        Card("Список целей на год", "перечень основных целей, которые нужно достичь в течение года."),
+        Card(
+            "Список дел на выходные",
+            "перечень дел, которые можно выполнить на выходных для отдыха и улучшения настроения."
+        ),
+        Card("Список интересных фильмов", "перечень фильмов, которые рекомендуются к просмотру в свободное время."),
+        Card("План обучения новому навыку", "план обучения и практики нового навыка для его освоения."),
+        Card("Список желаемых покупок", "перечень вещей, которые хотелось бы приобрести в ближайшее время."),
+        Card("План обновления гардероба", "план покупок и обновления гардероба на сезон."),
+        Card("Список любимых рецептов", "перечень любимых рецептов, которые можно приготовить для себя и близких."),
+        Card("План обновления дома", "план обновления и ремонта дома на ближайшее время."),
+        Card("Список целей на месяц", "перечень целей, которые нужно достичь в течение месяца."),
+        Card("Идеи для подарков", "записи о потенциальных подарках для близких и друзей на различные праздники."),
+        Card("sss", "wddww")
     )
     val (selectedCardIndices, setSelectedCardIndices) = remember { mutableStateOf(setOf<Int>()) }
 
-    val viewModel = ExampleViewModel()
-    val scrollState = rememberLazyStaggeredGridState()
-    val scrollUpState = viewModel.scrollUp.observeAsState()
+    val toolbarHeight = 60.dp
+    val toolbarHeightPx = with(LocalDensity.current) { toolbarHeight.roundToPx().toFloat() }
+    val toolbarOffsetHeightPx = remember { mutableStateOf(0f) }
 
-    viewModel.updateScrollPosition(scrollState.firstVisibleItemIndex)
+    val nestedScrollConnection = remember {
+        object : NestedScrollConnection {
+            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
 
-    Box(Modifier.fillMaxSize().padding(horizontal = 10.dp)) {
-        NotesVerticalMasonry(
-            staggeredGridCellsMode,
-            noteCards,
-            selectedCardIndices,
-            scrollState,
-            PaddingValues(0.dp, 70.dp, 0.dp, 100.dp),
-            { onNoteClick(selectedCardIndices, it, setSelectedCardIndices) }
-        ) { changeSelectedMode(selectedCardIndices, it, setSelectedCardIndices) }
-        ScrollableAppBar(
-            scrollUpState = scrollUpState
-        )
-//        Box(
-//            Modifier.padding(horizontal = 10.dp).background(Color.Transparent).align(Alignment.CenterStart)
-//        ) {
-//            SearchField(search = search, onValueChange = {
-//                search = it
-//            })
-//        }
+                val delta = available.y
+                val newOffset = toolbarOffsetHeightPx.value + delta
+                toolbarOffsetHeightPx.value = newOffset.coerceIn(-toolbarHeightPx, 0f)
+                return Offset.Zero
+            }
+        }
     }
-}
 
-@Composable
-fun ScrollableAppBar(
-    scrollUpState: State<Boolean?>,
-) {
-    val position by animateFloatAsState(if (scrollUpState.value == true) -170f else 0f)
     var search by remember { mutableStateOf("Value") }
 
     Box(
         Modifier
-            .padding(top = 10.dp)
-            .clip(RoundedCornerShape(15.dp))
-            .background(Color.Transparent)
-            .graphicsLayer { translationY = (position) }
-            .clip(RoundedCornerShape(15.dp))
-            .padding(horizontal = 10.dp)
-            .background(Color.Transparent),
+            .fillMaxSize()
+            .nestedScroll(nestedScrollConnection)
     ) {
-        SearchField(search = search, onValueChange = {
-            search = it
-        })
-    }
-
-}
-
-class ExampleViewModel : ViewModel() {
-
-    private var lastScrollIndex = 0
-
-    private val _scrollUp = MutableLiveData(false)
-    val scrollUp: LiveData<Boolean>
-        get() = _scrollUp
-
-    fun updateScrollPosition(newScrollIndex: Int) {
-        if (newScrollIndex == lastScrollIndex) return
-
-        _scrollUp.value = newScrollIndex > lastScrollIndex
-        lastScrollIndex = newScrollIndex
+        LazyVerticalStaggeredGrid(
+            columns = staggeredGridCellsMode,
+            verticalItemSpacing = 10.dp,
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            contentPadding = PaddingValues(10.dp, 80.dp, 10.dp, 100.dp),
+            modifier = Modifier.fillMaxSize(),
+        ){
+            items(noteCards.size) { index ->
+                NoteCard(
+                    noteCards[index].title,
+                    noteCards[index].description,
+                    selected = index in selectedCardIndices,
+                    onClick = {
+                        onNoteClick(selectedCardIndices, index, setSelectedCardIndices)
+                    },
+                    onLongClick = {
+                        changeSelectedMode(selectedCardIndices, index, setSelectedCardIndices)
+                    })
+            }
+        }
+        Box(
+            modifier = Modifier
+                .height(toolbarHeight)
+                .padding(20.dp, 10.dp, 20.dp, 0.dp)
+                .background(Color.Transparent)
+                .offset { IntOffset(x = 0, y = toolbarOffsetHeightPx.value.roundToInt()) },
+        ){
+            SearchField(search = search, onValueChange = {
+                search = it
+            })
+        }
     }
 }
 

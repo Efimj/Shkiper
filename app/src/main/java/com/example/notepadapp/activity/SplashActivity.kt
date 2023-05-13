@@ -29,7 +29,7 @@ class SplashActivity  : ComponentActivity() {
         splashScreen.setKeepOnScreenCondition { true }
 
         GlobalScope.launch {
-            delay(500)
+            delay(350)
             moveNext()
         }
     }
