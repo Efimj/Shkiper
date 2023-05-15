@@ -36,7 +36,7 @@ fun SetupHomePageNavGraph(
                 }
             }
         ) {
-            NotesPage()
+            NotesPage(navController)
         }
         composable(
             route = UserPage.Settings.route,

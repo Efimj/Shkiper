@@ -45,7 +45,7 @@ fun MainMenuBottomSheet() {
 }
 
 @Composable
-@OptIn(ExperimentalAnimationApi::class, ExperimentalPagerApi::class, ExperimentalMaterialApi::class)
+@OptIn(ExperimentalAnimationApi::class, ExperimentalMaterialApi::class)
 private fun MainPageLayout(
     navController: NavHostController,
     coroutineScope: CoroutineScope,
