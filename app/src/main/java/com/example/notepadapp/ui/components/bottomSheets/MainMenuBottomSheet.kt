@@ -1,6 +1,9 @@
 package com.example.notepadapp.ui.components.bottomSheets
 
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.TweenSpec
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -9,6 +12,7 @@ import androidx.compose.material.icons.outlined.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -51,12 +55,22 @@ private fun MainPageLayout(
     coroutineScope: CoroutineScope,
     bottomSheetState: ModalBottomSheetState
 ) {
+    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route ?: ""
+    val isButtonHide = currentRoute.substringBefore("/")== UserPage.Note.route.substringBefore("/")
+    val menuContainerHeight = 37
+
+    val offsetY by animateDpAsState(
+        if (isButtonHide) (menuContainerHeight).dp else 0.dp,
+        animationSpec = TweenSpec(durationMillis = 300)
+    )
+
     Box(Modifier.fillMaxSize()) {
         Box(Modifier.fillMaxSize()) {
-            SetupHomePageNavGraph(navController = navController, startDestination = UserPage.Notes.route)
+            SetupHomePageNavGraph(navController = navController, startDestination = UserPage.NoteList.route)
         }
         Box(
             Modifier
+                .offset(y = offsetY)
                 .align(Alignment.BottomCenter)
         ) {
             RoundedButton(
@@ -72,21 +86,27 @@ private fun MainPageLayout(
                     }
                 },
                 shape = RoundedCornerShape(topStart = 36.dp, topEnd = 36.dp),
-                modifier = Modifier.height(37.dp).width(160.dp).offset(y = 1.dp)
+                modifier = Modifier.height(menuContainerHeight.dp).width(160.dp).offset(y = 1.dp)
             )
         }
     }
 }
 
-private fun getCurrentMenuIcon(currentRoute: String): ImageVector? {
+private fun getCurrentMenuIcon(currentRoute: String): ImageVector {
     val currentButtonIcon = when (currentRoute) {
-        UserPage.Notes.route ->
+        UserPage.NoteList.route ->
             Icons.Outlined.AutoAwesomeMosaic
+
+        UserPage.Archive.route ->
+            Icons.Outlined.Archive
+
+        UserPage.Basket.route ->
+            Icons.Outlined.Delete
 
         UserPage.Settings.route ->
             Icons.Outlined.Settings
 
-        else -> null
+        else -> Icons.Outlined.Menu
     }
     return currentButtonIcon
 }
@@ -107,23 +127,23 @@ private fun BottomSheetContent(
     ) {
         MainMenuButton("Notes",
             Icons.Outlined.AutoAwesomeMosaic,
-            isActive = currentRoute == UserPage.Notes.route,
+            isActive = currentRoute == UserPage.NoteList.route,
             onClick = {
-                goToPage(navController, UserPage.Notes.route, coroutineScope, bottomSheetState)
+                goToPage(navController, UserPage.NoteList.route, coroutineScope, bottomSheetState)
             })
         Spacer(modifier = Modifier.height(8.dp))
         MainMenuButton("Archive",
             Icons.Outlined.Archive,
-            isActive = currentRoute == "",
+            isActive = currentRoute == UserPage.Archive.route,
             onClick = {
-                goToPage(navController, UserPage.Settings.route, coroutineScope, bottomSheetState)
+                goToPage(navController, UserPage.Archive.route, coroutineScope, bottomSheetState)
             })
         Spacer(modifier = Modifier.height(8.dp))
         MainMenuButton("Basket",
             Icons.Outlined.Delete,
-            isActive = currentRoute == "",
+            isActive = currentRoute == UserPage.Basket.route,
             onClick = {
-                goToPage(navController, UserPage.Settings.route, coroutineScope, bottomSheetState)
+                goToPage(navController, UserPage.Basket.route, coroutineScope, bottomSheetState)
             })
         Spacer(modifier = Modifier.height(8.dp))
         MainMenuButton("Settings",
