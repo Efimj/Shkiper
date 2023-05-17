@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.notepadapp.navigation.UserPage
 import com.example.notepadapp.ui.components.cards.NoteCard
 import com.example.notepadapp.ui.components.fields.SearchField
@@ -32,6 +33,7 @@ fun NoteListPage(navController: NavController, notesViewModel: NotesViewModel = 
     val staggeredGridCellsMode: StaggeredGridCells = remember {
         if (isPortrait) StaggeredGridCells.Fixed(2) else StaggeredGridCells.Adaptive(200.dp)
     }
+    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route ?: ""
 
     val toolbarHeight = 60.dp
     val toolbarHeightPx = with(LocalDensity.current) { toolbarHeight.roundToPx().toFloat() }
@@ -69,7 +71,12 @@ fun NoteListPage(navController: NavController, notesViewModel: NotesViewModel = 
                         if (notesViewModel.selectedNoteCardIndices.value.isNotEmpty())
                             notesViewModel.toggleSelectedNoteCard(index)
                         else
-                            navController.navigate(UserPage.Note.noteId(index.toString()))
+                        {
+
+                            if (currentRoute.substringBefore("/") != UserPage.Note.route.substringBefore("/")){
+                                navController.navigate(UserPage.Note.noteId(index.toString()))
+                            }
+                        }
                     },
                     onLongClick = {
                         notesViewModel.toggleSelectedNoteCard(index)
