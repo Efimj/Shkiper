@@ -18,7 +18,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
+import androidx.navigation.NavController
 import com.example.notepadapp.navigation.UserPage
 import com.example.notepadapp.ui.components.cards.NoteCard
 import com.example.notepadapp.ui.components.fields.SearchField
@@ -27,7 +27,7 @@ import kotlin.math.roundToInt
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun NoteListPage(navHostController: NavHostController, notesViewModel: NotesViewModel = viewModel()) {
+fun NoteListPage(navController: NavController, notesViewModel: NotesViewModel = viewModel()) {
     val isPortrait = LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT
     val staggeredGridCellsMode: StaggeredGridCells = remember {
         if (isPortrait) StaggeredGridCells.Fixed(2) else StaggeredGridCells.Adaptive(200.dp)
@@ -40,7 +40,6 @@ fun NoteListPage(navHostController: NavHostController, notesViewModel: NotesView
     val nestedScrollConnection = remember {
         object : NestedScrollConnection {
             override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-
                 val delta = available.y
                 val newOffset = toolbarOffsetHeightPx.value + delta
                 toolbarOffsetHeightPx.value = newOffset.coerceIn(-toolbarHeightPx, 0f)
@@ -70,7 +69,7 @@ fun NoteListPage(navHostController: NavHostController, notesViewModel: NotesView
                         if (notesViewModel.selectedNoteCardIndices.value.isNotEmpty())
                             notesViewModel.toggleSelectedNoteCard(index)
                         else
-                            navHostController.navigate(UserPage.Note.noteId(index.toString()))
+                            navController.navigate(UserPage.Note.noteId(index.toString()))
                     },
                     onLongClick = {
                         notesViewModel.toggleSelectedNoteCard(index)

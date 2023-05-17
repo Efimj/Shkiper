@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.example.notepadapp.page.NoteListPage
+import com.example.notepadapp.page.NotePage
 import com.example.notepadapp.page.SettingsPage
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
@@ -25,16 +26,14 @@ fun SetupHomePageNavGraph(
             route = UserPage.NoteList.route,
             enterTransition = {
                 when (initialState.destination.route) {
-                    UserPage.Settings.route ->
-                        slideInVertically(initialOffsetY = { -40 }) + fadeIn()
-                    else -> null
+                    UserPage.Note.route -> null
+                    else -> slideInVertically(initialOffsetY = { -40 }) + fadeIn()
                 }
             },
             exitTransition = {
                 when (targetState.destination.route) {
-                    UserPage.Settings.route ->
-                        slideOutVertically(targetOffsetY = {50}) + fadeOut()
-                    else -> null
+                    UserPage.Note.route -> null
+                    else -> slideOutVertically(targetOffsetY = {50}) + fadeOut()
                 }
             }
         ) {
@@ -45,16 +44,14 @@ fun SetupHomePageNavGraph(
             route = UserPage.Archive.route,
             enterTransition = {
                 when (initialState.destination.route) {
-                    UserPage.NoteList.route ->
-                        slideInVertically(initialOffsetY = { -40 }) + fadeIn()
-                    else -> null
+                    UserPage.Note.route -> null
+                    else -> slideInVertically(initialOffsetY = { -40 }) + fadeIn()
                 }
             },
             exitTransition = {
                 when (targetState.destination.route) {
-                    UserPage.NoteList.route ->
-                        slideOutVertically(targetOffsetY = {50}) + fadeOut()
-                    else -> null
+                    UserPage.Note.route -> null
+                    else -> slideOutVertically(targetOffsetY = {50}) + fadeOut()
                 }
             }
         ) {
@@ -65,16 +62,14 @@ fun SetupHomePageNavGraph(
             route = UserPage.Basket.route,
             enterTransition = {
                 when (initialState.destination.route) {
-                    UserPage.NoteList.route ->
-                        slideInVertically(initialOffsetY = { -40 }) + fadeIn()
-                    else -> null
+                    UserPage.Note.route -> null
+                    else -> slideInVertically(initialOffsetY = { -40 }) + fadeIn()
                 }
             },
             exitTransition = {
                 when (targetState.destination.route) {
-                    UserPage.NoteList.route ->
-                        slideOutVertically(targetOffsetY = {50}) + fadeOut()
-                    else -> null
+                    UserPage.Note.route -> null
+                    else -> slideOutVertically(targetOffsetY = {50}) + fadeOut()
                 }
             }
         ) {
@@ -85,16 +80,14 @@ fun SetupHomePageNavGraph(
             route = UserPage.Settings.route,
             enterTransition = {
                 when (initialState.destination.route) {
-                    UserPage.NoteList.route ->
-                        slideInVertically(initialOffsetY = { -40 }) + fadeIn()
-                    else -> null
+                    UserPage.Note.route -> null
+                    else -> slideInVertically(initialOffsetY = { -40 }) + fadeIn()
                 }
             },
             exitTransition = {
                 when (targetState.destination.route) {
-                    UserPage.NoteList.route ->
-                        slideOutVertically(targetOffsetY = {50}) + fadeOut()
-                    else -> null
+                    UserPage.Note.route -> null
+                    else -> slideOutVertically(targetOffsetY = {50}) + fadeOut()
                 }
             }
         ) {
@@ -107,21 +100,13 @@ fun SetupHomePageNavGraph(
                 type = NavType.StringType
             }),
             enterTransition = {
-                when (initialState.destination.route) {
-                    UserPage.Settings.route ->
-                        slideInVertically(initialOffsetY = { -40 }) + fadeIn()
-                    else -> null
-                }
+                fadeIn() + scaleIn(initialScale = 0.9f)
             },
             exitTransition = {
-                when (targetState.destination.route) {
-                    UserPage.Settings.route ->
-                        slideOutVertically(targetOffsetY = {50}) + fadeOut()
-                    else -> null
-                }
+                fadeOut() + scaleOut(targetScale = 0.9f)
             }
         ) {
-
+            NotePage(navController)
         }
     }
 }
