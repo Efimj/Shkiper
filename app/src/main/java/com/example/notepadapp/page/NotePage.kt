@@ -1,5 +1,7 @@
 package com.example.notepadapp.page
 
+import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.*
@@ -27,21 +29,13 @@ import com.example.notepadapp.navigation.UserPage
 import com.example.notepadapp.ui.theme.CustomAppTheme
 import com.example.notepadapp.viewmodel.NoteViewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun NotePage(navController: NavController, noteViewModel: NoteViewModel = viewModel()) {
     val scrollState = rememberScrollState()
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route ?: ""
-
-    LaunchedEffect(scrollState.value) {
-        if (scrollState.canScrollBackward || scrollState.canScrollForward) {
-            noteViewModel.isTopAppBarHover = scrollState.value > 0
-            noteViewModel.isBottomAppBarHover = scrollState.value < scrollState.maxValue
-        } else {
-            noteViewModel.isTopAppBarHover = false
-            noteViewModel.isBottomAppBarHover = false
-        }
-    }
 
     LaunchedEffect(currentRoute) {
         if (currentRoute.substringBefore("/") != UserPage.Note.route.substringBefore("/")) {
@@ -90,9 +84,19 @@ fun NotePage(navController: NavController, noteViewModel: NoteViewModel = viewMo
                         "wd\n" +
                         "wd\n" +
                         "wd\n" +
-                        "wd", fontSize = 30.sp, color = Color.White,
+                        "END", fontSize = 30.sp, color = Color.White,
                 modifier = Modifier.padding(horizontal = 20.dp)
             )
+        }
+    }
+
+    LaunchedEffect(scrollState.value) {
+        if (scrollState.canScrollBackward || scrollState.canScrollForward) {
+            noteViewModel.isTopAppBarHover = scrollState.value > 0
+            noteViewModel.isBottomAppBarHover = scrollState.value < scrollState.maxValue
+        } else {
+            noteViewModel.isTopAppBarHover = false
+            noteViewModel.isBottomAppBarHover = false
         }
     }
 }
@@ -166,6 +170,7 @@ private fun NotePageHeader(navController: NavController, noteViewModel: NoteView
     )
 }
 
+@SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 private fun NotePageFooter(navController: NavController, noteViewModel: NoteViewModel) {
     val systemUiController = rememberSystemUiController()
@@ -183,7 +188,7 @@ private fun NotePageFooter(navController: NavController, noteViewModel: NoteView
         backgroundColor = backgroundColor,
         contentColor = CustomAppTheme.colors.textSecondary,
         cutoutShape = CircleShape,
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().height(45.dp),
     ) {
         Spacer(modifier = Modifier.padding(5.dp, 0.dp, 0.dp, 0.dp))
         Text("Last changed: 18:19")
