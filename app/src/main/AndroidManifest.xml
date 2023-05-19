@@ -28,7 +28,10 @@
                 android:name=".activity.MainActivity"
                 android:exported="true"
                 android:label="@string/app_name"
-                android:theme="@style/Theme.NotePadApp">
+                android:windowSoftInputMode="adjustResize"
+                android:imeOptions="actionSend|flagNoEnterAction"
+                android:theme="@style/Theme.NotePadApp"
+>
             <meta-data
                     android:name="android.app.lib_name"
                     android:value=""/>
@@ -36,3 +39,6 @@
     </application>
 
 </manifest>
+<!-- что бы при открытии клавиатуры окно просмотра уменьшалось-->
+<!--        android:windowSoftInputMode="adjustResize"-->
+<!--        android:imeOptions="actionSend|flagNoEnterAction"-->
