@@ -5,8 +5,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.notepadapp.screen.WelcomeScreen
-import com.example.notepadapp.screen.HomeScreen
+import com.example.notepadapp.screen.WelcomeScreen.WelcomeScreen
+import com.example.notepadapp.screen.HomeScreen.HomeScreen
 import com.google.accompanist.pager.ExperimentalPagerApi
 
 @ExperimentalAnimationApi

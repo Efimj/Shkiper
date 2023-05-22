@@ -1,7 +1,6 @@
 package com.example.notepadapp.activity
 
 import android.os.Bundle
-import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -9,12 +8,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.toArgb
 import androidx.navigation.compose.rememberNavController
 import com.example.notepadapp.app_handlers.ThemePreferenceManager
 import com.example.notepadapp.navigation.AppScreen
 import com.example.notepadapp.navigation.SetupAppNavGraph
-import com.example.notepadapp.screen.HomeScreen
 import com.example.notepadapp.ui.theme.CustomAppTheme
 import com.example.notepadapp.util.ThemeUtil
 import com.google.accompanist.pager.ExperimentalPagerApi

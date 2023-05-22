@@ -5,9 +5,9 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
-import com.example.notepadapp.page.NoteListPage
-import com.example.notepadapp.page.NotePage
-import com.example.notepadapp.page.SettingsPage
+import com.example.notepadapp.page.NoteListPage.NoteListPage
+import com.example.notepadapp.page.NotePage.NotePage
+import com.example.notepadapp.page.SettingsPage.SettingsPage
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 

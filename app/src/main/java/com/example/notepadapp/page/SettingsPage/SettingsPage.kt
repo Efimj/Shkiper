@@ -1,4 +1,4 @@
-package com.example.notepadapp.page
+package com.example.notepadapp.page.SettingsPage
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState

@@ -1,4 +1,4 @@
-package com.example.notepadapp.screen
+package com.example.notepadapp.screen.HomeScreen
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material.*

@@ -1,4 +1,4 @@
-package com.example.notepadapp.page
+package com.example.notepadapp.page.NoteListPage
 
 import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -23,7 +23,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.notepadapp.navigation.UserPage
 import com.example.notepadapp.ui.components.cards.NoteCard
 import com.example.notepadapp.ui.components.fields.SearchField
-import com.example.notepadapp.viewmodel.NotesViewModel
 import kotlin.math.roundToInt
 
 @OptIn(ExperimentalFoundationApi::class)

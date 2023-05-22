@@ -1,4 +1,4 @@
-package com.example.notepadapp.screen
+package com.example.notepadapp.screen.WelcomeScreen
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi

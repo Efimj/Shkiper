@@ -1,4 +1,4 @@
-package com.example.notepadapp.viewmodel
+package com.example.notepadapp.page.NoteListPage
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue

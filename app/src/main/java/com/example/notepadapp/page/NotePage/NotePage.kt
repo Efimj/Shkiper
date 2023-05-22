@@ -1,7 +1,6 @@
-package com.example.notepadapp.page
+package com.example.notepadapp.page.NotePage
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.*
@@ -32,7 +31,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.notepadapp.navigation.UserPage
 import com.example.notepadapp.ui.components.fields.CustomTextField
 import com.example.notepadapp.ui.theme.CustomAppTheme
-import com.example.notepadapp.viewmodel.NoteViewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
@@ -48,7 +46,6 @@ fun NotePage(navController: NavController, noteViewModel: NoteViewModel = viewMo
     var headerValue by remember { mutableStateOf(TextFieldValue()) }
     var bodyValue by remember { mutableStateOf(TextFieldValue()) }
 
-    // Создаем состояние для отслеживания фокуса текстового поля
     val bodyFieldFocusRequester = remember { FocusRequester() }
 
     Scaffold(
