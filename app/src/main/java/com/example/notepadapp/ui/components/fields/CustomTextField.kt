@@ -64,7 +64,7 @@ fun CustomTextField(
         handleColor = CustomAppTheme.colors.stroke,
         backgroundColor = CustomAppTheme.colors.stroke,
     )
-    val focusManager = LocalFocusManager.current
+
     CompositionLocalProvider(
         LocalTextSelectionColors provides customTextSelectionColors,
     ) {
@@ -92,7 +92,7 @@ fun CustomTextField(
                 enabled = enabled,
                 interactionSource = interactionSource,
                 contentPadding = PaddingValues(0.dp),
-                placeholder = { Text(text = placeholder) },
+                placeholder = { Text(text = placeholder, style = textStyle) },
                 colors = textFieldColors,
             )
         }
