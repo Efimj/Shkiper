@@ -9,8 +9,8 @@ import com.example.notepadapp.screen.WelcomeScreen.WelcomeScreen
 import com.example.notepadapp.screen.HomeScreen.HomeScreen
 import com.google.accompanist.pager.ExperimentalPagerApi
 
+@OptIn(ExperimentalPagerApi::class)
 @ExperimentalAnimationApi
-@ExperimentalPagerApi
 @Composable
 fun SetupAppNavGraph(
     navController: NavHostController,

@@ -9,6 +9,7 @@ import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
@@ -28,7 +29,7 @@ fun NoteCard(
 ) {
     Card(
         modifier = Modifier
-            .heightIn(max = 250.dp)
+            .heightIn(max = 250.dp, min = 50.dp)
             .fillMaxWidth()
             .clip(RoundedCornerShape(15.dp))
             .combinedClickable(
@@ -62,6 +63,16 @@ fun NoteCard(
                     overflow = TextOverflow.Ellipsis,
                     style = MaterialTheme.typography.body1,
                     color = CustomAppTheme.colors.textSecondary,
+                )
+            }
+            if(header.isNullOrEmpty() && text.isNullOrEmpty()){
+                Text(
+                    text = "Empty note",
+                    maxLines = 10,
+                    overflow = TextOverflow.Ellipsis,
+                    style = MaterialTheme.typography.body1,
+                    color = CustomAppTheme.colors.textSecondary,
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
             }
         }
