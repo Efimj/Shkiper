@@ -57,7 +57,7 @@ fun CreateNoteCard(
                 text = text,
                 maxLines = 3,
                 overflow = TextOverflow.Ellipsis,
-                style = MaterialTheme.typography.body1.copy(fontSize = 18.sp),
+                style = MaterialTheme.typography.body1.copy(fontSize = 20.sp),
                 color = CustomAppTheme.colors.textSecondary,
             )
         }

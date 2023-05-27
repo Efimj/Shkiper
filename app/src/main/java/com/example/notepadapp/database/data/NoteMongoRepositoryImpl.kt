@@ -3,14 +3,20 @@ package com.example.notepadapp.database.data
 import android.util.Log
 import com.example.notepadapp.database.models.Note
 import io.realm.kotlin.Realm
+import io.realm.kotlin.ext.asFlow
 import io.realm.kotlin.ext.query
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import org.mongodb.kbson.ObjectId
 
-class NoteMongoRepositoryImpl(val realm: Realm): NoteMongoRepository {
+class NoteMongoRepositoryImpl(val realm: Realm) : NoteMongoRepository {
     override fun getNotes(): Flow<List<Note>> {
         return realm.query<Note>().asFlow().map { it.list }
+    }
+
+    override fun getNote(id: ObjectId): Note? {
+        return realm.query<Note>(query = "_id == $0", id).first().find()
     }
 
     override fun filterNotesByContains(name: String): Flow<List<Note>> {
@@ -22,17 +28,24 @@ class NoteMongoRepositoryImpl(val realm: Realm): NoteMongoRepository {
     }
 
     override suspend fun updateNote(note: Note) {
-        realm.write {
-            val queriedNote = query<Note>(query = "_id == $0", note._id).first().find()
-            queriedNote?.header = note.header
-            queriedNote?.body = note.body
-            queriedNote?.updateDate = note.updateDate
-            queriedNote?.creationDate = note.creationDate
-            queriedNote?.deletionDate = note.deletionDate
-            queriedNote?.hashtags = note.hashtags
-            queriedNote?.isPinned = note.isPinned
-            queriedNote?.position = note.position
-        }
+        realm.query<Note>(query = "_id == $0", note._id)
+            .first()
+            .find()
+            ?.also { currentNote ->
+                realm.writeBlocking {
+                    val queriedNote = findLatest(currentNote)
+                    queriedNote?.apply {
+                        header = note.header
+                        body = note.body
+                        updateDate = note.updateDate
+                        creationDate = note.creationDate
+                        deletionDate = note.deletionDate
+                        hashtags = note.hashtags
+                        isPinned = note.isPinned
+                        position = note.position
+                    }
+                }
+            }
     }
 
     override suspend fun deleteNote(id: ObjectId) {

@@ -6,6 +6,7 @@ import org.mongodb.kbson.ObjectId
 
 interface NoteMongoRepository {
     fun getNotes(): Flow<List<Note>>
+    fun getNote(id: ObjectId): Note?
     fun filterNotesByContains(name: String): Flow<List<Note>>
     suspend fun insertNote(note: Note)
     suspend fun updateNote(note: Note)

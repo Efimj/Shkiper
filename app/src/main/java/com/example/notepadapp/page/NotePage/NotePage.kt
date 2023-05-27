@@ -23,8 +23,8 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -32,9 +32,11 @@ import com.example.notepadapp.navigation.UserPage
 import com.example.notepadapp.ui.components.fields.CustomTextField
 import com.example.notepadapp.ui.theme.CustomAppTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import java.text.SimpleDateFormat
+import java.util.*
 
 @Composable
-fun NotePage(navController: NavController, noteViewModel: NoteViewModel = viewModel()) {
+fun NotePage(navController: NavController, noteViewModel: NoteViewModel = hiltViewModel()) {
     val scrollState = rememberScrollState()
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route ?: ""
     LaunchedEffect(currentRoute) {
@@ -43,9 +45,6 @@ fun NotePage(navController: NavController, noteViewModel: NoteViewModel = viewMo
             noteViewModel.isBottomAppBarHover = false
         }
     }
-    var headerValue by remember { mutableStateOf(TextFieldValue()) }
-    var bodyValue by remember { mutableStateOf(TextFieldValue()) }
-
     val bodyFieldFocusRequester = remember { FocusRequester() }
 
     Scaffold(
@@ -61,8 +60,8 @@ fun NotePage(navController: NavController, noteViewModel: NoteViewModel = viewMo
                 .verticalScroll(scrollState)
         ) {
             CustomTextField(
-                textFieldValue = headerValue,
-                onValueChange = { headerValue = it },
+                text = noteViewModel.noteHeader,
+                onTextChange = { noteViewModel.updateNoteHeader(it) },
                 placeholder = "Header",
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text, imeAction = ImeAction.Next),
                 keyboardActions = KeyboardActions(
@@ -74,8 +73,8 @@ fun NotePage(navController: NavController, noteViewModel: NoteViewModel = viewMo
                 modifier = Modifier.fillMaxSize().padding(horizontal = 20.dp).padding(bottom = 6.dp)
             )
             CustomTextField(
-                textFieldValue = bodyValue,
-                onValueChange = { bodyValue = it },
+                text = noteViewModel.noteBody,
+                onTextChange = { noteViewModel.updateNoteBody(it) },
                 placeholder = "Text",
                 textStyle = MaterialTheme.typography.body1,
                 modifier = Modifier.fillMaxSize().padding(horizontal = 20.dp)
@@ -172,6 +171,7 @@ private fun NotePageFooter(navController: NavController, noteViewModel: NoteView
         if (noteViewModel.isBottomAppBarHover) CustomAppTheme.colors.secondaryBackground else CustomAppTheme.colors.mainBackground,
         animationSpec = tween(200),
     )
+    val formatter = SimpleDateFormat("dd MM yyyy : ss", Locale.getDefault())
 
     SideEffect {
         systemUiController.setNavigationBarColor(backgroundColor)
@@ -185,7 +185,7 @@ private fun NotePageFooter(navController: NavController, noteViewModel: NoteView
         modifier = Modifier.fillMaxWidth().height(45.dp),
     ) {
         Spacer(modifier = Modifier.padding(5.dp, 0.dp, 0.dp, 0.dp))
-        Text("Last changed: 18:19")
+        Text(formatter.format(noteViewModel.noteUpdatedDate))
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.End

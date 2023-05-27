@@ -98,4 +98,5 @@ dependencies {
     // Mongo Realm
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1'
     implementation 'io.realm.kotlin:library-base:1.8.0'
+    //implementation 'io.realm:realm-android-library:10.9.0'
 }

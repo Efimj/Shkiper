@@ -1,10 +1,7 @@
 package com.example.notepadapp.ui.components.fields
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -13,31 +10,22 @@ import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.text.ParagraphIntrinsics
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.createFontFamilyResolver
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.notepadapp.ui.theme.CustomAppTheme
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun CustomTextField(
-    textFieldValue: TextFieldValue,
+    text: String,
     placeholder: String = "",
     textColor: Color = CustomAppTheme.colors.text,
-    onValueChange: (TextFieldValue) -> Unit = {},
+    onTextChange: (String) -> Unit = {},
     textStyle: TextStyle = MaterialTheme.typography.body1,
     enabled: Boolean = true,
     singleLine: Boolean = false,
@@ -69,8 +57,8 @@ fun CustomTextField(
         LocalTextSelectionColors provides customTextSelectionColors,
     ) {
         BasicTextField(
-            value = textFieldValue,
-            onValueChange = onValueChange,
+            value = text,
+            onValueChange = onTextChange,
             interactionSource = interactionSource,
             enabled = enabled,
             singleLine = singleLine,
@@ -79,13 +67,13 @@ fun CustomTextField(
             keyboardOptions = keyboardOptions,
             keyboardActions = keyboardActions ?: KeyboardActions(
                 onAny = {
-                    onValueChange(textFieldValue.copy("\n"))
+                    onTextChange("\n")
                 }
             ),
             modifier = modifier,
         ) {
             TextFieldDefaults.TextFieldDecorationBox(
-                value = textFieldValue.text,
+                value = text,
                 visualTransformation = VisualTransformation.None,
                 innerTextField = it,
                 singleLine = singleLine,
