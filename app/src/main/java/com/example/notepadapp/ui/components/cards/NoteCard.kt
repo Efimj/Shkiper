@@ -25,10 +25,11 @@ fun NoteCard(
     text: String? = null,
     selected: Boolean = false,
     onClick: () -> Unit = {},
-    onLongClick: () -> Unit = {}
+    onLongClick: () -> Unit = {},
+    modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = Modifier
+        modifier = modifier
             .heightIn(max = 250.dp, min = 50.dp)
             .fillMaxWidth()
             .clip(RoundedCornerShape(15.dp))

@@ -1,5 +1,6 @@
 package com.example.notepadapp.page.NoteListPage
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -12,6 +13,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import org.mongodb.kbson.ObjectId
 import javax.inject.Inject
 
 //data class NoteCard(
@@ -67,7 +69,7 @@ class NotesViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            repository.getNotes().collect(){
+            repository.getNotes().collect() {
                 notes.value = it
             }
         }
@@ -76,6 +78,21 @@ class NotesViewModel @Inject constructor(
     private val _selectedNoteCardIndices = mutableStateOf(setOf<String>())
     val selectedNoteCardIndices: State<Set<String>> = _selectedNoteCardIndices
 
+    fun clearSelectedNote() {
+        _selectedNoteCardIndices.value = setOf()
+    }
+
+    fun deleteSelectedNotes() {
+        viewModelScope.launch {
+            val listId = mutableListOf<ObjectId>()
+            for (id in selectedNoteCardIndices.value) {
+                listId += ObjectId(id)
+            }
+            repository.deleteNote(listId)
+            clearSelectedNote()
+        }
+    }
+
     fun toggleSelectedNoteCard(index: String) {
         _selectedNoteCardIndices.value = if (_selectedNoteCardIndices.value.contains(index))
             _selectedNoteCardIndices.value.minus(index)
@@ -83,7 +100,7 @@ class NotesViewModel @Inject constructor(
             _selectedNoteCardIndices.value.plus(index)
     }
 
-    fun createNewNote(){
+    fun createNewNote() {
         viewModelScope.launch(Dispatchers.IO) {
             repository.insertNote(Note())
         }

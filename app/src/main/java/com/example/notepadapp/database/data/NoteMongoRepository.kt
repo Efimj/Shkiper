@@ -11,4 +11,5 @@ interface NoteMongoRepository {
     suspend fun insertNote(note: Note)
     suspend fun updateNote(note: Note)
     suspend fun deleteNote(id: ObjectId)
+    suspend fun deleteNote(id: List<ObjectId>)
 }
