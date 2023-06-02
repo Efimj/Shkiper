@@ -1,14 +1,12 @@
 package com.example.notepadapp.page.NoteListPage
 
-import android.content.res.Configuration
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
-import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
+import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
@@ -26,7 +24,6 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
@@ -41,28 +38,27 @@ import com.example.notepadapp.navigation.UserPage
 import com.example.notepadapp.ui.components.cards.CreateNoteCard
 import com.example.notepadapp.ui.components.cards.NoteCard
 import com.example.notepadapp.ui.components.fields.SearchBar
+import com.example.notepadapp.ui.components.layouts.LazyGridNotes
 import com.example.notepadapp.ui.theme.CustomAppTheme
 import kotlin.math.roundToInt
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
 @Composable
 fun NoteListPage(navController: NavController, notesViewModel: NotesViewModel = hiltViewModel()) {
-    val isPortrait = LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT
-    val staggeredGridCellsMode: StaggeredGridCells = remember {
-        if (isPortrait) StaggeredGridCells.Fixed(2) else StaggeredGridCells.Adaptive(200.dp)
-    }
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route ?: ""
 
     val searchBarHeight = 60.dp
     val searchBarHeightPx = with(LocalDensity.current) { searchBarHeight.roundToPx().toFloat() }
     val searchBarOffsetHeightPx = remember { mutableStateOf(0f) }
+    val lazyGridNotes = rememberLazyStaggeredGridState()
 
     val nestedScrollConnection = remember {
         object : NestedScrollConnection {
             override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
                 val delta = available.y
                 val newOffset = searchBarOffsetHeightPx.value + delta
-                searchBarOffsetHeightPx.value = newOffset.coerceIn(-searchBarHeightPx, 0f)
+                if (lazyGridNotes.canScrollForward)
+                    searchBarOffsetHeightPx.value = newOffset.coerceIn(-searchBarHeightPx, 0f)
                 return Offset.Zero
             }
         }
@@ -72,6 +68,9 @@ fun NoteListPage(navController: NavController, notesViewModel: NotesViewModel = 
     val actionBarHeightPx = with(LocalDensity.current) { actionBarHeight.roundToPx().toFloat() }
     val offsetX = remember { Animatable(-actionBarHeightPx) }
 
+    /**
+     * LaunchedEffect for cases when the number of selected notes changes.
+     */
     LaunchedEffect(notesViewModel.selectedNoteCardIndices.value) {
         if (notesViewModel.selectedNoteCardIndices.value.isEmpty()) {
             offsetX.animateTo(
@@ -86,17 +85,24 @@ fun NoteListPage(navController: NavController, notesViewModel: NotesViewModel = 
         }
     }
 
+    /**
+     * LaunchedEffect for cases when it is impossible to scroll the list.
+     */
+    LaunchedEffect(lazyGridNotes.canScrollForward, lazyGridNotes.canScrollBackward) {
+        if (!lazyGridNotes.canScrollForward && !lazyGridNotes.canScrollBackward) {
+            searchBarOffsetHeightPx.value = 0f
+        }
+    }
+
     Box(
         Modifier
             .fillMaxSize()
             .nestedScroll(nestedScrollConnection)
     ) {
-        LazyVerticalStaggeredGrid(
-            columns = staggeredGridCellsMode,
-            verticalItemSpacing = 8.dp,
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            contentPadding = PaddingValues(10.dp, 75.dp, 10.dp, 100.dp),
+        LazyGridNotes(
+            contentPadding = PaddingValues(10.dp, 70.dp, 10.dp, 80.dp),
             modifier = Modifier.fillMaxSize(),
+            gridState = lazyGridNotes
         ) {
             item {
                 CreateNoteCard("Create", notesViewModel.selectedNoteCardIndices.value.isEmpty()) {
@@ -104,8 +110,7 @@ fun NoteListPage(navController: NavController, notesViewModel: NotesViewModel = 
                 }
             }
             items(items = notesViewModel.notes.value, key = { it._id.toHexString() }) {
-                NoteCard(
-                    it.header,
+                NoteCard(it.header,
                     it.body,
                     selected = it._id.toHexString() in notesViewModel.selectedNoteCardIndices.value,
                     onClick = { onNoteClick(notesViewModel, it, currentRoute, navController) },
