@@ -1,13 +1,15 @@
 package com.example.notepadapp.page.NoteListPage
 
-import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.AnimationVector1D
-import androidx.compose.animation.core.tween
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.*
+import androidx.compose.animation.slideIn
+import androidx.compose.animation.slideOut
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -42,7 +44,7 @@ import com.example.notepadapp.ui.components.layouts.LazyGridNotes
 import com.example.notepadapp.ui.theme.CustomAppTheme
 import kotlin.math.roundToInt
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun NoteListPage(navController: NavController, notesViewModel: NotesViewModel = hiltViewModel()) {
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route ?: ""
@@ -112,6 +114,7 @@ fun NoteListPage(navController: NavController, notesViewModel: NotesViewModel = 
             items(items = notesViewModel.notes.value, key = { it._id.toHexString() }) {
                 NoteCard(it.header,
                     it.body,
+                    markedText = notesViewModel.searchText,
                     selected = it._id.toHexString() in notesViewModel.selectedNoteCardIndices.value,
                     onClick = { onNoteClick(notesViewModel, it, currentRoute, navController) },
                     onLongClick = { notesViewModel.toggleSelectedNoteCard(it._id.toHexString()) })
@@ -220,15 +223,29 @@ private fun SearchBar(
     searchBarOffsetHeightPx: MutableState<Float>,
     notesViewModel: NotesViewModel
 ) {
-    Box(
-        modifier = Modifier
-            .height(searchBarHeight)
-            .padding(20.dp, 10.dp, 20.dp, 0.dp)
-            .offset { IntOffset(x = 0, y = searchBarOffsetHeightPx.value.roundToInt()) },
+    val searchBarFloatHeight = with(LocalDensity.current) { searchBarHeight.roundToPx().toFloat() }
+
+    AnimatedVisibility(
+        notesViewModel.selectedNoteCardIndices.value.isEmpty(),
+        enter = slideIn(tween(200, easing = LinearOutSlowInEasing)) {
+            IntOffset(0, -searchBarFloatHeight.roundToInt())
+        },
+        exit = slideOut(tween(200, easing = FastOutSlowInEasing)) {
+            IntOffset(0, -searchBarFloatHeight.roundToInt())
+        },
     ) {
-        SearchBar(search = notesViewModel.searchText, onValueChange = {
-            notesViewModel.searchText = it
-        })
+        Box(
+            modifier = Modifier
+                .height(searchBarHeight)
+                .padding(20.dp, 10.dp, 20.dp, 0.dp)
+                .offset { IntOffset(x = 0, y = searchBarOffsetHeightPx.value.roundToInt()) },
+        ) {
+            SearchBar(
+                search = notesViewModel.searchText,
+                onTrailingIconClick = { notesViewModel.changeSearchText("") },
+                onValueChange = { notesViewModel.changeSearchText(it) }
+            )
+        }
     }
 }
 

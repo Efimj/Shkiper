@@ -11,7 +11,6 @@ import com.example.notepadapp.database.data.NoteMongoRepository
 import com.example.notepadapp.database.models.Note
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.mongodb.kbson.ObjectId
 import javax.inject.Inject
@@ -69,9 +68,13 @@ class NotesViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            repository.getNotes().collect() {
-                notes.value = it
-            }
+            getNotes()
+        }
+    }
+
+    private suspend fun getNotes(){
+        repository.getNotes().collect() {
+            notes.value = it
         }
     }
 
@@ -107,4 +110,17 @@ class NotesViewModel @Inject constructor(
     }
 
     var searchText by mutableStateOf("")
+
+    fun changeSearchText(newString: String) {
+        searchText = newString
+        viewModelScope.launch(Dispatchers.IO) {
+            if (newString.isNullOrEmpty()) {
+                getNotes()
+            } else {
+                repository.filterNotesByContains(newString).collect {
+                    notes.value = it
+                }
+            }
+        }
+    }
 }

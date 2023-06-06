@@ -22,7 +22,7 @@ class NoteMongoRepositoryImpl(val realm: Realm) : NoteMongoRepository {
     }
 
     override fun filterNotesByContains(name: String): Flow<List<Note>> {
-        return realm.query<Note>(query = "header CONTAINS[c] $0", name).asFlow().map { it.list }
+        return realm.query<Note>(query = "header CONTAINS[c] $0 OR body CONTAINS[c] $0", name).asFlow().map { it.list }
     }
 
     override suspend fun insertNote(note: Note) {

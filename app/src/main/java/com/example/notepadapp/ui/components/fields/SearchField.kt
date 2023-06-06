@@ -49,11 +49,8 @@ fun SearchBar(
     val enabled = true
     val textStyle = MaterialTheme.typography.body1.copy(color = CustomAppTheme.colors.text)
     val visualTransformation = VisualTransformation.None
-    val isTrailingIconVisible by remember {
-        derivedStateOf {
-            search.isNotBlank()
-        }
-    }
+    val isTrailingIconVisible= search.isNotBlank()
+
     val textFieldColors = TextFieldDefaults.textFieldColors(
         backgroundColor = CustomAppTheme.colors.secondaryBackground,
         placeholderColor = CustomAppTheme.colors.textSecondary,

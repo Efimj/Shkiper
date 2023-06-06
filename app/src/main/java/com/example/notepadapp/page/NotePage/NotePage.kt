@@ -24,6 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -69,8 +70,8 @@ fun NotePage(navController: NavController, noteViewModel: NoteViewModel = hiltVi
                         bodyFieldFocusRequester.requestFocus()
                     }
                 ),
-                textStyle = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.SemiBold),
-                modifier = Modifier.fillMaxSize().padding(horizontal = 20.dp).padding(bottom = 6.dp)
+                textStyle = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.SemiBold, fontSize = 21.sp),
+                modifier = Modifier.fillMaxSize().padding(horizontal = 20.dp).padding(bottom = 6.dp, top = 4.dp)
             )
             CustomTextField(
                 text = noteViewModel.noteBody,
