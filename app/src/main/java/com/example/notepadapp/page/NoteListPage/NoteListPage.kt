@@ -117,7 +117,7 @@ fun NoteListPage(navController: NavController, notesViewModel: NotesViewModel = 
             gridState = lazyGridNotes
         ) {
             item {
-                CreateNoteCard("Create", notesViewModel.selectedNoteCardIndices.value.isEmpty()) {
+                CreateNoteCard("Add", notesViewModel.selectedNoteCardIndices.value.isEmpty()) {
                     notesViewModel.createNewNote()
                 }
             }
@@ -145,13 +145,15 @@ private fun ActionBar(
     offsetX: Animatable<Float, AnimationVector1D>,
     notesViewModel: NotesViewModel
 ) {
+    val topAppBarElevation = if (offsetX.value.roundToInt() < -actionBarHeight.value.roundToInt()) 0.dp else 2.dp
+
     Box(
         modifier = Modifier
             .height(actionBarHeight)
             .offset { IntOffset(x = 0, y = offsetX.value.roundToInt()) },
     ) {
         androidx.compose.material.TopAppBar(
-            elevation = 2.dp,
+            elevation = topAppBarElevation,
             contentColor = CustomAppTheme.colors.textSecondary,
             backgroundColor = CustomAppTheme.colors.mainBackground,
             title = {

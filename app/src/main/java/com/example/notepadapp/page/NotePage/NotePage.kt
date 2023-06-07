@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.*
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
@@ -20,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -59,6 +61,13 @@ fun NotePage(navController: NavController, noteViewModel: NoteViewModel = hiltVi
                 .fillMaxSize()
                 .padding(contentPadding)
                 .verticalScroll(scrollState)
+                .clickable(
+                    indication = null,
+                    interactionSource = remember { MutableInteractionSource() } // This is mandatory
+                ) {
+                    bodyFieldFocusRequester.requestFocus()
+                }
+
         ) {
             CustomTextField(
                 text = noteViewModel.noteHeader,
