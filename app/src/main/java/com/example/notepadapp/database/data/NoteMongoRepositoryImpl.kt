@@ -49,9 +49,10 @@ class NoteMongoRepositoryImpl(val realm: Realm) : NoteMongoRepository {
 
     override suspend fun deleteNote(id: ObjectId) {
         realm.write {
-            val note = getNote(id)
+            val note = getNote(id) ?: return@write
             try {
-                note?.let { delete(it) }
+                findLatest(note)
+                    ?.let { delete(it) }
             } catch (e: Exception) {
                 Log.d("NoteMongoRepositoryImpl", "${e.message}")
             }

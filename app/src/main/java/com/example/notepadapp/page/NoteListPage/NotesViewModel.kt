@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 import com.example.notepadapp.database.data.NoteMongoRepository
 import com.example.notepadapp.database.models.Note
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -72,7 +73,7 @@ class NotesViewModel @Inject constructor(
         }
     }
 
-    private suspend fun getNotes(){
+    private suspend fun getNotes() {
         repository.getNotes().collect() {
             notes.value = it
         }
@@ -103,9 +104,13 @@ class NotesViewModel @Inject constructor(
             _selectedNoteCardIndices.value.plus(index)
     }
 
+    var lastCreatedNoteId by mutableStateOf("")
+
     fun createNewNote() {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.insertNote(Note())
+            val newNote = Note()
+            repository.insertNote(newNote)
+            lastCreatedNoteId = newNote._id.toHexString()
         }
     }
 

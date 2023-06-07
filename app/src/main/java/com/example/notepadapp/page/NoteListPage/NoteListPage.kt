@@ -96,6 +96,16 @@ fun NoteListPage(navController: NavController, notesViewModel: NotesViewModel = 
         }
     }
 
+    /**
+     * LaunchedEffect when new note created.
+     */
+    LaunchedEffect(notesViewModel.lastCreatedNoteId) {
+        if (notesViewModel.lastCreatedNoteId.isNotEmpty()) {
+            navController.navigate(UserPage.Note.noteId(notesViewModel.lastCreatedNoteId))
+            notesViewModel.lastCreatedNoteId = ""
+        }
+    }
+
     Box(
         Modifier
             .fillMaxSize()

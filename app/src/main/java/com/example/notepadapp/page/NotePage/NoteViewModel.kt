@@ -1,8 +1,8 @@
 package com.example.notepadapp.page.NotePage
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -13,7 +13,6 @@ import com.example.notepadapp.navigation.ARGUMENT_NOTE_ID
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.mongodb.kbson.BsonObjectId
 import org.mongodb.kbson.ObjectId
 import java.util.*
 import javax.inject.Inject
@@ -33,16 +32,14 @@ class NoteViewModel @Inject constructor(
     var noteUpdatedDate by mutableStateOf(note?.updateDate ?: Date())
 
     init {
-        viewModelScope.launch {
-
-        }
+        viewModelScope.launch { }
     }
 
     fun updateNoteHeader(text: String) {
         noteHeader = text
         viewModelScope.launch(Dispatchers.IO) {
             repository.updateNote(note = Note().apply {
-                if(note == null) return@launch
+                if (note == null) return@launch
                 _id = this@NoteViewModel.note._id
                 header = this@NoteViewModel.noteHeader
                 body = this@NoteViewModel.note.body
@@ -60,7 +57,7 @@ class NoteViewModel @Inject constructor(
         noteBody = text
         viewModelScope.launch(Dispatchers.IO) {
             repository.updateNote(note = Note().apply {
-                if(note == null) return@launch
+                if (note == null) return@launch
                 _id = this@NoteViewModel.note._id
                 header = this@NoteViewModel.noteHeader
                 body = this@NoteViewModel.noteBody
@@ -71,6 +68,13 @@ class NoteViewModel @Inject constructor(
                 isPinned = this@NoteViewModel.note.isPinned
                 position = this@NoteViewModel.note.position
             })
+        }
+    }
+
+    fun deleteNoteIfEmpty() {
+        viewModelScope.launch {
+            if (noteHeader.isEmpty() && noteBody.isEmpty())
+                repository.deleteNote(noteId)
         }
     }
 }

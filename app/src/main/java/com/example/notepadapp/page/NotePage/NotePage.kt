@@ -93,6 +93,12 @@ fun NotePage(navController: NavController, noteViewModel: NoteViewModel = hiltVi
             noteViewModel.isBottomAppBarHover = false
         }
     }
+
+    DisposableEffect(Unit) {
+        onDispose {
+            noteViewModel.deleteNoteIfEmpty()
+        }
+    }
 }
 
 @Composable
