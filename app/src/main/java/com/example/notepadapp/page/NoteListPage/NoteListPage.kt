@@ -38,6 +38,7 @@ import com.example.notepadapp.ui.components.cards.NoteCard
 import com.example.notepadapp.ui.components.fields.SearchBar
 import com.example.notepadapp.ui.components.layouts.LazyGridNotes
 import com.example.notepadapp.ui.theme.CustomAppTheme
+import java.util.*
 import kotlin.math.roundToInt
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -140,14 +141,15 @@ private fun PageContent(
                 )
             }
         }
-        items(items = notesViewModel.pinnedNotes.value, key = { it._id.toHexString() }) {
+        itemsIndexed(items = notesViewModel.pinnedNotes.value) { _, item ->
             AnimatedContent(notesViewModel) {
-                NoteCard(it.header,
-                    it.body,
+                NoteCard(
+                    item.header,
+                    item.body,
                     markedText = notesViewModel.searchText,
-                    selected = it._id.toHexString() in notesViewModel.selectedNoteCardIndices.value,
-                    onClick = { onNoteClick(notesViewModel, it, currentRoute, navController) },
-                    onLongClick = { notesViewModel.toggleSelectedNoteCard(it._id.toHexString()) })
+                    selected = item._id.toHexString() in notesViewModel.selectedNoteCardIndices.value,
+                    onClick = { onNoteClick(notesViewModel, item, currentRoute, navController) },
+                    onLongClick = { notesViewModel.toggleSelectedNoteCard(item._id.toHexString()) })
             }
         }
         item(span = StaggeredGridItemSpan.FullLine) {
@@ -165,13 +167,14 @@ private fun PageContent(
                 notesViewModel.createNewNote()
             }
         }
-        items(items = notesViewModel.notes.value, key = { it._id.toHexString() }) {
-            NoteCard(it.header,
-                it.body,
+        itemsIndexed(items = notesViewModel.notes.value) { _, item ->
+            NoteCard(
+                item.header,
+                item.body,
                 markedText = notesViewModel.searchText,
-                selected = it._id.toHexString() in notesViewModel.selectedNoteCardIndices.value,
-                onClick = { onNoteClick(notesViewModel, it, currentRoute, navController) },
-                onLongClick = { notesViewModel.toggleSelectedNoteCard(it._id.toHexString()) })
+                selected = item._id.toHexString() in notesViewModel.selectedNoteCardIndices.value,
+                onClick = { onNoteClick(notesViewModel, item, currentRoute, navController) },
+                onLongClick = { notesViewModel.toggleSelectedNoteCard(item._id.toHexString()) })
         }
     }
 }
