@@ -10,12 +10,10 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.outlined.Archive
-import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.NotificationAdd
-import androidx.compose.material.icons.outlined.PushPin
+import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
@@ -33,13 +31,13 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.notepadapp.database.models.Note
 import com.example.notepadapp.navigation.UserPage
-import com.example.notepadapp.ui.components.cards.CreateNoteCard
 import com.example.notepadapp.ui.components.cards.NoteCard
 import com.example.notepadapp.ui.components.fields.SearchBar
 import com.example.notepadapp.ui.components.layouts.LazyGridNotes
 import com.example.notepadapp.ui.theme.CustomAppTheme
 import java.util.*
 import kotlin.math.roundToInt
+import com.example.notepadapp.ui.components.buttons.CreateNoteButton
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -56,8 +54,8 @@ fun NoteListPage(navController: NavController, notesViewModel: NotesViewModel = 
             override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
                 val delta = available.y
                 val newOffset = searchBarOffsetHeightPx.value + delta
-                if (lazyGridNotes.canScrollForward)
-                    searchBarOffsetHeightPx.value = newOffset.coerceIn(-searchBarHeightPx, 0f)
+                if (lazyGridNotes.canScrollForward) searchBarOffsetHeightPx.value =
+                    newOffset.coerceIn(-searchBarHeightPx, 0f)
                 return Offset.Zero
             }
         }
@@ -73,13 +71,11 @@ fun NoteListPage(navController: NavController, notesViewModel: NotesViewModel = 
     LaunchedEffect(notesViewModel.selectedNoteCardIndices.value) {
         if (notesViewModel.selectedNoteCardIndices.value.isEmpty()) {
             offsetX.animateTo(
-                targetValue = -actionBarHeightPx,
-                animationSpec = tween(durationMillis = 200)
+                targetValue = -actionBarHeightPx, animationSpec = tween(durationMillis = 200)
             )
         } else {
             offsetX.animateTo(
-                targetValue = 0f,
-                animationSpec = tween(durationMillis = 200)
+                targetValue = 0f, animationSpec = tween(durationMillis = 200)
             )
         }
     }
@@ -103,17 +99,18 @@ fun NoteListPage(navController: NavController, notesViewModel: NotesViewModel = 
         }
     }
 
-    Box(
-        Modifier
-            .fillMaxSize()
-            .nestedScroll(nestedScrollConnection)
-    ) {
+    Box(Modifier.fillMaxSize().nestedScroll(nestedScrollConnection)) {
         PageContent(lazyGridNotes, notesViewModel, currentRoute, navController)
-        Box(
-            modifier = Modifier
-        ) {
+        Box(modifier = Modifier) {
             SearchBar(searchBarHeight, searchBarOffsetHeightPx, notesViewModel)
             ActionBar(actionBarHeight, offsetX, notesViewModel)
+        }
+        Box(modifier = Modifier.align(Alignment.BottomEnd).padding(35.dp)) {
+            AnimatedContent(notesViewModel.selectedNoteCardIndices.value.isEmpty()) {
+                CreateNoteButton(notesViewModel.selectedNoteCardIndices.value.isEmpty()) {
+                    notesViewModel.createNewNote()
+                }
+            }
         }
     }
 }
@@ -132,19 +129,18 @@ private fun PageContent(
         gridState = lazyGridNotes
     ) {
         item(span = StaggeredGridItemSpan.FullLine) {
-            AnimatedContent(notesViewModel) {
+            AnimatedContent(notesViewModel.pinnedNotes.value.isNotEmpty()) {
                 Text(
                     "Pinned",
                     color = CustomAppTheme.colors.textSecondary,
-                    style = MaterialTheme.typography.h6.copy(fontSize = 17.sp),
+                    style = MaterialTheme.typography.body1.copy(fontSize = 17.sp),
                     modifier = Modifier.padding(horizontal = 10.dp)
                 )
             }
         }
-        itemsIndexed(items = notesViewModel.pinnedNotes.value) { _, item ->
-            AnimatedContent(notesViewModel) {
-                NoteCard(
-                    item.header,
+        items(items = notesViewModel.pinnedNotes.value) { item ->
+            AnimatedContent(notesViewModel.pinnedNotes.value.isNotEmpty()) {
+                NoteCard(item.header,
                     item.body,
                     markedText = notesViewModel.searchText,
                     selected = item._id.toHexString() in notesViewModel.selectedNoteCardIndices.value,
@@ -153,23 +149,17 @@ private fun PageContent(
             }
         }
         item(span = StaggeredGridItemSpan.FullLine) {
-            AnimatedContent(notesViewModel) {
+            AnimatedContent(notesViewModel.pinnedNotes.value.isNotEmpty()) {
                 Text(
                     "Other",
                     color = CustomAppTheme.colors.textSecondary,
-                    style = MaterialTheme.typography.h6.copy(fontSize = 17.sp),
+                    style = MaterialTheme.typography.body1.copy(fontSize = 17.sp),
                     modifier = Modifier.padding(horizontal = 10.dp)
                 )
             }
         }
-        item {
-            CreateNoteCard("Add", notesViewModel.selectedNoteCardIndices.value.isEmpty()) {
-                notesViewModel.createNewNote()
-            }
-        }
-        itemsIndexed(items = notesViewModel.notes.value) { _, item ->
-            NoteCard(
-                item.header,
+        items(items = notesViewModel.notes.value) { item ->
+            NoteCard(item.header,
                 item.body,
                 markedText = notesViewModel.searchText,
                 selected = item._id.toHexString() in notesViewModel.selectedNoteCardIndices.value,
@@ -180,9 +170,9 @@ private fun PageContent(
 }
 
 @Composable
-private fun AnimatedContent(notesViewModel: NotesViewModel, content: @Composable (() -> Unit)) {
+private fun AnimatedContent(state: Boolean, content: @Composable (() -> Unit)) {
     AnimatedVisibility(
-        notesViewModel.pinnedNotes.value.isNotEmpty(),
+        state,
         enter = fadeIn(tween(200, easing = LinearOutSlowInEasing)),
         exit = fadeOut(tween(200, easing = FastOutSlowInEasing)),
     ) {
@@ -192,16 +182,12 @@ private fun AnimatedContent(notesViewModel: NotesViewModel, content: @Composable
 
 @Composable
 private fun ActionBar(
-    actionBarHeight: Dp,
-    offsetX: Animatable<Float, AnimationVector1D>,
-    notesViewModel: NotesViewModel
+    actionBarHeight: Dp, offsetX: Animatable<Float, AnimationVector1D>, notesViewModel: NotesViewModel
 ) {
     val topAppBarElevation = if (offsetX.value.roundToInt() < -actionBarHeight.value.roundToInt()) 0.dp else 2.dp
 
     Box(
-        modifier = Modifier
-            .height(actionBarHeight)
-            .offset { IntOffset(x = 0, y = offsetX.value.roundToInt()) },
+        modifier = Modifier.height(actionBarHeight).offset { IntOffset(x = 0, y = offsetX.value.roundToInt()) },
     ) {
         androidx.compose.material.TopAppBar(
             elevation = topAppBarElevation,
@@ -282,9 +268,7 @@ private fun ActionBar(
 
 @Composable
 private fun SearchBar(
-    searchBarHeight: Dp,
-    searchBarOffsetHeightPx: MutableState<Float>,
-    notesViewModel: NotesViewModel
+    searchBarHeight: Dp, searchBarOffsetHeightPx: MutableState<Float>, notesViewModel: NotesViewModel
 ) {
     val searchBarFloatHeight = with(LocalDensity.current) { searchBarHeight.roundToPx().toFloat() }
 
@@ -298,28 +282,20 @@ private fun SearchBar(
         },
     ) {
         Box(
-            modifier = Modifier
-                .height(searchBarHeight)
-                .padding(20.dp, 10.dp, 20.dp, 0.dp)
+            modifier = Modifier.height(searchBarHeight).padding(20.dp, 10.dp, 20.dp, 0.dp)
                 .offset { IntOffset(x = 0, y = searchBarOffsetHeightPx.value.roundToInt()) },
         ) {
-            SearchBar(
-                search = notesViewModel.searchText,
+            SearchBar(search = notesViewModel.searchText,
                 onTrailingIconClick = { notesViewModel.changeSearchText("") },
-                onValueChange = { notesViewModel.changeSearchText(it) }
-            )
+                onValueChange = { notesViewModel.changeSearchText(it) })
         }
     }
 }
 
 private fun onNoteClick(
-    notesViewModel: NotesViewModel,
-    it: Note,
-    currentRoute: String,
-    navController: NavController
+    notesViewModel: NotesViewModel, it: Note, currentRoute: String, navController: NavController
 ) {
-    if (notesViewModel.selectedNoteCardIndices.value.isNotEmpty())
-        notesViewModel.toggleSelectedNoteCard(it._id.toHexString())
+    if (notesViewModel.selectedNoteCardIndices.value.isNotEmpty()) notesViewModel.toggleSelectedNoteCard(it._id.toHexString())
     else {
         if (currentRoute.substringBefore("/") != UserPage.Note.route.substringBefore("/")) {
             navController.navigate(UserPage.Note.noteId(it._id.toHexString()))

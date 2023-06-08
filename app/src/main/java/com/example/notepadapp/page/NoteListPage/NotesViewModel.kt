@@ -66,9 +66,13 @@ class NotesViewModel @Inject constructor(
 ) : ViewModel() {
     val pinnedNotes = mutableStateOf(emptyList<Note>())
     val notes = mutableStateOf(emptyList<Note>())
+    var lastCreatedNoteId by mutableStateOf("")
+    var searchText by mutableStateOf("")
 
     init {
-        getNotes()
+        viewModelScope.launch(Dispatchers.IO) {
+            getNotes()
+        }
     }
 
     private fun getNotes() {
@@ -104,7 +108,7 @@ class NotesViewModel @Inject constructor(
 
     fun pinSelectedNotes() {
         viewModelScope.launch {
-            var pinMode = true
+            var pinMode: Boolean
             val idList = mutableListOf<ObjectId>()
             for (id in selectedNoteCardIndices.value) {
                 idList += ObjectId(id)
@@ -137,8 +141,6 @@ class NotesViewModel @Inject constructor(
             else _selectedNoteCardIndices.value.plus(index)
     }
 
-    var lastCreatedNoteId by mutableStateOf("")
-
     fun createNewNote() {
         viewModelScope.launch(Dispatchers.IO) {
             val newNote = Note()
@@ -147,19 +149,21 @@ class NotesViewModel @Inject constructor(
         }
     }
 
-    var searchText by mutableStateOf("")
-
     fun changeSearchText(newString: String) {
         searchText = newString
         viewModelScope.launch(Dispatchers.IO) {
             if (newString.isEmpty()) {
                 getNotes()
             } else {
-                pinnedNotes.value = emptyList()
-                repository.filterNotesByContains(newString).collect {
-                    notes.value = it
-                }
+                getNotesByText(searchText)
             }
+        }
+    }
+
+    private suspend fun getNotesByText(newString: String) {
+        pinnedNotes.value = emptyList()
+        repository.filterNotesByContains(newString).collect {
+            notes.value = it
         }
     }
 }
