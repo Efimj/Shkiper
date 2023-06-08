@@ -7,7 +7,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
 import com.example.notepadapp.database.data.NoteMongoRepository
 import com.example.notepadapp.database.models.Note
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -65,17 +64,23 @@ import javax.inject.Inject
 class NotesViewModel @Inject constructor(
     private val repository: NoteMongoRepository
 ) : ViewModel() {
+    val pinnedNotes = mutableStateOf(emptyList<Note>())
     val notes = mutableStateOf(emptyList<Note>())
 
     init {
-        viewModelScope.launch {
-            getNotes()
-        }
+        getNotes()
     }
 
-    private suspend fun getNotes() {
-        repository.getNotes().collect() {
-            notes.value = it
+    private fun getNotes() {
+        viewModelScope.launch {
+            repository.getNotes(true).collect() {
+                pinnedNotes.value = it
+            }
+        }
+        viewModelScope.launch {
+            repository.getNotes().collect() {
+                notes.value = it
+            }
         }
     }
 
@@ -88,20 +93,48 @@ class NotesViewModel @Inject constructor(
 
     fun deleteSelectedNotes() {
         viewModelScope.launch {
-            val listId = mutableListOf<ObjectId>()
+            val idList = mutableListOf<ObjectId>()
             for (id in selectedNoteCardIndices.value) {
-                listId += ObjectId(id)
+                idList += ObjectId(id)
             }
-            repository.deleteNote(listId)
+            repository.deleteNote(idList)
+            clearSelectedNote()
+        }
+    }
+
+    fun pinSelectedNotes() {
+        viewModelScope.launch {
+            var pinMode = true
+            val idList = mutableListOf<ObjectId>()
+            for (id in selectedNoteCardIndices.value) {
+                idList += ObjectId(id)
+            }
+            var unpinnedNote =
+                notes.value.find { note ->
+                    idList.any {
+                        it.toHexString() == note._id.toHexString()
+                    } && !note.isPinned
+                }
+            if (unpinnedNote == null) {
+                unpinnedNote =
+                    pinnedNotes.value.find { note ->
+                        idList.any {
+                            it.toHexString() == note._id.toHexString()
+                        } && !note.isPinned
+                    }
+            }
+            pinMode = unpinnedNote != null
+            repository.updateNote(idList) { updatedNote ->
+                updatedNote.isPinned = pinMode
+            }
             clearSelectedNote()
         }
     }
 
     fun toggleSelectedNoteCard(index: String) {
-        _selectedNoteCardIndices.value = if (_selectedNoteCardIndices.value.contains(index))
-            _selectedNoteCardIndices.value.minus(index)
-        else
-            _selectedNoteCardIndices.value.plus(index)
+        _selectedNoteCardIndices.value =
+            if (_selectedNoteCardIndices.value.contains(index)) _selectedNoteCardIndices.value.minus(index)
+            else _selectedNoteCardIndices.value.plus(index)
     }
 
     var lastCreatedNoteId by mutableStateOf("")
@@ -119,9 +152,10 @@ class NotesViewModel @Inject constructor(
     fun changeSearchText(newString: String) {
         searchText = newString
         viewModelScope.launch(Dispatchers.IO) {
-            if (newString.isNullOrEmpty()) {
+            if (newString.isEmpty()) {
                 getNotes()
             } else {
+                pinnedNotes.value = emptyList()
                 repository.filterNotesByContains(newString).collect {
                     notes.value = it
                 }

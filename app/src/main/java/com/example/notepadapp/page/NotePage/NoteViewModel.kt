@@ -1,6 +1,5 @@
 package com.example.notepadapp.page.NotePage
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -29,6 +28,7 @@ class NoteViewModel @Inject constructor(
     val note = repository.getNote(noteId)
     var noteHeader by mutableStateOf(note?.header ?: "")
     var noteBody by mutableStateOf(note?.body ?: "")
+    var noteIsPinned by mutableStateOf(note?.isPinned ?: false)
     var noteUpdatedDate by mutableStateOf(note?.updateDate ?: Date())
 
     init {
@@ -37,37 +37,33 @@ class NoteViewModel @Inject constructor(
 
     fun updateNoteHeader(text: String) {
         noteHeader = text
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.updateNote(note = Note().apply {
-                if (note == null) return@launch
-                _id = this@NoteViewModel.note._id
-                header = this@NoteViewModel.noteHeader
-                body = this@NoteViewModel.note.body
-                updateDate = this@NoteViewModel.note.updateDate
-                creationDate = this@NoteViewModel.note.creationDate
-                deletionDate = this@NoteViewModel.note.deletionDate
-                hashtags = this@NoteViewModel.note.hashtags
-                isPinned = this@NoteViewModel.note.isPinned
-                position = this@NoteViewModel.note.position
-            })
+        noteUpdatedDate = Date()
+        updateNote {
+            it.header = this@NoteViewModel.noteHeader
+            it.updateDate = this@NoteViewModel.noteUpdatedDate
         }
     }
 
     fun updateNoteBody(text: String) {
         noteBody = text
+        noteUpdatedDate = Date()
+        updateNote {
+            it.body = this@NoteViewModel.noteBody
+            it.updateDate = this@NoteViewModel.noteUpdatedDate
+        }
+    }
+
+    fun switchNotePinnedMode() {
+        noteIsPinned = !noteIsPinned
+        updateNote {
+            it.isPinned = this@NoteViewModel.noteIsPinned
+        }
+    }
+
+    private fun updateNote(updateParams: (Note) -> Unit) {
+        if (this@NoteViewModel.note == null) return
         viewModelScope.launch(Dispatchers.IO) {
-            repository.updateNote(note = Note().apply {
-                if (note == null) return@launch
-                _id = this@NoteViewModel.note._id
-                header = this@NoteViewModel.noteHeader
-                body = this@NoteViewModel.noteBody
-                updateDate = this@NoteViewModel.note.updateDate
-                creationDate = this@NoteViewModel.note.creationDate
-                deletionDate = this@NoteViewModel.note.deletionDate
-                hashtags = this@NoteViewModel.note.hashtags
-                isPinned = this@NoteViewModel.note.isPinned
-                position = this@NoteViewModel.note.position
-            })
+            repository.updateNote(this@NoteViewModel.note._id, updateParams)
         }
     }
 
@@ -75,6 +71,15 @@ class NoteViewModel @Inject constructor(
         viewModelScope.launch {
             if (noteHeader.isEmpty() && noteBody.isEmpty())
                 repository.deleteNote(noteId)
+        }
+    }
+
+    fun saveChanges() {
+        updateNote {
+            it.header = this@NoteViewModel.noteHeader
+            it.body = this@NoteViewModel.noteBody
+            it.updateDate = this@NoteViewModel.noteUpdatedDate
+            it.isPinned = this@NoteViewModel.noteIsPinned
         }
     }
 }

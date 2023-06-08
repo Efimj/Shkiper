@@ -1,15 +1,12 @@
 package com.example.notepadapp.page.NoteListPage
 
-import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.*
 import androidx.compose.animation.core.*
-import androidx.compose.animation.slideIn
 import androidx.compose.animation.slideOut
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.staggeredgrid.items
-import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
+import androidx.compose.foundation.lazy.staggeredgrid.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -19,7 +16,6 @@ import androidx.compose.material.icons.outlined.NotificationAdd
 import androidx.compose.material.icons.outlined.PushPin
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
@@ -111,17 +107,41 @@ fun NoteListPage(navController: NavController, notesViewModel: NotesViewModel = 
             .fillMaxSize()
             .nestedScroll(nestedScrollConnection)
     ) {
-        LazyGridNotes(
-            contentPadding = PaddingValues(10.dp, 70.dp, 10.dp, 80.dp),
-            modifier = Modifier.fillMaxSize(),
-            gridState = lazyGridNotes
+        PageContent(lazyGridNotes, notesViewModel, currentRoute, navController)
+        Box(
+            modifier = Modifier
         ) {
-            item {
-                CreateNoteCard("Add", notesViewModel.selectedNoteCardIndices.value.isEmpty()) {
-                    notesViewModel.createNewNote()
-                }
+            SearchBar(searchBarHeight, searchBarOffsetHeightPx, notesViewModel)
+            ActionBar(actionBarHeight, offsetX, notesViewModel)
+        }
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+private fun PageContent(
+    lazyGridNotes: LazyStaggeredGridState,
+    notesViewModel: NotesViewModel,
+    currentRoute: String,
+    navController: NavController
+) {
+    LazyGridNotes(
+        contentPadding = PaddingValues(10.dp, 70.dp, 10.dp, 80.dp),
+        modifier = Modifier.fillMaxSize(),
+        gridState = lazyGridNotes
+    ) {
+        item(span = StaggeredGridItemSpan.FullLine) {
+            AnimatedContent(notesViewModel) {
+                Text(
+                    "Pinned",
+                    color = CustomAppTheme.colors.textSecondary,
+                    style = MaterialTheme.typography.h6.copy(fontSize = 17.sp),
+                    modifier = Modifier.padding(horizontal = 10.dp)
+                )
             }
-            items(items = notesViewModel.notes.value, key = { it._id.toHexString() }) {
+        }
+        items(items = notesViewModel.pinnedNotes.value, key = { it._id.toHexString() }) {
+            AnimatedContent(notesViewModel) {
                 NoteCard(it.header,
                     it.body,
                     markedText = notesViewModel.searchText,
@@ -130,12 +150,40 @@ fun NoteListPage(navController: NavController, notesViewModel: NotesViewModel = 
                     onLongClick = { notesViewModel.toggleSelectedNoteCard(it._id.toHexString()) })
             }
         }
-        Box(
-            modifier = Modifier
-        ) {
-            SearchBar(searchBarHeight, searchBarOffsetHeightPx, notesViewModel)
-            ActionBar(actionBarHeight, offsetX, notesViewModel)
+        item(span = StaggeredGridItemSpan.FullLine) {
+            AnimatedContent(notesViewModel) {
+                Text(
+                    "Other",
+                    color = CustomAppTheme.colors.textSecondary,
+                    style = MaterialTheme.typography.h6.copy(fontSize = 17.sp),
+                    modifier = Modifier.padding(horizontal = 10.dp)
+                )
+            }
         }
+        item {
+            CreateNoteCard("Add", notesViewModel.selectedNoteCardIndices.value.isEmpty()) {
+                notesViewModel.createNewNote()
+            }
+        }
+        items(items = notesViewModel.notes.value, key = { it._id.toHexString() }) {
+            NoteCard(it.header,
+                it.body,
+                markedText = notesViewModel.searchText,
+                selected = it._id.toHexString() in notesViewModel.selectedNoteCardIndices.value,
+                onClick = { onNoteClick(notesViewModel, it, currentRoute, navController) },
+                onLongClick = { notesViewModel.toggleSelectedNoteCard(it._id.toHexString()) })
+        }
+    }
+}
+
+@Composable
+private fun AnimatedContent(notesViewModel: NotesViewModel, content: @Composable (() -> Unit)) {
+    AnimatedVisibility(
+        notesViewModel.pinnedNotes.value.isNotEmpty(),
+        enter = fadeIn(tween(200, easing = LinearOutSlowInEasing)),
+        exit = fadeOut(tween(200, easing = FastOutSlowInEasing)),
+    ) {
+        content()
     }
 }
 
@@ -180,7 +228,7 @@ private fun ActionBar(
             },
             actions = {
                 androidx.compose.material.IconButton(
-                    onClick = { },
+                    onClick = { notesViewModel.pinSelectedNotes() },
                     modifier = Modifier.size(40.dp).clip(CircleShape).padding(0.dp),
                 ) {
                     Icon(

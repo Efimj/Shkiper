@@ -105,6 +105,7 @@ fun NotePage(navController: NavController, noteViewModel: NoteViewModel = hiltVi
 
     DisposableEffect(Unit) {
         onDispose {
+            noteViewModel.saveChanges()
             noteViewModel.deleteNoteIfEmpty()
         }
     }
@@ -142,13 +143,13 @@ private fun NotePageHeader(navController: NavController, noteViewModel: NoteView
         },
         actions = {
             IconButton(
-                onClick = { },
+                onClick = { noteViewModel.switchNotePinnedMode() },
                 modifier = Modifier.size(40.dp).clip(CircleShape).padding(0.dp),
             ) {
                 Icon(
                     imageVector = Icons.Outlined.PushPin,
                     contentDescription = "Attach a note",
-                    tint = CustomAppTheme.colors.textSecondary,
+                    tint = if (noteViewModel.noteIsPinned) CustomAppTheme.colors.text else CustomAppTheme.colors.textSecondary,
                 )
             }
             Spacer(modifier = Modifier.padding(5.dp, 0.dp, 0.dp, 0.dp))

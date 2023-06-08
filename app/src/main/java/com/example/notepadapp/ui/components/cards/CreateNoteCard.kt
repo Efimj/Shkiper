@@ -9,6 +9,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.AddBox
 import androidx.compose.material.icons.outlined.Create
 import androidx.compose.material.icons.outlined.PushPin
@@ -53,10 +54,10 @@ fun CreateNoteCard(
             verticalArrangement = Arrangement.Center
         ) {
             Icon(
-                imageVector = Icons.Outlined.AddBox,
+                imageVector = Icons.Outlined.Add,
                 contentDescription = null,
                 tint = CustomAppTheme.colors.textSecondary,
-                modifier = Modifier.size(35.dp)
+                modifier = Modifier.size(45.dp)
             )
             Spacer(modifier = Modifier.height(2.dp))
             Text(
