@@ -36,7 +36,7 @@ fun CreateNoteButton(
             imageVector = Icons.Outlined.Add,
             contentDescription = "Create note",
             tint = CustomAppTheme.colors.textSecondary,
-            modifier = Modifier.size(50.dp).padding(6.dp)
+            modifier = Modifier.size(53.dp).padding(6.dp)
         )
     }
 }

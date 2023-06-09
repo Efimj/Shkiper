@@ -1,14 +1,20 @@
 package com.example.notepadapp.page.NoteListPage
 
+import android.app.NotificationManager
+import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.notepadapp.R
 import com.example.notepadapp.database.data.NoteMongoRepository
 import com.example.notepadapp.database.models.Note
+import com.example.notepadapp.notification_service.NotificationData
+import com.example.notepadapp.notification_service.NotificationScheduler
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -95,6 +101,30 @@ class NotesViewModel @Inject constructor(
         _selectedNoteCardIndices.value = setOf()
     }
 
+    fun changeSearchText(newString: String) {
+        searchText = newString
+        viewModelScope.launch(Dispatchers.IO) {
+            if (newString.isEmpty()) {
+                getNotes()
+            } else {
+                getNotesByText(searchText)
+            }
+        }
+    }
+
+    private suspend fun getNotesByText(newString: String) {
+        pinnedNotes.value = emptyList()
+        repository.filterNotesByContains(newString).collect {
+            notes.value = it
+        }
+    }
+
+    fun toggleSelectedNoteCard(index: String) {
+        _selectedNoteCardIndices.value =
+            if (_selectedNoteCardIndices.value.contains(index)) _selectedNoteCardIndices.value.minus(index)
+            else _selectedNoteCardIndices.value.plus(index)
+    }
+
     fun deleteSelectedNotes() {
         viewModelScope.launch {
             val idList = mutableListOf<ObjectId>()
@@ -135,12 +165,6 @@ class NotesViewModel @Inject constructor(
         }
     }
 
-    fun toggleSelectedNoteCard(index: String) {
-        _selectedNoteCardIndices.value =
-            if (_selectedNoteCardIndices.value.contains(index)) _selectedNoteCardIndices.value.minus(index)
-            else _selectedNoteCardIndices.value.plus(index)
-    }
-
     fun createNewNote() {
         viewModelScope.launch(Dispatchers.IO) {
             val newNote = Note()
@@ -149,21 +173,16 @@ class NotesViewModel @Inject constructor(
         }
     }
 
-    fun changeSearchText(newString: String) {
-        searchText = newString
-        viewModelScope.launch(Dispatchers.IO) {
-            if (newString.isEmpty()) {
-                getNotes()
-            } else {
-                getNotesByText(searchText)
-            }
-        }
-    }
-
-    private suspend fun getNotesByText(newString: String) {
-        pinnedNotes.value = emptyList()
-        repository.filterNotesByContains(newString).collect {
-            notes.value = it
+    fun scheduleNotification(context: Context) {
+        viewModelScope.launch {
+            val notificationScheduler = NotificationScheduler(context)
+            notificationScheduler.createNotificationChannel(NotificationScheduler.Companion.NotificationChannels.NOTECHANNEL)
+            val notificationData = NotificationData("Заголовок", "Текст уведомления", R.drawable.first)
+            notificationScheduler.scheduleNotification(
+                notificationData,
+                2000,
+                "www"
+            )
         }
     }
 }
