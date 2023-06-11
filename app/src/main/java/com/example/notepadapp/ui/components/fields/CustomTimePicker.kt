@@ -13,11 +13,11 @@ import com.example.notepadapp.ui.theme.CustomAppTheme
 import java.time.LocalTime
 
 @Composable
-fun CustomTimeInput(
-    onTimeChange: (LocalTime) -> Unit,
-    startTime: LocalTime = LocalTime.now(),
+fun CustomTimePicker(
+    startTime: LocalTime,
     minTime: LocalTime = LocalTime.now(),
     maxTime: LocalTime = LocalTime.MAX,
+    onTimeChange: (LocalTime) -> Unit,
 ) {
     WheelTimePicker(
         startTime = startTime,

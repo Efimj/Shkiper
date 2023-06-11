@@ -33,9 +33,9 @@ import java.util.*
 
 @Composable
 fun CustomDatePicker(
-
+    currentDate: LocalDate,
+    onDateChange: (CalendarDay) -> Unit,
 ) {
-    val currentDate = remember { mutableStateOf(LocalDate.now().plusDays(1)) }
     val currentMonth = remember { YearMonth.now() }
     val startMonth = remember { currentMonth } // Adjust as needed currentMonth.minusMonths(100)
     val endMonth = remember { currentMonth.plusYears(3) }
@@ -50,11 +50,8 @@ fun CustomDatePicker(
 
     HorizontalCalendar(
         state = state,
-        dayContent = { CalendarDayView(it, currentDate.value) { currentDate.value = it.date } },
+        dayContent = { CalendarDayView(it, currentDate, onDateChange) },
         monthHeader = { month ->
-            // You may want to use `remember {}` here so the mapping is not done
-            // every time as the days of week order will never change unless
-            // you set a new value for `firstDayOfWeek` in the state.
             MonthHeader(month)
         }
     )

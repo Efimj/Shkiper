@@ -39,8 +39,7 @@ import com.example.notepadapp.ui.theme.CustomAppTheme
 import java.util.*
 import kotlin.math.roundToInt
 import com.example.notepadapp.ui.components.buttons.CreateNoteButton
-import com.example.notepadapp.ui.components.fields.CustomDatePicker
-import com.example.notepadapp.ui.components.fields.CustomTimeInput
+import com.example.notepadapp.ui.components.modals.CreateReminderDialog
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -140,7 +139,7 @@ private fun PageContent(
                         style = MaterialTheme.typography.body1.copy(fontSize = 17.sp),
                         modifier = Modifier.padding(horizontal = 10.dp)
                     )
-                    CustomDatePicker()
+                    CreateReminderDialog()
                 }
             }
         }
