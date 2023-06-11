@@ -39,6 +39,8 @@ import com.example.notepadapp.ui.theme.CustomAppTheme
 import java.util.*
 import kotlin.math.roundToInt
 import com.example.notepadapp.ui.components.buttons.CreateNoteButton
+import com.example.notepadapp.ui.components.fields.CustomDatePicker
+import com.example.notepadapp.ui.components.fields.CustomTimeInput
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -116,7 +118,7 @@ fun NoteListPage(navController: NavController, notesViewModel: NotesViewModel = 
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 private fun PageContent(
     lazyGridNotes: LazyStaggeredGridState,
@@ -131,12 +133,15 @@ private fun PageContent(
     ) {
         item(span = StaggeredGridItemSpan.FullLine) {
             AnimatedContent(notesViewModel.pinnedNotes.value.isNotEmpty()) {
-                Text(
-                    "Pinned",
-                    color = CustomAppTheme.colors.textSecondary,
-                    style = MaterialTheme.typography.body1.copy(fontSize = 17.sp),
-                    modifier = Modifier.padding(horizontal = 10.dp)
-                )
+                Column {
+                    Text(
+                        "Pinned",
+                        color = CustomAppTheme.colors.textSecondary,
+                        style = MaterialTheme.typography.body1.copy(fontSize = 17.sp),
+                        modifier = Modifier.padding(horizontal = 10.dp)
+                    )
+                    CustomDatePicker()
+                }
             }
         }
         items(items = notesViewModel.pinnedNotes.value) { item ->

@@ -99,4 +99,10 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1'
     implementation 'io.realm.kotlin:library-base:1.8.0'
     //implementation 'io.realm:realm-android-library:10.9.0'
+
+    // Wheel DateTime picker
+    implementation 'com.github.commandiron:WheelPickerCompose:1.1.11'
+
+    // Customize Calendar
+    implementation 'com.kizitonwose.calendar:compose:2.3.0'
 }
