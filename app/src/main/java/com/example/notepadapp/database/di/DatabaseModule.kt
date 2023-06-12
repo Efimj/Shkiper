@@ -1,7 +1,9 @@
 package com.example.notepadapp.database.di
 
-import com.example.notepadapp.database.data.NoteMongoRepository
-import com.example.notepadapp.database.data.NoteMongoRepositoryImpl
+import com.example.notepadapp.database.data.note.NoteMongoRepository
+import com.example.notepadapp.database.data.note.NoteMongoRepositoryImpl
+import com.example.notepadapp.database.data.reminder.ReminderMongoRepository
+import com.example.notepadapp.database.data.reminder.ReminderMongoRepositoryImpl
 import com.example.notepadapp.database.models.Note
 import dagger.Module
 import dagger.Provides
@@ -29,8 +31,14 @@ object DatabaseModule {
 
     @Singleton
     @Provides
-    fun provideMongoRepository(realm: Realm): NoteMongoRepository {
+    fun provideNoteMongoRepository(realm: Realm): NoteMongoRepository {
         return NoteMongoRepositoryImpl(realm = realm)
     }
 
+    @Override
+    @Singleton
+    @Provides
+    fun provideReminderMongoRepository(realm: Realm): ReminderMongoRepository {
+        return ReminderMongoRepositoryImpl(realm = realm)
+    }
 }

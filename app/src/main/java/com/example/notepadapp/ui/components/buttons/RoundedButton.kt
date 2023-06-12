@@ -23,9 +23,10 @@ fun RoundedButton(
     text: String? = null,
     icon: ImageVector? = null,
     onClick: () -> Unit,
+    enabled: Boolean = true,
     shape: Shape = RoundedCornerShape(15.dp),
     border: BorderStroke? = BorderStroke(1.dp, CustomAppTheme.colors.stroke),
-    colors: ButtonColors = ButtonDefaults.buttonColors(backgroundColor = CustomAppTheme.colors.mainBackground),
+    colors: ButtonColors = ButtonDefaults.buttonColors(backgroundColor = CustomAppTheme.colors.mainBackground, disabledBackgroundColor = Color.Transparent),
     textColor: Color = CustomAppTheme.colors.text,
     iconTint: Color = CustomAppTheme.colors.text,
     content: @Composable (() -> Unit)? = null,
@@ -36,7 +37,8 @@ fun RoundedButton(
         shape = shape,
         colors = colors,
         border = border,
-        elevation = null
+        elevation = null,
+        enabled = enabled
     ) {
         if (content != null) {
             content()

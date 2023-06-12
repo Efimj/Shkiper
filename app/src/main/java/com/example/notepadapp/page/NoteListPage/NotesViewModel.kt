@@ -1,17 +1,15 @@
 package com.example.notepadapp.page.NoteListPage
 
-import android.app.NotificationManager
 import android.content.Context
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.notepadapp.R
-import com.example.notepadapp.database.data.NoteMongoRepository
+import com.example.notepadapp.database.data.note.NoteMongoRepository
+import com.example.notepadapp.database.data.reminder.ReminderMongoRepository
 import com.example.notepadapp.database.models.Note
 import com.example.notepadapp.notification_service.NotificationData
 import com.example.notepadapp.notification_service.NotificationScheduler
@@ -68,7 +66,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NotesViewModel @Inject constructor(
-    private val repository: NoteMongoRepository
+    private val repository: NoteMongoRepository,
 ) : ViewModel() {
     val pinnedNotes = mutableStateOf(emptyList<Note>())
     val notes = mutableStateOf(emptyList<Note>())

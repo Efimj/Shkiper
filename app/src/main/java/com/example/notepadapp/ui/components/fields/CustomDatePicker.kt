@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.notepadapp.ui.theme.CustomAppTheme
+import com.kizitonwose.calendar.compose.ContentHeightMode
 import com.kizitonwose.calendar.compose.HorizontalCalendar
 import com.kizitonwose.calendar.compose.rememberCalendarState
 import com.kizitonwose.calendar.core.CalendarDay
@@ -34,6 +35,7 @@ import java.util.*
 @Composable
 fun CustomDatePicker(
     currentDate: LocalDate,
+    contentHeightMode: ContentHeightMode = ContentHeightMode.Wrap,
     onDateChange: (CalendarDay) -> Unit,
 ) {
     val currentMonth = remember { YearMonth.now() }
@@ -53,7 +55,8 @@ fun CustomDatePicker(
         dayContent = { CalendarDayView(it, currentDate, onDateChange) },
         monthHeader = { month ->
             MonthHeader(month)
-        }
+        },
+        contentHeightMode = contentHeightMode
     )
 }
 
@@ -74,11 +77,11 @@ fun MonthTitle(month: CalendarMonth) {
     val formattedDate = current.format(formatter)
     Row(modifier = Modifier.fillMaxWidth()) {
         Text(
-            modifier = Modifier.padding(start = 15.dp, end = 5.dp),
+            modifier = Modifier,
             textAlign = TextAlign.Center,
             text = formattedDate,
             color = CustomAppTheme.colors.text,
-            style = MaterialTheme.typography.h6
+            style = MaterialTheme.typography.body1
         )
     }
 }
@@ -104,35 +107,36 @@ fun CalendarDayView(day: CalendarDay, currentDate: LocalDate, onClick: (Calendar
     val isDateCurrentOrFuture = isDateCurrentOrFuture(day.date, dateNow)
     val borderCornerShape = RoundedCornerShape(15.dp)
 
-    Box(
-        modifier = Modifier
-            .clip(borderCornerShape)
-            .border(
-                BorderStroke(
-                    1.dp,
-                    if (currentDate == day.date) CustomAppTheme.colors.active else
-                        if (day.date == dateNow) CustomAppTheme.colors.stroke else
-                            Color.Transparent
+    if (day.position == DayPosition.MonthDate)
+        Box(
+            modifier = Modifier
+                .clip(borderCornerShape)
+                .border(
+                    BorderStroke(
+                        1.dp,
+                        if (currentDate == day.date) CustomAppTheme.colors.active else
+                            if (day.date == dateNow) CustomAppTheme.colors.stroke else
+                                Color.Transparent
+                    ),
+                    borderCornerShape
+                )
+                .background(if (currentDate == day.date) CustomAppTheme.colors.secondaryBackground else Color.Transparent)
+                .aspectRatio(1f)
+                .clickable(
+                    enabled = isDateCurrentOrFuture,
+                    onClick = { onClick(day) }
                 ),
-                borderCornerShape
-            )
-            .background(if (currentDate == day.date) CustomAppTheme.colors.secondaryBackground else Color.Transparent)
-            .aspectRatio(1f)
-            .clickable(
-                enabled = day.position == DayPosition.MonthDate && isDateCurrentOrFuture,
-                onClick = { onClick(day) }
-            ),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = day.date.dayOfMonth.toString(),
-            style = MaterialTheme.typography.body1,
-            color = if (day.position == DayPosition.MonthDate)
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = day.date.dayOfMonth.toString(),
+                style = MaterialTheme.typography.body1,
+                color =
                 if (isDateCurrentOrFuture) CustomAppTheme.colors.text
                 else CustomAppTheme.colors.textSecondary
-            else Color.Transparent
-        )
-    }
+
+            )
+        }
 }
 
 fun isDateCurrentOrFuture(date: LocalDate, currentDate: LocalDate = LocalDate.now()): Boolean {

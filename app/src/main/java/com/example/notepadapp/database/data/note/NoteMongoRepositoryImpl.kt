@@ -1,16 +1,13 @@
-package com.example.notepadapp.database.data
+package com.example.notepadapp.database.data.note
 
 import android.util.Log
 import com.example.notepadapp.database.models.Note
-import com.example.notepadapp.database.models.NotePosition
 import io.realm.kotlin.Realm
 import io.realm.kotlin.ext.query
 import io.realm.kotlin.query.Sort
-import io.realm.kotlin.types.RealmList
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import org.mongodb.kbson.ObjectId
-import java.util.*
 
 class NoteMongoRepositoryImpl(val realm: Realm) : NoteMongoRepository {
     override fun getAllNotes(): Flow<List<Note>> {

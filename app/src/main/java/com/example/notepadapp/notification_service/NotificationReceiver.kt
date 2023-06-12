@@ -29,6 +29,4 @@ class NotificationReceiver : BroadcastReceiver() {
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.notify(id, notificationBuilder.build())
     }
-
-
 }

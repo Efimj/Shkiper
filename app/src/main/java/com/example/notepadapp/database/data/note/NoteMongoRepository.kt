@@ -1,4 +1,4 @@
-package com.example.notepadapp.database.data
+package com.example.notepadapp.database.data.note
 
 import com.example.notepadapp.database.models.Note
 import com.example.notepadapp.database.models.NotePosition

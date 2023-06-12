@@ -6,7 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.notepadapp.database.data.NoteMongoRepository
+import com.example.notepadapp.database.data.note.NoteMongoRepository
 import com.example.notepadapp.database.models.Note
 import com.example.notepadapp.navigation.ARGUMENT_NOTE_ID
 import dagger.hilt.android.lifecycle.HiltViewModel
