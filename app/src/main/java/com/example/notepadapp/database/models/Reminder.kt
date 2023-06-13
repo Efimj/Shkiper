@@ -1,5 +1,7 @@
 package com.example.notepadapp.database.models
 
+import android.content.Context
+import com.example.notepadapp.R
 import io.realm.kotlin.types.RealmObject
 import io.realm.kotlin.types.annotations.Index
 import io.realm.kotlin.types.annotations.PrimaryKey
@@ -9,18 +11,41 @@ import java.time.LocalTime
 
 enum class RepeatMode {
     NONE,
-    EVERYDAY,
-    EVERYWEEK,
-    EVERYMONTH,
-    EVERYYEAR,
+    DAILY,
+    WEEKLY,
+    MONTHLY,
+    YEARLY;
+
+    fun getLocalizedValue(context: Context): String {
+        val string: String = when (name) {
+            RepeatMode.NONE.name ->
+                context.getString(R.string.none)
+
+            RepeatMode.DAILY.name ->
+                context.getString(R.string.daily)
+
+            RepeatMode.WEEKLY.name ->
+                context.getString(R.string.weekly)
+
+            RepeatMode.MONTHLY.name ->
+                context.getString(R.string.monthly)
+
+            RepeatMode.YEARLY.name ->
+                context.getString(R.string.yearly)
+
+            else -> ""
+        }
+        return string
+    }
 }
 
-class Reminder  : RealmObject {
+class Reminder : RealmObject {
     @PrimaryKey
     var _id: ObjectId = ObjectId.invoke()
+
     @Index
     var noteId: ObjectId = ObjectId.invoke()
     var time: LocalTime = LocalTime.now()
-    var date:LocalDate = LocalDate.now()
+    var date: LocalDate = LocalDate.now()
     var repeat: RepeatMode = RepeatMode.NONE
 }

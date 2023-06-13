@@ -1,4 +1,4 @@
-package com.example.notepadapp.ui.components.modals
+package com.example.notepadapp.ui.components.modals.CreateReminderDialog
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -15,9 +15,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.notepadapp.database.models.RepeatMode
+import com.example.notepadapp.page.NoteListPage.NotesViewModel
 import com.example.notepadapp.ui.components.buttons.DropDownButton
 import com.example.notepadapp.ui.components.buttons.DropDownButtonSizeMode
 import com.example.notepadapp.ui.components.buttons.RoundedButton
@@ -27,6 +31,7 @@ import com.example.notepadapp.ui.theme.CustomAppTheme
 import com.kizitonwose.calendar.compose.ContentHeightMode
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import org.mongodb.kbson.ObjectId
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
@@ -41,7 +46,8 @@ private enum class ReminderDialogPages(val value: Int) {
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun CreateReminderDialog() {
+fun CreateReminderDialog(noteIds: List<ObjectId>, reminderDialogViewModel: ReminderDialogViewModel = hiltViewModel()) {
+    reminderDialogViewModel.setNoteIds(noteIds)
     val date = remember { mutableStateOf(LocalDate.now()) }
     val time = remember { mutableStateOf(LocalTime.now()) }
     val pagerState = rememberPagerState()
@@ -144,10 +150,10 @@ private fun DialogContent(
 @Composable
 private fun RepeatModePage(time: MutableState<LocalTime>, date: MutableState<LocalDate>) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        val items = listOf("A", "B", "C", "D", "E", "F")
+        val repeatModes = RepeatMode.values().map { it.getLocalizedValue(LocalContext.current) }
         var selectedIndex by remember { mutableStateOf(0) }
         DropDownButton(
-            items,
+            repeatModes,
             selectedIndex,
             Modifier.weight(1f),
             DropDownButtonSizeMode.STRERCHBYBUTTONWIDTH

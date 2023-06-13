@@ -39,7 +39,10 @@ import com.example.notepadapp.ui.theme.CustomAppTheme
 import java.util.*
 import kotlin.math.roundToInt
 import com.example.notepadapp.ui.components.buttons.CreateNoteButton
-import com.example.notepadapp.ui.components.modals.CreateReminderDialog
+import com.example.notepadapp.ui.components.modals.CreateReminderDialog.CreateReminderDialog
+import com.example.notepadapp.ui.components.modals.CreateReminderDialog.ReminderDialogViewModel
+import org.mongodb.kbson.ObjectId
+import kotlin.collections.List
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -139,7 +142,7 @@ private fun PageContent(
                         style = MaterialTheme.typography.body1.copy(fontSize = 17.sp),
                         modifier = Modifier.padding(horizontal = 10.dp)
                     )
-                    CreateReminderDialog()
+                    CreateReminderDialog(listOf<ObjectId>())
                 }
             }
         }
