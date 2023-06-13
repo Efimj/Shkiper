@@ -8,8 +8,6 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.DropdownMenu
-import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -20,6 +18,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.example.notepadapp.ui.components.buttons.DropDownButton
+import com.example.notepadapp.ui.components.buttons.DropDownButtonSizeMode
 import com.example.notepadapp.ui.components.buttons.RoundedButton
 import com.example.notepadapp.ui.components.fields.CustomDatePicker
 import com.example.notepadapp.ui.components.fields.CustomTimePicker
@@ -144,35 +144,15 @@ private fun DialogContent(
 @Composable
 private fun RepeatModePage(time: MutableState<LocalTime>, date: MutableState<LocalDate>) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        var expanded by remember { mutableStateOf(false) }
         val items = listOf("A", "B", "C", "D", "E", "F")
         var selectedIndex by remember { mutableStateOf(0) }
-        Box(modifier = Modifier.fillMaxSize().wrapContentSize(Alignment.TopStart)) {
-            RoundedButton(
-                text = items[selectedIndex],
-                onClick = { expanded = !expanded },
-//                border = BorderStroke(1.dp, CustomAppTheme.colors.stroke),
-//                colors = ButtonDefaults.buttonColors(
-//                    backgroundColor = Color.Transparent,
-//                    disabledBackgroundColor = Color.Transparent
-//                )
-            )
-            DropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false },
-                modifier = Modifier.background(CustomAppTheme.colors.secondaryBackground)
-                    .clip(RoundedCornerShape(15.dp))
-                    .border(1.dp, CustomAppTheme.colors.active, RoundedCornerShape(15.dp))
-            ) {
-                items.forEachIndexed { index, s ->
-                    DropdownMenuItem(onClick = {
-                        selectedIndex = index
-                        expanded = false
-                    }) {
-                        Text(text = s, color = CustomAppTheme.colors.text, style = MaterialTheme.typography.body1)
-                    }
-                }
-            }
+        DropDownButton(
+            items,
+            selectedIndex,
+            Modifier.weight(1f),
+            DropDownButtonSizeMode.STRERCHBYBUTTONWIDTH
+        ) {
+            selectedIndex = it
         }
     }
 }
