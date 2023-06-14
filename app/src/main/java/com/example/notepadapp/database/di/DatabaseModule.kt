@@ -5,6 +5,7 @@ import com.example.notepadapp.database.data.note.NoteMongoRepositoryImpl
 import com.example.notepadapp.database.data.reminder.ReminderMongoRepository
 import com.example.notepadapp.database.data.reminder.ReminderMongoRepositoryImpl
 import com.example.notepadapp.database.models.Note
+import com.example.notepadapp.database.models.Reminder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,6 +23,7 @@ object DatabaseModule {
         val config = RealmConfiguration.Builder(
             schema = setOf(
                 Note::class,
+                Reminder::class,
             )
         )
             .compactOnLaunch()
@@ -35,7 +37,6 @@ object DatabaseModule {
         return NoteMongoRepositoryImpl(realm = realm)
     }
 
-    @Override
     @Singleton
     @Provides
     fun provideReminderMongoRepository(realm: Realm): ReminderMongoRepository {

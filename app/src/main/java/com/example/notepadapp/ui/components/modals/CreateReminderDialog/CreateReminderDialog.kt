@@ -21,7 +21,6 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.notepadapp.database.models.RepeatMode
-import com.example.notepadapp.page.NoteListPage.NotesViewModel
 import com.example.notepadapp.ui.components.buttons.DropDownButton
 import com.example.notepadapp.ui.components.buttons.DropDownButtonSizeMode
 import com.example.notepadapp.ui.components.buttons.RoundedButton
@@ -47,11 +46,9 @@ private enum class ReminderDialogPages(val value: Int) {
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CreateReminderDialog(noteIds: List<ObjectId>, reminderDialogViewModel: ReminderDialogViewModel = hiltViewModel()) {
-    reminderDialogViewModel.setNoteIds(noteIds)
-    val date = remember { mutableStateOf(LocalDate.now()) }
-    val time = remember { mutableStateOf(LocalTime.now()) }
-    val pagerState = rememberPagerState()
+    reminderDialogViewModel.initialize(noteIds)
     val coroutineScope = rememberCoroutineScope()
+    val pagerState = rememberPagerState()
 
     Dialog({}, DialogProperties(true, true)) {
         Column(
@@ -62,7 +59,7 @@ fun CreateReminderDialog(noteIds: List<ObjectId>, reminderDialogViewModel: Remin
                 pageCount = ReminderDialogPages.values().size,
                 state = pagerState,
             ) {
-                DialogContent(it, date, time)
+                DialogContent(it, reminderDialogViewModel)
             }
             DialogFooter(coroutineScope, pagerState)
         }
@@ -130,25 +127,24 @@ private fun DialogFooter(
 @Composable
 private fun DialogContent(
     it: Int,
-    date: MutableState<LocalDate>,
-    time: MutableState<LocalTime>
+    reminderDialogViewModel: ReminderDialogViewModel
 ) {
     Column(Modifier.height(340.dp)) {
         when (it) {
             ReminderDialogPages.DATEPICK.value ->
-                DatePickPage(date)
+                DatePickPage(reminderDialogViewModel)
 
             ReminderDialogPages.TIMEPICK.value ->
-                TimePickPage(time, date)
+                TimePickPage(reminderDialogViewModel)
 
             ReminderDialogPages.REPEATMODE.value ->
-                RepeatModePage(time, date)
+                RepeatModePage(reminderDialogViewModel)
         }
     }
 }
 
 @Composable
-private fun RepeatModePage(time: MutableState<LocalTime>, date: MutableState<LocalDate>) {
+private fun RepeatModePage(reminderDialogViewModel: ReminderDialogViewModel) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         val repeatModes = RepeatMode.values().map { it.getLocalizedValue(LocalContext.current) }
         var selectedIndex by remember { mutableStateOf(0) }
@@ -164,31 +160,34 @@ private fun RepeatModePage(time: MutableState<LocalTime>, date: MutableState<Loc
 }
 
 @Composable
-private fun TimePickPage(time: MutableState<LocalTime>, date: MutableState<LocalDate>) {
+private fun TimePickPage(reminderDialogViewModel: ReminderDialogViewModel) {
     val formatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG).withLocale(Locale.getDefault())
-    val formattedDate = date.value.format(formatter)
+    val formattedDate = reminderDialogViewModel.date.value.format(formatter)
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Row(Modifier.fillMaxWidth()) {
             Text(formattedDate, style = MaterialTheme.typography.h5, color = CustomAppTheme.colors.textSecondary)
             Spacer(Modifier.width(8.dp))
             Text(
-                time.value.toString(),
+                reminderDialogViewModel.time.value.toString(),
                 style = MaterialTheme.typography.h5,
                 color = CustomAppTheme.colors.text,
             )
         }
         Spacer(Modifier.height(20.dp))
-        CustomTimePicker(time.value) { newTime -> time.value = newTime }
+        CustomTimePicker(reminderDialogViewModel.time.value) { newTime -> reminderDialogViewModel.time.value = newTime }
     }
 }
 
 @Composable
-private fun DatePickPage(date: MutableState<LocalDate>) {
+private fun DatePickPage(reminderDialogViewModel: ReminderDialogViewModel) {
     val formatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG).withLocale(Locale.getDefault())
-    val formattedDate = date.value.format(formatter)
+    val formattedDate = reminderDialogViewModel.date.value.format(formatter)
     Column {
         Text(formattedDate, style = MaterialTheme.typography.h5, color = CustomAppTheme.colors.text)
         Spacer(Modifier.height(10.dp))
-        CustomDatePicker(date.value, ContentHeightMode.Wrap) { day -> date.value = day.date }
+        CustomDatePicker(
+            reminderDialogViewModel.date.value,
+            ContentHeightMode.Wrap
+        ) { day -> reminderDialogViewModel.date.value = day.date }
     }
 }

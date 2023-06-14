@@ -1,6 +1,7 @@
 package com.example.notepadapp.database.data.reminder
 
 import android.util.Log
+import com.example.notepadapp.database.models.Note
 import com.example.notepadapp.database.models.Reminder
 import io.realm.kotlin.Realm
 import io.realm.kotlin.ext.query
@@ -19,6 +20,10 @@ class ReminderMongoRepositoryImpl(val realm: Realm) : ReminderMongoRepository {
 
     override fun getReminder(id: ObjectId): Reminder? {
         return realm.query<Reminder>(query = "_id == $0", id).first().find()
+    }
+
+    override fun getRemindersForNotes(noteIds: List<ObjectId>): List<Reminder> {
+        return realm.query<Reminder>(query = "_id IN {${noteIds.joinToString(", ")}}").find()
     }
 
     override suspend fun insertReminder(reminder: Reminder) {

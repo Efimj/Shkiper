@@ -7,6 +7,7 @@ import org.mongodb.kbson.ObjectId
 interface ReminderMongoRepository {
     fun getAllReminders(): Flow<List<Reminder>>
     fun getReminder(id: ObjectId): Reminder?
+    fun getRemindersForNotes(noteIds: List<ObjectId>): List<Reminder>
     suspend fun insertReminder(reminder: Reminder)
     suspend fun updateReminder(id: ObjectId, updateParams: (Reminder) -> Unit)
     suspend fun updateReminder(ids: List<ObjectId>, updateParams: (Reminder) -> Unit)
