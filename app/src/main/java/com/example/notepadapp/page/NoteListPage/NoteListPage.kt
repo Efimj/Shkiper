@@ -40,9 +40,6 @@ import java.util.*
 import kotlin.math.roundToInt
 import com.example.notepadapp.ui.components.buttons.CreateNoteButton
 import com.example.notepadapp.ui.components.modals.CreateReminderDialog.CreateReminderDialog
-import com.example.notepadapp.ui.components.modals.CreateReminderDialog.ReminderDialogViewModel
-import org.mongodb.kbson.ObjectId
-import kotlin.collections.List
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -142,7 +139,6 @@ private fun PageContent(
                         style = MaterialTheme.typography.body1.copy(fontSize = 17.sp),
                         modifier = Modifier.padding(horizontal = 10.dp)
                     )
-                    CreateReminderDialog(listOf<ObjectId>())
                 }
             }
         }
@@ -175,6 +171,14 @@ private fun PageContent(
                 onLongClick = { notesViewModel.toggleSelectedNoteCard(item._id.toHexString()) })
         }
     }
+    if (notesViewModel.isCreateReminderDialogShow)
+        CreateReminderDialog(
+            onDismissRequest = {
+                notesViewModel.isCreateReminderDialogShow = !notesViewModel.isCreateReminderDialogShow
+            },
+        ){
+
+        }
 }
 
 @Composable
@@ -236,7 +240,7 @@ private fun ActionBar(
                 }
                 Spacer(modifier = Modifier.padding(5.dp, 0.dp, 0.dp, 0.dp))
                 IconButton(
-                    onClick = { notesViewModel.scheduleNotification(localContext) },
+                    onClick = { notesViewModel.isCreateReminderDialogShow = true },
                     modifier = Modifier.size(40.dp).clip(CircleShape).padding(0.dp),
                 ) {
                     Icon(

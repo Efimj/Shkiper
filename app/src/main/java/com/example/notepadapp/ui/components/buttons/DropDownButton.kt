@@ -26,16 +26,20 @@ fun DropDownButton(
     selectedIndex: Int,
     modifier: Modifier = Modifier,
     stretchMode: DropDownButtonSizeMode = DropDownButtonSizeMode.STRERCHBYCONTENT,
-    onChangedSelection: (newSelectedIndex: Int) -> Unit
+    onChangedSelection: (newSelectedIndex: Int) -> Unit,
+    button: @Composable ((() -> Unit) -> Unit)? = null,
 ) {
     var expanded by remember { mutableStateOf(false) }
 
     BoxWithConstraints(modifier = modifier.wrapContentSize(Alignment.TopStart)) {
-        RoundedButton(
-            modifier = Modifier.fillMaxWidth(),
-            text = items[selectedIndex],
-            onClick = { expanded = !expanded },
-        )
+        if (button != null)
+            button { expanded = !expanded }
+        else
+            RoundedButton(
+                modifier = Modifier.fillMaxWidth(),
+                text = items[selectedIndex],
+                onClick = { expanded = !expanded },
+            )
         DropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false },

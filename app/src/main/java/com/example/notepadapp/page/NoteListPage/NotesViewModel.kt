@@ -72,6 +72,7 @@ class NotesViewModel @Inject constructor(
     val notes = mutableStateOf(emptyList<Note>())
     var lastCreatedNoteId by mutableStateOf("")
     var searchText by mutableStateOf("")
+    var isCreateReminderDialogShow by mutableStateOf(false)
 
     init {
         viewModelScope.launch(Dispatchers.IO) {

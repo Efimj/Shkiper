@@ -4,6 +4,7 @@ plugins {
     id 'dagger.hilt.android.plugin'
     id 'kotlin-kapt'
     id 'io.realm.kotlin'
+    id 'kotlin-parcelize'
 }
 
 android {

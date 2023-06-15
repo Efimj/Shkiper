@@ -107,7 +107,7 @@ private fun noteAnnotatedContent(
 ) {
     if (!header.isNullOrEmpty()) {
         Text(
-            text = buildAnnotatedString(header, markedText, Color.White, CustomAppTheme.colors.active),
+            text = buildAnnotatedString(header, markedText, CustomAppTheme.colors.active, Color.Transparent),
             fontSize = headerStyle.fontSize,
             fontStyle = headerStyle.fontStyle,
             fontFamily = headerStyle.fontFamily,
@@ -119,7 +119,7 @@ private fun noteAnnotatedContent(
         Spacer(modifier = Modifier.height(8.dp))
     if (!text.isNullOrEmpty()) {
         Text(
-            text = buildAnnotatedString(text, markedText, Color.White, CustomAppTheme.colors.active),
+            text = buildAnnotatedString(text, markedText, CustomAppTheme.colors.active, Color.Transparent),
             fontSize = bodyStyle.fontSize,
             fontStyle = bodyStyle.fontStyle,
             fontFamily = bodyStyle.fontFamily,

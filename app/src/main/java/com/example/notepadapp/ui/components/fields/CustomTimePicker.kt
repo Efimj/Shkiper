@@ -15,7 +15,7 @@ import java.time.LocalTime
 @Composable
 fun CustomTimePicker(
     startTime: LocalTime,
-    minTime: LocalTime = LocalTime.now(),
+    minTime: LocalTime = LocalTime.MIN,
     maxTime: LocalTime = LocalTime.MAX,
     onTimeChange: (LocalTime) -> Unit,
 ) {
