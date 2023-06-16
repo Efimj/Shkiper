@@ -1,7 +1,6 @@
 package com.example.notepadapp.database.data.reminder
 
 import android.util.Log
-import com.example.notepadapp.database.models.Note
 import com.example.notepadapp.database.models.Reminder
 import io.realm.kotlin.Realm
 import io.realm.kotlin.ext.query
@@ -22,8 +21,12 @@ class ReminderMongoRepositoryImpl(val realm: Realm) : ReminderMongoRepository {
         return realm.query<Reminder>(query = "_id == $0", id).first().find()
     }
 
+    override fun getReminderForNote(noteId: ObjectId): Reminder? {
+        return realm.query<Reminder>(query = "noteId == $0", noteId).first().find()
+    }
+
     override fun getRemindersForNotes(noteIds: List<ObjectId>): List<Reminder> {
-        return realm.query<Reminder>(query = "_id IN {${noteIds.joinToString(", ")}}").find()
+        return realm.query<Reminder>(query = "noteId IN {${noteIds.joinToString(", ")}}").find()
     }
 
     override suspend fun insertReminder(reminder: Reminder) {
@@ -52,6 +55,29 @@ class ReminderMongoRepositoryImpl(val realm: Realm) : ReminderMongoRepository {
                     findLatest(reminder)?.let(updateParams)
                 } catch (e: Exception) {
                     Log.d("ReminderMongoRepositoryImpl", "${e.message}")
+                }
+            }
+        }
+    }
+
+    override suspend fun updateOrCreateReminderForNotes(
+        noteIds: List<ObjectId>,
+        updateParams: (Reminder) -> Unit
+    ) {
+        realm.writeBlocking {
+            for (id in noteIds) {
+                val reminder = getReminderForNote(id)
+                if (reminder != null) {
+                    try {
+                        findLatest(reminder)?.let(updateParams)
+                    } catch (e: Exception) {
+                        Log.d("ReminderMongoRepositoryImpl", "${e.message}")
+                    }
+                } else {
+                    val newReminder = Reminder()
+                    newReminder.noteId = id
+                    newReminder.let(updateParams)
+                    copyToRealm(newReminder)
                 }
             }
         }

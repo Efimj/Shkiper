@@ -39,7 +39,7 @@ import com.example.notepadapp.ui.theme.CustomAppTheme
 import java.util.*
 import kotlin.math.roundToInt
 import com.example.notepadapp.ui.components.buttons.CreateNoteButton
-import com.example.notepadapp.ui.components.modals.CreateReminderDialog.CreateReminderDialog
+import com.example.notepadapp.ui.components.modals.CreateReminderDialog
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -117,7 +117,7 @@ fun NoteListPage(navController: NavController, notesViewModel: NotesViewModel = 
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun PageContent(
     lazyGridNotes: LazyStaggeredGridState,
@@ -143,14 +143,13 @@ private fun PageContent(
             }
         }
         items(items = notesViewModel.pinnedNotes.value) { item ->
-            AnimatedContent(notesViewModel.pinnedNotes.value.isNotEmpty()) {
-                NoteCard(item.header,
-                    item.body,
-                    markedText = notesViewModel.searchText,
-                    selected = item._id.toHexString() in notesViewModel.selectedNoteCardIndices.value,
-                    onClick = { onNoteClick(notesViewModel, item, currentRoute, navController) },
-                    onLongClick = { notesViewModel.toggleSelectedNoteCard(item._id.toHexString()) })
-            }
+            NoteCard(item.header,
+                item.body,
+                reminderDate = notesViewModel.reminders.value.find { it.noteId == item._id }?.date,
+                markedText = notesViewModel.searchText,
+                selected = item._id in notesViewModel.selectedNoteCardIndices.value,
+                onClick = { onNoteClick(notesViewModel, item, currentRoute, navController) },
+                onLongClick = { notesViewModel.toggleSelectedNoteCard(item._id) })
         }
         item(span = StaggeredGridItemSpan.FullLine) {
             AnimatedContent(notesViewModel.pinnedNotes.value.isNotEmpty()) {
@@ -165,20 +164,20 @@ private fun PageContent(
         items(items = notesViewModel.notes.value) { item ->
             NoteCard(item.header,
                 item.body,
+                reminderDate = notesViewModel.reminders.value.find { it.noteId == item._id }?.date,
                 markedText = notesViewModel.searchText,
-                selected = item._id.toHexString() in notesViewModel.selectedNoteCardIndices.value,
+                selected = item._id in notesViewModel.selectedNoteCardIndices.value,
                 onClick = { onNoteClick(notesViewModel, item, currentRoute, navController) },
-                onLongClick = { notesViewModel.toggleSelectedNoteCard(item._id.toHexString()) })
+                onLongClick = { notesViewModel.toggleSelectedNoteCard(item._id) })
         }
     }
-    if (notesViewModel.isCreateReminderDialogShow)
+    if (notesViewModel.isCreateReminderDialogShow.value)
         CreateReminderDialog(
             onDismissRequest = {
-                notesViewModel.isCreateReminderDialogShow = !notesViewModel.isCreateReminderDialogShow
+                notesViewModel.switchReminderDialogShow()
             },
-        ){
-
-        }
+            onCompleteRequest = notesViewModel::createReminder
+        )
 }
 
 @Composable
@@ -240,7 +239,7 @@ private fun ActionBar(
                 }
                 Spacer(modifier = Modifier.padding(5.dp, 0.dp, 0.dp, 0.dp))
                 IconButton(
-                    onClick = { notesViewModel.isCreateReminderDialogShow = true },
+                    onClick = { notesViewModel.switchReminderDialogShow() },
                     modifier = Modifier.size(40.dp).clip(CircleShape).padding(0.dp),
                 ) {
                     Icon(
@@ -307,7 +306,7 @@ private fun SearchBar(
 private fun onNoteClick(
     notesViewModel: NotesViewModel, it: Note, currentRoute: String, navController: NavController
 ) {
-    if (notesViewModel.selectedNoteCardIndices.value.isNotEmpty()) notesViewModel.toggleSelectedNoteCard(it._id.toHexString())
+    if (notesViewModel.selectedNoteCardIndices.value.isNotEmpty()) notesViewModel.toggleSelectedNoteCard(it._id)
     else {
         if (currentRoute.substringBefore("/") != UserPage.Note.route.substringBefore("/")) {
             navController.navigate(UserPage.Note.noteId(it._id.toHexString()))

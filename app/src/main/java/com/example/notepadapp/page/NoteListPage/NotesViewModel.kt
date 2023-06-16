@@ -1,6 +1,7 @@
 package com.example.notepadapp.page.NoteListPage
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -11,12 +12,17 @@ import com.example.notepadapp.R
 import com.example.notepadapp.database.data.note.NoteMongoRepository
 import com.example.notepadapp.database.data.reminder.ReminderMongoRepository
 import com.example.notepadapp.database.models.Note
+import com.example.notepadapp.database.models.Reminder
+import com.example.notepadapp.database.models.RepeatMode
+import com.example.notepadapp.helpers.DateHelper
 import com.example.notepadapp.notification_service.NotificationData
 import com.example.notepadapp.notification_service.NotificationScheduler
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.mongodb.kbson.ObjectId
+import java.time.LocalDate
+import java.time.LocalTime
 import javax.inject.Inject
 
 //data class NoteCard(
@@ -66,35 +72,40 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NotesViewModel @Inject constructor(
-    private val repository: NoteMongoRepository,
+    private val noteRepository: NoteMongoRepository,
+    private val reminderRepository: ReminderMongoRepository,
 ) : ViewModel() {
+    /*******************
+     * Notes region
+     *******************/
+
     val pinnedNotes = mutableStateOf(emptyList<Note>())
     val notes = mutableStateOf(emptyList<Note>())
     var lastCreatedNoteId by mutableStateOf("")
     var searchText by mutableStateOf("")
-    var isCreateReminderDialogShow by mutableStateOf(false)
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
             getNotes()
+            getReminders()
         }
     }
 
     private fun getNotes() {
         viewModelScope.launch {
-            repository.getNotes(true).collect() {
+            noteRepository.getNotes(true).collect() {
                 pinnedNotes.value = it
             }
         }
         viewModelScope.launch {
-            repository.getNotes().collect() {
+            noteRepository.getNotes().collect() {
                 notes.value = it
             }
         }
     }
 
-    private val _selectedNoteCardIndices = mutableStateOf(setOf<String>())
-    val selectedNoteCardIndices: State<Set<String>> = _selectedNoteCardIndices
+    private val _selectedNoteCardIndices = mutableStateOf(setOf<ObjectId>())
+    val selectedNoteCardIndices: State<Set<ObjectId>> = _selectedNoteCardIndices
 
     fun clearSelectedNote() {
         _selectedNoteCardIndices.value = setOf()
@@ -113,12 +124,12 @@ class NotesViewModel @Inject constructor(
 
     private suspend fun getNotesByText(newString: String) {
         pinnedNotes.value = emptyList()
-        repository.filterNotesByContains(newString).collect {
+        noteRepository.filterNotesByContains(newString).collect {
             notes.value = it
         }
     }
 
-    fun toggleSelectedNoteCard(index: String) {
+    fun toggleSelectedNoteCard(index: ObjectId) {
         _selectedNoteCardIndices.value =
             if (_selectedNoteCardIndices.value.contains(index)) _selectedNoteCardIndices.value.minus(index)
             else _selectedNoteCardIndices.value.plus(index)
@@ -126,38 +137,30 @@ class NotesViewModel @Inject constructor(
 
     fun deleteSelectedNotes() {
         viewModelScope.launch {
-            val idList = mutableListOf<ObjectId>()
-            for (id in selectedNoteCardIndices.value) {
-                idList += ObjectId(id)
-            }
-            repository.deleteNote(idList)
+            noteRepository.deleteNote(selectedNoteCardIndices.value.toList())
             clearSelectedNote()
         }
     }
 
     fun pinSelectedNotes() {
         viewModelScope.launch {
-            var pinMode: Boolean
-            val idList = mutableListOf<ObjectId>()
-            for (id in selectedNoteCardIndices.value) {
-                idList += ObjectId(id)
-            }
+            val pinMode: Boolean
             var unpinnedNote =
                 notes.value.find { note ->
-                    idList.any {
-                        it.toHexString() == note._id.toHexString()
+                    selectedNoteCardIndices.value.any {
+                        it == note._id
                     } && !note.isPinned
                 }
             if (unpinnedNote == null) {
                 unpinnedNote =
                     pinnedNotes.value.find { note ->
-                        idList.any {
-                            it.toHexString() == note._id.toHexString()
+                        selectedNoteCardIndices.value.any {
+                            it == note._id
                         } && !note.isPinned
                     }
             }
             pinMode = unpinnedNote != null
-            repository.updateNote(idList) { updatedNote ->
+            noteRepository.updateNote(selectedNoteCardIndices.value.toList()) { updatedNote ->
                 updatedNote.isPinned = pinMode
             }
             clearSelectedNote()
@@ -167,8 +170,43 @@ class NotesViewModel @Inject constructor(
     fun createNewNote() {
         viewModelScope.launch(Dispatchers.IO) {
             val newNote = Note()
-            repository.insertNote(newNote)
+            noteRepository.insertNote(newNote)
             lastCreatedNoteId = newNote._id.toHexString()
+        }
+    }
+
+    /*******************
+     * Reminder region
+     *******************/
+
+    private val _reminders = mutableStateOf(emptyList<Reminder>())
+    val reminders: State<List<Reminder>> = _reminders
+
+    private fun getReminders() {
+        viewModelScope.launch {
+            reminderRepository.getAllReminders().collect() {
+                _reminders.value = it
+            }
+        }
+    }
+
+    private val _isCreateReminderDialogShow = mutableStateOf(false)
+    val isCreateReminderDialogShow: State<Boolean> = _isCreateReminderDialogShow
+
+    fun switchReminderDialogShow() {
+        _isCreateReminderDialogShow.value = !_isCreateReminderDialogShow.value
+    }
+
+    fun createReminder(date: LocalDate, time: LocalTime, repeatMode: RepeatMode) {
+        if (DateHelper.isFutureDateTime(date, time)) {
+            viewModelScope.launch {
+                reminderRepository.updateOrCreateReminderForNotes(selectedNoteCardIndices.value.toList()) { updatedReminder ->
+                    updatedReminder.date = date
+                    updatedReminder.time = time
+                    updatedReminder.repeat = repeatMode
+                }
+            }
+            switchReminderDialogShow()
         }
     }
 

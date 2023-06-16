@@ -1,4 +1,4 @@
-package com.example.notepadapp.ui.components.modals.CreateReminderDialog
+package com.example.notepadapp.ui.components.modals
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -55,7 +55,7 @@ data class ReminderDialogProperties(
 fun CreateReminderDialog(
     reminderDialogProperties: ReminderDialogProperties = ReminderDialogProperties(),
     onDismissRequest: () -> Unit,
-    onCompleteRequest: () -> Unit,
+    onCompleteRequest: (date: LocalDate, time: LocalTime, repeatMode: RepeatMode) -> Unit,
 ) {
     val date = rememberSaveable { mutableStateOf(reminderDialogProperties.date) }
     val time = rememberSaveable { mutableStateOf(reminderDialogProperties.time) }
@@ -73,7 +73,9 @@ fun CreateReminderDialog(
             ) {
                 DialogContent(it, date, time, repeatMode)
             }
-            DialogFooter(pagerState)
+            DialogFooter(pagerState, onDismissRequest) {
+                onCompleteRequest(date.value, time.value, repeatMode.value)
+            }
         }
     }
 }
@@ -82,6 +84,8 @@ fun CreateReminderDialog(
 @Composable
 private fun DialogFooter(
     pagerState: PagerState,
+    onDismissRequest: () -> Unit,
+    onCompleteRequest: () -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
     Row(
@@ -94,7 +98,7 @@ private fun DialogFooter(
                 coroutineScope.launch {
                     if (pagerState.currentPage > 0) pagerState.animateScrollToPage(pagerState.currentPage - 1)
                     else {
-                        //reminderDialogViewModel.onDismissRequest()
+                        onDismissRequest()
                     }
                 }
             }, border = BorderStroke(0.dp, Color.Transparent), colors = ButtonDefaults.buttonColors(
@@ -116,7 +120,7 @@ private fun DialogFooter(
             text = if (pagerState.currentPage == ReminderDialogPages.values().size - 1) "Save" else "Next",
             onClick = {
                 if (pagerState.currentPage == ReminderDialogPages.values().size - 1) {
-                    //reminderDialogViewModel.saveReminder()
+                    onCompleteRequest()
                 } else coroutineScope.launch {
                     pagerState.animateScrollToPage(pagerState.currentPage + 1)
                 }
@@ -211,16 +215,13 @@ private fun RepeatModePage(
                     )
                 }
             }
-            if (DateHelper.isFutureDateTime(date.value, time.value)) {
-
-            } else {
+            if (!DateHelper.isFutureDateTime(date.value, time.value))
                 Text(
                     "The date must be in the future",
                     style = MaterialTheme.typography.body1,
                     color = CustomAppTheme.colors.text,
                     modifier = Modifier.padding(top = 10.dp)
                 )
-            }
         }
     }
 }

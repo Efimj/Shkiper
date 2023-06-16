@@ -1,13 +1,11 @@
 package com.example.notepadapp.ui.components.cards
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Event
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,13 +19,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.notepadapp.helpers.DateHelper
 import com.example.notepadapp.ui.theme.CustomAppTheme
+import java.time.LocalDate
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun NoteCard(
     header: String? = null,
     text: String? = null,
+    reminderDate: LocalDate? = null,
     markedText: String? = null,
     selected: Boolean = false,
     onClick: () -> Unit = {},
@@ -55,7 +56,7 @@ fun NoteCard(
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
-            if (markedText == null || markedText.isNullOrEmpty())
+            if (markedText.isNullOrEmpty())
                 noteContent(header, text, headerStyle, bodyStyle)
             else
                 noteAnnotatedContent(header, text, markedText, headerStyle, bodyStyle)
@@ -68,6 +69,30 @@ fun NoteCard(
                     color = CustomAppTheme.colors.textSecondary,
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
+            }
+            if (reminderDate != null) {
+                Spacer(modifier = Modifier.height(4.dp))
+                val shape = RoundedCornerShape(5.dp)
+                Row(
+                    Modifier
+                        .clip(shape)
+                        .background(CustomAppTheme.colors.secondaryBackground)
+                        .padding(horizontal = 5.dp, vertical = 3.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        tint = CustomAppTheme.colors.textSecondary,
+                        imageVector = Icons.Default.Event,
+                        contentDescription = "Event",
+                        modifier = Modifier.height(16.dp)
+                    )
+                    Spacer(Modifier.width(4.dp))
+                    androidx.compose.material3.Text(
+                        DateHelper.getLocalizedDate(reminderDate),
+                        style = MaterialTheme.typography.body1.copy(fontSize = 15.sp),
+                        color = CustomAppTheme.colors.textSecondary,
+                    )
+                }
             }
         }
     }

@@ -3,6 +3,7 @@ package com.example.notepadapp.database.models
 import android.content.Context
 import com.example.notepadapp.R
 import io.realm.kotlin.types.RealmObject
+import io.realm.kotlin.types.annotations.Ignore
 import io.realm.kotlin.types.annotations.Index
 import io.realm.kotlin.types.annotations.PrimaryKey
 import org.mongodb.kbson.ObjectId
@@ -45,7 +46,19 @@ class Reminder : RealmObject {
 
     @Index
     var noteId: ObjectId = ObjectId.invoke()
-    var time: LocalTime = LocalTime.now()
-    var date: LocalDate = LocalDate.now()
     var repeat: RepeatMode = RepeatMode.NONE
+    var dateString: String = ""
+    var timeString: String = ""
+
+    var date: LocalDate
+        get() = LocalDate.parse(dateString)
+        set(value) {
+            dateString = value.toString()
+        }
+
+    var time: LocalTime
+        get() = LocalTime.parse(timeString)
+        set(value) {
+            timeString = value.toString()
+        }
 }
