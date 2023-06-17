@@ -6,6 +6,10 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.provider.SyncStateContract.Constants
+import com.example.notepadapp.database.models.Note
+import com.example.notepadapp.database.models.Reminder
+import com.example.notepadapp.database.models.RepeatMode
 
 class NotificationScheduler(private val context: Context) {
     companion object {
@@ -23,35 +27,47 @@ class NotificationScheduler(private val context: Context) {
 
     fun scheduleNotification(
         notificationData: NotificationData,
-        delay: Long,
-        notificationId: String,
-        requestID: Int = 0,
+        requestCode: Int,
+        trigger: Long,
         channel: NotificationChannels = NotificationChannels.NOTECHANNEL
     ) {
         val notificationIntent = Intent(context, NotificationReceiver::class.java)
         notificationIntent.putExtra("channelId", channel.channelId)
-        notificationIntent.putExtra("id", notificationId)
+        notificationIntent.putExtra("id", notificationData.id)
         notificationIntent.putExtra("title", notificationData.title)
         notificationIntent.putExtra("message", notificationData.message)
         notificationIntent.putExtra("icon", notificationData.icon)
+        notificationIntent.putExtra("repeatMode", notificationData.repeatMode.name)
+        notificationIntent.putExtra("requestCode", requestCode)
 
         val pendingIntent = PendingIntent.getBroadcast(
             context,
-            requestID,
+            requestCode,
             notificationIntent,
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
 
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val triggerTime = System.currentTimeMillis() + delay
-        alarmManager.set(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent)
+        when (notificationData.repeatMode) {
+            RepeatMode.DAILY -> {
+                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, trigger, AlarmManager.INTERVAL_DAY, pendingIntent)
+            }
+
+            RepeatMode.WEEKLY -> {
+                val millsInWeek: Long = 24 * 60 * 60 * 1000 * 7
+                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, trigger, millsInWeek, pendingIntent)
+            }
+
+            else ->
+                alarmManager.set(AlarmManager.RTC_WAKEUP, trigger, pendingIntent)
+        }
     }
 
-    fun cancelScheduledNotification() {
+    fun cancelScheduledNotification(requestCode: Int) {
         val notificationIntent = Intent(context, NotificationReceiver::class.java)
         val pendingIntent = PendingIntent.getBroadcast(
             context,
-            0,
+            requestCode,
             notificationIntent,
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )

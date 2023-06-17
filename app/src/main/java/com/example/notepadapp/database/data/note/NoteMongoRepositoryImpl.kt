@@ -24,6 +24,10 @@ class NoteMongoRepositoryImpl(val realm: Realm) : NoteMongoRepository {
             .map { it.list }
     }
 
+    override fun getNotes(ids: List<ObjectId>): List<Note> {
+        return realm.query<Note>().find().filter { ids.any { id -> id == it._id } }
+    }
+
     override fun getNote(id: ObjectId): Note? {
         return realm.query<Note>(query = "_id == $0", id).first().find()
     }

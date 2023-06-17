@@ -70,8 +70,8 @@ fun NoteListPage(navController: NavController, notesViewModel: NotesViewModel = 
     /**
      * LaunchedEffect for cases when the number of selected notes changes.
      */
-    LaunchedEffect(notesViewModel.selectedNoteCardIndices.value) {
-        if (notesViewModel.selectedNoteCardIndices.value.isEmpty()) {
+    LaunchedEffect(notesViewModel.selectedNotes.value) {
+        if (notesViewModel.selectedNotes.value.isEmpty()) {
             offsetX.animateTo(
                 targetValue = -actionBarHeightPx, animationSpec = tween(durationMillis = 200)
             )
@@ -108,8 +108,8 @@ fun NoteListPage(navController: NavController, notesViewModel: NotesViewModel = 
             ActionBar(actionBarHeight, offsetX, notesViewModel)
         }
         Box(modifier = Modifier.align(Alignment.BottomEnd).padding(35.dp)) {
-            AnimatedContent(notesViewModel.selectedNoteCardIndices.value.isEmpty()) {
-                CreateNoteButton(notesViewModel.selectedNoteCardIndices.value.isEmpty()) {
+            AnimatedContent(notesViewModel.selectedNotes.value.isEmpty()) {
+                CreateNoteButton(notesViewModel.selectedNotes.value.isEmpty()) {
                     notesViewModel.createNewNote()
                 }
             }
@@ -147,7 +147,7 @@ private fun PageContent(
                 item.body,
                 reminderDate = notesViewModel.reminders.value.find { it.noteId == item._id }?.date,
                 markedText = notesViewModel.searchText,
-                selected = item._id in notesViewModel.selectedNoteCardIndices.value,
+                selected = item._id in notesViewModel.selectedNotes.value,
                 onClick = { onNoteClick(notesViewModel, item, currentRoute, navController) },
                 onLongClick = { notesViewModel.toggleSelectedNoteCard(item._id) })
         }
@@ -166,7 +166,7 @@ private fun PageContent(
                 item.body,
                 reminderDate = notesViewModel.reminders.value.find { it.noteId == item._id }?.date,
                 markedText = notesViewModel.searchText,
-                selected = item._id in notesViewModel.selectedNoteCardIndices.value,
+                selected = item._id in notesViewModel.selectedNotes.value,
                 onClick = { onNoteClick(notesViewModel, item, currentRoute, navController) },
                 onLongClick = { notesViewModel.toggleSelectedNoteCard(item._id) })
         }
@@ -206,7 +206,7 @@ private fun ActionBar(
             backgroundColor = CustomAppTheme.colors.mainBackground,
             title = {
                 Text(
-                    notesViewModel.selectedNoteCardIndices.value.count().toString(),
+                    notesViewModel.selectedNotes.value.count().toString(),
                     overflow = TextOverflow.Ellipsis,
                     style = MaterialTheme.typography.body1.copy(fontSize = 18.sp),
                     color = CustomAppTheme.colors.textSecondary,
@@ -284,7 +284,7 @@ private fun SearchBar(
     val searchBarFloatHeight = with(LocalDensity.current) { searchBarHeight.roundToPx().toFloat() }
 
     AnimatedVisibility(
-        notesViewModel.selectedNoteCardIndices.value.isEmpty(),
+        notesViewModel.selectedNotes.value.isEmpty(),
         enter = slideIn(tween(200, easing = LinearOutSlowInEasing)) {
             IntOffset(0, -searchBarFloatHeight.roundToInt())
         },
@@ -306,7 +306,7 @@ private fun SearchBar(
 private fun onNoteClick(
     notesViewModel: NotesViewModel, it: Note, currentRoute: String, navController: NavController
 ) {
-    if (notesViewModel.selectedNoteCardIndices.value.isNotEmpty()) notesViewModel.toggleSelectedNoteCard(it._id)
+    if (notesViewModel.selectedNotes.value.isNotEmpty()) notesViewModel.toggleSelectedNoteCard(it._id)
     else {
         if (currentRoute.substringBefore("/") != UserPage.Note.route.substringBefore("/")) {
             navController.navigate(UserPage.Note.noteId(it._id.toHexString()))

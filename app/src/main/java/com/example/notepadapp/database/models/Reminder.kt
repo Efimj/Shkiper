@@ -43,7 +43,6 @@ enum class RepeatMode {
 class Reminder : RealmObject {
     @PrimaryKey
     var _id: ObjectId = ObjectId.invoke()
-
     @Index
     var noteId: ObjectId = ObjectId.invoke()
     var repeat: RepeatMode = RepeatMode.NONE

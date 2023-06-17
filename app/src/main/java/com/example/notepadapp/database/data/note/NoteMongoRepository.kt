@@ -11,6 +11,7 @@ import java.util.*
 interface NoteMongoRepository {
     fun getAllNotes(): Flow<List<Note>>
     fun getNotes(pinned: Boolean = false): Flow<List<Note>>
+    fun getNotes(ids: List<ObjectId>): List<Note>
     fun getNote(id: ObjectId): Note?
     fun filterNotesByContains(text: String): Flow<List<Note>>
     suspend fun insertNote(note: Note)
