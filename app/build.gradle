@@ -106,4 +106,7 @@ dependencies {
 
     // Customize Calendar
     implementation 'com.kizitonwose.calendar:compose:2.3.0'
+
+    // Json serialization
+    implementation 'com.google.code.gson:gson:2.8.8'
 }

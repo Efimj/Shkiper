@@ -11,28 +11,19 @@ import java.time.LocalDate
 import java.time.LocalTime
 
 enum class RepeatMode {
-    NONE,
-    DAILY,
-    WEEKLY,
-    MONTHLY,
-    YEARLY;
+    NONE, DAILY, WEEKLY, MONTHLY, YEARLY;
 
     fun getLocalizedValue(context: Context): String {
         val string: String = when (name) {
-            RepeatMode.NONE.name ->
-                context.getString(R.string.none)
+            RepeatMode.NONE.name -> context.getString(R.string.none)
 
-            RepeatMode.DAILY.name ->
-                context.getString(R.string.daily)
+            RepeatMode.DAILY.name -> context.getString(R.string.daily)
 
-            RepeatMode.WEEKLY.name ->
-                context.getString(R.string.weekly)
+            RepeatMode.WEEKLY.name -> context.getString(R.string.weekly)
 
-            RepeatMode.MONTHLY.name ->
-                context.getString(R.string.monthly)
+            RepeatMode.MONTHLY.name -> context.getString(R.string.monthly)
 
-            RepeatMode.YEARLY.name ->
-                context.getString(R.string.yearly)
+            RepeatMode.YEARLY.name -> context.getString(R.string.yearly)
 
             else -> ""
         }
@@ -43,6 +34,7 @@ enum class RepeatMode {
 class Reminder : RealmObject {
     @PrimaryKey
     var _id: ObjectId = ObjectId.invoke()
+
     @Index
     var noteId: ObjectId = ObjectId.invoke()
     var repeat: RepeatMode = RepeatMode.NONE

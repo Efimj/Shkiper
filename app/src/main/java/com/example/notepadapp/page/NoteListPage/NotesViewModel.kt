@@ -21,7 +21,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.mongodb.kbson.ObjectId
 import java.time.*
-import java.util.*
 import javax.inject.Inject
 
 //data class NoteCard(
@@ -144,19 +143,17 @@ class NotesViewModel @Inject constructor(
     fun pinSelectedNotes() {
         viewModelScope.launch {
             val pinMode: Boolean
-            var unpinnedNote =
-                notes.value.find { note ->
+            var unpinnedNote = notes.value.find { note ->
+                selectedNotes.value.any {
+                    it == note._id
+                } && !note.isPinned
+            }
+            if (unpinnedNote == null) {
+                unpinnedNote = pinnedNotes.value.find { note ->
                     selectedNotes.value.any {
                         it == note._id
                     } && !note.isPinned
                 }
-            if (unpinnedNote == null) {
-                unpinnedNote =
-                    pinnedNotes.value.find { note ->
-                        selectedNotes.value.any {
-                            it == note._id
-                        } && !note.isPinned
-                    }
             }
             pinMode = unpinnedNote != null
             noteRepository.updateNote(selectedNotes.value.toList()) { updatedNote ->
@@ -206,20 +203,19 @@ class NotesViewModel @Inject constructor(
                 }
                 val notes = noteRepository.getNotes(selectedNotes.value.toList())
                 for (note in notes) {
+                    val localDateTime = LocalDateTime.of(date, time)
                     val notificationData = NotificationData(
                         note._id.timestamp,
-                        repeatMode,
                         note.header,
                         note.body,
-                        R.drawable.first
+                        R.drawable.first,
+                        repeatMode,
+                        note._id.timestamp,
+                        localDateTime.toInstant(OffsetDateTime.now().offset).toEpochMilli()
                     )
-                    val localDateTime = LocalDateTime.of(date, time)
                     val notificationScheduler = NotificationScheduler(application.applicationContext)
                     notificationScheduler.createNotificationChannel(NotificationScheduler.Companion.NotificationChannels.NOTECHANNEL)
-                    notificationScheduler.scheduleNotification(
-                        notificationData,
-                        note._id.timestamp, localDateTime.toInstant(OffsetDateTime.now().offset).toEpochMilli()
-                    )
+                    notificationScheduler.scheduleNotification(notificationData)
                 }
             }
             switchReminderDialogShow()
