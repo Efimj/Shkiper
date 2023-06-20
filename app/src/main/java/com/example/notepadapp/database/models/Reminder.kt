@@ -37,9 +37,15 @@ class Reminder : RealmObject {
 
     @Index
     var noteId: ObjectId = ObjectId.invoke()
-    var repeat: RepeatMode = RepeatMode.NONE
+    var repeatString: String = RepeatMode.NONE.name
     var dateString: String = ""
     var timeString: String = ""
+
+    var repeat: RepeatMode
+        get() = RepeatMode.valueOf(repeatString)
+        set(value) {
+            repeatString = value.name
+        }
 
     var date: LocalDate
         get() = LocalDate.parse(dateString)

@@ -17,16 +17,26 @@ enum class NotePosition {
 class Note : RealmObject {
     @PrimaryKey
     var _id: ObjectId = ObjectId.invoke()
+
     @Index
     var header: String = ""
+
     @Index
     var body: String = ""
     var hashtags: RealmList<String> = realmListOf()
     var creationDate: Date = Date()
     var updateDate: Date = Date()
     var deletionDate: Date? = null
+
     @Index
     var isPinned: Boolean = false
+
     @Index
-    var position: NotePosition = NotePosition.MAIN
+    var positionString: String = NotePosition.MAIN.name
+
+    var position: NotePosition
+        get() = NotePosition.valueOf(positionString)
+        set(value) {
+            positionString = value.name
+        }
 }

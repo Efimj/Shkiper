@@ -20,6 +20,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.notepadapp.helpers.DateHelper
+import com.example.notepadapp.ui.modifiers.bounceClick
 import com.example.notepadapp.ui.theme.CustomAppTheme
 import java.time.LocalDate
 
@@ -40,6 +41,7 @@ fun NoteCard(
 
     Card(
         modifier = modifier
+            .bounceClick()
             .heightIn(max = 250.dp, min = 50.dp)
             .fillMaxWidth()
             .clip(RoundedCornerShape(15.dp))

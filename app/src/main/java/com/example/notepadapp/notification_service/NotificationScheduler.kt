@@ -46,6 +46,25 @@ class NotificationScheduler(private val context: Context) {
         cancelNotification(notification)
     }
 
+    fun deleteNotification(requestCode: Int) {
+        notificationStorage.remove(requestCode)
+        cancelNotification(requestCode)
+    }
+
+    fun cancelNotification(requestCode: Int) {
+        val notificationIntent = Intent(context, NotificationReceiver::class.java)
+
+        val pendingIntent = PendingIntent.getBroadcast(
+            context,
+            requestCode,
+            notificationIntent,
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        )
+
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        alarmManager.cancel(pendingIntent)
+    }
+
     fun cancelNotification(notification: NotificationData) {
         val notificationIntent = Intent(context, NotificationReceiver::class.java)
 

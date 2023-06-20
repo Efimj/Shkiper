@@ -54,15 +54,15 @@ data class ReminderDialogProperties(
 @Composable
 fun CreateReminderDialog(
     reminderDialogProperties: ReminderDialogProperties = ReminderDialogProperties(),
-    onDismissRequest: () -> Unit,
-    onCompleteRequest: (date: LocalDate, time: LocalTime, repeatMode: RepeatMode) -> Unit,
+    onGoBack: () -> Unit,
+    onDelete: (() -> Unit)? = null,
+    onSave: (date: LocalDate, time: LocalTime, repeatMode: RepeatMode) -> Unit,
 ) {
     val date = rememberSaveable { mutableStateOf(reminderDialogProperties.date) }
     val time = rememberSaveable { mutableStateOf(reminderDialogProperties.time) }
     val repeatMode = rememberSaveable { mutableStateOf(reminderDialogProperties.repeatMode) }
     val pagerState = rememberPagerState()
-
-    Dialog(onDismissRequest, DialogProperties(true, dismissOnClickOutside = true)) {
+    Dialog(onGoBack, DialogProperties(true, dismissOnClickOutside = true)) {
         Column(
             Modifier.clip(RoundedCornerShape(15.dp)).background(CustomAppTheme.colors.secondaryBackground)
                 .padding(20.dp)
@@ -73,8 +73,8 @@ fun CreateReminderDialog(
             ) {
                 DialogContent(it, date, time, repeatMode)
             }
-            DialogFooter(pagerState, onDismissRequest) {
-                onCompleteRequest(date.value, time.value, repeatMode.value)
+            DialogFooter(pagerState, onGoBack, onDelete) {
+                onSave(date.value, time.value, repeatMode.value)
             }
         }
     }
@@ -84,8 +84,9 @@ fun CreateReminderDialog(
 @Composable
 private fun DialogFooter(
     pagerState: PagerState,
-    onDismissRequest: () -> Unit,
-    onCompleteRequest: () -> Unit,
+    onGoBack: () -> Unit,
+    onDelete: (() -> Unit)? = null,
+    onSave: () -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
     Row(
@@ -93,39 +94,59 @@ private fun DialogFooter(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        RoundedButton(
-            text = if (pagerState.currentPage > 0) "Back" else "Cancel", onClick = {
-                coroutineScope.launch {
-                    if (pagerState.currentPage > 0) pagerState.animateScrollToPage(pagerState.currentPage - 1)
-                    else {
-                        onDismissRequest()
+        if (onDelete != null)
+            RoundedButton(
+                text = "Delete", onClick = {
+                    coroutineScope.launch {
+                        onDelete()
+                    }
+                }, border = BorderStroke(0.dp, Color.Transparent), colors = ButtonDefaults.buttonColors(
+                    backgroundColor = Color.Transparent, disabledBackgroundColor = Color.Transparent
+                )
+            )
+        Row(
+            modifier = if (onDelete == null) Modifier.fillMaxWidth() else Modifier,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            RoundedButton(
+                text = if (pagerState.currentPage > 0) "Back" else "Cancel", onClick = {
+                    coroutineScope.launch {
+                        if (pagerState.currentPage > 0) pagerState.animateScrollToPage(pagerState.currentPage - 1)
+                        else {
+                            onGoBack()
+                        }
+                    }
+                }, border = BorderStroke(0.dp, Color.Transparent), colors = ButtonDefaults.buttonColors(
+                    backgroundColor = Color.Transparent, disabledBackgroundColor = Color.Transparent
+                )
+            )
+            if (onDelete == null) {
+                Row(
+                    Modifier.align(Alignment.CenterVertically), horizontalArrangement = Arrangement.Center
+                ) {
+                    repeat(ReminderDialogPages.values().size) { iteration ->
+                        val color =
+                            if (pagerState.currentPage == iteration) CustomAppTheme.colors.text else CustomAppTheme.colors.textSecondary
+                        Box(
+                            modifier = Modifier.padding(2.dp).clip(CircleShape).background(color).size(7.dp)
+                        )
                     }
                 }
-            }, border = BorderStroke(0.dp, Color.Transparent), colors = ButtonDefaults.buttonColors(
-                backgroundColor = Color.Transparent, disabledBackgroundColor = Color.Transparent
-            )
-        )
-        Row(
-            Modifier.align(Alignment.CenterVertically), horizontalArrangement = Arrangement.Center
-        ) {
-            repeat(ReminderDialogPages.values().size) { iteration ->
-                val color =
-                    if (pagerState.currentPage == iteration) CustomAppTheme.colors.text else CustomAppTheme.colors.textSecondary
-                Box(
-                    modifier = Modifier.padding(2.dp).clip(CircleShape).background(color).size(7.dp)
-                )
+            } else {
+                Spacer(Modifier.width(10.dp))
             }
+            RoundedButton(
+                text = if (pagerState.currentPage == ReminderDialogPages.values().size - 1) "Save" else "Next",
+                onClick = {
+                    if (pagerState.currentPage == ReminderDialogPages.values().size - 1) {
+                        onSave()
+                    } else coroutineScope.launch {
+                        pagerState.animateScrollToPage(pagerState.currentPage + 1)
+                    }
+                },
+            )
         }
-        RoundedButton(
-            text = if (pagerState.currentPage == ReminderDialogPages.values().size - 1) "Save" else "Next",
-            onClick = {
-                if (pagerState.currentPage == ReminderDialogPages.values().size - 1) {
-                    onCompleteRequest()
-                } else coroutineScope.launch {
-                    pagerState.animateScrollToPage(pagerState.currentPage + 1)
-                }
-            },
-        )
     }
 }
 
@@ -153,7 +174,7 @@ private fun RepeatModePage(
     time: MutableState<LocalTime>,
     repeatMode: MutableState<RepeatMode>,
 ) {
-    val repeatModes = RepeatMode.values().map { it.getLocalizedValue(LocalContext.current) }
+    val repeatModeList = RepeatMode.values().map { it.getLocalizedValue(LocalContext.current) }
 
     Column(
         Modifier.fillMaxSize(),
@@ -200,7 +221,7 @@ private fun RepeatModePage(
                     contentDescription = "Repeat"
                 )
                 Spacer(Modifier.width(8.dp))
-                DropDownButton(repeatModes,
+                DropDownButton(repeatModeList,
                     repeatMode.value.ordinal,
                     Modifier.width(150.dp),
                     DropDownButtonSizeMode.STRERCHBYBUTTONWIDTH,

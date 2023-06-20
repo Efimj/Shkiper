@@ -193,6 +193,10 @@ class NotesViewModel @Inject constructor(
         _isCreateReminderDialogShow.value = !_isCreateReminderDialogShow.value
     }
 
+    fun getReminder(noteId: ObjectId):Reminder? {
+        return reminderRepository.getReminderForNote(noteId)
+    }
+
     fun createReminder(date: LocalDate, time: LocalTime, repeatMode: RepeatMode) {
         if (DateHelper.isFutureDateTime(date, time)) {
             viewModelScope.launch {
@@ -222,16 +226,14 @@ class NotesViewModel @Inject constructor(
         }
     }
 
-//    fun scheduleNotification(context: Context) {
-//        viewModelScope.launch {
-//            val notificationScheduler = NotificationScheduler(context)
-//            notificationScheduler.createNotificationChannel(NotificationScheduler.Companion.NotificationChannels.NOTECHANNEL)
-//            val notificationData = NotificationData("Заголовок", "Текст уведомления", R.drawable.first)
-//            notificationScheduler.scheduleNotification(
-//                notificationData,
-//                2000,
-//                "www"
-//            )
-//        }
-//    }
+    fun deleteSelectedReminder() {
+        if (selectedNotes.value.isEmpty()) return
+        viewModelScope.launch {
+            val reminder = reminderRepository.getReminderForNote(selectedNotes.value.toList().first()) ?: return@launch
+            reminderRepository.deleteReminder(reminder._id)
+            val notificationScheduler = NotificationScheduler(application.applicationContext)
+            notificationScheduler.deleteNotification(reminder.noteId.timestamp)
+        }
+        switchReminderDialogShow()
+    }
 }

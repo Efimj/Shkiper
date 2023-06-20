@@ -40,6 +40,7 @@ import java.util.*
 import kotlin.math.roundToInt
 import com.example.notepadapp.ui.components.buttons.CreateNoteButton
 import com.example.notepadapp.ui.components.modals.CreateReminderDialog
+import com.example.notepadapp.ui.components.modals.ReminderDialogProperties
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -171,13 +172,23 @@ private fun PageContent(
                 onLongClick = { notesViewModel.toggleSelectedNoteCard(item._id) })
         }
     }
-    if (notesViewModel.isCreateReminderDialogShow.value)
+    if (notesViewModel.isCreateReminderDialogShow.value) {
+        val reminder =
+            remember {
+                if (notesViewModel.selectedNotes.value.size == 1)
+                    notesViewModel.getReminder(notesViewModel.selectedNotes.value.first()) else null
+            }
+        val reminderDialogProperties = remember {
+            if (reminder != null) ReminderDialogProperties(reminder.date, reminder.time, reminder.repeat)
+            else ReminderDialogProperties()
+        }
         CreateReminderDialog(
-            onDismissRequest = {
-                notesViewModel.switchReminderDialogShow()
-            },
-            onCompleteRequest = notesViewModel::createReminder
+            reminderDialogProperties = reminderDialogProperties,
+            onGoBack = notesViewModel::switchReminderDialogShow,
+            onDelete = if(reminder != null) notesViewModel::deleteSelectedReminder else null,
+            onSave = notesViewModel::createReminder,
         )
+    }
 }
 
 @Composable
