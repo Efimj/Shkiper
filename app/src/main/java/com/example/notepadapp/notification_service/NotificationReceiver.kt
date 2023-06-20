@@ -18,6 +18,14 @@ class NotificationReceiver : BroadcastReceiver() {
                 notificationScheduler.restoreNotifications()
             }
 
+            Intent.ACTION_TIME_CHANGED -> {
+                notificationScheduler.restoreNotifications()
+            }
+
+            Intent.ACTION_TIMEZONE_CHANGED -> {
+                notificationScheduler.restoreNotifications()
+            }
+
             Intent.ACTION_BOOT_COMPLETED -> {
                 notificationScheduler.restoreNotifications()
             }
@@ -38,11 +46,11 @@ class NotificationReceiver : BroadcastReceiver() {
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.notify(notification.notificationId, notificationBuilder.build())
 
-        val newNotificationDate = LocalDateTime.ofInstant(
+        var newNotificationDate = LocalDateTime.ofInstant(
             Instant.ofEpochMilli(notification.trigger),
             OffsetDateTime.now().offset
         )
-        when (notification.repeatMode) {
+        newNotificationDate = when (notification.repeatMode) {
             RepeatMode.DAILY -> {
                 newNotificationDate.plusDays(1)
             }
@@ -64,15 +72,7 @@ class NotificationReceiver : BroadcastReceiver() {
 
         val milliseconds = newNotificationDate.toInstant(OffsetDateTime.now().offset).toEpochMilli()
         NotificationScheduler(context).scheduleNotification(
-            NotificationData(
-                notification.notificationId,
-                notification.title,
-                notification.message,
-                notification.icon,
-                notification.repeatMode,
-                requestCode,
-                milliseconds
-            )
+            notification.copy(trigger = milliseconds)
         )
     }
 }

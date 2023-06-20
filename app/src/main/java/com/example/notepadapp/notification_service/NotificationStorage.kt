@@ -41,6 +41,12 @@ class NotificationStorage(private val context: Context) {
         save(notifications)
     }
 
+    fun remove(requestId: Int) {
+        val notifications = getAll()
+        removeElement(notifications, requestId)
+        save(notifications)
+    }
+
     private fun findNotification(
         notifications: MutableList<NotificationData>,
         requestId: Int
@@ -55,6 +61,14 @@ class NotificationStorage(private val context: Context) {
 
     private fun removeElement(list: MutableList<NotificationData>, element: NotificationData) {
         val index = list.indexOfFirst { it.requestCode == element.requestCode } // if exists
+
+        if (index != -1) {
+            list.removeAt(index)
+        }
+    }
+
+    private fun removeElement(list: MutableList<NotificationData>, requestId: Int) {
+        val index = list.indexOfFirst { it.requestCode == requestId } // if exists
 
         if (index != -1) {
             list.removeAt(index)

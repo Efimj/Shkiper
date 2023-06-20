@@ -21,8 +21,10 @@
         <receiver android:name=".notification_service.NotificationReceiver" android:enabled="true"
                   android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.DATE_CHANGED" />
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.DATE_CHANGED"/>
+                <action android:name="android.intent.action.TIMEZONE_CHANGED"/>
+                <action android:name="android.intent.action.TIME_SET"/>
             </intent-filter>
         </receiver>
         <activity

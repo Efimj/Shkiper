@@ -11,7 +11,6 @@ import java.time.DayOfWeek
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
-import java.util.*
 
 class NotificationScheduler(private val context: Context) {
     companion object {
@@ -39,108 +38,118 @@ class NotificationScheduler(private val context: Context) {
         )
 
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        when (notificationData.repeatMode) {
-            RepeatMode.DAILY -> {
-                alarmManager.setRepeating(
-                    AlarmManager.RTC_WAKEUP, notificationData.trigger, AlarmManager.INTERVAL_DAY, pendingIntent
-                )
-            }
-
-            RepeatMode.WEEKLY -> {
-                val millsInWeek: Long = 24 * 60 * 60 * 1000 * 7
-                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, notificationData.trigger, millsInWeek, pendingIntent)
-            }
-
-            else -> alarmManager.set(AlarmManager.RTC_WAKEUP, notificationData.trigger, pendingIntent)
-        }
+        alarmManager.set(AlarmManager.RTC_WAKEUP, notificationData.trigger, pendingIntent)
     }
 
-    fun cancelScheduledNotification(requestCode: Int) {
-        //????
-//        val notificationIntent = Intent(context, NotificationReceiver::class.java)
-//        val pendingIntent = PendingIntent.getBroadcast(
-//            context,
-//            requestCode,
-//            notificationIntent,
-//            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
-//        )
-//
-//        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-//        alarmManager.cancel(pendingIntent)
+    fun deleteNotification(notification: NotificationData) {
+        notificationStorage.remove(notification)
+        cancelNotification(notification)
+    }
+
+    fun cancelNotification(notification: NotificationData) {
+        val notificationIntent = Intent(context, NotificationReceiver::class.java)
+
+        val pendingIntent = PendingIntent.getBroadcast(
+            context,
+            notification.requestCode,
+            notificationIntent,
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        )
+
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        alarmManager.cancel(pendingIntent)
     }
 
     fun restoreNotifications() {
-        val now = LocalDateTime.now()
-
         notificationStorage.getAll().forEach { notification ->
-            val oldReminderDate = LocalDateTime.ofInstant(
-                Instant.ofEpochMilli(notification.trigger),
-                OffsetDateTime.now().offset
-            )
-
-            val newReminderDate = when (notification.repeatMode) {
-                RepeatMode.NONE -> {
-                    if (oldReminderDate.isBefore(now)) {
-                        notificationStorage.remove(notification)
-                        oldReminderDate
-                    } else {
-                        oldReminderDate
-                    }
-                }
-
-                RepeatMode.DAILY -> {
-                    val updatedReminderDate = oldReminderDate.withHour(now.hour)
-                        .withMinute(now.minute)
-
-                    if (updatedReminderDate.isBefore(now)) {
-                        updatedReminderDate.plusDays(1)
-                    } else {
-                        updatedReminderDate
-                    }
-                }
-
-                RepeatMode.WEEKLY -> {
-                    val updatedReminderDate = oldReminderDate.with(DayOfWeek.from(now.dayOfWeek))
-                        .withHour(now.hour)
-                        .withMinute(now.minute)
-
-                    if (updatedReminderDate.isBefore(now)) {
-                        updatedReminderDate.plusDays(7)
-                    } else {
-                        updatedReminderDate
-                    }
-                }
-
-                RepeatMode.MONTHLY -> {
-                    val updatedReminderDate = oldReminderDate.withDayOfMonth(now.dayOfMonth)
-                        .withHour(now.hour)
-                        .withMinute(now.minute)
-
-                    if (updatedReminderDate.isBefore(now)) {
-                        updatedReminderDate.plusMonths(1)
-                    } else {
-                        updatedReminderDate
-                    }
-                }
-
-                RepeatMode.YEARLY -> {
-                    val updatedReminderDate = oldReminderDate.withMonth(now.monthValue)
-                        .withDayOfMonth(now.dayOfMonth)
-                        .withHour(now.hour)
-                        .withMinute(now.minute)
-
-                    if (updatedReminderDate.isBefore(now)) {
-                        updatedReminderDate.plusYears(1)
-                    } else {
-                        updatedReminderDate
-                    }
-                }
+            //cancelNotification(notification)
+            val oldReminderDate = getNotificationDateTime(notification)
+            if (oldReminderDate.isBefore(LocalDateTime.now())) {
+                scheduleNotification(notification)
             }
+            val newReminderDate = newDateForReminder(notification)
 
             val milliseconds = newReminderDate.toInstant(OffsetDateTime.now().offset).toEpochMilli()
             val newNotification = notification.copy(trigger = milliseconds)
             scheduleNotification(newNotification)
         }
+    }
+
+    private fun newDateForReminder(
+        notification: NotificationData,
+    ): LocalDateTime {
+        val oldReminderDate = getNotificationDateTime(notification)
+
+        val newReminderDate = when (notification.repeatMode) {
+            RepeatMode.NONE -> {
+                if (oldReminderDate.isBefore(LocalDateTime.now())) {
+                    notificationStorage.remove(notification)
+                    oldReminderDate
+                } else {
+                    oldReminderDate
+                }
+            }
+
+            RepeatMode.DAILY -> {
+                val updatedReminderDate = LocalDateTime.now()
+                    .withHour(oldReminderDate.hour)
+                    .withMinute(oldReminderDate.minute)
+
+                if (updatedReminderDate.isBefore(LocalDateTime.now())) {
+                    updatedReminderDate.plusDays(1)
+                } else {
+                    updatedReminderDate
+                }
+            }
+
+            RepeatMode.WEEKLY -> {
+                val updatedReminderDate = LocalDateTime.now()
+                    .with(DayOfWeek.from(oldReminderDate.dayOfWeek))
+                    .withHour(oldReminderDate.hour)
+                    .withMinute(oldReminderDate.minute)
+
+                if (updatedReminderDate.isBefore(LocalDateTime.now())) {
+                    updatedReminderDate.plusDays(7)
+                } else {
+                    updatedReminderDate
+                }
+            }
+
+            RepeatMode.MONTHLY -> {
+                val updatedReminderDate = LocalDateTime.now()
+                    .withDayOfMonth(oldReminderDate.dayOfMonth)
+                    .withHour(oldReminderDate.hour)
+                    .withMinute(oldReminderDate.minute)
+
+                if (updatedReminderDate.isBefore(LocalDateTime.now())) {
+                    updatedReminderDate.plusMonths(1)
+                } else {
+                    updatedReminderDate
+                }
+            }
+
+            RepeatMode.YEARLY -> {
+                val updatedReminderDate = LocalDateTime.now()
+                    .withMonth(oldReminderDate.monthValue)
+                    .withDayOfMonth(oldReminderDate.dayOfMonth)
+                    .withHour(oldReminderDate.hour)
+                    .withMinute(oldReminderDate.minute)
+
+                if (updatedReminderDate.isBefore(LocalDateTime.now())) {
+                    updatedReminderDate.plusYears(1)
+                } else {
+                    updatedReminderDate
+                }
+            }
+        }
+        return newReminderDate
+    }
+
+    private fun getNotificationDateTime(notification: NotificationData): LocalDateTime {
+        return LocalDateTime.ofInstant(
+            Instant.ofEpochMilli(notification.trigger),
+            OffsetDateTime.now().offset
+        )
     }
 
     fun createNotificationChannel(channel: NotificationChannels) {
