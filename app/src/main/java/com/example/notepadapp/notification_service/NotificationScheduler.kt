@@ -16,7 +16,7 @@ class NotificationScheduler(private val context: Context) {
     companion object {
         enum class NotificationChannels(val channelId: String, val channelName: String, val importance: Int) {
             NOTECHANNEL(
-                "NOTECHANNEL", "notechennel", NotificationManager.IMPORTANCE_HIGH
+                "NOTECHANNEL", "Reminders", NotificationManager.IMPORTANCE_HIGH
             )
         }
     }

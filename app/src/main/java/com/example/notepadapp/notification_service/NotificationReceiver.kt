@@ -4,7 +4,10 @@ import android.app.NotificationManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
+import com.example.notepadapp.R
 import com.example.notepadapp.database.models.RepeatMode
 import java.time.Instant
 import java.time.LocalDateTime
@@ -40,8 +43,16 @@ class NotificationReceiver : BroadcastReceiver() {
         val notificationBuilder =
             NotificationCompat.Builder(context, notification.channel.channelId)
                 .setContentTitle(notification.title)
-                .setContentText(notification.message)
-                .setSmallIcon(notification.icon).setAutoCancel(true)
+                .setSmallIcon(notification.icon)
+                .setAutoCancel(true)
+                .setColor(ContextCompat.getColor(context, R.color.active))
+                .setColorized(true)
+                .setStyle(
+                    NotificationCompat
+                        .BigTextStyle()
+                        .bigText(notification.message)
+                )
+
 
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.notify(notification.notificationId, notificationBuilder.build())

@@ -212,7 +212,7 @@ class NotesViewModel @Inject constructor(
                         note._id.timestamp,
                         note.header,
                         note.body,
-                        R.drawable.first,
+                        R.drawable.ic_notification,
                         repeatMode,
                         note._id.timestamp,
                         localDateTime.toInstant(OffsetDateTime.now().offset).toEpochMilli()
