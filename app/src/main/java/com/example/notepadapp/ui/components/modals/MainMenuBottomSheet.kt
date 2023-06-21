@@ -29,7 +29,8 @@ import kotlinx.coroutines.launch
 fun MainMenuBottomSheet() {
     val coroutineScope = rememberCoroutineScope()
     val navController = rememberAnimatedNavController()
-    val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
+    val bottomSheetState =
+        rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden, skipHalfExpanded = true)
 
     ModalBottomSheetLayout(
         sheetBackgroundColor = CustomAppTheme.colors.mainBackground,
@@ -37,7 +38,6 @@ fun MainMenuBottomSheet() {
         scrimColor = CustomAppTheme.colors.modalBackground,
         sheetShape = RoundedCornerShape(topStart = 26.dp, topEnd = 26.dp),
         sheetContent = {
-            // Здесь вы можете определить свой макет BottomSheet
             BottomSheetContent(navController, coroutineScope, bottomSheetState)
         }
     ) {
