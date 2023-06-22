@@ -209,6 +209,7 @@ class NotesViewModel @Inject constructor(
                 for (note in notes) {
                     val localDateTime = LocalDateTime.of(date, time)
                     val notificationData = NotificationData(
+                        note._id.toHexString(),
                         note._id.timestamp,
                         note.header,
                         note.body,

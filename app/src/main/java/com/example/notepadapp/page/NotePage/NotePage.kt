@@ -21,17 +21,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.example.notepadapp.navigation.UserPage
+import com.example.notepadapp.navigation.UserPages
 import com.example.notepadapp.ui.components.fields.CustomTextField
 import com.example.notepadapp.ui.theme.CustomAppTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -43,7 +41,7 @@ fun NotePage(navController: NavController, noteViewModel: NoteViewModel = hiltVi
     val scrollState = rememberScrollState()
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route ?: ""
     LaunchedEffect(currentRoute) {
-        if (currentRoute.substringBefore("/") != UserPage.Note.route.substringBefore("/")) {
+        if (currentRoute.substringBefore("/") != UserPages.Note.route.substringBefore("/")) {
             noteViewModel.isTopAppBarHover = false
             noteViewModel.isBottomAppBarHover = false
         }

@@ -8,10 +8,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
-import androidx.navigation.compose.rememberNavController
 import com.example.notepadapp.app_handlers.ThemePreferenceManager
-import com.example.notepadapp.navigation.AppScreen
-import com.example.notepadapp.navigation.SetupAppNavGraph
+import com.example.notepadapp.navigation.UserPages
+import com.example.notepadapp.ui.components.modals.MainMenuBottomSheet
 import com.example.notepadapp.ui.theme.CustomAppTheme
 import com.example.notepadapp.util.ThemeUtil
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -24,15 +23,29 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ThemeUtil.isDarkTheme = ThemePreferenceManager(this).getSavedTheme()
+        val startDestination = getStartDestination()
 
         setContent {
-            val navController = rememberNavController()
             CustomAppTheme(darkTheme = ThemeUtil.isDarkTheme) {
-
                 Box(Modifier.fillMaxSize().background(CustomAppTheme.colors.mainBackground)) {
-                    SetupAppNavGraph(navController = navController, startDestination = AppScreen.Home.route)
+                    MainMenuBottomSheet(startDestination)
                 }
             }
         }
+    }
+
+    private fun getStartDestination(): String {
+        // Retrieve the extras from the Intent
+        val extras = intent.extras
+        var noteId: String? = null
+        if (extras != null) {
+            noteId = extras.getString("noteId", null)
+        }
+        val startDestination = if (noteId != null) {
+            UserPages.Note.noteId(noteId)
+        } else {
+            UserPages.NoteList.route
+        }
+        return startDestination
     }
 }

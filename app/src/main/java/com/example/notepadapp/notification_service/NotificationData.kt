@@ -3,6 +3,7 @@ package com.example.notepadapp.notification_service
 import com.example.notepadapp.database.models.RepeatMode
 
 data class NotificationData(
+    val noteId: String,
     val notificationId: Int,
     val title: String,
     val message: String,

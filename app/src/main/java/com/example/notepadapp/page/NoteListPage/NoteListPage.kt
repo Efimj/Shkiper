@@ -31,7 +31,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.notepadapp.database.models.Note
-import com.example.notepadapp.navigation.UserPage
+import com.example.notepadapp.navigation.UserPages
 import com.example.notepadapp.ui.components.cards.NoteCard
 import com.example.notepadapp.ui.components.fields.SearchBar
 import com.example.notepadapp.ui.components.layouts.LazyGridNotes
@@ -97,7 +97,7 @@ fun NoteListPage(navController: NavController, notesViewModel: NotesViewModel = 
      */
     LaunchedEffect(notesViewModel.lastCreatedNoteId) {
         if (notesViewModel.lastCreatedNoteId.isNotEmpty()) {
-            navController.navigate(UserPage.Note.noteId(notesViewModel.lastCreatedNoteId))
+            navController.navigate(UserPages.Note.noteId(notesViewModel.lastCreatedNoteId))
             notesViewModel.lastCreatedNoteId = ""
         }
     }
@@ -319,8 +319,8 @@ private fun onNoteClick(
 ) {
     if (notesViewModel.selectedNotes.value.isNotEmpty()) notesViewModel.toggleSelectedNoteCard(it._id)
     else {
-        if (currentRoute.substringBefore("/") != UserPage.Note.route.substringBefore("/")) {
-            navController.navigate(UserPage.Note.noteId(it._id.toHexString()))
+        if (currentRoute.substringBefore("/") != UserPages.Note.route.substringBefore("/")) {
+            navController.navigate(UserPages.Note.noteId(it._id.toHexString()))
         }
     }
 }

@@ -23,16 +23,16 @@ fun SetupHomePageNavGraph(
         startDestination = startDestination
     ) {
         composable(
-            route = UserPage.NoteList.route,
+            route = UserPages.NoteList.route,
             enterTransition = {
                 when (initialState.destination.route) {
-                    UserPage.Note.route -> null
+                    UserPages.Note.route -> null
                     else -> slideInVertically(initialOffsetY = { -40 }) + fadeIn()
                 }
             },
             exitTransition = {
                 when (targetState.destination.route) {
-                    UserPage.Note.route -> null
+                    UserPages.Note.route -> null
                     else -> slideOutVertically(targetOffsetY = {50}) + fadeOut()
                 }
             }
@@ -41,16 +41,16 @@ fun SetupHomePageNavGraph(
         }
 
         composable(
-            route = UserPage.Archive.route,
+            route = UserPages.Archive.route,
             enterTransition = {
                 when (initialState.destination.route) {
-                    UserPage.Note.route -> null
+                    UserPages.Note.route -> null
                     else -> slideInVertically(initialOffsetY = { -40 }) + fadeIn()
                 }
             },
             exitTransition = {
                 when (targetState.destination.route) {
-                    UserPage.Note.route -> null
+                    UserPages.Note.route -> null
                     else -> slideOutVertically(targetOffsetY = {50}) + fadeOut()
                 }
             }
@@ -59,16 +59,16 @@ fun SetupHomePageNavGraph(
         }
 
         composable(
-            route = UserPage.Basket.route,
+            route = UserPages.Basket.route,
             enterTransition = {
                 when (initialState.destination.route) {
-                    UserPage.Note.route -> null
+                    UserPages.Note.route -> null
                     else -> slideInVertically(initialOffsetY = { -40 }) + fadeIn()
                 }
             },
             exitTransition = {
                 when (targetState.destination.route) {
-                    UserPage.Note.route -> null
+                    UserPages.Note.route -> null
                     else -> slideOutVertically(targetOffsetY = {50}) + fadeOut()
                 }
             }
@@ -77,16 +77,16 @@ fun SetupHomePageNavGraph(
         }
 
         composable(
-            route = UserPage.Settings.route,
+            route = UserPages.Settings.route,
             enterTransition = {
                 when (initialState.destination.route) {
-                    UserPage.Note.route -> null
+                    UserPages.Note.route -> null
                     else -> slideInVertically(initialOffsetY = { -40 }) + fadeIn()
                 }
             },
             exitTransition = {
                 when (targetState.destination.route) {
-                    UserPage.Note.route -> null
+                    UserPages.Note.route -> null
                     else -> slideOutVertically(targetOffsetY = {50}) + fadeOut()
                 }
             }
@@ -95,7 +95,7 @@ fun SetupHomePageNavGraph(
         }
 
         composable(
-            route = UserPage.Note.route,
+            route = UserPages.Note.route,
             arguments = listOf(navArgument(ARGUMENT_NOTE_ID){
                 type = NavType.StringType
             }),

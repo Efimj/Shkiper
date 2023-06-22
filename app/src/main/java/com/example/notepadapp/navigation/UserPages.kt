@@ -1,7 +1,7 @@
 package com.example.notepadapp.navigation
 
 const val ARGUMENT_NOTE_ID = "noteId"
-sealed class UserPage(val route: String) {
+sealed class UserPages(val route: String) {
         object NoteList: AppScreen(route = "note_list")
         object Archive: AppScreen(route = "archive")
         object Basket: AppScreen(route = "basket")
