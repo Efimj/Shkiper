@@ -9,7 +9,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
 import com.example.notepadapp.app_handlers.ThemePreferenceManager
-import com.example.notepadapp.navigation.UserPages
+import com.example.notepadapp.navigation.AppScreens
 import com.example.notepadapp.ui.components.modals.MainMenuBottomSheet
 import com.example.notepadapp.ui.theme.CustomAppTheme
 import com.example.notepadapp.util.ThemeUtil
@@ -42,9 +42,9 @@ class MainActivity : ComponentActivity() {
             noteId = extras.getString("noteId", null)
         }
         val startDestination = if (noteId != null) {
-            UserPages.Note.noteId(noteId)
+            AppScreens.Note.noteId(noteId)
         } else {
-            UserPages.NoteList.route
+            AppScreens.NoteList.route
         }
         return startDestination
     }

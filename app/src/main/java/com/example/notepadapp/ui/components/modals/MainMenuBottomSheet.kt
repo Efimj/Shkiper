@@ -16,8 +16,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.example.notepadapp.navigation.SetupHomePageNavGraph
-import com.example.notepadapp.navigation.UserPages
+import com.example.notepadapp.navigation.SetupAppScreenNavGraph
+import com.example.notepadapp.navigation.AppScreens
 import com.example.notepadapp.ui.components.buttons.MainMenuButton
 import com.example.notepadapp.ui.components.buttons.RoundedButton
 import com.example.notepadapp.ui.theme.CustomAppTheme
@@ -27,7 +27,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 @OptIn(ExperimentalMaterialApi::class, ExperimentalAnimationApi::class)
-fun MainMenuBottomSheet(startDestination: String = UserPages.NoteList.route) {
+fun MainMenuBottomSheet(startDestination: String = AppScreens.NoteList.route) {
     val coroutineScope = rememberCoroutineScope()
     val navController = rememberAnimatedNavController()
     val bottomSheetState =
@@ -50,12 +50,12 @@ fun MainMenuBottomSheet(startDestination: String = UserPages.NoteList.route) {
 @OptIn(ExperimentalAnimationApi::class, ExperimentalMaterialApi::class)
 private fun MainPageLayout(
     navController: NavHostController,
-    startDestination: String = UserPages.NoteList.route,
+    startDestination: String = AppScreens.NoteList.route,
     coroutineScope: CoroutineScope,
     bottomSheetState: ModalBottomSheetState
 ) {
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route ?: ""
-    val isButtonHide = currentRoute.substringBefore("/") == UserPages.Note.route.substringBefore("/")
+    val isButtonHide = currentRoute.substringBefore("/") == AppScreens.Note.route.substringBefore("/")
     val menuContainerHeight = 37
 
     val offsetY by animateDpAsState(
@@ -65,7 +65,7 @@ private fun MainPageLayout(
 
     Box(Modifier.fillMaxSize()) {
         Box(Modifier.fillMaxSize()) {
-            SetupHomePageNavGraph(navController = navController, startDestination = UserPages.NoteList.route)
+            SetupAppScreenNavGraph(navController = navController, startDestination = AppScreens.NoteList.route)
         }
         Box(
             Modifier
@@ -93,23 +93,23 @@ private fun MainPageLayout(
     LaunchedEffect(Unit) {
         if (isInitialized.value) return@LaunchedEffect
         isInitialized.value = true
-        if (startDestination != UserPages.NoteList.route)
+        if (startDestination != AppScreens.NoteList.route)
             navController.navigate(startDestination)
     }
 }
 
 private fun getCurrentMenuIcon(currentRoute: String): ImageVector {
     val currentButtonIcon = when (currentRoute) {
-        UserPages.NoteList.route ->
+        AppScreens.NoteList.route ->
             Icons.Outlined.AutoAwesomeMosaic
 
-        UserPages.Archive.route ->
+        AppScreens.Archive.route ->
             Icons.Outlined.Archive
 
-        UserPages.Basket.route ->
+        AppScreens.Basket.route ->
             Icons.Outlined.Delete
 
-        UserPages.Settings.route ->
+        AppScreens.Settings.route ->
             Icons.Outlined.Settings
 
         else -> Icons.Outlined.Menu
@@ -133,30 +133,30 @@ private fun BottomSheetContent(
     ) {
         MainMenuButton("Notes",
             Icons.Outlined.AutoAwesomeMosaic,
-            isActive = currentRoute == UserPages.NoteList.route,
+            isActive = currentRoute == AppScreens.NoteList.route,
             onClick = {
-                goToPage(navController, UserPages.NoteList.route, coroutineScope, bottomSheetState)
+                goToPage(navController, AppScreens.NoteList.route, coroutineScope, bottomSheetState)
             })
         Spacer(modifier = Modifier.height(8.dp))
         MainMenuButton("Archive",
             Icons.Outlined.Archive,
-            isActive = currentRoute == UserPages.Archive.route,
+            isActive = currentRoute == AppScreens.Archive.route,
             onClick = {
-                goToPage(navController, UserPages.Archive.route, coroutineScope, bottomSheetState)
+                goToPage(navController, AppScreens.Archive.route, coroutineScope, bottomSheetState)
             })
         Spacer(modifier = Modifier.height(8.dp))
         MainMenuButton("Basket",
             Icons.Outlined.Delete,
-            isActive = currentRoute == UserPages.Basket.route,
+            isActive = currentRoute == AppScreens.Basket.route,
             onClick = {
-                goToPage(navController, UserPages.Basket.route, coroutineScope, bottomSheetState)
+                goToPage(navController, AppScreens.Basket.route, coroutineScope, bottomSheetState)
             })
         Spacer(modifier = Modifier.height(8.dp))
         MainMenuButton("Settings",
             Icons.Outlined.Settings,
-            isActive = currentRoute == UserPages.Settings.route,
+            isActive = currentRoute == AppScreens.Settings.route,
             onClick = {
-                goToPage(navController, UserPages.Settings.route, coroutineScope, bottomSheetState)
+                goToPage(navController, AppScreens.Settings.route, coroutineScope, bottomSheetState)
             }
         )
     }

@@ -5,16 +5,16 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
-import com.example.notepadapp.page.NoteListPage.NoteListPage
-import com.example.notepadapp.page.NotePage.NotePage
-import com.example.notepadapp.page.SettingsPage.SettingsPage
+import com.example.notepadapp.screens.NoteListScreen.NoteListScreen
+import com.example.notepadapp.screens.NoteScreen.NoteScreen
+import com.example.notepadapp.screens.SettingsScreen.SettingsScreen
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 
 
 @ExperimentalAnimationApi
 @Composable
-fun SetupHomePageNavGraph(
+fun SetupAppScreenNavGraph(
     navController: NavHostController,
     startDestination: String
 ) {
@@ -23,52 +23,34 @@ fun SetupHomePageNavGraph(
         startDestination = startDestination
     ) {
         composable(
-            route = UserPages.NoteList.route,
+            route = AppScreens.NoteList.route,
             enterTransition = {
                 when (initialState.destination.route) {
-                    UserPages.Note.route -> null
+                    AppScreens.Note.route -> null
                     else -> slideInVertically(initialOffsetY = { -40 }) + fadeIn()
                 }
             },
             exitTransition = {
                 when (targetState.destination.route) {
-                    UserPages.Note.route -> null
+                    AppScreens.Note.route -> null
                     else -> slideOutVertically(targetOffsetY = {50}) + fadeOut()
                 }
             }
         ) {
-            NoteListPage(navController)
+            NoteListScreen(navController)
         }
 
         composable(
-            route = UserPages.Archive.route,
+            route = AppScreens.Archive.route,
             enterTransition = {
                 when (initialState.destination.route) {
-                    UserPages.Note.route -> null
+                    AppScreens.Note.route -> null
                     else -> slideInVertically(initialOffsetY = { -40 }) + fadeIn()
                 }
             },
             exitTransition = {
                 when (targetState.destination.route) {
-                    UserPages.Note.route -> null
-                    else -> slideOutVertically(targetOffsetY = {50}) + fadeOut()
-                }
-            }
-        ) {
-
-        }
-
-        composable(
-            route = UserPages.Basket.route,
-            enterTransition = {
-                when (initialState.destination.route) {
-                    UserPages.Note.route -> null
-                    else -> slideInVertically(initialOffsetY = { -40 }) + fadeIn()
-                }
-            },
-            exitTransition = {
-                when (targetState.destination.route) {
-                    UserPages.Note.route -> null
+                    AppScreens.Note.route -> null
                     else -> slideOutVertically(targetOffsetY = {50}) + fadeOut()
                 }
             }
@@ -77,25 +59,43 @@ fun SetupHomePageNavGraph(
         }
 
         composable(
-            route = UserPages.Settings.route,
+            route = AppScreens.Basket.route,
             enterTransition = {
                 when (initialState.destination.route) {
-                    UserPages.Note.route -> null
+                    AppScreens.Note.route -> null
                     else -> slideInVertically(initialOffsetY = { -40 }) + fadeIn()
                 }
             },
             exitTransition = {
                 when (targetState.destination.route) {
-                    UserPages.Note.route -> null
+                    AppScreens.Note.route -> null
                     else -> slideOutVertically(targetOffsetY = {50}) + fadeOut()
                 }
             }
         ) {
-            SettingsPage()
+
         }
 
         composable(
-            route = UserPages.Note.route,
+            route = AppScreens.Settings.route,
+            enterTransition = {
+                when (initialState.destination.route) {
+                    AppScreens.Note.route -> null
+                    else -> slideInVertically(initialOffsetY = { -40 }) + fadeIn()
+                }
+            },
+            exitTransition = {
+                when (targetState.destination.route) {
+                    AppScreens.Note.route -> null
+                    else -> slideOutVertically(targetOffsetY = {50}) + fadeOut()
+                }
+            }
+        ) {
+            SettingsScreen()
+        }
+
+        composable(
+            route = AppScreens.Note.route,
             arguments = listOf(navArgument(ARGUMENT_NOTE_ID){
                 type = NavType.StringType
             }),
@@ -106,7 +106,7 @@ fun SetupHomePageNavGraph(
                 fadeOut() + scaleOut(targetScale = 0.9f)
             }
         ) {
-            NotePage(navController)
+            NoteScreen(navController)
         }
     }
 }
