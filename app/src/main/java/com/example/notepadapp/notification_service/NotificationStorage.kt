@@ -1,19 +1,19 @@
 package com.example.notepadapp.notification_service
 
 import android.content.Context
+import com.example.notepadapp.SharedPreferencesKeys
+import com.example.notepadapp.database.models.RepeatMode
 import com.google.gson.Gson
+import java.time.LocalDate
+import java.time.LocalTime
 
-class NotificationStorage(private val context: Context) {
-    companion object {
-        const val reminderStorageName = "ReminderStorage"
-        const val reminderListKey = "Reminders"
-    }
-
+class NotificationStorage(context: Context) {
     private val gson = Gson()
-    private val sharedPreferences = context.getSharedPreferences(reminderStorageName, Context.MODE_PRIVATE)
+    private val sharedPreferences =
+        context.getSharedPreferences(SharedPreferencesKeys.NotificationStorageName, Context.MODE_PRIVATE)
 
     fun getAll(): MutableList<NotificationData> {
-        val json = sharedPreferences.getString(reminderListKey, "[]")
+        val json = sharedPreferences.getString(SharedPreferencesKeys.NotificationListKey, "[]")
         return gson.fromJson(json, Array<NotificationData>::class.java).toMutableList()
     }
 
@@ -25,7 +25,7 @@ class NotificationStorage(private val context: Context) {
     fun save(notifications: List<NotificationData>) {
         val json = gson.toJson(notifications)
         val editor = sharedPreferences.edit()
-        editor.putString(reminderListKey, json)
+        editor.putString(SharedPreferencesKeys.NotificationListKey, json)
         editor.apply()
     }
 
@@ -33,6 +33,24 @@ class NotificationStorage(private val context: Context) {
         val notifications = getAll()
         addOrUpdateElement(notifications, notificationData)
         save(notifications)
+    }
+
+    fun updateNotificationTime(requestId: Int, trigger: Long, repeatMode: RepeatMode) {
+        val notifications = getAll()
+        val newNotification = notifications.find { notification -> notification.requestCode == requestId }?.copy(
+            trigger = trigger,
+            repeatMode = repeatMode
+        ) ?: return
+        addOrUpdate(newNotification)
+    }
+
+    fun updateNotificationData(requestId: Int, title: String, message: String) {
+        val notifications = getAll()
+        val newNotification = notifications.find { notification -> notification.requestCode == requestId }?.copy(
+            title = title,
+            message = message
+        ) ?: return
+        addOrUpdate(newNotification)
     }
 
     fun remove(notificationData: NotificationData) {

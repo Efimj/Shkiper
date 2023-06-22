@@ -1,13 +1,20 @@
 package com.example.notepadapp.database.data.reminder
 
+import android.content.Context
 import android.util.Log
+import com.example.notepadapp.R
+import com.example.notepadapp.database.models.Note
 import com.example.notepadapp.database.models.Reminder
+import com.example.notepadapp.notification_service.NotificationData
+import com.example.notepadapp.notification_service.NotificationScheduler
 import io.realm.kotlin.Realm
 import io.realm.kotlin.ext.query
 import io.realm.kotlin.query.Sort
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import org.mongodb.kbson.ObjectId
+import java.time.LocalDateTime
+import java.time.OffsetDateTime
 
 class ReminderMongoRepositoryImpl(val realm: Realm) : ReminderMongoRepository {
     override fun getAllReminders(): Flow<List<Reminder>> {
@@ -25,34 +32,43 @@ class ReminderMongoRepositoryImpl(val realm: Realm) : ReminderMongoRepository {
         return realm.query<Reminder>(query = "noteId == $0", noteId).first().find()
     }
 
-    override fun getRemindersForNotes(noteIds: List<ObjectId>): List<Reminder> {
-        return realm.query<Reminder>(query = "noteId IN {${noteIds.joinToString(", ")}}").find()
-    }
-
-    override suspend fun insertReminder(reminder: Reminder) {
+    override suspend fun insertReminder(reminder: Reminder, note: Note, context: Context) {
         realm.write { copyToRealm(reminder) }
+        scheduleNotification(reminder, note, context)
     }
 
-    override suspend fun updateReminder(id: ObjectId, updateParams: (Reminder) -> Unit) {
+    override suspend fun updateReminder(id: ObjectId, context: Context, updateParams: (Reminder) -> Unit) {
         getReminder(id)?.also { currentReminder ->
             realm.writeBlocking {
-                val queriedReminder = findLatest(currentReminder)
-                queriedReminder?.apply {
+                val queriedReminder = findLatest(currentReminder) ?: return@writeBlocking
+                queriedReminder.apply {
                     updateParams(this)
                 }
+                updateNotification(context, id, queriedReminder)
             }
         }
     }
 
-    override suspend fun updateReminder(
-        ids: List<ObjectId>,
+    override suspend fun updateOrCreateReminderForNotes(
+        notes: List<Note>,
+        context: Context,
         updateParams: (Reminder) -> Unit
     ) {
         realm.writeBlocking {
-            for (id in ids) {
-                val reminder = getReminder(id) ?: continue
+            for (note in notes) {
                 try {
-                    findLatest(reminder)?.let(updateParams)
+                    var reminder = getReminderForNote(note._id)
+                    if (reminder != null) {
+                        val latest = findLatest(reminder) ?: continue
+                        latest.let(updateParams)
+                        reminder = latest
+                    } else {
+                        reminder = Reminder()
+                        reminder.noteId = note._id
+                        reminder.let(updateParams)
+                        copyToRealm(reminder)
+                    }
+                    scheduleNotification(reminder, note, context)
                 } catch (e: Exception) {
                     Log.d("ReminderMongoRepositoryImpl", "${e.message}")
                 }
@@ -60,52 +76,71 @@ class ReminderMongoRepositoryImpl(val realm: Realm) : ReminderMongoRepository {
         }
     }
 
-    override suspend fun updateOrCreateReminderForNotes(
-        noteIds: List<ObjectId>,
-        updateParams: (Reminder) -> Unit
-    ) {
-        realm.writeBlocking {
-            for (id in noteIds) {
-                val reminder = getReminderForNote(id)
-                if (reminder != null) {
-                    try {
-                        findLatest(reminder)?.let(updateParams)
-                    } catch (e: Exception) {
-                        Log.d("ReminderMongoRepositoryImpl", "${e.message}")
-                    }
-                } else {
-                    val newReminder = Reminder()
-                    newReminder.noteId = id
-                    newReminder.let(updateParams)
-                    copyToRealm(newReminder)
-                }
-            }
-        }
-    }
-
-    override suspend fun deleteReminder(id: ObjectId) {
+    override suspend fun deleteReminder(id: ObjectId, context: Context) {
         realm.write {
             val reminder = getReminder(id) ?: return@write
             try {
-                findLatest(reminder)
-                    ?.let { delete(it) }
+                findLatest(reminder)?.let { delete(it) }
+                deleteNotification(context, id)
             } catch (e: Exception) {
                 Log.d("ReminderMongoRepositoryImpl", "${e.message}")
             }
         }
     }
 
-    override suspend fun deleteReminder(ids: List<ObjectId>) {
+    override suspend fun deleteReminder(ids: List<ObjectId>, context: Context) {
         realm.writeBlocking {
             for (id in ids) {
                 val reminder = getReminder(id) ?: continue
                 try {
                     findLatest(reminder)
                         ?.let { delete(it) }
+                    deleteNotification(context, id)
                 } catch (e: Exception) {
                     Log.d("ReminderMongoRepositoryImpl", "${e.message}")
                 }
             }
         }
+    }
+
+    private fun deleteNotification(context: Context, id: ObjectId) {
+        val notificationScheduler = NotificationScheduler(context)
+        notificationScheduler.deleteNotification(id.timestamp)
+    }
+
+    private fun updateNotification(
+        context: Context,
+        id: ObjectId,
+        queriedReminder: Reminder
+    ) {
+        // Update notification
+        val notificationScheduler = NotificationScheduler(context)
+        notificationScheduler.updateNotificationTime(
+            id.timestamp,
+            queriedReminder.date,
+            queriedReminder.time,
+            queriedReminder.repeat
+        )
+    }
+
+    private fun scheduleNotification(
+        reminder: Reminder,
+        note: Note,
+        context: Context
+    ) {
+        val notificationScheduler = NotificationScheduler(context)
+        notificationScheduler.createNotificationChannel(NotificationScheduler.Companion.NotificationChannels.NOTECHANNEL)
+        val localDateTime = LocalDateTime.of(reminder.date, reminder.time)
+        val notificationData = NotificationData(
+            note._id.toHexString(),
+            reminder._id.timestamp,
+            note.header,
+            note.body,
+            R.drawable.ic_notification,
+            reminder.repeat,
+            reminder._id.timestamp,
+            localDateTime.toInstant(OffsetDateTime.now().offset).toEpochMilli()
+        )
+        notificationScheduler.scheduleNotification(notificationData)
     }
 }

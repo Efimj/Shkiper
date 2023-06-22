@@ -9,7 +9,9 @@ import android.content.Intent
 import com.example.notepadapp.database.models.RepeatMode
 import java.time.DayOfWeek
 import java.time.Instant
+import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.LocalTime
 import java.time.OffsetDateTime
 
 class NotificationScheduler(private val context: Context) {
@@ -27,18 +29,33 @@ class NotificationScheduler(private val context: Context) {
 
     fun scheduleNotification(notificationData: NotificationData) {
         notificationStorage.addOrUpdate(notificationData)
+        setNotification(notificationData.requestCode, notificationData.trigger)
+    }
+
+    fun updateNotificationTime(requestId: Int, date: LocalDate, time: LocalTime, repeatMode: RepeatMode) {
+        val localDateTime = LocalDateTime.of(date, time)
+        val trigger = localDateTime.toInstant(OffsetDateTime.now().offset).toEpochMilli()
+        notificationStorage.updateNotificationTime(requestId, trigger, repeatMode)
+        setNotification(requestId, trigger)
+    }
+
+    fun updateNotificationData(requestId: Int, title: String, message: String) {
+        notificationStorage.updateNotificationData(requestId, title, message)
+    }
+
+    private fun setNotification(requestId: Int, trigger: Long) {
         val notificationIntent = Intent(context, NotificationReceiver::class.java)
-        notificationIntent.putExtra("requestCode", notificationData.requestCode)
+        notificationIntent.putExtra("requestCode", requestId)
 
         val pendingIntent = PendingIntent.getBroadcast(
             context,
-            notificationData.requestCode,
+            requestId,
             notificationIntent,
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
 
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        alarmManager.set(AlarmManager.RTC_WAKEUP, notificationData.trigger, pendingIntent)
+        alarmManager.set(AlarmManager.RTC_WAKEUP, trigger, pendingIntent)
     }
 
     fun deleteNotification(notification: NotificationData) {

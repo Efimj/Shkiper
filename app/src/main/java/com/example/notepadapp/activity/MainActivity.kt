@@ -8,6 +8,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
+import com.example.notepadapp.SharedPreferencesKeys
 import com.example.notepadapp.app_handlers.ThemePreferenceManager
 import com.example.notepadapp.navigation.AppScreens
 import com.example.notepadapp.ui.components.modals.MainMenuBottomSheet
@@ -39,7 +40,7 @@ class MainActivity : ComponentActivity() {
         val extras = intent.extras
         var noteId: String? = null
         if (extras != null) {
-            noteId = extras.getString("noteId", null)
+            noteId = extras.getString(SharedPreferencesKeys.NoteIdExtra, null)
         }
         val startDestination = if (noteId != null) {
             AppScreens.Note.noteId(noteId)

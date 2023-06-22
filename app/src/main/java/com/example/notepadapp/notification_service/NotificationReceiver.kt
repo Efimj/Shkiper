@@ -10,6 +10,7 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import com.example.notepadapp.R
+import com.example.notepadapp.SharedPreferencesKeys
 import com.example.notepadapp.activity.MainActivity
 import com.example.notepadapp.database.models.RepeatMode
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -48,7 +49,7 @@ class NotificationReceiver : BroadcastReceiver() {
 
         // Create an Intent for the activity you want to start
         val mainIntent = Intent(context, MainActivity::class.java)
-            .putExtra("noteId", notification.noteId)
+            .putExtra(SharedPreferencesKeys.NoteIdExtra, notification.noteId)
 
         // Create the TaskStackBuilder
         val mainPendingIntent: PendingIntent? = TaskStackBuilder.create(context).run {
