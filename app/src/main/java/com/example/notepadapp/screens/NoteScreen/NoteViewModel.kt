@@ -21,6 +21,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.mongodb.kbson.ObjectId
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
 import java.util.*
 import javax.inject.Inject
@@ -40,11 +41,11 @@ class NoteViewModel @Inject constructor(
     var noteHeader by mutableStateOf(note?.header ?: "")
     var noteBody by mutableStateOf(note?.body ?: "")
     var noteIsPinned by mutableStateOf(note?.isPinned ?: false)
-    var noteUpdatedDate by mutableStateOf(note?.updateDate ?: Date())
+    var noteUpdatedDate by mutableStateOf(note?.updateDate ?: LocalDateTime.now())
 
     fun updateNoteHeader(text: String) {
         noteHeader = text
-        noteUpdatedDate = Date()
+        noteUpdatedDate = LocalDateTime.now()
         updateNote {
             it.header = this@NoteViewModel.noteHeader
             it.updateDate = this@NoteViewModel.noteUpdatedDate
@@ -53,7 +54,7 @@ class NoteViewModel @Inject constructor(
 
     fun updateNoteBody(text: String) {
         noteBody = text
-        noteUpdatedDate = Date()
+        noteUpdatedDate = LocalDateTime.now()
         updateNote {
             it.body = this@NoteViewModel.noteBody
             it.updateDate = this@NoteViewModel.noteUpdatedDate

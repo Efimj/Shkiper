@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.notepadapp.helpers.DateHelper
 import com.example.notepadapp.navigation.AppScreens
 import com.example.notepadapp.ui.components.fields.CustomTextField
 import com.example.notepadapp.ui.components.modals.CreateReminderDialog
@@ -36,6 +37,10 @@ import com.example.notepadapp.ui.components.modals.ReminderDialogProperties
 import com.example.notepadapp.ui.theme.CustomAppTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import java.text.SimpleDateFormat
+import java.time.Duration
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 import java.util.*
 
 @Composable
@@ -197,6 +202,7 @@ private fun NoteScreenHeader(navController: NavController, noteViewModel: NoteVi
     )
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 private fun NoteScreenFooter(navController: NavController, noteViewModel: NoteViewModel) {
@@ -205,7 +211,6 @@ private fun NoteScreenFooter(navController: NavController, noteViewModel: NoteVi
         if (noteViewModel.isBottomAppBarHover) CustomAppTheme.colors.secondaryBackground else CustomAppTheme.colors.mainBackground,
         animationSpec = tween(200),
     )
-    val formatter = SimpleDateFormat("dd MM yyyy : ss", Locale.getDefault())
 
     SideEffect {
         systemUiController.setNavigationBarColor(backgroundColor)
@@ -219,7 +224,11 @@ private fun NoteScreenFooter(navController: NavController, noteViewModel: NoteVi
         modifier = Modifier.fillMaxWidth().height(45.dp),
     ) {
         Spacer(modifier = Modifier.padding(5.dp, 0.dp, 0.dp, 0.dp))
-        Text(formatter.format(noteViewModel.noteUpdatedDate))
+        Text(
+            "Changed at ${getUpdatedTime(noteViewModel)}",
+            modifier = Modifier.basicMarquee(),
+            style = MaterialTheme.typography.body1.copy(fontSize = 15.sp)
+        )
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.End
@@ -237,4 +246,12 @@ private fun NoteScreenFooter(navController: NavController, noteViewModel: NoteVi
             Spacer(modifier = Modifier.padding(5.dp, 0.dp, 0.dp, 0.dp))
         }
     }
+}
+
+private fun getUpdatedTime(noteViewModel: NoteViewModel): String {
+    val duration = Duration.between(noteViewModel.noteUpdatedDate, LocalDateTime.now())
+    return if (duration.toDays() > 1)
+        noteViewModel.noteUpdatedDate.format(DateTimeFormatter.ofPattern("d MMMM yyyy, HH:mm"))
+    else
+        noteViewModel.noteUpdatedDate.format(DateTimeFormatter.ofPattern("HH:mm"))
 }

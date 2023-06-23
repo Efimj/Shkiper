@@ -7,17 +7,12 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Event
 import androidx.compose.material.icons.filled.Repeat
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.*
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
@@ -49,7 +44,7 @@ fun NoteCard(
     Card(
         modifier = modifier
             .bounceClick()
-            .heightIn(max = 250.dp, min = 50.dp)
+            //.heightIn(max = 250.dp, min = 50.dp)
             .fillMaxWidth()
             .clip(RoundedCornerShape(15.dp))
             .combinedClickable(
@@ -101,8 +96,8 @@ private fun ReminderInformation(reminder: Reminder?) {
             Modifier
                 .basicMarquee()
                 .clip(shape)
-                .background(CustomAppTheme.colors.secondaryBackground)
-                .padding(horizontal = 5.dp, vertical = 3.dp),
+                .background(CustomAppTheme.colors.secondaryBackground),
+            //.padding(horizontal = 5.dp, vertical = 3.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
@@ -133,13 +128,17 @@ private fun ReminderInformation(reminder: Reminder?) {
 
 @Composable
 private fun NoteContent(header: String?, text: String?, headerStyle: TextStyle, bodyStyle: TextStyle) {
+    var headerLineCount by remember { mutableStateOf(1) }
     if (!header.isNullOrEmpty()) {
         Text(
             text = header,
-            maxLines = 5,
+            maxLines = 3,
             overflow = TextOverflow.Ellipsis,
             style = headerStyle,
-            fontSize = 18.sp
+            fontSize = 18.sp,
+            onTextLayout = { textLayoutResult: TextLayoutResult ->
+                headerLineCount = textLayoutResult.lineCount
+            }
         )
     }
     if (!text.isNullOrEmpty() && !header.isNullOrEmpty())
@@ -147,7 +146,7 @@ private fun NoteContent(header: String?, text: String?, headerStyle: TextStyle, 
     if (!text.isNullOrEmpty()) {
         Text(
             text = text,
-            maxLines = 10,
+            maxLines = 8 - headerLineCount,
             overflow = TextOverflow.Ellipsis,
             style = bodyStyle,
             color = CustomAppTheme.colors.textSecondary,

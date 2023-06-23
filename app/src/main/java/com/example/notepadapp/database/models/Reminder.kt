@@ -9,6 +9,7 @@ import io.realm.kotlin.types.annotations.PrimaryKey
 import org.mongodb.kbson.ObjectId
 import java.time.LocalDate
 import java.time.LocalTime
+import java.time.format.DateTimeParseException
 
 enum class RepeatMode {
     NONE, DAILY, WEEKLY, MONTHLY, YEARLY;
@@ -48,13 +49,25 @@ class Reminder : RealmObject {
         }
 
     var date: LocalDate
-        get() = LocalDate.parse(dateString)
+        get() {
+            return try {
+                LocalDate.parse(dateString)
+            } catch (e: DateTimeParseException) {
+                LocalDate.now()
+            }
+        }
         set(value) {
             dateString = value.toString()
         }
 
     var time: LocalTime
-        get() = LocalTime.parse(timeString)
+        get() {
+            return try {
+                LocalTime.parse(timeString)
+            } catch (e: DateTimeParseException) {
+                LocalTime.now()
+            }
+        }
         set(value) {
             timeString = value.toString()
         }
