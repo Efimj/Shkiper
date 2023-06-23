@@ -247,13 +247,14 @@ private fun RepeatModePage(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun TimePickPage(
     date: MutableState<LocalDate>,
     time: MutableState<LocalTime>,
 ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Row(Modifier.fillMaxWidth()) {
+        Row(Modifier.basicMarquee().fillMaxWidth()) {
             Text(
                 DateHelper.getLocalizedDate(date.value),
                 style = MaterialTheme.typography.h5,

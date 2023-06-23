@@ -146,7 +146,7 @@ private fun ScreenContent(
         items(items = notesViewModel.pinnedNotes.value) { item ->
             NoteCard(item.header,
                 item.body,
-                reminderDate = notesViewModel.reminders.value.find { it.noteId == item._id }?.date,
+                reminder = notesViewModel.reminders.value.find { it.noteId == item._id },
                 markedText = notesViewModel.searchText,
                 selected = item._id in notesViewModel.selectedNotes.value,
                 onClick = { onNoteClick(notesViewModel, item, currentRoute, navController) },
@@ -165,7 +165,7 @@ private fun ScreenContent(
         items(items = notesViewModel.notes.value) { item ->
             NoteCard(item.header,
                 item.body,
-                reminderDate = notesViewModel.reminders.value.find { it.noteId == item._id }?.date,
+                reminder = notesViewModel.reminders.value.find { it.noteId == item._id },
                 markedText = notesViewModel.searchText,
                 selected = item._id in notesViewModel.selectedNotes.value,
                 onClick = { onNoteClick(notesViewModel, item, currentRoute, navController) },

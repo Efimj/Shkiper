@@ -6,7 +6,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Event
+import androidx.compose.material.icons.filled.Repeat
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -16,20 +19,24 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.notepadapp.database.models.Reminder
+import com.example.notepadapp.database.models.RepeatMode
 import com.example.notepadapp.helpers.DateHelper
 import com.example.notepadapp.ui.modifiers.bounceClick
 import com.example.notepadapp.ui.theme.CustomAppTheme
-import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun NoteCard(
     header: String? = null,
     text: String? = null,
-    reminderDate: LocalDate? = null,
+    reminder: Reminder? = null,
     markedText: String? = null,
     selected: Boolean = false,
     onClick: () -> Unit = {},
@@ -59,9 +66,9 @@ fun NoteCard(
             modifier = Modifier.padding(16.dp)
         ) {
             if (markedText.isNullOrEmpty())
-                noteContent(header, text, headerStyle, bodyStyle)
+                NoteContent(header, text, headerStyle, bodyStyle)
             else
-                noteAnnotatedContent(header, text, markedText, headerStyle, bodyStyle)
+                NoteAnnotatedContent(header, text, markedText, headerStyle, bodyStyle)
             if (header.isNullOrEmpty() && text.isNullOrEmpty()) {
                 Text(
                     text = "Empty note",
@@ -72,36 +79,60 @@ fun NoteCard(
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
             }
-            if (reminderDate != null) {
-                Spacer(modifier = Modifier.height(4.dp))
-                val shape = RoundedCornerShape(5.dp)
-                Row(
-                    Modifier
-                        .clip(shape)
-                        .background(CustomAppTheme.colors.secondaryBackground)
-                        .padding(horizontal = 5.dp, vertical = 3.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        tint = CustomAppTheme.colors.textSecondary,
-                        imageVector = Icons.Default.Event,
-                        contentDescription = "Event",
-                        modifier = Modifier.height(16.dp)
-                    )
-                    Spacer(Modifier.width(4.dp))
-                    androidx.compose.material3.Text(
-                        DateHelper.getLocalizedDate(reminderDate),
-                        style = MaterialTheme.typography.body1.copy(fontSize = 15.sp),
-                        color = CustomAppTheme.colors.textSecondary,
-                    )
-                }
-            }
+            ReminderInformation(reminder)
+        }
+    }
+}
+
+private fun getNextReminderDate(reminder: Reminder?): LocalDateTime {
+    if (reminder == null) return LocalDateTime.now()
+    return DateHelper.nextDateWithRepeating(reminder.date, reminder.time, reminder.repeat)
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+private fun ReminderInformation(reminder: Reminder?) {
+    val nextReminderDate = remember { mutableStateOf(getNextReminderDate(reminder)) }
+    val isDateFuture = remember { mutableStateOf(DateHelper.isFutureDateTime(nextReminderDate.value)) }
+    if (reminder != null) {
+        Spacer(modifier = Modifier.height(4.dp))
+        val shape = RoundedCornerShape(5.dp)
+        Row(
+            Modifier
+                .basicMarquee()
+                .clip(shape)
+                .background(CustomAppTheme.colors.secondaryBackground)
+                .padding(horizontal = 5.dp, vertical = 3.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                tint = CustomAppTheme.colors.textSecondary,
+                imageVector = if (reminder.repeat == RepeatMode.NONE) Icons.Default.Event else Icons.Default.Repeat,
+                contentDescription = "Event",
+                modifier = Modifier.height(15.dp)
+            )
+            Spacer(Modifier.width(4.dp))
+            androidx.compose.material3.Text(
+                DateHelper.getLocalizedDate(nextReminderDate.value.toLocalDate()),
+                style = MaterialTheme.typography.body1.copy(
+                    fontSize = 13.sp,
+                    textDecoration = if (isDateFuture.value) TextDecoration.None else TextDecoration.LineThrough
+                ),
+                color = CustomAppTheme.colors.textSecondary,
+            )
+            Spacer(Modifier.width(4.dp))
+            if (isDateFuture.value)
+                androidx.compose.material3.Text(
+                    nextReminderDate.value.toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")),
+                    style = MaterialTheme.typography.body1.copy(fontSize = 13.sp),
+                    color = CustomAppTheme.colors.textSecondary,
+                )
         }
     }
 }
 
 @Composable
-private fun noteContent(header: String?, text: String?, headerStyle: TextStyle, bodyStyle: TextStyle) {
+private fun NoteContent(header: String?, text: String?, headerStyle: TextStyle, bodyStyle: TextStyle) {
     if (!header.isNullOrEmpty()) {
         Text(
             text = header,
@@ -125,7 +156,7 @@ private fun noteContent(header: String?, text: String?, headerStyle: TextStyle, 
 }
 
 @Composable
-private fun noteAnnotatedContent(
+private fun NoteAnnotatedContent(
     header: String?,
     text: String?,
     markedText: String,
