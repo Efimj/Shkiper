@@ -19,4 +19,5 @@ interface ReminderMongoRepository {
     )
     suspend fun deleteReminder(id: ObjectId, context: Context)
     suspend fun deleteReminder(ids: List<ObjectId>, context: Context)
+    suspend fun deleteReminderForNote(noteId: ObjectId, context: Context)
 }

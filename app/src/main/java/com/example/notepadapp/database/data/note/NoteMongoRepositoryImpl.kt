@@ -1,7 +1,11 @@
 package com.example.notepadapp.database.data.note
 
+import android.content.Context
 import android.util.Log
+import com.example.notepadapp.database.data.reminder.ReminderMongoRepositoryImpl
 import com.example.notepadapp.database.models.Note
+import com.example.notepadapp.database.models.Reminder
+import com.example.notepadapp.notification_service.NotificationScheduler
 import io.realm.kotlin.Realm
 import io.realm.kotlin.ext.query
 import io.realm.kotlin.query.Sort
@@ -40,26 +44,30 @@ class NoteMongoRepositoryImpl(val realm: Realm) : NoteMongoRepository {
         realm.write { copyToRealm(note) }
     }
 
-    override suspend fun updateNote(id: ObjectId, updateParams: (Note) -> Unit) {
+    override suspend fun updateNote(id: ObjectId, context: Context, updateParams: (Note) -> Unit) {
         getNote(id)?.also { currentNote ->
             realm.writeBlocking {
-                val queriedNote = findLatest(currentNote)
-                queriedNote?.apply {
+                val queriedNote = findLatest(currentNote) ?: return@writeBlocking
+                queriedNote.apply {
                     updateParams(this)
                 }
+                updateNotification(context, queriedNote)
             }
         }
     }
 
     override suspend fun updateNote(
         ids: List<ObjectId>,
+        context: Context,
         updateParams: (Note) -> Unit
     ) {
         realm.writeBlocking {
             for (id in ids) {
                 val note = getNote(id) ?: continue
                 try {
-                    findLatest(note)?.let(updateParams)
+                    val latest = findLatest(note) ?: continue
+                    latest.let(updateParams)
+                    updateNotification(context, latest)
                 } catch (e: Exception) {
                     Log.d("NoteMongoRepositoryImpl", "${e.message}")
                 }
@@ -67,19 +75,20 @@ class NoteMongoRepositoryImpl(val realm: Realm) : NoteMongoRepository {
         }
     }
 
-    override suspend fun deleteNote(id: ObjectId) {
+    override suspend fun deleteNote(id: ObjectId, context: Context) {
         realm.write {
             val note = getNote(id) ?: return@write
             try {
-                findLatest(note)
-                    ?.let { delete(it) }
+                val latest = findLatest(note) ?: return@write
+                delete(latest)
             } catch (e: Exception) {
                 Log.d("NoteMongoRepositoryImpl", "${e.message}")
             }
         }
+        ReminderMongoRepositoryImpl(realm).deleteReminderForNote(id, context)
     }
 
-    override suspend fun deleteNote(ids: List<ObjectId>) {
+    override suspend fun deleteNote(ids: List<ObjectId>, context: Context) {
         realm.writeBlocking {
             for (id in ids) {
                 val note = getNote(id) ?: continue
@@ -91,5 +100,20 @@ class NoteMongoRepositoryImpl(val realm: Realm) : NoteMongoRepository {
                 }
             }
         }
+        for (id in ids)
+            ReminderMongoRepositoryImpl(realm).deleteReminderForNote(id, context)
+    }
+
+    private fun updateNotification(
+        context: Context,
+        newNote: Note
+    ) {
+        // Update notification
+        val notificationScheduler = NotificationScheduler(context)
+        notificationScheduler.updateNotificationData(
+            newNote._id.toHexString(),
+            newNote.header,
+            newNote.body
+        )
     }
 }

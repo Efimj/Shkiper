@@ -44,9 +44,9 @@ class NotificationStorage(context: Context) {
         addOrUpdate(newNotification)
     }
 
-    fun updateNotificationData(requestId: Int, title: String, message: String) {
+    fun updateNotificationData(noteId: String, title: String, message: String) {
         val notifications = getAll()
-        val newNotification = notifications.find { notification -> notification.requestCode == requestId }?.copy(
+        val newNotification = notifications.find { notification -> notification.noteId == noteId }?.copy(
             title = title,
             message = message
         ) ?: return
@@ -63,6 +63,13 @@ class NotificationStorage(context: Context) {
         val notifications = getAll()
         removeElement(notifications, requestId)
         save(notifications)
+    }
+
+    fun remove(noteId: String): Int? {
+        val notifications = getAll()
+        val requestId = removeElement(notifications, noteId)
+        save(notifications)
+        return requestId
     }
 
     private fun findNotification(
@@ -91,6 +98,16 @@ class NotificationStorage(context: Context) {
         if (index != -1) {
             list.removeAt(index)
         }
+    }
+
+    private fun removeElement(list: MutableList<NotificationData>, noteId: String): Int? {
+        val index = list.indexOfFirst { it.noteId == noteId } // if exists
+        var requestId: Int? = null
+        if (index != -1) {
+            requestId = list[index].requestCode
+            list.removeAt(index)
+        }
+        return requestId
     }
 
     private fun addOrUpdateElement(list: MutableList<NotificationData>, element: NotificationData) {

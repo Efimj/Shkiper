@@ -39,8 +39,8 @@ class NotificationScheduler(private val context: Context) {
         setNotification(requestId, trigger)
     }
 
-    fun updateNotificationData(requestId: Int, title: String, message: String) {
-        notificationStorage.updateNotificationData(requestId, title, message)
+    fun updateNotificationData(noteId: String, title: String, message: String) {
+        notificationStorage.updateNotificationData(noteId, title, message)
     }
 
     private fun setNotification(requestId: Int, trigger: Long) {
@@ -65,6 +65,11 @@ class NotificationScheduler(private val context: Context) {
 
     fun deleteNotification(requestCode: Int) {
         notificationStorage.remove(requestCode)
+        cancelNotification(requestCode)
+    }
+
+    fun deleteNotification(noteId: String) {
+        val requestCode = notificationStorage.remove(noteId) ?: return
         cancelNotification(requestCode)
     }
 

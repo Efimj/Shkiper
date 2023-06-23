@@ -1,5 +1,6 @@
 package com.example.notepadapp.screens.NoteScreen
 
+import android.app.Application
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -19,6 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class NoteViewModel @Inject constructor(
     private val repository: NoteMongoRepository,
+    private val application: Application,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     var isTopAppBarHover by mutableStateOf(false)
@@ -63,14 +65,14 @@ class NoteViewModel @Inject constructor(
     private fun updateNote(updateParams: (Note) -> Unit) {
         if (this@NoteViewModel.note == null) return
         viewModelScope.launch(Dispatchers.IO) {
-            repository.updateNote(this@NoteViewModel.note._id, updateParams)
+            repository.updateNote(this@NoteViewModel.note._id, application.applicationContext, updateParams)
         }
     }
 
     fun deleteNoteIfEmpty() {
         viewModelScope.launch {
             if (noteHeader.isEmpty() && noteBody.isEmpty())
-                repository.deleteNote(noteId)
+                repository.deleteNote(noteId, application.applicationContext)
         }
     }
 

@@ -135,7 +135,7 @@ class NotesViewModel @Inject constructor(
 
     fun deleteSelectedNotes() {
         viewModelScope.launch {
-            noteRepository.deleteNote(selectedNotes.value.toList())
+            noteRepository.deleteNote(selectedNotes.value.toList(), application.applicationContext)
             clearSelectedNote()
         }
     }
@@ -156,7 +156,7 @@ class NotesViewModel @Inject constructor(
                 }
             }
             pinMode = unpinnedNote != null
-            noteRepository.updateNote(selectedNotes.value.toList()) { updatedNote ->
+            noteRepository.updateNote(selectedNotes.value.toList(), application.applicationContext) { updatedNote ->
                 updatedNote.isPinned = pinMode
             }
             clearSelectedNote()

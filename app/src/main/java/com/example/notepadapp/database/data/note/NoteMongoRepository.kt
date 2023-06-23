@@ -1,5 +1,6 @@
 package com.example.notepadapp.database.data.note
 
+import android.content.Context
 import com.example.notepadapp.database.models.Note
 import com.example.notepadapp.database.models.NotePosition
 import io.realm.kotlin.ext.realmListOf
@@ -15,8 +16,8 @@ interface NoteMongoRepository {
     fun getNote(id: ObjectId): Note?
     fun filterNotesByContains(text: String): Flow<List<Note>>
     suspend fun insertNote(note: Note)
-    suspend fun updateNote(id: ObjectId, updateParams: (Note) -> Unit)
-    suspend fun updateNote(ids: List<ObjectId>, updateParams: (Note) -> Unit)
-    suspend fun deleteNote(id: ObjectId)
-    suspend fun deleteNote(ids: List<ObjectId>)
+    suspend fun updateNote(id: ObjectId, context: Context, updateParams: (Note) -> Unit)
+    suspend fun updateNote(ids: List<ObjectId>, context: Context, updateParams: (Note) -> Unit)
+    suspend fun deleteNote(id: ObjectId, context: Context)
+    suspend fun deleteNote(ids: List<ObjectId>, context: Context)
 }

@@ -103,6 +103,18 @@ class ReminderMongoRepositoryImpl(val realm: Realm) : ReminderMongoRepository {
         }
     }
 
+    override suspend fun deleteReminderForNote(noteId: ObjectId, context: Context){
+        realm.write {
+            val reminder = getReminderForNote(noteId) ?: return@write
+            try {
+                findLatest(reminder)?.let { delete(it) }
+                deleteNotification(context, reminder._id)
+            } catch (e: Exception) {
+                Log.d("ReminderMongoRepositoryImpl", "${e.message}")
+            }
+        }
+    }
+
     private fun deleteNotification(context: Context, id: ObjectId) {
         val notificationScheduler = NotificationScheduler(context)
         notificationScheduler.deleteNotification(id.timestamp)
