@@ -31,6 +31,8 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.notepadapp.navigation.AppScreens
 import com.example.notepadapp.ui.components.fields.CustomTextField
+import com.example.notepadapp.ui.components.modals.CreateReminderDialog
+import com.example.notepadapp.ui.components.modals.ReminderDialogProperties
 import com.example.notepadapp.ui.theme.CustomAppTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import java.text.SimpleDateFormat
@@ -39,7 +41,7 @@ import java.util.*
 @Composable
 fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hiltViewModel()) {
     LaunchedEffect(Unit) {
-        if(noteViewModel.note == null) navController.popBackStack()
+        if (noteViewModel.note == null) navController.popBackStack()
     }
     val scrollState = rememberScrollState()
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route ?: ""
@@ -92,6 +94,20 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
                     .focusRequester(bodyFieldFocusRequester)
             )
         }
+    }
+
+    if (noteViewModel.isCreateReminderDialogShow.value) {
+        val reminder = remember { noteViewModel.reminder.value }
+        val reminderDialogProperties = remember {
+            if (reminder != null) ReminderDialogProperties(reminder.date, reminder.time, reminder.repeat)
+            else ReminderDialogProperties()
+        }
+        CreateReminderDialog(
+            reminderDialogProperties = reminderDialogProperties,
+            onGoBack = noteViewModel::switchReminderDialogShow,
+            onDelete = if (reminder != null) noteViewModel::deleteReminder else null,
+            onSave = noteViewModel::createReminder,
+        )
     }
 
     LaunchedEffect(scrollState.value) {
@@ -155,13 +171,13 @@ private fun NoteScreenHeader(navController: NavController, noteViewModel: NoteVi
             }
             Spacer(modifier = Modifier.padding(5.dp, 0.dp, 0.dp, 0.dp))
             IconButton(
-                onClick = { },
+                onClick = { noteViewModel.switchReminderDialogShow() },
                 modifier = Modifier.size(40.dp).clip(CircleShape).padding(0.dp),
             ) {
                 Icon(
                     imageVector = Icons.Outlined.NotificationAdd,
                     contentDescription = "Add to notification",
-                    tint = CustomAppTheme.colors.textSecondary,
+                    tint = if (noteViewModel.reminder.value == null) CustomAppTheme.colors.textSecondary else CustomAppTheme.colors.text,
                 )
             }
             Spacer(modifier = Modifier.padding(5.dp, 0.dp, 0.dp, 0.dp))

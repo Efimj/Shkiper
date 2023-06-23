@@ -8,6 +8,7 @@ import com.example.notepadapp.database.models.Reminder
 import com.example.notepadapp.notification_service.NotificationData
 import com.example.notepadapp.notification_service.NotificationScheduler
 import io.realm.kotlin.Realm
+import io.realm.kotlin.ext.asFlow
 import io.realm.kotlin.ext.query
 import io.realm.kotlin.query.Sort
 import kotlinx.coroutines.flow.Flow
@@ -115,20 +116,20 @@ class ReminderMongoRepositoryImpl(val realm: Realm) : ReminderMongoRepository {
         }
     }
 
-    private fun deleteNotification(context: Context, id: ObjectId) {
+    private fun deleteNotification(context: Context, reminderId: ObjectId) {
         val notificationScheduler = NotificationScheduler(context)
-        notificationScheduler.deleteNotification(id.timestamp)
+        notificationScheduler.deleteNotification(reminderId.timestamp)
     }
 
     private fun updateNotification(
         context: Context,
-        id: ObjectId,
+        reminderId: ObjectId,
         queriedReminder: Reminder
     ) {
         // Update notification
         val notificationScheduler = NotificationScheduler(context)
         notificationScheduler.updateNotificationTime(
-            id.timestamp,
+            reminderId.timestamp,
             queriedReminder.date,
             queriedReminder.time,
             queriedReminder.repeat
