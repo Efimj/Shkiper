@@ -28,16 +28,16 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.notepadapp.navigation.AppScreens
+import com.example.notepadapp.ui.components.buttons.RoundedButton
 import com.example.notepadapp.ui.components.fields.CustomTextField
+import com.example.notepadapp.ui.components.fields.HashtagEditor
 import com.example.notepadapp.ui.components.modals.CreateReminderDialog
 import com.example.notepadapp.ui.components.modals.ReminderDialogProperties
 import com.example.notepadapp.ui.theme.CustomAppTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import java.text.SimpleDateFormat
 import java.time.Duration
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
 import java.util.*
 
 @Composable
@@ -95,6 +95,18 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
                 modifier = Modifier.fillMaxSize().padding(horizontal = 20.dp)
                     .focusRequester(bodyFieldFocusRequester)
             )
+            HashtagEditor(
+                setOf(
+                    "Home",
+                    "School",
+                    "Work",
+                    "Android",
+                    "Jetpack",
+                    "Compose",
+                    "UI",
+                    "Kotlin",
+                    "Development"
+                ), {})
         }
     }
 
@@ -198,6 +210,7 @@ private fun NoteScreenHeader(navController: NavController, noteViewModel: NoteVi
         modifier = Modifier.fillMaxWidth(),
     )
 }
+
 
 @OptIn(ExperimentalFoundationApi::class)
 @SuppressLint("CoroutineCreationDuringComposition")

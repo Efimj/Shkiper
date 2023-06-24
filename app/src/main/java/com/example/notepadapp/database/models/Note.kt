@@ -1,8 +1,10 @@
 package com.example.notepadapp.database.models
 
 import io.realm.kotlin.ext.realmListOf
+import io.realm.kotlin.ext.realmSetOf
 import io.realm.kotlin.types.RealmList
 import io.realm.kotlin.types.RealmObject
+import io.realm.kotlin.types.RealmSet
 import io.realm.kotlin.types.annotations.Index
 import io.realm.kotlin.types.annotations.PrimaryKey
 import org.mongodb.kbson.ObjectId
@@ -26,7 +28,7 @@ class Note : RealmObject {
 
     @Index
     var body: String = ""
-    var hashtags: RealmList<String> = realmListOf()
+    var hashtags: RealmSet<String> = realmSetOf()
     var creationDateString: String = ""
     var updateDateString: String = ""
     var deletionDateString: String? = null
