@@ -12,11 +12,9 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.outlined.Archive
-import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.NotificationAdd
-import androidx.compose.material.icons.outlined.PushPin
+import androidx.compose.material.icons.outlined.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
@@ -29,7 +27,6 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.example.notepadapp.helpers.DateHelper
 import com.example.notepadapp.navigation.AppScreens
 import com.example.notepadapp.ui.components.fields.CustomTextField
 import com.example.notepadapp.ui.components.modals.CreateReminderDialog
@@ -174,7 +171,7 @@ private fun NoteScreenHeader(navController: NavController, noteViewModel: NoteVi
                     tint = if (noteViewModel.noteIsPinned.value) CustomAppTheme.colors.text else CustomAppTheme.colors.textSecondary,
                 )
             }
-            Spacer(modifier = Modifier.padding(5.dp, 0.dp, 0.dp, 0.dp))
+            Spacer(modifier = Modifier.padding(6.dp, 0.dp, 0.dp, 0.dp))
             IconButton(
                 onClick = { noteViewModel.switchReminderDialogShow() },
                 modifier = Modifier.size(40.dp).clip(CircleShape).padding(0.dp),
@@ -185,7 +182,7 @@ private fun NoteScreenHeader(navController: NavController, noteViewModel: NoteVi
                     tint = if (noteViewModel.reminder.value == null) CustomAppTheme.colors.textSecondary else CustomAppTheme.colors.text,
                 )
             }
-            Spacer(modifier = Modifier.padding(5.dp, 0.dp, 0.dp, 0.dp))
+            Spacer(modifier = Modifier.padding(6.dp, 0.dp, 0.dp, 0.dp))
             IconButton(
                 onClick = { },
                 modifier = Modifier.size(40.dp).clip(CircleShape).padding(0.dp),
@@ -196,7 +193,7 @@ private fun NoteScreenHeader(navController: NavController, noteViewModel: NoteVi
                     tint = CustomAppTheme.colors.textSecondary,
                 )
             }
-            Spacer(modifier = Modifier.padding(5.dp, 0.dp, 0.dp, 0.dp))
+            Spacer(modifier = Modifier.padding(6.dp, 0.dp, 0.dp, 0.dp))
         },
         modifier = Modifier.fillMaxWidth(),
     )
@@ -221,36 +218,71 @@ private fun NoteScreenFooter(navController: NavController, noteViewModel: NoteVi
         backgroundColor = backgroundColor,
         contentColor = CustomAppTheme.colors.textSecondary,
         cutoutShape = CircleShape,
-        modifier = Modifier.fillMaxWidth().height(45.dp),
+        modifier = Modifier.fillMaxWidth().height(50.dp),
     ) {
-        Spacer(modifier = Modifier.padding(5.dp, 0.dp, 0.dp, 0.dp))
-        Text(
-            "Changed at ${getUpdatedTime(noteViewModel)}",
-            modifier = Modifier.basicMarquee(),
-            style = MaterialTheme.typography.body1.copy(fontSize = 15.sp)
-        )
         Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.End
+            Modifier.fillMaxSize(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            IconButton(
-                onClick = { },
-                modifier = Modifier.size(40.dp).clip(CircleShape).padding(0.dp),
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.Delete,
-                    contentDescription = "Add to basket",
-                    tint = CustomAppTheme.colors.textSecondary,
-                )
+            if (noteViewModel.intermediateStates.value.size < 2) {
+                Row {
+                    Spacer(modifier = Modifier.padding(15.dp, 0.dp, 0.dp, 0.dp))
+                    Text(
+                        "Changed at ${getUpdatedTime(noteViewModel)}",
+                        modifier = Modifier.basicMarquee(),
+                        style = MaterialTheme.typography.body1.copy(fontSize = 15.sp)
+                    )
+                }
+            } else {
+                Spacer(modifier = Modifier.padding(45.dp, 0.dp, 0.dp, 0.dp))
+                Row {
+                    IconButton(
+                        onClick = { noteViewModel.noteStateGoBack() },
+                        modifier = Modifier.size(40.dp).clip(CircleShape).padding(0.dp),
+                        enabled = noteViewModel.currentStateIndex.value > 0
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.Undo,
+                            contentDescription = "Go back",
+                            tint = if (noteViewModel.currentStateIndex.value > 0) CustomAppTheme.colors.text else CustomAppTheme.colors.textSecondary,
+                        )
+                    }
+                    Spacer(modifier = Modifier.padding(6.dp, 0.dp, 0.dp, 0.dp))
+                    IconButton(
+                        onClick = { noteViewModel.noteStateGoNext() },
+                        modifier = Modifier.size(40.dp).clip(CircleShape).padding(0.dp),
+                        enabled = noteViewModel.currentStateIndex.value < noteViewModel.intermediateStates.value.size - 1
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.Redo,
+                            contentDescription = "Go forward",
+                            tint = if (noteViewModel.currentStateIndex.value < noteViewModel.intermediateStates.value.size - 1) CustomAppTheme.colors.text else CustomAppTheme.colors.textSecondary,
+                        )
+                    }
+                }
             }
-            Spacer(modifier = Modifier.padding(5.dp, 0.dp, 0.dp, 0.dp))
+            Row {
+                IconButton(
+                    onClick = { },
+                    modifier = Modifier.size(40.dp).clip(CircleShape).padding(0.dp),
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.Delete,
+                        contentDescription = "Add to basket",
+                        tint = CustomAppTheme.colors.textSecondary,
+                    )
+                }
+                Spacer(modifier = Modifier.padding(6.dp, 0.dp, 0.dp, 0.dp))
+            }
         }
     }
 }
 
+
 private fun getUpdatedTime(noteViewModel: NoteViewModel): String {
     val duration = Duration.between(noteViewModel.noteUpdatedDate.value, LocalDateTime.now())
-    return if (duration.toDays() > 1)
+    return if (duration.toDays() > 0)
         noteViewModel.noteUpdatedDate.value.format(DateTimeFormatter.ofPattern("d MMMM yyyy, HH:mm"))
     else
         noteViewModel.noteUpdatedDate.value.format(DateTimeFormatter.ofPattern("HH:mm"))

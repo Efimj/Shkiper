@@ -3,9 +3,7 @@ package com.example.notepadapp.screens.NoteScreen
 import android.app.Application
 import android.util.Log
 import androidx.compose.runtime.State
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -73,7 +71,64 @@ class NoteViewModel @Inject constructor(
     private var _noteUpdatedDate = mutableStateOf(note?.updateDate ?: LocalDateTime.now())
     val noteUpdatedDate: State<LocalDateTime> = _noteUpdatedDate
 
+    /*******************
+     * States for Possible Undo
+     *******************/
+
+    data class IntermediateState(val header: String, val body: String)
+
+    private var _intermediateStates = mutableStateOf(listOf(IntermediateState(_noteHeader.value, _noteBody.value)))
+    val intermediateStates: State<List<IntermediateState>> = _intermediateStates
+    private var _currentStateIndex = mutableStateOf(_intermediateStates.value.size - 1)
+    val currentStateIndex: State<Int> = _currentStateIndex
+
+    private var intermediateStatesChangeTimer: Timer? = null
+
+    private fun updateIntermediateStates(intermediateState: IntermediateState) {
+        intermediateStatesChangeTimer?.cancel()
+        intermediateStatesChangeTimer = Timer()
+        intermediateStatesChangeTimer?.schedule(object : TimerTask() {
+            override fun run() {
+                if (_currentStateIndex.value < _intermediateStates.value.size - 1) {
+                    _intermediateStates.value =
+                        _intermediateStates.value.subList(0, _currentStateIndex.value + 1).toList()
+                }
+                if (_intermediateStates.value[_intermediateStates.value.size - 1].header != intermediateState.header || _intermediateStates.value[_intermediateStates.value.size - 1].body != intermediateState.body) {
+                    _intermediateStates.value = _intermediateStates.value.plus(intermediateState)
+                }
+                _currentStateIndex.value = _intermediateStates.value.size - 1
+            }
+        }, 750L)
+    }
+
+    fun noteStateGoNext() {
+        if (_currentStateIndex.value >= _intermediateStates.value.size - 1) return
+        _currentStateIndex.value++
+        changeNoteContent(
+            _intermediateStates.value[_currentStateIndex.value].header,
+            _intermediateStates.value[_currentStateIndex.value].body
+        )
+    }
+
+    fun noteStateGoBack() {
+        if (_currentStateIndex.value < 1) return
+        _currentStateIndex.value--
+        changeNoteContent(
+            _intermediateStates.value[_currentStateIndex.value].header,
+            _intermediateStates.value[_currentStateIndex.value].body
+        )
+    }
+
+    /*******************
+     * Note handlers
+     *******************/
+
     fun updateNoteHeader(text: String) {
+        changeNoteHeader(text)
+        updateIntermediateStates(IntermediateState(_noteHeader.value, _noteBody.value))
+    }
+
+    private fun changeNoteHeader(text: String) {
         _noteHeader.value = text
         _noteUpdatedDate.value = LocalDateTime.now()
         updateNote {
@@ -83,9 +138,25 @@ class NoteViewModel @Inject constructor(
     }
 
     fun updateNoteBody(text: String) {
+        changeNoteBody(text)
+        updateIntermediateStates(IntermediateState(_noteHeader.value, _noteBody.value))
+    }
+
+    private fun changeNoteBody(text: String) {
         _noteBody.value = text
         _noteUpdatedDate.value = LocalDateTime.now()
         updateNote {
+            it.body = this@NoteViewModel._noteBody.value
+            it.updateDate = this@NoteViewModel._noteUpdatedDate.value
+        }
+    }
+
+    private fun changeNoteContent(header: String, body: String) {
+        _noteHeader.value = header
+        _noteBody.value = body
+        _noteUpdatedDate.value = LocalDateTime.now()
+        updateNote {
+            it.header = this@NoteViewModel._noteHeader.value
             it.body = this@NoteViewModel._noteBody.value
             it.updateDate = this@NoteViewModel._noteUpdatedDate.value
         }
@@ -107,8 +178,10 @@ class NoteViewModel @Inject constructor(
 
     fun deleteNoteIfEmpty() {
         viewModelScope.launch {
-            if (noteHeader.value.isEmpty() && noteBody.value.isEmpty())
-                noteRepository.deleteNote(_noteId.value, application.applicationContext)
+            if (noteHeader.value.isEmpty() && noteBody.value.isEmpty()) noteRepository.deleteNote(
+                _noteId.value,
+                application.applicationContext
+            )
         }
     }
 

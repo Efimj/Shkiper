@@ -248,7 +248,7 @@ private fun ActionBar(
                         tint = CustomAppTheme.colors.textSecondary,
                     )
                 }
-                Spacer(modifier = Modifier.padding(5.dp, 0.dp, 0.dp, 0.dp))
+                Spacer(modifier = Modifier.padding(6.dp, 0.dp, 0.dp, 0.dp))
                 IconButton(
                     onClick = { notesViewModel.switchReminderDialogShow() },
                     modifier = Modifier.size(40.dp).clip(CircleShape).padding(0.dp),
@@ -259,7 +259,7 @@ private fun ActionBar(
                         tint = CustomAppTheme.colors.textSecondary,
                     )
                 }
-                Spacer(modifier = Modifier.padding(5.dp, 0.dp, 0.dp, 0.dp))
+                Spacer(modifier = Modifier.padding(6.dp, 0.dp, 0.dp, 0.dp))
                 IconButton(
                     onClick = { },
                     modifier = Modifier.size(40.dp).clip(CircleShape).padding(0.dp),
@@ -270,7 +270,7 @@ private fun ActionBar(
                         tint = CustomAppTheme.colors.textSecondary,
                     )
                 }
-                Spacer(modifier = Modifier.padding(5.dp, 0.dp, 0.dp, 0.dp))
+                Spacer(modifier = Modifier.padding(6.dp, 0.dp, 0.dp, 0.dp))
                 IconButton(
                     onClick = { notesViewModel.deleteSelectedNotes() },
                     modifier = Modifier.size(40.dp).clip(CircleShape).padding(0.dp),
@@ -281,7 +281,7 @@ private fun ActionBar(
                         tint = CustomAppTheme.colors.textSecondary,
                     )
                 }
-                Spacer(modifier = Modifier.padding(5.dp, 0.dp, 0.dp, 0.dp))
+                Spacer(modifier = Modifier.padding(6.dp, 0.dp, 0.dp, 0.dp))
             },
             modifier = Modifier.fillMaxWidth(),
         )
