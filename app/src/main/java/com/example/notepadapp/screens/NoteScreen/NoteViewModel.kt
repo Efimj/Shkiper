@@ -33,38 +33,68 @@ class NoteViewModel @Inject constructor(
     private val reminderRepository: ReminderMongoRepository,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-    var isTopAppBarHover by mutableStateOf(false)
-    var isBottomAppBarHover by mutableStateOf(false)
 
-    var noteId by mutableStateOf(ObjectId(savedStateHandle[ARGUMENT_NOTE_ID] ?: ""))
-    val note = noteRepository.getNote(noteId)
-    var noteHeader by mutableStateOf(note?.header ?: "")
-    var noteBody by mutableStateOf(note?.body ?: "")
-    var noteIsPinned by mutableStateOf(note?.isPinned ?: false)
-    var noteUpdatedDate by mutableStateOf(note?.updateDate ?: LocalDateTime.now())
+    /*******************
+     * Screen States
+     *******************/
+
+    private var _isTopAppBarHover = mutableStateOf(false)
+    val isTopAppBarHover: State<Boolean> = _isTopAppBarHover
+
+    private var _isBottomAppBarHover = mutableStateOf(false)
+    val isBottomAppBarHover: State<Boolean> = _isBottomAppBarHover
+
+    fun setTopAppBarHover(isHover: Boolean) {
+        _isTopAppBarHover.value = isHover
+    }
+
+    fun setBottomAppBarHover(isHover: Boolean) {
+        _isBottomAppBarHover.value = isHover
+    }
+
+    /*******************
+     * Note
+     *******************/
+
+    private var _noteId = mutableStateOf(ObjectId(savedStateHandle[ARGUMENT_NOTE_ID] ?: ""))
+    val noteId: State<ObjectId> = _noteId
+
+    val note = noteRepository.getNote(noteId.value)
+
+    private var _noteHeader = mutableStateOf(note?.header ?: "")
+    val noteHeader: State<String> = _noteHeader
+
+    private var _noteBody = mutableStateOf(note?.body ?: "")
+    val noteBody: State<String> = _noteBody
+
+    private var _noteIsPinned = mutableStateOf(note?.isPinned ?: false)
+    val noteIsPinned: State<Boolean> = _noteIsPinned
+
+    private var _noteUpdatedDate = mutableStateOf(note?.updateDate ?: LocalDateTime.now())
+    val noteUpdatedDate: State<LocalDateTime> = _noteUpdatedDate
 
     fun updateNoteHeader(text: String) {
-        noteHeader = text
-        noteUpdatedDate = LocalDateTime.now()
+        _noteHeader.value = text
+        _noteUpdatedDate.value = LocalDateTime.now()
         updateNote {
-            it.header = this@NoteViewModel.noteHeader
-            it.updateDate = this@NoteViewModel.noteUpdatedDate
+            it.header = this@NoteViewModel._noteHeader.value
+            it.updateDate = this@NoteViewModel._noteUpdatedDate.value
         }
     }
 
     fun updateNoteBody(text: String) {
-        noteBody = text
-        noteUpdatedDate = LocalDateTime.now()
+        _noteBody.value = text
+        _noteUpdatedDate.value = LocalDateTime.now()
         updateNote {
-            it.body = this@NoteViewModel.noteBody
-            it.updateDate = this@NoteViewModel.noteUpdatedDate
+            it.body = this@NoteViewModel._noteBody.value
+            it.updateDate = this@NoteViewModel._noteUpdatedDate.value
         }
     }
 
     fun switchNotePinnedMode() {
-        noteIsPinned = !noteIsPinned
+        _noteIsPinned.value = !noteIsPinned.value
         updateNote {
-            it.isPinned = this@NoteViewModel.noteIsPinned
+            it.isPinned = this@NoteViewModel.noteIsPinned.value
         }
     }
 
@@ -77,17 +107,17 @@ class NoteViewModel @Inject constructor(
 
     fun deleteNoteIfEmpty() {
         viewModelScope.launch {
-            if (noteHeader.isEmpty() && noteBody.isEmpty())
-                noteRepository.deleteNote(noteId, application.applicationContext)
+            if (noteHeader.value.isEmpty() && noteBody.value.isEmpty())
+                noteRepository.deleteNote(_noteId.value, application.applicationContext)
         }
     }
 
     fun saveChanges() {
         updateNote {
-            it.header = this@NoteViewModel.noteHeader
-            it.body = this@NoteViewModel.noteBody
-            it.updateDate = this@NoteViewModel.noteUpdatedDate
-            it.isPinned = this@NoteViewModel.noteIsPinned
+            it.header = this@NoteViewModel._noteHeader.value
+            it.body = this@NoteViewModel._noteBody.value
+            it.updateDate = this@NoteViewModel._noteUpdatedDate.value
+            it.isPinned = this@NoteViewModel.noteIsPinned.value
         }
     }
 
@@ -100,7 +130,7 @@ class NoteViewModel @Inject constructor(
 
     private fun getReminder() {
         viewModelScope.launch {
-            val reminderValue = reminderRepository.getReminderForNote(noteId)
+            val reminderValue = reminderRepository.getReminderForNote(_noteId.value)
             _reminder.value = reminderValue
         }
     }
@@ -108,7 +138,7 @@ class NoteViewModel @Inject constructor(
     fun createReminder(date: LocalDate, time: LocalTime, repeatMode: RepeatMode) {
         if (DateHelper.isFutureDateTime(date, time)) {
             viewModelScope.launch {
-                val note = noteRepository.getNote(noteId) ?: return@launch
+                val note = noteRepository.getNote(_noteId.value) ?: return@launch
                 val noteList = listOf(note)
                 reminderRepository.updateOrCreateReminderForNotes(
                     noteList, application.applicationContext
