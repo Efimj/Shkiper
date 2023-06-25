@@ -92,21 +92,16 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
                 onTextChange = { noteViewModel.updateNoteBody(it) },
                 placeholder = "Text",
                 textStyle = MaterialTheme.typography.body1,
-                modifier = Modifier.fillMaxSize().padding(horizontal = 20.dp)
+                modifier = Modifier.padding(horizontal = 20.dp)
                     .focusRequester(bodyFieldFocusRequester)
             )
+            Spacer(Modifier.height(10.dp))
             HashtagEditor(
-                setOf(
-                    "Home",
-                    "School",
-                    "Work",
-                    "Android",
-                    "Jetpack",
-                    "Compose",
-                    "UI",
-                    "Kotlin",
-                    "Development"
-                ), {})
+                Modifier.padding(horizontal = 20.dp),
+                noteViewModel.noteHashtags.value,
+                noteViewModel::changeNoteHashtags
+            )
+            Spacer(Modifier.height(25.dp))
         }
     }
 

@@ -1,44 +1,160 @@
 package com.example.notepadapp.ui.components.fields
 
+import androidx.compose.foundation.*
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Chip
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.*
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.notepadapp.ui.components.buttons.RoundedButton
+import com.example.notepadapp.ui.theme.CustomAppTheme
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun HashtagEditor(hashtags: Set<String>, onSave: () -> Unit) {
-    Column {
-        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-            Text("Hashtags", style = MaterialTheme.typography.body1)
-            RoundedButton(Modifier, text = "Edit", onClick = {})
-        }
-        Spacer(Modifier.height(4.dp))
-        FlowRow {
-            for (hashtag in hashtags) {
-                HashtagItem(hashtag, {})
+fun HashtagEditor(modifier: Modifier, hashtags: Set<String>, onSave: (Set<String>) -> Unit) {
+    val editModeEnabled = rememberSaveable { mutableStateOf(false) }
+    val textFieldFocusRequester by remember { mutableStateOf(FocusRequester()) }
+    val textFieldValue = rememberSaveable { mutableStateOf(hashtags.joinToString(" ")) }
+    var isFocused by remember { mutableStateOf(false) }
+
+    Column(modifier = modifier.clickable(
+        interactionSource = MutableInteractionSource(),
+        indication = null
+    ) { editModeEnabled.value = true }) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                "Hashtags",
+                style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.SemiBold, fontSize = 18.sp),
+                color = CustomAppTheme.colors.textSecondary
+            )
+            if (editModeEnabled.value) {
+                Row {
+                    RoundedButton(
+                        Modifier,
+                        text = "Cancel",
+                        onClick = { editModeEnabled.value = false },
+                        border = BorderStroke(0.dp, Color.Transparent)
+                    )
+                    Spacer(Modifier.width(8.dp))
+                    RoundedButton(
+                        Modifier,
+                        text = "Save",
+                        onClick = {
+                            if (editModeEnabled.value)
+                                saveHandle(onSave, textFieldValue)
+                            editModeEnabled.value = !editModeEnabled.value
+                        })
+                }
             }
+        }
+        Column(Modifier.fillMaxWidth()) {
+            if (editModeEnabled.value) {
+                HashtagsEdit(textFieldValue, Modifier.padding(bottom = 10.dp).fillMaxWidth()
+                    .focusRequester(textFieldFocusRequester).onFocusChanged { isFocused = it.isFocused }) {
+                    saveHandle(onSave, textFieldValue)
+                    editModeEnabled.value = !editModeEnabled.value
+                }
+            } else
+                HashtagsPresentation(hashtags) { editModeEnabled.value = true }
+        }
+    }
+
+    LaunchedEffect(editModeEnabled.value) {
+        if (editModeEnabled.value) {
+            textFieldValue.value = hashtags.joinToString(" ")
+            textFieldFocusRequester.requestFocus()
+        }
+    }
+
+    LaunchedEffect(isFocused) {
+        if (!isFocused) {
+            editModeEnabled.value = false
         }
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
+private fun saveHandle(
+    onSave: (Set<String>) -> Unit,
+    textFieldValue: MutableState<String>
+) {
+    onSave(textFieldValue.value.split(" ").filter { it != "" }.toSet())
+}
+
+@Composable
+private fun HashtagsEdit(
+    text: MutableState<String>,
+    modifier: Modifier,
+    onDone: () -> Unit
+) {
+    CustomTextField(
+        text = text.value,
+        onTextChange = { text.value = it },
+        placeholder = "Text",
+        textStyle = MaterialTheme.typography.body1,
+        modifier = modifier,
+        keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+        keyboardActions = KeyboardActions(
+            onDone = { onDone() }
+        )
+    )
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun HashtagsPresentation(
+    hashtags: Set<String>,
+    setEditMode: () -> Unit
+) {
+    if (hashtags.isEmpty()) {
+        Text(
+            "Write hashtags, e.g. Home Work",
+            style = MaterialTheme.typography.body1,
+            color = CustomAppTheme.colors.textSecondary
+        )
+    } else
+        FlowRow(Modifier.clickable { setEditMode() }) {
+            for (hashtag in hashtags) {
+                HashtagItem(hashtag) { setEditMode() }
+            }
+        }
+}
+
+@OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
 @Composable
 fun HashtagItem(chip: String, onChipClicked: (String) -> Unit) {
-    val isSelected = remember { mutableStateOf(false) }
-
     Chip(
         modifier = Modifier
-            .padding(4.dp),
-        onClick = { onChipClicked(chip) }
+            .padding(end = 8.dp),
+        onClick = { onChipClicked(chip) },
+        shape = RoundedCornerShape(10.dp),
+        colors = ChipDefaults.chipColors(
+            backgroundColor = CustomAppTheme.colors.secondaryBackground,
+            contentColor = CustomAppTheme.colors.text
+        ),
+        border = BorderStroke(1.dp, CustomAppTheme.colors.stroke)
     ) {
-        Text(chip, modifier = Modifier.padding(8.dp))
+        Text(
+            chip,
+            modifier = Modifier.basicMarquee().padding(8.dp),
+            maxLines = 1,
+            style = MaterialTheme.typography.body1,
+            color = CustomAppTheme.colors.text
+        )
     }
 }

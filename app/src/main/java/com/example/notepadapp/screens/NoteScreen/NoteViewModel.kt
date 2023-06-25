@@ -15,6 +15,8 @@ import com.example.notepadapp.database.models.RepeatMode
 import com.example.notepadapp.helpers.DateHelper
 import com.example.notepadapp.navigation.ARGUMENT_NOTE_ID
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.realm.kotlin.ext.realmSetOf
+import io.realm.kotlin.types.RealmSet
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.mongodb.kbson.ObjectId
@@ -70,6 +72,9 @@ class NoteViewModel @Inject constructor(
 
     private var _noteUpdatedDate = mutableStateOf(note?.updateDate ?: LocalDateTime.now())
     val noteUpdatedDate: State<LocalDateTime> = _noteUpdatedDate
+
+    private var _noteHashtags = mutableStateOf(note?.hashtags?.toSet() ?: setOf(""))
+    val noteHashtags: State<Set<String>> = _noteHashtags
 
     /*******************
      * States for Possible Undo
@@ -166,6 +171,20 @@ class NoteViewModel @Inject constructor(
         _noteIsPinned.value = !noteIsPinned.value
         updateNote {
             it.isPinned = this@NoteViewModel.noteIsPinned.value
+        }
+    }
+
+    fun changeNoteHashtags(hashtags: Set<String>) {
+        if (hashtags.isNotEmpty()) {
+            _noteHashtags.value = hashtags
+            updateNote {
+                it.hashtags = realmSetOf(*this@NoteViewModel.noteHashtags.value.toTypedArray())
+            }
+        } else {
+            _noteHashtags.value = emptySet()
+            updateNote {
+                it.hashtags = realmSetOf()
+            }
         }
     }
 
