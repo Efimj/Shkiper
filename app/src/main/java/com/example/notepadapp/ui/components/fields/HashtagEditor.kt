@@ -137,7 +137,7 @@ private fun HashtagsPresentation(
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
 @Composable
-fun HashtagItem(chip: String, onChipClicked: (String) -> Unit) {
+private fun HashtagItem(chip: String, onChipClicked: (String) -> Unit) {
     Chip(
         modifier = Modifier
             .padding(end = 8.dp),

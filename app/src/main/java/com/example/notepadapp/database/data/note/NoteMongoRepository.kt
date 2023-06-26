@@ -11,9 +11,11 @@ import java.util.*
 
 interface NoteMongoRepository {
     fun getAllNotes(): Flow<List<Note>>
-    fun getNotes(pinned: Boolean = false): Flow<List<Note>>
-    fun getNotes(ids: List<ObjectId>): List<Note>
     fun getNote(id: ObjectId): Note?
+    fun getNotes(position: NotePosition): Flow<List<Note>>
+    fun getNotes(ids: List<ObjectId>): List<Note>
+    fun getNotesByHashtag(position: NotePosition, hashtag: String): Flow<List<Note>>
+    fun getHashtags(position: NotePosition): Flow<Set<String>>
     fun filterNotesByContains(text: String): Flow<List<Note>>
     suspend fun insertNote(note: Note)
     suspend fun updateNote(id: ObjectId, context: Context, updateParams: (Note) -> Unit)

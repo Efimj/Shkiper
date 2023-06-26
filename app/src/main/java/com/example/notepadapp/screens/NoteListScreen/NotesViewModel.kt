@@ -11,6 +11,7 @@ import com.example.notepadapp.R
 import com.example.notepadapp.database.data.note.NoteMongoRepository
 import com.example.notepadapp.database.data.reminder.ReminderMongoRepository
 import com.example.notepadapp.database.models.Note
+import com.example.notepadapp.database.models.NotePosition
 import com.example.notepadapp.database.models.Reminder
 import com.example.notepadapp.database.models.RepeatMode
 import com.example.notepadapp.helpers.DateHelper
@@ -18,6 +19,7 @@ import com.example.notepadapp.notification_service.NotificationData
 import com.example.notepadapp.notification_service.NotificationScheduler
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.mongodb.kbson.ObjectId
 import java.time.*
@@ -29,29 +31,29 @@ class NotesViewModel @Inject constructor(
     private val reminderRepository: ReminderMongoRepository,
     private val application: Application
 ) : ViewModel() {
+
     /*******************
      * Notes region
      *******************/
-    val pinnedNotes = mutableStateOf(emptyList<Note>())
+
     val notes = mutableStateOf(emptyList<Note>())
     var lastCreatedNoteId by mutableStateOf("")
     var searchText by mutableStateOf("")
+    private var notesFlowJob: Job? = null
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
+            getHashtags()
             getNotes()
             getReminders()
         }
     }
 
     private fun getNotes() {
-        viewModelScope.launch {
-            noteRepository.getNotes(true).collect() {
-                pinnedNotes.value = it
-            }
-        }
-        viewModelScope.launch {
-            noteRepository.getNotes().collect() {
+        notesFlowJob?.cancel()
+
+        notesFlowJob = viewModelScope.launch {
+            noteRepository.getNotes(NotePosition.MAIN).collect() {
                 notes.value = it
             }
         }
@@ -65,8 +67,10 @@ class NotesViewModel @Inject constructor(
     }
 
     fun changeSearchText(newString: String) {
+        notesFlowJob?.cancel()
+
         searchText = newString
-        viewModelScope.launch(Dispatchers.IO) {
+        notesFlowJob = viewModelScope.launch(Dispatchers.IO) {
             if (newString.isEmpty()) {
                 getNotes()
             } else {
@@ -76,7 +80,6 @@ class NotesViewModel @Inject constructor(
     }
 
     private suspend fun getNotesByText(newString: String) {
-        pinnedNotes.value = emptyList()
         noteRepository.filterNotesByContains(newString).collect {
             notes.value = it
         }
@@ -98,13 +101,13 @@ class NotesViewModel @Inject constructor(
     fun pinSelectedNotes() {
         viewModelScope.launch {
             val pinMode: Boolean
-            var unpinnedNote = notes.value.find { note ->
+            var unpinnedNote = notes.value.filter { it.isPinned }.find { note ->
                 selectedNotes.value.any {
                     it == note._id
                 } && !note.isPinned
             }
             if (unpinnedNote == null) {
-                unpinnedNote = pinnedNotes.value.find { note ->
+                unpinnedNote = notes.value.filterNot { it.isPinned }.find { note ->
                     selectedNotes.value.any {
                         it == note._id
                     } && !note.isPinned
@@ -123,6 +126,42 @@ class NotesViewModel @Inject constructor(
             val newNote = Note()
             noteRepository.insertNote(newNote)
             lastCreatedNoteId = newNote._id.toHexString()
+        }
+    }
+
+    /*******************
+     * Hashtag region
+     *******************/
+    val hashtags = mutableStateOf(setOf<String>())
+
+    private val _currentHashtag = mutableStateOf<String?>(null)
+    val currentHashtag: State<String?> = _currentHashtag
+
+    fun getHashtags() {
+        viewModelScope.launch {
+            noteRepository.getHashtags(NotePosition.MAIN).collect() {
+                hashtags.value = it
+            }
+        }
+    }
+
+    fun setCurrentHashtag(newHashtag: String?) {
+        if (newHashtag == _currentHashtag.value) {
+            _currentHashtag.value = null
+            getNotes()
+        } else {
+            _currentHashtag.value = newHashtag
+            getNotesByHashtag(_currentHashtag.value ?: "")
+        }
+    }
+
+    fun getNotesByHashtag(hashtag: String) {
+        notesFlowJob?.cancel()
+
+        notesFlowJob = viewModelScope.launch {
+            noteRepository.getNotesByHashtag(NotePosition.MAIN, hashtag).collect() {
+                notes.value = it
+            }
         }
     }
 

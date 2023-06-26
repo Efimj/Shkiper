@@ -4,12 +4,14 @@ import android.content.Context
 import android.util.Log
 import com.example.notepadapp.database.data.reminder.ReminderMongoRepositoryImpl
 import com.example.notepadapp.database.models.Note
+import com.example.notepadapp.database.models.NotePosition
 import com.example.notepadapp.database.models.Reminder
 import com.example.notepadapp.notification_service.NotificationScheduler
 import io.realm.kotlin.Realm
 import io.realm.kotlin.ext.query
 import io.realm.kotlin.query.Sort
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flatMap
 import kotlinx.coroutines.flow.map
 import org.mongodb.kbson.ObjectId
 
@@ -21,19 +23,34 @@ class NoteMongoRepositoryImpl(val realm: Realm) : NoteMongoRepository {
             .map { it.list }
     }
 
-    override fun getNotes(pinned: Boolean): Flow<List<Note>> {
-        return realm.query<Note>(query = "isPinned == $0", pinned)
+    override fun getNote(id: ObjectId): Note? {
+        return realm.query<Note>(query = "_id == $0", id).first().find()
+    }
+
+    override fun getNotes(position: NotePosition): Flow<List<Note>> {
+        return realm.query<Note>(query = "positionString == $0", position.name)
             .sort("_id", Sort.DESCENDING)
             .asFlow()
             .map { it.list }
     }
 
-    override fun getNotes(ids: List<ObjectId>): List<Note> {
-        return realm.query<Note>().find().filter { ids.any { id -> id == it._id } }
+    override fun getNotesByHashtag(position: NotePosition, hashtag: String): Flow<List<Note>> {
+        return realm.query<Note>(query = "positionString == $0 AND $1 IN hashtags", position.name, hashtag)
+            .sort("_id", Sort.DESCENDING)
+            .asFlow()
+            .map { it.list }
     }
 
-    override fun getNote(id: ObjectId): Note? {
-        return realm.query<Note>(query = "_id == $0", id).first().find()
+    override fun getHashtags(position: NotePosition): Flow<Set<String>> {
+        return realm.query<Note>(query = "positionString == $0", position.name)
+            .sort("_id", Sort.DESCENDING)
+            .asFlow().map { notes ->
+                notes.list.flatMap { it.hashtags }.toSet()
+            }
+    }
+
+    override fun getNotes(ids: List<ObjectId>): List<Note> {
+        return realm.query<Note>().find().filter { ids.any { id -> id == it._id } }
     }
 
     override fun filterNotesByContains(text: String): Flow<List<Note>> {

@@ -5,6 +5,9 @@ import androidx.compose.animation.core.*
 import androidx.compose.animation.slideOut
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.lazy.staggeredgrid.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
@@ -39,6 +42,7 @@ import com.example.notepadapp.ui.theme.CustomAppTheme
 import java.util.*
 import kotlin.math.roundToInt
 import com.example.notepadapp.ui.components.buttons.CreateNoteButton
+import com.example.notepadapp.ui.components.buttons.HashtagButton
 import com.example.notepadapp.ui.components.modals.CreateReminderDialog
 import com.example.notepadapp.ui.components.modals.ReminderDialogProperties
 
@@ -126,13 +130,27 @@ private fun ScreenContent(
     currentRoute: String,
     navController: NavController
 ) {
+    val pinnedNotes = notesViewModel.notes.value.filter { it.isPinned }
+    val unpinnedNotes = notesViewModel.notes.value.filterNot { it.isPinned }
+
     LazyGridNotes(
         contentPadding = PaddingValues(10.dp, 70.dp, 10.dp, 80.dp),
         modifier = Modifier.fillMaxSize(),
         gridState = lazyGridNotes
     ) {
         item(span = StaggeredGridItemSpan.FullLine) {
-            AnimatedContent(notesViewModel.pinnedNotes.value.isNotEmpty()) {
+            LazyRow(Modifier.fillMaxWidth(), state = rememberLazyListState()) {
+                items(items = notesViewModel.hashtags.value.toList()) { item ->
+                    HashtagButton(item, item == notesViewModel.currentHashtag.value) {
+                        notesViewModel.setCurrentHashtag(
+                            item
+                        )
+                    }
+                }
+            }
+        }
+        if (pinnedNotes.isNotEmpty()) {
+            item(span = StaggeredGridItemSpan.FullLine) {
                 Column {
                     Text(
                         "Pinned",
@@ -142,18 +160,18 @@ private fun ScreenContent(
                     )
                 }
             }
+            items(items = pinnedNotes) { item ->
+                NoteCard(item.header,
+                    item.body,
+                    reminder = notesViewModel.reminders.value.find { it.noteId == item._id },
+                    markedText = notesViewModel.searchText,
+                    selected = item._id in notesViewModel.selectedNotes.value,
+                    onClick = { onNoteClick(notesViewModel, item, currentRoute, navController) },
+                    onLongClick = { notesViewModel.toggleSelectedNoteCard(item._id) })
+            }
         }
-        items(items = notesViewModel.pinnedNotes.value) { item ->
-            NoteCard(item.header,
-                item.body,
-                reminder = notesViewModel.reminders.value.find { it.noteId == item._id },
-                markedText = notesViewModel.searchText,
-                selected = item._id in notesViewModel.selectedNotes.value,
-                onClick = { onNoteClick(notesViewModel, item, currentRoute, navController) },
-                onLongClick = { notesViewModel.toggleSelectedNoteCard(item._id) })
-        }
-        item(span = StaggeredGridItemSpan.FullLine) {
-            AnimatedContent(notesViewModel.pinnedNotes.value.isNotEmpty()) {
+        if (unpinnedNotes.isNotEmpty()) {
+            item(span = StaggeredGridItemSpan.FullLine) {
                 Text(
                     "Other",
                     color = CustomAppTheme.colors.textSecondary,
@@ -161,15 +179,15 @@ private fun ScreenContent(
                     modifier = Modifier.padding(horizontal = 10.dp)
                 )
             }
-        }
-        items(items = notesViewModel.notes.value) { item ->
-            NoteCard(item.header,
-                item.body,
-                reminder = notesViewModel.reminders.value.find { it.noteId == item._id },
-                markedText = notesViewModel.searchText,
-                selected = item._id in notesViewModel.selectedNotes.value,
-                onClick = { onNoteClick(notesViewModel, item, currentRoute, navController) },
-                onLongClick = { notesViewModel.toggleSelectedNoteCard(item._id) })
+            items(items = unpinnedNotes) { item ->
+                NoteCard(item.header,
+                    item.body,
+                    reminder = notesViewModel.reminders.value.find { it.noteId == item._id },
+                    markedText = notesViewModel.searchText,
+                    selected = item._id in notesViewModel.selectedNotes.value,
+                    onClick = { onNoteClick(notesViewModel, item, currentRoute, navController) },
+                    onLongClick = { notesViewModel.toggleSelectedNoteCard(item._id) })
+            }
         }
     }
     if (notesViewModel.isCreateReminderDialogShow.value) {
@@ -185,9 +203,10 @@ private fun ScreenContent(
         CreateReminderDialog(
             reminderDialogProperties = reminderDialogProperties,
             onGoBack = notesViewModel::switchReminderDialogShow,
-            onDelete = if(reminder != null) notesViewModel::deleteSelectedReminder else null,
+            onDelete = if (reminder != null) notesViewModel::deleteSelectedReminder else null,
             onSave = notesViewModel::createReminder,
         )
+
     }
 }
 

@@ -38,7 +38,7 @@ fun NoteCard(
     onLongClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
-    val headerStyle = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Bold)
+    val headerStyle = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Bold, fontSize = 18.sp)
     val bodyStyle = MaterialTheme.typography.body1
 
     Card(
@@ -132,13 +132,12 @@ private fun NoteContent(header: String?, text: String?, headerStyle: TextStyle, 
     if (!header.isNullOrEmpty()) {
         Text(
             text = header,
-            maxLines = 3,
-            overflow = TextOverflow.Ellipsis,
             style = headerStyle,
-            fontSize = 18.sp,
+            overflow = TextOverflow.Ellipsis,
             onTextLayout = { textLayoutResult: TextLayoutResult ->
                 headerLineCount = textLayoutResult.lineCount
-            }
+            },
+            maxLines = 3
         )
     }
     if (!text.isNullOrEmpty() && !header.isNullOrEmpty())
@@ -162,6 +161,7 @@ private fun NoteAnnotatedContent(
     headerStyle: TextStyle,
     bodyStyle: TextStyle
 ) {
+    var headerLineCount by remember { mutableStateOf(1) }
     if (!header.isNullOrEmpty()) {
         Text(
             text = buildAnnotatedString(header, markedText, CustomAppTheme.colors.active, Color.Transparent),
@@ -169,7 +169,12 @@ private fun NoteAnnotatedContent(
             fontStyle = headerStyle.fontStyle,
             fontFamily = headerStyle.fontFamily,
             fontWeight = headerStyle.fontWeight,
-            color = headerStyle.color
+            overflow = TextOverflow.Ellipsis,
+            color = headerStyle.color,
+            onTextLayout = { textLayoutResult: TextLayoutResult ->
+                headerLineCount = textLayoutResult.lineCount
+            },
+            maxLines = 3,
         )
     }
     if (!text.isNullOrEmpty() && !header.isNullOrEmpty())
@@ -181,7 +186,9 @@ private fun NoteAnnotatedContent(
             fontStyle = bodyStyle.fontStyle,
             fontFamily = bodyStyle.fontFamily,
             fontWeight = bodyStyle.fontWeight,
-            color = CustomAppTheme.colors.textSecondary
+            overflow = TextOverflow.Ellipsis,
+            color = CustomAppTheme.colors.textSecondary,
+            maxLines = 8 - headerLineCount,
         )
     }
 }
