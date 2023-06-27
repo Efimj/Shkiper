@@ -1,6 +1,8 @@
 package com.example.notepadapp.activity
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -36,17 +38,24 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun getStartDestination(): String {
+        val route = getNotificationRoute()
+        if (route != null)
+            return route
+        return getOnboardingRoute(applicationContext) ?: AppScreens.NoteList.route
+    }
+
+    private fun getOnboardingRoute(context: Context): String? {
+        val sharedPreferences =
+            context.getSharedPreferences(SharedPreferencesKeys.ApplicationStorageName, Context.MODE_PRIVATE)
+        val isOnboardingPageFinished =
+            sharedPreferences.getBoolean(SharedPreferencesKeys.isOnboardingPageFinished, false)
+        return if (isOnboardingPageFinished) null else AppScreens.Onboarding.route
+    }
+
+    private fun getNotificationRoute(): String? {
         // Retrieve the extras from the Intent
-        val extras = intent.extras
-        var noteId: String? = null
-        if (extras != null) {
-            noteId = extras.getString(SharedPreferencesKeys.NoteIdExtra, null)
-        }
-        val startDestination = if (noteId != null) {
-            AppScreens.Note.noteId(noteId)
-        } else {
-            AppScreens.NoteList.route
-        }
-        return startDestination
+        val extras = intent.extras ?: return null
+        val noteId = extras.getString(SharedPreferencesKeys.NoteIdExtra, null) ?: return null
+        return AppScreens.Note.noteId(noteId)
     }
 }

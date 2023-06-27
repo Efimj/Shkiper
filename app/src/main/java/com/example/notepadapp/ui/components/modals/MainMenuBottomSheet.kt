@@ -54,8 +54,9 @@ private fun MainPageLayout(
     coroutineScope: CoroutineScope,
     bottomSheetState: ModalBottomSheetState
 ) {
-    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route ?: ""
-    val isButtonHide = currentRoute.substringBefore("/") == AppScreens.Note.route.substringBefore("/")
+    val currentRoute =
+        (navController.currentBackStackEntryAsState().value?.destination?.route ?: "").substringBefore("/")
+    val isButtonHide = AppScreens.SecondaryRoutes.isSecondaryRoute(currentRoute)
     val menuContainerHeight = 37
 
     val offsetY by animateDpAsState(
