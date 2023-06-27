@@ -90,7 +90,13 @@ class NotificationReceiver : BroadcastReceiver() {
             Instant.ofEpochMilli(notification.trigger),
             OffsetDateTime.now().offset
         )
+        val notificationScheduler = NotificationScheduler(context)
         newNotificationDate = when (notification.repeatMode) {
+            RepeatMode.NONE -> {
+                notificationScheduler.deleteNotification(notification.requestCode)
+                return
+            }
+
             RepeatMode.DAILY -> {
                 newNotificationDate.plusDays(1)
             }
@@ -106,12 +112,10 @@ class NotificationReceiver : BroadcastReceiver() {
             RepeatMode.YEARLY -> {
                 newNotificationDate.plusYears(1)
             }
-
-            else -> return
         }
 
         val milliseconds = newNotificationDate.toInstant(OffsetDateTime.now().offset).toEpochMilli()
-        NotificationScheduler(context).scheduleNotification(
+        notificationScheduler.scheduleNotification(
             notification.copy(trigger = milliseconds)
         )
     }
