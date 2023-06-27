@@ -34,7 +34,7 @@ fun HashtagEditor(modifier: Modifier, hashtags: Set<String>, onSave: (Set<String
         indication = null
     ) { editModeEnabled.value = true }) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().height(45.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {

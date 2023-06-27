@@ -101,7 +101,7 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
                 noteViewModel.noteHashtags.value,
                 noteViewModel::changeNoteHashtags
             )
-            Spacer(Modifier.height(25.dp))
+            Spacer(Modifier.height(45.dp))
         }
     }
 
