@@ -16,15 +16,15 @@ sealed class OnBoardingPage(
     )
 
     object Hashtags : OnBoardingPage(
-        image = R.drawable.ic_notification,
-        title = "Hashtags",
-        description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod."
+        image = R.drawable.onboarding_hashtag,
+        title = "Tags",
+        description = "Tags are necessary for quickly filtering your notes; multiple tags can be added to each note."
     )
 
     object Reminders : OnBoardingPage(
-        image = R.drawable.ic_notification,
+        image = R.drawable.onboarding_reminder,
         title = "Reminders",
-        description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod."
+        description = "Reminders allow you to schedule a notification for an important event on a specified day and time, with a chosen interval."
     )
 
     object PageList {

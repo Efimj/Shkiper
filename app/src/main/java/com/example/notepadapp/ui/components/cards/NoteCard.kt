@@ -44,7 +44,6 @@ fun NoteCard(
     Card(
         modifier = modifier
             .bounceClick()
-            //.heightIn(max = 250.dp, min = 50.dp)
             .fillMaxWidth()
             .clip(RoundedCornerShape(15.dp))
             .combinedClickable(
@@ -87,8 +86,8 @@ private fun getNextReminderDate(reminder: Reminder?): LocalDateTime {
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun ReminderInformation(reminder: Reminder?) {
-    val nextReminderDate = remember { mutableStateOf(getNextReminderDate(reminder)) }
-    val isDateFuture = remember { mutableStateOf(DateHelper.isFutureDateTime(nextReminderDate.value)) }
+    val nextReminderDate = getNextReminderDate(reminder)
+    val isDateFuture = DateHelper.isFutureDateTime(nextReminderDate)
     if (reminder != null) {
         Spacer(modifier = Modifier.height(4.dp))
         val shape = RoundedCornerShape(5.dp)
@@ -108,17 +107,17 @@ private fun ReminderInformation(reminder: Reminder?) {
             )
             Spacer(Modifier.width(4.dp))
             androidx.compose.material3.Text(
-                DateHelper.getLocalizedDate(nextReminderDate.value.toLocalDate()),
+                DateHelper.getLocalizedDate(nextReminderDate.toLocalDate()),
                 style = MaterialTheme.typography.body1.copy(
                     fontSize = 13.sp,
-                    textDecoration = if (isDateFuture.value) TextDecoration.None else TextDecoration.LineThrough
+                    textDecoration = if (isDateFuture) TextDecoration.None else TextDecoration.LineThrough
                 ),
                 color = CustomAppTheme.colors.textSecondary,
             )
             Spacer(Modifier.width(4.dp))
-            if (isDateFuture.value)
+            if (isDateFuture)
                 androidx.compose.material3.Text(
-                    nextReminderDate.value.toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")),
+                    nextReminderDate.toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")),
                     style = MaterialTheme.typography.body1.copy(fontSize = 13.sp),
                     color = CustomAppTheme.colors.textSecondary,
                 )

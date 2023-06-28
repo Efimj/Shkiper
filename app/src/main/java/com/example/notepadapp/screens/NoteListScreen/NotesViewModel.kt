@@ -80,6 +80,7 @@ class NotesViewModel @Inject constructor(
     }
 
     private suspend fun getNotesByText(newString: String) {
+        _currentHashtag.value = null
         noteRepository.filterNotesByContains(newString).collect {
             notes.value = it
         }

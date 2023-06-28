@@ -66,7 +66,10 @@ private fun MainPageLayout(
 
     Box(Modifier.fillMaxSize()) {
         Box(Modifier.fillMaxSize()) {
-            SetupAppScreenNavGraph(navController = navController, startDestination = AppScreens.NoteList.route)
+            SetupAppScreenNavGraph(
+                navController = navController,
+                startDestination = if (startDestination == AppScreens.Onboarding.route) AppScreens.Onboarding.route else AppScreens.NoteList.route
+            )
         }
         Box(
             Modifier
@@ -94,7 +97,7 @@ private fun MainPageLayout(
     LaunchedEffect(Unit) {
         if (isInitialized.value) return@LaunchedEffect
         isInitialized.value = true
-        if (startDestination != AppScreens.NoteList.route)
+        if (startDestination != AppScreens.NoteList.route && startDestination != AppScreens.Onboarding.route)
             navController.navigate(startDestination)
     }
 }
