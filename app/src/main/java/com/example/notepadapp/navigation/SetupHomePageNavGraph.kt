@@ -7,7 +7,7 @@ import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.example.notepadapp.screens.NoteListScreen.NoteListScreen
 import com.example.notepadapp.screens.NoteScreen.NoteScreen
-import com.example.notepadapp.screens.OnboardingScreen.OnboardingScreen
+import com.example.notepadapp.screens.OnboardingScreen.OnBoardingScreen
 import com.example.notepadapp.screens.SettingsScreen.SettingsScreen
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
@@ -115,7 +115,7 @@ fun SetupAppScreenNavGraph(
             enterTransition = { slideInVertically(initialOffsetY = { -40 }) + fadeIn() },
             exitTransition = { slideOutVertically(targetOffsetY = { 50 }) + fadeOut() }
         ) {
-            OnboardingScreen(navController)
+            OnBoardingScreen(navController)
         }
     }
 }

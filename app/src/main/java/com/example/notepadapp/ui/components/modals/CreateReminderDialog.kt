@@ -65,7 +65,7 @@ fun CreateReminderDialog(
     Dialog(onGoBack, DialogProperties(true, dismissOnClickOutside = true)) {
         Column(
             Modifier.clip(RoundedCornerShape(15.dp)).background(CustomAppTheme.colors.secondaryBackground)
-                .padding(20.dp)
+                .padding(vertical = 20.dp)
         ) {
             HorizontalPager(
                 pageCount = ReminderDialogPages.values().size,
@@ -90,7 +90,7 @@ private fun DialogFooter(
 ) {
     val coroutineScope = rememberCoroutineScope()
     Row(
-        Modifier.fillMaxWidth(),
+        Modifier.fillMaxWidth().padding(horizontal = 20.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -177,7 +177,7 @@ private fun RepeatModePage(
     val repeatModeList = RepeatMode.values().map { it.getLocalizedValue(LocalContext.current) }
 
     Column(
-        Modifier.fillMaxSize(),
+        Modifier.fillMaxSize().padding(horizontal = 20.dp),
         horizontalAlignment = Alignment.Start,
     ) {
         Text(
@@ -254,7 +254,7 @@ private fun TimePickPage(
     time: MutableState<LocalTime>,
 ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Row(Modifier.basicMarquee().fillMaxWidth()) {
+        Row(Modifier.basicMarquee().fillMaxWidth().padding(horizontal = 20.dp)) {
             Text(
                 DateHelper.getLocalizedDate(date.value),
                 style = MaterialTheme.typography.h5,
@@ -274,7 +274,7 @@ private fun TimePickPage(
 
 @Composable
 private fun DatePickPage(date: MutableState<LocalDate>) {
-    Column {
+    Column (Modifier.padding(horizontal = 20.dp)){
         Text(
             DateHelper.getLocalizedDate(date.value),
             style = MaterialTheme.typography.h5,

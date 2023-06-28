@@ -23,6 +23,8 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextOverflow
@@ -139,7 +141,12 @@ private fun ScreenContent(
         gridState = lazyGridNotes
     ) {
         item(span = StaggeredGridItemSpan.FullLine) {
-            LazyRow(Modifier.fillMaxWidth(), state = rememberLazyListState()) {
+            LazyRow(
+                modifier = Modifier.wrapContentSize(unbounded = true)
+                    .width(LocalConfiguration.current.screenWidthDp.dp),
+                state = rememberLazyListState(),
+                contentPadding = PaddingValues(10.dp, 0.dp, 10.dp, 0.dp)
+            ) {
                 items(items = notesViewModel.hashtags.value.toList()) { item ->
                     HashtagButton(item, item == notesViewModel.currentHashtag.value) {
                         notesViewModel.setCurrentHashtag(

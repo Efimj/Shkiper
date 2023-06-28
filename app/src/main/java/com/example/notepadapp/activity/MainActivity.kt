@@ -31,7 +31,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             CustomAppTheme(darkTheme = ThemeUtil.isDarkTheme) {
                 Box(Modifier.fillMaxSize().background(CustomAppTheme.colors.mainBackground)) {
-                    MainMenuBottomSheet(startDestination)
+                    MainMenuBottomSheet(AppScreens.NoteList.route)
                 }
             }
         }
