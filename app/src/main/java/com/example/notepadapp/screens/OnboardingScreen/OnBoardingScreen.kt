@@ -102,15 +102,18 @@ private fun ScreenFooter(navController: NavController, pagerState: PagerState) {
 fun onFinished(context: Context, navController: NavController) {
     val sharedPreferences =
         context.getSharedPreferences(SharedPreferencesKeys.ApplicationStorageName, Context.MODE_PRIVATE)
-    //sharedPreferences.edit().putBoolean(SharedPreferencesKeys.isOnboardingPageFinished, true).apply()
-    navController.navigate(AppScreens.NoteList.route)
+    sharedPreferences.edit().putBoolean(SharedPreferencesKeys.isOnboardingPageFinished, true).apply()
+    navController.navigate(AppScreens.NoteList.route) {
+        popUpTo(AppScreens.Onboarding.route) {
+            inclusive = true
+        }
+    }
 }
 
 @Composable
 fun PagerScreen(onBoardingPage: OnBoardingPage) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth(),
+        modifier = Modifier.fillMaxSize(1f),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {

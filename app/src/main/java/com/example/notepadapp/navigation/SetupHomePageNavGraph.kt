@@ -92,7 +92,7 @@ fun SetupAppScreenNavGraph(
                 }
             }
         ) {
-            SettingsScreen()
+            SettingsScreen(navController)
         }
 
         composable(
@@ -104,7 +104,7 @@ fun SetupAppScreenNavGraph(
                 fadeIn() + scaleIn(initialScale = 0.9f)
             },
             exitTransition = {
-                fadeOut() + scaleOut(targetScale = 0.9f)
+                fadeOut() + scaleOut(targetScale = 0.9f) + slideOutVertically { -150 }
             }
         ) {
             NoteScreen(navController)

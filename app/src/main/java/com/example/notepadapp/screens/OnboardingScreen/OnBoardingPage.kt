@@ -10,9 +10,9 @@ sealed class OnBoardingPage(
     val description: String
 ) {
     object Greetings : OnBoardingPage(
-        image = R.drawable.ic_notification,
-        title = "Greetings",
-        description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod."
+        image = R.drawable.onboarding_first,
+        title = "JetNotes",
+        description = "Fast, simple, and convenient notepad."
     )
 
     object Hashtags : OnBoardingPage(

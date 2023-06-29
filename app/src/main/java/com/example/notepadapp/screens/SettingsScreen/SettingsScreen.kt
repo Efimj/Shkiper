@@ -15,14 +15,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.notepadapp.app_handlers.ThemePreferenceManager
+import com.example.notepadapp.navigation.AppScreens
 import com.example.notepadapp.ui.components.buttons.RoundedButton
 import com.example.notepadapp.ui.theme.CustomAppTheme
 import com.example.notepadapp.util.ThemeUtil
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun SettingsScreen() {
+fun SettingsScreen(navController: NavController) {
     val themePreferenceManager = ThemePreferenceManager(LocalContext.current)
     val themeModeIcon: ImageVector = if (ThemeUtil.isDarkTheme) Icons.Outlined.LightMode else Icons.Outlined.DarkMode
 
@@ -32,7 +33,7 @@ fun SettingsScreen() {
             .verticalScroll(rememberScrollState())
     )
     {
-        Column (Modifier.padding(20.dp, 65.dp)) {
+        Column(Modifier.padding(20.dp, 65.dp)) {
             Text(
                 color = CustomAppTheme.colors.text,
                 text = "Settings",
@@ -65,6 +66,11 @@ fun SettingsScreen() {
                 "Connect",
                 Icons.Outlined.CloudOff,
                 {})
+            SettingsScreenMenuElement(
+                "Onboarding page",
+                "Open",
+                Icons.Outlined.ViewCarousel
+            ) { navController.navigate(AppScreens.Onboarding.route) }
             Text(
                 color = CustomAppTheme.colors.text,
                 text = "Information",
@@ -133,13 +139,5 @@ private fun SettingsScreenMenuElement(
                 onClick = onClick,
             )
         }
-    }
-}
-
-@Composable
-@Preview(showBackground = true)
-fun SettingsScreenPreview() {
-    CustomAppTheme {
-        SettingsScreen()
     }
 }
