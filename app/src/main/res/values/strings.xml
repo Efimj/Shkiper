@@ -1,8 +1,48 @@
 <resources>
-    <string name="app_name">Jets</string>
+    <string name="app_name">JetNotes</string>
+
+    <!--    Repeating   -->
     <string name="none">Does not repeat</string>
     <string name="daily">Daily</string>
     <string name="weekly">Weekly</string>
     <string name="monthly">Monthly</string>
     <string name="yearly">Yearly</string>
+
+    <!--    Languages   -->
+    <string name="en">English</string>
+    <string name="uk">Ukrainian</string>
+    <string name="ru">Russian</string>
+
+    <!--    Expressions   -->
+    <!--    settings page   -->
+    <string name="ChoseLocalization">Chose localization</string>
+    <string name="AppDataPolitics">All your information is stored locally on your device, clearing your browsing data may result in losing all your data. Therefore, before resetting, save the file with your data so as not to lose them.</string>
+    <string name="Info">Info</string>
+    <string name="Information">Information</string>
+    <string name="Open">Open</string>
+    <string name="OnboardingPage">Onboarding page</string>
+    <string name="Other">Other</string>
+    <string name="Connect">Connect</string>
+    <string name="CloudStorage">Cloud storage</string>
+    <string name="Upload">Upload</string>
+    <string name="UploadNotes">Upload notes</string>
+    <string name="SaveAllNotesLocally">Save all notes locally</string>
+    <string name="Save">Save</string>
+    <string name="Backup">Backup</string>
+    <string name="ApplicationTheme">Application theme</string>
+    <string name="LightTheme">Light</string>
+    <string name="DarkTheme">Dark</string>
+    <string name="Application">Application</string>
+
+    <!--    Onboarding page   -->
+    <string name="Back">Back</string>
+    <string name="Finish">Finish</string>
+    <string name="Next">Next</string>
+    <string name="PagerImage">Pager Image</string>
+    <string name="Tags">Tags</string>
+    <string name="TagsDescription">Tags are necessary for quickly filtering your notes, multiple tags can be added to each note.</string>
+    <string name="AppDescription">Fast, simple, and convenient notepad.</string>
+    <string name="Reminders">Reminders</string>
+    <string name="RemindersDescription">Reminders allow you to schedule a notification for an important event on a specified day and time, with a chosen interval.</string>
+
 </resources>

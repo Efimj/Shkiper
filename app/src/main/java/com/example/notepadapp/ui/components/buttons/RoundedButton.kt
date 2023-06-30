@@ -1,6 +1,8 @@
 package com.example.notepadapp.ui.components.buttons
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
@@ -13,10 +15,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.notepadapp.ui.theme.CustomAppTheme
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun RoundedButton(
     modifier: Modifier = Modifier,
@@ -60,6 +64,8 @@ fun RoundedButton(
                     fontWeight = FontWeight.Normal,
                     style = MaterialTheme.typography.body1,
                     fontSize = 16.sp,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                 )
             }
         }

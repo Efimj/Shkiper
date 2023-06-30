@@ -52,6 +52,3 @@
     </application>
 
 </manifest>
-        <!-- что бы при открытии клавиатуры окно просмотра уменьшалось-->
-        <!--        android:windowSoftInputMode="adjustResize"-->
-        <!--        android:imeOptions="actionSend|flagNoEnterAction"-->

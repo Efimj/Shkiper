@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">JetNotes</string>
+
+    <!--    Repeating   -->
+    <string name="none">Не повторять</string>
+    <string name="daily">Каждый день</string>
+    <string name="weekly">Каждую неделю</string>
+    <string name="monthly">Каждый месяц</string>
+    <string name="yearly">Каждый год</string>
+
+    <!--    Languages   -->
+    <string name="en">Английский</string>
+    <string name="uk">Украинский</string>
+    <string name="ru">Русский</string>
+
+    <!--    Expressions   -->
+    <!--    settings page   -->
+    <string name="ChoseLocalization">Язык</string>
+    <string name="AppDataPolitics">Вся ваша информация хранится локально на вашем устройстве, очистка данных просмотра может привести к потере всех ваших данных. Поэтому перед сбросом сохраните файл со своими данными, чтобы не потерять их.</string>
+    <string name="Info">Информация</string>
+    <string name="Information">Информация</string>
+    <string name="Open">Открыть</string>
+    <string name="OnboardingPage">Страница вступления</string>
+    <string name="Other">Другое</string>
+    <string name="Connect">Подключить</string>
+    <string name="CloudStorage">Облачное хранилище</string>
+    <string name="Upload">Загрузить</string>
+    <string name="UploadNotes">Загрузить из телефона</string>
+    <string name="SaveAllNotesLocally">Сохранить локально</string>
+    <string name="Save">Сохранить</string>
+    <string name="Backup">Резервное копирование</string>
+    <string name="ApplicationTheme">Тема приложения</string>
+    <string name="LightTheme">Светлая</string>
+    <string name="DarkTheme">Темная</string>
+    <string name="Application">Приложение</string>
+
+    <!--    Onboarding page   -->
+    <string name="Back">Назад</string>
+    <string name="Finish">Завершить</string>
+    <string name="Next">Вперед</string>
+    <string name="PagerImage">Иконка</string>
+    <string name="Tags">Теги</string>
+    <string name="TagsDescription">Теги необходимы для быстрой фильтрации ваших заметок, к каждой заметке можно добавить несколько тегов.</string>
+    <string name="AppDescription">Быстрый, простой и удобный блокнот.</string>
+    <string name="Reminders">Напоминания</string>
+    <string name="RemindersDescription">Напоминания позволяют запланировать уведомление о важном событии в указанный день и время с выбранным интервалом.</string>
+</resources>

@@ -21,10 +21,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.notepadapp.R
 import com.example.notepadapp.SharedPreferencesKeys
 import com.example.notepadapp.navigation.AppScreens
 import com.example.notepadapp.ui.components.buttons.RoundedButton
@@ -62,7 +64,7 @@ private fun ScreenFooter(navController: NavController, pagerState: PagerState) {
         Row(Modifier.weight(1f)) {
             if (pagerState.currentPage > 0)
                 RoundedButton(
-                    text = "Back", onClick = {
+                    text = stringResource(R.string.Back), onClick = {
                         coroutineScope.launch {
                             pagerState.animateScrollToPage(pagerState.currentPage - 1)
                         }
@@ -84,7 +86,7 @@ private fun ScreenFooter(navController: NavController, pagerState: PagerState) {
         }
         Row(Modifier.weight(1f), horizontalArrangement = Arrangement.End) {
             RoundedButton(
-                text = if (pagerState.currentPage == OnBoardingPage.PageList.Count - 1) "Finish" else "Next",
+                text = if (pagerState.currentPage == OnBoardingPage.PageList.Count - 1) stringResource(R.string.Finish) else stringResource(R.string.Next),
                 onClick = {
                     if (pagerState.currentPage == OnBoardingPage.PageList.Count - 1) {
                         onFinished(context, navController)
@@ -102,7 +104,7 @@ private fun ScreenFooter(navController: NavController, pagerState: PagerState) {
 fun onFinished(context: Context, navController: NavController) {
     val sharedPreferences =
         context.getSharedPreferences(SharedPreferencesKeys.ApplicationStorageName, Context.MODE_PRIVATE)
-    sharedPreferences.edit().putBoolean(SharedPreferencesKeys.isOnboardingPageFinished, true).apply()
+    sharedPreferences.edit().putBoolean(SharedPreferencesKeys.IsOnboardingPageFinished, true).apply()
     navController.navigate(AppScreens.NoteList.route) {
         popUpTo(AppScreens.Onboarding.route) {
             inclusive = true
@@ -122,12 +124,12 @@ fun PagerScreen(onBoardingPage: OnBoardingPage) {
                 .fillMaxWidth(0.7f)
                 .fillMaxHeight(0.7f),
             painter = painterResource(id = onBoardingPage.image),
-            contentDescription = "Pager Image"
+            contentDescription = stringResource(R.string.PagerImage)
         )
         Text(
             modifier = Modifier
                 .fillMaxWidth(),
-            text = onBoardingPage.title,
+            text = stringResource(onBoardingPage.title),
             fontSize = MaterialTheme.typography.h4.fontSize,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,
@@ -138,7 +140,7 @@ fun PagerScreen(onBoardingPage: OnBoardingPage) {
                 .fillMaxWidth()
                 .padding(horizontal = 40.dp)
                 .padding(top = 20.dp),
-            text = onBoardingPage.description,
+            text = stringResource(onBoardingPage.description),
             fontSize = MaterialTheme.typography.subtitle1.fontSize,
             fontWeight = FontWeight.Medium,
             textAlign = TextAlign.Center,

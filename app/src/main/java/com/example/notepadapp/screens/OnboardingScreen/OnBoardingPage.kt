@@ -6,25 +6,25 @@ import com.example.notepadapp.R
 sealed class OnBoardingPage(
     @DrawableRes
     val image: Int,
-    val title: String,
-    val description: String
+    val title: Int,
+    val description: Int
 ) {
     object Greetings : OnBoardingPage(
         image = R.drawable.onboarding_first,
-        title = "JetNotes",
-        description = "Fast, simple, and convenient notepad."
+        title = R.string.app_name,
+        description = R.string.AppDescription,
     )
 
     object Hashtags : OnBoardingPage(
         image = R.drawable.onboarding_hashtag,
-        title = "Tags",
-        description = "Tags are necessary for quickly filtering your notes; multiple tags can be added to each note."
+        title = R.string.Tags,
+        description = R.string.TagsDescription,
     )
 
     object Reminders : OnBoardingPage(
         image = R.drawable.onboarding_reminder,
-        title = "Reminders",
-        description = "Reminders allow you to schedule a notification for an important event on a specified day and time, with a chosen interval."
+        title = R.string.Reminders,
+        description = R.string.RemindersDescription
     )
 
     object PageList {

@@ -1,5 +1,9 @@
 package com.example.notepadapp.screens.SettingsScreen
 
+import android.app.Activity
+import android.content.Context
+import android.os.Handler
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -9,97 +13,195 @@ import androidx.compose.material.icons.outlined.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.notepadapp.NotepadApplication
+import com.example.notepadapp.R
 import com.example.notepadapp.app_handlers.ThemePreferenceManager
+import com.example.notepadapp.database.models.RepeatMode
+import com.example.notepadapp.helpers.localization.LocaleHelper
+import com.example.notepadapp.helpers.localization.Localization
 import com.example.notepadapp.navigation.AppScreens
+import com.example.notepadapp.ui.components.buttons.DropDownButton
+import com.example.notepadapp.ui.components.buttons.DropDownButtonSizeMode
 import com.example.notepadapp.ui.components.buttons.RoundedButton
 import com.example.notepadapp.ui.theme.CustomAppTheme
 import com.example.notepadapp.util.ThemeUtil
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun SettingsScreen(navController: NavController) {
     val themePreferenceManager = ThemePreferenceManager(LocalContext.current)
-    val themeModeIcon: ImageVector = if (ThemeUtil.isDarkTheme) Icons.Outlined.LightMode else Icons.Outlined.DarkMode
 
-    Box(
-        Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-    )
-    {
-        Column(Modifier.padding(20.dp, 65.dp)) {
+    Column(
+        Modifier.fillMaxSize().padding(horizontal = 20.dp).verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Spacer(Modifier.height(65.dp))
+        Text(
+            color = CustomAppTheme.colors.text,
+            text = stringResource(R.string.Application),
+            fontWeight = FontWeight.SemiBold,
+            fontSize = 20.sp,
+            style = MaterialTheme.typography.body1,
+            modifier = Modifier.padding(top = 15.dp, bottom = 8.dp)
+        )
+        SettingsScreenMenuElement(
+            stringResource(R.string.ApplicationTheme),
+            ThemeUtil.isDarkTheme.let { if (it) stringResource(R.string.LightTheme) else stringResource(R.string.DarkTheme) },
+            buttonIcon = if (ThemeUtil.isDarkTheme) Icons.Outlined.LightMode else Icons.Outlined.DarkMode,
+            onClick = {
+                ThemeUtil.toggleTheme()
+                themePreferenceManager.saveTheme(ThemeUtil.isDarkTheme)
+            }
+        )
+        SettingsScreenSelectLanguageElement()
+        Text(
+            color = CustomAppTheme.colors.text,
+            text = stringResource(R.string.Backup),
+            fontWeight = FontWeight.SemiBold,
+            fontSize = 20.sp,
+            style = MaterialTheme.typography.body1,
+            modifier = Modifier.padding(top = 15.dp, bottom = 8.dp)
+        )
+        SettingsScreenMenuElement(
+            stringResource(R.string.SaveAllNotesLocally),
+            stringResource(R.string.Save),
+            Icons.Outlined.Download,
+            {})
+        SettingsScreenMenuElement(
+            stringResource(R.string.UploadNotes),
+            stringResource(R.string.Upload),
+            Icons.Outlined.Upload,
+            {})
+        SettingsScreenMenuElement(
+            stringResource(R.string.CloudStorage),
+            stringResource(R.string.Connect),
+            Icons.Outlined.CloudOff,
+            {})
+        Text(
+            color = CustomAppTheme.colors.text,
+            text = stringResource(R.string.Other),
+            fontWeight = FontWeight.SemiBold,
+            fontSize = 20.sp,
+            style = MaterialTheme.typography.body1,
+            modifier = Modifier.padding(top = 15.dp, bottom = 8.dp)
+        )
+        SettingsScreenMenuElement(
+            stringResource(R.string.OnboardingPage),
+            stringResource(R.string.Open),
+            Icons.Outlined.ViewCarousel
+        ) { navController.navigate(AppScreens.Onboarding.route) }
+        Text(
+            color = CustomAppTheme.colors.text,
+            text = stringResource(R.string.Information),
+            fontWeight = FontWeight.SemiBold,
+            fontSize = 20.sp,
+            style = MaterialTheme.typography.body1,
+            modifier = Modifier.padding(top = 15.dp)
+        )
+        Row(
+            Modifier.fillMaxWidth().padding(top = 15.dp, bottom = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.Info,
+                contentDescription = stringResource(R.string.Info),
+                tint = CustomAppTheme.colors.textSecondary
+            )
+            Spacer(Modifier.width(10.dp))
+            Text(
+                text = stringResource(R.string.AppDataPolitics),
+                color = CustomAppTheme.colors.textSecondary,
+                fontSize = 16.sp,
+                lineHeight = 24.sp,
+                style = MaterialTheme.typography.body1,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+        Spacer(Modifier.height(55.dp))
+    }
+}
+
+@Composable
+private fun SettingsScreenSelectLanguageElement() {
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    val currentLanguage = NotepadApplication.currentLanguage
+    val localizationList = Localization.values().map { it.getLocalizedValue(LocalContext.current) }
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Box(modifier = Modifier.weight(1f)
+        ) {
             Text(
                 color = CustomAppTheme.colors.text,
-                text = "Settings",
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 20.sp,
+                text = stringResource(R.string.ChoseLocalization),
                 style = MaterialTheme.typography.body1,
-                modifier = Modifier.padding(bottom = 12.dp).align(Alignment.CenterHorizontally)
+                modifier = Modifier.align(Alignment.CenterEnd)
             )
-            SettingsScreenMenuElement(
-                "Application theme",
-                ThemeUtil.isDarkTheme.let { if (it) "Light" else "Dark" },
-                themeModeIcon,
-                onClick = {
-                    ThemeUtil.toggleTheme()
-                    themePreferenceManager.saveTheme(ThemeUtil.isDarkTheme)
-                }
-            )
-            SettingsScreenMenuElement(
-                "Save all notes locally",
-                "Save",
-                Icons.Outlined.Download,
-                {})
-            SettingsScreenMenuElement(
-                "Upload notes",
-                "Upload",
-                Icons.Outlined.Upload,
-                {})
-            SettingsScreenMenuElement(
-                "Cloud storage",
-                "Connect",
-                Icons.Outlined.CloudOff,
-                {})
-            SettingsScreenMenuElement(
-                "Onboarding page",
-                "Open",
-                Icons.Outlined.ViewCarousel
-            ) { navController.navigate(AppScreens.Onboarding.route) }
-            Text(
-                color = CustomAppTheme.colors.text,
-                text = "Information",
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 20.sp,
-                style = MaterialTheme.typography.body1,
-                modifier = Modifier.padding(bottom = 12.dp)
-                    .padding(top = 15.dp)
-                    .align(Alignment.CenterHorizontally)
-            )
-            Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                Icon(
-                    imageVector = Icons.Outlined.Info,
-                    contentDescription = "Info",
-                    tint = CustomAppTheme.colors.textSecondary
-                )
-                Spacer(Modifier.width(10.dp))
-                Text(
-                    text = "All your information is stored locally on your device, clearing your browsing data may result in losing all your data. Therefore, before resetting, save the file with your data so as not to lose them.",
-                    color = CustomAppTheme.colors.textSecondary,
-                    fontSize = 16.sp,
-                    lineHeight = 24.sp,
-                    style = MaterialTheme.typography.body1,
-                    modifier = Modifier.fillMaxWidth()
+        }
+        Spacer(modifier = Modifier.width(16.dp))
+        Box(
+            modifier = Modifier
+                .weight(1f)
+        ) {
+            DropDownButton(localizationList,
+                currentLanguage.ordinal,
+                Modifier.width(150.dp),
+                DropDownButtonSizeMode.STRERCHBYBUTTONWIDTH,
+                onChangedSelection = {
+                    changeLocalization(it, context, scope)
+                }) {
+                RoundedButton(
+                    modifier = Modifier.width(145.dp),
+                    text = currentLanguage.getLocalizedValue(context),
+                    icon = Icons.Outlined.Language,
+                    onClick = { it() },
+                    border = BorderStroke(1.dp, CustomAppTheme.colors.stroke),
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = Color.Transparent, disabledBackgroundColor = Color.Transparent
+                    )
                 )
             }
-
-            //Spacer(modifier = Modifier.padding(bottom = 65.dp))
         }
+    }
+}
+
+private fun changeLocalization(it: Int, context: Context, scope: CoroutineScope) {
+    val newLanguage = Localization.values()[it]
+    LocaleHelper.setLocale(context, newLanguage)
+
+    /*******************
+     * If you remove the delay, an error will be generated
+     * ANR in com.example.notepadapp (com.example.notepadapp/.activity.MainActivity)
+     * PID: 16898
+     * Reason: Input dispatching timed out (Waiting because no window has focus but there is a focused application that may eventually add a window when it finishes starting up.)
+     * Load: 0.85 / 0.24 / 0.12
+     * possible problem drop down layout
+     *******************/
+
+    scope.launch {
+        delay(150)
+        (context as? Activity)?.recreate()
     }
 }
 
@@ -124,7 +226,9 @@ private fun SettingsScreenMenuElement(
                 color = CustomAppTheme.colors.text,
                 text = description,
                 style = MaterialTheme.typography.body1,
-                modifier = Modifier.align(Alignment.CenterEnd)
+                modifier = Modifier.align(Alignment.CenterEnd),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
         }
         Spacer(modifier = Modifier.width(16.dp))

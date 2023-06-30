@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">JetNotes</string>
+
+    <!--    Repeating   -->
+    <string name="none">Не повторювати</string>
+    <string name="daily">Кожен день</string>
+    <string name="weekly">Кожен тиждень</string>
+    <string name="monthly">Кожен місяць</string>
+    <string name="yearly">Кожен рік</string>
+
+    <!--    Languages   -->
+    <string name="en">Англійська</string>
+    <string name="uk">Українська</string>
+    <string name="ru">Російська</string>
+
+    <!--    Expressions     -->
+    <!--    settings page   -->
+    <string name="ChoseLocalization">Локалізація</string>
+    <string name="AppDataPolitics">Уся ваша інформація зберігається локально на вашому пристрої, видалення даних веб-перегляду може призвести до втрати всіх ваших даних. Тому перед скиданням збережіть файл зі своїми даними, щоб не втратити їх.</string>
+    <string name="Info">Інформація</string>
+    <string name="Information">Інформація</string>
+    <string name="Open">Відкрити</string>
+    <string name="OnboardingPage">Вступна сторінка</string>
+    <string name="Other">Інше</string>
+    <string name="Connect">Підключитися</string>
+    <string name="CloudStorage">Хмарне сховище</string>
+    <string name="Upload">Завантажити</string>
+    <string name="UploadNotes">Завантажити з телефону</string>
+    <string name="SaveAllNotesLocally">Зберегти локально</string>
+    <string name="Save">Зберегти</string>
+    <string name="Backup">Резервне копіювання</string>
+    <string name="ApplicationTheme">Тема програми</string>
+    <string name="LightTheme">Світло</string>
+    <string name="DarkTheme">Темна</string>
+    <string name="Application">Програма</string>
+
+    <!--    Onboarding page   -->
+    <string name="Back">Назад</string>
+    <string name="Finish">Завершити</string>
+    <string name="Next">Вперед</string>
+    <string name="PagerImage">Іконка</string>
+    <string name="Tags">Теги</string>
+    <string name="TagsDescription">Теги необхідні для швидкої фільтрації ваших нотаток, до кожної нотатки можна додати кілька тегів.</string>
+    <string name="AppDescription">Швидкий, простий та зручний блокнот.</string>
+    <string name="Reminders">Нагадування</string>
+    <string name="RemindersDescription">Нагадування дозволяють запланувати повідомлення про важливу подію у вказаний день та час з вибраним інтервалом.</string>
+</resources>

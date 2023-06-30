@@ -2,7 +2,6 @@ package com.example.notepadapp.activity
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -10,8 +9,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
+import com.example.notepadapp.NotepadApplication
 import com.example.notepadapp.SharedPreferencesKeys
 import com.example.notepadapp.app_handlers.ThemePreferenceManager
+import com.example.notepadapp.helpers.localization.LocaleHelper
 import com.example.notepadapp.navigation.AppScreens
 import com.example.notepadapp.ui.components.modals.MainMenuBottomSheet
 import com.example.notepadapp.ui.theme.CustomAppTheme
@@ -23,6 +24,12 @@ import dagger.hilt.android.AndroidEntryPoint
 @ExperimentalPagerApi
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(
+            LocaleHelper.setLocale(newBase, NotepadApplication.currentLanguage)
+        )
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ThemeUtil.isDarkTheme = ThemePreferenceManager(this).getSavedTheme()
@@ -48,7 +55,7 @@ class MainActivity : ComponentActivity() {
         val sharedPreferences =
             context.getSharedPreferences(SharedPreferencesKeys.ApplicationStorageName, Context.MODE_PRIVATE)
         val isOnboardingPageFinished =
-            sharedPreferences.getBoolean(SharedPreferencesKeys.isOnboardingPageFinished, false)
+            sharedPreferences.getBoolean(SharedPreferencesKeys.IsOnboardingPageFinished, false)
         return if (isOnboardingPageFinished) null else AppScreens.Onboarding.route
     }
 
