@@ -96,36 +96,40 @@ private fun DialogFooter(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        if (onDelete != null)
-            RoundedButton(
-                text = stringResource(R.string.Delete), onClick = {
-                    coroutineScope.launch {
-                        onDelete()
-                    }
-                }, border = BorderStroke(0.dp, Color.Transparent), colors = ButtonDefaults.buttonColors(
-                    backgroundColor = Color.Transparent, disabledBackgroundColor = Color.Transparent
-                )
+        if (onDelete != null) RoundedButton(
+            text = stringResource(R.string.Delete), onClick = {
+                coroutineScope.launch {
+                    onDelete()
+                }
+            }, border = BorderStroke(0.dp, Color.Transparent), colors = ButtonDefaults.buttonColors(
+                backgroundColor = Color.Transparent, disabledBackgroundColor = Color.Transparent
             )
+        )
         Row(
             modifier = if (onDelete == null) Modifier.fillMaxWidth() else Modifier,
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            RoundedButton(
-                text = if (pagerState.currentPage > 0) stringResource(R.string.Back) else stringResource(R.string.Cancel), onClick = {
-                    coroutineScope.launch {
-                        if (pagerState.currentPage > 0) pagerState.animateScrollToPage(pagerState.currentPage - 1)
-                        else {
-                            onGoBack()
+            Row(Modifier.weight(1f), horizontalArrangement = Arrangement.Start) {
+                RoundedButton(
+                    text = if (pagerState.currentPage > 0) stringResource(R.string.Back) else stringResource(R.string.Cancel),
+                    onClick = {
+                        coroutineScope.launch {
+                            if (pagerState.currentPage > 0) pagerState.animateScrollToPage(pagerState.currentPage - 1)
+                            else {
+                                onGoBack()
+                            }
                         }
-                    }
-                }, border = BorderStroke(0.dp, Color.Transparent), colors = ButtonDefaults.buttonColors(
-                    backgroundColor = Color.Transparent, disabledBackgroundColor = Color.Transparent
+                    },
+                    border = BorderStroke(0.dp, Color.Transparent),
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = Color.Transparent, disabledBackgroundColor = Color.Transparent
+                    )
                 )
-            )
+            }
             if (onDelete == null) {
                 Row(
-                    Modifier.align(Alignment.CenterVertically), horizontalArrangement = Arrangement.Center
+                    Modifier.align(Alignment.CenterVertically).weight(1f), horizontalArrangement = Arrangement.Center
                 ) {
                     repeat(ReminderDialogPages.values().size) { iteration ->
                         val color =
@@ -138,16 +142,20 @@ private fun DialogFooter(
             } else {
                 Spacer(Modifier.width(10.dp))
             }
-            RoundedButton(
-                text = if (pagerState.currentPage == ReminderDialogPages.values().size - 1) stringResource(R.string.Save) else stringResource(R.string.Next),
-                onClick = {
-                    if (pagerState.currentPage == ReminderDialogPages.values().size - 1) {
-                        onSave()
-                    } else coroutineScope.launch {
-                        pagerState.animateScrollToPage(pagerState.currentPage + 1)
-                    }
-                },
-            )
+            Row(Modifier.weight(1f), horizontalArrangement = Arrangement.End) {
+                RoundedButton(
+                    text = if (pagerState.currentPage == ReminderDialogPages.values().size - 1) stringResource(R.string.Save) else stringResource(
+                        R.string.Next
+                    ),
+                    onClick = {
+                        if (pagerState.currentPage == ReminderDialogPages.values().size - 1) {
+                            onSave()
+                        } else coroutineScope.launch {
+                            pagerState.animateScrollToPage(pagerState.currentPage + 1)
+                        }
+                    },
+                )
+            }
         }
     }
 }
@@ -238,13 +246,12 @@ private fun RepeatModePage(
                     )
                 }
             }
-            if (!DateHelper.isFutureDateTime(date.value, time.value))
-                Text(
-                    stringResource(R.string.ErrorDateMastBeFuture),
-                    style = MaterialTheme.typography.body1,
-                    color = CustomAppTheme.colors.text,
-                    modifier = Modifier.padding(top = 10.dp)
-                )
+            if (!DateHelper.isFutureDateTime(date.value, time.value)) Text(
+                stringResource(R.string.ErrorDateMastBeFuture),
+                style = MaterialTheme.typography.body1,
+                color = CustomAppTheme.colors.text,
+                modifier = Modifier.padding(top = 10.dp)
+            )
         }
     }
 }
@@ -276,7 +283,7 @@ private fun TimePickPage(
 
 @Composable
 private fun DatePickPage(date: MutableState<LocalDate>) {
-    Column (Modifier.padding(horizontal = 20.dp)){
+    Column(Modifier.padding(horizontal = 20.dp)) {
         Text(
             DateHelper.getLocalizedDate(date.value),
             style = MaterialTheme.typography.h5,
