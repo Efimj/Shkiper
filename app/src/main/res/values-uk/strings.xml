@@ -17,7 +17,10 @@
     <!--    Expressions     -->
     <!--    settings page   -->
     <string name="ChoseLocalization">Локалізація</string>
-    <string name="AppDataPolitics">Уся ваша інформація зберігається локально на вашому пристрої, видалення даних веб-перегляду може призвести до втрати всіх ваших даних. Тому перед скиданням збережіть файл зі своїми даними, щоб не втратити їх.</string>
+    <string name="AppDataPolitics">Уся ваша інформація зберігається локально на вашому пристрої, видалення даних
+        веб-перегляду може призвести до втрати всіх ваших даних. Тому перед скиданням збережіть файл зі своїми даними,
+        щоб не втратити їх.
+    </string>
     <string name="Info">Інформація</string>
     <string name="Information">Інформація</string>
     <string name="Open">Відкрити</string>
@@ -41,8 +44,46 @@
     <string name="Next">Вперед</string>
     <string name="PagerImage">Іконка</string>
     <string name="Tags">Теги</string>
-    <string name="TagsDescription">Теги необхідні для швидкої фільтрації ваших нотаток, до кожної нотатки можна додати кілька тегів.</string>
+    <string name="TagsDescription">Теги необхідні для швидкої фільтрації ваших нотаток, до кожної нотатки можна додати
+        кілька тегів.
+    </string>
     <string name="AppDescription">Швидкий, простий та зручний блокнот.</string>
     <string name="Reminders">Нагадування</string>
-    <string name="RemindersDescription">Нагадування дозволяють запланувати повідомлення про важливу подію у вказаний день та час з вибраним інтервалом.</string>
+    <string name="RemindersDescription">Нагадування дозволяють запланувати повідомлення про важливу подію у вказаний
+        день та час з вибраним інтервалом.
+    </string>
+
+    <!--    Nate page   -->
+    <string name="Header">Заголовок</string>
+    <string name="Text">Текст</string>
+    <string name="GoBack">Повернутись</string>
+    <string name="AttachNote">Прикріпити нотатку</string>
+    <string name="AddToNotification">Додати повідомлення</string>
+    <string name="AddToArchive">Перенести до архіву</string>
+    <string name="ChangedAt">Змінено в</string>
+    <string name="GoForward">Вперед</string>
+    <string name="AddToBasket">Перенести до видалених</string>
+
+    <!--    NateList page   -->
+    <string name="Pinned">Закріплені</string>
+
+    <!-- Other components -->
+    <string name="CreateNote">Створити нотатку</string>
+    <string name="Hashtags">Хештегі</string>
+    <string name="Cancel">Скасувати</string>
+    <string name="HashtagExample">Напишіть хештеги, наприклад. Дім Плани</string>
+    <string name="Delete">Видалити</string>
+    <string name="Reminder">Нагадування</string>
+    <string name="Event">Подія</string>
+    <string name="Schedule">Розклад</string>
+    <string name="Repeat">Повторити</string>
+    <string name="ErrorDateMastBeFuture">Дата має бути в майбутньому</string>
+    <string name="Menu">Меню</string>
+    <string name="Notes">Примітки</string>
+    <string name="Archive">Архів</string>
+    <string name="Basket">Видалені</string>
+    <string name="Settings">Налаштування</string>
+    <string name="Clear">Очистити</string>
+    <string name="Search">Пошук</string>
+
 </resources>

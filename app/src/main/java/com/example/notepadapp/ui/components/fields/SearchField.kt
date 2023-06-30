@@ -24,6 +24,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalTextToolbar
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.ParagraphIntrinsics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.createFontFamilyResolver
@@ -32,6 +33,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.notepadapp.R
 import com.example.notepadapp.ui.theme.CustomAppTheme
 
 
@@ -41,7 +43,7 @@ private val CONTAINERSHAPE = RoundedCornerShape(15.dp)
 @Composable
 fun SearchBar(
     search: String,
-    placeholder: String = "Search",
+    placeholder: String = stringResource(R.string.Search),
     onValueChange: (String) -> Unit,
     onTrailingIconClick: () -> Unit = {},
 ) {
@@ -191,7 +193,7 @@ private fun trailingIcon(isTrailingIconVisible: Boolean, onTrailingIconClick: ()
             Icon(
                 tint = CustomAppTheme.colors.textSecondary,
                 imageVector = Icons.Default.Clear,
-                contentDescription = "Clear"
+                contentDescription = stringResource(R.string.Clear)
             )
         }
     }
@@ -201,7 +203,7 @@ private fun trailingIcon(isTrailingIconVisible: Boolean, onTrailingIconClick: ()
 private fun leadingIcon() {
     Icon(
         imageVector = Icons.Default.Search,
-        contentDescription = "Search",
+        contentDescription = stringResource(R.string.Search),
         tint = CustomAppTheme.colors.textSecondary
     )
 }

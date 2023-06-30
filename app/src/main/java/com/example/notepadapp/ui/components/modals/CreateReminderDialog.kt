@@ -22,10 +22,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.example.notepadapp.R
 import com.example.notepadapp.database.models.RepeatMode
 import com.example.notepadapp.helpers.DateHelper
 import com.example.notepadapp.ui.components.buttons.DropDownButton
@@ -96,7 +98,7 @@ private fun DialogFooter(
     ) {
         if (onDelete != null)
             RoundedButton(
-                text = "Delete", onClick = {
+                text = stringResource(R.string.Delete), onClick = {
                     coroutineScope.launch {
                         onDelete()
                     }
@@ -110,7 +112,7 @@ private fun DialogFooter(
             verticalAlignment = Alignment.CenterVertically
         ) {
             RoundedButton(
-                text = if (pagerState.currentPage > 0) "Back" else "Cancel", onClick = {
+                text = if (pagerState.currentPage > 0) stringResource(R.string.Back) else stringResource(R.string.Cancel), onClick = {
                     coroutineScope.launch {
                         if (pagerState.currentPage > 0) pagerState.animateScrollToPage(pagerState.currentPage - 1)
                         else {
@@ -137,7 +139,7 @@ private fun DialogFooter(
                 Spacer(Modifier.width(10.dp))
             }
             RoundedButton(
-                text = if (pagerState.currentPage == ReminderDialogPages.values().size - 1) "Save" else "Next",
+                text = if (pagerState.currentPage == ReminderDialogPages.values().size - 1) stringResource(R.string.Save) else stringResource(R.string.Next),
                 onClick = {
                     if (pagerState.currentPage == ReminderDialogPages.values().size - 1) {
                         onSave()
@@ -181,7 +183,7 @@ private fun RepeatModePage(
         horizontalAlignment = Alignment.Start,
     ) {
         Text(
-            "Reminder",
+            stringResource(R.string.Reminder),
             style = MaterialTheme.typography.h5,
             color = CustomAppTheme.colors.textSecondary,
             textAlign = TextAlign.Center,
@@ -192,7 +194,7 @@ private fun RepeatModePage(
                 Icon(
                     tint = CustomAppTheme.colors.textSecondary,
                     imageVector = Icons.Default.Event,
-                    contentDescription = "Event"
+                    contentDescription = stringResource(R.string.Event)
                 )
                 Spacer(Modifier.width(8.dp))
                 Text(
@@ -205,7 +207,7 @@ private fun RepeatModePage(
                 Icon(
                     tint = CustomAppTheme.colors.textSecondary,
                     imageVector = Icons.Default.Schedule,
-                    contentDescription = "Schedule"
+                    contentDescription = stringResource(R.string.Schedule)
                 )
                 Spacer(Modifier.width(8.dp))
                 Text(
@@ -218,7 +220,7 @@ private fun RepeatModePage(
                 Icon(
                     tint = CustomAppTheme.colors.textSecondary,
                     imageVector = Icons.Default.Repeat,
-                    contentDescription = "Repeat"
+                    contentDescription = stringResource(R.string.Repeat)
                 )
                 Spacer(Modifier.width(8.dp))
                 DropDownButton(repeatModeList,
@@ -238,7 +240,7 @@ private fun RepeatModePage(
             }
             if (!DateHelper.isFutureDateTime(date.value, time.value))
                 Text(
-                    "The date must be in the future",
+                    stringResource(R.string.ErrorDateMastBeFuture),
                     style = MaterialTheme.typography.body1,
                     color = CustomAppTheme.colors.text,
                     modifier = Modifier.padding(top = 10.dp)

@@ -17,7 +17,10 @@
     <!--    Expressions   -->
     <!--    settings page   -->
     <string name="ChoseLocalization">Chose localization</string>
-    <string name="AppDataPolitics">All your information is stored locally on your device, clearing your browsing data may result in losing all your data. Therefore, before resetting, save the file with your data so as not to lose them.</string>
+    <string name="AppDataPolitics">All your information is stored locally on your device, clearing your browsing data
+        may result in losing all your data. Therefore, before resetting, save the file with your data so as not to lose
+        them.
+    </string>
     <string name="Info">Info</string>
     <string name="Information">Information</string>
     <string name="Open">Open</string>
@@ -41,9 +44,46 @@
     <string name="Next">Next</string>
     <string name="PagerImage">Pager Image</string>
     <string name="Tags">Tags</string>
-    <string name="TagsDescription">Tags are necessary for quickly filtering your notes, multiple tags can be added to each note.</string>
+    <string name="TagsDescription">Tags are necessary for quickly filtering your notes, multiple tags can be added to
+        each note.
+    </string>
     <string name="AppDescription">Fast, simple, and convenient notepad.</string>
     <string name="Reminders">Reminders</string>
-    <string name="RemindersDescription">Reminders allow you to schedule a notification for an important event on a specified day and time, with a chosen interval.</string>
+    <string name="RemindersDescription">Reminders allow you to schedule a notification for an important event on a
+        specified day and time, with a chosen interval.
+    </string>
+
+    <!--    Nate page   -->
+    <string name="Header">Header</string>
+    <string name="Text">Text</string>
+    <string name="GoBack">Go back</string>
+    <string name="AttachNote">Attach a note</string>
+    <string name="AddToNotification">Add to notification</string>
+    <string name="AddToArchive">Add to archive</string>
+    <string name="ChangedAt">Changed at</string>
+    <string name="GoForward">Go forward</string>
+    <string name="AddToBasket">Add to basket</string>
+
+    <!--    NateList page   -->
+    <string name="Pinned">Pinned</string>
+
+    <!--    Other components   -->
+    <string name="CreateNote">Create note</string>
+    <string name="Hashtags">Hashtags</string>
+    <string name="Cancel">Cancel</string>
+    <string name="HashtagExample">Write hashtags, e.g. Home Work</string>
+    <string name="Delete">Delete</string>
+    <string name="Reminder">Reminder</string>
+    <string name="Event">Event</string>
+    <string name="Schedule">Schedule</string>
+    <string name="Repeat">Repeat</string>
+    <string name="ErrorDateMastBeFuture">The date must be in the future</string>
+    <string name="Menu">Menu</string>
+    <string name="Notes">Notes</string>
+    <string name="Archive">Archive</string>
+    <string name="Basket">Basket</string>
+    <string name="Settings">Settings</string>
+    <string name="Clear">Clear</string>
+    <string name="Search">Search</string>
 
 </resources>

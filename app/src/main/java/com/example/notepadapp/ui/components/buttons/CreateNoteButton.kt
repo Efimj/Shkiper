@@ -12,7 +12,9 @@ import androidx.compose.material.icons.outlined.Add
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.notepadapp.R
 import com.example.notepadapp.ui.modifiers.bounceClick
 import com.example.notepadapp.ui.theme.CustomAppTheme
 
@@ -38,7 +40,7 @@ fun CreateNoteButton(
     ) {
         androidx.compose.material3.Icon(
             imageVector = Icons.Outlined.Add,
-            contentDescription = "Create note",
+            contentDescription = stringResource(R.string.CreateNote),
             tint = CustomAppTheme.colors.textSecondary,
             modifier = Modifier.size(53.dp).padding(6.dp)
         )

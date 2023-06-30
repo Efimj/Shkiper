@@ -15,10 +15,12 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.notepadapp.R
 import com.example.notepadapp.ui.components.buttons.RoundedButton
 import com.example.notepadapp.ui.theme.CustomAppTheme
 
@@ -39,7 +41,7 @@ fun HashtagEditor(modifier: Modifier, hashtags: Set<String>, onSave: (Set<String
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                "Hashtags",
+                stringResource(R.string.Hashtags),
                 style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.SemiBold, fontSize = 18.sp),
                 color = CustomAppTheme.colors.textSecondary
             )
@@ -47,14 +49,14 @@ fun HashtagEditor(modifier: Modifier, hashtags: Set<String>, onSave: (Set<String
                 Row {
                     RoundedButton(
                         Modifier,
-                        text = "Cancel",
+                        text = stringResource(R.string.Cancel),
                         onClick = { editModeEnabled.value = false },
                         border = BorderStroke(0.dp, Color.Transparent)
                     )
                     Spacer(Modifier.width(8.dp))
                     RoundedButton(
                         Modifier,
-                        text = "Save",
+                        text = stringResource(R.string.Save),
                         onClick = {
                             if (editModeEnabled.value)
                                 saveHandle(onSave, textFieldValue)
@@ -105,7 +107,7 @@ private fun HashtagsEdit(
     CustomTextField(
         text = text.value,
         onTextChange = { text.value = it },
-        placeholder = "Text",
+        placeholder = stringResource(R.string.Text),
         textStyle = MaterialTheme.typography.body1,
         modifier = modifier,
         keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
@@ -123,7 +125,7 @@ private fun HashtagsPresentation(
 ) {
     if (hashtags.isEmpty()) {
         Text(
-            "Write hashtags, e.g. Home Work",
+            stringResource(R.string.HashtagExample),
             style = MaterialTheme.typography.body1,
             color = CustomAppTheme.colors.textSecondary
         )

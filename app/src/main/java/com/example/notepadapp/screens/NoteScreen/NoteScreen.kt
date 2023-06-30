@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -27,6 +28,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.notepadapp.R
 import com.example.notepadapp.navigation.AppScreens
 import com.example.notepadapp.ui.components.buttons.RoundedButton
 import com.example.notepadapp.ui.components.fields.CustomTextField
@@ -77,7 +79,7 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
             CustomTextField(
                 text = noteViewModel.noteHeader.value,
                 onTextChange = { noteViewModel.updateNoteHeader(it) },
-                placeholder = "Header",
+                placeholder = stringResource(R.string.Header),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text, imeAction = ImeAction.Next),
                 keyboardActions = KeyboardActions(
                     onAny = {
@@ -90,7 +92,7 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
             CustomTextField(
                 text = noteViewModel.noteBody.value,
                 onTextChange = { noteViewModel.updateNoteBody(it) },
-                placeholder = "Text",
+                placeholder = stringResource(R.string.Text),
                 textStyle = MaterialTheme.typography.body1,
                 modifier = Modifier.padding(horizontal = 20.dp)
                     .focusRequester(bodyFieldFocusRequester)
@@ -162,7 +164,7 @@ private fun NoteScreenHeader(navController: NavController, noteViewModel: NoteVi
             ) {
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
-                    contentDescription = "Go back",
+                    contentDescription = stringResource(R.string.GoBack),
                     tint = CustomAppTheme.colors.textSecondary,
                 )
             }
@@ -174,7 +176,7 @@ private fun NoteScreenHeader(navController: NavController, noteViewModel: NoteVi
             ) {
                 Icon(
                     imageVector = Icons.Outlined.PushPin,
-                    contentDescription = "Attach a note",
+                    contentDescription = stringResource(R.string.AttachNote),
                     tint = if (noteViewModel.noteIsPinned.value) CustomAppTheme.colors.text else CustomAppTheme.colors.textSecondary,
                 )
             }
@@ -185,7 +187,7 @@ private fun NoteScreenHeader(navController: NavController, noteViewModel: NoteVi
             ) {
                 Icon(
                     imageVector = Icons.Outlined.NotificationAdd,
-                    contentDescription = "Add to notification",
+                    contentDescription = stringResource(R.string.AddToNotification),
                     tint = if (noteViewModel.reminder.value == null) CustomAppTheme.colors.textSecondary else CustomAppTheme.colors.text,
                 )
             }
@@ -196,7 +198,7 @@ private fun NoteScreenHeader(navController: NavController, noteViewModel: NoteVi
             ) {
                 Icon(
                     imageVector = Icons.Outlined.Archive,
-                    contentDescription = "Add to archive",
+                    contentDescription = stringResource(R.string.AddToArchive),
                     tint = CustomAppTheme.colors.textSecondary,
                 )
             }
@@ -237,7 +239,7 @@ private fun NoteScreenFooter(navController: NavController, noteViewModel: NoteVi
                 Row {
                     Spacer(modifier = Modifier.padding(15.dp, 0.dp, 0.dp, 0.dp))
                     Text(
-                        "Changed at ${getUpdatedTime(noteViewModel)}",
+                        "${stringResource(R.string.ChangedAt)} ${getUpdatedTime(noteViewModel)}",
                         modifier = Modifier.basicMarquee(),
                         style = MaterialTheme.typography.body1.copy(fontSize = 15.sp)
                     )
@@ -252,7 +254,7 @@ private fun NoteScreenFooter(navController: NavController, noteViewModel: NoteVi
                     ) {
                         Icon(
                             imageVector = Icons.Outlined.Undo,
-                            contentDescription = "Go back",
+                            contentDescription = stringResource(R.string.GoBack),
                             tint = if (noteViewModel.currentStateIndex.value > 0) CustomAppTheme.colors.text else CustomAppTheme.colors.textSecondary,
                         )
                     }
@@ -264,7 +266,7 @@ private fun NoteScreenFooter(navController: NavController, noteViewModel: NoteVi
                     ) {
                         Icon(
                             imageVector = Icons.Outlined.Redo,
-                            contentDescription = "Go forward",
+                            contentDescription = stringResource(R.string.GoForward),
                             tint = if (noteViewModel.currentStateIndex.value < noteViewModel.intermediateStates.value.size - 1) CustomAppTheme.colors.text else CustomAppTheme.colors.textSecondary,
                         )
                     }
@@ -277,7 +279,7 @@ private fun NoteScreenFooter(navController: NavController, noteViewModel: NoteVi
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.Delete,
-                        contentDescription = "Add to basket",
+                        contentDescription = stringResource(R.string.AddToBasket),
                         tint = CustomAppTheme.colors.textSecondary,
                     )
                 }

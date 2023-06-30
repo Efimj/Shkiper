@@ -13,9 +13,11 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.notepadapp.R
 import com.example.notepadapp.navigation.SetupAppScreenNavGraph
 import com.example.notepadapp.navigation.AppScreens
 import com.example.notepadapp.ui.components.buttons.MainMenuButton
@@ -77,7 +79,7 @@ private fun MainPageLayout(
                 .align(Alignment.BottomCenter)
         ) {
             RoundedButton(
-                text = "Menu",
+                text = stringResource(R.string.Menu),
                 icon = navController.currentBackStackEntryAsState().value?.destination?.route?.let {
                     getCurrentMenuIcon(
                         it
@@ -135,28 +137,28 @@ private fun BottomSheetContent(
             .fillMaxWidth()
             .padding(16.dp)
     ) {
-        MainMenuButton("Notes",
+        MainMenuButton(stringResource(R.string.Notes),
             Icons.Outlined.AutoAwesomeMosaic,
             isActive = currentRoute == AppScreens.NoteList.route,
             onClick = {
                 goToPage(navController, AppScreens.NoteList.route, coroutineScope, bottomSheetState)
             })
         Spacer(modifier = Modifier.height(8.dp))
-        MainMenuButton("Archive",
+        MainMenuButton(stringResource(R.string.Archive),
             Icons.Outlined.Archive,
             isActive = currentRoute == AppScreens.Archive.route,
             onClick = {
                 goToPage(navController, AppScreens.Archive.route, coroutineScope, bottomSheetState)
             })
         Spacer(modifier = Modifier.height(8.dp))
-        MainMenuButton("Basket",
+        MainMenuButton(stringResource(R.string.Basket),
             Icons.Outlined.Delete,
             isActive = currentRoute == AppScreens.Basket.route,
             onClick = {
                 goToPage(navController, AppScreens.Basket.route, coroutineScope, bottomSheetState)
             })
         Spacer(modifier = Modifier.height(8.dp))
-        MainMenuButton("Settings",
+        MainMenuButton(stringResource(R.string.Settings),
             Icons.Outlined.Settings,
             isActive = currentRoute == AppScreens.Settings.route,
             onClick = {

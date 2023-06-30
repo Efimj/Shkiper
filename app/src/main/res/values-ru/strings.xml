@@ -17,7 +17,10 @@
     <!--    Expressions   -->
     <!--    settings page   -->
     <string name="ChoseLocalization">Язык</string>
-    <string name="AppDataPolitics">Вся ваша информация хранится локально на вашем устройстве, очистка данных просмотра может привести к потере всех ваших данных. Поэтому перед сбросом сохраните файл со своими данными, чтобы не потерять их.</string>
+    <string name="AppDataPolitics">Вся ваша информация хранится локально на вашем устройстве, очистка данных просмотра
+        может привести к потере всех ваших данных. Поэтому перед сбросом сохраните файл со своими данными, чтобы не
+        потерять их.
+    </string>
     <string name="Info">Информация</string>
     <string name="Information">Информация</string>
     <string name="Open">Открыть</string>
@@ -41,8 +44,46 @@
     <string name="Next">Вперед</string>
     <string name="PagerImage">Иконка</string>
     <string name="Tags">Теги</string>
-    <string name="TagsDescription">Теги необходимы для быстрой фильтрации ваших заметок, к каждой заметке можно добавить несколько тегов.</string>
+    <string name="TagsDescription">Теги необходимы для быстрой фильтрации ваших заметок, к каждой заметке можно добавить
+        несколько тегов.
+    </string>
     <string name="AppDescription">Быстрый, простой и удобный блокнот.</string>
     <string name="Reminders">Напоминания</string>
-    <string name="RemindersDescription">Напоминания позволяют запланировать уведомление о важном событии в указанный день и время с выбранным интервалом.</string>
+    <string name="RemindersDescription">Напоминания позволяют запланировать уведомление о важном событии в указанный
+        день и время с выбранным интервалом.
+    </string>
+
+    <!--    Nate page   -->
+    <string name="Header">Заголовок</string>
+    <string name="Text">Текст</string>
+    <string name="GoBack">Вернуться</string>
+    <string name="AttachNote">Прикрепить заметку</string>
+    <string name="AddToNotification">Добавить уведомление</string>
+    <string name="AddToArchive">Переместить в архив</string>
+    <string name="ChangedAt">Изменено в</string>
+    <string name="GoForward">Вперед</string>
+    <string name="AddToBasket">Переместить в корзину</string>
+
+    <!--    NateList page   -->
+    <string name="Pinned">Закрепленные</string>
+
+    <!--    Other components   -->
+    <string name="CreateNote">Создать заметку</string>
+    <string name="Hashtags">Хэштеги</string>
+    <string name="Cancel">Отменить</string>
+    <string name="HashtagExample">Напишите хэштеги, например. Планы Встречи</string>
+    <string name="Delete">Удалить</string>
+    <string name="Reminder">Напоминание</string>
+    <string name="Event">Событие</string>
+    <string name="Schedule">Расписание</string>
+    <string name="Repeat">Повторить</string>
+    <string name="ErrorDateMastBeFuture">Дата должна быть в будущем</string>
+    <string name="Menu">Меню</string>
+    <string name="Notes">Примечания</string>
+    <string name="Archive">Архив</string>
+    <string name="Basket">Корзина</string>
+    <string name="Settings">Настройки</string>
+    <string name="Clear">Очистить</string>
+    <string name="Search">Поиск</string>
+
 </resources>

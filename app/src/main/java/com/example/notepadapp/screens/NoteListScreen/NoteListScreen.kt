@@ -27,6 +27,7 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
@@ -35,6 +36,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.notepadapp.R
 import com.example.notepadapp.database.models.Note
 import com.example.notepadapp.navigation.AppScreens
 import com.example.notepadapp.ui.components.cards.NoteCard
@@ -160,7 +162,7 @@ private fun ScreenContent(
             item(span = StaggeredGridItemSpan.FullLine) {
                 Column {
                     Text(
-                        "Pinned",
+                        stringResource(R.string.Pinned),
                         color = CustomAppTheme.colors.textSecondary,
                         style = MaterialTheme.typography.body1.copy(fontSize = 17.sp),
                         modifier = Modifier.padding(horizontal = 10.dp)
@@ -180,7 +182,7 @@ private fun ScreenContent(
         if (unpinnedNotes.isNotEmpty()) {
             item(span = StaggeredGridItemSpan.FullLine) {
                 Text(
-                    "Other",
+                    stringResource(R.string.Other),
                     color = CustomAppTheme.colors.textSecondary,
                     style = MaterialTheme.typography.body1.copy(fontSize = 17.sp),
                     modifier = Modifier.padding(horizontal = 10.dp)
@@ -258,7 +260,7 @@ private fun ActionBar(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Close,
-                        contentDescription = "Go back",
+                        contentDescription = stringResource(R.string.GoBack),
                         tint = CustomAppTheme.colors.textSecondary,
                     )
                 }
@@ -270,7 +272,7 @@ private fun ActionBar(
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.PushPin,
-                        contentDescription = "Attach a note",
+                        contentDescription = stringResource(R.string.AttachNote),
                         tint = CustomAppTheme.colors.textSecondary,
                     )
                 }
@@ -281,7 +283,7 @@ private fun ActionBar(
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.NotificationAdd,
-                        contentDescription = "Add to notification",
+                        contentDescription = stringResource(R.string.AddToNotification),
                         tint = CustomAppTheme.colors.textSecondary,
                     )
                 }
@@ -292,7 +294,7 @@ private fun ActionBar(
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.Archive,
-                        contentDescription = "Add to archive",
+                        contentDescription = stringResource(R.string.AddToArchive),
                         tint = CustomAppTheme.colors.textSecondary,
                     )
                 }
@@ -303,7 +305,7 @@ private fun ActionBar(
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.Delete,
-                        contentDescription = "Add to archive",
+                        contentDescription = stringResource(R.string.AddToBasket),
                         tint = CustomAppTheme.colors.textSecondary,
                     )
                 }
