@@ -16,7 +16,7 @@
 
     <!--    Expressions     -->
     <!--    settings page   -->
-    <string name="ChoseLocalization">Локалізація</string>
+    <string name="ChoseLocalization">Локалізація програми</string>
     <string name="AppDataPolitics">Уся ваша інформація зберігається локально на вашому пристрої, видалення даних
         веб-перегляду може призвести до втрати всіх ваших даних. Тому перед скиданням збережіть файл зі своїми даними,
         щоб не втратити їх.

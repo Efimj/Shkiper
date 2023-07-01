@@ -16,7 +16,7 @@
 
     <!--    Expressions   -->
     <!--    settings page   -->
-    <string name="ChoseLocalization">Язык</string>
+    <string name="ChoseLocalization">Язык приложения</string>
     <string name="AppDataPolitics">Вся ваша информация хранится локально на вашем устройстве, очистка данных просмотра
         может привести к потере всех ваших данных. Поэтому перед сбросом сохраните файл со своими данными, чтобы не
         потерять их.

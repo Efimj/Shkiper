@@ -6,8 +6,8 @@ import android.graphics.Color.parseColor as GraphicsColor
 // Light colors
 val light_stroke = Color(GraphicsColor("#D2D2D2"))
 val light_background = Color(GraphicsColor("#FFFFFF"))
-val light_text = Color(GraphicsColor("#000000"))
-val light_text_secondary = Color(GraphicsColor("#414141"))
+val light_text = Color(GraphicsColor("#161616"))
+val light_text_secondary = Color(GraphicsColor("#7A7A7A"))
 val light_modal_background = Color(0, 0, 0, (255 * 0.2).toInt())
 val light_active = Color(GraphicsColor("#433FFF"))
 val light_secondary_background = Color(GraphicsColor("#FFFFFF"))
