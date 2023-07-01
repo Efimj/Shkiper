@@ -9,7 +9,7 @@ import dagger.hilt.android.HiltAndroidApp
 @HiltAndroidApp
 class NotepadApplication : Application() {
     override fun attachBaseContext(base: Context) {
-        val currentLocalization = LocaleHelper.getSavedLocalization(base)
+        val currentLocalization = LocaleHelper.getSavedLocalization(base) ?: LocaleHelper.getDeviceLocalization(base)
         super.attachBaseContext(LocaleHelper.setLocale(base, currentLocalization ?: Localization.EN))
     }
 

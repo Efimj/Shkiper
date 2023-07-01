@@ -28,6 +28,10 @@ object LocaleHelper {
         }
         return Localization.values().find { it.name == language }
     }
+    fun getDeviceLocalization(context: Context): Localization? {
+        return Localization.values().find { (Locale.getDefault().language.equals(Locale(it.name).language))}
+    }
+
 
     private fun updateResources(context: Context, language: Localization): Context? {
         val locale = Locale(language.localeKey)
