@@ -21,7 +21,6 @@ import kotlinx.coroutines.launch
 
 @SuppressLint("CustomSplashScreen")
 @ExperimentalAnimationApi
-@ExperimentalPagerApi
 @AndroidEntryPoint
 @OptIn(DelicateCoroutinesApi::class)
 class SplashActivity : ComponentActivity() {
@@ -49,6 +48,7 @@ class SplashActivity : ComponentActivity() {
         }
     }
 
+    @OptIn(ExperimentalPagerApi::class)
     private fun moveNext() {
         startActivity(Intent(this, MainActivity::class.java))
         finish()

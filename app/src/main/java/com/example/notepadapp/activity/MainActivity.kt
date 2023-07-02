@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -21,9 +22,8 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import dagger.hilt.android.AndroidEntryPoint
 
 @ExperimentalAnimationApi
-@ExperimentalPagerApi
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity () {
     override fun attachBaseContext(newBase: Context) {
         super.attachBaseContext(
             LocaleHelper.setLocale(newBase, NotepadApplication.currentLanguage)

@@ -1,6 +1,7 @@
 package com.example.notepadapp.screens.SettingsScreen
 
 import android.app.Activity
+import android.app.UiModeManager
 import android.content.Context
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
@@ -145,7 +146,8 @@ private fun SettingsScreenSelectLanguageElement() {
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Box(modifier = Modifier.weight(1f)
+        Box(
+            modifier = Modifier.weight(1f)
         ) {
             Text(
                 color = CustomAppTheme.colors.text,
