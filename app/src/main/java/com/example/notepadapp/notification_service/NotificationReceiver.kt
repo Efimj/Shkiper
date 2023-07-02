@@ -64,12 +64,15 @@ class NotificationReceiver : BroadcastReceiver() {
 
         val notificationBuilder =
             NotificationCompat.Builder(context, notification.channel.channelId)
-                .setContentTitle(notification.title)
                 .setSmallIcon(notification.icon)
                 .setAutoCancel(true)
                 .setColor(ContextCompat.getColor(context, R.color.active))
                 .setColorized(true)
                 .setContentIntent(mainPendingIntent)
+        if (notification.title.isNotEmpty())
+            notificationBuilder.setContentTitle(notification.title)
+        if (notification.message.isNotEmpty())
+            notificationBuilder.setContentText(notification.message)
                 .setStyle(
                     NotificationCompat
                         .BigTextStyle()

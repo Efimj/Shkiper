@@ -2,7 +2,6 @@ package com.example.notepadapp.screens.SettingsScreen
 
 import android.app.Activity
 import android.content.Context
-import android.os.Handler
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -13,12 +12,9 @@ import androidx.compose.material.icons.outlined.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -28,7 +24,6 @@ import androidx.navigation.NavController
 import com.example.notepadapp.NotepadApplication
 import com.example.notepadapp.R
 import com.example.notepadapp.app_handlers.ThemePreferenceManager
-import com.example.notepadapp.database.models.RepeatMode
 import com.example.notepadapp.helpers.localization.LocaleHelper
 import com.example.notepadapp.helpers.localization.Localization
 import com.example.notepadapp.navigation.AppScreens

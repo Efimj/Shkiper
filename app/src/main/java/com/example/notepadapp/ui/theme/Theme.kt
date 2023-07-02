@@ -1,5 +1,7 @@
 package com.example.notepadapp.ui.theme
 
+import android.app.UiModeManager
+import android.content.Context.UI_MODE_SERVICE
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors

@@ -1,5 +1,6 @@
 package com.example.notepadapp.app_handlers
 
+import android.app.UiModeManager
 import android.content.Context
 import android.content.res.Configuration
 import com.example.notepadapp.SharedPreferencesKeys
@@ -16,6 +17,8 @@ class ThemePreferenceManager(val context: Context) {
     }
 
     fun saveTheme(isDarkTheme: Boolean) {
+        val uiModeManager = context.getSystemService(Context.UI_MODE_SERVICE) as UiModeManager
+        uiModeManager.nightMode = if(isDarkTheme) UiModeManager.MODE_NIGHT_YES else UiModeManager.MODE_NIGHT_NO
         sharedPreferences.edit().putBoolean(SharedPreferencesKeys.AppThemeKey, isDarkTheme).apply()
     }
 }
