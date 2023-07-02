@@ -9,9 +9,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import com.example.notepadapp.ui.components.buttons.RoundedButton
 import com.example.notepadapp.ui.theme.CustomAppTheme
-import com.example.notepadapp.ui.theme.dark_text
+
 @Composable
 fun MainMenuButton(text: String, icon: ImageVector? = null, isActive: Boolean = false, onClick: () -> Unit = { }){
     val menuButtonModifier = Modifier.fillMaxWidth().height(50.dp)
@@ -23,7 +22,7 @@ fun MainMenuButton(text: String, icon: ImageVector? = null, isActive: Boolean = 
             modifier = menuButtonModifier,
             border = BorderStroke(0.dp, CustomAppTheme.colors.mainBackground),
             colors = ButtonDefaults.buttonColors(backgroundColor = CustomAppTheme.colors.active),
-            textColor = dark_text,
+            textColor = Color.White,
             onClick = onClick,
             iconTint = Color.White
         )

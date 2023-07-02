@@ -1,14 +1,13 @@
 package com.example.notepadapp.util
 
 import androidx.compose.runtime.*
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import com.example.notepadapp.ui.theme.ColorTheme
+import com.example.notepadapp.ui.theme.UserTheme
 
 object ThemeUtil {
-    var isDarkTheme by mutableStateOf(false)
+    var currentTheme by mutableStateOf(UserTheme(true, ColorTheme.DefaultColorTheme.darkColors))
 
-    fun toggleTheme(){
-        isDarkTheme = !isDarkTheme
+    fun toggleTheme() {
+        currentTheme = UserTheme(currentTheme.isDarkTheme, currentTheme.themeColors)
     }
 }

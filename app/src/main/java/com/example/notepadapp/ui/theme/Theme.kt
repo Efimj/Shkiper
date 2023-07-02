@@ -1,7 +1,5 @@
 package com.example.notepadapp.ui.theme
 
-import android.app.UiModeManager
-import android.content.Context.UI_MODE_SERVICE
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
@@ -35,26 +33,6 @@ private val LightColorPalette = lightColors(
     onSurface = md_theme_dark_onSurface,
 )
 
-val LightThemeColors = ExtendedColors(
-    mainBackground = light_background,
-    stroke = light_stroke,
-    text = light_text,
-    textSecondary = light_text_secondary,
-    modalBackground = light_modal_background,
-    active = light_active,
-    secondaryBackground = light_secondary_background,
-)
-
-val DarkThemeColors = ExtendedColors(
-    mainBackground = dark_background,
-    stroke = dark_stroke,
-    text = dark_text,
-    textSecondary = dark_text_secondary,
-    modalBackground = dark_modal_background,
-    active = dark_active,
-    secondaryBackground = dark_secondary_background,
-)
-
 object CustomAppTheme {
     val colors: ExtendedColors
         @Composable
@@ -70,19 +48,15 @@ object CustomAppTheme {
 
 @Composable
 fun CustomAppTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    themeColor: ExtendedColors,
     content: @Composable () -> Unit
 ) {
-    val mdColors = if (darkTheme) DarkColorPalette else LightColorPalette
-    val colors = if (darkTheme) DarkThemeColors else LightThemeColors
-
-    CompositionLocalProvider(LocalExtendedColors provides colors) {
+    CompositionLocalProvider(LocalExtendedColors provides themeColor) {
         val systemUiController = rememberSystemUiController()
         systemUiController.setSystemBarsColor(
-            color = colors.mainBackground
+            color = themeColor.mainBackground
         )
         MaterialTheme(
-            colors = mdColors,
             typography = Typography,
             shapes = Shapes,
             content = content

@@ -17,11 +17,11 @@ class NotepadApplication : Application() {
     }
 
     private fun setAppTheme(context: Context) {
-        setDefaultNightMode(if (ThemePreferenceManager(context).getSavedTheme()) MODE_NIGHT_YES else MODE_NIGHT_NO)
+        setDefaultNightMode(if (ThemePreferenceManager(context).getSavedTheme().isDarkTheme) MODE_NIGHT_YES else MODE_NIGHT_NO)
     }
 
     override fun attachBaseContext(base: Context) {
-        val currentLocalization = LocaleHelper.getSavedLocalization(base) ?: LocaleHelper.getDeviceLocalization(base)
+        val currentLocalization = LocaleHelper.getSavedLocalization(base) ?: LocaleHelper.getDeviceLocalization()
         super.attachBaseContext(LocaleHelper.setLocale(base, currentLocalization ?: Localization.EN))
     }
 

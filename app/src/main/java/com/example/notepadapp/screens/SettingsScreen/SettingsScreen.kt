@@ -1,7 +1,6 @@
 package com.example.notepadapp.screens.SettingsScreen
 
 import android.app.Activity
-import android.app.UiModeManager
 import android.content.Context
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
@@ -31,7 +30,9 @@ import com.example.notepadapp.navigation.AppScreens
 import com.example.notepadapp.ui.components.buttons.DropDownButton
 import com.example.notepadapp.ui.components.buttons.DropDownButtonSizeMode
 import com.example.notepadapp.ui.components.buttons.RoundedButton
+import com.example.notepadapp.ui.theme.ColorTheme
 import com.example.notepadapp.ui.theme.CustomAppTheme
+import com.example.notepadapp.ui.theme.UserTheme
 import com.example.notepadapp.util.ThemeUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
@@ -57,11 +58,16 @@ fun SettingsScreen(navController: NavController) {
         )
         SettingsScreenMenuElement(
             stringResource(R.string.ApplicationTheme),
-            ThemeUtil.isDarkTheme.let { if (it) stringResource(R.string.LightTheme) else stringResource(R.string.DarkTheme) },
-            buttonIcon = if (ThemeUtil.isDarkTheme) Icons.Outlined.LightMode else Icons.Outlined.DarkMode,
+            ThemeUtil.currentTheme.let { if (it.isDarkTheme) stringResource(R.string.LightTheme) else stringResource(R.string.DarkTheme) },
+            buttonIcon = if (ThemeUtil.currentTheme.isDarkTheme) Icons.Outlined.LightMode else Icons.Outlined.DarkMode,
             onClick = {
                 ThemeUtil.toggleTheme()
-                themePreferenceManager.saveTheme(ThemeUtil.isDarkTheme)
+                themePreferenceManager.saveTheme(
+                    UserTheme(
+                        !ThemeUtil.currentTheme.isDarkTheme,
+                        if (ThemeUtil.currentTheme.isDarkTheme) ColorTheme.DefaultColorTheme.lightColors else ColorTheme.DefaultColorTheme.darkColors
+                    )
+                )
             }
         )
         SettingsScreenSelectLanguageElement()

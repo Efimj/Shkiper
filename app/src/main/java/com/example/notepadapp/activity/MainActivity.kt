@@ -2,7 +2,6 @@ package com.example.notepadapp.activity
 
 import android.content.Context
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -18,7 +17,6 @@ import com.example.notepadapp.navigation.AppScreens
 import com.example.notepadapp.ui.components.modals.MainMenuBottomSheet
 import com.example.notepadapp.ui.theme.CustomAppTheme
 import com.example.notepadapp.util.ThemeUtil
-import com.google.accompanist.pager.ExperimentalPagerApi
 import dagger.hilt.android.AndroidEntryPoint
 
 @ExperimentalAnimationApi
@@ -32,11 +30,11 @@ class MainActivity : AppCompatActivity () {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ThemeUtil.isDarkTheme = ThemePreferenceManager(this).getSavedTheme()
+        ThemeUtil.currentTheme = ThemePreferenceManager(this).getSavedTheme()
         val startDestination = getStartDestination()
 
         setContent {
-            CustomAppTheme(darkTheme = ThemeUtil.isDarkTheme) {
+            CustomAppTheme(ThemeUtil.currentTheme.themeColors) {
                 Box(
                     Modifier.fillMaxSize().background(CustomAppTheme.colors.mainBackground)
 //                        .paint(
