@@ -7,6 +7,7 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import com.example.notepadapp.SharedPreferencesKeys
 import com.example.notepadapp.ui.theme.ColorTheme
+import com.example.notepadapp.ui.theme.ColorThemes
 import com.example.notepadapp.ui.theme.UserTheme
 import com.google.gson.Gson
 
@@ -20,9 +21,7 @@ class ThemePreferenceManager(val context: Context) {
         val currentTheme = if (savedThemeString.isNullOrEmpty()) {
             val isDarkTheme =
                 context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
-            val currentColor =
-                if (isDarkTheme) ColorTheme.DefaultColorTheme.darkColors else ColorTheme.DefaultColorTheme.lightColors
-            UserTheme(isDarkTheme, currentColor)
+            UserTheme(isDarkTheme, ColorThemes.Default.name, ColorThemes.Default.name)
         } else {
             val gson = Gson()
             gson.fromJson(savedThemeString, UserTheme::class.java)

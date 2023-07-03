@@ -1,13 +1,10 @@
 package com.example.notepadapp.ui.theme
 
-sealed class ColorTheme(
+data class ColorTheme(
     val lightColors: ExtendedColors,
     val darkColors: ExtendedColors
-) {
-    object DefaultColorTheme : ColorTheme(DefaultLightThemeColors, DefaultDarkThemeColors)
+)
 
-    object ThemeList {
-        val PageList = listOf(DefaultColorTheme)
-        val Count = PageList.size
-    }
+enum class ColorThemes(val colorTheme: ColorTheme) {
+    Default(ColorTheme(DefaultLightThemeColors, DefaultDarkThemeColors))
 }

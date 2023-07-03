@@ -30,11 +30,11 @@ class MainActivity : AppCompatActivity () {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ThemeUtil.currentTheme = ThemePreferenceManager(this).getSavedTheme()
+        ThemeUtil.theme = ThemePreferenceManager(this).getSavedTheme()
         val startDestination = getStartDestination()
 
         setContent {
-            CustomAppTheme(ThemeUtil.currentTheme.themeColors) {
+            CustomAppTheme(ThemeUtil.themeColors) {
                 Box(
                     Modifier.fillMaxSize().background(CustomAppTheme.colors.mainBackground)
 //                        .paint(
