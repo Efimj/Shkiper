@@ -1,12 +1,15 @@
 package com.example.notepadapp.screens.OnboardingScreen
 
 import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import com.example.notepadapp.R
 
 sealed class OnBoardingPage(
     @DrawableRes
     val image: Int,
+    @StringRes
     val title: Int,
+    @StringRes
     val description: Int
 ) {
     object Greetings : OnBoardingPage(

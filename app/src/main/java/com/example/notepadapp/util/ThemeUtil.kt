@@ -5,12 +5,13 @@ import android.util.Log
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
 import com.example.notepadapp.app_handlers.ThemePreferenceManager
+import com.example.notepadapp.ui.theme.ColorTheme
 import com.example.notepadapp.ui.theme.ColorThemes
 import com.example.notepadapp.ui.theme.ExtendedColors
 import com.example.notepadapp.ui.theme.UserTheme
 
 object ThemeUtil {
-    var _theme = UserTheme(true, ColorThemes.Default.name, ColorThemes.Default.name)
+    private var _theme = UserTheme(true, ColorThemes.Default.name, ColorThemes.Default.name)
     var theme: UserTheme
         get() = _theme
         set(value) {
@@ -19,8 +20,16 @@ object ThemeUtil {
         }
 
     var themeColors by mutableStateOf(ColorThemes.Default.colorTheme.darkColors)
+        private set
 
-    private fun getCurrentColors():ExtendedColors{
+    fun changeColorTheme(context: Context, colorTheme: ColorThemes) {
+        val newUserTheme = if (theme.isDarkTheme) UserTheme(theme.isDarkTheme, colorTheme.name, theme.lightThemeName)
+        else UserTheme(theme.isDarkTheme, theme.darkThemeName, colorTheme.name)
+        theme = newUserTheme
+        saveTheme(context)
+    }
+
+    private fun getCurrentColors(): ExtendedColors {
         return try {
             val currentThemeName = if (theme.isDarkTheme) theme.darkThemeName else theme.lightThemeName
             val currentTheme = ColorThemes.valueOf(currentThemeName)
@@ -32,7 +41,7 @@ object ThemeUtil {
     }
 
     fun toggleTheme(context: Context) {
-        theme = UserTheme(!theme.isDarkTheme, ColorThemes.Default.name, ColorThemes.Default.name)
+        _theme = UserTheme(!_theme.isDarkTheme, _theme.darkThemeName, _theme.lightThemeName)
         saveTheme(context)
     }
 
@@ -40,9 +49,9 @@ object ThemeUtil {
         val themePreferenceManager = ThemePreferenceManager(context)
         themePreferenceManager.saveTheme(
             UserTheme(
-                theme.isDarkTheme,
-                ColorThemes.Default.name,
-                ColorThemes.Default.name
+                _theme.isDarkTheme,
+                _theme.darkThemeName,
+                _theme.lightThemeName
             )
         )
     }

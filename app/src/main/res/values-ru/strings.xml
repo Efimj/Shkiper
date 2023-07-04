@@ -37,6 +37,7 @@
     <string name="LightTheme">Светлая</string>
     <string name="DarkTheme">Темная</string>
     <string name="Application">Приложение</string>
+    <string name="ApplicationColors">Цвета приложения</string>
 
     <!--    Onboarding page   -->
     <string name="Back">Назад</string>

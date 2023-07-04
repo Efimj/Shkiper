@@ -5,6 +5,9 @@ import android.content.Context
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
@@ -30,6 +33,7 @@ import com.example.notepadapp.navigation.AppScreens
 import com.example.notepadapp.ui.components.buttons.DropDownButton
 import com.example.notepadapp.ui.components.buttons.DropDownButtonSizeMode
 import com.example.notepadapp.ui.components.buttons.RoundedButton
+import com.example.notepadapp.ui.components.cards.ThemePreview
 import com.example.notepadapp.ui.theme.CustomAppTheme
 import com.example.notepadapp.util.ThemeUtil
 import kotlinx.coroutines.CoroutineScope
@@ -59,6 +63,7 @@ fun SettingsScreen(navController: NavController, settingsViewModel: SettingsView
                 buttonIcon = if (ThemeUtil.theme.isDarkTheme) Icons.Outlined.LightMode else Icons.Outlined.DarkMode,
                 onClick = { settingsViewModel.toggleAppTheme() }
             )
+            SettingsColorThemePicker(settingsViewModel)
             SettingsItem(
                 stringResource(R.string.ChoseLocalization), null, null,
                 {
@@ -136,6 +141,44 @@ fun SettingsScreen(navController: NavController, settingsViewModel: SettingsView
             }
         }
         Spacer(Modifier.height(55.dp))
+    }
+}
+
+@Composable
+private fun SettingsColorThemePicker(settingsViewModel: SettingsViewModel) {
+    val isDark = ThemeUtil.theme.isDarkTheme
+    val selectedThemeName = if (isDark) ThemeUtil.theme.darkThemeName else ThemeUtil.theme.lightThemeName
+
+    Column(
+        Modifier.padding(vertical = 5.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Row {
+            Box(modifier = Modifier.weight(1f)) {
+                Text(
+                    color = CustomAppTheme.colors.text,
+                    text = stringResource(R.string.ApplicationColors),
+                    style = MaterialTheme.typography.body1,
+                    modifier = Modifier.align(Alignment.CenterEnd),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+            Spacer(modifier = Modifier.width(16.dp))
+            Box(modifier = Modifier.weight(1f))
+        }
+        Spacer(Modifier.height(6.dp))
+        LazyRow(state = rememberLazyListState(), contentPadding = PaddingValues(start = 10.dp)) {
+            items(settingsViewModel.themeColorList.value) { theme ->
+                Box(Modifier.padding(end = 10.dp).height(70.dp).width(55.dp)) {
+                    val colors = if (isDark) theme.colorTheme.darkColors else theme.colorTheme.lightColors
+                    ThemePreview(colors, theme.name == selectedThemeName) {
+                        settingsViewModel.selectColorTheme(theme.name)
+                    }
+                }
+            }
+        }
     }
 }
 

@@ -30,7 +30,10 @@ fun RoundedButton(
     enabled: Boolean = true,
     shape: Shape = RoundedCornerShape(15.dp),
     border: BorderStroke? = BorderStroke(1.dp, CustomAppTheme.colors.stroke),
-    colors: ButtonColors = ButtonDefaults.buttonColors(backgroundColor = CustomAppTheme.colors.mainBackground, disabledBackgroundColor = Color.Transparent),
+    colors: ButtonColors = ButtonDefaults.buttonColors(
+        backgroundColor = CustomAppTheme.colors.mainBackground,
+        disabledBackgroundColor = Color.Transparent
+    ),
     textColor: Color = CustomAppTheme.colors.text,
     iconTint: Color = CustomAppTheme.colors.text,
     content: @Composable (() -> Unit)? = null,

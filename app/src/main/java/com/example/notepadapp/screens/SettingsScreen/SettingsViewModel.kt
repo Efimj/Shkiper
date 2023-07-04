@@ -1,22 +1,16 @@
 package com.example.notepadapp.screens.SettingsScreen
 
-import android.app.Activity
 import android.app.Application
-import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.notepadapp.NotepadApplication
 import com.example.notepadapp.helpers.localization.LocaleHelper
 import com.example.notepadapp.helpers.localization.Localization
+import com.example.notepadapp.ui.theme.ColorTheme
+import com.example.notepadapp.ui.theme.ColorThemes
 import com.example.notepadapp.util.ThemeUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,8 +22,19 @@ class SettingsViewModel @Inject constructor(
      * App theming
      *******************/
 
+    val themeColorList = mutableStateOf(getThemeColorList())
+
     fun toggleAppTheme() {
         ThemeUtil.toggleTheme(application.applicationContext)
+    }
+
+    fun selectColorTheme(themeName: String) {
+        val selectedTheme = ColorThemes.values().find { it.name == themeName }?: return
+        ThemeUtil.changeColorTheme(application.applicationContext, selectedTheme)
+    }
+
+    private fun getThemeColorList(): List<ColorThemes> {
+        return ColorThemes.values().toList()
     }
 
     /*******************

@@ -37,6 +37,7 @@
     <string name="LightTheme">Light</string>
     <string name="DarkTheme">Dark</string>
     <string name="Application">Application</string>
+    <string name="ApplicationColors">Application colors</string>
 
     <!--    Onboarding page   -->
     <string name="Back">Back</string>
