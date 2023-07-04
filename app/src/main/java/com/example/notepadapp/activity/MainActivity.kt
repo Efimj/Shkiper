@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity () {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ThemeUtil.theme = ThemePreferenceManager(this).getSavedTheme()
+        ThemeUtil.theme = ThemePreferenceManager(this).getSavedUserTheme()
         val startDestination = getStartDestination()
 
         setContent {

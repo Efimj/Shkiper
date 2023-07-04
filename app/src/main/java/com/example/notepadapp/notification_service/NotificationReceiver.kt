@@ -7,13 +7,13 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.ui.graphics.toArgb
 import androidx.core.app.NotificationCompat
-import androidx.core.content.ContextCompat
-import com.example.notepadapp.R
 import com.example.notepadapp.SharedPreferencesKeys
 import com.example.notepadapp.activity.MainActivity
+import com.example.notepadapp.app_handlers.ThemePreferenceManager
 import com.example.notepadapp.database.models.RepeatMode
-import com.google.accompanist.pager.ExperimentalPagerApi
+import com.example.notepadapp.util.ThemeUtil
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
@@ -42,10 +42,11 @@ class NotificationReceiver : BroadcastReceiver() {
         }
     }
 
-    @OptIn(ExperimentalAnimationApi::class, ExperimentalPagerApi::class)
+    @OptIn(ExperimentalAnimationApi::class)
     private fun sendNotification(intent: Intent, context: Context) {
         val requestCode = intent.getIntExtra("requestCode", 0)
         val notification = NotificationStorage(context).getNotification(requestCode) ?: return
+        val savedColors = ThemeUtil.getCurrentColors(ThemePreferenceManager(context).getSavedUserTheme())
 
         // Create an Intent for the activity you want to start
         val mainIntent = Intent(context, MainActivity::class.java)
@@ -66,7 +67,7 @@ class NotificationReceiver : BroadcastReceiver() {
             NotificationCompat.Builder(context, notification.channel.channelId)
                 .setSmallIcon(notification.icon)
                 .setAutoCancel(true)
-                .setColor(ContextCompat.getColor(context, R.color.active))
+                .setColor(savedColors.active.toArgb())
                 .setColorized(true)
                 .setContentIntent(mainPendingIntent)
         if (notification.title.isNotEmpty())

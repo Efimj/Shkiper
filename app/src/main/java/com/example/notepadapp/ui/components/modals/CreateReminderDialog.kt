@@ -143,17 +143,26 @@ private fun DialogFooter(
                 Spacer(Modifier.width(10.dp))
             }
             Row(Modifier.weight(1f), horizontalArrangement = Arrangement.End) {
+                val isEnd = pagerState.currentPage == ReminderDialogPages.values().size - 1
                 RoundedButton(
-                    text = if (pagerState.currentPage == ReminderDialogPages.values().size - 1) stringResource(R.string.Save) else stringResource(
+                    text = if (isEnd) stringResource(R.string.Save) else stringResource(
                         R.string.Next
                     ),
                     onClick = {
-                        if (pagerState.currentPage == ReminderDialogPages.values().size - 1) {
+                        if (isEnd) {
                             onSave()
                         } else coroutineScope.launch {
                             pagerState.animateScrollToPage(pagerState.currentPage + 1)
                         }
                     },
+                    colors = if (isEnd) ButtonDefaults.buttonColors(
+                        backgroundColor = CustomAppTheme.colors.active,
+                        disabledBackgroundColor = Color.Transparent
+                    ) else ButtonDefaults.buttonColors(
+                        backgroundColor = CustomAppTheme.colors.mainBackground,
+                        disabledBackgroundColor = Color.Transparent
+                    ),
+                    textColor = if (isEnd) Color.White else CustomAppTheme.colors.text
                 )
             }
         }

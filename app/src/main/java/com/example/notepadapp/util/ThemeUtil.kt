@@ -16,7 +16,7 @@ object ThemeUtil {
         get() = _theme
         set(value) {
             _theme = value
-            themeColors = getCurrentColors()
+            themeColors = getCurrentColors(_theme)
         }
 
     var themeColors by mutableStateOf(ColorThemes.Default.colorTheme.darkColors)
@@ -29,11 +29,11 @@ object ThemeUtil {
         saveTheme(context)
     }
 
-    private fun getCurrentColors(): ExtendedColors {
+    fun getCurrentColors(userTheme: UserTheme): ExtendedColors {
         return try {
-            val currentThemeName = if (theme.isDarkTheme) theme.darkThemeName else theme.lightThemeName
+            val currentThemeName = if (userTheme.isDarkTheme) userTheme.darkThemeName else userTheme.lightThemeName
             val currentTheme = ColorThemes.valueOf(currentThemeName)
-            if (theme.isDarkTheme) currentTheme.colorTheme.darkColors else currentTheme.colorTheme.lightColors
+            if (userTheme.isDarkTheme) currentTheme.colorTheme.darkColors else currentTheme.colorTheme.lightColors
         } catch (ex: IllegalArgumentException) {
             Log.d("ThemeUtil -> themeColors", ex.toString())
             if (theme.isDarkTheme) ColorThemes.Default.colorTheme.darkColors else ColorThemes.Default.colorTheme.lightColors

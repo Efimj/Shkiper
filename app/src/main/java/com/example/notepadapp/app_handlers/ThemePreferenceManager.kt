@@ -3,11 +3,10 @@ package com.example.notepadapp.app_handlers
 import android.app.UiModeManager
 import android.content.Context
 import android.content.res.Configuration
-import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import com.example.notepadapp.SharedPreferencesKeys
-import com.example.notepadapp.ui.theme.ColorTheme
 import com.example.notepadapp.ui.theme.ColorThemes
+import com.example.notepadapp.ui.theme.ExtendedColors
 import com.example.notepadapp.ui.theme.UserTheme
 import com.google.gson.Gson
 
@@ -16,7 +15,7 @@ class ThemePreferenceManager(val context: Context) {
         context.getSharedPreferences(SharedPreferencesKeys.ThemePreferencesName, Context.MODE_PRIVATE)
     private val uiModeManager = context.getSystemService(Context.UI_MODE_SERVICE) as UiModeManager
 
-    fun getSavedTheme(): UserTheme {
+    fun getSavedUserTheme(): UserTheme {
         val savedThemeString = sharedPreferences.getString(SharedPreferencesKeys.AppThemeKey, "")
         val currentTheme = if (savedThemeString.isNullOrEmpty()) {
             val isDarkTheme =

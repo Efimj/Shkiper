@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatDelegate.*
 import com.example.notepadapp.app_handlers.ThemePreferenceManager
 import com.example.notepadapp.helpers.localization.LocaleHelper
 import com.example.notepadapp.helpers.localization.Localization
-import com.example.notepadapp.ui.theme.CustomAppTheme
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
@@ -17,7 +16,7 @@ class NotepadApplication : Application() {
     }
 
     private fun setAppTheme(context: Context) {
-        setDefaultNightMode(if (ThemePreferenceManager(context).getSavedTheme().isDarkTheme) MODE_NIGHT_YES else MODE_NIGHT_NO)
+        setDefaultNightMode(if (ThemePreferenceManager(context).getSavedUserTheme().isDarkTheme) MODE_NIGHT_YES else MODE_NIGHT_NO)
     }
 
     override fun attachBaseContext(base: Context) {
