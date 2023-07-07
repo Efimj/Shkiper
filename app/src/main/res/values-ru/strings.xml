@@ -86,5 +86,12 @@
     <string name="Settings">Настройки</string>
     <string name="Clear">Очистить</string>
     <string name="Search">Поиск</string>
+    <string name="Links">Ссылки</string>
+    <string name="Hide">Скрыть</string>
+    <string name="ShowAll">Показать все</string>
+    <string name="Link">Ссылка</string>
+    <string name="LinkCopied">Ссылка скопирована</string>
+    <string name="LinkImage">Изображение ссылки</string>
+    <string name="EmptyNote">Пустая заметка</string>
 
 </resources>

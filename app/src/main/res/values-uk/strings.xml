@@ -86,5 +86,12 @@
     <string name="Settings">Налаштування</string>
     <string name="Clear">Очистити</string>
     <string name="Search">Пошук</string>
+    <string name="Links">Посилання</string>
+    <string name="Hide">Приховати</string>
+    <string name="ShowAll">Показати все</string>
+    <string name="Link">Посилання</string>
+    <string name="LinkCopied">Посилання скопійоване</string>
+    <string name="LinkImage">Зображення посилання</string>
+    <string name="EmptyNote">Порожня примітка</string>
 
 </resources>

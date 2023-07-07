@@ -13,10 +13,11 @@ import com.example.notepadapp.database.models.Note
 import com.example.notepadapp.database.models.Reminder
 import com.example.notepadapp.database.models.RepeatMode
 import com.example.notepadapp.helpers.DateHelper
+import com.example.notepadapp.helpers.LinkHelper
 import com.example.notepadapp.navigation.ARGUMENT_NOTE_ID
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.realm.kotlin.ext.realmSetOf
-import io.realm.kotlin.types.RealmSet
+import kotlinx.coroutines.Delay
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.mongodb.kbson.ObjectId
@@ -31,7 +32,7 @@ class NoteViewModel @Inject constructor(
     private val application: Application,
     private val noteRepository: NoteMongoRepository,
     private val reminderRepository: ReminderMongoRepository,
-    savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
     /*******************
@@ -75,6 +76,24 @@ class NoteViewModel @Inject constructor(
 
     private var _noteHashtags = mutableStateOf(note?.hashtags?.toSet() ?: setOf(""))
     val noteHashtags: State<Set<String>> = _noteHashtags
+
+    /*******************
+     * Note links handler
+     *******************/
+
+    private val _linksMetaData = mutableStateOf(emptySet<LinkHelper.LinkPreview>())
+    val linksMetaData: State<Set<LinkHelper.LinkPreview>> = _linksMetaData
+
+    fun getLinksMetaData() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val links = LinkHelper().findLinks(_noteBody.value)
+            _linksMetaData.value = _linksMetaData.value.filter { it.link in links }.toSet()
+            for (link in links) {
+                if (_linksMetaData.value.any { it.link == link }) continue
+                _linksMetaData.value = _linksMetaData.value.plus(LinkHelper().getOpenGraphData(link))
+            }
+        }
+    }
 
     /*******************
      * States for Possible Undo
@@ -154,6 +173,7 @@ class NoteViewModel @Inject constructor(
             it.body = this@NoteViewModel._noteBody.value
             it.updateDate = this@NoteViewModel._noteUpdatedDate.value
         }
+        getLinksMetaData()
     }
 
     private fun changeNoteContent(header: String, body: String) {

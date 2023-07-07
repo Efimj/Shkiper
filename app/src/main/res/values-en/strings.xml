@@ -86,5 +86,12 @@
     <string name="Settings">Settings</string>
     <string name="Clear">Clear</string>
     <string name="Search">Search</string>
+    <string name="Links">Links</string>
+    <string name="Hide">Hide</string>
+    <string name="ShowAll">Show all</string>
+    <string name="Link">Link</string>
+    <string name="LinkCopied">Link copied</string>
+    <string name="LinkImage">Link image</string>
+    <string name="EmptyNote">Empty note</string>
 
 </resources>

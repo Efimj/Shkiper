@@ -6,6 +6,7 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material3.SnackbarHost
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.runtime.*
@@ -22,7 +23,10 @@ import com.example.notepadapp.navigation.SetupAppScreenNavGraph
 import com.example.notepadapp.navigation.AppScreens
 import com.example.notepadapp.ui.components.buttons.MainMenuButton
 import com.example.notepadapp.ui.components.buttons.RoundedButton
+import com.example.notepadapp.ui.components.cards.SnackbarCard
 import com.example.notepadapp.ui.theme.CustomAppTheme
+import com.example.notepadapp.util.SnackbarHostUtil
+import com.example.notepadapp.util.SnackbarVisualsCustom
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -73,10 +77,19 @@ private fun MainPageLayout(
                 startDestination = if (startDestination == AppScreens.Onboarding.route) AppScreens.Onboarding.route else AppScreens.NoteList.route
             )
         }
+        SnackbarHost(
+            hostState = SnackbarHostUtil.snackbarHostState,
+            modifier = Modifier.align(Alignment.BottomCenter)
+        ) { snackbarData ->
+            Box(
+                Modifier.offset(y = (-30).dp).align(Alignment.BottomCenter)
+            ) {
+                val customVisuals = snackbarData.visuals as SnackbarVisualsCustom
+                SnackbarCard(customVisuals)
+            }
+        }
         Box(
-            Modifier
-                .offset(y = offsetY)
-                .align(Alignment.BottomCenter)
+            Modifier.offset(y = offsetY).align(Alignment.BottomCenter)
         ) {
             RoundedButton(
                 text = stringResource(R.string.Menu),

@@ -12,12 +12,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.*
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.notepadapp.R
 import com.example.notepadapp.database.models.Reminder
 import com.example.notepadapp.database.models.RepeatMode
 import com.example.notepadapp.helpers.DateHelper
@@ -65,7 +67,7 @@ fun NoteCard(
                 NoteAnnotatedContent(header, text, markedText, headerStyle, bodyStyle)
             if (header.isNullOrEmpty() && text.isNullOrEmpty()) {
                 Text(
-                    text = "Empty note",
+                    text = stringResource(R.string.EmptyNote),
                     maxLines = 10,
                     overflow = TextOverflow.Ellipsis,
                     style = MaterialTheme.typography.body1,
@@ -102,7 +104,7 @@ private fun ReminderInformation(reminder: Reminder?) {
             Icon(
                 tint = CustomAppTheme.colors.textSecondary,
                 imageVector = if (reminder.repeat == RepeatMode.NONE) Icons.Default.Event else Icons.Default.Repeat,
-                contentDescription = "Event",
+                contentDescription = stringResource(R.string.Event),
                 modifier = Modifier.height(15.dp)
             )
             Spacer(Modifier.width(4.dp))
