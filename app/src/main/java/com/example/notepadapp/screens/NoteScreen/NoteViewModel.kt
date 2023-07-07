@@ -17,9 +17,7 @@ import com.example.notepadapp.helpers.LinkHelper
 import com.example.notepadapp.navigation.ARGUMENT_NOTE_ID
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.realm.kotlin.ext.realmSetOf
-import kotlinx.coroutines.Delay
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import org.mongodb.kbson.ObjectId
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -88,10 +86,23 @@ class NoteViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             val links = LinkHelper().findLinks(_noteBody.value)
             _linksMetaData.value = _linksMetaData.value.filter { it.link in links }.toSet()
+
+            val newLinkData = mutableListOf<LinkHelper.LinkPreview>()
+            val deferredList = mutableListOf<Deferred<LinkHelper.LinkPreview>>()
+
             for (link in links) {
                 if (_linksMetaData.value.any { it.link == link }) continue
-                _linksMetaData.value = _linksMetaData.value.plus(LinkHelper().getOpenGraphData(link))
+                val deferred = async(Dispatchers.IO) {
+                    LinkHelper().getOpenGraphData(link)
+                }
+                deferredList.add(deferred)
             }
+
+            deferredList.awaitAll().forEach { result ->
+                newLinkData.add(result)
+            }
+
+            _linksMetaData.value = _linksMetaData.value.plus(newLinkData)
         }
     }
 

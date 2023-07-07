@@ -125,9 +125,12 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
                 noteViewModel.noteHashtags.value,
                 noteViewModel::changeNoteHashtags
             )
-            if (noteViewModel.linksMetaData.value.isNotEmpty()) {
+            val currentLinks =
+                noteViewModel.linksMetaData.value.filterNot { it.title.isNullOrEmpty() && it.description.isNullOrEmpty() && it.img.isNullOrEmpty() }
+                    .toSet()
+            if (currentLinks.isNotEmpty()) {
                 Spacer(Modifier.height(15.dp))
-                LinkPreviewList(noteViewModel.linksMetaData.value, Modifier.padding(horizontal = 20.dp))
+                LinkPreviewList(currentLinks, Modifier.padding(horizontal = 20.dp))
             }
             Spacer(Modifier.height(45.dp))
         }
