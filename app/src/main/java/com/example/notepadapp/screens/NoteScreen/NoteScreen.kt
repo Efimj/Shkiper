@@ -1,28 +1,19 @@
 package com.example.notepadapp.screens.NoteScreen
 
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Event
-import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -30,35 +21,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import coil.compose.AsyncImage
 import com.example.notepadapp.R
-import com.example.notepadapp.helpers.LinkHelper
 import com.example.notepadapp.navigation.AppScreens
-import com.example.notepadapp.ui.components.cards.LinkPreviewCard
-import com.example.notepadapp.ui.components.cards.LinkPreviewList
+import com.example.notepadapp.ui.components.layouts.LinkPreviewList
 import com.example.notepadapp.ui.components.fields.CustomTextField
 import com.example.notepadapp.ui.components.fields.HashtagEditor
 import com.example.notepadapp.ui.components.modals.CreateReminderDialog
 import com.example.notepadapp.ui.components.modals.ReminderDialogProperties
-import com.example.notepadapp.ui.modifiers.bounceClick
 import com.example.notepadapp.ui.theme.CustomAppTheme
-import com.example.notepadapp.util.SnackbarHostUtil
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import kotlinx.coroutines.launch
 import java.time.Duration
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -70,7 +50,7 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
         noteViewModel.getLinksMetaData()
         if (noteViewModel.note == null) navController.popBackStack()
     }
-    val scrollState = rememberScrollState()
+    val scrollState = rememberLazyListState()
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route ?: ""
     LaunchedEffect(currentRoute) {
         if (currentRoute.substringBefore("/") != AppScreens.Note.route.substringBefore("/")) {
@@ -79,6 +59,7 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
         }
     }
     val bodyFieldFocusRequester = remember { FocusRequester() }
+    var linkListExpanded = remember { mutableStateOf(false) }
 
     Scaffold(
         backgroundColor = CustomAppTheme.colors.mainBackground,
@@ -86,11 +67,9 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
         bottomBar = { NoteScreenFooter(navController, noteViewModel) },
         modifier = Modifier.imePadding().navigationBarsPadding().fillMaxSize(),
     ) { contentPadding ->
-        Column(
-            Modifier
-                .fillMaxSize()
-                .padding(contentPadding)
-                .verticalScroll(scrollState)
+        LazyColumn(
+            state = scrollState,
+            modifier = Modifier.fillMaxSize().padding(contentPadding)
                 .clickable(
                     indication = null,
                     interactionSource = remember { MutableInteractionSource() } // This is mandatory
@@ -99,40 +78,47 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
                 }
 
         ) {
-            CustomTextField(
-                text = noteViewModel.noteHeader.value,
-                onTextChange = { noteViewModel.updateNoteHeader(it) },
-                placeholder = stringResource(R.string.Header),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text, imeAction = ImeAction.Next),
-                keyboardActions = KeyboardActions(
-                    onAny = {
-                        bodyFieldFocusRequester.requestFocus()
-                    }
-                ),
-                textStyle = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.SemiBold, fontSize = 21.sp),
-                modifier = Modifier.fillMaxSize().padding(horizontal = 20.dp).padding(bottom = 6.dp, top = 4.dp)
-            )
-            CustomTextField(
-                text = noteViewModel.noteBody.value,
-                onTextChange = { noteViewModel.updateNoteBody(it) },
-                placeholder = stringResource(R.string.Text),
-                textStyle = MaterialTheme.typography.body1,
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp).focusRequester(bodyFieldFocusRequester)
-            )
-            Spacer(Modifier.height(10.dp))
-            HashtagEditor(
-                Modifier.padding(horizontal = 20.dp),
-                noteViewModel.noteHashtags.value,
-                noteViewModel::changeNoteHashtags
-            )
-            val currentLinks =
-                noteViewModel.linksMetaData.value.filterNot { it.title.isNullOrEmpty() && it.description.isNullOrEmpty() && it.img.isNullOrEmpty() }
-                    .toSet()
-            if (currentLinks.isNotEmpty()) {
-                Spacer(Modifier.height(15.dp))
-                LinkPreviewList(currentLinks, Modifier.padding(horizontal = 20.dp))
+            item {
+                CustomTextField(
+                    text = noteViewModel.noteHeader.value,
+                    onTextChange = { noteViewModel.updateNoteHeader(it) },
+                    placeholder = stringResource(R.string.Header),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text, imeAction = ImeAction.Next),
+                    keyboardActions = KeyboardActions(
+                        onAny = {
+                            bodyFieldFocusRequester.requestFocus()
+                        }
+                    ),
+                    textStyle = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.SemiBold, fontSize = 21.sp),
+                    modifier = Modifier.fillMaxSize().padding(bottom = 6.dp, top = 4.dp).padding(horizontal = 20.dp)
+                )
             }
-            Spacer(Modifier.height(45.dp))
+            item {
+                CustomTextField(
+                    text = noteViewModel.noteBody.value,
+                    onTextChange = { noteViewModel.updateNoteBody(it) },
+                    placeholder = stringResource(R.string.Text),
+                    textStyle = MaterialTheme.typography.body1,
+                    modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp).padding(horizontal = 20.dp)
+                        .focusRequester(bodyFieldFocusRequester)
+                )
+            }
+            item {
+                HashtagEditor(
+                    Modifier.padding(bottom = 15.dp).padding(horizontal = 20.dp),
+                    noteViewModel.noteHashtags.value,
+                    noteViewModel::changeNoteHashtags
+                )
+            }
+            LinkPreviewList(
+                noteViewModel.linksData.value,
+                linkListExpanded,
+                noteViewModel.linksLoading,
+                Modifier.padding(horizontal = 20.dp)
+            )
+            item {
+                Spacer(Modifier.height(45.dp))
+            }
         }
     }
 
@@ -150,10 +136,10 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
         )
     }
 
-    LaunchedEffect(scrollState.value) {
+    LaunchedEffect(scrollState.canScrollBackward, scrollState.canScrollForward) {
         if (scrollState.canScrollBackward || scrollState.canScrollForward) {
-            noteViewModel.setTopAppBarHover(scrollState.value > 0)
-            noteViewModel.setBottomAppBarHover(scrollState.value < scrollState.maxValue)
+            noteViewModel.setTopAppBarHover(scrollState.canScrollBackward)
+            noteViewModel.setBottomAppBarHover(scrollState.canScrollForward)
         } else {
             noteViewModel.setTopAppBarHover(false)
             noteViewModel.setBottomAppBarHover(false)

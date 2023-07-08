@@ -1,7 +1,6 @@
 package com.example.notepadapp.screens.NoteScreen
 
 import android.app.Application
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
@@ -79,19 +78,31 @@ class NoteViewModel @Inject constructor(
      * Note links handler
      *******************/
 
-    private val _linksMetaData = mutableStateOf(emptySet<LinkHelper.LinkPreview>())
-    val linksMetaData: State<Set<LinkHelper.LinkPreview>> = _linksMetaData
+    private var _allLinksMetaData = emptySet<LinkHelper.LinkPreview>()
+
+    private var allLinksMetaData: Set<LinkHelper.LinkPreview>
+        get() = _allLinksMetaData
+        set(value) {
+            _allLinksMetaData = value
+            _linksData.value = getCorrectLinks()
+        }
+
+    private val _linksData = mutableStateOf(emptySet<LinkHelper.LinkPreview>())
+    val linksData: State<Set<LinkHelper.LinkPreview>> = _linksData
+
+    private val _linksLoading = mutableStateOf(true)
+    val linksLoading: State<Boolean> = _linksLoading
 
     fun getLinksMetaData() {
         viewModelScope.launch(Dispatchers.IO) {
             val links = LinkHelper().findLinks(_noteBody.value)
-            _linksMetaData.value = _linksMetaData.value.filter { it.link in links }.toSet()
+            allLinksMetaData = allLinksMetaData.filter { it.link in links }.toSet()
 
             val newLinkData = mutableListOf<LinkHelper.LinkPreview>()
             val deferredList = mutableListOf<Deferred<LinkHelper.LinkPreview>>()
 
             for (link in links) {
-                if (_linksMetaData.value.any { it.link == link }) continue
+                if (allLinksMetaData.any { it.link == link }) continue
                 val deferred = async(Dispatchers.IO) {
                     LinkHelper().getOpenGraphData(link)
                 }
@@ -102,8 +113,14 @@ class NoteViewModel @Inject constructor(
                 newLinkData.add(result)
             }
 
-            _linksMetaData.value = _linksMetaData.value.plus(newLinkData)
+            allLinksMetaData = allLinksMetaData.plus(newLinkData)
+            _linksLoading.value = false
         }
+    }
+
+    fun getCorrectLinks(): Set<LinkHelper.LinkPreview> {
+        return allLinksMetaData.filterNot { it.title.isNullOrEmpty() && it.description.isNullOrEmpty() && it.img.isNullOrEmpty() }
+            .toSet()
     }
 
     /*******************

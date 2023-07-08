@@ -93,5 +93,6 @@
     <string name="LinkCopied">Ссылка скопирована</string>
     <string name="LinkImage">Изображение ссылки</string>
     <string name="EmptyNote">Пустая заметка</string>
+    <string name="Loading">Загрузка</string>
 
 </resources>

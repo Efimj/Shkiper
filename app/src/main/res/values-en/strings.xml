@@ -93,5 +93,6 @@
     <string name="LinkCopied">Link copied</string>
     <string name="LinkImage">Link image</string>
     <string name="EmptyNote">Empty note</string>
+    <string name="Loading">Loading</string>
 
 </resources>
