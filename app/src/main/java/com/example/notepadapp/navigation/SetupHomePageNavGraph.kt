@@ -104,7 +104,7 @@ fun SetupAppScreenNavGraph(
                 fadeIn() + scaleIn(initialScale = 0.9f)
             },
             exitTransition = {
-                fadeOut() + scaleOut(targetScale = 0.9f) + slideOutVertically { -150 }
+                fadeOut() + scaleOut(targetScale = 0.9f)
             }
         ) {
             NoteScreen(navController)
