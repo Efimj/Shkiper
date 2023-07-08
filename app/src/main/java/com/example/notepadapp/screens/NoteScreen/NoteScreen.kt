@@ -47,7 +47,7 @@ import java.util.*
 @Composable
 fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hiltViewModel()) {
     LaunchedEffect(Unit) {
-        noteViewModel.getLinksMetaData()
+        noteViewModel.runFetchingLinksMetaData()
         if (noteViewModel.note == null) navController.popBackStack()
     }
     val scrollState = rememberLazyListState()

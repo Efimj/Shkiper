@@ -51,7 +51,7 @@ class NoteViewModel @Inject constructor(
     }
 
     /*******************
-     * Note
+     * Note States
      *******************/
 
     private var _noteId = mutableStateOf(ObjectId(savedStateHandle[ARGUMENT_NOTE_ID] ?: ""))
@@ -79,6 +79,13 @@ class NoteViewModel @Inject constructor(
      *******************/
 
     private var _allLinksMetaData = emptySet<LinkHelper.LinkPreview>()
+    private val _linksData = mutableStateOf(emptySet<LinkHelper.LinkPreview>())
+    val linksData: State<Set<LinkHelper.LinkPreview>> = _linksData
+
+    private val _linksLoading = mutableStateOf(true)
+    val linksLoading: State<Boolean> = _linksLoading
+
+    private var linkRefreshTimer: Timer? = null
 
     private var allLinksMetaData: Set<LinkHelper.LinkPreview>
         get() = _allLinksMetaData
@@ -87,13 +94,23 @@ class NoteViewModel @Inject constructor(
             _linksData.value = getCorrectLinks()
         }
 
-    private val _linksData = mutableStateOf(emptySet<LinkHelper.LinkPreview>())
-    val linksData: State<Set<LinkHelper.LinkPreview>> = _linksData
+    fun runFetchingLinksMetaData() {
+        if (linkRefreshTimer == null) {
+            fetchLinkMetaData()
+            linkRefreshTimer?.cancel()
+            linkRefreshTimer = Timer()
+            return
+        }
+        linkRefreshTimer?.cancel()
+        linkRefreshTimer = Timer()
+        linkRefreshTimer?.schedule(object : TimerTask() {
+            override fun run() {
+                fetchLinkMetaData()
+            }
+        }, 1000L)
+    }
 
-    private val _linksLoading = mutableStateOf(true)
-    val linksLoading: State<Boolean> = _linksLoading
-
-    fun getLinksMetaData() {
+    private fun fetchLinkMetaData() {
         viewModelScope.launch(Dispatchers.IO) {
             val links = LinkHelper().findLinks(_noteBody.value)
             allLinksMetaData = allLinksMetaData.filter { it.link in links }.toSet()
@@ -160,6 +177,7 @@ class NoteViewModel @Inject constructor(
             _intermediateStates.value[_currentStateIndex.value].header,
             _intermediateStates.value[_currentStateIndex.value].body
         )
+        runFetchingLinksMetaData()
     }
 
     fun noteStateGoBack() {
@@ -169,6 +187,7 @@ class NoteViewModel @Inject constructor(
             _intermediateStates.value[_currentStateIndex.value].header,
             _intermediateStates.value[_currentStateIndex.value].body
         )
+        runFetchingLinksMetaData()
     }
 
     /*******************
@@ -201,7 +220,7 @@ class NoteViewModel @Inject constructor(
             it.body = this@NoteViewModel._noteBody.value
             it.updateDate = this@NoteViewModel._noteUpdatedDate.value
         }
-        getLinksMetaData()
+        runFetchingLinksMetaData()
     }
 
     private fun changeNoteContent(header: String, body: String) {

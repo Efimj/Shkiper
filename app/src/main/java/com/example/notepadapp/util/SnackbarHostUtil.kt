@@ -15,4 +15,10 @@ data class SnackbarVisualsCustom(
 
 object SnackbarHostUtil {
     val snackbarHostState = SnackbarHostState()
+
+//    fun showSnackbar(snackbarData: SnackbarVisualsCustom) {
+//        snackbarHostState.showSnackbar(
+//            snackbarData
+//        )
+//    }
 }
