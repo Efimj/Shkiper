@@ -4,8 +4,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.DropdownMenu
-import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -48,14 +48,15 @@ fun DropDownButton(
                 .background(CustomAppTheme.colors.mainBackground)
                 .clip(RoundedCornerShape(15.dp))
                 .border(1.dp, CustomAppTheme.colors.stroke, RoundedCornerShape(15.dp))
+
         ) {
             items.forEachIndexed { index, s ->
-                DropdownMenuItem(onClick = {
+                DropdownMenuItem(
+                    text = { Text(text = s, color = CustomAppTheme.colors.text, style = MaterialTheme.typography.body1) },
+                    onClick = {
                     onChangedSelection(index)
                     expanded = false
-                }) {
-                    Text(text = s, color = CustomAppTheme.colors.text, style = MaterialTheme.typography.body1)
-                }
+                })
             }
         }
     }
