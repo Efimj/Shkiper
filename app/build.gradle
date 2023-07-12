@@ -8,11 +8,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.notepadapp'
+    namespace 'com.android.notepad'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.notepadapp"
+        applicationId "com.android.notepad"
         minSdk 27
         targetSdk 33
         versionCode 1
