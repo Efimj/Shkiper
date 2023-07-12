@@ -9,6 +9,7 @@ import com.android.notepad.screens.NoteListScreen.NoteListScreen
 import com.android.notepad.screens.NoteScreen.NoteScreen
 import com.android.notepad.screens.OnboardingScreen.OnBoardingScreen
 import com.android.notepad.screens.SettingsScreen.SettingsScreen
+import com.android.notepad.screens.StatisticsScreen.StatisticsScreen
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 
@@ -19,6 +20,10 @@ fun SetupAppScreenNavGraph(
     navController: NavHostController,
     startDestination: String
 ) {
+    fun isSecondaryRoute(targetRoute: String?): Boolean {
+        return AppScreens.SecondaryRoutes.isSecondaryRoute(targetRoute ?: "")
+    }
+
     AnimatedNavHost(
         navController = navController,
         startDestination = startDestination
@@ -28,13 +33,15 @@ fun SetupAppScreenNavGraph(
             enterTransition = {
                 when (initialState.destination.route) {
                     AppScreens.Note.route -> null
-                    else -> slideInVertically(initialOffsetY = { -40 }) + fadeIn()
+                    else -> if (isSecondaryRoute(initialState.destination.route)) null else slideInVertically(
+                        initialOffsetY = { -40 }) + fadeIn()
                 }
             },
             exitTransition = {
                 when (targetState.destination.route) {
                     AppScreens.Note.route -> null
-                    else -> slideOutVertically(targetOffsetY = { 50 }) + fadeOut()
+                    else -> if (isSecondaryRoute(targetState.destination.route)) null else slideOutVertically(
+                        targetOffsetY = { 50 }) + fadeOut()
                 }
             }
         ) {
@@ -46,13 +53,15 @@ fun SetupAppScreenNavGraph(
             enterTransition = {
                 when (initialState.destination.route) {
                     AppScreens.Note.route -> null
-                    else -> slideInVertically(initialOffsetY = { -40 }) + fadeIn()
+                    else -> if (isSecondaryRoute(initialState.destination.route)) null else slideInVertically(
+                        initialOffsetY = { -40 }) + fadeIn()
                 }
             },
             exitTransition = {
                 when (targetState.destination.route) {
                     AppScreens.Note.route -> null
-                    else -> slideOutVertically(targetOffsetY = { 50 }) + fadeOut()
+                    else -> if (isSecondaryRoute(targetState.destination.route)) null else slideOutVertically(
+                        targetOffsetY = { 50 }) + fadeOut()
                 }
             }
         ) {
@@ -64,13 +73,15 @@ fun SetupAppScreenNavGraph(
             enterTransition = {
                 when (initialState.destination.route) {
                     AppScreens.Note.route -> null
-                    else -> slideInVertically(initialOffsetY = { -40 }) + fadeIn()
+                    else -> if (isSecondaryRoute(initialState.destination.route)) null else slideInVertically(
+                        initialOffsetY = { -40 }) + fadeIn()
                 }
             },
             exitTransition = {
                 when (targetState.destination.route) {
                     AppScreens.Note.route -> null
-                    else -> slideOutVertically(targetOffsetY = { 50 }) + fadeOut()
+                    else -> if (isSecondaryRoute(targetState.destination.route)) null else slideOutVertically(
+                        targetOffsetY = { 50 }) + fadeOut()
                 }
             }
         ) {
@@ -82,13 +93,15 @@ fun SetupAppScreenNavGraph(
             enterTransition = {
                 when (initialState.destination.route) {
                     AppScreens.Note.route -> null
-                    else -> slideInVertically(initialOffsetY = { -40 }) + fadeIn()
+                    else -> if (isSecondaryRoute(initialState.destination.route)) null else slideInVertically(
+                        initialOffsetY = { -40 }) + fadeIn()
                 }
             },
             exitTransition = {
                 when (targetState.destination.route) {
                     AppScreens.Note.route -> null
-                    else -> slideOutVertically(targetOffsetY = { 50 }) + fadeOut()
+                    else -> if (isSecondaryRoute(targetState.destination.route)) null else slideOutVertically(
+                        targetOffsetY = { 50 }) + fadeOut()
                 }
             }
         ) {
@@ -97,25 +110,21 @@ fun SetupAppScreenNavGraph(
 
         composable(
             route = AppScreens.Note.route,
-            arguments = listOf(navArgument(ARGUMENT_NOTE_ID) {
-                type = NavType.StringType
-            }),
-            enterTransition = {
-                fadeIn() + scaleIn(initialScale = 0.9f)
-            },
-            exitTransition = {
-                fadeOut() + scaleOut(targetScale = 0.9f)
-            }
-        ) {
-            NoteScreen(navController)
-        }
+            arguments = listOf(navArgument(ARGUMENT_NOTE_ID) { type = NavType.StringType }),
+            enterTransition = { fadeIn() + scaleIn(initialScale = 0.9f) },
+            exitTransition = { fadeOut() + scaleOut(targetScale = 0.9f) }
+        ) { NoteScreen(navController) }
 
         composable(
             route = AppScreens.Onboarding.route,
-            enterTransition = { slideInVertically(initialOffsetY = { -40 }) + fadeIn() },
-            exitTransition = { slideOutVertically(targetOffsetY = { 50 }) + fadeOut() }
-        ) {
-            OnBoardingScreen(navController)
-        }
+            enterTransition = { fadeIn() + slideInHorizontally() },
+            exitTransition = { fadeOut() + slideOutHorizontally() }
+        ) { OnBoardingScreen(navController) }
+
+        composable(
+            route = AppScreens.Statistics.route,
+            enterTransition = { fadeIn() + slideInHorizontally() },
+            exitTransition = { fadeOut() + slideOutHorizontally() }
+        ) { StatisticsScreen() }
     }
 }

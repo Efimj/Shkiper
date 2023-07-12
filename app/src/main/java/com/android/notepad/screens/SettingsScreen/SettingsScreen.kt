@@ -108,6 +108,11 @@ fun SettingsScreen(navController: NavController, settingsViewModel: SettingsView
                 stringResource(R.string.Open),
                 Icons.Outlined.ViewCarousel
             ) { navController.navigate(AppScreens.Onboarding.route) }
+            SettingsItem(
+                stringResource(R.string.StatisticsPage),
+                stringResource(R.string.Open),
+                Icons.Outlined.DataUsage
+            ) { navController.navigate(AppScreens.Statistics.route) }
         }
         SettingsItemGroup {
             Text(

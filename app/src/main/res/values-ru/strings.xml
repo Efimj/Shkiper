@@ -38,6 +38,7 @@
     <string name="DarkTheme">Темная</string>
     <string name="Application">Приложение</string>
     <string name="ApplicationColors">Цвета приложения</string>
+    <string name="StatisticsPage">Страница статистики</string>
 
     <!--    Onboarding page   -->
     <string name="Back">Назад</string>
