@@ -12,18 +12,18 @@ data class StatisticsData(
     var openAppCount: ULong
         get() = _openAppCount
         set(value) {
-            setValue(value, _openAppCount)
+            _openAppCount = setValue(value, _openAppCount)
         }
 
     var countCreatedNotes: ULong
         get() = _countCreatedNotes
         set(value) {
-            setValue(value, _countCreatedNotes)
+            _countCreatedNotes = setValue(value, _countCreatedNotes)
         }
 
     var countCreatedReminders: ULong
         get() = _countCreatedReminders
         set(value) {
-            setValue(value, _countCreatedReminders)
+            _countCreatedReminders = setValue(value, _countCreatedReminders)
         }
 }

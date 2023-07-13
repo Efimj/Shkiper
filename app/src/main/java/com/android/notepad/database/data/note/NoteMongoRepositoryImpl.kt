@@ -6,6 +6,7 @@ import com.android.notepad.database.data.reminder.ReminderMongoRepositoryImpl
 import com.android.notepad.database.models.Note
 import com.android.notepad.database.models.NotePosition
 import com.android.notepad.services.notification_service.NotificationScheduler
+import com.android.notepad.services.statistics_service.StatisticsService
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.realm.kotlin.Realm
 import io.realm.kotlin.ext.query
@@ -58,6 +59,7 @@ class NoteMongoRepositoryImpl(val realm: Realm, @ApplicationContext val context:
 
     override suspend fun insertNote(note: Note) {
         realm.write { copyToRealm(note) }
+        StatisticsService().incrementCreatedNotesCount(context)
     }
 
     override suspend fun updateNote(id: ObjectId, updateParams: (Note) -> Unit) {

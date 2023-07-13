@@ -7,6 +7,7 @@ import com.android.notepad.database.models.Note
 import com.android.notepad.database.models.Reminder
 import com.android.notepad.services.notification_service.NotificationData
 import com.android.notepad.services.notification_service.NotificationScheduler
+import com.android.notepad.services.statistics_service.StatisticsService
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.realm.kotlin.Realm
 import io.realm.kotlin.ext.query
@@ -36,6 +37,7 @@ class ReminderMongoRepositoryImpl(val realm: Realm, @ApplicationContext val cont
     override suspend fun insertReminder(reminder: Reminder, note: Note) {
         realm.write { copyToRealm(reminder) }
         scheduleNotification(reminder, note)
+        StatisticsService().incrementCreatedRemindersCount(context)
     }
 
     override suspend fun updateReminder(id: ObjectId, updateParams: (Reminder) -> Unit) {
@@ -67,6 +69,7 @@ class ReminderMongoRepositoryImpl(val realm: Realm, @ApplicationContext val cont
                         reminder.noteId = note._id
                         reminder.let(updateParams)
                         copyToRealm(reminder)
+                        StatisticsService().incrementCreatedRemindersCount(context)
                     }
                     scheduleNotification(reminder, note)
                 } catch (e: Exception) {

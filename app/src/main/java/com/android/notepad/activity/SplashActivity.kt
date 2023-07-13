@@ -7,11 +7,13 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.runtime.LaunchedEffect
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.android.notepad.NotepadApplication
 import com.android.notepad.helpers.localization.LocaleHelper
 import com.android.notepad.screens.NoteListScreen.NotesViewModel
+import com.android.notepad.services.statistics_service.StatisticsService
 import com.google.accompanist.pager.ExperimentalPagerApi
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -32,7 +34,7 @@ class SplashActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val splashScreen = installSplashScreen()
-
+        val context = this.applicationContext
         super.onCreate(savedInstanceState)
 
         splashScreen.setKeepOnScreenCondition { true }
@@ -43,12 +45,15 @@ class SplashActivity : ComponentActivity() {
         }
 
         GlobalScope.launch {
-            delay(300)
+            StatisticsService().incrementOpenAppCount(context)
+        }
+
+        GlobalScope.launch {
+            delay(250)
             moveNext()
         }
     }
 
-    @OptIn(ExperimentalPagerApi::class)
     private fun moveNext() {
         startActivity(Intent(this, MainActivity::class.java))
         finish()
