@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">JetNotes</string>
+    <string name="app_name">Shkiper</string>
 
     <!--    Repeating   -->
     <string name="none">Does not repeat</string>
@@ -94,5 +94,6 @@
     <string name="LinkImage">Link image</string>
     <string name="EmptyNote">Empty note</string>
     <string name="Loading">Loading</string>
+    <string name="Statistics">Statistics</string>
 
 </resources>

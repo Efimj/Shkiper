@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">JetNotes</string>
+    <string name="app_name">Shkiper</string>
 
     <!--    Repeating   -->
     <string name="none">Не повторять</string>
@@ -95,5 +95,6 @@
     <string name="LinkImage">Изображение ссылки</string>
     <string name="EmptyNote">Пустая заметка</string>
     <string name="Loading">Загрузка</string>
+    <string name="Statistics">Статистика</string>
 
 </resources>
