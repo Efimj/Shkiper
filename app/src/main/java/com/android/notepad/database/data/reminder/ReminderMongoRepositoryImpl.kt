@@ -5,8 +5,9 @@ import android.util.Log
 import com.android.notepad.R
 import com.android.notepad.database.models.Note
 import com.android.notepad.database.models.Reminder
-import com.android.notepad.notification_service.NotificationData
-import com.android.notepad.notification_service.NotificationScheduler
+import com.android.notepad.services.notification_service.NotificationData
+import com.android.notepad.services.notification_service.NotificationScheduler
+import dagger.hilt.android.qualifiers.ApplicationContext
 import io.realm.kotlin.Realm
 import io.realm.kotlin.ext.query
 import io.realm.kotlin.query.Sort
@@ -16,7 +17,7 @@ import org.mongodb.kbson.ObjectId
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
 
-class ReminderMongoRepositoryImpl(val realm: Realm) : ReminderMongoRepository {
+class ReminderMongoRepositoryImpl(val realm: Realm, @ApplicationContext val context: Context) : ReminderMongoRepository {
     override fun getAllReminders(): Flow<List<Reminder>> {
         return realm.query<Reminder>()
             .sort("_id", Sort.DESCENDING)
@@ -32,26 +33,25 @@ class ReminderMongoRepositoryImpl(val realm: Realm) : ReminderMongoRepository {
         return realm.query<Reminder>(query = "noteId == $0", noteId).first().find()
     }
 
-    override suspend fun insertReminder(reminder: Reminder, note: Note, context: Context) {
+    override suspend fun insertReminder(reminder: Reminder, note: Note) {
         realm.write { copyToRealm(reminder) }
-        scheduleNotification(reminder, note, context)
+        scheduleNotification(reminder, note)
     }
 
-    override suspend fun updateReminder(id: ObjectId, context: Context, updateParams: (Reminder) -> Unit) {
+    override suspend fun updateReminder(id: ObjectId, updateParams: (Reminder) -> Unit) {
         getReminder(id)?.also { currentReminder ->
             realm.writeBlocking {
                 val queriedReminder = findLatest(currentReminder) ?: return@writeBlocking
                 queriedReminder.apply {
                     updateParams(this)
                 }
-                updateNotification(context, id, queriedReminder)
+                updateNotification(id, queriedReminder)
             }
         }
     }
 
     override suspend fun updateOrCreateReminderForNotes(
         notes: List<Note>,
-        context: Context,
         updateParams: (Reminder) -> Unit
     ) {
         realm.writeBlocking {
@@ -68,7 +68,7 @@ class ReminderMongoRepositoryImpl(val realm: Realm) : ReminderMongoRepository {
                         reminder.let(updateParams)
                         copyToRealm(reminder)
                     }
-                    scheduleNotification(reminder, note, context)
+                    scheduleNotification(reminder, note)
                 } catch (e: Exception) {
                     Log.d("ReminderMongoRepositoryImpl", "${e.message}")
                 }
@@ -76,26 +76,26 @@ class ReminderMongoRepositoryImpl(val realm: Realm) : ReminderMongoRepository {
         }
     }
 
-    override suspend fun deleteReminder(id: ObjectId, context: Context) {
+    override suspend fun deleteReminder(id: ObjectId) {
         realm.write {
             val reminder = getReminder(id) ?: return@write
             try {
                 findLatest(reminder)?.let { delete(it) }
-                deleteNotification(context, id)
+                deleteNotification(id)
             } catch (e: Exception) {
                 Log.d("ReminderMongoRepositoryImpl", "${e.message}")
             }
         }
     }
 
-    override suspend fun deleteReminder(ids: List<ObjectId>, context: Context) {
+    override suspend fun deleteReminder(ids: List<ObjectId>) {
         realm.writeBlocking {
             for (id in ids) {
                 val reminder = getReminder(id) ?: continue
                 try {
                     findLatest(reminder)
                         ?.let { delete(it) }
-                    deleteNotification(context, id)
+                    deleteNotification(id)
                 } catch (e: Exception) {
                     Log.d("ReminderMongoRepositoryImpl", "${e.message}")
                 }
@@ -103,25 +103,24 @@ class ReminderMongoRepositoryImpl(val realm: Realm) : ReminderMongoRepository {
         }
     }
 
-    override suspend fun deleteReminderForNote(noteId: ObjectId, context: Context){
+    override suspend fun deleteReminderForNote(noteId: ObjectId){
         realm.write {
             val reminder = getReminderForNote(noteId) ?: return@write
             try {
                 findLatest(reminder)?.let { delete(it) }
-                deleteNotification(context, reminder._id)
+                deleteNotification(reminder._id)
             } catch (e: Exception) {
                 Log.d("ReminderMongoRepositoryImpl", "${e.message}")
             }
         }
     }
 
-    private fun deleteNotification(context: Context, reminderId: ObjectId) {
+    private fun deleteNotification(reminderId: ObjectId) {
         val notificationScheduler = NotificationScheduler(context)
         notificationScheduler.deleteNotification(reminderId.timestamp)
     }
 
     private fun updateNotification(
-        context: Context,
         reminderId: ObjectId,
         queriedReminder: Reminder
     ) {
@@ -138,7 +137,6 @@ class ReminderMongoRepositoryImpl(val realm: Realm) : ReminderMongoRepository {
     private fun scheduleNotification(
         reminder: Reminder,
         note: Note,
-        context: Context
     ) {
         val notificationScheduler = NotificationScheduler(context)
         notificationScheduler.createNotificationChannel(NotificationScheduler.Companion.NotificationChannels.NOTECHANNEL)

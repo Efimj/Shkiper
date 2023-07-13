@@ -26,7 +26,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NoteViewModel @Inject constructor(
-    private val application: Application,
     private val noteRepository: NoteMongoRepository,
     private val reminderRepository: ReminderMongoRepository,
     savedStateHandle: SavedStateHandle,
@@ -258,7 +257,7 @@ class NoteViewModel @Inject constructor(
     private fun updateNote(updateParams: (Note) -> Unit) {
         if (this@NoteViewModel.note == null) return
         viewModelScope.launch(Dispatchers.IO) {
-            noteRepository.updateNote(this@NoteViewModel.note._id, application.applicationContext, updateParams)
+            noteRepository.updateNote(this@NoteViewModel.note._id, updateParams)
         }
     }
 
@@ -266,7 +265,6 @@ class NoteViewModel @Inject constructor(
         viewModelScope.launch {
             if (noteHeader.value.isEmpty() && noteBody.value.isEmpty()) noteRepository.deleteNote(
                 _noteId.value,
-                application.applicationContext
             )
         }
     }
@@ -300,7 +298,7 @@ class NoteViewModel @Inject constructor(
                 val note = noteRepository.getNote(_noteId.value) ?: return@launch
                 val noteList = listOf(note)
                 reminderRepository.updateOrCreateReminderForNotes(
-                    noteList, application.applicationContext
+                    noteList
                 ) { updatedReminder ->
                     updatedReminder.date = date
                     updatedReminder.time = time
@@ -315,7 +313,7 @@ class NoteViewModel @Inject constructor(
     fun deleteReminder() {
         viewModelScope.launch {
             val reminderId = reminder.value?._id ?: return@launch
-            reminderRepository.deleteReminder(reminderId, application.applicationContext)
+            reminderRepository.deleteReminder(reminderId)
             _reminder.value = null
         }
         switchReminderDialogShow()

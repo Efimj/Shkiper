@@ -1,4 +1,4 @@
-package com.android.notepad.notification_service
+package com.android.notepad.services.notification_service
 
 import android.app.NotificationManager
 import android.app.PendingIntent

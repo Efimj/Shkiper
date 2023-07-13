@@ -1,5 +1,6 @@
 package com.android.notepad.database.di
 
+import android.content.Context
 import com.android.notepad.database.data.note.NoteMongoRepository
 import com.android.notepad.database.data.note.NoteMongoRepositoryImpl
 import com.android.notepad.database.data.reminder.ReminderMongoRepository
@@ -9,13 +10,14 @@ import com.android.notepad.database.models.Reminder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import io.realm.kotlin.Realm
 import io.realm.kotlin.RealmConfiguration
 import javax.inject.Singleton
 
-@InstallIn(SingletonComponent::class)
 @Module
+@InstallIn(SingletonComponent::class)
 object DatabaseModule {
     @Singleton
     @Provides
@@ -33,13 +35,13 @@ object DatabaseModule {
 
     @Singleton
     @Provides
-    fun provideNoteMongoRepository(realm: Realm): NoteMongoRepository {
-        return NoteMongoRepositoryImpl(realm = realm)
+    fun provideNoteMongoRepository(realm: Realm, @ApplicationContext appContext: Context): NoteMongoRepository {
+        return NoteMongoRepositoryImpl(realm = realm, context = appContext)
     }
 
     @Singleton
     @Provides
-    fun provideReminderMongoRepository(realm: Realm): ReminderMongoRepository {
-        return ReminderMongoRepositoryImpl(realm = realm)
+    fun provideReminderMongoRepository(realm: Realm, @ApplicationContext appContext: Context): ReminderMongoRepository {
+        return ReminderMongoRepositoryImpl(realm = realm, context = appContext)
     }
 }

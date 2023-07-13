@@ -1,4 +1,4 @@
-package com.android.notepad.notification_service
+package com.android.notepad.services.notification_service
 
 import com.android.notepad.database.models.RepeatMode
 

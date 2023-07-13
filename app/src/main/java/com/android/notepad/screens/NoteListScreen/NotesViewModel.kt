@@ -26,7 +26,6 @@ import javax.inject.Inject
 class NotesViewModel @Inject constructor(
     private val noteRepository: NoteMongoRepository,
     private val reminderRepository: ReminderMongoRepository,
-    private val application: Application
 ) : ViewModel() {
 
     /*******************
@@ -91,7 +90,7 @@ class NotesViewModel @Inject constructor(
 
     fun deleteSelectedNotes() {
         viewModelScope.launch {
-            noteRepository.deleteNote(selectedNotes.value.toList(), application.applicationContext)
+            noteRepository.deleteNote(selectedNotes.value.toList())
             clearSelectedNote()
         }
     }
@@ -112,7 +111,7 @@ class NotesViewModel @Inject constructor(
                 }
             }
             pinMode = unpinnedNote != null
-            noteRepository.updateNote(selectedNotes.value.toList(), application.applicationContext) { updatedNote ->
+            noteRepository.updateNote(selectedNotes.value.toList()) { updatedNote ->
                 updatedNote.isPinned = pinMode
             }
             clearSelectedNote()
@@ -194,7 +193,6 @@ class NotesViewModel @Inject constructor(
             viewModelScope.launch {
                 reminderRepository.updateOrCreateReminderForNotes(
                     noteRepository.getNotes(selectedNotes.value.toList()),
-                    application.applicationContext
                 ) { updatedReminder ->
                     updatedReminder.date = date
                     updatedReminder.time = time
@@ -209,7 +207,7 @@ class NotesViewModel @Inject constructor(
         if (selectedNotes.value.isEmpty()) return
         viewModelScope.launch {
             val reminder = reminderRepository.getReminderForNote(selectedNotes.value.toList().first()) ?: return@launch
-            reminderRepository.deleteReminder(reminder._id, application.applicationContext)
+            reminderRepository.deleteReminder(reminder._id)
         }
         switchReminderDialogShow()
     }

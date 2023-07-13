@@ -14,4 +14,5 @@ object SharedPreferencesKeys {
     const val ApplicationStorageName = "ApplicationStorageName"
     const val IsOnboardingPageFinished = "IsOnboardingPageFinished"
     const val Localization = "Localization"
+    const val Statistics = "Statistics"
 }

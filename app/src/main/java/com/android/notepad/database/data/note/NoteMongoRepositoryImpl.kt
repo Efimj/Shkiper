@@ -5,7 +5,8 @@ import android.util.Log
 import com.android.notepad.database.data.reminder.ReminderMongoRepositoryImpl
 import com.android.notepad.database.models.Note
 import com.android.notepad.database.models.NotePosition
-import com.android.notepad.notification_service.NotificationScheduler
+import com.android.notepad.services.notification_service.NotificationScheduler
+import dagger.hilt.android.qualifiers.ApplicationContext
 import io.realm.kotlin.Realm
 import io.realm.kotlin.ext.query
 import io.realm.kotlin.query.Sort
@@ -13,7 +14,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import org.mongodb.kbson.ObjectId
 
-class NoteMongoRepositoryImpl(val realm: Realm) : NoteMongoRepository {
+class NoteMongoRepositoryImpl(val realm: Realm, @ApplicationContext val context: Context) : NoteMongoRepository {
     override fun getAllNotes(): Flow<List<Note>> {
         return realm.query<Note>()
             .sort("_id", Sort.DESCENDING)
@@ -59,21 +60,20 @@ class NoteMongoRepositoryImpl(val realm: Realm) : NoteMongoRepository {
         realm.write { copyToRealm(note) }
     }
 
-    override suspend fun updateNote(id: ObjectId, context: Context, updateParams: (Note) -> Unit) {
+    override suspend fun updateNote(id: ObjectId, updateParams: (Note) -> Unit) {
         getNote(id)?.also { currentNote ->
             realm.writeBlocking {
                 val queriedNote = findLatest(currentNote) ?: return@writeBlocking
                 queriedNote.apply {
                     updateParams(this)
                 }
-                updateNotification(context, queriedNote)
+                updateNotification(queriedNote)
             }
         }
     }
 
     override suspend fun updateNote(
         ids: List<ObjectId>,
-        context: Context,
         updateParams: (Note) -> Unit
     ) {
         realm.writeBlocking {
@@ -82,7 +82,7 @@ class NoteMongoRepositoryImpl(val realm: Realm) : NoteMongoRepository {
                 try {
                     val latest = findLatest(note) ?: continue
                     latest.let(updateParams)
-                    updateNotification(context, latest)
+                    updateNotification(latest)
                 } catch (e: Exception) {
                     Log.d("NoteMongoRepositoryImpl", "${e.message}")
                 }
@@ -90,7 +90,7 @@ class NoteMongoRepositoryImpl(val realm: Realm) : NoteMongoRepository {
         }
     }
 
-    override suspend fun deleteNote(id: ObjectId, context: Context) {
+    override suspend fun deleteNote(id: ObjectId) {
         realm.write {
             val note = getNote(id) ?: return@write
             try {
@@ -100,10 +100,10 @@ class NoteMongoRepositoryImpl(val realm: Realm) : NoteMongoRepository {
                 Log.d("NoteMongoRepositoryImpl", "${e.message}")
             }
         }
-        ReminderMongoRepositoryImpl(realm).deleteReminderForNote(id, context)
+        ReminderMongoRepositoryImpl(realm, context).deleteReminderForNote(id)
     }
 
-    override suspend fun deleteNote(ids: List<ObjectId>, context: Context) {
+    override suspend fun deleteNote(ids: List<ObjectId>) {
         realm.writeBlocking {
             for (id in ids) {
                 val note = getNote(id) ?: continue
@@ -116,11 +116,10 @@ class NoteMongoRepositoryImpl(val realm: Realm) : NoteMongoRepository {
             }
         }
         for (id in ids)
-            ReminderMongoRepositoryImpl(realm).deleteReminderForNote(id, context)
+            ReminderMongoRepositoryImpl(realm, context).deleteReminderForNote(id)
     }
 
     private fun updateNotification(
-        context: Context,
         newNote: Note
     ) {
         // Update notification

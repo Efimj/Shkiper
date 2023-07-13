@@ -1,6 +1,5 @@
 package com.android.notepad.database.data.note
 
-import android.content.Context
 import com.android.notepad.database.models.Note
 import com.android.notepad.database.models.NotePosition
 import kotlinx.coroutines.flow.Flow
@@ -15,8 +14,8 @@ interface NoteMongoRepository {
     fun getHashtags(position: NotePosition): Flow<Set<String>>
     fun filterNotesByContains(text: String): Flow<List<Note>>
     suspend fun insertNote(note: Note)
-    suspend fun updateNote(id: ObjectId, context: Context, updateParams: (Note) -> Unit)
-    suspend fun updateNote(ids: List<ObjectId>, context: Context, updateParams: (Note) -> Unit)
-    suspend fun deleteNote(id: ObjectId, context: Context)
-    suspend fun deleteNote(ids: List<ObjectId>, context: Context)
+    suspend fun updateNote(id: ObjectId, updateParams: (Note) -> Unit)
+    suspend fun updateNote(ids: List<ObjectId>, updateParams: (Note) -> Unit)
+    suspend fun deleteNote(id: ObjectId)
+    suspend fun deleteNote(ids: List<ObjectId>)
 }
