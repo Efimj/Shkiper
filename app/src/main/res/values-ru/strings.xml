@@ -96,5 +96,23 @@
     <string name="EmptyNote">Пустая заметка</string>
     <string name="Loading">Загрузка</string>
     <string name="Statistics">Статистика</string>
+    <string name="StatisticsImage">Изображение статистики</string>
+
+    <!-- Statistics components -->
+    <string name="Thinker">Мыслитель</string>
+    <string name="ThinkerDescription">Количество открытий блокнота</string>
+    <string name="Creator">Создатель</string>
+    <string name="CreatorDescription">Количество созданных заметок</string>
+    <string name="Eternal">Вечный</string>
+    <string name="EternalDescription">Не хочешь забыть? Создай напоминание</string>
+    <string name="Remembered">Помнящий</string>
+    <string name="RememberedDescription">\"Дорогой, ты ничего не забыл?\" - \"Нет\"</string>
+
+    <string name="Pioneer">Первопроходец</string>
+    <string name="PioneerDescription">Установить приложение до 01–01–2024</string>
+    <string name="TruthSeeker">Искатель истины</string>
+    <string name="TruthSeekerDescription">Открыть страницу приложения</string>
+    <string name="NoteDestroyer">Уничтожитель заметок</string>
+    <string name="NoteDestroyerDescription">Я породил тебя и уничтожу! «Тарас Бульба»</string>
 
 </resources>

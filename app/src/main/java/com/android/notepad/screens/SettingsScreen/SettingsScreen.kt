@@ -45,7 +45,7 @@ fun SettingsScreen(navController: NavController, settingsViewModel: SettingsView
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(Modifier.height(65.dp))
+        Spacer(Modifier.height(75.dp))
         SettingsItemGroup {
             Text(
                 color = CustomAppTheme.colors.text,
@@ -53,7 +53,7 @@ fun SettingsScreen(navController: NavController, settingsViewModel: SettingsView
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 20.sp,
                 style = MaterialTheme.typography.body1,
-                modifier = Modifier.padding(top = 15.dp, bottom = 8.dp)
+                modifier = Modifier.padding(bottom = 8.dp)
             )
             SettingsItem(
                 stringResource(R.string.ApplicationTheme),

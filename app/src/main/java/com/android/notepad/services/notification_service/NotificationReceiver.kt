@@ -13,7 +13,10 @@ import com.android.notepad.SharedPreferencesKeys
 import com.android.notepad.activity.MainActivity
 import com.android.notepad.app_handlers.ThemePreferenceManager
 import com.android.notepad.database.models.RepeatMode
+import com.android.notepad.services.statistics_service.StatisticsService
 import com.android.notepad.util.ThemeUtil
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
@@ -84,6 +87,9 @@ class NotificationReceiver : BroadcastReceiver() {
         notificationManager.notify(notification.notificationId, notificationBuilder.build())
 
         scheduleRepeatableNotification(notification, context)
+
+        // Update user statistics
+        StatisticsService().incrementNotificationCount(context)
     }
 
     private fun scheduleRepeatableNotification(

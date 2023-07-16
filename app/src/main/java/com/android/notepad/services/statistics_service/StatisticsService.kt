@@ -6,7 +6,7 @@ class StatisticsService {
     fun incrementCreatedNotesCount(context: Context) {
         StatisticsStorage().apply {
             val statistics = getStatistics(context).apply {
-                countCreatedNotes++
+                createdNotesCount.progress++
             }
             saveStatistics(statistics, context)
         }
@@ -15,7 +15,7 @@ class StatisticsService {
     fun incrementCreatedRemindersCount(context: Context) {
         StatisticsStorage().apply {
             val statistics = getStatistics(context).apply {
-                countCreatedReminders++
+                createdRemindersCount.progress++
             }
             saveStatistics(statistics, context)
         }
@@ -24,7 +24,25 @@ class StatisticsService {
     fun incrementOpenAppCount(context: Context) {
         StatisticsStorage().apply {
             val statistics = getStatistics(context).apply {
-                openAppCount++
+                openAppCount.progress++
+            }
+            saveStatistics(statistics, context)
+        }
+    }
+
+    fun incrementNotificationCount(context: Context) {
+        StatisticsStorage().apply {
+            val statistics = getStatistics(context).apply {
+                notificationCount.progress++
+            }
+            saveStatistics(statistics, context)
+        }
+    }
+
+    fun setPioneerAchievement(context: Context) {
+        StatisticsStorage().apply {
+            val statistics = getStatistics(context).apply {
+                isPioneer.progress++
             }
             saveStatistics(statistics, context)
         }

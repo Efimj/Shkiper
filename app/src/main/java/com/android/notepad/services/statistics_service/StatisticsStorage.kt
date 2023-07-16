@@ -20,6 +20,25 @@ class StatisticsStorage() {
         val sharedPreferences =
             context.getSharedPreferences(SharedPreferencesKeys.ApplicationStorageName, Context.MODE_PRIVATE)
         val json = sharedPreferences.getString(SharedPreferencesKeys.Statistics, "")
-        return if (json.isNullOrEmpty()) StatisticsData() else gson.fromJson(json, StatisticsData::class.java)
+        val savedStatistic =
+            if (json.isNullOrEmpty()) StatisticsData() else gson.fromJson(json, StatisticsData::class.java)
+        return getCurrentStatistics(savedStatistic)
+    }
+
+    private fun getCurrentStatistics(statisticsData: StatisticsData): StatisticsData {
+        val newStatistic = StatisticsData()
+        for ((fieldNumber, property) in newStatistic.javaClass.declaredFields.withIndex()) {
+            property.isAccessible = true
+            val value = property.get(newStatistic)
+            if (value is StatisticsItem) {
+                val item = statisticsData.javaClass.declaredFields[fieldNumber]
+                item.isAccessible = true
+                val statistics = item.get(statisticsData)
+                if (statistics is StatisticsItem) {
+                    value.progress = statistics.progress
+                }
+            }
+        }
+        return newStatistic
     }
 }

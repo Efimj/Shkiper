@@ -97,5 +97,23 @@
     <string name="EmptyNote">Порожня примітка</string>
     <string name="Loading">Завантаження</string>
     <string name="Statistics">Статистика</string>
+    <string name="StatisticsImage">Зображення статистики</string>
+
+    <!-- Statistics components -->
+    <string name="Thinker">Міркуючий</string>
+    <string name="ThinkerDescription">Кількість відкриттів блокнота</string>
+    <string name="Creator">Творець</string>
+    <string name="CreatorDescription">Кількість створених нотаток</string>
+    <string name="Eternal">Вічний</string>
+    <string name="EternalDescription">Не хочеш забути? Створи нагадування</string>
+    <string name="Remembered">Пам\'ятаючий</string>
+    <string name="RememberedDescription">\"Дорогий, ти нічого не забув?\" - \"Ні\"</string>
+
+    <string name="Pioneer">Першопрохідник</string>
+    <string name="PioneerDescription">Встановити додаток до 01–01–2024</string>
+    <string name="TruthSeeker">Шукач істини</string>
+    <string name="TruthSeekerDescription">Відкрити сторінку програми</string>
+    <string name="NoteDestroyer">Знищувач нотаток</string>
+    <string name="NoteDestroyerDescription">Я породив тебе, я і знищу! "Тарас Бульба"</string>
 
 </resources>
