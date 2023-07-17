@@ -18,7 +18,8 @@ import org.mongodb.kbson.ObjectId
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
 
-class ReminderMongoRepositoryImpl(val realm: Realm, @ApplicationContext val context: Context) : ReminderMongoRepository {
+class ReminderMongoRepositoryImpl(val realm: Realm, @ApplicationContext val context: Context) :
+    ReminderMongoRepository {
     override fun getAllReminders(): Flow<List<Reminder>> {
         return realm.query<Reminder>()
             .sort("_id", Sort.DESCENDING)
@@ -37,7 +38,17 @@ class ReminderMongoRepositoryImpl(val realm: Realm, @ApplicationContext val cont
     override suspend fun insertReminder(reminder: Reminder, note: Note) {
         realm.write { copyToRealm(reminder) }
         scheduleNotification(reminder, note)
-        StatisticsService().incrementCreatedRemindersCount(context)
+
+        updateStatisticsCreatedRemindersCount()
+    }
+
+    private fun updateStatisticsCreatedRemindersCount() {
+        // Statistics update
+        val statisticsService = StatisticsService(context)
+        statisticsService.appStatistics.apply {
+            createdRemindersCount.increment()
+        }
+        statisticsService.saveStatistics()
     }
 
     override suspend fun updateReminder(id: ObjectId, updateParams: (Reminder) -> Unit) {
@@ -69,7 +80,7 @@ class ReminderMongoRepositoryImpl(val realm: Realm, @ApplicationContext val cont
                         reminder.noteId = note._id
                         reminder.let(updateParams)
                         copyToRealm(reminder)
-                        StatisticsService().incrementCreatedRemindersCount(context)
+                        updateStatisticsCreatedRemindersCount()
                     }
                     scheduleNotification(reminder, note)
                 } catch (e: Exception) {
@@ -106,7 +117,7 @@ class ReminderMongoRepositoryImpl(val realm: Realm, @ApplicationContext val cont
         }
     }
 
-    override suspend fun deleteReminderForNote(noteId: ObjectId){
+    override suspend fun deleteReminderForNote(noteId: ObjectId) {
         realm.write {
             val reminder = getReminderForNote(noteId) ?: return@write
             try {

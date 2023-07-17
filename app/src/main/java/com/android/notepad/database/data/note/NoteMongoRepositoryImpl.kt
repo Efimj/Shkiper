@@ -59,7 +59,13 @@ class NoteMongoRepositoryImpl(val realm: Realm, @ApplicationContext val context:
 
     override suspend fun insertNote(note: Note) {
         realm.write { copyToRealm(note) }
-        StatisticsService().incrementCreatedNotesCount(context)
+
+        // Statistics update
+        val statisticsService = StatisticsService(context)
+        statisticsService.appStatistics.apply {
+            createdNotesCount.increment()
+        }
+        statisticsService.saveStatistics()
     }
 
     override suspend fun updateNote(id: ObjectId, updateParams: (Note) -> Unit) {

@@ -53,7 +53,7 @@ fun StatisticsInformationDialog(
                     verticalArrangement = Arrangement.Center,
                 ) {
                     Text(
-                        NumberHelper().formatNumber(statistics.progress),
+                        statistics.getStringValue(),
                         color = CustomAppTheme.colors.text,
                         style = MaterialTheme.typography.h5,
                         modifier = Modifier.padding(bottom = 10.dp)

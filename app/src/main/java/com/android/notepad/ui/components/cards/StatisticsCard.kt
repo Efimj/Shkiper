@@ -55,7 +55,7 @@ fun StatisticsCard(statistic: StatisticsItem, onClick: () -> Unit) {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    NumberHelper().formatNumber(statistic.progress),
+                    statistic.getStringValue(),
                     color = CustomAppTheme.colors.text,
                     style = MaterialTheme.typography.h6,
                     modifier = Modifier.basicMarquee(),
@@ -72,3 +72,4 @@ fun StatisticsCard(statistic: StatisticsItem, onClick: () -> Unit) {
         }
     }
 }
+

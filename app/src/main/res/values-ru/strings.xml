@@ -97,6 +97,8 @@
     <string name="Loading">Загрузка</string>
     <string name="Statistics">Статистика</string>
     <string name="StatisticsImage">Изображение статистики</string>
+    <string name="Complete">Выполнено</string>
+    <string name="Uncomplete">Невыполнено</string>
 
     <!-- Statistics components -->
     <string name="Thinker">Мыслитель</string>

@@ -97,6 +97,8 @@
     <string name="Loading">Loading</string>
     <string name="Statistics">Statistics</string>
     <string name="StatisticsImage">Statistics image</string>
+    <string name="Complete">Completed</string>
+    <string name="Uncomplete">Uncompleted</string>
 
     <!--    Statistics components   -->
     <string name="Thinker">Thinker</string>
