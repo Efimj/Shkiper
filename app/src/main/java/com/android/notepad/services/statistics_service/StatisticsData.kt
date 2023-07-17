@@ -6,7 +6,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.android.notepad.R
 import com.android.notepad.helpers.NumberHelper
-import com.google.gson.annotations.SerializedName
 
 abstract class Statistics {
     abstract fun increment()
@@ -53,7 +52,7 @@ data class StatisticsItem(
     fun getStringValue(): String {
         return when (statistics) {
             is LongStatistics -> NumberHelper().formatNumber((statistics as LongStatistics).value)
-            is BooleanStatistics -> stringResource(if ((statistics as BooleanStatistics).value) R.string.Complete else R.string.Uncomplete)
+            is BooleanStatistics -> stringResource(if ((statistics as BooleanStatistics).value) R.string.DoneEmoji else R.string.NotDoneEmoji)
             else -> throw UnsupportedOperationException("Unsupported type")
         }
     }
@@ -121,4 +120,16 @@ data class AppStatistics(
         R.string.NoteDestroyerDescription,
         statisticsData.noteDeletedCount
     ),
-)
+) {
+    fun getStatisticsPreviews(): List<StatisticsItem> {
+        var previewsList = emptyList<StatisticsItem>()
+        for (property in this.javaClass.declaredFields) {
+            property.isAccessible = true
+            val value = property.get(this)
+            if (value is StatisticsItem) {
+                previewsList = previewsList.plus(value)
+            }
+        }
+        return previewsList
+    }
+}

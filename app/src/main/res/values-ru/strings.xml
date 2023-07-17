@@ -98,7 +98,9 @@
     <string name="Statistics">Статистика</string>
     <string name="StatisticsImage">Изображение статистики</string>
     <string name="Complete">Выполнено</string>
-    <string name="Uncomplete">Невыполнено</string>
+    <string name="Uncompleted">Невыполнено</string>
+    <string name="DoneEmoji">✔️</string>
+    <string name="NotDoneEmoji">➖</string>
 
     <!-- Statistics components -->
     <string name="Thinker">Мыслитель</string>

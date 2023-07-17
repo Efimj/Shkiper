@@ -30,7 +30,7 @@ import kotlin.math.log
 @Composable
 fun StatisticsScreen() {
     val context = LocalContext.current
-    val statistics = remember { StatisticsService(context).appStatistics }
+    val statistics = remember { StatisticsService(context).appStatistics.getStatisticsPreviews() }
     val openedStatistics = remember { mutableStateOf<StatisticsItem?>(null) }
 
     Column(Modifier.fillMaxSize()) {
@@ -53,13 +53,9 @@ fun StatisticsScreen() {
                     )
                 }
             }
-            items(statistics.javaClass.declaredFields) { property ->
-                property.isAccessible = true
-                val value = property.get(statistics)
-                if (value is StatisticsItem) {
-                    Box(Modifier.padding(7.dp)) {
-                        StatisticsCard(value) { openedStatistics.value = value }
-                    }
+            items(statistics) { property ->
+                Box(Modifier.padding(7.dp)) {
+                    StatisticsCard(property) { openedStatistics.value = property }
                 }
             }
         }

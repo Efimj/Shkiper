@@ -14,6 +14,7 @@ import io.realm.kotlin.query.Sort
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import org.mongodb.kbson.ObjectId
+import java.time.LocalDate
 
 class NoteMongoRepositoryImpl(val realm: Realm, @ApplicationContext val context: Context) : NoteMongoRepository {
     override fun getAllNotes(): Flow<List<Note>> {
@@ -104,11 +105,21 @@ class NoteMongoRepositoryImpl(val realm: Realm, @ApplicationContext val context:
             try {
                 val latest = findLatest(note) ?: return@write
                 delete(latest)
+                // update statistics
+                statisticsNoteDeletedIncrement()
             } catch (e: Exception) {
                 Log.d("NoteMongoRepositoryImpl", "${e.message}")
             }
         }
         ReminderMongoRepositoryImpl(realm, context).deleteReminderForNote(id)
+    }
+
+    private fun statisticsNoteDeletedIncrement() {
+        val statisticsService = StatisticsService(context)
+        statisticsService.appStatistics.apply {
+            noteDeletedCount.increment()
+        }
+        statisticsService.saveStatistics()
     }
 
     override suspend fun deleteNote(ids: List<ObjectId>) {
@@ -118,6 +129,8 @@ class NoteMongoRepositoryImpl(val realm: Realm, @ApplicationContext val context:
                 try {
                     findLatest(note)
                         ?.let { delete(it) }
+                    // update statistics
+                    statisticsNoteDeletedIncrement()
                 } catch (e: Exception) {
                     Log.d("NoteMongoRepositoryImpl", "${e.message}")
                 }
