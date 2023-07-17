@@ -23,6 +23,8 @@ import com.android.notepad.R
 import com.android.notepad.database.models.Reminder
 import com.android.notepad.database.models.RepeatMode
 import com.android.notepad.helpers.DateHelper
+import com.android.notepad.ui.helpers.MultipleEventsCutter
+import com.android.notepad.ui.helpers.get
 import com.android.notepad.ui.modifiers.bounceClick
 import com.android.notepad.ui.theme.CustomAppTheme
 import java.time.LocalDateTime
@@ -42,6 +44,7 @@ fun NoteCard(
 ) {
     val headerStyle = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Bold, fontSize = 18.sp)
     val bodyStyle = MaterialTheme.typography.body1
+    val multipleEventsCutter = remember { MultipleEventsCutter.get() }
 
     Card(
         modifier = modifier
@@ -49,7 +52,7 @@ fun NoteCard(
             .fillMaxWidth()
             .clip(RoundedCornerShape(15.dp))
             .combinedClickable(
-                onClick = onClick,
+                onClick = { multipleEventsCutter.processEvent { onClick() } },
                 onLongClick = onLongClick,
             ),
         elevation = 0.dp,

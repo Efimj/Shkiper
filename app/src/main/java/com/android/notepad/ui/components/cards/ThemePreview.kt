@@ -8,10 +8,13 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.android.notepad.ui.helpers.MultipleEventsCutter
+import com.android.notepad.ui.helpers.get
 import com.android.notepad.ui.modifiers.bounceClick
 import com.android.notepad.ui.theme.ExtendedColors
 
@@ -22,12 +25,14 @@ fun ThemePreview(
     selected: Boolean = false,
     onClick: () -> Unit = {}
 ) {
+    val multipleEventsCutter = remember { MultipleEventsCutter.get() }
+
     Card(
         modifier = Modifier
             .bounceClick()
             .fillMaxSize()
             .clip(RoundedCornerShape(10.dp))
-            .combinedClickable(onClick = onClick),
+            .combinedClickable(onClick = { multipleEventsCutter.processEvent { onClick() } }),
         elevation = 0.dp,
         shape = RoundedCornerShape(10.dp),
         border = BorderStroke(if (selected) 2.dp else 0.dp, if (selected) colors.active else Color.Transparent),

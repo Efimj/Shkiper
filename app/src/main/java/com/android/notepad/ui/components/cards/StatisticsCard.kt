@@ -7,6 +7,7 @@ import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -18,6 +19,8 @@ import androidx.compose.ui.unit.sp
 import com.android.notepad.R
 import com.android.notepad.helpers.NumberHelper
 import com.android.notepad.services.statistics_service.StatisticsItem
+import com.android.notepad.ui.helpers.MultipleEventsCutter
+import com.android.notepad.ui.helpers.get
 import com.android.notepad.ui.modifiers.bounceClick
 import com.android.notepad.ui.theme.CustomAppTheme
 
@@ -25,13 +28,15 @@ import com.android.notepad.ui.theme.CustomAppTheme
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun StatisticsCard(statistic: StatisticsItem, onClick: () -> Unit) {
+    val multipleEventsCutter = remember { MultipleEventsCutter.get() }
+
     Card(
         modifier = Modifier
             .height(130.dp)
             .bounceClick()
             .fillMaxWidth()
             .clip(RoundedCornerShape(15.dp))
-            .clickable(onClick = onClick),
+            .clickable(onClick = { multipleEventsCutter.processEvent { onClick() } }),
         elevation = 0.dp,
         shape = RoundedCornerShape(15.dp),
         border = BorderStroke(1.dp, CustomAppTheme.colors.stroke),

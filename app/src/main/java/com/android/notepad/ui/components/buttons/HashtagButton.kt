@@ -7,18 +7,23 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.android.notepad.ui.helpers.MultipleEventsCutter
+import com.android.notepad.ui.helpers.get
 import com.android.notepad.ui.theme.CustomAppTheme
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
 @Composable
 fun HashtagButton(chip: String, selected: Boolean, onChipClicked: (String) -> Unit) {
+    val multipleEventsCutter = remember { MultipleEventsCutter.get() }
+
     Chip(
         modifier = Modifier
             .padding(end = 8.dp),
-        onClick = { onChipClicked(chip) },
+        onClick = { multipleEventsCutter.processEvent { onChipClicked(chip) } },
         shape = RoundedCornerShape(10.dp),
         colors = ChipDefaults.chipColors(
             backgroundColor = if (selected) CustomAppTheme.colors.active else CustomAppTheme.colors.secondaryBackground,

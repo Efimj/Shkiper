@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
@@ -16,6 +17,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.android.notepad.ui.helpers.MultipleEventsCutter
+import com.android.notepad.ui.helpers.get
 import com.android.notepad.ui.theme.CustomAppTheme
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -36,9 +39,11 @@ fun RoundedButton(
     iconTint: Color = CustomAppTheme.colors.text,
     content: @Composable (() -> Unit)? = null,
 ) {
+    val multipleEventsCutter = remember { MultipleEventsCutter.get() }
+
     Button(
         modifier = modifier,
-        onClick = onClick,
+        onClick = { multipleEventsCutter.processEvent { onClick() } },
         shape = shape,
         colors = colors,
         border = border,

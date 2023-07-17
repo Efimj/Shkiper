@@ -36,6 +36,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.android.notepad.helpers.LinkHelper
+import com.android.notepad.ui.helpers.MultipleEventsCutter
+import com.android.notepad.ui.helpers.get
 import com.android.notepad.ui.modifiers.bounceClick
 import com.android.notepad.ui.theme.CustomAppTheme
 import com.android.notepad.util.SnackbarHostUtil
@@ -58,6 +60,7 @@ fun LinkPreviewCard(openGraphData: LinkHelper.LinkPreview) {
     val coroutineScope = rememberCoroutineScope()
     val onLinkCopiedText = stringResource(R.string.LinkCopied)
     val linkTextLabel = stringResource(R.string.Link)
+    val multipleEventsCutter = remember { MultipleEventsCutter.get() }
 
     Card(
         modifier = Modifier
@@ -67,14 +70,16 @@ fun LinkPreviewCard(openGraphData: LinkHelper.LinkPreview) {
             .clip(RoundedCornerShape(10.dp))
             .combinedClickable(
                 onClick = {
-                    try {
-                        val intent = Intent(Intent.ACTION_VIEW)
-                        intent.data = Uri.parse(openGraphData.link)
-                        openLinkLauncher.launch(intent)
-                    } catch (
-                        e: Exception
-                    ) {
-                        Log.e("LinkPreviewCard", "OnClick", e)
+                    multipleEventsCutter.processEvent {
+                        try {
+                            val intent = Intent(Intent.ACTION_VIEW)
+                            intent.data = Uri.parse(openGraphData.link)
+                            openLinkLauncher.launch(intent)
+                        } catch (
+                            e: Exception
+                        ) {
+                            Log.e("LinkPreviewCard", "OnClick", e)
+                        }
                     }
                 },
                 onLongClick = {

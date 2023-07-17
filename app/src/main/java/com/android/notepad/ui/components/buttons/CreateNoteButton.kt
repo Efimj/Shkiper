@@ -15,6 +15,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.android.notepad.R
+import com.android.notepad.ui.helpers.MultipleEventsCutter
+import com.android.notepad.ui.helpers.get
 import com.android.notepad.ui.modifiers.bounceClick
 import com.android.notepad.ui.theme.CustomAppTheme
 
@@ -23,13 +25,15 @@ fun CreateNoteButton(
     isActive: Boolean = true,
     onClick: () -> Unit = {},
 ) {
+    val multipleEventsCutter = remember { MultipleEventsCutter.get() }
+
     Card(
         modifier = Modifier.bounceClick().clip(RoundedCornerShape(15.dp)).clickable(
             indication = if (isActive) LocalIndication.current else null,
             interactionSource = remember { MutableInteractionSource() } // This is mandatory
         ) {
             if (isActive) {
-                onClick()
+                multipleEventsCutter.processEvent { onClick() }
             }
         },
         elevation = 0.dp,
