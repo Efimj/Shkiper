@@ -56,7 +56,7 @@ fun StatisticsInformationDialog(
                         statistics.getStringValue(),
                         color = CustomAppTheme.colors.text,
                         style = MaterialTheme.typography.h5,
-                        modifier = Modifier.padding(bottom = 10.dp)
+                        modifier = Modifier.padding(bottom = 4.dp)
                     )
                     Text(
                         stringResource(statistics.title),
