@@ -3,6 +3,7 @@ package com.android.notepad.database.data.reminder
 import android.content.Context
 import android.util.Log
 import com.android.notepad.R
+import com.android.notepad.database.data.note.NoteMongoRepositoryImpl
 import com.android.notepad.database.models.Note
 import com.android.notepad.database.models.Reminder
 import com.android.notepad.services.notification_service.NotificationData
@@ -10,6 +11,7 @@ import com.android.notepad.services.notification_service.NotificationScheduler
 import com.android.notepad.services.statistics_service.StatisticsService
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.realm.kotlin.Realm
+import io.realm.kotlin.UpdatePolicy
 import io.realm.kotlin.ext.query
 import io.realm.kotlin.query.Sort
 import kotlinx.coroutines.flow.Flow
@@ -20,11 +22,15 @@ import java.time.OffsetDateTime
 
 class ReminderMongoRepositoryImpl(val realm: Realm, @ApplicationContext val context: Context) :
     ReminderMongoRepository {
-    override fun getAllReminders(): Flow<List<Reminder>> {
+    override fun getReminders(): Flow<List<Reminder>> {
         return realm.query<Reminder>()
             .sort("_id", Sort.DESCENDING)
             .asFlow()
             .map { it.list }
+    }
+
+    override fun getAllReminders(): List<Reminder> {
+        return realm.query<Reminder>().find()
     }
 
     override fun getReminder(id: ObjectId): Reminder? {
@@ -35,18 +41,35 @@ class ReminderMongoRepositoryImpl(val realm: Realm, @ApplicationContext val cont
         return realm.query<Reminder>(query = "noteId == $0", noteId).first().find()
     }
 
-    override suspend fun insertReminder(reminder: Reminder, note: Note) {
+    override suspend fun insertReminder(reminder: Reminder) {
         realm.write { copyToRealm(reminder) }
+        val note = NoteMongoRepositoryImpl(realm, context).getNote(reminder.noteId) ?: return
         scheduleNotification(reminder, note)
 
         updateStatisticsCreatedRemindersCount()
     }
 
-    private fun updateStatisticsCreatedRemindersCount() {
+    override suspend fun insertOrUpdateReminders(reminders: List<Reminder>, updateStatistics: Boolean) {
+        val noteMongoRepository = NoteMongoRepositoryImpl(realm, context)
+        val notes = noteMongoRepository.getNotes(reminders.map { it.noteId }.distinct())
+        realm.write {
+            for (note in notes) {
+                val reminder = reminders.first { it.noteId == note._id }
+                copyToRealm(reminder, UpdatePolicy.ALL)
+                scheduleNotification(reminder, note)
+            }
+        }
+        if (updateStatistics)
+            updateStatisticsCreatedRemindersCount(notes.size)
+    }
+
+    private fun updateStatisticsCreatedRemindersCount(count: Int = 1) {
         // Statistics update
         val statisticsService = StatisticsService(context)
         statisticsService.appStatistics.apply {
-            createdRemindersCount.increment()
+            repeat(count) {
+                createdRemindersCount.increment()
+            }
         }
         statisticsService.saveStatistics()
     }

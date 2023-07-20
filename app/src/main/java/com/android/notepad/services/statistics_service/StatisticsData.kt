@@ -77,7 +77,7 @@ data class StatisticsData(
 )
 
 data class AppStatistics(
-    val statisticsData: StatisticsData = StatisticsData(),
+    var statisticsData: StatisticsData = StatisticsData(),
     val openAppCount: StatisticsItem = StatisticsItem(
         R.drawable.onboarding_reminder,
         R.string.Thinker,

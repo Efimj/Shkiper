@@ -1,6 +1,5 @@
 package com.android.notepad.screens.NoteListScreen
 
-import android.app.Application
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -171,7 +170,7 @@ class NotesViewModel @Inject constructor(
 
     private fun getReminders() {
         viewModelScope.launch {
-            reminderRepository.getAllReminders().collect() {
+            reminderRepository.getReminders().collect() {
                 _reminders.value = it
             }
         }

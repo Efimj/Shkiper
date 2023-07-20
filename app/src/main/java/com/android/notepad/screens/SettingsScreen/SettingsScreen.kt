@@ -1,7 +1,13 @@
 package com.android.notepad.screens.SettingsScreen
 
 import android.app.Activity
+import android.app.DownloadManager
 import android.content.Context
+import android.content.Intent
+import android.os.Environment
+import android.webkit.MimeTypeMap
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -28,6 +34,7 @@ import androidx.navigation.NavController
 import com.android.notepad.NotepadApplication
 import com.android.notepad.R
 import com.android.notepad.navigation.AppScreens
+import com.android.notepad.services.backup_service.BackupService
 import com.android.notepad.ui.components.buttons.DropDownButton
 import com.android.notepad.ui.components.buttons.DropDownButtonSizeMode
 import com.android.notepad.ui.components.buttons.RoundedButton
@@ -37,9 +44,18 @@ import com.android.notepad.util.ThemeUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.io.File
+import java.io.FileOutputStream
 
 @Composable
 fun SettingsScreen(navController: NavController, settingsViewModel: SettingsViewModel = hiltViewModel()) {
+    val fileSearch =
+        rememberLauncherForActivityResult(contract = ActivityResultContracts.OpenDocument()) { uri ->
+            if (uri != null) {
+                settingsViewModel.uploadLocalBackup(uri)
+            }
+        }
+
     Column(
         Modifier.fillMaxSize().verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.Center,
@@ -81,13 +97,13 @@ fun SettingsScreen(navController: NavController, settingsViewModel: SettingsView
                 description = stringResource(R.string.SaveAllNotesLocally),
                 buttonText = stringResource(R.string.Save),
                 buttonIcon = Icons.Outlined.Download,
-                onClick = {}
+                onClick = { settingsViewModel.saveLocalBackup() }
             )
             SettingsItem(
                 stringResource(R.string.UploadNotes),
                 stringResource(R.string.Upload),
                 Icons.Outlined.Upload,
-                onClick = {})
+                onClick = { fileSearch.launch(arrayOf("*/*")) })
             SettingsItem(
                 stringResource(R.string.CloudStorage),
                 stringResource(R.string.Connect),

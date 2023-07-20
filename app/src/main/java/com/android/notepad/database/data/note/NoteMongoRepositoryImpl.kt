@@ -9,6 +9,8 @@ import com.android.notepad.services.notification_service.NotificationScheduler
 import com.android.notepad.services.statistics_service.StatisticsService
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.realm.kotlin.Realm
+import io.realm.kotlin.UpdatePolicy
+import io.realm.kotlin.ext.copyFromRealm
 import io.realm.kotlin.ext.query
 import io.realm.kotlin.query.Sort
 import kotlinx.coroutines.flow.Flow
@@ -17,7 +19,7 @@ import org.mongodb.kbson.ObjectId
 import java.time.LocalDate
 
 class NoteMongoRepositoryImpl(val realm: Realm, @ApplicationContext val context: Context) : NoteMongoRepository {
-    override fun getAllNotes(): Flow<List<Note>> {
+    override fun getNotes(): Flow<List<Note>> {
         return realm.query<Note>()
             .sort("_id", Sort.DESCENDING)
             .asFlow()
@@ -54,6 +56,10 @@ class NoteMongoRepositoryImpl(val realm: Realm, @ApplicationContext val context:
         return realm.query<Note>().find().filter { ids.any { id -> id == it._id } }
     }
 
+    override fun getAllNotes(): List<Note> {
+        return realm.query<Note>().find()
+    }
+
     override fun filterNotesByContains(text: String): Flow<List<Note>> {
         return realm.query<Note>(query = "header CONTAINS[c] $0 OR body CONTAINS[c] $0", text).asFlow().map { it.list }
     }
@@ -65,6 +71,33 @@ class NoteMongoRepositoryImpl(val realm: Realm, @ApplicationContext val context:
         val statisticsService = StatisticsService(context)
         statisticsService.appStatistics.apply {
             createdNotesCount.increment()
+        }
+        statisticsService.saveStatistics()
+    }
+
+    override suspend fun insertOrUpdateNotes(notes: List<Note>, updateStatistics: Boolean) {
+        realm.writeBlocking {
+            for (note in notes) {
+                val existedNote = getNote(note._id)
+                if (existedNote == null) {
+                    copyToRealm(note)
+                    continue
+                }
+                try {
+                    copyToRealm(note, UpdatePolicy.ALL)
+                    updateNotification(note)
+                } catch (e: Exception) {
+                    Log.d("NoteMongoRepositoryImpl", "${e.message}")
+                }
+            }
+        }
+        if (!updateStatistics) return
+        // Statistics update
+        val statisticsService = StatisticsService(context)
+        statisticsService.appStatistics.apply {
+            repeat(notes.size) {
+                createdNotesCount.increment()
+            }
         }
         statisticsService.saveStatistics()
     }
