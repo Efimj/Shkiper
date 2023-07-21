@@ -102,6 +102,7 @@
     <string name="Uncompleted">Uncompleted</string>
     <string name="DoneEmoji">✔️</string>
     <string name="NotDoneEmoji">➖</string>
+    <string name="Saving">Saving</string>
 
     <!--    Statistics components   -->
     <string name="Thinker">Thinker</string>

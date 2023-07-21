@@ -103,6 +103,7 @@
     <string name="Uncompleted">Невиконано</string>
     <string name="DoneEmoji">✔️</string>
     <string name="NotDoneEmoji">➖</string>
+    <string name="Saving">Збереження</string>
 
     <!-- Statistics components -->
     <string name="Thinker">Міркуючий</string>

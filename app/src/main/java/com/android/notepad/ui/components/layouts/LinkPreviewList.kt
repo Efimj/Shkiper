@@ -24,6 +24,7 @@ import com.android.notepad.R
 import com.android.notepad.helpers.LinkHelper
 import com.android.notepad.ui.components.buttons.RoundedButton
 import com.android.notepad.ui.components.cards.LinkPreviewCard
+import com.android.notepad.ui.modifiers.circularRotation
 import com.android.notepad.ui.theme.CustomAppTheme
 
 fun LazyListScope.LinkPreviewList(
@@ -34,18 +35,6 @@ fun LazyListScope.LinkPreviewList(
 ) {
     if (isLoading.value) {
         item {
-            val rotation = remember { Animatable(0f) }
-            LaunchedEffect(Unit) {
-                with(rotation) {
-                    animateTo(
-                        targetValue = 360f,
-                        animationSpec = infiniteRepeatable(
-                            animation = tween(durationMillis = 1000, easing = LinearEasing),
-                            repeatMode = RepeatMode.Restart
-                        )
-                    )
-                }
-            }
             Row(verticalAlignment = Alignment.CenterVertically, modifier = contentPadding) {
                 Text(
                     text = stringResource(R.string.Loading),
@@ -59,7 +48,7 @@ fun LazyListScope.LinkPreviewList(
                     imageVector = Icons.Outlined.Loop,
                     contentDescription = stringResource(R.string.Loading),
                     tint = CustomAppTheme.colors.textSecondary,
-                    modifier = Modifier.rotate(rotation.value)
+                    modifier = Modifier.circularRotation()
                 )
             }
         }

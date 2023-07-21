@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.android.notepad.ui.helpers.MultipleEventsCutter
 import com.android.notepad.ui.helpers.get
+import com.android.notepad.ui.modifiers.circularRotation
 import com.android.notepad.ui.theme.CustomAppTheme
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -29,6 +30,7 @@ fun RoundedButton(
     icon: ImageVector? = null,
     onClick: () -> Unit,
     enabled: Boolean = true,
+    loading: Boolean = false,
     shape: Shape = RoundedCornerShape(15.dp),
     border: BorderStroke? = BorderStroke(1.dp, CustomAppTheme.colors.stroke),
     colors: ButtonColors = ButtonDefaults.buttonColors(
@@ -58,7 +60,7 @@ fun RoundedButton(
                     imageVector = icon,
                     contentDescription = null,
                     tint = iconTint,
-                    modifier = Modifier.size(20.dp)
+                    modifier = if (loading) Modifier.size(20.dp).circularRotation() else Modifier.size(20.dp)
                 )
                 Spacer(Modifier.width(5.dp))
             }

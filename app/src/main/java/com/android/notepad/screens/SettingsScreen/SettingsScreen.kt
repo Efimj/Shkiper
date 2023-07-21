@@ -96,14 +96,22 @@ fun SettingsScreen(navController: NavController, settingsViewModel: SettingsView
             Spacer(Modifier.height(8.dp))
             SettingsItem(
                 description = stringResource(R.string.SaveAllNotesLocally),
-                buttonText = stringResource(R.string.Save),
-                buttonIcon = Icons.Outlined.Download,
+                buttonText = if (settingsViewModel.settingsScreenState.value.isLocalBackupSaving)
+                    stringResource(R.string.Saving) else
+                    stringResource(R.string.Save),
+                buttonIcon = if (settingsViewModel.settingsScreenState.value.isLocalBackupSaving) Icons.Outlined.Loop else Icons.Outlined.Download,
+                isLoading = settingsViewModel.settingsScreenState.value.isLocalBackupSaving,
+                isEnabled = !settingsViewModel.isBackupHandling(),
                 onClick = { settingsViewModel.saveLocalBackup() }
             )
             SettingsItem(
-                stringResource(R.string.UploadNotes),
-                stringResource(R.string.Upload),
-                Icons.Outlined.Upload,
+                description = stringResource(R.string.UploadNotes),
+                buttonText = if (settingsViewModel.settingsScreenState.value.isLocalBackupUploading)
+                    stringResource(R.string.Loading) else
+                    stringResource(R.string.Upload),
+                buttonIcon = if (settingsViewModel.settingsScreenState.value.isLocalBackupUploading) Icons.Outlined.Loop else Icons.Outlined.Upload,
+                isLoading = settingsViewModel.settingsScreenState.value.isLocalBackupUploading,
+                isEnabled = !settingsViewModel.isBackupHandling(),
                 onClick = { fileSearch.launch(arrayOf("*/*")) })
             SettingsItem(
                 stringResource(R.string.CloudStorage),
@@ -265,6 +273,8 @@ private fun SettingsItem(
     buttonText: String? = null,
     buttonIcon: ImageVector? = null,
     buttonComponent: @Composable (() -> Unit)? = null,
+    isLoading: Boolean = false,
+    isEnabled: Boolean = true,
     onClick: (() -> Unit) = { },
 ) {
     Row(
@@ -285,12 +295,22 @@ private fun SettingsItem(
         Spacer(modifier = Modifier.width(16.dp))
         Box(modifier = Modifier.weight(1f)) {
             if (buttonComponent == null)
-
                 RoundedButton(
                     text = buttonText,
                     icon = buttonIcon,
                     modifier = Modifier.width(145.dp),
                     onClick = onClick,
+                    enabled = !isLoading && isEnabled,
+                    loading = isLoading,
+                    colors = if (isLoading) ButtonDefaults.buttonColors(
+                        backgroundColor = CustomAppTheme.colors.active,
+                        disabledBackgroundColor = CustomAppTheme.colors.active
+                    ) else ButtonDefaults.buttonColors(
+                        backgroundColor = CustomAppTheme.colors.mainBackground,
+                        disabledBackgroundColor = Color.Transparent
+                    ),
+                    textColor = if (isLoading) Color.White else CustomAppTheme.colors.text,
+                    iconTint = if (isLoading) Color.White else CustomAppTheme.colors.text,
                 )
             else {
                 buttonComponent()

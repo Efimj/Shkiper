@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.ContentResolver
 import android.net.Uri
 import android.util.Log
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -19,6 +20,7 @@ import com.android.notepad.ui.theme.ColorThemes
 import com.android.notepad.util.ThemeUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.BufferedReader
 import java.io.IOException
@@ -31,6 +33,9 @@ class SettingsViewModel @Inject constructor(
     private val reminderRepository: ReminderMongoRepository,
     private val application: Application,
 ) : ViewModel() {
+
+    private val _settingsScreenState = mutableStateOf(SettingsScreenState())
+    val settingsScreenState: State<SettingsScreenState> = _settingsScreenState
 
     /*******************
      * App theming
@@ -78,21 +83,36 @@ class SettingsViewModel @Inject constructor(
      *******************/
 
     fun saveLocalBackup() {
+        if (isBackupHandling()) return
+        _settingsScreenState.value = _settingsScreenState.value.copy(isLocalBackupSaving = true)
         viewModelScope.launch() {
             val backupData = BackupData()
             backupData.realmNoteList = noteRepository.getAllNotes()
             backupData.realmReminderList = reminderRepository.getAllReminders()
             backupData.userStatistics = StatisticsService(application.applicationContext).appStatistics.statisticsData
             BackupService().createBackup(backupData)
+            delay(1000)
+            _settingsScreenState.value = _settingsScreenState.value.copy(isLocalBackupSaving = false)
         }
     }
 
     fun uploadLocalBackup(uri: Uri) {
+        if (isBackupHandling()) return
+        _settingsScreenState.value = _settingsScreenState.value.copy(isLocalBackupUploading = true)
         viewModelScope.launch() {
-            val backupData = BackupService().uploadBackup(uri, application.applicationContext)?:return@launch
+            val backupData = BackupService().uploadBackup(uri, application.applicationContext) ?: return@launch
             noteRepository.insertOrUpdateNotes(backupData.realmNoteList)
             reminderRepository.insertOrUpdateReminders(backupData.realmReminderList)
             StatisticsService(application.applicationContext).updateStatistics(backupData.userStatistics)
+            delay(1000)
+            _settingsScreenState.value = _settingsScreenState.value.copy(isLocalBackupUploading = false)
         }
+    }
+
+    fun isBackupHandling(): Boolean {
+        return _settingsScreenState.value.isLocalBackupUploading ||
+                _settingsScreenState.value.isGoogleDriveBackupUploading ||
+                _settingsScreenState.value.isGoogleDriveBackupUpSaving ||
+                _settingsScreenState.value.isLocalBackupSaving
     }
 }

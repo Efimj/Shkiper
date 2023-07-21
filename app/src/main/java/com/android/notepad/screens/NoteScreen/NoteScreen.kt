@@ -337,7 +337,7 @@ private fun NoteScreenFooter(navController: NavController, noteViewModel: NoteVi
                         modifier = Modifier.size(40.dp).clip(CircleShape).padding(0.dp)
                     ) {
                         Icon(
-                            imageVector = Icons.Outlined.Delete,
+                            imageVector = Icons.Outlined.MoreVert,
                             contentDescription = stringResource(R.string.AddToBasket),
                             tint = CustomAppTheme.colors.textSecondary
                         )
