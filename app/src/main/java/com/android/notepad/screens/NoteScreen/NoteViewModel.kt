@@ -1,6 +1,7 @@
 package com.android.notepad.screens.NoteScreen
 
 import android.app.Application
+import android.content.Context
 import android.content.Intent
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -289,7 +290,7 @@ class NoteViewModel @Inject constructor(
         }
     }
 
-    fun shareNoteText() {
+    fun shareNoteText(context: Context) {
         val sharedText = noteHeader.value + "\n\n" + noteBody.value
 
         val intent = Intent(Intent.ACTION_SEND).apply {
@@ -297,8 +298,10 @@ class NoteViewModel @Inject constructor(
             putExtra(Intent.EXTRA_TEXT, sharedText)
         }
 
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
         val chooser = Intent.createChooser(intent, "Share link")
-        application.applicationContext.startActivity(chooser)
+        context.startActivity(chooser)
     }
 
     /*******************

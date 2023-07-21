@@ -104,6 +104,8 @@
     <string name="DoneEmoji">✔️</string>
     <string name="NotDoneEmoji">➖</string>
     <string name="Saving">Збереження</string>
+    <string name="BackupCreated">Резервна копія створена</string>
+    <string name="BackupUploaded">Резервна копія завантажена</string>
 
     <!-- Statistics components -->
     <string name="Thinker">Міркуючий</string>

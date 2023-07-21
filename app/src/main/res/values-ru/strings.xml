@@ -103,6 +103,8 @@
     <string name="DoneEmoji">✔️</string>
     <string name="NotDoneEmoji">➖</string>
     <string name="Saving">Сохранение</string>
+    <string name="BackupCreated">Резервная копия создана</string>
+    <string name="BackupUploaded">Резервная копия загружена</string>
 
     <!-- Statistics components -->
     <string name="Thinker">Мыслитель</string>

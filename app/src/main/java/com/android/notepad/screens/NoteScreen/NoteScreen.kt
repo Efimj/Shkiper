@@ -319,7 +319,7 @@ private fun NoteScreenFooter(navController: NavController, noteViewModel: NoteVi
                         icon = Icons.Outlined.Delete
                     )
                 )
-
+                val context = LocalContext.current
                 DropDownButton(
                     items = dropDownItems,
                     selectedIndex = 0,
@@ -327,7 +327,7 @@ private fun NoteScreenFooter(navController: NavController, noteViewModel: NoteVi
                     stretchMode = DropDownButtonSizeMode.STRERCHBYCONTENT,
                     onChangedSelection = { index ->
                         when (index) {
-                            0 -> noteViewModel.shareNoteText()
+                            0 -> noteViewModel.shareNoteText(context)
                             1 -> noteViewModel.moveToBasket()
                         }
                     }

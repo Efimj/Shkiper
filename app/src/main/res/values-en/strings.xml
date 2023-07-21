@@ -103,6 +103,8 @@
     <string name="DoneEmoji">✔️</string>
     <string name="NotDoneEmoji">➖</string>
     <string name="Saving">Saving</string>
+    <string name="BackupCreated">Backup created</string>
+    <string name="BackupUploaded">Backup uploaded</string>
 
     <!--    Statistics components   -->
     <string name="Thinker">Thinker</string>

@@ -4,11 +4,16 @@ import android.app.Application
 import android.content.ContentResolver
 import android.net.Uri
 import android.util.Log
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.filled.Link
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.notepad.NotepadApplication
+import com.android.notepad.R
 import com.android.notepad.database.data.note.NoteMongoRepository
 import com.android.notepad.database.data.reminder.ReminderMongoRepository
 import com.android.notepad.helpers.localization.LocaleHelper
@@ -17,6 +22,8 @@ import com.android.notepad.services.backup_service.BackupData
 import com.android.notepad.services.backup_service.BackupService
 import com.android.notepad.services.statistics_service.StatisticsService
 import com.android.notepad.ui.theme.ColorThemes
+import com.android.notepad.util.SnackbarHostUtil
+import com.android.notepad.util.SnackbarVisualsCustom
 import com.android.notepad.util.ThemeUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -93,6 +100,7 @@ class SettingsViewModel @Inject constructor(
             BackupService().createBackup(backupData)
             delay(1000)
             _settingsScreenState.value = _settingsScreenState.value.copy(isLocalBackupSaving = false)
+            showSnackbar(application.applicationContext.getString(R.string.BackupCreated), Icons.Default.Done)
         }
     }
 
@@ -106,7 +114,17 @@ class SettingsViewModel @Inject constructor(
             StatisticsService(application.applicationContext).updateStatistics(backupData.userStatistics)
             delay(1000)
             _settingsScreenState.value = _settingsScreenState.value.copy(isLocalBackupUploading = false)
+            showSnackbar(application.applicationContext.getString(R.string.BackupUploaded), Icons.Default.Done)
         }
+    }
+
+    private suspend fun showSnackbar(message: String, icon: ImageVector?) {
+        SnackbarHostUtil.snackbarHostState.showSnackbar(
+            SnackbarVisualsCustom(
+                message = message,
+                icon = icon
+            )
+        )
     }
 
     fun isBackupHandling(): Boolean {
