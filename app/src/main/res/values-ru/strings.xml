@@ -105,6 +105,8 @@
     <string name="Saving">Сохранение</string>
     <string name="BackupCreated">Резервная копия создана</string>
     <string name="BackupUploaded">Резервная копия загружена</string>
+    <string name="UnspecifiedErrorOccurred">Возникла неопределенная ошибка</string>
+    <string name="CannotPerformedWithoutPermission">Нельзя выполнить операцию без разрешения</string>
 
     <!-- Statistics components -->
     <string name="Thinker">Мыслитель</string>

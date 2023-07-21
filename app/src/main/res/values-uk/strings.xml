@@ -106,6 +106,8 @@
     <string name="Saving">Збереження</string>
     <string name="BackupCreated">Резервна копія створена</string>
     <string name="BackupUploaded">Резервна копія завантажена</string>
+    <string name="UnspecifiedErrorOccurred">Виникла невизначена помилка</string>
+    <string name="CannotPerformedWithoutPermission">Не можна виконати операцію без дозволу</string>
 
     <!-- Statistics components -->
     <string name="Thinker">Міркуючий</string>

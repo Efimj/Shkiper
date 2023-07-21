@@ -105,6 +105,8 @@
     <string name="Saving">Saving</string>
     <string name="BackupCreated">Backup created</string>
     <string name="BackupUploaded">Backup uploaded</string>
+    <string name="UnspecifiedErrorOccurred">An unspecified error occurred</string>
+    <string name="CannotPerformedWithoutPermission">Cannot be performed without permission</string>
 
     <!--    Statistics components   -->
     <string name="Thinker">Thinker</string>

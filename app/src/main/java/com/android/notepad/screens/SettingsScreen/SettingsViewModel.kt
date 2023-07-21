@@ -1,5 +1,6 @@
 package com.android.notepad.screens.SettingsScreen
 
+import android.Manifest
 import android.app.Application
 import android.content.ContentResolver
 import android.net.Uri
@@ -25,6 +26,7 @@ import com.android.notepad.ui.theme.ColorThemes
 import com.android.notepad.util.SnackbarHostUtil
 import com.android.notepad.util.SnackbarVisualsCustom
 import com.android.notepad.util.ThemeUtil
+import com.gun0912.tedpermission.coroutine.TedPermission
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -33,6 +35,7 @@ import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
 import javax.inject.Inject
+import kotlin.math.log
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
@@ -93,14 +96,31 @@ class SettingsViewModel @Inject constructor(
         if (isBackupHandling()) return
         _settingsScreenState.value = _settingsScreenState.value.copy(isLocalBackupSaving = true)
         viewModelScope.launch() {
+            val permissionResult = TedPermission.create()
+                    .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    .checkGranted()
+            if(!permissionResult){
+                _settingsScreenState.value = _settingsScreenState.value.copy(isLocalBackupSaving = false)
+                showSnackbar(
+                    application.applicationContext.getString(R.string.CannotPerformedWithoutPermission),
+                    Icons.Default.Done
+                )
+                return@launch
+            }
             val backupData = BackupData()
             backupData.realmNoteList = noteRepository.getAllNotes()
             backupData.realmReminderList = reminderRepository.getAllReminders()
             backupData.userStatistics = StatisticsService(application.applicationContext).appStatistics.statisticsData
-            BackupService().createBackup(backupData)
+            val result = BackupService().createBackup(backupData)
             delay(1000)
             _settingsScreenState.value = _settingsScreenState.value.copy(isLocalBackupSaving = false)
-            showSnackbar(application.applicationContext.getString(R.string.BackupCreated), Icons.Default.Done)
+            if (result)
+                showSnackbar(application.applicationContext.getString(R.string.BackupCreated), Icons.Default.Done)
+            else
+                showSnackbar(
+                    application.applicationContext.getString(R.string.UnspecifiedErrorOccurred),
+                    Icons.Default.Done
+                )
         }
     }
 
@@ -108,7 +128,26 @@ class SettingsViewModel @Inject constructor(
         if (isBackupHandling()) return
         _settingsScreenState.value = _settingsScreenState.value.copy(isLocalBackupUploading = true)
         viewModelScope.launch() {
-            val backupData = BackupService().uploadBackup(uri, application.applicationContext) ?: return@launch
+            val permissionResult = TedPermission.create()
+                    .setPermissions(Manifest.permission.READ_EXTERNAL_STORAGE)
+                    .checkGranted()
+            if(!permissionResult){
+                _settingsScreenState.value = _settingsScreenState.value.copy(isLocalBackupUploading = false)
+                showSnackbar(
+                    application.applicationContext.getString(R.string.CannotPerformedWithoutPermission),
+                    Icons.Default.Done
+                )
+                return@launch
+            }
+            val backupData = BackupService().uploadBackup(uri, application.applicationContext)
+            if (backupData == null) {
+                _settingsScreenState.value = _settingsScreenState.value.copy(isLocalBackupUploading = false)
+                showSnackbar(
+                    application.applicationContext.getString(R.string.UnspecifiedErrorOccurred),
+                    Icons.Default.Done
+                )
+                return@launch
+            }
             noteRepository.insertOrUpdateNotes(backupData.realmNoteList)
             reminderRepository.insertOrUpdateReminders(backupData.realmReminderList)
             StatisticsService(application.applicationContext).updateStatistics(backupData.userStatistics)

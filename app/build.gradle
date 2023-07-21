@@ -119,6 +119,9 @@ dependencies {
     // Coil for images
     implementation("io.coil-kt:coil-compose:2.4.0")
 
-    //jsoup for link preview
+    // jsoup for link preview
     implementation 'org.jsoup:jsoup:1.14.3'
+
+    // TedPermission permission provider
+    implementation 'io.github.ParkSangGwon:tedpermission-coroutine:3.3.0'
 }
