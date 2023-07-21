@@ -66,6 +66,7 @@
     <string name="ChangedAt">Змінено в</string>
     <string name="GoForward">Вперед</string>
     <string name="AddToBasket">Перенести до видалених</string>
+    <string name="ShareNote">Поділитися нотаткою</string>
 
     <!--    NateList page   -->
     <string name="Pinned">Закріплені</string>

@@ -64,6 +64,7 @@
     <string name="ChangedAt">Changed at</string>
     <string name="GoForward">Go forward</string>
     <string name="AddToBasket">Add to basket</string>
+    <string name="ShareNote">Share a note</string>
 
     <!--    NateList page   -->
     <string name="Pinned">Pinned</string>

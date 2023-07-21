@@ -32,6 +32,7 @@ import com.android.notepad.database.models.RepeatMode
 import com.android.notepad.helpers.DateHelper
 import com.android.notepad.ui.components.buttons.DropDownButton
 import com.android.notepad.ui.components.buttons.DropDownButtonSizeMode
+import com.android.notepad.ui.components.buttons.DropDownItem
 import com.android.notepad.ui.components.buttons.RoundedButton
 import com.android.notepad.ui.components.fields.CustomDatePicker
 import com.android.notepad.ui.components.fields.CustomTimePicker
@@ -193,7 +194,7 @@ private fun RepeatModePage(
     time: MutableState<LocalTime>,
     repeatMode: MutableState<RepeatMode>,
 ) {
-    val repeatModeList = RepeatMode.values().map { it.getLocalizedValue(LocalContext.current) }
+    val repeatModeList = RepeatMode.values().map { DropDownItem(text = it.getLocalizedValue(LocalContext.current)) }
 
     Column(
         Modifier.fillMaxSize().padding(horizontal = 20.dp),

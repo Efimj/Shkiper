@@ -269,6 +269,14 @@ class NoteViewModel @Inject constructor(
         }
     }
 
+    fun moveToBasket() {
+//        viewModelScope.launch {
+//            if (noteHeader.value.isEmpty() && noteBody.value.isEmpty()) noteRepository.deleteNote(
+//                _noteId.value,
+//            )
+//        }
+    }
+
     fun saveChanges() {
         updateNote {
             it.header = this@NoteViewModel._noteHeader.value
@@ -276,6 +284,17 @@ class NoteViewModel @Inject constructor(
             it.updateDate = this@NoteViewModel._noteUpdatedDate.value
             it.isPinned = this@NoteViewModel.noteIsPinned.value
         }
+    }
+
+    private val _sharedText = mutableStateOf<String?>(null)
+    val sharedText: State<String?> = _sharedText
+
+    fun shareNoteText() {
+        _sharedText.value = noteHeader.value + "\n\n" + noteBody.value
+    }
+
+    fun onShareCompleted() {
+        _sharedText.value = null
     }
 
     /*******************

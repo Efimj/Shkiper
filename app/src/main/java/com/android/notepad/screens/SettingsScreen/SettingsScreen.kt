@@ -37,6 +37,7 @@ import com.android.notepad.navigation.AppScreens
 import com.android.notepad.services.backup_service.BackupService
 import com.android.notepad.ui.components.buttons.DropDownButton
 import com.android.notepad.ui.components.buttons.DropDownButtonSizeMode
+import com.android.notepad.ui.components.buttons.DropDownItem
 import com.android.notepad.ui.components.buttons.RoundedButton
 import com.android.notepad.ui.components.cards.ThemePreview
 import com.android.notepad.ui.theme.CustomAppTheme
@@ -219,7 +220,9 @@ private fun SettingsItemSelectLanguage(settingsViewModel: SettingsViewModel) {
     val coroutineScope = rememberCoroutineScope()
     val currentLanguage = NotepadApplication.currentLanguage
 
-    DropDownButton(settingsViewModel.localizationList.value,
+    val dropDownItems = settingsViewModel.localizationList.value.map { DropDownItem(text = it) }
+
+    DropDownButton(dropDownItems,
         currentLanguage.ordinal,
         Modifier.width(150.dp),
         DropDownButtonSizeMode.STRERCHBYBUTTONWIDTH,

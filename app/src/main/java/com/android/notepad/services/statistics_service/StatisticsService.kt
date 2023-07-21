@@ -10,7 +10,7 @@ class StatisticsService(val context: Context) {
     }
 
     fun updateStatistics(newStatisticsData: StatisticsData) {
-        (appStatistics.statisticsData.createdNotesCount.value > newStatisticsData.createdNotesCount.value) ?: return
+        (appStatistics.statisticsData.createdNotesCount.value > newStatisticsData.createdNotesCount.value)
         appStatistics.statisticsData = newStatisticsData
         saveStatistics()
     }

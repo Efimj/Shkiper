@@ -1,6 +1,9 @@
 package com.android.notepad.screens.NoteScreen
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.*
@@ -21,6 +24,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -31,7 +36,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.android.notepad.R
+import com.android.notepad.database.models.RepeatMode
 import com.android.notepad.navigation.AppScreens
+import com.android.notepad.ui.components.buttons.DropDownButton
+import com.android.notepad.ui.components.buttons.DropDownButtonSizeMode
+import com.android.notepad.ui.components.buttons.DropDownItem
+import com.android.notepad.ui.components.buttons.RoundedButton
 import com.android.notepad.ui.components.layouts.LinkPreviewList
 import com.android.notepad.ui.components.fields.CustomTextField
 import com.android.notepad.ui.components.fields.HashtagEditor
@@ -288,15 +298,57 @@ private fun NoteScreenFooter(navController: NavController, noteViewModel: NoteVi
                 }
             }
             Row {
-                IconButton(
-                    onClick = { },
-                    modifier = Modifier.size(40.dp).clip(CircleShape).padding(0.dp),
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.Delete,
-                        contentDescription = stringResource(R.string.AddToBasket),
-                        tint = CustomAppTheme.colors.textSecondary,
+                val context = LocalContext.current
+                val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                    noteViewModel.onShareCompleted()
+                }
+                LaunchedEffect(noteViewModel.sharedText.value) {
+                    val sharedLink = noteViewModel.sharedText.value
+                    if (!sharedLink.isNullOrEmpty()) {
+                        val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                            type = "text/plain"
+                            putExtra(Intent.EXTRA_TEXT, sharedLink)
+                        }
+
+                        if (shareIntent.resolveActivity(context.packageManager) != null) {
+                            launcher.launch(Intent.createChooser(shareIntent, "Share note"))
+                        }
+                    }
+                }
+
+                val dropDownItems = listOf(
+                    DropDownItem(
+                        text = stringResource(R.string.ShareNote),
+                        icon = Icons.Outlined.Share
+                    ),
+                    DropDownItem(
+                        text = stringResource(R.string.Delete),
+                        icon = Icons.Outlined.Delete
                     )
+                )
+
+                DropDownButton(
+                    items = dropDownItems,
+                    selectedIndex = 0,
+                    modifier = Modifier,
+                    stretchMode = DropDownButtonSizeMode.STRERCHBYCONTENT,
+                    onChangedSelection = { index ->
+                        when (index) {
+                            0 -> noteViewModel.shareNoteText()
+                            1 -> noteViewModel.moveToBasket()
+                        }
+                    }
+                ) {
+                    IconButton(
+                        onClick = { it() },
+                        modifier = Modifier.size(40.dp).clip(CircleShape).padding(0.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.Delete,
+                            contentDescription = stringResource(R.string.AddToBasket),
+                            tint = CustomAppTheme.colors.textSecondary
+                        )
+                    }
                 }
                 Spacer(modifier = Modifier.padding(6.dp, 0.dp, 0.dp, 0.dp))
             }

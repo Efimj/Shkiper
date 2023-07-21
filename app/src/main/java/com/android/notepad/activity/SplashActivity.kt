@@ -42,6 +42,7 @@ class SplashActivity : ComponentActivity() {
         // Initialization Realm database
         setContent {
             val noteViewModel: NotesViewModel = hiltViewModel()
+            noteViewModel.notes
         }
 
         GlobalScope.launch {
