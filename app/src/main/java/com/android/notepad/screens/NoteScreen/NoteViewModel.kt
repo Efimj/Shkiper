@@ -1,8 +1,10 @@
 package com.android.notepad.screens.NoteScreen
 
 import android.app.Application
+import android.content.Intent
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -29,6 +31,7 @@ class NoteViewModel @Inject constructor(
     private val noteRepository: NoteMongoRepository,
     private val reminderRepository: ReminderMongoRepository,
     savedStateHandle: SavedStateHandle,
+    private val application: Application,
 ) : ViewModel() {
 
     /*******************
@@ -286,15 +289,16 @@ class NoteViewModel @Inject constructor(
         }
     }
 
-    private val _sharedText = mutableStateOf<String?>(null)
-    val sharedText: State<String?> = _sharedText
-
     fun shareNoteText() {
-        _sharedText.value = noteHeader.value + "\n\n" + noteBody.value
-    }
+        val sharedText = noteHeader.value + "\n\n" + noteBody.value
 
-    fun onShareCompleted() {
-        _sharedText.value = null
+        val intent = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            putExtra(Intent.EXTRA_TEXT, sharedText)
+        }
+
+        val chooser = Intent.createChooser(intent, "Share link")
+        application.applicationContext.startActivity(chooser)
     }
 
     /*******************

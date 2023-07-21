@@ -6,6 +6,8 @@ import com.android.notepad.R
 import com.android.notepad.database.data.note.NoteMongoRepositoryImpl
 import com.android.notepad.database.models.Note
 import com.android.notepad.database.models.Reminder
+import com.android.notepad.database.models.RepeatMode
+import com.android.notepad.helpers.DateHelper
 import com.android.notepad.services.notification_service.NotificationData
 import com.android.notepad.services.notification_service.NotificationScheduler
 import com.android.notepad.services.statistics_service.StatisticsService
@@ -177,7 +179,12 @@ class ReminderMongoRepositoryImpl(val realm: Realm, @ApplicationContext val cont
     ) {
         val notificationScheduler = NotificationScheduler(context)
         notificationScheduler.createNotificationChannel(NotificationScheduler.Companion.NotificationChannels.NOTECHANNEL)
-        val localDateTime = LocalDateTime.of(reminder.date, reminder.time)
+        var reminderDateTime = LocalDateTime.of(reminder.date, reminder.time)
+        if (LocalDateTime.now().isAfter(reminderDateTime)) {
+            if (reminder.repeat == RepeatMode.NONE) return
+            else
+                reminderDateTime = DateHelper.nextDateWithRepeating(reminder.date, reminder.time, reminder.repeat)
+        }
         val notificationData = NotificationData(
             note._id.toHexString(),
             reminder._id.timestamp,
@@ -186,7 +193,7 @@ class ReminderMongoRepositoryImpl(val realm: Realm, @ApplicationContext val cont
             R.drawable.ic_notification,
             reminder.repeat,
             reminder._id.timestamp,
-            localDateTime.toInstant(OffsetDateTime.now().offset).toEpochMilli()
+            reminderDateTime.toInstant(OffsetDateTime.now().offset).toEpochMilli()
         )
         notificationScheduler.scheduleNotification(notificationData)
     }
