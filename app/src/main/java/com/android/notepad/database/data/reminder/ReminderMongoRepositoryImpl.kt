@@ -178,7 +178,7 @@ class ReminderMongoRepositoryImpl(val realm: Realm, @ApplicationContext val cont
         note: Note,
     ) {
         val notificationScheduler = NotificationScheduler(context)
-        notificationScheduler.createNotificationChannel(NotificationScheduler.Companion.NotificationChannels.NOTECHANNEL)
+        notificationScheduler.createNotificationChannel(NotificationScheduler.Companion.NotificationChannels.NOTECHANNEL, context)
         var reminderDateTime = LocalDateTime.of(reminder.date, reminder.time)
         if (LocalDateTime.now().isAfter(reminderDateTime)) {
             if (reminder.repeat == RepeatMode.NONE) return

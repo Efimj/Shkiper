@@ -6,6 +6,8 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import androidx.annotation.StringRes
+import com.android.notepad.R
 import com.android.notepad.database.models.RepeatMode
 import java.time.DayOfWeek
 import java.time.Instant
@@ -16,9 +18,9 @@ import java.time.OffsetDateTime
 
 class NotificationScheduler(private val context: Context) {
     companion object {
-        enum class NotificationChannels(val channelId: String, val channelName: String, val importance: Int) {
+        enum class NotificationChannels(val channelId: String, @StringRes val channelName: Int, val importance: Int) {
             NOTECHANNEL(
-                "NOTECHANNEL", "Reminders", NotificationManager.IMPORTANCE_HIGH
+                "NOTECHANNEL", R.string.Reminders, NotificationManager.IMPORTANCE_HIGH
             )
         }
     }
@@ -193,8 +195,9 @@ class NotificationScheduler(private val context: Context) {
         )
     }
 
-    fun createNotificationChannel(channel: NotificationChannels) {
-        val createdChannel = NotificationChannel(channel.channelId, channel.channelName, channel.importance)
+    fun createNotificationChannel(channel: NotificationChannels, context: Context) {
+        val createdChannel =
+            NotificationChannel(channel.channelId, context.getString(channel.channelName), channel.importance)
         notificationManager.createNotificationChannel(createdChannel)
     }
 }
