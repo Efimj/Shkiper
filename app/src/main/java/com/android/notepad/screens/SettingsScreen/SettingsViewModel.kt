@@ -7,7 +7,9 @@ import android.net.Uri
 import android.util.Log
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.Link
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -21,6 +23,7 @@ import com.android.notepad.helpers.localization.LocaleHelper
 import com.android.notepad.helpers.localization.Localization
 import com.android.notepad.services.backup_service.BackupData
 import com.android.notepad.services.backup_service.BackupService
+import com.android.notepad.services.backup_service.BackupServiceResult
 import com.android.notepad.services.statistics_service.StatisticsService
 import com.android.notepad.ui.theme.ColorThemes
 import com.android.notepad.util.SnackbarHostUtil
@@ -96,31 +99,29 @@ class SettingsViewModel @Inject constructor(
         if (isBackupHandling()) return
         _settingsScreenState.value = _settingsScreenState.value.copy(isLocalBackupSaving = true)
         viewModelScope.launch() {
-            val permissionResult = TedPermission.create()
-                    .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    .checkGranted()
-            if(!permissionResult){
-                _settingsScreenState.value = _settingsScreenState.value.copy(isLocalBackupSaving = false)
-                showSnackbar(
-                    application.applicationContext.getString(R.string.CannotPerformedWithoutPermission),
-                    Icons.Default.Done
-                )
-                return@launch
-            }
             val backupData = BackupData()
             backupData.realmNoteList = noteRepository.getAllNotes()
             backupData.realmReminderList = reminderRepository.getAllReminders()
             backupData.userStatistics = StatisticsService(application.applicationContext).appStatistics.statisticsData
-            val result = BackupService().createBackup(backupData)
+            val result = BackupService().createBackup(backupData, application.applicationContext)
             delay(1000)
             _settingsScreenState.value = _settingsScreenState.value.copy(isLocalBackupSaving = false)
-            if (result)
-                showSnackbar(application.applicationContext.getString(R.string.BackupCreated), Icons.Default.Done)
-            else
-                showSnackbar(
+            when (result) {
+                BackupServiceResult.UnexpectedError -> showSnackbar(
                     application.applicationContext.getString(R.string.UnspecifiedErrorOccurred),
+                    Icons.Default.Error
+                )
+
+                BackupServiceResult.WritePermissionDenied -> showSnackbar(
+                    application.applicationContext.getString(R.string.CannotPerformedWithoutPermission),
+                    Icons.Default.Settings
+                )
+
+                else -> showSnackbar(
+                    application.applicationContext.getString(R.string.BackupCreated),
                     Icons.Default.Done
                 )
+            }
         }
     }
 
@@ -128,32 +129,30 @@ class SettingsViewModel @Inject constructor(
         if (isBackupHandling()) return
         _settingsScreenState.value = _settingsScreenState.value.copy(isLocalBackupUploading = true)
         viewModelScope.launch() {
-            val permissionResult = TedPermission.create()
-                    .setPermissions(Manifest.permission.READ_EXTERNAL_STORAGE)
-                    .checkGranted()
-            if(!permissionResult){
-                _settingsScreenState.value = _settingsScreenState.value.copy(isLocalBackupUploading = false)
-                showSnackbar(
-                    application.applicationContext.getString(R.string.CannotPerformedWithoutPermission),
-                    Icons.Default.Done
-                )
-                return@launch
+            val result = BackupService().uploadBackup(uri, application.applicationContext)
+            if (result.backupData != null) {
+                noteRepository.insertOrUpdateNotes(result.backupData.realmNoteList)
+                reminderRepository.insertOrUpdateReminders(result.backupData.realmReminderList)
+                StatisticsService(application.applicationContext).updateStatistics(result.backupData.userStatistics)
             }
-            val backupData = BackupService().uploadBackup(uri, application.applicationContext)
-            if (backupData == null) {
-                _settingsScreenState.value = _settingsScreenState.value.copy(isLocalBackupUploading = false)
-                showSnackbar(
-                    application.applicationContext.getString(R.string.UnspecifiedErrorOccurred),
-                    Icons.Default.Done
-                )
-                return@launch
-            }
-            noteRepository.insertOrUpdateNotes(backupData.realmNoteList)
-            reminderRepository.insertOrUpdateReminders(backupData.realmReminderList)
-            StatisticsService(application.applicationContext).updateStatistics(backupData.userStatistics)
             delay(1000)
             _settingsScreenState.value = _settingsScreenState.value.copy(isLocalBackupUploading = false)
-            showSnackbar(application.applicationContext.getString(R.string.BackupUploaded), Icons.Default.Done)
+            when (result.backupServiceResult) {
+                BackupServiceResult.UnexpectedError -> showSnackbar(
+                    application.applicationContext.getString(R.string.UnspecifiedErrorOccurred),
+                    Icons.Default.Error
+                )
+
+                BackupServiceResult.ReadPermissionDenied -> showSnackbar(
+                    application.applicationContext.getString(R.string.CannotPerformedWithoutPermission),
+                    Icons.Default.Settings
+                )
+
+                else -> showSnackbar(
+                    application.applicationContext.getString(R.string.BackupUploaded),
+                    Icons.Default.Done
+                )
+            }
         }
     }
 
