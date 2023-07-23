@@ -9,6 +9,7 @@ import com.android.notepad.helpers.NumberHelper
 
 abstract class Statistics {
     abstract fun increment()
+
 }
 
 data class LongStatistics(
@@ -60,6 +61,18 @@ data class StatisticsItem(
     fun increment() {
         when (statistics) {
             is LongStatistics -> (statistics as LongStatistics).increment()
+            is BooleanStatistics -> (statistics as BooleanStatistics).increment()
+            else -> throw UnsupportedOperationException("Unsupported type")
+        }
+    }
+
+    fun isMore(item: StatisticsItem) {
+        when (statistics) {
+            is LongStatistics -> {
+                if(item.statistics is LongStatistics)
+                (statistics as LongStatistics).increment()
+            }
+
             is BooleanStatistics -> (statistics as BooleanStatistics).increment()
             else -> throw UnsupportedOperationException("Unsupported type")
         }

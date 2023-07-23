@@ -131,8 +131,8 @@ class SettingsViewModel @Inject constructor(
         viewModelScope.launch() {
             val result = BackupService().uploadBackup(uri, application.applicationContext)
             if (result.backupData != null) {
-                noteRepository.insertOrUpdateNotes(result.backupData.realmNoteList)
-                reminderRepository.insertOrUpdateReminders(result.backupData.realmReminderList)
+                noteRepository.insertOrUpdateNotes(result.backupData.realmNoteList, false)
+                reminderRepository.insertOrUpdateReminders(result.backupData.realmReminderList, false)
                 StatisticsService(application.applicationContext).updateStatistics(result.backupData.userStatistics)
             }
             delay(1000)

@@ -10,8 +10,18 @@ class StatisticsService(val context: Context) {
     }
 
     fun updateStatistics(newStatisticsData: StatisticsData) {
-        (appStatistics.statisticsData.createdNotesCount.value > newStatisticsData.createdNotesCount.value)
-        appStatistics.statisticsData = newStatisticsData
+        for ((index, property) in appStatistics.statisticsData.javaClass.declaredFields.withIndex()) {
+            property.isAccessible = true
+            val value = property.get(appStatistics.statisticsData)
+            val newStatisticsValue = newStatisticsData.javaClass.declaredFields[index]
+            newStatisticsValue.isAccessible = true
+            val newValue = property.get(newStatisticsData)
+
+            if (value is LongStatistics && newValue is LongStatistics)
+                if (newValue.value > value.value) value.value = newValue.value
+            if (value is BooleanStatistics && newValue is BooleanStatistics)
+                if (newValue.value > value.value) value.value = newValue.value
+        }
         saveStatistics()
     }
 }
