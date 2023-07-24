@@ -107,6 +107,7 @@
     <string name="BackupUploaded">Backup uploaded</string>
     <string name="UnspecifiedErrorOccurred">An unspecified error occurred</string>
     <string name="CannotPerformedWithoutPermission">Cannot be performed without permission</string>
+    <string name="EmptyNotesPageHeader">Notes you add appear here.</string>
 
     <!--    Statistics components   -->
     <string name="Thinker">Thinker</string>

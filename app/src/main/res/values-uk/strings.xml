@@ -108,6 +108,7 @@
     <string name="BackupUploaded">Резервна копія завантажена</string>
     <string name="UnspecifiedErrorOccurred">Виникла невизначена помилка</string>
     <string name="CannotPerformedWithoutPermission">Не можна виконати операцію без дозволу</string>
+    <string name="EmptyNotesPageHeader">Тут будуть ваші нотатки.</string>
 
     <!-- Statistics components -->
     <string name="Thinker">Міркуючий</string>

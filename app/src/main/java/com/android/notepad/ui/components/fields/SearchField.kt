@@ -60,7 +60,7 @@ fun SearchBar(
         focusedLabelColor = CustomAppTheme.colors.textSecondary,
         unfocusedLabelColor = CustomAppTheme.colors.textSecondary,
     )
-    val maxFontSize = 20.sp
+    val maxFontSize = 18.sp
     val minFontSize = 16.sp
 
     val customTextSelectionColors = TextSelectionColors(

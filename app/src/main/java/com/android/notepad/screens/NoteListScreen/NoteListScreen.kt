@@ -13,6 +13,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -27,6 +28,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
@@ -47,6 +49,7 @@ import com.android.notepad.ui.components.buttons.CreateNoteButton
 import com.android.notepad.ui.components.buttons.HashtagButton
 import com.android.notepad.ui.components.modals.CreateReminderDialog
 import com.android.notepad.ui.components.modals.ReminderDialogProperties
+import com.android.notepad.ui.modifiers.circularRotation
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -77,8 +80,8 @@ fun NoteListScreen(navController: NavController, notesViewModel: NotesViewModel 
     /**
      * LaunchedEffect for cases when the number of selected notes changes.
      */
-    LaunchedEffect(notesViewModel.selectedNotes.value) {
-        if (notesViewModel.selectedNotes.value.isEmpty()) {
+    LaunchedEffect(notesViewModel.screenState.value.selectedNotes) {
+        if (notesViewModel.screenState.value.selectedNotes.isEmpty()) {
             offsetX.animateTo(
                 targetValue = -actionBarHeightPx, animationSpec = tween(durationMillis = 200)
             )
@@ -101,25 +104,57 @@ fun NoteListScreen(navController: NavController, notesViewModel: NotesViewModel 
     /**
      * LaunchedEffect when new note created.
      */
-    LaunchedEffect(notesViewModel.lastCreatedNoteId) {
-        if (notesViewModel.lastCreatedNoteId.isNotEmpty()) {
-            navController.navigate(AppScreens.Note.noteId(notesViewModel.lastCreatedNoteId))
-            notesViewModel.lastCreatedNoteId = ""
+    LaunchedEffect(notesViewModel.screenState.value.lastCreatedNoteId) {
+        if (notesViewModel.screenState.value.lastCreatedNoteId.isNotEmpty()) {
+            navController.navigate(AppScreens.Note.noteId(notesViewModel.screenState.value.lastCreatedNoteId))
+            notesViewModel.clearLastCreatedNote()
         }
     }
 
     Box(Modifier.fillMaxSize().nestedScroll(nestedScrollConnection)) {
-        ScreenContent(lazyGridNotes, notesViewModel, currentRoute, navController)
+        if (notesViewModel.screenState.value.isNotesInitialized && notesViewModel.screenState.value.notes.isEmpty())
+            ScreenIfNoData()
+        else
+            ScreenContent(lazyGridNotes, notesViewModel, currentRoute, navController)
         Box(modifier = Modifier) {
             SearchBar(searchBarHeight, searchBarOffsetHeightPx, notesViewModel)
             ActionBar(actionBarHeight, offsetX, notesViewModel)
         }
         Box(modifier = Modifier.align(Alignment.BottomEnd).padding(35.dp)) {
-            AnimatedContent(notesViewModel.selectedNotes.value.isEmpty()) {
-                CreateNoteButton(notesViewModel.selectedNotes.value.isEmpty()) {
+            AnimatedContent(notesViewModel.screenState.value.selectedNotes.isEmpty()) {
+                CreateNoteButton(notesViewModel.screenState.value.selectedNotes.isEmpty()) {
                     notesViewModel.createNewNote()
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun ScreenIfNoData() {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.Description,
+                contentDescription = null,
+                tint = CustomAppTheme.colors.active,
+                modifier = Modifier.size(140.dp)
+            )
+            Spacer(Modifier.height(10.dp))
+            Text(
+                text = stringResource(R.string.EmptyNotesPageHeader),
+                style = MaterialTheme.typography.h6,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                color = CustomAppTheme.colors.text
+            )
         }
     }
 }
@@ -132,8 +167,8 @@ private fun ScreenContent(
     currentRoute: String,
     navController: NavController
 ) {
-    val pinnedNotes = notesViewModel.notes.value.filter { it.isPinned }
-    val unpinnedNotes = notesViewModel.notes.value.filterNot { it.isPinned }
+    val pinnedNotes = notesViewModel.screenState.value.notes.filter { it.isPinned }
+    val unpinnedNotes = notesViewModel.screenState.value.notes.filterNot { it.isPinned }
 
     LazyGridNotes(
         contentPadding = PaddingValues(10.dp, 70.dp, 10.dp, 80.dp),
@@ -147,8 +182,8 @@ private fun ScreenContent(
                 state = rememberLazyListState(),
                 contentPadding = PaddingValues(10.dp, 0.dp, 10.dp, 0.dp)
             ) {
-                items(items = notesViewModel.hashtags.value.toList()) { item ->
-                    HashtagButton(item, item == notesViewModel.currentHashtag.value) {
+                items(items = notesViewModel.screenState.value.hashtags.toList()) { item ->
+                    HashtagButton(item, item == notesViewModel.screenState.value.currentHashtag) {
                         notesViewModel.setCurrentHashtag(
                             item
                         )
@@ -170,9 +205,9 @@ private fun ScreenContent(
             items(items = pinnedNotes) { item ->
                 NoteCard(item.header,
                     item.body,
-                    reminder = notesViewModel.reminders.value.find { it.noteId == item._id },
-                    markedText = notesViewModel.searchText,
-                    selected = item._id in notesViewModel.selectedNotes.value,
+                    reminder = notesViewModel.screenState.value.reminders.find { it.noteId == item._id },
+                    markedText = notesViewModel.screenState.value.searchText,
+                    selected = item._id in notesViewModel.screenState.value.selectedNotes,
                     onClick = { onNoteClick(notesViewModel, item, currentRoute, navController) },
                     onLongClick = { notesViewModel.toggleSelectedNoteCard(item._id) })
             }
@@ -189,19 +224,19 @@ private fun ScreenContent(
             items(items = unpinnedNotes) { item ->
                 NoteCard(item.header,
                     item.body,
-                    reminder = notesViewModel.reminders.value.find { it.noteId == item._id },
-                    markedText = notesViewModel.searchText,
-                    selected = item._id in notesViewModel.selectedNotes.value,
+                    reminder = notesViewModel.screenState.value.reminders.find { it.noteId == item._id },
+                    markedText = notesViewModel.screenState.value.searchText,
+                    selected = item._id in notesViewModel.screenState.value.selectedNotes,
                     onClick = { onNoteClick(notesViewModel, item, currentRoute, navController) },
                     onLongClick = { notesViewModel.toggleSelectedNoteCard(item._id) })
             }
         }
     }
-    if (notesViewModel.isCreateReminderDialogShow.value) {
+    if (notesViewModel.screenState.value.isCreateReminderDialogShow) {
         val reminder =
             remember {
-                if (notesViewModel.selectedNotes.value.size == 1)
-                    notesViewModel.getReminder(notesViewModel.selectedNotes.value.first()) else null
+                if (notesViewModel.screenState.value.selectedNotes.size == 1)
+                    notesViewModel.getReminder(notesViewModel.screenState.value.selectedNotes.first()) else null
             }
         val reminderDialogProperties = remember {
             if (reminder != null) ReminderDialogProperties(reminder.date, reminder.time, reminder.repeat)
@@ -242,7 +277,7 @@ private fun ActionBar(
             backgroundColor = CustomAppTheme.colors.mainBackground,
             title = {
                 Text(
-                    notesViewModel.selectedNotes.value.count().toString(),
+                    notesViewModel.screenState.value.selectedNotes.count().toString(),
                     overflow = TextOverflow.Ellipsis,
                     style = MaterialTheme.typography.body1.copy(fontSize = 18.sp),
                     color = CustomAppTheme.colors.textSecondary,
@@ -320,7 +355,7 @@ private fun SearchBar(
     val searchBarFloatHeight = with(LocalDensity.current) { searchBarHeight.roundToPx().toFloat() }
 
     AnimatedVisibility(
-        notesViewModel.selectedNotes.value.isEmpty(),
+        notesViewModel.screenState.value.selectedNotes.isEmpty(),
         enter = slideIn(tween(200, easing = LinearOutSlowInEasing)) {
             IntOffset(0, -searchBarFloatHeight.roundToInt())
         },
@@ -332,7 +367,7 @@ private fun SearchBar(
             modifier = Modifier.height(searchBarHeight).padding(20.dp, 10.dp, 20.dp, 0.dp)
                 .offset { IntOffset(x = 0, y = searchBarOffsetHeightPx.value.roundToInt()) },
         ) {
-            SearchBar(search = notesViewModel.searchText,
+            SearchBar(search = notesViewModel.screenState.value.searchText,
                 onTrailingIconClick = { notesViewModel.changeSearchText("") },
                 onValueChange = { notesViewModel.changeSearchText(it) })
         }
@@ -342,7 +377,7 @@ private fun SearchBar(
 private fun onNoteClick(
     notesViewModel: NotesViewModel, it: Note, currentRoute: String, navController: NavController
 ) {
-    if (notesViewModel.selectedNotes.value.isNotEmpty()) notesViewModel.toggleSelectedNoteCard(it._id)
+    if (notesViewModel.screenState.value.selectedNotes.isNotEmpty()) notesViewModel.toggleSelectedNoteCard(it._id)
     else {
         if (currentRoute.substringBefore("/") != AppScreens.Note.route.substringBefore("/")) {
             navController.navigate(AppScreens.Note.noteId(it._id.toHexString()))

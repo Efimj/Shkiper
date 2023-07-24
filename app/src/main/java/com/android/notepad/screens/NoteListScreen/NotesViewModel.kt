@@ -1,9 +1,7 @@
 package com.android.notepad.screens.NoteListScreen
 
 import androidx.compose.runtime.State
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.notepad.database.data.note.NoteMongoRepository
@@ -21,19 +19,31 @@ import org.mongodb.kbson.ObjectId
 import java.time.*
 import javax.inject.Inject
 
+data class NotesScreenState(
+    val isNotesInitialized: Boolean = false,
+    val notes: List<Note> = emptyList(),
+    val lastCreatedNoteId: String = "",
+    val searchText: String = "",
+    val selectedNotes: Set<ObjectId> = emptySet(),
+    val hashtags: Set<String> = emptySet(),
+    val currentHashtag: String? = null,
+    val reminders: List<Reminder> = emptyList(),
+    val isCreateReminderDialogShow: Boolean = false,
+)
+
 @HiltViewModel
 class NotesViewModel @Inject constructor(
     private val noteRepository: NoteMongoRepository,
     private val reminderRepository: ReminderMongoRepository,
 ) : ViewModel() {
 
+    private val _screenState = mutableStateOf(NotesScreenState())
+    val screenState: State<NotesScreenState> = _screenState
+
     /*******************
      * Notes region
      *******************/
 
-    val notes = mutableStateOf(emptyList<Note>())
-    var lastCreatedNoteId by mutableStateOf("")
-    var searchText by mutableStateOf("")
     private var notesFlowJob: Job? = null
 
     init {
@@ -49,47 +59,46 @@ class NotesViewModel @Inject constructor(
 
         notesFlowJob = viewModelScope.launch {
             noteRepository.getNotes(NotePosition.MAIN).collect() {
-                notes.value = it
+                _screenState.value = _screenState.value.copy(notes = it, isNotesInitialized = true)
             }
         }
     }
 
-    private val _selectedNoteCardIndices = mutableStateOf(setOf<ObjectId>())
-    val selectedNotes: State<Set<ObjectId>> = _selectedNoteCardIndices
-
     fun clearSelectedNote() {
-        _selectedNoteCardIndices.value = setOf()
+        _screenState.value = screenState.value.copy(selectedNotes = setOf())
     }
 
     fun changeSearchText(newString: String) {
         notesFlowJob?.cancel()
 
-        searchText = newString
+        _screenState.value = _screenState.value.copy(searchText = newString)
         notesFlowJob = viewModelScope.launch(Dispatchers.IO) {
             if (newString.isEmpty()) {
                 getNotes()
             } else {
-                getNotesByText(searchText)
+                getNotesByText(_screenState.value.searchText)
             }
         }
     }
 
     private suspend fun getNotesByText(newString: String) {
-        _currentHashtag.value = null
+        _screenState.value = screenState.value.copy(currentHashtag = null)
         noteRepository.filterNotesByContains(newString).collect {
-            notes.value = it
+            _screenState.value = _screenState.value.copy(notes = it)
         }
     }
 
-    fun toggleSelectedNoteCard(index: ObjectId) {
-        _selectedNoteCardIndices.value =
-            if (_selectedNoteCardIndices.value.contains(index)) _selectedNoteCardIndices.value.minus(index)
-            else _selectedNoteCardIndices.value.plus(index)
+    fun toggleSelectedNoteCard(noteId: ObjectId) {
+        val selectedNotes = screenState.value.selectedNotes
+        _screenState.value = screenState.value.copy(
+            selectedNotes = if (selectedNotes.contains(noteId)) selectedNotes.minus(noteId)
+            else selectedNotes.plus(noteId)
+        )
     }
 
     fun deleteSelectedNotes() {
         viewModelScope.launch {
-            noteRepository.deleteNote(selectedNotes.value.toList())
+            noteRepository.deleteNote(screenState.value.selectedNotes.toList())
             clearSelectedNote()
         }
     }
@@ -97,20 +106,20 @@ class NotesViewModel @Inject constructor(
     fun pinSelectedNotes() {
         viewModelScope.launch {
             val pinMode: Boolean
-            var unpinnedNote = notes.value.filter { it.isPinned }.find { note ->
-                selectedNotes.value.any {
+            var unpinnedNote = _screenState.value.notes.filter { it.isPinned }.find { note ->
+                screenState.value.selectedNotes.any {
                     it == note._id
                 } && !note.isPinned
             }
             if (unpinnedNote == null) {
-                unpinnedNote = notes.value.filterNot { it.isPinned }.find { note ->
-                    selectedNotes.value.any {
+                unpinnedNote = _screenState.value.notes.filterNot { it.isPinned }.find { note ->
+                    screenState.value.selectedNotes.any {
                         it == note._id
                     } && !note.isPinned
                 }
             }
             pinMode = unpinnedNote != null
-            noteRepository.updateNote(selectedNotes.value.toList()) { updatedNote ->
+            noteRepository.updateNote(screenState.value.selectedNotes.toList()) { updatedNote ->
                 updatedNote.isPinned = pinMode
             }
             clearSelectedNote()
@@ -121,33 +130,33 @@ class NotesViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             val newNote = Note()
             noteRepository.insertNote(newNote)
-            lastCreatedNoteId = newNote._id.toHexString()
+            _screenState.value = screenState.value.copy(lastCreatedNoteId = newNote._id.toHexString())
         }
+    }
+
+    fun clearLastCreatedNote() {
+        _screenState.value = screenState.value.copy(lastCreatedNoteId = "")
     }
 
     /*******************
      * Hashtag region
      *******************/
-    val hashtags = mutableStateOf(setOf<String>())
-
-    private val _currentHashtag = mutableStateOf<String?>(null)
-    val currentHashtag: State<String?> = _currentHashtag
 
     fun getHashtags() {
         viewModelScope.launch {
             noteRepository.getHashtags(NotePosition.MAIN).collect() {
-                hashtags.value = it
+                _screenState.value = screenState.value.copy(hashtags = it)
             }
         }
     }
 
     fun setCurrentHashtag(newHashtag: String?) {
-        if (newHashtag == _currentHashtag.value) {
-            _currentHashtag.value = null
+        if (newHashtag == screenState.value.currentHashtag) {
+            _screenState.value = screenState.value.copy(currentHashtag = null)
             getNotes()
         } else {
-            _currentHashtag.value = newHashtag
-            getNotesByHashtag(_currentHashtag.value ?: "")
+            _screenState.value = screenState.value.copy(currentHashtag = newHashtag)
+            getNotesByHashtag(screenState.value.currentHashtag ?: "")
         }
     }
 
@@ -156,7 +165,7 @@ class NotesViewModel @Inject constructor(
 
         notesFlowJob = viewModelScope.launch {
             noteRepository.getNotesByHashtag(NotePosition.MAIN, hashtag).collect() {
-                notes.value = it
+                _screenState.value = _screenState.value.copy(notes = it)
             }
         }
     }
@@ -165,22 +174,17 @@ class NotesViewModel @Inject constructor(
      * Reminder region
      *******************/
 
-    private val _reminders = mutableStateOf(emptyList<Reminder>())
-    val reminders: State<List<Reminder>> = _reminders
-
     private fun getReminders() {
         viewModelScope.launch {
             reminderRepository.getReminders().collect() {
-                _reminders.value = it
+                _screenState.value = screenState.value.copy(reminders = it)
             }
         }
     }
 
-    private val _isCreateReminderDialogShow = mutableStateOf(false)
-    val isCreateReminderDialogShow: State<Boolean> = _isCreateReminderDialogShow
-
     fun switchReminderDialogShow() {
-        _isCreateReminderDialogShow.value = !_isCreateReminderDialogShow.value
+        _screenState.value =
+            _screenState.value.copy(isCreateReminderDialogShow = !_screenState.value.isCreateReminderDialogShow)
     }
 
     fun getReminder(noteId: ObjectId): Reminder? {
@@ -191,7 +195,7 @@ class NotesViewModel @Inject constructor(
         if (DateHelper.isFutureDateTime(date, time)) {
             viewModelScope.launch {
                 reminderRepository.updateOrCreateReminderForNotes(
-                    noteRepository.getNotes(selectedNotes.value.toList()),
+                    noteRepository.getNotes(screenState.value.selectedNotes.toList()),
                 ) { updatedReminder ->
                     updatedReminder.date = date
                     updatedReminder.time = time
@@ -203,9 +207,10 @@ class NotesViewModel @Inject constructor(
     }
 
     fun deleteSelectedReminder() {
-        if (selectedNotes.value.isEmpty()) return
+        if (screenState.value.selectedNotes.isEmpty()) return
         viewModelScope.launch {
-            val reminder = reminderRepository.getReminderForNote(selectedNotes.value.toList().first()) ?: return@launch
+            val reminder =
+                reminderRepository.getReminderForNote(screenState.value.selectedNotes.toList().first()) ?: return@launch
             reminderRepository.deleteReminder(reminder._id)
         }
         switchReminderDialogShow()
