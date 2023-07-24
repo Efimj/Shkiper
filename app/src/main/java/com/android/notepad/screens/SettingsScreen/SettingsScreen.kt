@@ -114,11 +114,11 @@ fun SettingsScreen(navController: NavController, settingsViewModel: SettingsView
                 isLoading = settingsViewModel.settingsScreenState.value.isLocalBackupUploading,
                 isEnabled = !settingsViewModel.isBackupHandling(),
                 onClick = { fileSearch.launch(arrayOf("*/*")) })
-            SettingsItem(
-                stringResource(R.string.CloudStorage),
-                stringResource(R.string.Connect),
-                Icons.Outlined.CloudOff,
-                onClick = {})
+//            SettingsItem(
+//                stringResource(R.string.CloudStorage),
+//                stringResource(R.string.Connect),
+//                Icons.Outlined.CloudOff,
+//                onClick = {})
         }
         SettingsItemGroup {
             Text(

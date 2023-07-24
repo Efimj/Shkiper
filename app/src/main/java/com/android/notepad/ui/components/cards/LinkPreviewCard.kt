@@ -83,7 +83,7 @@ fun LinkPreviewCard(openGraphData: LinkHelper.LinkPreview) {
                     }
                 },
                 onLongClick = {
-                    clipboardManager.setPrimaryClip(ClipData.newPlainText(linkTextLabel, openGraphData.url))
+                    clipboardManager.setPrimaryClip(ClipData.newPlainText(linkTextLabel, openGraphData.link))
                     coroutineScope.launch {
                         SnackbarHostUtil.snackbarHostState.showSnackbar(
                             SnackbarVisualsCustom(
