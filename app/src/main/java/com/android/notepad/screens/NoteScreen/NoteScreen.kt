@@ -65,10 +65,9 @@ import java.util.*
 
 @Composable
 fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hiltViewModel()) {
-
-    LaunchedEffect(Unit) {
+    LaunchedEffect(noteViewModel.screenState.value.isNoteExisted) {
         noteViewModel.runFetchingLinksMetaData()
-        if (noteViewModel.note == null) navController.popBackStack()
+        if (!noteViewModel.screenState.value.isNoteExisted) navController.popBackStack()
     }
     val scrollState = rememberLazyListState()
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route ?: ""
@@ -101,7 +100,7 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
         ) {
             item {
                 CustomTextField(
-                    text = noteViewModel.noteHeader.value,
+                    text = noteViewModel.screenState.value.noteHeader,
                     onTextChange = { noteViewModel.updateNoteHeader(it) },
                     placeholder = stringResource(R.string.Header),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text, imeAction = ImeAction.Next),
@@ -116,7 +115,7 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
             }
             item {
                 CustomTextField(
-                    text = noteViewModel.noteBody.value,
+                    text = noteViewModel.screenState.value.noteBody,
                     onTextChange = { noteViewModel.updateNoteBody(it) },
                     placeholder = stringResource(R.string.Text),
                     textStyle = MaterialTheme.typography.body1,
@@ -127,14 +126,14 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
             item {
                 HashtagEditor(
                     Modifier.padding(bottom = 15.dp).padding(horizontal = 20.dp),
-                    noteViewModel.noteHashtags.value,
+                    noteViewModel.screenState.value.hashtags,
                     noteViewModel::changeNoteHashtags
                 )
             }
             LinkPreviewList(
-                noteViewModel.linksData.value,
+                noteViewModel.screenState.value.linksMetaData,
                 linkListExpanded,
-                noteViewModel.linksLoading,
+                noteViewModel.screenState.value.linksLoading,
                 Modifier.padding(horizontal = 20.dp)
             )
             item {
@@ -143,8 +142,8 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
         }
     }
 
-    if (noteViewModel.isCreateReminderDialogShow.value) {
-        val reminder = remember { noteViewModel.reminder.value }
+    if (noteViewModel.screenState.value.isCreateReminderDialogShow) {
+        val reminder = remember { noteViewModel.screenState.value.reminder }
         val reminderDialogProperties = remember {
             if (reminder != null) ReminderDialogProperties(reminder.date, reminder.time, reminder.repeat)
             else ReminderDialogProperties()
@@ -179,7 +178,7 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
 private fun NoteScreenHeader(navController: NavController, noteViewModel: NoteViewModel) {
     val systemUiController = rememberSystemUiController()
     val backgroundColor by animateColorAsState(
-        if (noteViewModel.isTopAppBarHover.value) CustomAppTheme.colors.secondaryBackground else CustomAppTheme.colors.mainBackground,
+        if (noteViewModel.screenState.value.isTopAppBarHover) CustomAppTheme.colors.secondaryBackground else CustomAppTheme.colors.mainBackground,
         animationSpec = tween(200),
     )
 
@@ -188,7 +187,7 @@ private fun NoteScreenHeader(navController: NavController, noteViewModel: NoteVi
     }
 
     TopAppBar(
-        elevation = if (noteViewModel.isTopAppBarHover.value) 8.dp else 0.dp,
+        elevation = if (noteViewModel.screenState.value.isTopAppBarHover) 8.dp else 0.dp,
         backgroundColor = backgroundColor,
         contentColor = CustomAppTheme.colors.textSecondary,
         title = { },
@@ -213,7 +212,7 @@ private fun NoteScreenHeader(navController: NavController, noteViewModel: NoteVi
                 Icon(
                     imageVector = Icons.Outlined.PushPin,
                     contentDescription = stringResource(R.string.AttachNote),
-                    tint = if (noteViewModel.noteIsPinned.value) CustomAppTheme.colors.text else CustomAppTheme.colors.textSecondary,
+                    tint = if (noteViewModel.screenState.value.isPinned) CustomAppTheme.colors.text else CustomAppTheme.colors.textSecondary,
                 )
             }
             Spacer(modifier = Modifier.padding(6.dp, 0.dp, 0.dp, 0.dp))
@@ -224,7 +223,7 @@ private fun NoteScreenHeader(navController: NavController, noteViewModel: NoteVi
                 Icon(
                     imageVector = Icons.Outlined.NotificationAdd,
                     contentDescription = stringResource(R.string.AddToNotification),
-                    tint = if (noteViewModel.reminder.value == null) CustomAppTheme.colors.textSecondary else CustomAppTheme.colors.text,
+                    tint = if (noteViewModel.screenState.value.reminder == null) CustomAppTheme.colors.textSecondary else CustomAppTheme.colors.text,
                 )
             }
             Spacer(modifier = Modifier.padding(6.dp, 0.dp, 0.dp, 0.dp))
@@ -251,7 +250,7 @@ private fun NoteScreenHeader(navController: NavController, noteViewModel: NoteVi
 private fun NoteScreenFooter(navController: NavController, noteViewModel: NoteViewModel) {
     val systemUiController = rememberSystemUiController()
     val backgroundColor by animateColorAsState(
-        if (noteViewModel.isBottomAppBarHover.value) CustomAppTheme.colors.secondaryBackground else CustomAppTheme.colors.mainBackground,
+        if (noteViewModel.screenState.value.isBottomAppBarHover) CustomAppTheme.colors.secondaryBackground else CustomAppTheme.colors.mainBackground,
         animationSpec = tween(200),
     )
 
@@ -260,7 +259,7 @@ private fun NoteScreenFooter(navController: NavController, noteViewModel: NoteVi
     }
 
     BottomAppBar(
-        elevation = if (noteViewModel.isBottomAppBarHover.value) 8.dp else 0.dp,
+        elevation = if (noteViewModel.screenState.value.isBottomAppBarHover) 8.dp else 0.dp,
         backgroundColor = backgroundColor,
         contentColor = CustomAppTheme.colors.textSecondary,
         cutoutShape = CircleShape,
@@ -271,7 +270,7 @@ private fun NoteScreenFooter(navController: NavController, noteViewModel: NoteVi
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            if (noteViewModel.intermediateStates.value.size < 2) {
+            if (noteViewModel.screenState.value.intermediateStates.size < 2) {
                 Row {
                     Spacer(modifier = Modifier.padding(15.dp, 0.dp, 0.dp, 0.dp))
                     Text(
@@ -286,24 +285,24 @@ private fun NoteScreenFooter(navController: NavController, noteViewModel: NoteVi
                     IconButton(
                         onClick = { noteViewModel.noteStateGoBack() },
                         modifier = Modifier.size(40.dp).clip(CircleShape).padding(0.dp),
-                        enabled = noteViewModel.currentStateIndex.value > 0
+                        enabled = noteViewModel.screenState.value.currentIntermediateIndex > 0
                     ) {
                         Icon(
                             imageVector = Icons.Outlined.Undo,
                             contentDescription = stringResource(R.string.GoBack),
-                            tint = if (noteViewModel.currentStateIndex.value > 0) CustomAppTheme.colors.text else CustomAppTheme.colors.textSecondary,
+                            tint = if (noteViewModel.screenState.value.currentIntermediateIndex > 0) CustomAppTheme.colors.text else CustomAppTheme.colors.textSecondary,
                         )
                     }
                     Spacer(modifier = Modifier.padding(6.dp, 0.dp, 0.dp, 0.dp))
                     IconButton(
                         onClick = { noteViewModel.noteStateGoNext() },
                         modifier = Modifier.size(40.dp).clip(CircleShape).padding(0.dp),
-                        enabled = noteViewModel.currentStateIndex.value < noteViewModel.intermediateStates.value.size - 1
+                        enabled = noteViewModel.screenState.value.currentIntermediateIndex < noteViewModel.screenState.value.intermediateStates.size - 1
                     ) {
                         Icon(
                             imageVector = Icons.Outlined.Redo,
                             contentDescription = stringResource(R.string.GoForward),
-                            tint = if (noteViewModel.currentStateIndex.value < noteViewModel.intermediateStates.value.size - 1) CustomAppTheme.colors.text else CustomAppTheme.colors.textSecondary,
+                            tint = if (noteViewModel.screenState.value.currentIntermediateIndex < noteViewModel.screenState.value.intermediateStates.size - 1) CustomAppTheme.colors.text else CustomAppTheme.colors.textSecondary,
                         )
                     }
                 }
@@ -351,9 +350,9 @@ private fun NoteScreenFooter(navController: NavController, noteViewModel: NoteVi
 
 
 private fun getUpdatedTime(noteViewModel: NoteViewModel): String {
-    val duration = Duration.between(noteViewModel.noteUpdatedDate.value, LocalDateTime.now())
+    val duration = Duration.between(noteViewModel.screenState.value.updatedDate, LocalDateTime.now())
     return if (duration.toDays() > 0)
-        noteViewModel.noteUpdatedDate.value.format(DateTimeFormatter.ofPattern("d MMMM yyyy, HH:mm"))
+        noteViewModel.screenState.value.updatedDate.format(DateTimeFormatter.ofPattern("d MMMM yyyy, HH:mm"))
     else
-        noteViewModel.noteUpdatedDate.value.format(DateTimeFormatter.ofPattern("HH:mm"))
+        noteViewModel.screenState.value.updatedDate.format(DateTimeFormatter.ofPattern("HH:mm"))
 }

@@ -30,10 +30,10 @@ import com.android.notepad.ui.theme.CustomAppTheme
 fun LazyListScope.LinkPreviewList(
     linkPreviewList: Set<LinkHelper.LinkPreview>,
     expanded: MutableState<Boolean>,
-    isLoading: State<Boolean>,
+    isLoading: Boolean,
     contentPadding: Modifier
 ) {
-    if (isLoading.value) {
+    if (isLoading) {
         item {
             Row(verticalAlignment = Alignment.CenterVertically, modifier = contentPadding) {
                 Text(
