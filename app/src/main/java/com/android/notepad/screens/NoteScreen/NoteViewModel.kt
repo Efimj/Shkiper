@@ -2,6 +2,7 @@ package com.android.notepad.screens.NoteScreen
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
@@ -14,7 +15,7 @@ import com.android.notepad.database.models.Reminder
 import com.android.notepad.database.models.RepeatMode
 import com.android.notepad.helpers.DateHelper
 import com.android.notepad.helpers.LinkHelper
-import com.android.notepad.navigation.ARGUMENT_NOTE_ID
+import com.android.notepad.navigation.Argument_Note_Id
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.realm.kotlin.ext.realmSetOf
 import kotlinx.coroutines.*
@@ -57,8 +58,7 @@ class NoteViewModel @Inject constructor(
     val screenState: State<NoteScreenState> = _screenState
 
     init {
-
-        initializeNote(ObjectId(savedStateHandle[ARGUMENT_NOTE_ID] ?: ""))
+        initializeNote(ObjectId(savedStateHandle[Argument_Note_Id] ?: ""))
         viewModelScope.launch {
             getReminder()
         }

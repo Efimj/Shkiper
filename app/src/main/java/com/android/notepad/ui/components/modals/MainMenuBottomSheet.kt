@@ -1,5 +1,6 @@
 package com.android.notepad.ui.components.modals
 
+import android.util.Log
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.TweenSpec
 import androidx.compose.animation.core.animateDpAsState
@@ -19,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.android.notepad.R
+import com.android.notepad.database.models.NotePosition
 import com.android.notepad.navigation.SetupAppScreenNavGraph
 import com.android.notepad.navigation.AppScreens
 import com.android.notepad.ui.components.buttons.MainMenuButton
@@ -118,17 +120,17 @@ private fun MainPageLayout(
 }
 
 private fun getCurrentMenuIcon(currentRoute: String): ImageVector {
-    val currentButtonIcon = when (currentRoute) {
-        AppScreens.NoteList.route ->
+    val currentButtonIcon = when (currentRoute.substringBefore("/")) {
+        AppScreens.NoteList.route.substringBefore("/") ->
             Icons.Outlined.AutoAwesomeMosaic
 
-        AppScreens.Archive.route ->
+        AppScreens.Archive.route.substringBefore("/") ->
             Icons.Outlined.Archive
 
-        AppScreens.Basket.route ->
+        AppScreens.Basket.route.substringBefore("/") ->
             Icons.Outlined.Delete
 
-        AppScreens.Settings.route ->
+        AppScreens.Settings.route.substringBefore("/") ->
             Icons.Outlined.Settings
 
         else -> Icons.Outlined.Menu
@@ -154,21 +156,36 @@ private fun BottomSheetContent(
             Icons.Outlined.AutoAwesomeMosaic,
             isActive = currentRoute == AppScreens.NoteList.route,
             onClick = {
-                goToPage(navController, AppScreens.NoteList.route, coroutineScope, bottomSheetState)
+                goToPage(
+                    navController,
+                    AppScreens.NoteList.notePosition(NotePosition.MAIN.name),
+                    coroutineScope,
+                    bottomSheetState
+                )
             })
         Spacer(modifier = Modifier.height(8.dp))
         MainMenuButton(stringResource(R.string.Archive),
             Icons.Outlined.Archive,
             isActive = currentRoute == AppScreens.Archive.route,
             onClick = {
-                goToPage(navController, AppScreens.Archive.route, coroutineScope, bottomSheetState)
+                goToPage(
+                    navController,
+                    AppScreens.Archive.notePosition(NotePosition.ARCHIVE.name),
+                    coroutineScope,
+                    bottomSheetState
+                )
             })
         Spacer(modifier = Modifier.height(8.dp))
         MainMenuButton(stringResource(R.string.Basket),
             Icons.Outlined.Delete,
             isActive = currentRoute == AppScreens.Basket.route,
             onClick = {
-                goToPage(navController, AppScreens.Basket.route, coroutineScope, bottomSheetState)
+                goToPage(
+                    navController,
+                    AppScreens.Basket.notePosition(NotePosition.DELETE.name),
+                    coroutineScope,
+                    bottomSheetState
+                )
             })
         Spacer(modifier = Modifier.height(8.dp))
         MainMenuButton(stringResource(R.string.Settings),

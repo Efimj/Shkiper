@@ -1,20 +1,26 @@
-package com.android.notepad.screens.NoteListScreen
+package com.android.notepad.screens.ArchiveNotesScreen
 
-import androidx.compose.animation.*
-import androidx.compose.animation.core.*
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.AnimationVector1D
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.lazy.staggeredgrid.*
+import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridState
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
+import androidx.compose.foundation.lazy.staggeredgrid.items
+import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.outlined.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
@@ -32,22 +38,21 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.android.notepad.R
 import com.android.notepad.navigation.AppScreens
-import com.android.notepad.ui.components.cards.NoteCard
-import com.android.notepad.ui.components.layouts.LazyGridNotes
-import com.android.notepad.ui.theme.CustomAppTheme
-import kotlin.math.roundToInt
-import com.android.notepad.ui.components.buttons.CreateNoteButton
 import com.android.notepad.ui.components.buttons.HashtagButton
-import com.android.notepad.ui.components.layouts.ScreenContentIfNoData
+import com.android.notepad.ui.components.cards.NoteCard
 import com.android.notepad.ui.components.layouts.CustomTopAppBar
+import com.android.notepad.ui.components.layouts.LazyGridNotes
+import com.android.notepad.ui.components.layouts.ScreenContentIfNoData
 import com.android.notepad.ui.components.layouts.TopAppBarItem
 import com.android.notepad.ui.components.modals.CreateReminderDialog
 import com.android.notepad.ui.components.modals.ReminderDialogProperties
+import com.android.notepad.ui.theme.CustomAppTheme
 import com.android.notepad.viewModels.NotesViewModel
+import kotlin.math.roundToInt
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun NoteListScreen(navController: NavController, notesViewModel: NotesViewModel = hiltViewModel()) {
+fun ArchiveNotesScreen(navController: NavController, archiveViewModel: NotesViewModel = hiltViewModel()) {
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route ?: ""
 
     val searchBarHeight = 60.dp
@@ -74,8 +79,8 @@ fun NoteListScreen(navController: NavController, notesViewModel: NotesViewModel 
     /**
      * LaunchedEffect for cases when the number of selected notes changes.
      */
-    LaunchedEffect(notesViewModel.screenState.value.selectedNotes) {
-        if (notesViewModel.screenState.value.selectedNotes.isEmpty()) {
+    LaunchedEffect(archiveViewModel.screenState.value.selectedNotes) {
+        if (archiveViewModel.screenState.value.selectedNotes.isEmpty()) {
             offsetX.animateTo(
                 targetValue = -actionBarHeightPx, animationSpec = tween(durationMillis = 200)
             )
@@ -98,38 +103,27 @@ fun NoteListScreen(navController: NavController, notesViewModel: NotesViewModel 
     /**
      * LaunchedEffect when new note created.
      */
-    LaunchedEffect(notesViewModel.screenState.value.lastCreatedNoteId) {
-        if (notesViewModel.screenState.value.lastCreatedNoteId.isNotEmpty()) {
-            navController.navigate(AppScreens.Note.noteId(notesViewModel.screenState.value.lastCreatedNoteId))
-            notesViewModel.clearLastCreatedNote()
+    LaunchedEffect(archiveViewModel.screenState.value.lastCreatedNoteId) {
+        if (archiveViewModel.screenState.value.lastCreatedNoteId.isNotEmpty()) {
+            navController.navigate(AppScreens.Note.noteId(archiveViewModel.screenState.value.lastCreatedNoteId))
+            archiveViewModel.clearLastCreatedNote()
         }
     }
 
     Box(Modifier.fillMaxSize().nestedScroll(nestedScrollConnection)) {
-        if (notesViewModel.screenState.value.isNotesInitialized && notesViewModel.screenState.value.notes.isEmpty())
-            ScreenContentIfNoData(R.string.EmptyNotesPageHeader, Icons.Outlined.Description)
+        if (archiveViewModel.screenState.value.isNotesInitialized && archiveViewModel.screenState.value.notes.isEmpty())
+            ScreenContentIfNoData(R.string.ArchiveNotesPageHeader, Icons.Outlined.Inbox)
         else
-            ScreenContent(lazyGridNotes, notesViewModel, currentRoute, navController)
+            ScreenContent(lazyGridNotes, archiveViewModel, currentRoute, navController)
         Box(modifier = Modifier) {
             com.android.notepad.ui.components.fields.SearchBar(
                 searchBarHeight,
                 searchBarOffsetHeightPx.value,
-                notesViewModel.screenState.value.selectedNotes.isEmpty(),
-                notesViewModel.screenState.value.searchText,
-                notesViewModel::changeSearchText
+                archiveViewModel.screenState.value.selectedNotes.isEmpty(),
+                archiveViewModel.screenState.value.searchText,
+                archiveViewModel::changeSearchText
             )
-            ActionBar(actionBarHeight, offsetX, notesViewModel)
-        }
-        Box(modifier = Modifier.align(Alignment.BottomEnd).padding(35.dp)) {
-            AnimatedVisibility(
-                notesViewModel.screenState.value.selectedNotes.isEmpty(),
-                enter = fadeIn(tween(200, easing = LinearOutSlowInEasing)),
-                exit = fadeOut(tween(200, easing = FastOutSlowInEasing)),
-            ) {
-                CreateNoteButton(notesViewModel.screenState.value.selectedNotes.isEmpty()) {
-                    notesViewModel.createNewNote()
-                }
-            }
+            ActionBar(actionBarHeight, offsetX, archiveViewModel)
         }
     }
 }
@@ -261,9 +255,9 @@ private fun ActionBar(
                 ),
                 TopAppBarItem(
                     isActive = false,
-                    icon = Icons.Outlined.Archive,
+                    icon = Icons.Outlined.Unarchive,
                     iconDescription = R.string.AddToArchive,
-                    onClick = notesViewModel::archiveSelectedNotes
+                    onClick = notesViewModel::unarchiveSelectedNotes
                 ),
                 TopAppBarItem(
                     isActive = false,

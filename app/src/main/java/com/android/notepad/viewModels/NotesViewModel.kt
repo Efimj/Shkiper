@@ -1,9 +1,12 @@
-package com.android.notepad.screens.NoteListScreen
+package com.android.notepad.viewModels
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 import com.android.notepad.database.data.note.NoteMongoRepository
 import com.android.notepad.database.data.reminder.ReminderMongoRepository
 import com.android.notepad.database.models.Note
@@ -11,6 +14,9 @@ import com.android.notepad.database.models.NotePosition
 import com.android.notepad.database.models.Reminder
 import com.android.notepad.database.models.RepeatMode
 import com.android.notepad.helpers.DateHelper
+import com.android.notepad.navigation.AppScreens
+import com.android.notepad.navigation.Argument_Note_Id
+import com.android.notepad.navigation.Argument_Note_Position
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -35,8 +41,9 @@ data class NotesScreenState(
 class NotesViewModel @Inject constructor(
     private val noteRepository: NoteMongoRepository,
     private val reminderRepository: ReminderMongoRepository,
+    savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-
+    private val notePosition: NotePosition
     private val _screenState = mutableStateOf(NotesScreenState())
     val screenState: State<NotesScreenState> = _screenState
 
@@ -47,6 +54,12 @@ class NotesViewModel @Inject constructor(
     private var notesFlowJob: Job? = null
 
     init {
+        notePosition = try {
+            NotePosition.valueOf(savedStateHandle[Argument_Note_Position] ?: NotePosition.MAIN.name)
+        } catch (e: Exception) {
+            Log.i("savedStateHandle", "notePosition", e)
+            NotePosition.MAIN
+        }
         viewModelScope.launch(Dispatchers.IO) {
             getHashtags()
             getNotes()
@@ -58,7 +71,7 @@ class NotesViewModel @Inject constructor(
         notesFlowJob?.cancel()
 
         notesFlowJob = viewModelScope.launch {
-            noteRepository.getNotes(NotePosition.MAIN).collect() {
+            noteRepository.getNotes(notePosition).collect() {
                 _screenState.value = _screenState.value.copy(notes = it, isNotesInitialized = true)
             }
         }
@@ -83,7 +96,7 @@ class NotesViewModel @Inject constructor(
 
     private suspend fun getNotesByText(newString: String) {
         _screenState.value = screenState.value.copy(currentHashtag = null)
-        noteRepository.filterNotesByContains(newString).collect {
+        noteRepository.filterNotesByContains(newString, notePosition).collect {
             _screenState.value = _screenState.value.copy(notes = it)
         }
     }
@@ -121,6 +134,25 @@ class NotesViewModel @Inject constructor(
             pinMode = unpinnedNote != null
             noteRepository.updateNote(screenState.value.selectedNotes.toList()) { updatedNote ->
                 updatedNote.isPinned = pinMode
+                updatedNote.position = NotePosition.MAIN
+            }
+            clearSelectedNote()
+        }
+    }
+
+    fun archiveSelectedNotes() {
+        viewModelScope.launch {
+            noteRepository.updateNote(screenState.value.selectedNotes.toList()) { updatedNote ->
+                updatedNote.position = NotePosition.ARCHIVE
+            }
+            clearSelectedNote()
+        }
+    }
+
+    fun unarchiveSelectedNotes() {
+        viewModelScope.launch {
+            noteRepository.updateNote(screenState.value.selectedNotes.toList()) { updatedNote ->
+                updatedNote.position = NotePosition.MAIN
             }
             clearSelectedNote()
         }
@@ -138,13 +170,23 @@ class NotesViewModel @Inject constructor(
         _screenState.value = screenState.value.copy(lastCreatedNoteId = "")
     }
 
+    fun clickOnNote(note: Note, currentRoute: String, navController: NavController) {
+        if (_screenState.value.selectedNotes.isNotEmpty())
+            toggleSelectedNoteCard(note._id)
+        else {
+            if (currentRoute.substringBefore("/") != AppScreens.Note.route.substringBefore("/")) {
+                navController.navigate(AppScreens.Note.noteId(note._id.toHexString()))
+            }
+        }
+    }
+
     /*******************
      * Hashtag region
      *******************/
 
     fun getHashtags() {
         viewModelScope.launch {
-            noteRepository.getHashtags(NotePosition.MAIN).collect() {
+            noteRepository.getHashtags(notePosition).collect() {
                 _screenState.value = screenState.value.copy(hashtags = it)
             }
         }
@@ -164,7 +206,7 @@ class NotesViewModel @Inject constructor(
         notesFlowJob?.cancel()
 
         notesFlowJob = viewModelScope.launch {
-            noteRepository.getNotesByHashtag(NotePosition.MAIN, hashtag).collect() {
+            noteRepository.getNotesByHashtag(notePosition, hashtag).collect() {
                 _screenState.value = _screenState.value.copy(notes = it)
             }
         }

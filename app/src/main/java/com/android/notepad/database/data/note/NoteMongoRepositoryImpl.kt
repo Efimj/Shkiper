@@ -60,8 +60,12 @@ class NoteMongoRepositoryImpl(val realm: Realm, @ApplicationContext val context:
         return realm.query<Note>().find()
     }
 
-    override fun filterNotesByContains(text: String): Flow<List<Note>> {
-        return realm.query<Note>(query = "header CONTAINS[c] $0 OR body CONTAINS[c] $0", text).asFlow().map { it.list }
+    override fun filterNotesByContains(text: String, position: NotePosition): Flow<List<Note>> {
+        return realm.query<Note>(
+            query = "(header CONTAINS[c] $0 OR body CONTAINS[c] $0) AND positionString == $1",
+            text,
+            position.name
+        ).sort("_id", Sort.DESCENDING).asFlow().map { it.list }
     }
 
     override suspend fun insertNote(note: Note) {

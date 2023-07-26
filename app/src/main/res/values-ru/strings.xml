@@ -108,6 +108,8 @@
     <string name="UnspecifiedErrorOccurred">Возникла неопределенная ошибка</string>
     <string name="CannotPerformedWithoutPermission">Нельзя выполнить операцию без разрешения</string>
     <string name="EmptyNotesPageHeader">Тут будут ваши заметки.</string>
+    <string name="ArchiveNotesPageHeader">Архивные заметки будут здесь.</string>
+    <string name="UnarchiveNotes">Разархивировать заметки</string>
 
     <!-- Statistics components -->
     <string name="Thinker">Мыслитель</string>

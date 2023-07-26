@@ -1,17 +1,33 @@
 package com.android.notepad.navigation
 
-const val ARGUMENT_NOTE_ID = "noteId"
+const val Argument_Note_Id = "noteId"
+const val Argument_Note_Position = "position"
 
 sealed class AppScreens(val route: String) {
     object Onboarding : AppScreens(route = "onboarding")
-    object NoteList : AppScreens(route = "note_list")
-    object Archive : AppScreens(route = "archive")
-    object Basket : AppScreens(route = "basket")
+    object NoteList : AppScreens(route = "note_list/{$Argument_Note_Position}") {
+        fun notePosition(position: String): String {
+            return this.route.replace(oldValue = "{$Argument_Note_Position}", newValue = position)
+        }
+    }
+
+    object Archive : AppScreens(route = "archive/{$Argument_Note_Position}") {
+        fun notePosition(position: String): String {
+            return this.route.replace(oldValue = "{$Argument_Note_Position}", newValue = position)
+        }
+    }
+
+    object Basket : AppScreens(route = "basket/{$Argument_Note_Position}") {
+        fun notePosition(position: String): String {
+            return this.route.replace(oldValue = "{$Argument_Note_Position}", newValue = position)
+        }
+    }
+
     object Settings : AppScreens(route = "settings")
     object Statistics : AppScreens(route = "statistics")
-    object Note : AppScreens(route = "note/{$ARGUMENT_NOTE_ID}") {
+    object Note : AppScreens(route = "note/{$Argument_Note_Id}") {
         fun noteId(id: String): String {
-            return this.route.replace(oldValue = "{$ARGUMENT_NOTE_ID}", newValue = id)
+            return this.route.replace(oldValue = "{$Argument_Note_Id}", newValue = id)
         }
     }
 

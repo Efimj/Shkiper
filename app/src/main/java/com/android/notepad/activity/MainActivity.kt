@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import com.android.notepad.NotepadApplication
 import com.android.notepad.SharedPreferencesKeys
 import com.android.notepad.app_handlers.ThemePreferenceManager
+import com.android.notepad.database.models.NotePosition
 import com.android.notepad.helpers.localization.LocaleHelper
 import com.android.notepad.navigation.AppScreens
 import com.android.notepad.ui.components.modals.MainMenuBottomSheet
@@ -37,10 +38,6 @@ class MainActivity : AppCompatActivity () {
             CustomAppTheme(ThemeUtil.themeColors) {
                 Box(
                     Modifier.fillMaxSize().background(CustomAppTheme.colors.mainBackground)
-//                        .paint(
-//                        painterResource(id = R.drawable.screen_style_1),
-//                        contentScale = ContentScale.FillBounds
-//                    )
                 ) {
                     MainMenuBottomSheet(startDestination)
                 }
@@ -52,7 +49,7 @@ class MainActivity : AppCompatActivity () {
         val route = getNotificationRoute()
         if (route != null)
             return route
-        return getOnboardingRoute(applicationContext) ?: AppScreens.NoteList.route
+        return getOnboardingRoute(applicationContext) ?: AppScreens.NoteList.notePosition(NotePosition.MAIN.name)
     }
 
     private fun getOnboardingRoute(context: Context): String? {

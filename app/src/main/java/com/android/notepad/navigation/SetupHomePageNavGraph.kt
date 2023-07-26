@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
+import com.android.notepad.screens.ArchiveNotesScreen.ArchiveNotesScreen
 import com.android.notepad.screens.NoteListScreen.NoteListScreen
 import com.android.notepad.screens.NoteScreen.NoteScreen
 import com.android.notepad.screens.OnboardingScreen.OnBoardingScreen
@@ -65,7 +66,7 @@ fun SetupAppScreenNavGraph(
                 }
             }
         ) {
-
+            ArchiveNotesScreen(navController)
         }
 
         composable(
@@ -110,7 +111,7 @@ fun SetupAppScreenNavGraph(
 
         composable(
             route = AppScreens.Note.route,
-            arguments = listOf(navArgument(ARGUMENT_NOTE_ID) { type = NavType.StringType }),
+            arguments = listOf(navArgument(Argument_Note_Id) { type = NavType.StringType }),
             enterTransition = { fadeIn() + scaleIn(initialScale = 0.9f) },
             exitTransition = { fadeOut() + scaleOut(targetScale = 0.9f) }
         ) { NoteScreen(navController) }

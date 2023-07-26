@@ -38,7 +38,7 @@ private const val TEXT_SCALE_REDUCTION_INTERVAL = 0.9f
 private val CONTAINERSHAPE = RoundedCornerShape(15.dp)
 
 @Composable
-fun SearchBar(
+fun SearchField(
     search: String,
     placeholder: String = stringResource(R.string.Search),
     onValueChange: (String) -> Unit,
