@@ -110,6 +110,7 @@
     <string name="EmptyNotesPageHeader">Notes you add appear here.</string>
     <string name="ArchiveNotesPageHeader">Archived notes will be here.</string>
     <string name="UnarchiveNotes">Unarchive notes</string>
+    <string name="BasketNotesPageHeader">Basket of deleted notes.</string>
 
     <!--    Statistics components   -->
     <string name="Thinker">Thinker</string>

@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.android.notepad.screens.ArchiveNotesScreen.ArchiveNotesScreen
+import com.android.notepad.screens.BasketNotesScreen.BasketNotesScreen
 import com.android.notepad.screens.NoteListScreen.NoteListScreen
 import com.android.notepad.screens.NoteScreen.NoteScreen
 import com.android.notepad.screens.OnboardingScreen.OnBoardingScreen
@@ -86,7 +87,7 @@ fun SetupAppScreenNavGraph(
                 }
             }
         ) {
-
+            BasketNotesScreen(navController)
         }
 
         composable(

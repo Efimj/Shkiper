@@ -1,6 +1,7 @@
 package com.android.notepad.ui.components.modals
 
 import android.util.Log
+import androidx.annotation.StringRes
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.TweenSpec
 import androidx.compose.animation.core.animateDpAsState
@@ -94,7 +95,7 @@ private fun MainPageLayout(
             Modifier.offset(y = offsetY).align(Alignment.BottomCenter)
         ) {
             RoundedButton(
-                text = stringResource(R.string.Menu),
+                text = getCurrentMenuText(currentRoute),
                 icon = navController.currentBackStackEntryAsState().value?.destination?.route?.let {
                     getCurrentMenuIcon(
                         it
@@ -106,7 +107,8 @@ private fun MainPageLayout(
                     }
                 },
                 shape = RoundedCornerShape(topStart = 36.dp, topEnd = 36.dp),
-                modifier = Modifier.height(menuContainerHeight.dp).width(160.dp).offset(y = 1.dp)
+                modifier = Modifier.height(menuContainerHeight.dp).width(160.dp).offset(y = 1.dp),
+                horizontalPaddings = 10.dp
             )
         }
     }
@@ -134,6 +136,26 @@ private fun getCurrentMenuIcon(currentRoute: String): ImageVector {
             Icons.Outlined.Settings
 
         else -> Icons.Outlined.Menu
+    }
+    return currentButtonIcon
+}
+
+@Composable
+private fun getCurrentMenuText(currentRoute: String): String {
+    val currentButtonIcon = when (currentRoute.substringBefore("/")) {
+        AppScreens.NoteList.route.substringBefore("/") ->
+            stringResource(R.string.Notes)
+
+        AppScreens.Archive.route.substringBefore("/") ->
+            stringResource(R.string.Archive)
+
+        AppScreens.Basket.route.substringBefore("/") ->
+            stringResource(R.string.Basket)
+
+        AppScreens.Settings.route.substringBefore("/") ->
+            stringResource(R.string.Settings)
+
+        else -> stringResource(R.string.Menu)
     }
     return currentButtonIcon
 }

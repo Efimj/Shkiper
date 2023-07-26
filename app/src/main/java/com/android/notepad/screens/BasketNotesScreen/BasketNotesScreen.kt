@@ -1,4 +1,4 @@
-package com.android.notepad.screens.ArchiveNotesScreen
+package com.android.notepad.screens.BasketNotesScreen
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector1D
@@ -19,13 +19,8 @@ import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
-import androidx.compose.ui.input.nestedscroll.NestedScrollSource
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
@@ -37,7 +32,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.android.notepad.R
-import com.android.notepad.navigation.AppScreens
 import com.android.notepad.ui.components.buttons.HashtagButton
 import com.android.notepad.ui.components.cards.NoteCard
 import com.android.notepad.ui.components.layouts.CustomTopAppBar
@@ -52,25 +46,10 @@ import kotlin.math.roundToInt
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ArchiveNotesScreen(navController: NavController, archiveViewModel: NotesViewModel = hiltViewModel()) {
+fun BasketNotesScreen(navController: NavController, archiveViewModel: NotesViewModel = hiltViewModel()) {
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route ?: ""
 
-    val searchBarHeight = 60.dp
-    val searchBarHeightPx = with(LocalDensity.current) { searchBarHeight.roundToPx().toFloat() }
-    val searchBarOffsetHeightPx = remember { mutableStateOf(0f) }
     val lazyGridNotes = rememberLazyStaggeredGridState()
-
-    val nestedScrollConnection = remember {
-        object : NestedScrollConnection {
-            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-                val delta = available.y
-                val newOffset = searchBarOffsetHeightPx.value + delta
-                if (lazyGridNotes.canScrollForward) searchBarOffsetHeightPx.value =
-                    newOffset.coerceIn(-searchBarHeightPx, 0f)
-                return Offset.Zero
-            }
-        }
-    }
 
     val actionBarHeight = 56.dp
     val actionBarHeightPx = with(LocalDensity.current) { actionBarHeight.roundToPx().toFloat() }
@@ -91,38 +70,12 @@ fun ArchiveNotesScreen(navController: NavController, archiveViewModel: NotesView
         }
     }
 
-    /**
-     * LaunchedEffect for cases when it is impossible to scroll the list.
-     */
-    LaunchedEffect(lazyGridNotes.canScrollForward, lazyGridNotes.canScrollBackward) {
-        if (!lazyGridNotes.canScrollForward && !lazyGridNotes.canScrollBackward) {
-            searchBarOffsetHeightPx.value = 0f
-        }
-    }
-
-    /**
-     * LaunchedEffect when new note created.
-     */
-    LaunchedEffect(archiveViewModel.screenState.value.lastCreatedNoteId) {
-        if (archiveViewModel.screenState.value.lastCreatedNoteId.isNotEmpty()) {
-            navController.navigate(AppScreens.Note.noteId(archiveViewModel.screenState.value.lastCreatedNoteId))
-            archiveViewModel.clearLastCreatedNote()
-        }
-    }
-
-    Box(Modifier.fillMaxSize().nestedScroll(nestedScrollConnection)) {
+    Box(Modifier.fillMaxSize()) {
         if (archiveViewModel.screenState.value.isNotesInitialized && archiveViewModel.screenState.value.notes.isEmpty())
-            ScreenContentIfNoData(R.string.ArchiveNotesPageHeader, Icons.Outlined.Inbox)
+            ScreenContentIfNoData(R.string.BasketNotesPageHeader, Icons.Outlined.DeleteSweep)
         else
             ScreenContent(lazyGridNotes, archiveViewModel, currentRoute, navController)
         Box(modifier = Modifier) {
-            com.android.notepad.ui.components.fields.SearchBar(
-                searchBarHeight,
-                searchBarOffsetHeightPx.value,
-                archiveViewModel.screenState.value.selectedNotes.isEmpty(),
-                archiveViewModel.screenState.value.searchText,
-                archiveViewModel::changeSearchText
-            )
             ActionBar(actionBarHeight, offsetX, archiveViewModel)
         }
     }
@@ -138,34 +91,20 @@ private fun ScreenContent(
     navController: NavController
 ) {
     LazyGridNotes(
-        contentPadding = PaddingValues(10.dp, 70.dp, 10.dp, 80.dp),
+        contentPadding = PaddingValues(10.dp, 10.dp, 10.dp, 80.dp),
         modifier = Modifier.fillMaxSize(),
         gridState = lazyGridNotes
     ) {
         item(span = StaggeredGridItemSpan.FullLine) {
-            LazyRow(
-                modifier = Modifier.wrapContentSize(unbounded = true)
-                    .width(LocalConfiguration.current.screenWidthDp.dp),
-                state = rememberLazyListState(),
-                contentPadding = PaddingValues(10.dp, 0.dp, 10.dp, 0.dp)
-            ) {
-                items(items = notesViewModel.screenState.value.hashtags.toList()) { item ->
-                    HashtagButton(item, item == notesViewModel.screenState.value.currentHashtag) {
-                        notesViewModel.setCurrentHashtag(
-                            item
-                        )
-                    }
-                }
+            Column {
+                Text(
+                    "WDSADCXCSC",
+                    color = CustomAppTheme.colors.textSecondary,
+                    style = MaterialTheme.typography.body1.copy(fontSize = 17.sp),
+                    modifier = Modifier.padding(horizontal = 10.dp)
+                )
             }
         }
-//        item(span = StaggeredGridItemSpan.FullLine) {
-//            Text(
-//                stringResource(R.string.Notes),
-//                color = CustomAppTheme.colors.textSecondary,
-//                style = MaterialTheme.typography.body1.copy(fontSize = 17.sp),
-//                modifier = Modifier.padding(horizontal = 10.dp)
-//            )
-//        }
         items(items = notesViewModel.screenState.value.notes) { item ->
             NoteCard(item.header,
                 item.body,

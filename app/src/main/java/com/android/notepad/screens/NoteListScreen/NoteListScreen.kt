@@ -269,7 +269,7 @@ private fun ActionBar(
                     isActive = false,
                     icon = Icons.Outlined.Delete,
                     iconDescription = R.string.AddToBasket,
-                    onClick = notesViewModel::deleteSelectedNotes
+                    onClick = notesViewModel::moveSelectedNotesToBasket
                 ),
             )
         )

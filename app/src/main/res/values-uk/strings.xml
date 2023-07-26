@@ -85,7 +85,7 @@
     <string name="Menu">Меню</string>
     <string name="Notes">Нотатки</string>
     <string name="Archive">Архів</string>
-    <string name="Basket">Видалені</string>
+    <string name="Basket">Кошик</string>
     <string name="Settings">Налаштування</string>
     <string name="Clear">Очистити</string>
     <string name="Search">Пошук</string>
@@ -111,6 +111,7 @@
     <string name="EmptyNotesPageHeader">Тут будуть ваші нотатки.</string>
     <string name="ArchiveNotesPageHeader">Заархівовані нотатки будуть тут.</string>
     <string name="UnarchiveNotes">Розархівувати нотатки</string>
+    <string name="BasketNotesPageHeader">Кошик видалених нотаток.</string>
 
     <!-- Statistics components -->
     <string name="Thinker">Міркуючий</string>

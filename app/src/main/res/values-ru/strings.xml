@@ -110,6 +110,7 @@
     <string name="EmptyNotesPageHeader">Тут будут ваши заметки.</string>
     <string name="ArchiveNotesPageHeader">Архивные заметки будут здесь.</string>
     <string name="UnarchiveNotes">Разархивировать заметки</string>
+    <string name="BasketNotesPageHeader">Корзина удаленных заметок.</string>
 
     <!-- Statistics components -->
     <string name="Thinker">Мыслитель</string>

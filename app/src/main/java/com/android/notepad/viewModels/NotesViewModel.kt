@@ -144,6 +144,7 @@ class NotesViewModel @Inject constructor(
         viewModelScope.launch {
             noteRepository.updateNote(screenState.value.selectedNotes.toList()) { updatedNote ->
                 updatedNote.position = NotePosition.ARCHIVE
+                updatedNote.isPinned = false
             }
             clearSelectedNote()
         }
@@ -153,6 +154,27 @@ class NotesViewModel @Inject constructor(
         viewModelScope.launch {
             noteRepository.updateNote(screenState.value.selectedNotes.toList()) { updatedNote ->
                 updatedNote.position = NotePosition.MAIN
+            }
+            clearSelectedNote()
+        }
+    }
+
+    fun moveSelectedNotesToBasket() {
+        viewModelScope.launch {
+            noteRepository.updateNote(screenState.value.selectedNotes.toList()) { updatedNote ->
+                updatedNote.position = NotePosition.DELETE
+                updatedNote.isPinned = false
+                updatedNote.deletionDate = LocalDateTime.now()
+            }
+            clearSelectedNote()
+        }
+    }
+
+    fun removeSelectedNotesFromBasket() {
+        viewModelScope.launch {
+            noteRepository.updateNote(screenState.value.selectedNotes.toList()) { updatedNote ->
+                updatedNote.position = NotePosition.MAIN
+                updatedNote.deletionDate = null
             }
             clearSelectedNote()
         }

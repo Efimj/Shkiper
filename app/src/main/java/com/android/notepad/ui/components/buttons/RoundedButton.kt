@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.android.notepad.ui.helpers.MultipleEventsCutter
@@ -38,6 +39,7 @@ fun RoundedButton(
         backgroundColor = CustomAppTheme.colors.mainBackground,
         disabledBackgroundColor = Color.Transparent
     ),
+    horizontalPaddings: Dp = 0.dp,
     textColor: Color = CustomAppTheme.colors.text,
     textStyle: TextStyle = MaterialTheme.typography.body1,
     iconTint: Color = CustomAppTheme.colors.text,
@@ -54,6 +56,7 @@ fun RoundedButton(
         elevation = null,
         enabled = enabled
     ) {
+        Spacer(Modifier.width(horizontalPaddings))
         if (content != null) {
             content()
         } else {
@@ -77,5 +80,6 @@ fun RoundedButton(
                 )
             }
         }
+        Spacer(Modifier.width(horizontalPaddings))
     }
 }
