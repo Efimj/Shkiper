@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -38,6 +39,7 @@ fun RoundedButton(
         disabledBackgroundColor = Color.Transparent
     ),
     textColor: Color = CustomAppTheme.colors.text,
+    textStyle: TextStyle = MaterialTheme.typography.body1,
     iconTint: Color = CustomAppTheme.colors.text,
     content: @Composable (() -> Unit)? = null,
 ) {
@@ -67,11 +69,9 @@ fun RoundedButton(
             if (text != null) {
                 Text(
                     text = text,
-                    letterSpacing = 0.sp,
+                    //letterSpacing = 0.sp,
                     color = textColor,
-                    fontWeight = FontWeight.Normal,
-                    style = MaterialTheme.typography.body1,
-                    fontSize = 16.sp,
+                    style = textStyle,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )

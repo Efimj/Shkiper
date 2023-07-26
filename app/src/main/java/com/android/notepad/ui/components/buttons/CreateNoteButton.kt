@@ -38,7 +38,7 @@ fun CreateNoteButton(
         },
         elevation = 0.dp,
         shape = RoundedCornerShape(15.dp),
-        border = BorderStroke(if (isActive) 1.dp else 0.dp, CustomAppTheme.colors.stroke),
+        border = BorderStroke(if (isActive) 1.dp else 0.dp, CustomAppTheme.colors.active),
         backgroundColor = CustomAppTheme.colors.mainBackground,
         contentColor = CustomAppTheme.colors.text,
     ) {
