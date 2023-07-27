@@ -116,6 +116,11 @@
     <string name="DeleteSelectedNotesDialogText">Delete selected notes?</string>
     <string name="DeleteNoteDialogText">Delete note?</string>
     <string name="Confirm">Confirm</string>
+    <string name="NotesAreBeenDeleted">Notes have been deleted</string>
+    <string name="NotesArchived">Notes moved to archive</string>
+    <string name="NotesUnarchived">Notes unarchived</string>
+    <string name="NotesMovedToBasket">Notes moved to basket</string>
+    <string name="NotesRestored">Notes restored</string>
 
     <!--    Statistics components   -->
     <string name="Thinker">Thinker</string>

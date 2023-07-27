@@ -1,12 +1,17 @@
 package com.android.notepad.viewModels
 
+import android.app.Application
 import android.util.Log
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import com.android.notepad.R
 import com.android.notepad.database.data.note.NoteMongoRepository
 import com.android.notepad.database.data.reminder.ReminderMongoRepository
 import com.android.notepad.database.models.Note
@@ -17,6 +22,8 @@ import com.android.notepad.helpers.DateHelper
 import com.android.notepad.navigation.AppScreens
 import com.android.notepad.navigation.Argument_Note_Id
 import com.android.notepad.navigation.Argument_Note_Position
+import com.android.notepad.util.SnackbarHostUtil
+import com.android.notepad.util.SnackbarVisualsCustom
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -42,6 +49,7 @@ data class NotesScreenState(
 class NotesViewModel @Inject constructor(
     private val noteRepository: NoteMongoRepository,
     private val reminderRepository: ReminderMongoRepository,
+    private val application: Application,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
     private val notePosition: NotePosition
@@ -118,6 +126,10 @@ class NotesViewModel @Inject constructor(
         viewModelScope.launch {
             noteRepository.deleteNote(screenState.value.selectedNotes.toList())
             clearSelectedNote()
+            showSnackbar(
+                message = application.applicationContext.getString(R.string.NotesAreBeenDeleted),
+                icon = Icons.Default.DeleteForever
+            )
         }
     }
 
@@ -152,6 +164,10 @@ class NotesViewModel @Inject constructor(
                 updatedNote.isPinned = false
             }
             clearSelectedNote()
+            showSnackbar(
+                message = application.applicationContext.getString(R.string.NotesArchived),
+                icon = Icons.Default.Archive
+            )
         }
     }
 
@@ -161,6 +177,10 @@ class NotesViewModel @Inject constructor(
                 updatedNote.position = NotePosition.MAIN
             }
             clearSelectedNote()
+            showSnackbar(
+                message = application.applicationContext.getString(R.string.NotesUnarchived),
+                icon = Icons.Default.Unarchive
+            )
         }
     }
 
@@ -172,6 +192,10 @@ class NotesViewModel @Inject constructor(
                 updatedNote.deletionDate = LocalDateTime.now()
             }
             clearSelectedNote()
+            showSnackbar(
+                message = application.applicationContext.getString(R.string.NotesMovedToBasket),
+                icon = Icons.Default.DeleteSweep
+            )
         }
     }
 
@@ -182,6 +206,10 @@ class NotesViewModel @Inject constructor(
                 updatedNote.deletionDate = null
             }
             clearSelectedNote()
+            showSnackbar(
+                message = application.applicationContext.getString(R.string.NotesRestored),
+                icon = Icons.Default.Undo
+            )
         }
     }
 
@@ -288,5 +316,14 @@ class NotesViewModel @Inject constructor(
             reminderRepository.deleteReminder(reminder._id)
         }
         switchReminderDialogShow()
+    }
+
+    private suspend fun showSnackbar(message: String, icon: ImageVector?) {
+        SnackbarHostUtil.snackbarHostState.showSnackbar(
+            SnackbarVisualsCustom(
+                message = message,
+                icon = icon
+            )
+        )
     }
 }
