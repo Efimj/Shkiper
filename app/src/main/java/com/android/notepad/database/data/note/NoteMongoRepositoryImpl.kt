@@ -19,7 +19,7 @@ import org.mongodb.kbson.ObjectId
 import java.time.LocalDate
 
 class NoteMongoRepositoryImpl(val realm: Realm, @ApplicationContext val context: Context) : NoteMongoRepository {
-    override fun getNotes(): Flow<List<Note>> {
+    override fun getNotesFlow(): Flow<List<Note>> {
         return realm.query<Note>()
             .sort("_id", Sort.DESCENDING)
             .asFlow()
@@ -30,11 +30,16 @@ class NoteMongoRepositoryImpl(val realm: Realm, @ApplicationContext val context:
         return realm.query<Note>(query = "_id == $0", id).first().find()
     }
 
-    override fun getNotes(position: NotePosition): Flow<List<Note>> {
+    override fun getNotesFlow(position: NotePosition): Flow<List<Note>> {
         return realm.query<Note>(query = "positionString == $0", position.name)
             .sort("_id", Sort.DESCENDING)
             .asFlow()
             .map { it.list }
+    }
+
+    override fun getNotes(position: NotePosition): List<Note> {
+        return realm.query<Note>(query = "positionString == $0", position.name)
+            .sort("_id", Sort.DESCENDING).find()
     }
 
     override fun getNotesByHashtag(position: NotePosition, hashtag: String): Flow<List<Note>> {
@@ -52,7 +57,7 @@ class NoteMongoRepositoryImpl(val realm: Realm, @ApplicationContext val context:
             }
     }
 
-    override fun getNotes(ids: List<ObjectId>): List<Note> {
+    override fun getNotesFlow(ids: List<ObjectId>): List<Note> {
         return realm.query<Note>().find().filter { ids.any { id -> id == it._id } }
     }
 

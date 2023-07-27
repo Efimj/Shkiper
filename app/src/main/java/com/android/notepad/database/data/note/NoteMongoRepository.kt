@@ -6,10 +6,11 @@ import kotlinx.coroutines.flow.Flow
 import org.mongodb.kbson.ObjectId
 
 interface NoteMongoRepository {
-    fun getNotes(): Flow<List<Note>>
+    fun getNotesFlow(): Flow<List<Note>>
     fun getNote(id: ObjectId): Note?
-    fun getNotes(position: NotePosition): Flow<List<Note>>
-    fun getNotes(ids: List<ObjectId>): List<Note>
+    fun getNotes(position: NotePosition): List<Note>
+    fun getNotesFlow(position: NotePosition): Flow<List<Note>>
+    fun getNotesFlow(ids: List<ObjectId>): List<Note>
     fun getAllNotes(): List<Note>
     fun getNotesByHashtag(position: NotePosition, hashtag: String): Flow<List<Note>>
     fun getHashtags(position: NotePosition): Flow<Set<String>>

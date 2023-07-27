@@ -20,16 +20,17 @@ import com.android.notepad.database.models.Reminder
 import com.android.notepad.database.models.RepeatMode
 import com.android.notepad.helpers.DateHelper
 import com.android.notepad.navigation.AppScreens
-import com.android.notepad.navigation.Argument_Note_Id
 import com.android.notepad.navigation.Argument_Note_Position
 import com.android.notepad.util.SnackbarHostUtil
 import com.android.notepad.util.SnackbarVisualsCustom
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import org.mongodb.kbson.ObjectId
 import java.time.*
+import java.time.temporal.ChronoUnit
 import javax.inject.Inject
 
 data class NotesScreenState(
@@ -73,6 +74,8 @@ class NotesViewModel @Inject constructor(
             getHashtags()
             getNotes()
             getReminders()
+            if (notePosition == NotePosition.DELETE)
+                deleteExpiredNotes()
         }
     }
 
@@ -80,7 +83,7 @@ class NotesViewModel @Inject constructor(
         notesFlowJob?.cancel()
 
         notesFlowJob = viewModelScope.launch {
-            noteRepository.getNotes(notePosition).collect() {
+            noteRepository.getNotesFlow(notePosition).collect() {
                 _screenState.value = _screenState.value.copy(notes = it, isNotesInitialized = true)
             }
         }
@@ -240,6 +243,19 @@ class NotesViewModel @Inject constructor(
             _screenState.value.copy(isDeleteNotesDialogShow = !_screenState.value.isDeleteNotesDialogShow)
     }
 
+    fun deleteExpiredNotes() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val notes = noteRepository.getNotes(NotePosition.DELETE)
+            val suitableNotes = notes.filter {
+                it.position == NotePosition.DELETE && ChronoUnit.DAYS.between(
+                    it.deletionDate,
+                    LocalDateTime.now()
+                ) >= 7
+            }
+            noteRepository.deleteNote(suitableNotes.map { it._id })
+        }
+    }
+
     /*******************
      * Hashtag region
      *******************/
@@ -297,7 +313,7 @@ class NotesViewModel @Inject constructor(
         if (DateHelper.isFutureDateTime(date, time)) {
             viewModelScope.launch {
                 reminderRepository.updateOrCreateReminderForNotes(
-                    noteRepository.getNotes(screenState.value.selectedNotes.toList()),
+                    noteRepository.getNotesFlow(screenState.value.selectedNotes.toList()),
                 ) { updatedReminder ->
                     updatedReminder.date = date
                     updatedReminder.time = time

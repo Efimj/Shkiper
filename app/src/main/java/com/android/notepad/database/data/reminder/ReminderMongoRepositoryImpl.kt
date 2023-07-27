@@ -53,7 +53,7 @@ class ReminderMongoRepositoryImpl(val realm: Realm, @ApplicationContext val cont
 
     override suspend fun insertOrUpdateReminders(reminders: List<Reminder>, updateStatistics: Boolean) {
         val noteMongoRepository = NoteMongoRepositoryImpl(realm, context)
-        val notes = noteMongoRepository.getNotes(reminders.map { it.noteId }.distinct())
+        val notes = noteMongoRepository.getNotesFlow(reminders.map { it.noteId }.distinct())
         realm.write {
             for (note in notes) {
                 val reminder = reminders.first { it.noteId == note._id }
