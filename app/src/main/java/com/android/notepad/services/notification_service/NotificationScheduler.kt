@@ -41,8 +41,10 @@ class NotificationScheduler(private val context: Context) {
         setNotification(requestId, trigger)
     }
 
-    fun updateNotificationData(noteId: String, title: String, message: String) {
+    fun updateNotificationData(noteId: String, title: String, message: String, schedule: Boolean = false) {
         notificationStorage.updateNotificationData(noteId, title, message)
+        if (schedule)
+            notificationStorage.getNotification(noteId)?.let { scheduleNotification(it) }
     }
 
     private fun setNotification(requestId: Int, trigger: Long) {
@@ -73,6 +75,21 @@ class NotificationScheduler(private val context: Context) {
     fun deleteNotification(noteId: String) {
         val requestCode = notificationStorage.remove(noteId) ?: return
         cancelNotification(requestCode)
+    }
+
+    fun cancelNotification(noteId: String) {
+        val notificationIntent = Intent(context, NotificationReceiver::class.java)
+
+        val requestCode = notificationStorage.getNotification(noteId)?.requestCode ?: return
+        val pendingIntent = PendingIntent.getBroadcast(
+            context,
+            requestCode,
+            notificationIntent,
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        )
+
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        alarmManager.cancel(pendingIntent)
     }
 
     fun cancelNotification(requestCode: Int) {

@@ -20,6 +20,11 @@ class NotificationStorage(context: Context) {
         return findNotification(notifications, requestId)
     }
 
+    fun getNotification(noteId: String): NotificationData? {
+        val notifications = getAll()
+        return findNotification(notifications, noteId)
+    }
+
     fun save(notifications: List<NotificationData>) {
         val json = gson.toJson(notifications)
         val editor = sharedPreferences.edit()
@@ -75,6 +80,18 @@ class NotificationStorage(context: Context) {
         requestId: Int
     ): NotificationData? {
         val index = notifications.indexOfFirst { it.requestCode == requestId } // if exists
+        var notification: NotificationData? = null
+        if (index != -1) {
+            notification = notifications[index]
+        }
+        return notification
+    }
+
+    private fun findNotification(
+        notifications: MutableList<NotificationData>,
+        noteId: String
+    ): NotificationData? {
+        val index = notifications.indexOfFirst { it.noteId == noteId } // if exists
         var notification: NotificationData? = null
         if (index != -1) {
             notification = notifications[index]
