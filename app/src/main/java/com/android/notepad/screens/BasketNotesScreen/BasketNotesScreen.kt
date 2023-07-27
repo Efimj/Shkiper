@@ -4,10 +4,8 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridState
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.lazy.staggeredgrid.items
@@ -15,13 +13,16 @@ import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridS
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.outlined.*
+import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.DeleteSweep
+import androidx.compose.material.icons.outlined.History
+import androidx.compose.material.icons.outlined.Warning
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
@@ -32,12 +33,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.android.notepad.R
-import com.android.notepad.ui.components.buttons.HashtagButton
 import com.android.notepad.ui.components.cards.NoteCard
 import com.android.notepad.ui.components.layouts.CustomTopAppBar
 import com.android.notepad.ui.components.layouts.LazyGridNotes
 import com.android.notepad.ui.components.layouts.ScreenContentIfNoData
 import com.android.notepad.ui.components.layouts.TopAppBarItem
+import com.android.notepad.ui.components.modals.ActionDialog
 import com.android.notepad.ui.components.modals.CreateReminderDialog
 import com.android.notepad.ui.components.modals.ReminderDialogProperties
 import com.android.notepad.ui.theme.CustomAppTheme
@@ -46,7 +47,7 @@ import kotlin.math.roundToInt
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun BasketNotesScreen(navController: NavController, archiveViewModel: NotesViewModel = hiltViewModel()) {
+fun BasketNotesScreen(navController: NavController, basketViewModel: NotesViewModel = hiltViewModel()) {
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route ?: ""
 
     val lazyGridNotes = rememberLazyStaggeredGridState()
@@ -58,8 +59,8 @@ fun BasketNotesScreen(navController: NavController, archiveViewModel: NotesViewM
     /**
      * LaunchedEffect for cases when the number of selected notes changes.
      */
-    LaunchedEffect(archiveViewModel.screenState.value.selectedNotes) {
-        if (archiveViewModel.screenState.value.selectedNotes.isEmpty()) {
+    LaunchedEffect(basketViewModel.screenState.value.selectedNotes) {
+        if (basketViewModel.screenState.value.selectedNotes.isEmpty()) {
             offsetX.animateTo(
                 targetValue = -actionBarHeightPx, animationSpec = tween(durationMillis = 200)
             )
@@ -71,14 +72,24 @@ fun BasketNotesScreen(navController: NavController, archiveViewModel: NotesViewM
     }
 
     Box(Modifier.fillMaxSize()) {
-        if (archiveViewModel.screenState.value.isNotesInitialized && archiveViewModel.screenState.value.notes.isEmpty())
+        if (basketViewModel.screenState.value.isNotesInitialized && basketViewModel.screenState.value.notes.isEmpty())
             ScreenContentIfNoData(R.string.BasketNotesPageHeader, Icons.Outlined.DeleteSweep)
         else
-            ScreenContent(lazyGridNotes, archiveViewModel, currentRoute, navController)
+            ScreenContent(lazyGridNotes, basketViewModel, currentRoute, navController)
         Box(modifier = Modifier) {
-            ActionBar(actionBarHeight, offsetX, archiveViewModel)
+            ActionBar(actionBarHeight, offsetX, basketViewModel)
         }
     }
+
+    if (basketViewModel.screenState.value.isDeleteNotesDialogShow)
+        ActionDialog(
+            title = stringResource(R.string.DeleteSelectedNotesDialogText),
+            icon = Icons.Outlined.Warning,
+            confirmText = stringResource(R.string.Confirm),
+            onConfirm = basketViewModel::deleteSelectedNotes,
+            goBackText = stringResource(R.string.Cancel),
+            onGoBack = basketViewModel::switchDeleteDialogShow
+        )
 }
 
 
@@ -96,12 +107,17 @@ private fun ScreenContent(
         gridState = lazyGridNotes
     ) {
         item(span = StaggeredGridItemSpan.FullLine) {
-            Column {
+            Column(
+                modifier = Modifier.height(56.dp).fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
                 Text(
-                    "WDSADCXCSC",
+                    text = stringResource(R.string.BasketPageHeader),
                     color = CustomAppTheme.colors.textSecondary,
                     style = MaterialTheme.typography.body1.copy(fontSize = 17.sp),
-                    modifier = Modifier.padding(horizontal = 10.dp)
+                    modifier = Modifier.padding(horizontal = 10.dp).basicMarquee(),
+                    maxLines = 1
                 )
             }
         }
@@ -114,24 +130,6 @@ private fun ScreenContent(
                 onClick = { notesViewModel.clickOnNote(item, currentRoute, navController) },
                 onLongClick = { notesViewModel.toggleSelectedNoteCard(item._id) })
         }
-    }
-    if (notesViewModel.screenState.value.isCreateReminderDialogShow) {
-        val reminder =
-            remember {
-                if (notesViewModel.screenState.value.selectedNotes.size == 1)
-                    notesViewModel.getReminder(notesViewModel.screenState.value.selectedNotes.first()) else null
-            }
-        val reminderDialogProperties = remember {
-            if (reminder != null) ReminderDialogProperties(reminder.date, reminder.time, reminder.repeat)
-            else ReminderDialogProperties()
-        }
-        CreateReminderDialog(
-            reminderDialogProperties = reminderDialogProperties,
-            onGoBack = notesViewModel::switchReminderDialogShow,
-            onDelete = if (reminder != null) notesViewModel::deleteSelectedReminder else null,
-            onSave = notesViewModel::createReminder,
-        )
-
     }
 }
 
@@ -156,27 +154,15 @@ private fun ActionBar(
             items = listOf(
                 TopAppBarItem(
                     isActive = false,
-                    icon = Icons.Outlined.PushPin,
-                    iconDescription = R.string.AttachNote,
-                    onClick = notesViewModel::pinSelectedNotes
-                ),
-                TopAppBarItem(
-                    isActive = false,
-                    icon = Icons.Outlined.NotificationAdd,
-                    iconDescription = R.string.AddToNotification,
-                    onClick = notesViewModel::switchReminderDialogShow
-                ),
-                TopAppBarItem(
-                    isActive = false,
-                    icon = Icons.Outlined.Unarchive,
-                    iconDescription = R.string.AddToArchive,
-                    onClick = notesViewModel::unarchiveSelectedNotes
+                    icon = Icons.Outlined.History,
+                    iconDescription = R.string.Restore,
+                    onClick = notesViewModel::removeSelectedNotesFromBasket
                 ),
                 TopAppBarItem(
                     isActive = false,
                     icon = Icons.Outlined.Delete,
-                    iconDescription = R.string.AddToBasket,
-                    onClick = notesViewModel::moveSelectedNotesToBasket
+                    iconDescription = R.string.Delete,
+                    onClick = notesViewModel::switchDeleteDialogShow
                 ),
             )
         )

@@ -112,6 +112,11 @@
     <string name="ArchiveNotesPageHeader">Заархівовані нотатки будуть тут.</string>
     <string name="UnarchiveNotes">Розархівувати нотатки</string>
     <string name="BasketNotesPageHeader">Кошик видалених нотаток.</string>
+    <string name="Restore">Відновити</string>
+    <string name="BasketPageHeader">Нотатки видаляються із кошика через 7 днів.</string>
+    <string name="DeleteSelectedNotesDialogText">Видалити виділені нотатки?</string>
+    <string name="DeleteNoteDialogText">Видалити нотатку?</string>
+    <string name="Confirm">Підтвердити</string>
 
     <!-- Statistics components -->
     <string name="Thinker">Міркуючий</string>

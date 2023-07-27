@@ -111,6 +111,11 @@
     <string name="ArchiveNotesPageHeader">Архивные заметки будут здесь.</string>
     <string name="UnarchiveNotes">Разархивировать заметки</string>
     <string name="BasketNotesPageHeader">Корзина удаленных заметок.</string>
+    <string name="Restore">Восстановить</string>
+    <string name="BasketPageHeader">Заметки удаляются из корзины через 7 дней.</string>
+    <string name="DeleteSelectedNotesDialogText">Удалить выбранные заметки?</string>
+    <string name="DeleteNoteDialogText">Удалить заметку?</string>
+    <string name="Confirm">Подтвердить</string>
 
     <!-- Statistics components -->
     <string name="Thinker">Мыслитель</string>

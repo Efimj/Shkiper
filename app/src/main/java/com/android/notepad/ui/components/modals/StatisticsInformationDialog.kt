@@ -24,7 +24,6 @@ import com.android.notepad.helpers.NumberHelper
 import com.android.notepad.services.statistics_service.StatisticsItem
 import com.android.notepad.ui.theme.CustomAppTheme
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun StatisticsInformationDialog(
     statistics: StatisticsItem,

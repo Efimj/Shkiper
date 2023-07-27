@@ -35,6 +35,7 @@ data class NotesScreenState(
     val currentHashtag: String? = null,
     val reminders: List<Reminder> = emptyList(),
     val isCreateReminderDialogShow: Boolean = false,
+    val isDeleteNotesDialogShow: Boolean = false,
 )
 
 @HiltViewModel
@@ -78,7 +79,11 @@ class NotesViewModel @Inject constructor(
     }
 
     fun clearSelectedNote() {
-        _screenState.value = screenState.value.copy(selectedNotes = setOf())
+        _screenState.value = screenState.value.copy(
+            selectedNotes = setOf(),
+            isCreateReminderDialogShow = false,
+            isDeleteNotesDialogShow = false
+        )
     }
 
     fun changeSearchText(newString: String) {
@@ -200,6 +205,11 @@ class NotesViewModel @Inject constructor(
                 navController.navigate(AppScreens.Note.noteId(note._id.toHexString()))
             }
         }
+    }
+
+    fun switchDeleteDialogShow() {
+        _screenState.value =
+            _screenState.value.copy(isDeleteNotesDialogShow = !_screenState.value.isDeleteNotesDialogShow)
     }
 
     /*******************

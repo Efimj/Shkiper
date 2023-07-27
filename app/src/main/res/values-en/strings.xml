@@ -111,6 +111,11 @@
     <string name="ArchiveNotesPageHeader">Archived notes will be here.</string>
     <string name="UnarchiveNotes">Unarchive notes</string>
     <string name="BasketNotesPageHeader">Basket of deleted notes.</string>
+    <string name="Restore">Restore</string>
+    <string name="BasketPageHeader">Notes are removed from the basket after 7 days.</string>
+    <string name="DeleteSelectedNotesDialogText">Delete selected notes?</string>
+    <string name="DeleteNoteDialogText">Delete note?</string>
+    <string name="Confirm">Confirm</string>
 
     <!--    Statistics components   -->
     <string name="Thinker">Thinker</string>
