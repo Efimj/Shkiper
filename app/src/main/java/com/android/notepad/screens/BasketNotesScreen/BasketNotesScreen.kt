@@ -13,10 +13,7 @@ import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridS
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.DeleteSweep
-import androidx.compose.material.icons.outlined.History
-import androidx.compose.material.icons.outlined.Warning
+import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -160,7 +157,7 @@ private fun ActionBar(
                 ),
                 TopAppBarItem(
                     isActive = false,
-                    icon = Icons.Outlined.Delete,
+                    icon = Icons.Outlined.DeleteForever,
                     iconDescription = R.string.Delete,
                     onClick = notesViewModel::switchDeleteDialogShow
                 ),

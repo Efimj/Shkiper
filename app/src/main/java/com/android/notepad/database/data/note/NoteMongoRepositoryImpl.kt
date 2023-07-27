@@ -180,12 +180,16 @@ class NoteMongoRepositoryImpl(val realm: Realm, @ApplicationContext val context:
     private fun updateNotification(
         newNote: Note
     ) {
-        // Update notification
         val notificationScheduler = NotificationScheduler(context)
-        notificationScheduler.updateNotificationData(
-            newNote._id.toHexString(),
-            newNote.header,
-            newNote.body
-        )
+        if (newNote.position == NotePosition.DELETE) {
+            notificationScheduler.deleteNotification(newNote._id.toHexString())
+        } else {
+            // Update notification
+            notificationScheduler.updateNotificationData(
+                newNote._id.toHexString(),
+                newNote.header,
+                newNote.body
+            )
+        }
     }
 }
