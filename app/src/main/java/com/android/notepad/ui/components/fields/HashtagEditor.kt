@@ -25,7 +25,12 @@ import com.android.notepad.ui.components.buttons.RoundedButton
 import com.android.notepad.ui.theme.CustomAppTheme
 
 @Composable
-fun HashtagEditor(modifier: Modifier, hashtags: Set<String>, onSave: (Set<String>) -> Unit) {
+fun HashtagEditor(
+    modifier: Modifier,
+    enabled: Boolean = true,
+    hashtags: Set<String>,
+    onSave: (Set<String>) -> Unit
+) {
     val editModeEnabled = rememberSaveable { mutableStateOf(false) }
     val textFieldFocusRequester by remember { mutableStateOf(FocusRequester()) }
     val textFieldValue = rememberSaveable { mutableStateOf(hashtags.joinToString(" ")) }
@@ -34,7 +39,8 @@ fun HashtagEditor(modifier: Modifier, hashtags: Set<String>, onSave: (Set<String
     Column(modifier = modifier.clickable(
         interactionSource = MutableInteractionSource(),
         indication = null
-    ) { editModeEnabled.value = true }) {
+    ) { if (enabled) editModeEnabled.value = true })
+    {
         Row(
             modifier = Modifier.fillMaxWidth().height(45.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -73,7 +79,7 @@ fun HashtagEditor(modifier: Modifier, hashtags: Set<String>, onSave: (Set<String
                     editModeEnabled.value = !editModeEnabled.value
                 }
             } else
-                HashtagsPresentation(hashtags) { editModeEnabled.value = true }
+                HashtagsPresentation(hashtags) { if (enabled) editModeEnabled.value = true }
         }
     }
 

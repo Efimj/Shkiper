@@ -67,7 +67,7 @@ class NotesViewModel @Inject constructor(
         notePosition = try {
             NotePosition.valueOf(savedStateHandle[Argument_Note_Position] ?: NotePosition.MAIN.name)
         } catch (e: Exception) {
-            Log.i("savedStateHandle", "notePosition", e)
+            Log.i("savedStateHandle", "notePositionError", e)
             NotePosition.MAIN
         }
         viewModelScope.launch(Dispatchers.IO) {

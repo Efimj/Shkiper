@@ -214,7 +214,12 @@ private fun BottomSheetContent(
             Icons.Outlined.Settings,
             isActive = currentRoute == AppScreens.Settings.route,
             onClick = {
-                goToPage(navController, AppScreens.Settings.route, coroutineScope, bottomSheetState)
+                goToPage(
+                    navController,
+                    AppScreens.Settings.route,
+                    coroutineScope,
+                    bottomSheetState
+                )
             }
         )
     }

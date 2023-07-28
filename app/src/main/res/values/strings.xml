@@ -123,6 +123,8 @@
     <string name="NoteUnarchived">Note unarchived</string>
     <string name="NotesMovedToBasket">Notes moved to basket</string>
     <string name="NotesRestored">Notes restored</string>
+    <string name="DaysBeforeDeletingNote">Days before deleting a note: </string>
+    <string name="DeleteForever">Delete forever?</string>
 
     <!--    Statistics components   -->
     <string name="Thinker">Thinker</string>

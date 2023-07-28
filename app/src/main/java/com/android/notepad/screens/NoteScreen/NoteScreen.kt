@@ -13,8 +13,10 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Archive
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -22,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -38,17 +41,21 @@ import com.android.notepad.navigation.AppScreens
 import com.android.notepad.ui.components.buttons.DropDownButton
 import com.android.notepad.ui.components.buttons.DropDownButtonSizeMode
 import com.android.notepad.ui.components.buttons.DropDownItem
+import com.android.notepad.ui.components.cards.SnackbarCard
 import com.android.notepad.ui.components.layouts.LinkPreviewList
 import com.android.notepad.ui.components.fields.CustomTextField
 import com.android.notepad.ui.components.fields.HashtagEditor
 import com.android.notepad.ui.components.layouts.CustomTopAppBar
 import com.android.notepad.ui.components.layouts.TopAppBarItem
+import com.android.notepad.ui.components.modals.ActionDialog
 import com.android.notepad.ui.components.modals.CreateReminderDialog
 import com.android.notepad.ui.components.modals.ReminderDialogProperties
 import com.android.notepad.ui.theme.CustomAppTheme
+import com.android.notepad.util.SnackbarVisualsCustom
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import java.time.Duration
 import java.time.LocalDateTime
+import java.time.Period
 import java.time.format.DateTimeFormatter
 import java.util.*
 
@@ -76,59 +83,91 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
         bottomBar = { NoteScreenFooter(navController, noteViewModel) },
         modifier = Modifier.imePadding().navigationBarsPadding().fillMaxSize(),
     ) { contentPadding ->
-        LazyColumn(
-            state = scrollState,
-            modifier = Modifier.fillMaxSize().padding(contentPadding)
-                .clickable(
-                    indication = null,
-                    interactionSource = remember { MutableInteractionSource() } // This is mandatory
-                ) {
-                    bodyFieldFocusRequester.requestFocus()
-                }
+        Box(Modifier.fillMaxSize().padding(contentPadding)) {
+            LazyColumn(
+                state = scrollState,
+                modifier = Modifier.fillMaxSize()
+                    .clickable(
+                        indication = null,
+                        interactionSource = remember { MutableInteractionSource() } // This is mandatory
+                    ) {
+                        bodyFieldFocusRequester.requestFocus()
+                    }
 
-        ) {
-            item {
-                CustomTextField(
-                    text = noteViewModel.screenState.value.noteHeader,
-                    onTextChange = { noteViewModel.updateNoteHeader(it) },
-                    placeholder = stringResource(R.string.Header),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text, imeAction = ImeAction.Next),
-                    keyboardActions = KeyboardActions(
-                        onAny = {
-                            bodyFieldFocusRequester.requestFocus()
-                        }
-                    ),
-                    textStyle = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.SemiBold, fontSize = 21.sp),
-                    modifier = Modifier.fillMaxSize().padding(bottom = 6.dp, top = 4.dp).padding(horizontal = 20.dp)
+            ) {
+                val enabled = noteViewModel.screenState.value.notePosition != NotePosition.DELETE
+                item {
+                    CustomTextField(
+                        text = noteViewModel.screenState.value.noteHeader,
+                        onTextChange = { noteViewModel.updateNoteHeader(it) },
+                        placeholder = stringResource(R.string.Header),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text, imeAction = ImeAction.Next),
+                        keyboardActions = KeyboardActions(
+                            onAny = {
+                                bodyFieldFocusRequester.requestFocus()
+                            }
+                        ),
+                        enabled = enabled,
+                        textStyle = MaterialTheme.typography.h6.copy(
+                            fontWeight = FontWeight.SemiBold,
+                            fontSize = 21.sp
+                        ),
+                        modifier = Modifier.fillMaxSize().padding(bottom = 6.dp, top = 4.dp).padding(horizontal = 20.dp)
+                    )
+                }
+                item {
+                    CustomTextField(
+                        text = noteViewModel.screenState.value.noteBody,
+                        onTextChange = { noteViewModel.updateNoteBody(it) },
+                        placeholder = stringResource(R.string.Text),
+                        textStyle = MaterialTheme.typography.body1,
+                        enabled = enabled,
+                        modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp).padding(horizontal = 20.dp)
+                            .focusRequester(bodyFieldFocusRequester)
+                    )
+                }
+                item {
+                    HashtagEditor(
+                        enabled = enabled,
+                        modifier = Modifier.padding(bottom = 15.dp).padding(horizontal = 20.dp),
+                        hashtags = noteViewModel.screenState.value.hashtags,
+                        onSave = noteViewModel::changeNoteHashtags
+                    )
+                }
+                LinkPreviewList(
+                    noteViewModel.screenState.value.linksMetaData,
+                    linkListExpanded,
+                    noteViewModel.screenState.value.linksLoading,
+                    Modifier.padding(horizontal = 20.dp)
                 )
+                item {
+                    Spacer(Modifier.height(45.dp))
+                }
             }
-            item {
-                CustomTextField(
-                    text = noteViewModel.screenState.value.noteBody,
-                    onTextChange = { noteViewModel.updateNoteBody(it) },
-                    placeholder = stringResource(R.string.Text),
-                    textStyle = MaterialTheme.typography.body1,
-                    modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp).padding(horizontal = 20.dp)
-                        .focusRequester(bodyFieldFocusRequester)
-                )
-            }
-            item {
-                HashtagEditor(
-                    Modifier.padding(bottom = 15.dp).padding(horizontal = 20.dp),
-                    noteViewModel.screenState.value.hashtags,
-                    noteViewModel::changeNoteHashtags
-                )
-            }
-            LinkPreviewList(
-                noteViewModel.screenState.value.linksMetaData,
-                linkListExpanded,
-                noteViewModel.screenState.value.linksLoading,
-                Modifier.padding(horizontal = 20.dp)
-            )
-            item {
-                Spacer(Modifier.height(45.dp))
-            }
+            if (noteViewModel.screenState.value.notePosition == NotePosition.DELETE && noteViewModel.screenState.value.deletionDate != null)
+                Box(modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 30.dp)) {
+                    SnackbarCard(
+                        SnackbarVisualsCustom(
+                            message = "${stringResource(R.string.DaysBeforeDeletingNote)} ${
+                                7 - Duration.between(
+                                    noteViewModel.screenState.value.deletionDate,
+                                    LocalDateTime.now()
+                                ).toDays()
+                            }",
+                            icon = Icons.Outlined.Warning
+                        )
+                    )
+                }
         }
+        if (noteViewModel.screenState.value.isDeleteDialogShow)
+            ActionDialog(
+                title = stringResource(R.string.DeleteForever),
+                icon = Icons.Outlined.Warning,
+                confirmText = stringResource(R.string.Confirm),
+                onConfirm = noteViewModel::deleteNote,
+                goBackText = stringResource(R.string.Cancel),
+                onGoBack = noteViewModel::switchDeleteDialogShow
+            )
     }
 
     if (noteViewModel.screenState.value.isCreateReminderDialogShow) {
@@ -184,26 +223,36 @@ private fun NoteScreenHeader(navController: NavController, noteViewModel: NoteVi
             iconDescription = R.string.GoBack,
             onClick = navController::popBackStack
         ),
-        items = listOf(
-            TopAppBarItem(
-                isActive = noteViewModel.screenState.value.isPinned,
-                icon = Icons.Outlined.PushPin,
-                iconDescription = R.string.AttachNote,
-                onClick = noteViewModel::switchNotePinnedMode
-            ),
-            TopAppBarItem(
-                isActive = noteViewModel.screenState.value.reminder != null,
-                icon = Icons.Outlined.NotificationAdd,
-                iconDescription = R.string.AddToNotification,
-                onClick = noteViewModel::switchReminderDialogShow
-            ),
-            TopAppBarItem(
-                isActive = noteViewModel.screenState.value.notePosition == NotePosition.ARCHIVE,
-                icon = if (noteViewModel.screenState.value.notePosition == NotePosition.ARCHIVE) Icons.Outlined.Unarchive else Icons.Outlined.Archive,
-                iconDescription = if (noteViewModel.screenState.value.notePosition == NotePosition.ARCHIVE) R.string.UnarchiveNotes else R.string.AddToArchive,
-                onClick = if (noteViewModel.screenState.value.notePosition == NotePosition.ARCHIVE) noteViewModel::unarchiveNote else noteViewModel::archiveNote
-            ),
-        )
+        items =
+        if (noteViewModel.screenState.value.notePosition == NotePosition.DELETE)
+            listOf(
+                TopAppBarItem(
+                    icon = Icons.Outlined.History,
+                    iconDescription = R.string.Restore,
+                    onClick = noteViewModel::removeNoteFromBasket
+                )
+            )
+        else
+            listOf(
+                TopAppBarItem(
+                    isActive = noteViewModel.screenState.value.isPinned,
+                    icon = Icons.Outlined.PushPin,
+                    iconDescription = R.string.AttachNote,
+                    onClick = noteViewModel::switchNotePinnedMode
+                ),
+                TopAppBarItem(
+                    isActive = noteViewModel.screenState.value.reminder != null,
+                    icon = Icons.Outlined.NotificationAdd,
+                    iconDescription = R.string.AddToNotification,
+                    onClick = noteViewModel::switchReminderDialogShow
+                ),
+                TopAppBarItem(
+                    isActive = noteViewModel.screenState.value.notePosition == NotePosition.ARCHIVE,
+                    icon = if (noteViewModel.screenState.value.notePosition == NotePosition.ARCHIVE) Icons.Outlined.Unarchive else Icons.Outlined.Archive,
+                    iconDescription = if (noteViewModel.screenState.value.notePosition == NotePosition.ARCHIVE) R.string.UnarchiveNotes else R.string.AddToArchive,
+                    onClick = if (noteViewModel.screenState.value.notePosition == NotePosition.ARCHIVE) noteViewModel::unarchiveNote else noteViewModel::archiveNote
+                ),
+            )
     )
 }
 
@@ -272,16 +321,25 @@ private fun NoteScreenFooter(navController: NavController, noteViewModel: NoteVi
                 }
             }
             Row {
-                val dropDownItems = listOf(
-                    DropDownItem(
-                        text = stringResource(R.string.ShareNote),
-                        icon = Icons.Outlined.Share
-                    ),
-                    DropDownItem(
-                        text = stringResource(R.string.Delete),
-                        icon = if (noteViewModel.screenState.value.notePosition == NotePosition.DELETE) Icons.Outlined.DeleteForever else Icons.Outlined.Delete
-                    )
-                )
+                val dropDownItems =
+                    if (noteViewModel.screenState.value.notePosition == NotePosition.DELETE)
+                        listOf(
+                            DropDownItem(
+                                text = stringResource(R.string.Delete),
+                                icon = Icons.Outlined.DeleteForever
+                            )
+                        ) else
+                        listOf(
+                            DropDownItem(
+                                text = stringResource(R.string.ShareNote),
+                                icon = Icons.Outlined.Share
+                            ),
+                            DropDownItem(
+                                text = stringResource(R.string.Delete),
+                                icon = if (noteViewModel.screenState.value.notePosition == NotePosition.DELETE) Icons.Outlined.DeleteForever else Icons.Outlined.Delete
+                            )
+                        )
+
                 val context = LocalContext.current
                 DropDownButton(
                     items = dropDownItems,
@@ -289,15 +347,20 @@ private fun NoteScreenFooter(navController: NavController, noteViewModel: NoteVi
                     modifier = Modifier,
                     stretchMode = DropDownButtonSizeMode.STRERCHBYCONTENT,
                     onChangedSelection = { index ->
-                        when (index) {
-                            0 -> noteViewModel.shareNoteText(context)
-                            1 -> {
-                                if (noteViewModel.screenState.value.notePosition == NotePosition.DELETE)
-                                    noteViewModel.deleteNote()
-                                else
-                                    noteViewModel.moveToBasket()
+                        if (noteViewModel.screenState.value.notePosition == NotePosition.DELETE)
+                            when (index) {
+                                0 -> noteViewModel.switchDeleteDialogShow()
                             }
-                        }
+                        else
+                            when (index) {
+                                0 -> noteViewModel.shareNoteText(context)
+                                1 -> {
+                                    if (noteViewModel.screenState.value.notePosition == NotePosition.DELETE)
+                                        noteViewModel.deleteNote()
+                                    else
+                                        noteViewModel.moveToBasket()
+                                }
+                            }
                     }
                 ) {
                     IconButton(

@@ -45,7 +45,7 @@ class Note : RealmObject {
         get() {
             return try {
                 LocalDateTime.parse(creationDateString)
-            } catch (e: DateTimeParseException) {
+            } catch (e: Exception) {
                 LocalDateTime.now()
             }
         }
@@ -57,7 +57,7 @@ class Note : RealmObject {
         get() {
             return try {
                 LocalDateTime.parse(updateDateString)
-            } catch (e: DateTimeParseException) {
+            } catch (e: Exception) {
                 LocalDateTime.now()
             }
         }
@@ -69,7 +69,7 @@ class Note : RealmObject {
         get() {
             return try {
                 LocalDateTime.parse(deletionDateString)
-            } catch (e: DateTimeParseException) {
+            } catch (e: Exception) {
                 null
             }
         }

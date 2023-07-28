@@ -124,6 +124,8 @@
     <string name="NoteUnarchived">Заметка разархивирована</string>
     <string name="NotesMovedToBasket">Заметки перемещены в корзину</string>
     <string name="NotesRestored">Заметки восстановлены</string>
+    <string name="DaysBeforeDeletingNote">Дней до удаления заметки: </string>
+    <string name="DeleteForever">Удалить навсегда?</string>
 
     <!-- Statistics components -->
     <string name="Thinker">Мыслитель</string>

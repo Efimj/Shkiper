@@ -38,6 +38,7 @@ data class NoteScreenState(
     val isGoBack: Boolean = false,
     val isTopAppBarHover: Boolean = false,
     val isBottomAppBarHover: Boolean = false,
+
     val noteId: ObjectId = ObjectId(),
     val noteHeader: String = "",
     val notePosition: NotePosition = NotePosition.MAIN,
@@ -45,6 +46,8 @@ data class NoteScreenState(
     val isPinned: Boolean = false,
     val updatedDate: LocalDateTime = LocalDateTime.now(),
     val hashtags: Set<String> = emptySet(),
+    val deletionDate: LocalDateTime? = LocalDateTime.now(),
+
     val linksLoading: Boolean = true,
     val linksMetaData: Set<LinkHelper.LinkPreview> = emptySet(),
     val intermediateStates: List<NoteViewModel.IntermediateState> = listOf(
@@ -52,7 +55,8 @@ data class NoteScreenState(
     ),
     val currentIntermediateIndex: Int = intermediateStates.size - 1,
     val reminder: Reminder? = null,
-    val isCreateReminderDialogShow: Boolean = false
+    val isCreateReminderDialogShow: Boolean = false,
+    val isDeleteDialogShow: Boolean = false,
 )
 
 @HiltViewModel
@@ -90,6 +94,7 @@ class NoteViewModel @Inject constructor(
                 updatedDate = note.updateDate,
                 hashtags = note.hashtags,
                 notePosition = note.position,
+                deletionDate = note.deletionDate,
                 intermediateStates = listOf(IntermediateState(note.header, note.body))
             )
     }
@@ -104,6 +109,10 @@ class NoteViewModel @Inject constructor(
 
     fun setBottomAppBarHover(isHover: Boolean) {
         _screenState.value = _screenState.value.copy(isBottomAppBarHover = isHover)
+    }
+
+    fun switchDeleteDialogShow() {
+        _screenState.value = _screenState.value.copy(isDeleteDialogShow = !_screenState.value.isDeleteDialogShow)
     }
 
     /*******************

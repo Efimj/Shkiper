@@ -125,6 +125,8 @@
     <string name="NoteUnarchived">Нотатку розархівовано</string>
     <string name="NotesMovedToBasket">Нотатки переміщено до кошика</string>
     <string name="NotesRestored">Нотатки відновлено</string>
+    <string name="DaysBeforeDeletingNote">Днів до видалення нотатки: </string>
+    <string name="DeleteForever">Видалити назавжди?</string>
 
     <!-- Statistics components -->
     <string name="Thinker">Міркуючий</string>
