@@ -117,8 +117,11 @@
     <string name="DeleteNoteDialogText">Удалить заметку?</string>
     <string name="Confirm">Подтвердить</string>
     <string name="NotesAreBeenDeleted">Заметки удалены</string>
+    <string name="NoteAreBeenDeleted">Заметка удалена</string>
     <string name="NotesArchived">Заметки перемещены в архив</string>
     <string name="NotesUnarchived">Заметки разархивированы</string>
+    <string name="NoteArchived">Заметка перемещена в архив</string>
+    <string name="NoteUnarchived">Заметка разархивирована</string>
     <string name="NotesMovedToBasket">Заметки перемещены в корзину</string>
     <string name="NotesRestored">Заметки восстановлены</string>
 

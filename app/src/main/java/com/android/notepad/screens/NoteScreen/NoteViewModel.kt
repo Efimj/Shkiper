@@ -1,21 +1,28 @@
 package com.android.notepad.screens.NoteScreen
 
+import android.app.Application
 import android.content.Context
 import android.content.Intent
-import android.util.Log
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.android.notepad.R
 import com.android.notepad.database.data.note.NoteMongoRepository
 import com.android.notepad.database.data.reminder.ReminderMongoRepository
 import com.android.notepad.database.models.Note
+import com.android.notepad.database.models.NotePosition
 import com.android.notepad.database.models.Reminder
 import com.android.notepad.database.models.RepeatMode
 import com.android.notepad.helpers.DateHelper
 import com.android.notepad.helpers.LinkHelper
 import com.android.notepad.navigation.Argument_Note_Id
+import com.android.notepad.util.SnackbarHostUtil
+import com.android.notepad.util.SnackbarVisualsCustom
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.realm.kotlin.ext.realmSetOf
 import kotlinx.coroutines.*
@@ -28,11 +35,12 @@ import javax.inject.Inject
 
 data class NoteScreenState(
     val isLoading: Boolean = true,
-    val isNoteExisted: Boolean = true,
+    val isGoBack: Boolean = false,
     val isTopAppBarHover: Boolean = false,
     val isBottomAppBarHover: Boolean = false,
     val noteId: ObjectId = ObjectId(),
     val noteHeader: String = "",
+    val notePosition: NotePosition = NotePosition.MAIN,
     val noteBody: String = "",
     val isPinned: Boolean = false,
     val updatedDate: LocalDateTime = LocalDateTime.now(),
@@ -52,6 +60,7 @@ class NoteViewModel @Inject constructor(
     private val noteRepository: NoteMongoRepository,
     private val reminderRepository: ReminderMongoRepository,
     savedStateHandle: SavedStateHandle,
+    private val application: Application,
 ) : ViewModel() {
 
     private val _screenState = mutableStateOf(NoteScreenState())
@@ -69,7 +78,7 @@ class NoteViewModel @Inject constructor(
         if (note == null)
             _screenState.value = _screenState.value.copy(
                 isLoading = false,
-                isNoteExisted = false
+                isGoBack = true
             )
         else
             _screenState.value = _screenState.value.copy(
@@ -80,6 +89,7 @@ class NoteViewModel @Inject constructor(
                 isPinned = note.isPinned,
                 updatedDate = note.updateDate,
                 hashtags = note.hashtags,
+                notePosition = note.position,
                 intermediateStates = listOf(IntermediateState(note.header, note.body))
             )
     }
@@ -161,6 +171,7 @@ class NoteViewModel @Inject constructor(
      *******************/
 
     data class IntermediateState(val header: String, val body: String)
+
     private var intermediateStatesChangeTimer: Timer? = null
 
     private fun updateIntermediateStates(intermediateState: IntermediateState) {
@@ -255,8 +266,20 @@ class NoteViewModel @Inject constructor(
 
     fun switchNotePinnedMode() {
         _screenState.value = _screenState.value.copy(isPinned = !_screenState.value.isPinned)
-        updateNote {
-            it.isPinned = this@NoteViewModel._screenState.value.isPinned
+        if (_screenState.value.notePosition == NotePosition.ARCHIVE) {
+            val newPosition = NotePosition.MAIN
+            updateNote {
+                it.isPinned = this@NoteViewModel._screenState.value.isPinned
+                it.position = newPosition
+            }
+            _screenState.value = _screenState.value.copy(
+                notePosition = newPosition,
+                isGoBack = true,
+            )
+        } else {
+            updateNote {
+                it.isPinned = this@NoteViewModel._screenState.value.isPinned
+            }
         }
     }
 
@@ -282,20 +305,11 @@ class NoteViewModel @Inject constructor(
         }
     }
 
-    fun moveToBasket() {
-//        viewModelScope.launch {
-//            if (noteHeader.value.isEmpty() && noteBody.value.isEmpty()) noteRepository.deleteNote(
-//                _noteId.value,
-//            )
-//        }
-    }
-
     fun saveChanges() {
         updateNote {
             it.header = this@NoteViewModel._screenState.value.noteHeader
             it.body = this@NoteViewModel._screenState.value.noteBody
             it.updateDate = this@NoteViewModel._screenState.value.updatedDate
-            it.isPinned = this@NoteViewModel._screenState.value.isPinned
         }
     }
 
@@ -311,6 +325,82 @@ class NoteViewModel @Inject constructor(
 
         val chooser = Intent.createChooser(intent, "Share link")
         context.startActivity(chooser)
+    }
+
+    fun archiveNote() {
+        viewModelScope.launch {
+            val newPosition = NotePosition.ARCHIVE
+            noteRepository.updateNote(screenState.value.noteId) { updatedNote ->
+                updatedNote.position = newPosition
+                updatedNote.isPinned = false
+            }
+            _screenState.value = _screenState.value.copy(
+                notePosition = newPosition,
+                isGoBack = true,
+            )
+            // when returning, the snackbar turns off
+//            showSnackbar(
+//                message = application.applicationContext.getString(R.string.NoteArchived),
+//                icon = Icons.Default.Archive
+//            )
+        }
+    }
+
+    fun unarchiveNote() {
+        viewModelScope.launch {
+            val newPosition = NotePosition.MAIN
+            noteRepository.updateNote(screenState.value.noteId) { updatedNote ->
+                updatedNote.position = newPosition
+            }
+            _screenState.value = _screenState.value.copy(
+                notePosition = newPosition,
+                isGoBack = true,
+            )
+            // when returning, the snackbar turns off
+//            showSnackbar(
+//                message = application.applicationContext.getString(R.string.NoteUnarchived),
+//                icon = Icons.Default.Unarchive
+//            )
+        }
+    }
+
+    fun moveToBasket() {
+        viewModelScope.launch {
+            val newPosition = NotePosition.DELETE
+            noteRepository.updateNote(screenState.value.noteId) { updatedNote ->
+                updatedNote.position = newPosition
+                updatedNote.isPinned = false
+                updatedNote.deletionDate = LocalDateTime.now()
+            }
+            _screenState.value = _screenState.value.copy(
+                notePosition = newPosition,
+                isPinned = false,
+                isGoBack = true,
+            )
+        }
+    }
+
+    fun removeNoteFromBasket() {
+        viewModelScope.launch {
+            val newPosition = NotePosition.MAIN
+            noteRepository.updateNote(screenState.value.noteId) { updatedNote ->
+                updatedNote.position = newPosition
+                updatedNote.deletionDate = null
+            }
+            _screenState.value = _screenState.value.copy(
+                notePosition = newPosition,
+                isGoBack = true,
+            )
+        }
+    }
+
+    fun deleteNote() {
+        viewModelScope.launch {
+            noteRepository.deleteNote(screenState.value.noteId)
+            _screenState.value = _screenState.value.copy(
+                isGoBack = true,
+            )
+        }
     }
 
     /*******************
@@ -354,5 +444,14 @@ class NoteViewModel @Inject constructor(
     fun switchReminderDialogShow() {
         _screenState.value =
             _screenState.value.copy(isCreateReminderDialogShow = !_screenState.value.isCreateReminderDialogShow)
+    }
+
+    private suspend fun showSnackbar(message: String, icon: ImageVector?) {
+        SnackbarHostUtil.snackbarHostState.showSnackbar(
+            SnackbarVisualsCustom(
+                message = message,
+                icon = icon
+            )
+        )
     }
 }

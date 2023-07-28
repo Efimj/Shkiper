@@ -1,12 +1,6 @@
 package com.android.notepad.screens.NoteScreen
 
 import android.annotation.SuppressLint
-import android.content.Intent
-import android.graphics.Rect
-import android.util.Log
-import android.view.ViewTreeObserver
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.*
@@ -20,40 +14,35 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.android.notepad.R
-import com.android.notepad.database.models.RepeatMode
+import com.android.notepad.database.models.NotePosition
 import com.android.notepad.navigation.AppScreens
 import com.android.notepad.ui.components.buttons.DropDownButton
 import com.android.notepad.ui.components.buttons.DropDownButtonSizeMode
 import com.android.notepad.ui.components.buttons.DropDownItem
-import com.android.notepad.ui.components.buttons.RoundedButton
 import com.android.notepad.ui.components.layouts.LinkPreviewList
 import com.android.notepad.ui.components.fields.CustomTextField
 import com.android.notepad.ui.components.fields.HashtagEditor
+import com.android.notepad.ui.components.layouts.CustomTopAppBar
+import com.android.notepad.ui.components.layouts.TopAppBarItem
 import com.android.notepad.ui.components.modals.CreateReminderDialog
 import com.android.notepad.ui.components.modals.ReminderDialogProperties
 import com.android.notepad.ui.theme.CustomAppTheme
@@ -65,9 +54,9 @@ import java.util.*
 
 @Composable
 fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hiltViewModel()) {
-    LaunchedEffect(noteViewModel.screenState.value.isNoteExisted) {
+    LaunchedEffect(noteViewModel.screenState.value.isGoBack) {
         noteViewModel.runFetchingLinksMetaData()
-        if (!noteViewModel.screenState.value.isNoteExisted) navController.popBackStack()
+        if (noteViewModel.screenState.value.isGoBack) navController.popBackStack()
     }
     val scrollState = rememberLazyListState()
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route ?: ""
@@ -186,60 +175,35 @@ private fun NoteScreenHeader(navController: NavController, noteViewModel: NoteVi
         systemUiController.setStatusBarColor(backgroundColor)
     }
 
-    TopAppBar(
+    CustomTopAppBar(
+        modifier = Modifier.fillMaxWidth(),
         elevation = if (noteViewModel.screenState.value.isTopAppBarHover) 8.dp else 0.dp,
         backgroundColor = backgroundColor,
-        contentColor = CustomAppTheme.colors.textSecondary,
-        title = { },
-        navigationIcon = {
-            Spacer(modifier = Modifier.padding(5.dp, 0.dp, 0.dp, 0.dp))
-            IconButton(
-                onClick = { navController.popBackStack() },
-                modifier = Modifier.size(40.dp).clip(CircleShape).padding(0.dp),
-            ) {
-                Icon(
-                    imageVector = Icons.Default.ArrowBack,
-                    contentDescription = stringResource(R.string.GoBack),
-                    tint = CustomAppTheme.colors.textSecondary,
-                )
-            }
-        },
-        actions = {
-            IconButton(
-                onClick = { noteViewModel.switchNotePinnedMode() },
-                modifier = Modifier.size(40.dp).clip(CircleShape).padding(0.dp),
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.PushPin,
-                    contentDescription = stringResource(R.string.AttachNote),
-                    tint = if (noteViewModel.screenState.value.isPinned) CustomAppTheme.colors.text else CustomAppTheme.colors.textSecondary,
-                )
-            }
-            Spacer(modifier = Modifier.padding(6.dp, 0.dp, 0.dp, 0.dp))
-            IconButton(
-                onClick = { noteViewModel.switchReminderDialogShow() },
-                modifier = Modifier.size(40.dp).clip(CircleShape).padding(0.dp),
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.NotificationAdd,
-                    contentDescription = stringResource(R.string.AddToNotification),
-                    tint = if (noteViewModel.screenState.value.reminder == null) CustomAppTheme.colors.textSecondary else CustomAppTheme.colors.text,
-                )
-            }
-            Spacer(modifier = Modifier.padding(6.dp, 0.dp, 0.dp, 0.dp))
-            IconButton(
-                onClick = { },
-                modifier = Modifier.size(40.dp).clip(CircleShape).padding(0.dp),
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.Archive,
-                    contentDescription = stringResource(R.string.AddToArchive),
-                    tint = CustomAppTheme.colors.textSecondary,
-                )
-            }
-            Spacer(modifier = Modifier.padding(6.dp, 0.dp, 0.dp, 0.dp))
-        },
-        modifier = Modifier.fillMaxWidth(),
+        navigation = TopAppBarItem(
+            icon = Icons.Default.ArrowBack,
+            iconDescription = R.string.GoBack,
+            onClick = navController::popBackStack
+        ),
+        items = listOf(
+            TopAppBarItem(
+                isActive = noteViewModel.screenState.value.isPinned,
+                icon = Icons.Outlined.PushPin,
+                iconDescription = R.string.AttachNote,
+                onClick = noteViewModel::switchNotePinnedMode
+            ),
+            TopAppBarItem(
+                isActive = noteViewModel.screenState.value.reminder != null,
+                icon = Icons.Outlined.NotificationAdd,
+                iconDescription = R.string.AddToNotification,
+                onClick = noteViewModel::switchReminderDialogShow
+            ),
+            TopAppBarItem(
+                isActive = noteViewModel.screenState.value.notePosition == NotePosition.ARCHIVE,
+                icon = if (noteViewModel.screenState.value.notePosition == NotePosition.ARCHIVE) Icons.Outlined.Unarchive else Icons.Outlined.Archive,
+                iconDescription = if (noteViewModel.screenState.value.notePosition == NotePosition.ARCHIVE) R.string.UnarchiveNotes else R.string.AddToArchive,
+                onClick = if (noteViewModel.screenState.value.notePosition == NotePosition.ARCHIVE) noteViewModel::unarchiveNote else noteViewModel::archiveNote
+            ),
+        )
     )
 }
 
@@ -315,7 +279,7 @@ private fun NoteScreenFooter(navController: NavController, noteViewModel: NoteVi
                     ),
                     DropDownItem(
                         text = stringResource(R.string.Delete),
-                        icon = Icons.Outlined.Delete
+                        icon = if (noteViewModel.screenState.value.notePosition == NotePosition.DELETE) Icons.Outlined.DeleteForever else Icons.Outlined.Delete
                     )
                 )
                 val context = LocalContext.current
@@ -327,7 +291,12 @@ private fun NoteScreenFooter(navController: NavController, noteViewModel: NoteVi
                     onChangedSelection = { index ->
                         when (index) {
                             0 -> noteViewModel.shareNoteText(context)
-                            1 -> noteViewModel.moveToBasket()
+                            1 -> {
+                                if (noteViewModel.screenState.value.notePosition == NotePosition.DELETE)
+                                    noteViewModel.deleteNote()
+                                else
+                                    noteViewModel.moveToBasket()
+                            }
                         }
                     }
                 ) {

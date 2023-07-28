@@ -118,8 +118,11 @@
     <string name="DeleteNoteDialogText">Видалити нотатку?</string>
     <string name="Confirm">Підтвердити</string>
     <string name="NotesAreBeenDeleted">Нотатки видалено</string>
+    <string name="NoteAreBeenDeleted">Нотатку видалено</string>
     <string name="NotesArchived">Нотатки переміщено до архіву</string>
     <string name="NotesUnarchived">Нотатки розархівовано</string>
+    <string name="NoteArchived">Нотатку переміщено до архіву</string>
+    <string name="NoteUnarchived">Нотатку розархівовано</string>
     <string name="NotesMovedToBasket">Нотатки переміщено до кошика</string>
     <string name="NotesRestored">Нотатки відновлено</string>
 

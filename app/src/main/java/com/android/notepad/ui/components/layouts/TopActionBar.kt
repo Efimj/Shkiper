@@ -1,5 +1,6 @@
 package com.android.notepad.ui.components.layouts
 
+import android.util.Log
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
@@ -13,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -27,23 +29,25 @@ data class TopAppBarItem(
     @StringRes
     val iconDescription: Int,
     val onClick: () -> Unit,
-
     )
 
 @Composable
 fun CustomTopAppBar(
     modifier: Modifier,
-    elevation: Dp,
-    text: String,
+    elevation: Dp = 0.dp,
+    text: String = "",
+    backgroundColor: Color = CustomAppTheme.colors.secondaryBackground,
+    contentColor: Color = CustomAppTheme.colors.textSecondary,
     navigation: TopAppBarItem,
     items: List<TopAppBarItem>
 ) {
     TopAppBar(
         elevation = elevation,
-        contentColor = CustomAppTheme.colors.textSecondary,
-        backgroundColor = CustomAppTheme.colors.mainBackground,
+        contentColor = contentColor,
+        backgroundColor = backgroundColor,
         modifier = modifier,
         title = {
+            Spacer(modifier = Modifier.padding(6.dp, 0.dp, 0.dp, 0.dp))
             Text(
                 text,
                 overflow = TextOverflow.Ellipsis,
@@ -53,7 +57,7 @@ fun CustomTopAppBar(
             )
         },
         navigationIcon = {
-            Spacer(modifier = Modifier.padding(5.dp, 0.dp, 0.dp, 0.dp))
+            Spacer(modifier = Modifier.padding(6.dp, 0.dp, 0.dp, 0.dp))
             IconButton(
                 onClick = navigation.onClick,
                 modifier = Modifier.size(40.dp).clip(CircleShape).padding(0.dp),
@@ -74,7 +78,7 @@ fun CustomTopAppBar(
                     Icon(
                         imageVector = item.icon,
                         contentDescription = stringResource(item.iconDescription),
-                        tint = if (navigation.isActive) CustomAppTheme.colors.text else CustomAppTheme.colors.textSecondary,
+                        tint = if (item.isActive) CustomAppTheme.colors.text else CustomAppTheme.colors.textSecondary,
                     )
                 }
                 Spacer(modifier = Modifier.padding(6.dp, 0.dp, 0.dp, 0.dp))
