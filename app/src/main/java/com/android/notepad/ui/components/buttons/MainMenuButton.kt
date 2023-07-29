@@ -18,7 +18,7 @@ import com.android.notepad.ui.theme.CustomAppTheme
 
 @Composable
 fun MainMenuButton(text: String, icon: ImageVector? = null, isActive: Boolean = false, onClick: () -> Unit = { }){
-    val menuButtonModifier = Modifier.fillMaxWidth().height(50.dp)
+    val menuButtonModifier = Modifier.fillMaxWidth().height(45.dp)
 
     if(isActive){
         RoundedButton(
@@ -28,7 +28,7 @@ fun MainMenuButton(text: String, icon: ImageVector? = null, isActive: Boolean = 
             border = BorderStroke(0.dp, CustomAppTheme.colors.mainBackground),
             colors = ButtonDefaults.buttonColors(backgroundColor = CustomAppTheme.colors.active),
             textColor = Color.White,
-            textStyle = MaterialTheme.typography.h6.copy(fontSize = 18.sp),
+            textStyle = MaterialTheme.typography.h6.copy(fontSize = 17.sp),
             onClick = onClick,
             iconTint = Color.White
         )
@@ -38,7 +38,7 @@ fun MainMenuButton(text: String, icon: ImageVector? = null, isActive: Boolean = 
             icon = icon,
             modifier = menuButtonModifier,
             border = BorderStroke(0.dp, CustomAppTheme.colors.mainBackground),
-            textStyle = MaterialTheme.typography.h6.copy(fontSize = 18.sp),
+            textStyle = MaterialTheme.typography.h6.copy(fontSize = 17.sp),
             onClick = onClick,
         )
     }

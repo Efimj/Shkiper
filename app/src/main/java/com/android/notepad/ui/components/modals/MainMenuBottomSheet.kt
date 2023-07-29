@@ -232,7 +232,7 @@ private fun goToPage(
     coroutineScope: CoroutineScope,
     modalBottomSheetState: ModalBottomSheetState
 ) {
-    if (navController.currentDestination?.route == rout) {
+    if (navController.currentDestination?.route?.substringBefore("/") == rout.substringBefore("/")) {
         coroutineScope.launch { modalBottomSheetState.hide() }
         return
     }
