@@ -1,5 +1,6 @@
 package com.android.notepad.screens.ArchiveNotesScreen
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.animation.core.tween
@@ -75,6 +76,14 @@ fun ArchiveNotesScreen(navController: NavController, archiveViewModel: NotesView
     val actionBarHeight = 56.dp
     val actionBarHeightPx = with(LocalDensity.current) { actionBarHeight.roundToPx().toFloat() }
     val offsetX = remember { Animatable(-actionBarHeightPx) }
+
+    /**
+     * When user select note
+     */
+    BackHandler(
+        enabled = archiveViewModel.screenState.value.selectedNotes.isNotEmpty(), onBack =
+        archiveViewModel::clearSelectedNote
+    )
 
     /**
      * LaunchedEffect for cases when the number of selected notes changes.

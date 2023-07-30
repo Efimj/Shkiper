@@ -1,5 +1,6 @@
 package com.android.notepad.screens.BasketNotesScreen
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.animation.core.tween
@@ -52,6 +53,14 @@ fun BasketNotesScreen(navController: NavController, basketViewModel: NotesViewMo
     val actionBarHeight = 56.dp
     val actionBarHeightPx = with(LocalDensity.current) { actionBarHeight.roundToPx().toFloat() }
     val offsetX = remember { Animatable(-actionBarHeightPx) }
+
+    /**
+     * When user select note
+     */
+    BackHandler(
+        enabled = basketViewModel.screenState.value.selectedNotes.isNotEmpty(), onBack =
+        basketViewModel::clearSelectedNote
+    )
 
     /**
      * LaunchedEffect for cases when the number of selected notes changes.

@@ -1,5 +1,6 @@
 package com.android.notepad.screens.NoteListScreen
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -70,6 +71,14 @@ fun NoteListScreen(navController: NavController, notesViewModel: NotesViewModel 
     val actionBarHeight = 56.dp
     val actionBarHeightPx = with(LocalDensity.current) { actionBarHeight.roundToPx().toFloat() }
     val offsetX = remember { Animatable(-actionBarHeightPx) }
+
+    /**
+     * When user select note
+     */
+    BackHandler(
+        enabled = notesViewModel.screenState.value.selectedNotes.isNotEmpty(), onBack =
+        notesViewModel::clearSelectedNote
+    )
 
     /**
      * LaunchedEffect for cases when the number of selected notes changes.
