@@ -43,14 +43,14 @@ fun CustomTextField(
         leadingIconColor = CustomAppTheme.colors.textSecondary,
         trailingIconColor = CustomAppTheme.colors.textSecondary,
         textColor = CustomAppTheme.colors.text,
-        cursorColor = CustomAppTheme.colors.textSecondary,
+        cursorColor = CustomAppTheme.colors.active,
         focusedLabelColor = CustomAppTheme.colors.textSecondary,
         unfocusedLabelColor = CustomAppTheme.colors.textSecondary,
     )
 
     val customTextSelectionColors = TextSelectionColors(
-        handleColor = CustomAppTheme.colors.stroke,
-        backgroundColor = CustomAppTheme.colors.stroke,
+        handleColor = CustomAppTheme.colors.active,
+        backgroundColor = CustomAppTheme.colors.active.copy(alpha = 0.4f),
     )
 
     CompositionLocalProvider(
@@ -63,7 +63,7 @@ fun CustomTextField(
             enabled = enabled,
             singleLine = singleLine,
             textStyle = textStyle.copy(color = textColor),
-            cursorBrush = SolidColor(CustomAppTheme.colors.textSecondary),
+            cursorBrush = SolidColor(CustomAppTheme.colors.active),
             keyboardOptions = keyboardOptions,
             keyboardActions = keyboardActions ?: KeyboardActions(
                 onAny = {

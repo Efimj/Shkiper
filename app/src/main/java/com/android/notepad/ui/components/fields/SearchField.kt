@@ -64,8 +64,8 @@ fun SearchField(
     val minFontSize = 16.sp
 
     val customTextSelectionColors = TextSelectionColors(
-        handleColor = CustomAppTheme.colors.stroke,
-        backgroundColor = CustomAppTheme.colors.stroke,
+        handleColor = CustomAppTheme.colors.active,
+        backgroundColor = CustomAppTheme.colors.active.copy(alpha = 0.4f),
     )
     val focusManager = LocalFocusManager.current
 
@@ -81,7 +81,7 @@ fun SearchField(
                 enabled = enabled,
                 singleLine = true,
                 textStyle = textStyle.copy(fontSize = shrunkFontSize),
-                cursorBrush = SolidColor(CustomAppTheme.colors.textSecondary),
+                cursorBrush = SolidColor(CustomAppTheme.colors.active),
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Text,
                     imeAction = ImeAction.Done,
