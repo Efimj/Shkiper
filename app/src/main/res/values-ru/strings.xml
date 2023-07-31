@@ -126,6 +126,7 @@
     <string name="NotesRestored">Заметки восстановлены</string>
     <string name="DaysBeforeDeletingNote">Дней до удаления заметки: </string>
     <string name="DeleteForever">Удалить навсегда?</string>
+    <string name="RateTheApp">Оценить Shkiper</string>
 
     <!-- Statistics components -->
     <string name="Thinker">Мыслитель</string>

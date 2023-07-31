@@ -2,7 +2,9 @@ package com.android.notepad.screens.SettingsScreen
 
 import android.Manifest
 import android.app.Application
+import android.content.ActivityNotFoundException
 import android.content.ContentResolver
+import android.content.Intent
 import android.net.Uri
 import android.util.Log
 import androidx.compose.material.icons.Icons
@@ -13,6 +15,7 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.notepad.NotepadApplication
@@ -21,6 +24,7 @@ import com.android.notepad.database.data.note.NoteMongoRepository
 import com.android.notepad.database.data.reminder.ReminderMongoRepository
 import com.android.notepad.helpers.localization.LocaleHelper
 import com.android.notepad.helpers.localization.Localization
+import com.android.notepad.helpers.openRateScreen
 import com.android.notepad.services.backup_service.BackupData
 import com.android.notepad.services.backup_service.BackupService
 import com.android.notepad.services.backup_service.BackupServiceResult
@@ -170,5 +174,13 @@ class SettingsViewModel @Inject constructor(
                 _settingsScreenState.value.isGoogleDriveBackupUploading ||
                 _settingsScreenState.value.isGoogleDriveBackupUpSaving ||
                 _settingsScreenState.value.isLocalBackupSaving
+    }
+
+    /*******************
+     * App Rate
+     *******************/
+
+    fun rateTheApp() {
+        openRateScreen(application.applicationContext)
     }
 }

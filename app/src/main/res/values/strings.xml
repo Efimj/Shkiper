@@ -125,6 +125,7 @@
     <string name="NotesRestored">Notes restored</string>
     <string name="DaysBeforeDeletingNote">Days before deleting a note: </string>
     <string name="DeleteForever">Delete forever?</string>
+    <string name="RateTheApp">Rate Shkiper</string>
 
     <!--    Statistics components   -->
     <string name="Thinker">Thinker</string>

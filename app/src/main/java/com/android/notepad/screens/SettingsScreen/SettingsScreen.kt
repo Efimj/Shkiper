@@ -130,6 +130,11 @@ fun SettingsScreen(navController: NavController, settingsViewModel: SettingsView
             )
             Spacer(Modifier.height(8.dp))
             SettingsItem(
+                stringResource(R.string.RateTheApp),
+                stringResource(R.string.Open),
+                Icons.Outlined.Stars
+            ) { settingsViewModel.rateTheApp() }
+            SettingsItem(
                 stringResource(R.string.OnboardingPage),
                 stringResource(R.string.Open),
                 Icons.Outlined.ViewCarousel
