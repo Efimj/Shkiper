@@ -69,6 +69,7 @@ fun SearchField(
     )
     val focusManager = LocalFocusManager.current
 
+
     BoxWithConstraints(modifier = Modifier.fillMaxWidth()) {
         val shrunkFontSize = resizeFontSize(maxFontSize, search, textStyle, minFontSize, TEXT_SCALE_REDUCTION_INTERVAL)
         CompositionLocalProvider(
