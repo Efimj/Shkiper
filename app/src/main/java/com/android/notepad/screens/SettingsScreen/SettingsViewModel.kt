@@ -1,30 +1,24 @@
 package com.android.notepad.screens.SettingsScreen
 
-import android.Manifest
 import android.app.Application
-import android.content.ActivityNotFoundException
-import android.content.ContentResolver
-import android.content.Intent
 import android.net.Uri
 import android.util.Log
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Error
-import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.notepad.NotepadApplication
 import com.android.notepad.R
 import com.android.notepad.database.data.note.NoteMongoRepository
 import com.android.notepad.database.data.reminder.ReminderMongoRepository
+import com.android.notepad.helpers.RateScreenHelper
 import com.android.notepad.helpers.localization.LocaleHelper
 import com.android.notepad.helpers.localization.Localization
-import com.android.notepad.helpers.openRateScreen
 import com.android.notepad.services.backup_service.BackupData
 import com.android.notepad.services.backup_service.BackupService
 import com.android.notepad.services.backup_service.BackupServiceResult
@@ -33,16 +27,10 @@ import com.android.notepad.ui.theme.ColorThemes
 import com.android.notepad.util.SnackbarHostUtil
 import com.android.notepad.util.SnackbarVisualsCustom
 import com.android.notepad.util.ThemeUtil
-import com.gun0912.tedpermission.coroutine.TedPermission
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.io.BufferedReader
-import java.io.IOException
-import java.io.InputStreamReader
 import javax.inject.Inject
-import kotlin.math.log
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
@@ -181,6 +169,6 @@ class SettingsViewModel @Inject constructor(
      *******************/
 
     fun rateTheApp() {
-        openRateScreen(application.applicationContext)
+        RateScreenHelper(application.applicationContext).openRateScreen()
     }
 }
