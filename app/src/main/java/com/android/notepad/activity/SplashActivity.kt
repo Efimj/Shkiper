@@ -38,9 +38,7 @@ class SplashActivity : ComponentActivity() {
         val context = this.applicationContext
         super.onCreate(savedInstanceState)
 
-        if (!BuildConfig.BUILD_TYPE.contains("benchmark")) {
-            splashScreen.setKeepOnScreenCondition { true }
-        }
+        splashScreen.setKeepOnScreenCondition { true }
 
         // Initialization Realm database
         setContent {

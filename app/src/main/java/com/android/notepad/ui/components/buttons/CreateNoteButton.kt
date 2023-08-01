@@ -29,14 +29,14 @@ fun CreateNoteButton(
     val multipleEventsCutter = remember { MultipleEventsCutter.get() }
 
     Card(
-        modifier = Modifier.bounceClick().clip(RoundedCornerShape(15.dp)).clickable(
+        modifier = Modifier.testTag("create_note_button").bounceClick().clip(RoundedCornerShape(15.dp)).clickable(
             indication = if (isActive) LocalIndication.current else null,
             interactionSource = remember { MutableInteractionSource() } // This is mandatory
         ) {
             if (isActive) {
                 multipleEventsCutter.processEvent { onClick() }
             }
-        }.testTag("create_note_button"),
+        },
         elevation = 0.dp,
         shape = RoundedCornerShape(15.dp),
         border = BorderStroke(if (isActive) 1.dp else 0.dp, CustomAppTheme.colors.active),

@@ -1,5 +1,6 @@
 package com.notepad.macrobenchmark
 
+import android.util.Log
 import androidx.benchmark.macro.*
 import androidx.benchmark.macro.junit4.MacrobenchmarkRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -38,8 +39,8 @@ class ExampleStartupBenchmark {
     @Test
     fun scrollCompilationModeNone() = scrollAndNavigate(CompilationMode.None())
 
-//    @Test
-//    fun scrollCompilationModePartial() = scrollAndNavigate(CompilationMode.Partial())
+    @Test
+    fun scrollCompilationModePartial() = scrollAndNavigate(CompilationMode.Partial())
 
 //    fun startup(mode: CompilationMode) = benchmarkRule.measureRepeated(
 //        packageName = "com.android.notepad",
@@ -67,6 +68,7 @@ class ExampleStartupBenchmark {
 }
 
 fun MacrobenchmarkScope.addElementsAndScrollDown() {
+    device.waitForIdle(500)
     repeat(1) {
         val createNoteButton = device.findObject(By.res("create_note_button"))
         createNoteButton.click()
