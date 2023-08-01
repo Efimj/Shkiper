@@ -29,7 +29,7 @@ fun ScreenContentIfNoData(@StringRes title: Int, icon: ImageVector) {
                 imageVector = icon,
                 contentDescription = null,
                 tint = CustomAppTheme.colors.active,
-                modifier = Modifier.size(140.dp)
+                modifier = Modifier.size(90.dp)
             )
             Spacer(Modifier.height(10.dp))
             Text(
