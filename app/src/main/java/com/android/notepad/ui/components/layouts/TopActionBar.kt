@@ -28,8 +28,9 @@ data class TopAppBarItem(
     val icon: ImageVector,
     @StringRes
     val iconDescription: Int,
-    val onClick: () -> Unit,
-    )
+    val modifier: Modifier = Modifier,
+    val onClick: () -> Unit
+)
 
 @Composable
 fun CustomTopAppBar(
@@ -60,7 +61,7 @@ fun CustomTopAppBar(
             Spacer(modifier = Modifier.padding(6.dp, 0.dp, 0.dp, 0.dp))
             IconButton(
                 onClick = navigation.onClick,
-                modifier = Modifier.size(40.dp).clip(CircleShape).padding(0.dp),
+                modifier = navigation.modifier.size(40.dp).clip(CircleShape).padding(0.dp),
             ) {
                 Icon(
                     imageVector = navigation.icon,
@@ -73,7 +74,7 @@ fun CustomTopAppBar(
             for (item in items) {
                 IconButton(
                     onClick = item.onClick,
-                    modifier = Modifier.size(40.dp).clip(CircleShape).padding(0.dp),
+                    modifier = item.modifier.size(40.dp).clip(CircleShape).padding(0.dp),
                 ) {
                     Icon(
                         imageVector = item.icon,

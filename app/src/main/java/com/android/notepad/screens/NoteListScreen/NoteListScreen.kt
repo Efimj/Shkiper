@@ -23,6 +23,7 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
@@ -157,7 +158,7 @@ private fun ScreenContent(
 
     LazyGridNotes(
         contentPadding = PaddingValues(10.dp, 70.dp, 10.dp, 80.dp),
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().testTag("notes_list"),
         gridState = lazyGridNotes
     ) {
         item(span = StaggeredGridItemSpan.FullLine) {

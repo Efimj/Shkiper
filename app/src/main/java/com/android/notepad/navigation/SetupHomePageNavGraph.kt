@@ -2,6 +2,10 @@ package com.android.notepad.navigation
 
 import androidx.compose.animation.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
@@ -16,6 +20,7 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 
 
+@OptIn(ExperimentalComposeUiApi::class)
 @ExperimentalAnimationApi
 @Composable
 fun SetupAppScreenNavGraph(
@@ -28,7 +33,10 @@ fun SetupAppScreenNavGraph(
 
     AnimatedNavHost(
         navController = navController,
-        startDestination = startDestination
+        startDestination = startDestination,
+        modifier = Modifier.semantics {
+            testTagsAsResourceId = true
+        }
     ) {
         composable(
             route = AppScreens.NoteList.route,

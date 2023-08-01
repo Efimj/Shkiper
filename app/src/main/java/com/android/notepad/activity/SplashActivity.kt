@@ -10,6 +10,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.android.notepad.BuildConfig
 import com.android.notepad.NotepadApplication
 import com.android.notepad.helpers.localization.LocaleHelper
 import com.android.notepad.services.statistics_service.StatisticsService
@@ -37,7 +38,9 @@ class SplashActivity : ComponentActivity() {
         val context = this.applicationContext
         super.onCreate(savedInstanceState)
 
-        splashScreen.setKeepOnScreenCondition { true }
+        if (!BuildConfig.BUILD_TYPE.contains("benchmark")) {
+            splashScreen.setKeepOnScreenCondition { true }
+        }
 
         // Initialization Realm database
         setContent {

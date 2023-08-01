@@ -26,6 +26,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -112,7 +113,8 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
                             fontWeight = FontWeight.SemiBold,
                             fontSize = 21.sp
                         ),
-                        modifier = Modifier.fillMaxSize().padding(bottom = 6.dp, top = 4.dp).padding(horizontal = 20.dp)
+                        modifier = Modifier.testTag("note_header_input").fillMaxSize()
+                            .padding(bottom = 6.dp, top = 4.dp).padding(horizontal = 20.dp)
                     )
                 }
                 item {
@@ -122,7 +124,7 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
                         placeholder = stringResource(R.string.Text),
                         textStyle = MaterialTheme.typography.body1,
                         enabled = enabled,
-                        modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp).padding(horizontal = 20.dp)
+                        modifier = Modifier.testTag("note_body_input").fillMaxWidth().padding(bottom = 10.dp).padding(horizontal = 20.dp)
                             .focusRequester(bodyFieldFocusRequester)
                     )
                 }
@@ -221,6 +223,7 @@ private fun NoteScreenHeader(navController: NavController, noteViewModel: NoteVi
         navigation = TopAppBarItem(
             icon = Icons.Default.ArrowBack,
             iconDescription = R.string.GoBack,
+            modifier = Modifier.testTag("button_navigate_back"),
             onClick = navController::popBackStack
         ),
         items =

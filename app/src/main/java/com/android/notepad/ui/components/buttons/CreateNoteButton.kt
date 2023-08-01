@@ -12,6 +12,7 @@ import androidx.compose.material.icons.outlined.Add
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.android.notepad.R
@@ -35,7 +36,7 @@ fun CreateNoteButton(
             if (isActive) {
                 multipleEventsCutter.processEvent { onClick() }
             }
-        },
+        }.testTag("create_note_button"),
         elevation = 0.dp,
         shape = RoundedCornerShape(15.dp),
         border = BorderStroke(if (isActive) 1.dp else 0.dp, CustomAppTheme.colors.active),
