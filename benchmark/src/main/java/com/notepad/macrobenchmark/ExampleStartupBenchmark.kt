@@ -1,6 +1,5 @@
 package com.notepad.macrobenchmark
 
-import android.util.Log
 import androidx.benchmark.macro.*
 import androidx.benchmark.macro.junit4.MacrobenchmarkRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -29,22 +28,22 @@ class ExampleStartupBenchmark {
     @get:Rule
     val benchmarkRule = MacrobenchmarkRule()
 
-    @Test
-    fun startUpCompilationModeNone() = startup(CompilationMode.None())
-
-    @Test
-    fun startUpCompilationModePartial() = startup(CompilationMode.Partial())
-
 //    @Test
-//    fun scrollCompilationModeNone() = scrollAndNavigate(CompilationMode.None())
+//    fun startUpCompilationModeNone() = startup(CompilationMode.None())
 //
 //    @Test
-//    fun scrollCompilationModePartial() = scrollAndNavigate(CompilationMode.Partial())
+//    fun startUpCompilationModePartial() = startup(CompilationMode.Partial())
+
+    @Test
+    fun scrollCompilationModeNone() = scrollAndNavigate(CompilationMode.None())
+
+    @Test
+    fun scrollCompilationModePartial() = scrollAndNavigate(CompilationMode.Partial())
 
     fun startup(mode: CompilationMode) = benchmarkRule.measureRepeated(
         packageName = "com.jobik.shkiper",
         metrics = listOf(StartupTimingMetric()),
-        iterations = 3,
+        iterations = 5,
         startupMode = StartupMode.COLD,
         compilationMode = mode
     ) {
@@ -55,51 +54,57 @@ class ExampleStartupBenchmark {
     fun scrollAndNavigate(mode: CompilationMode) = benchmarkRule.measureRepeated(
         packageName = "com.jobik.shkiper",
         metrics = listOf(FrameTimingMetric()),
-        iterations = 3,
+        iterations = 5,
         startupMode = StartupMode.COLD,
-        compilationMode = mode
+        compilationMode = mode,
+        setupBlock = {
+            pressHome()
+            startActivityAndWait()
+        }
     ) {
-        pressHome()
-        startActivityAndWait()
-
-        addElementsAndScrollDown()
+        finishOnboarding()
+        createNote()
+        scrollNoteListJourney()
     }
 }
 
-fun MacrobenchmarkScope.addElementsAndScrollDown() {
-    device.waitForIdle(500)
-    repeat(4) {
+fun MacrobenchmarkScope.finishOnboarding() {
+    val createNoteButton = device.findObject(By.res("button_next"))
+    repeat(3) {
         try {
-            val createNoteButton = device.findObject(By.res("button_next"))
-            device.waitForIdle(500)
+            Thread.sleep(1_000)
             createNoteButton.click()
         } catch (e: Exception) {
             return@repeat
         }
     }
-    device.waitForIdle(500)
-//    repeat(1) {
-//        val createNoteButton = device.findObject(By.res("create_note_button"))
-//        createNoteButton.click()
-//        val noteHeaderInput = device.findObject(By.res("note_header_input"))
-//        val noteBodyInput = device.findObject(By.res("note_body_input"))
-//        noteHeaderInput.text = generateSentence(Random.nextInt(6, 67))
-//        noteBodyInput.text = generateSentence(Random.nextInt(6, 200))
-//        device.pressBack()
-////        if(it%2==0){
-////            val backButton = device.findObject(By.res("button_navigate_back"))
-////            backButton.click()
-////        }else{
-////            device.pressBack()
-////        }
-//    }
-//    device.waitForIdle(500)
-//
-//    // scroll notes list
-//    val list = device.findObject(By.res("notes_list"))
-//
-//    list.setGestureMargin(device.displayWidth / 5)
-//    list.fling(Direction.DOWN)
+}
+
+fun MacrobenchmarkScope.createNote() {
+    device.wait(Until.hasObject(By.res("create_note_button")), 5_000)
+    Thread.sleep(1_000)
+
+    val createNoteButton = device.findObject(By.res("create_note_button"))
+    createNoteButton.click()
+
+    device.wait(Until.hasObject(By.res("note_header_input")), 5_000)
+    val noteHeaderInput = device.findObject(By.res("note_header_input"))
+    val noteBodyInput = device.findObject(By.res("note_body_input"))
+    noteHeaderInput.text = generateSentence(Random.nextInt(6, 67))
+    noteBodyInput.text = generateSentence(Random.nextInt(6, 200))
+
+    device.pressBack()
+}
+
+fun MacrobenchmarkScope.scrollNoteListJourney() {
+    device.wait(Until.hasObject(By.res("notes_list")), 5_000)
+    Thread.sleep(1_000)
+    val noteList = device.findObject(By.res("notes_list"))
+    // Set gesture margin to avoid triggering gesture navigation.
+    noteList.setGestureMargin(device.displayWidth / 5)
+    noteList.fling(Direction.DOWN)
+    device.waitForIdle()
+    noteList.fling(Direction.UP)
     device.waitForIdle()
 }
 

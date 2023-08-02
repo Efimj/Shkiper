@@ -1,6 +1,7 @@
 package com.jobik.shkiper.screens.OnboardingScreen
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -88,7 +89,9 @@ private fun ScreenFooter(navController: NavController, pagerState: PagerState) {
         Row(Modifier.weight(1f), horizontalArrangement = Arrangement.End) {
             RoundedButton(
                 modifier = Modifier.testTag("button_next"),
-                text = if (pagerState.currentPage == OnBoardingPage.PageList.Count - 1) stringResource(R.string.Finish) else stringResource(R.string.Next),
+                text = if (pagerState.currentPage == OnBoardingPage.PageList.Count - 1) stringResource(R.string.Finish) else stringResource(
+                    R.string.Next
+                ),
                 onClick = {
                     if (pagerState.currentPage == OnBoardingPage.PageList.Count - 1) {
                         onFinished(context, navController)
@@ -104,9 +107,13 @@ private fun ScreenFooter(navController: NavController, pagerState: PagerState) {
 }
 
 fun onFinished(context: Context, navController: NavController) {
-    val sharedPreferences =
-        context.getSharedPreferences(SharedPreferencesKeys.ApplicationStorageName, Context.MODE_PRIVATE)
-    sharedPreferences.edit().putBoolean(SharedPreferencesKeys.IsOnboardingPageFinished, true).apply()
+    try {
+        val sharedPreferences =
+            context.getSharedPreferences(SharedPreferencesKeys.ApplicationStorageName, Context.MODE_PRIVATE)
+        sharedPreferences.edit().putBoolean(SharedPreferencesKeys.IsOnboardingPageFinished, true).apply()
+    } catch (e: Exception) {
+        Log.i("onboarding - onFinished", e.toString())
+    }
     navController.navigate(AppScreens.NoteList.route) {
         popUpTo(AppScreens.Onboarding.route) {
             inclusive = true
