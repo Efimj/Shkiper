@@ -15,7 +15,7 @@ class BaselineProfileGenerator {
 
     @Test
     fun generateBaselineProfile() = baselineRule.collectBaselineProfile(
-        packageName = "com.android.notepad",
+        packageName = "com.jobik.shkiper",
     ) {
         pressHome()
         startActivityAndWait()

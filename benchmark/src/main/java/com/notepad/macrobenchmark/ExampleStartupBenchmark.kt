@@ -35,7 +35,6 @@ class ExampleStartupBenchmark {
 //    @Test
 //    fun startUpCompilationModePartial() = startup(CompilationMode.Partial())
 
-
     @Test
     fun scrollCompilationModeNone() = scrollAndNavigate(CompilationMode.None())
 
@@ -54,7 +53,7 @@ class ExampleStartupBenchmark {
 //    }
 
     fun scrollAndNavigate(mode: CompilationMode) = benchmarkRule.measureRepeated(
-        packageName = "com.android.notepad",
+        packageName = "com.jobik.shkiper",
         metrics = listOf(FrameTimingMetric()),
         iterations = 5,
         startupMode = StartupMode.COLD,
