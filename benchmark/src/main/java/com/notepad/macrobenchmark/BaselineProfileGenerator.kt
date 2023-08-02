@@ -20,6 +20,6 @@ class BaselineProfileGenerator {
         pressHome()
         startActivityAndWait()
 
-        addElementsAndScrollDown()
+        //addElementsAndScrollDown()
     }
 }

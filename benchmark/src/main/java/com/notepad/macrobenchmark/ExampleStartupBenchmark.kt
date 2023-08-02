@@ -29,33 +29,33 @@ class ExampleStartupBenchmark {
     @get:Rule
     val benchmarkRule = MacrobenchmarkRule()
 
+    @Test
+    fun startUpCompilationModeNone() = startup(CompilationMode.None())
+
+    @Test
+    fun startUpCompilationModePartial() = startup(CompilationMode.Partial())
+
 //    @Test
-//    fun startUpCompilationModeNone() = startup(CompilationMode.None())
+//    fun scrollCompilationModeNone() = scrollAndNavigate(CompilationMode.None())
 //
 //    @Test
-//    fun startUpCompilationModePartial() = startup(CompilationMode.Partial())
+//    fun scrollCompilationModePartial() = scrollAndNavigate(CompilationMode.Partial())
 
-    @Test
-    fun scrollCompilationModeNone() = scrollAndNavigate(CompilationMode.None())
-
-    @Test
-    fun scrollCompilationModePartial() = scrollAndNavigate(CompilationMode.Partial())
-
-//    fun startup(mode: CompilationMode) = benchmarkRule.measureRepeated(
-//        packageName = "com.android.notepad",
-//        metrics = listOf(StartupTimingMetric()),
-//        iterations = 5,
-//        startupMode = StartupMode.COLD,
-//        compilationMode = mode
-//    ) {
-//        pressHome()
-//        startActivityAndWait()
-//    }
+    fun startup(mode: CompilationMode) = benchmarkRule.measureRepeated(
+        packageName = "com.jobik.shkiper",
+        metrics = listOf(StartupTimingMetric()),
+        iterations = 3,
+        startupMode = StartupMode.COLD,
+        compilationMode = mode
+    ) {
+        pressHome()
+        startActivityAndWait()
+    }
 
     fun scrollAndNavigate(mode: CompilationMode) = benchmarkRule.measureRepeated(
         packageName = "com.jobik.shkiper",
         metrics = listOf(FrameTimingMetric()),
-        iterations = 5,
+        iterations = 3,
         startupMode = StartupMode.COLD,
         compilationMode = mode
     ) {
@@ -68,28 +68,38 @@ class ExampleStartupBenchmark {
 
 fun MacrobenchmarkScope.addElementsAndScrollDown() {
     device.waitForIdle(500)
-    repeat(1) {
-        val createNoteButton = device.findObject(By.res("create_note_button"))
-        createNoteButton.click()
-        val noteHeaderInput = device.findObject(By.res("note_header_input"))
-        val noteBodyInput = device.findObject(By.res("note_body_input"))
-        noteHeaderInput.text = generateSentence(Random.nextInt(6, 67))
-        noteBodyInput.text = generateSentence(Random.nextInt(6, 200))
-        device.pressBack()
-//        if(it%2==0){
-//            val backButton = device.findObject(By.res("button_navigate_back"))
-//            backButton.click()
-//        }else{
-//            device.pressBack()
-//        }
+    repeat(4) {
+        try {
+            val createNoteButton = device.findObject(By.res("button_next"))
+            device.waitForIdle(500)
+            createNoteButton.click()
+        } catch (e: Exception) {
+            return@repeat
+        }
     }
-    device.waitForIdle()
-
-    // scroll notes list
-    val list = device.findObject(By.res("notes_list"))
-
-    list.setGestureMargin(device.displayWidth / 5)
-    list.fling(Direction.DOWN)
+    device.waitForIdle(500)
+//    repeat(1) {
+//        val createNoteButton = device.findObject(By.res("create_note_button"))
+//        createNoteButton.click()
+//        val noteHeaderInput = device.findObject(By.res("note_header_input"))
+//        val noteBodyInput = device.findObject(By.res("note_body_input"))
+//        noteHeaderInput.text = generateSentence(Random.nextInt(6, 67))
+//        noteBodyInput.text = generateSentence(Random.nextInt(6, 200))
+//        device.pressBack()
+////        if(it%2==0){
+////            val backButton = device.findObject(By.res("button_navigate_back"))
+////            backButton.click()
+////        }else{
+////            device.pressBack()
+////        }
+//    }
+//    device.waitForIdle(500)
+//
+//    // scroll notes list
+//    val list = device.findObject(By.res("notes_list"))
+//
+//    list.setGestureMargin(device.displayWidth / 5)
+//    list.fling(Direction.DOWN)
     device.waitForIdle()
 }
 

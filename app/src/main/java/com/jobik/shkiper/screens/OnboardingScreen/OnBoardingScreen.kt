@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -86,6 +87,7 @@ private fun ScreenFooter(navController: NavController, pagerState: PagerState) {
         }
         Row(Modifier.weight(1f), horizontalArrangement = Arrangement.End) {
             RoundedButton(
+                modifier = Modifier.testTag("button_next"),
                 text = if (pagerState.currentPage == OnBoardingPage.PageList.Count - 1) stringResource(R.string.Finish) else stringResource(R.string.Next),
                 onClick = {
                     if (pagerState.currentPage == OnBoardingPage.PageList.Count - 1) {
