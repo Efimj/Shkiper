@@ -6,6 +6,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.jobik.shkiper.R
 import com.jobik.shkiper.helpers.NumberHelper
+import java.time.LocalDate
+import java.util.*
 
 abstract class Statistics {
     abstract fun increment()
@@ -40,6 +42,21 @@ data class BooleanStatistics(
     }
 }
 
+data class DateStatistics(
+    private var _value: LocalDate?
+) : Statistics() {
+    var value: LocalDate?
+        get() = _value
+        set(newValue) {
+            _value = newValue
+        }
+
+    override fun increment() {
+        if (_value == null)
+            _value = LocalDate.now()
+    }
+}
+
 data class StatisticsItem(
     @DrawableRes
     val image: Int,
@@ -54,6 +71,7 @@ data class StatisticsItem(
         return when (statistics) {
             is LongStatistics -> NumberHelper().formatNumber((statistics as LongStatistics).value)
             is BooleanStatistics -> stringResource(if ((statistics as BooleanStatistics).value) R.string.DoneEmoji else R.string.NotDoneEmoji)
+            is DateStatistics -> (statistics as DateStatistics).value.toString()
             else -> throw UnsupportedOperationException("Unsupported type")
         }
     }
@@ -62,24 +80,14 @@ data class StatisticsItem(
         when (statistics) {
             is LongStatistics -> (statistics as LongStatistics).increment()
             is BooleanStatistics -> (statistics as BooleanStatistics).increment()
-            else -> throw UnsupportedOperationException("Unsupported type")
-        }
-    }
-
-    fun isMore(item: StatisticsItem) {
-        when (statistics) {
-            is LongStatistics -> {
-                if(item.statistics is LongStatistics)
-                (statistics as LongStatistics).increment()
-            }
-
-            is BooleanStatistics -> (statistics as BooleanStatistics).increment()
+            is DateStatistics -> (statistics as DateStatistics).increment()
             else -> throw UnsupportedOperationException("Unsupported type")
         }
     }
 }
 
 data class StatisticsData(
+    val firstOpenDate: DateStatistics = DateStatistics(null),
     val openAppCount: LongStatistics = LongStatistics(0u),
     val createdNotesCount: LongStatistics = LongStatistics(0u),
     val createdRemindersCount: LongStatistics = LongStatistics(0u),
@@ -91,6 +99,13 @@ data class StatisticsData(
 
 data class AppStatistics(
     var statisticsData: StatisticsData = StatisticsData(),
+
+    val fistOpenDate: StatisticsItem = StatisticsItem(
+        R.drawable.ic_notification,
+        R.string.Thinker,
+        R.string.ThinkerDescription,
+        statisticsData.firstOpenDate
+    ),
     val openAppCount: StatisticsItem = StatisticsItem(
         R.drawable.onboarding_reminder,
         R.string.Thinker,

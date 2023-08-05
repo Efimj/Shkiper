@@ -16,9 +16,9 @@ import com.jobik.shkiper.NotepadApplication
 import com.jobik.shkiper.R
 import com.jobik.shkiper.database.data.note.NoteMongoRepository
 import com.jobik.shkiper.database.data.reminder.ReminderMongoRepository
-import com.jobik.shkiper.helpers.RateScreenHelper
-import com.jobik.shkiper.helpers.localization.LocaleHelper
-import com.jobik.shkiper.helpers.localization.Localization
+import com.jobik.shkiper.services.review_service.ReviewService
+import com.jobik.shkiper.services.localization.LocaleHelper
+import com.jobik.shkiper.services.localization.Localization
 import com.jobik.shkiper.services.backup_service.BackupData
 import com.jobik.shkiper.services.backup_service.BackupService
 import com.jobik.shkiper.services.backup_service.BackupServiceResult
@@ -169,6 +169,6 @@ class SettingsViewModel @Inject constructor(
      *******************/
 
     fun rateTheApp() {
-        RateScreenHelper(application.applicationContext).openRateScreen()
+        ReviewService(application.applicationContext).openRateScreen()
     }
 }

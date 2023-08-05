@@ -1,14 +1,55 @@
-package com.jobik.shkiper.helpers
+package com.jobik.shkiper.services.review_service
 
 import android.annotation.SuppressLint
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import com.jobik.shkiper.SharedPreferencesKeys
+import com.jobik.shkiper.services.statistics_service.StatisticsService
+import java.time.LocalDate
+import java.time.temporal.ChronoUnit
 
 
-class RateScreenHelper(val context: Context){
+class ReviewService(val context: Context) {
     private val appId: String = context.packageName
+    private val countOfferReviewKey = SharedPreferencesKeys.CountOfferReview
+    private val sharedPreferences =
+        context.getSharedPreferences(SharedPreferencesKeys.ApplicationStorageName, Context.MODE_PRIVATE)
+
+    fun needShowOfferReview(): Boolean {
+        val currentOpenAppDate = StatisticsService(context).appStatistics.statisticsData.firstOpenDate.value
+        val countReviewOffer = sharedPreferences.getInt(countOfferReviewKey, 0)
+
+        if (currentOpenAppDate == null) return false
+
+        val daysSinceFirstOpen = ChronoUnit.DAYS.between(currentOpenAppDate, LocalDate.now())
+
+        val result = when (countReviewOffer) {
+            0 -> daysSinceFirstOpen >= 5
+            1 -> daysSinceFirstOpen >= 45
+            2 -> daysSinceFirstOpen >= 145
+            else -> false
+        }
+        if (result) incrementCountOfferReview()
+
+        return result
+    }
+
+    fun incrementCountOfferReview(count: Int = 1) {
+        val countReviewOffer = sharedPreferences.getInt(countOfferReviewKey, 0)
+        val editor = sharedPreferences.edit()
+        editor.putInt(countOfferReviewKey, countReviewOffer + count)
+        editor.apply()
+    }
+
+    fun openRateScreen() {
+        try {
+            openAppRating()
+        } catch (e: Exception) {
+            openBrowserForRate()
+        }
+    }
 
     @SuppressLint("QueryPermissionsNeeded")
     private fun openAppRating() {
@@ -56,20 +97,12 @@ class RateScreenHelper(val context: Context){
     }
 
     private fun openBrowserForRate() {
-        val uri =  Uri.parse("https://play.google.com/store/apps/details?id=${context.packageName}")
+        val uri = Uri.parse("https://play.google.com/store/apps/details?id=${context.packageName}")
         val intent = Intent(
             Intent.ACTION_VIEW,
             uri
         )
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         context.startActivity(intent)
-    }
-
-    fun openRateScreen(){
-        try {
-            openAppRating()
-        } catch (e: Exception) {
-            openBrowserForRate()
-        }
     }
 }

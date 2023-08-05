@@ -10,7 +10,7 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.jobik.shkiper.NotepadApplication
-import com.jobik.shkiper.helpers.localization.LocaleHelper
+import com.jobik.shkiper.services.localization.LocaleHelper
 import com.jobik.shkiper.services.statistics_service.StatisticsService
 import com.jobik.shkiper.viewModels.NotesViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -48,6 +48,7 @@ class SplashActivity : ComponentActivity() {
         GlobalScope.launch {
             val statisticsService = StatisticsService(context)
             statisticsService.appStatistics.apply {
+                fistOpenDate.increment()
                 openAppCount.increment()
                 if (LocalDate.now().isBefore(LocalDate.of(2024, 1, 1))) {
                     isPioneer.increment()

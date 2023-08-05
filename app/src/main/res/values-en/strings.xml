@@ -127,6 +127,9 @@
     <string name="DaysBeforeDeletingNote">Days before deleting a note: </string>
     <string name="DeleteForever">Delete forever?</string>
     <string name="RateTheApp">Rate Shkiper</string>
+    <string name="Image">Image</string>
+    <string name="OfferWriteReviewTitle">Do you like Shkiper?</string>
+    <string name="OfferWriteReviewDescription">If you have a few minutes left, please leave your review in the Google Play Store.</string>
 
     <!--    Statistics components   -->
     <string name="Thinker">Thinker</string>

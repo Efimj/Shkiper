@@ -1,4 +1,4 @@
-package com.jobik.shkiper.helpers.localization
+package com.jobik.shkiper.services.localization
 
 import android.content.Context
 import com.jobik.shkiper.NotepadApplication

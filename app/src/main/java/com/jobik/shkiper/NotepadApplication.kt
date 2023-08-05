@@ -4,8 +4,8 @@ import android.app.Application
 import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate.*
 import com.jobik.shkiper.app_handlers.ThemePreferenceManager
-import com.jobik.shkiper.helpers.localization.LocaleHelper
-import com.jobik.shkiper.helpers.localization.Localization
+import com.jobik.shkiper.services.localization.LocaleHelper
+import com.jobik.shkiper.services.localization.Localization
 
 import dagger.hilt.android.HiltAndroidApp
 

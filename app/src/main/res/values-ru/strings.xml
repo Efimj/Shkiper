@@ -127,6 +127,9 @@
     <string name="DaysBeforeDeletingNote">Дней до удаления заметки: </string>
     <string name="DeleteForever">Удалить навсегда?</string>
     <string name="RateTheApp">Оценить Shkiper</string>
+    <string name="Image">Изображение</string>
+    <string name="OfferWriteReviewTitle">Нравится Shkiper?</string>
+    <string name="OfferWriteReviewDescription">Если у вас остались несколько минут, пожалуйста, оставьте свой отзыв в Google Play Маркете.</string>
 
     <!-- Statistics components -->
     <string name="Thinker">Мыслитель</string>

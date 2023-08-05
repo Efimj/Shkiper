@@ -1,4 +1,4 @@
-package com.jobik.shkiper.helpers.localization
+package com.jobik.shkiper.services.localization
 
 import android.content.Context
 import com.jobik.shkiper.R
@@ -10,9 +10,9 @@ enum class Localization(val localeKey: String) {
 
     fun getLocalizedValue(context: Context): String {
         val string: String = when (name) {
-            Localization.EN.name -> context.getString(R.string.en)
-            Localization.UK.name -> context.getString(R.string.uk)
-            Localization.RU.name -> context.getString(R.string.ru)
+            EN.name -> context.getString(R.string.en)
+            UK.name -> context.getString(R.string.uk)
+            RU.name -> context.getString(R.string.ru)
 
             else -> ""
         }
