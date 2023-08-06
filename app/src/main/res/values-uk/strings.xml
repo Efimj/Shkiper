@@ -131,6 +131,8 @@
     <string name="Image">Зображення</string>
     <string name="OfferWriteReviewTitle">Подобається Shkiper?</string>
     <string name="OfferWriteReviewDescription">Якщо у вас залишилося кілька хвилин, будь ласка, залиште свій відгук у Google Play Маркеті.</string>
+    <string name="Restart">Перезавантажити</string>
+    <string name="UpdateDownloaded">Оновлення завантажено</string>
 
     <!-- Statistics components -->
     <string name="Thinker">Міркуючий</string>

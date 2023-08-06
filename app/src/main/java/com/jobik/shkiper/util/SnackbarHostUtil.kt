@@ -10,6 +10,7 @@ data class SnackbarVisualsCustom(
     override val actionLabel: String? = null,
     override val withDismissAction: Boolean = false,
     override val duration: SnackbarDuration = if (actionLabel == null) SnackbarDuration.Short else SnackbarDuration.Indefinite,
+    val action: (() -> Unit)? = null,
     val icon: ImageVector? = null
 ) : SnackbarVisuals
 
