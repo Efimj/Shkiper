@@ -43,32 +43,35 @@ class InAppUpdatesService(val activity: Activity) {
         }
     }
 
-    fun checkForUpdate(updateActivityResultLauncher: ActivityResultLauncher<IntentSenderRequest>) {
+    fun checkForDownloadedUpdate() {
         appUpdateManager = AppUpdateManagerFactory.create(activity)
         val appUpdateInfoTask = appUpdateManager.appUpdateInfo.addOnSuccessListener { updateInfo ->
             if (updateInfo.installStatus() == InstallStatus.DOWNLOADED) {
                 snackbarShowUpdate()
-            } else {
-                updateLastCanceledUpdateDate()
-                if (!checkUpdateNeed()) return@addOnSuccessListener
-                val isUpdateAvailable = updateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
-                val isUpdateAllowed = when (updateType) {
-                    AppUpdateType.FLEXIBLE -> updateInfo.isFlexibleUpdateAllowed
-                    AppUpdateType.IMMEDIATE -> updateInfo.isImmediateUpdateAllowed
-                    else -> false
-                }
-                if (isUpdateAvailable && isUpdateAllowed) {
-                    appUpdateManager.startUpdateFlowForResult(
-                        updateInfo,
-                        updateActivityResultLauncher,
-                        AppUpdateOptions.newBuilder(updateType)
-                            .setAllowAssetPackDeletion(true)
-                            .build()
-                    )
-                }
             }
-            registerListener()
         }
+    }
+
+    fun checkForUpdate(updateActivityResultLauncher: ActivityResultLauncher<IntentSenderRequest>) {
+        appUpdateManager = AppUpdateManagerFactory.create(activity)
+        val appUpdateInfoTask = appUpdateManager.appUpdateInfo.addOnSuccessListener { updateInfo ->
+            val isUpdateAvailable = updateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+            val isUpdateAllowed = when (updateType) {
+                AppUpdateType.FLEXIBLE -> updateInfo.isFlexibleUpdateAllowed
+                AppUpdateType.IMMEDIATE -> updateInfo.isImmediateUpdateAllowed
+                else -> false
+            }
+            if (isUpdateAvailable && isUpdateAllowed) {
+                appUpdateManager.startUpdateFlowForResult(
+                    updateInfo,
+                    updateActivityResultLauncher,
+                    AppUpdateOptions.newBuilder(updateType)
+                        .setAllowAssetPackDeletion(true)
+                        .build()
+                )
+            }
+        }
+        registerListener()
     }
 
     private fun registerListener() {
@@ -80,28 +83,6 @@ class InAppUpdatesService(val activity: Activity) {
         // When status updates are no longer needed, unregister the listener.
         if (updateType == AppUpdateType.FLEXIBLE)
             appUpdateManager.unregisterListener(listener)
-    }
-
-    private fun checkUpdateNeed(): Boolean {
-        return try {
-            val lastUpdateDate =
-                LocalDateTime.parse(
-                    sharedPreferences.getString(
-                        LastUpdateCanceledRequestDate,
-                        LocalDateTime.now().minusDays(minimumTimeBetweenCancelUpdates + 1).toString()
-                    )
-                )
-            val daysDifference = LocalDateTime.now().minusDays(minimumTimeBetweenCancelUpdates)
-            lastUpdateDate.isBefore(daysDifference)
-        } catch (e: Exception) {
-            true
-        }
-    }
-
-    fun updateLastCanceledUpdateDate() {
-        val editor = sharedPreferences.edit()
-        editor.putString(LastUpdateCanceledRequestDate, LocalDateTime.now().toString())
-        editor.apply()
     }
 
     @OptIn(DelicateCoroutinesApi::class)

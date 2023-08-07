@@ -87,7 +87,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        inAppUpdatesService.checkForUpdate(updateActivityResultLauncher)
+        inAppUpdatesService.checkForDownloadedUpdate()
     }
 
     private fun getStartDestination(): String {
