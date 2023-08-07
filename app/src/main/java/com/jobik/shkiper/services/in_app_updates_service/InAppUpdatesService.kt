@@ -16,13 +16,11 @@ import com.google.android.play.core.ktx.isFlexibleUpdateAllowed
 import com.google.android.play.core.ktx.isImmediateUpdateAllowed
 import com.jobik.shkiper.R
 import com.jobik.shkiper.SharedPreferencesKeys
-import com.jobik.shkiper.SharedPreferencesKeys.LastUpdateCanceledRequestDate
 import com.jobik.shkiper.util.SnackbarHostUtil
 import com.jobik.shkiper.util.SnackbarVisualsCustom
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.time.LocalDateTime
 
 class InAppUpdatesService(val activity: Activity) {
     private val sharedPreferences =

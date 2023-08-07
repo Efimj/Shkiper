@@ -142,7 +142,8 @@
     <string name="EternalDescription">Не хочешь забыть? Создай напоминание</string>
     <string name="Remembered">Помнящий</string>
     <string name="RememberedDescription">\"Дорогой, ты ничего не забыл?\" - \"Нет\"</string>
-
+    <string name="FirstAppOpenDate">Первое открытие</string>
+    <string name="FirstAppOpenDateDescription">Дата первого открытия приложения</string>
     <string name="Pioneer">Первопроходец</string>
     <string name="PioneerDescription">Установить приложение до 01–01–2024</string>
     <string name="TruthSeeker">Искатель истины</string>

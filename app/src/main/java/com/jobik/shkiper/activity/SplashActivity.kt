@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -11,6 +12,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.jobik.shkiper.NotepadApplication
 import com.jobik.shkiper.services.localization.LocaleHelper
+import com.jobik.shkiper.services.statistics_service.DateStatistics
 import com.jobik.shkiper.services.statistics_service.StatisticsService
 import com.jobik.shkiper.viewModels.NotesViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -47,6 +49,11 @@ class SplashActivity : ComponentActivity() {
 
         GlobalScope.launch {
             val statisticsService = StatisticsService(context)
+            Log.i("firstOpenDate",statisticsService.appStatistics.statisticsData.firstOpenDate.value.toString())
+            val dateStatistics = DateStatistics(null)
+            dateStatistics.increment()
+            Log.i("d",dateStatistics.value.toString())
+
             statisticsService.appStatistics.apply {
                 fistOpenDate.increment()
                 openAppCount.increment()

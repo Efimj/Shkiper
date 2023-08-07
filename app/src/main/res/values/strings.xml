@@ -141,8 +141,9 @@
     <string name="EternalDescription">Don\'t forget? Create a reminder</string>
     <string name="Remembered">Remembered</string>
     <string name="RememberedDescription">\"Darling, did you forget anything?\" - \"No.\"</string>
-
     <string name="Pioneer">Pioneer</string>
+    <string name="FirstAppOpenDate">First opening</string>
+    <string name="FirstAppOpenDateDescription">The date the app was first opened</string>
     <string name="PioneerDescription">Install the application before 01–01–2024</string>
     <string name="TruthSeeker">Truth seeker</string>
     <string name="TruthSeekerDescription">Open app page</string>

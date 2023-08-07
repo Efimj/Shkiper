@@ -143,7 +143,8 @@
     <string name="EternalDescription">Не хочеш забути? Створи нагадування</string>
     <string name="Remembered">Пам\'ятаючий</string>
     <string name="RememberedDescription">\"Дорогий, ти нічого не забув?\" - \"Ні\"</string>
-
+    <string name="FirstAppOpenDate">Перше відкриття</string>
+    <string name="FirstAppOpenDateDescription">Дата першого відкриття програми</string>
     <string name="Pioneer">Першопрохідник</string>
     <string name="PioneerDescription">Встановити додаток до 01–01–2024</string>
     <string name="TruthSeeker">Шукач істини</string>

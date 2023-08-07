@@ -7,7 +7,6 @@ import androidx.compose.ui.res.stringResource
 import com.jobik.shkiper.R
 import com.jobik.shkiper.helpers.NumberHelper
 import java.time.LocalDate
-import java.util.*
 
 abstract class Statistics {
     abstract fun increment()
@@ -102,8 +101,8 @@ data class AppStatistics(
 
     val fistOpenDate: StatisticsItem = StatisticsItem(
         R.drawable.ic_notification,
-        R.string.Thinker,
-        R.string.ThinkerDescription,
+        R.string.FirstAppOpenDate,
+        R.string.FirstAppOpenDateDescription,
         statisticsData.firstOpenDate
     ),
     val openAppCount: StatisticsItem = StatisticsItem(
