@@ -27,7 +27,7 @@ class ReviewService(val context: Context) {
 
         val result = when (countReviewOffer) {
             0 -> daysSinceFirstOpen >= 5
-            1 -> daysSinceFirstOpen >= 45
+            1 -> daysSinceFirstOpen >= 55
             2 -> daysSinceFirstOpen >= 145
             else -> false
         }
