@@ -1,6 +1,9 @@
 package com.jobik.shkiper.services.in_app_updates_service
 
 import android.app.Activity
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.IntentSenderRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.material3.SnackbarDuration
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
@@ -46,7 +49,7 @@ class InAppUpdatesService(val activity: Activity) {
         }
     }
 
-    fun checkForUpdate() {
+    fun checkForUpdate(updateActivityResultLauncher: ActivityResultLauncher<IntentSenderRequest>) {
         appUpdateManager = AppUpdateManagerFactory.create(activity)
         val appUpdateInfoTask = appUpdateManager.appUpdateInfo.addOnSuccessListener { updateInfo ->
             if (updateInfo.installStatus() == InstallStatus.DOWNLOADED) {
@@ -61,9 +64,10 @@ class InAppUpdatesService(val activity: Activity) {
                 if (isUpdateAvailable && isUpdateAllowed) {
                     appUpdateManager.startUpdateFlowForResult(
                         updateInfo,
-                        activity,
-                        AppUpdateOptions.newBuilder(updateType).build(),
-                        updateRequest
+                        updateActivityResultLauncher,
+                        AppUpdateOptions.newBuilder(updateType)
+                            .setAllowAssetPackDeletion(true)
+                            .build()
                     )
                 }
             }

@@ -1,9 +1,11 @@
 package com.jobik.shkiper.activity
 
+import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
@@ -46,11 +48,13 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var inAppUpdatesService: InAppUpdatesService
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ThemeUtil.theme = ThemePreferenceManager(this).getSavedUserTheme()
         val startDestination = getStartDestination()
         val canShowOfferReview = mutableStateOf(ReviewService(applicationContext).needShowOfferReview())
+
         checkForUpdates()
 
         setContent {
@@ -66,14 +70,24 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private val updateActivityResultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
+            // Handle the result of the update flow here.
+            if (result.resultCode != Activity.RESULT_OK) {
+                // If the update flow fails, you can retry it or notify the user.
+                // Note: In a flexible update, the user has the option to postpone the update.
+            }
+        }
+
     private fun checkForUpdates() {
         inAppUpdatesService = InAppUpdatesService(this)
-        inAppUpdatesService.checkForUpdate()
+        // Initialize the updateActivityResultLauncher.
+        inAppUpdatesService.checkForUpdate(updateActivityResultLauncher)
     }
 
     override fun onResume() {
         super.onResume()
-        inAppUpdatesService.checkForUpdate()
+        inAppUpdatesService.checkForUpdate(updateActivityResultLauncher)
     }
 
     private fun getStartDestination(): String {
