@@ -49,10 +49,6 @@ class SplashActivity : ComponentActivity() {
 
         GlobalScope.launch {
             val statisticsService = StatisticsService(context)
-            Log.i("firstOpenDate",statisticsService.appStatistics.statisticsData.firstOpenDate.value.toString())
-            val dateStatistics = DateStatistics(null)
-            dateStatistics.increment()
-            Log.i("d",dateStatistics.value.toString())
 
             statisticsService.appStatistics.apply {
                 fistOpenDate.increment()

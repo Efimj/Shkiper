@@ -1,5 +1,6 @@
 package com.jobik.shkiper.services.statistics_service
 
+import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
@@ -42,17 +43,19 @@ data class BooleanStatistics(
 }
 
 data class DateStatistics(
-    private var _value: LocalDate?
+    private var _value: String?
 ) : Statistics() {
     var value: LocalDate?
-        get() = _value
+        get() {
+            return if (_value == null) null else LocalDate.parse(_value)
+        }
         set(newValue) {
-            _value = newValue
+            _value = newValue.toString()
         }
 
     override fun increment() {
         if (_value == null)
-            _value = LocalDate.now()
+            _value = LocalDate.now().toString()
     }
 }
 
