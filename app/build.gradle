@@ -15,8 +15,8 @@ android {
         applicationId "com.jobik.shkiper"
         minSdk 27
         targetSdk 33
-        versionCode 7
-        versionName "1.6"
+        versionCode 11
+        versionName "2.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -136,4 +136,7 @@ dependencies {
 
     // For Kotlin users also add the Kotlin extensions library for Play In-App Update:
     implementation 'com.google.android.play:app-update-ktx:2.1.0'
+
+    // In-app purchases
+    implementation "com.android.billingclient:billing-ktx:6.0.1"
 }
