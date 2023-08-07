@@ -49,6 +49,7 @@ class InAppUpdatesService(val activity: Activity) {
             if (updateInfo.installStatus() == InstallStatus.DOWNLOADED) {
                 snackbarShowUpdate()
             } else {
+                updateLastCanceledUpdateDate()
                 if (!checkUpdateNeed()) return@addOnSuccessListener
                 val isUpdateAvailable = updateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
                 val isUpdateAllowed = when (updateType) {

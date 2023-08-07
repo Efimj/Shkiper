@@ -76,7 +76,6 @@ class MainActivity : AppCompatActivity() {
             if (result.resultCode != Activity.RESULT_OK) {
                 // If the update flow fails, you can retry it or notify the user.
                 // Note: In a flexible update, the user has the option to postpone the update.
-                inAppUpdatesService.updateLastCanceledUpdateDate()
             }
         }
 
