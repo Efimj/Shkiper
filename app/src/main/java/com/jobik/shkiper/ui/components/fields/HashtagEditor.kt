@@ -85,24 +85,24 @@ fun HashtagEditor(
             } else
                 if (enabled && selectableTags.isNotEmpty()) {
                     val items = selectableTags.toList()
-                        DropDownButton(
-                            items = items.map {
-                                DropDownItem(text = it)
-                            },
-                            selectedIndex = 0,
-                            stretchMode = DropDownButtonSizeMode.STRERCHBYCONTENT,
-                            onChangedSelection = {
-                                val newTagString = textFieldValue.value + " " + items[it]
-                                onSave(handleTagListString(newTagString))
-                                textFieldValue.value = newTagString
-                            }
-                        ) {
-                            RoundedButton(
-                                Modifier,
-                                text = stringResource(R.string.Add),
-                                icon = Icons.Outlined.Label,
-                                onClick = { it() })
+                    DropDownButton(
+                        items = items.map {
+                            DropDownItem(text = it)
+                        },
+                        selectedIndex = 0,
+                        stretchMode = DropDownButtonSizeMode.STRERCHBYCONTENT,
+                        onChangedSelection = {
+                            val newTagString = textFieldValue.value + " " + items[it]
+                            onSave(handleTagListString(newTagString))
+                            textFieldValue.value = newTagString
                         }
+                    ) {
+                        RoundedButton(
+                            Modifier,
+                            text = stringResource(R.string.Add),
+                            icon = Icons.Outlined.Label,
+                            onClick = { it() })
+                    }
                 }
         }
         Column(Modifier.fillMaxWidth()) {
