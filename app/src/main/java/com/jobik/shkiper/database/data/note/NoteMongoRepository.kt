@@ -13,6 +13,7 @@ interface NoteMongoRepository {
     fun getNotesFlow(ids: List<ObjectId>): List<Note>
     fun getAllNotes(): List<Note>
     fun getNotesByHashtag(position: NotePosition, hashtag: String): Flow<List<Note>>
+    fun getHashtags(): Set<String>
     fun getHashtags(position: NotePosition): Flow<Set<String>>
     fun filterNotesByContains(text: String, position: NotePosition): Flow<List<Note>>
     suspend fun insertNote(note: Note)

@@ -65,7 +65,8 @@ fun RoundedButton(
                     tint = iconTint,
                     modifier = if (loading) Modifier.size(20.dp).circularRotation() else Modifier.size(20.dp)
                 )
-                Spacer(Modifier.width(5.dp))
+                if (text != null)
+                    Spacer(Modifier.width(5.dp))
             }
             if (text != null) {
                 Text(

@@ -132,6 +132,7 @@
     <string name="OfferWriteReviewDescription">Если у вас остались несколько минут, пожалуйста, оставьте свой отзыв в Google Play Маркете.</string>
     <string name="Restart">Перезагрузить</string>
     <string name="UpdateDownloaded">Обновление загружено</string>
+    <string name="Add">Добавить</string>
 
     <!-- Statistics components -->
     <string name="Thinker">Мыслитель</string>

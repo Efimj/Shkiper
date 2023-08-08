@@ -47,6 +47,13 @@ class NoteMongoRepositoryImpl(val realm: Realm, @ApplicationContext val context:
             .map { it.list }
     }
 
+    override fun getHashtags(): Set<String> {
+        return realm.query<Note>()
+            .sort("_id", Sort.DESCENDING)
+            .find()
+            .flatMap { it.hashtags }.toSet()
+    }
+
     override fun getHashtags(position: NotePosition): Flow<Set<String>> {
         return realm.query<Note>(query = "positionString == $0", position.name)
             .sort("_id", Sort.DESCENDING)

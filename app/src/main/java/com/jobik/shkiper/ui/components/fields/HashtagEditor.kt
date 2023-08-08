@@ -3,24 +3,35 @@ package com.jobik.shkiper.ui.components.fields
 import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.icons.outlined.Label
+import androidx.compose.material.icons.outlined.NewLabel
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jobik.shkiper.R
+import com.jobik.shkiper.database.models.RepeatMode
+import com.jobik.shkiper.ui.components.buttons.DropDownButton
+import com.jobik.shkiper.ui.components.buttons.DropDownButtonSizeMode
+import com.jobik.shkiper.ui.components.buttons.DropDownItem
 import com.jobik.shkiper.ui.components.buttons.RoundedButton
 import com.jobik.shkiper.ui.theme.CustomAppTheme
 
@@ -28,13 +39,15 @@ import com.jobik.shkiper.ui.theme.CustomAppTheme
 fun HashtagEditor(
     modifier: Modifier,
     enabled: Boolean = true,
-    hashtags: Set<String>,
+    tags: Set<String>,
+    forSelectionTags: Set<String>,
     onSave: (Set<String>) -> Unit
 ) {
     val editModeEnabled = rememberSaveable { mutableStateOf(false) }
     val textFieldFocusRequester by remember { mutableStateOf(FocusRequester()) }
-    val textFieldValue = rememberSaveable { mutableStateOf(hashtags.joinToString(" ")) }
+    val textFieldValue = rememberSaveable { mutableStateOf(tags.joinToString(" ")) }
     var isFocused by remember { mutableStateOf(false) }
+    val selectableTags = forSelectionTags - tags
 
     Column(modifier = modifier.clickable(
         interactionSource = MutableInteractionSource(),
@@ -69,7 +82,28 @@ fun HashtagEditor(
                             editModeEnabled.value = !editModeEnabled.value
                         })
                 }
-            }
+            } else
+                if (enabled && selectableTags.isNotEmpty()) {
+                    val items = selectableTags.toList()
+                        DropDownButton(
+                            items = items.map {
+                                DropDownItem(text = it)
+                            },
+                            selectedIndex = 0,
+                            stretchMode = DropDownButtonSizeMode.STRERCHBYCONTENT,
+                            onChangedSelection = {
+                                val newTagString = textFieldValue.value + " " + items[it]
+                                onSave(handleTagListString(newTagString))
+                                textFieldValue.value = newTagString
+                            }
+                        ) {
+                            RoundedButton(
+                                Modifier,
+                                text = stringResource(R.string.Add),
+                                icon = Icons.Outlined.Label,
+                                onClick = { it() })
+                        }
+                }
         }
         Column(Modifier.fillMaxWidth()) {
             if (editModeEnabled.value) {
@@ -79,13 +113,13 @@ fun HashtagEditor(
                     editModeEnabled.value = !editModeEnabled.value
                 }
             } else
-                HashtagsPresentation(hashtags) { if (enabled) editModeEnabled.value = true }
+                HashtagsPresentation(tags) { if (enabled) editModeEnabled.value = true }
         }
     }
 
     LaunchedEffect(editModeEnabled.value) {
         if (editModeEnabled.value) {
-            textFieldValue.value = hashtags.joinToString(" ")
+            textFieldValue.value = tags.joinToString(" ")
             textFieldFocusRequester.requestFocus()
         }
     }
@@ -101,7 +135,13 @@ private fun saveHandle(
     onSave: (Set<String>) -> Unit,
     textFieldValue: MutableState<String>
 ) {
-    onSave(textFieldValue.value.split(" ").filter { it != "" }.toSet())
+    onSave(handleTagListString(textFieldValue.value))
+}
+
+private fun handleTagListString(
+    text: String
+): Set<String> {
+    return text.split(" ").filter { it != "" }.toSet()
 }
 
 @Composable

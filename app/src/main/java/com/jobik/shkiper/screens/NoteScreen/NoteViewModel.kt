@@ -54,6 +54,7 @@ data class NoteScreenState(
     val reminder: Reminder? = null,
     val isCreateReminderDialogShow: Boolean = false,
     val isDeleteDialogShow: Boolean = false,
+    val allHashtags: Set<String> = emptySet(),
 )
 
 @HiltViewModel
@@ -71,6 +72,7 @@ class NoteViewModel @Inject constructor(
         initializeNote(ObjectId(savedStateHandle[Argument_Note_Id] ?: ""))
         viewModelScope.launch {
             getReminder()
+            getHashtags()
         }
     }
 
@@ -450,6 +452,10 @@ class NoteViewModel @Inject constructor(
     fun switchReminderDialogShow() {
         _screenState.value =
             _screenState.value.copy(isCreateReminderDialogShow = !_screenState.value.isCreateReminderDialogShow)
+    }
+
+    fun getHashtags() {
+        _screenState.value = _screenState.value.copy(allHashtags = noteRepository.getHashtags())
     }
 
     private suspend fun showSnackbar(message: String, icon: ImageVector?) {

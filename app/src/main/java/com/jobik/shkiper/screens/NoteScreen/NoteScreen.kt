@@ -127,7 +127,8 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
                     HashtagEditor(
                         enabled = enabled,
                         modifier = Modifier.padding(bottom = 15.dp).padding(horizontal = 20.dp),
-                        hashtags = noteViewModel.screenState.value.hashtags,
+                        tags = noteViewModel.screenState.value.hashtags,
+                        forSelectionTags = noteViewModel.screenState.value.allHashtags,
                         onSave = noteViewModel::changeNoteHashtags
                     )
                 }
