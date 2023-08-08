@@ -1,7 +1,9 @@
 package com.jobik.shkiper.services.notification_service
 
+import androidx.annotation.Keep
 import com.jobik.shkiper.database.models.RepeatMode
 
+@Keep
 data class NotificationData(
     val noteId: String,
     val notificationId: Int,

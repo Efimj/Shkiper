@@ -1,5 +1,6 @@
 package com.jobik.shkiper.database.models
 
+import androidx.annotation.Keep
 import io.realm.kotlin.ext.realmSetOf
 import io.realm.kotlin.types.RealmObject
 import io.realm.kotlin.types.RealmSet
@@ -8,6 +9,7 @@ import io.realm.kotlin.types.annotations.PrimaryKey
 import org.mongodb.kbson.ObjectId
 import java.time.LocalDateTime
 
+@Keep
 enum class NotePosition {
     MAIN,
     ARCHIVE,

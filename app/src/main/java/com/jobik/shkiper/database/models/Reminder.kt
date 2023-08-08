@@ -1,6 +1,7 @@
 package com.jobik.shkiper.database.models
 
 import android.content.Context
+import androidx.annotation.Keep
 import com.jobik.shkiper.R
 import io.realm.kotlin.types.RealmObject
 import io.realm.kotlin.types.annotations.Index
@@ -10,6 +11,7 @@ import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeParseException
 
+@Keep
 enum class RepeatMode {
     NONE, DAILY, WEEKLY, MONTHLY, YEARLY;
 
