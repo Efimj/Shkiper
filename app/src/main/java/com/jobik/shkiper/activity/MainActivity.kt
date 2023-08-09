@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private lateinit var inAppUpdatesService: InAppUpdatesService
-
+    private var updateChecked = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +55,8 @@ class MainActivity : AppCompatActivity() {
         val startDestination = getStartDestination()
         val canShowOfferReview = mutableStateOf(ReviewService(applicationContext).needShowOfferReview())
 
-        checkForUpdates()
+        if (!updateChecked)
+            checkForUpdates()
 
         setContent {
             CustomAppTheme(ThemeUtil.themeColors) {
@@ -80,6 +81,7 @@ class MainActivity : AppCompatActivity() {
         }
 
     private fun checkForUpdates() {
+        updateChecked = true
         inAppUpdatesService = InAppUpdatesService(this)
         // Initialize the updateActivityResultLauncher.
         inAppUpdatesService.checkForUpdate(updateActivityResultLauncher)
