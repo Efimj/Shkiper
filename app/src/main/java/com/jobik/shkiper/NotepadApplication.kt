@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate.*
 import com.jobik.shkiper.app_handlers.ThemePreferenceManager
+import com.jobik.shkiper.services.billing_service.BillingService
 import com.jobik.shkiper.services.localization.LocaleHelper
 import com.jobik.shkiper.services.localization.Localization
 
@@ -15,6 +16,9 @@ class NotepadApplication : Application() {
         super.onCreate()
         setAppTheme(applicationContext)
     }
+
+    val billingClientLifecycle: BillingService
+        get() = BillingService.getInstance(this)
 
     private fun setAppTheme(context: Context) {
         setDefaultNightMode(if (ThemePreferenceManager(context).getSavedUserTheme().isDarkTheme) MODE_NIGHT_YES else MODE_NIGHT_NO)
