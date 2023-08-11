@@ -212,7 +212,6 @@ class BillingService private constructor(
         private const val TAG = "BillingService"
         private const val MAX_RETRY_ATTEMPT = 3
 
-        @SuppressLint("StaticFieldLeak")
         @Volatile
         private var INSTANCE: BillingService? = null
 

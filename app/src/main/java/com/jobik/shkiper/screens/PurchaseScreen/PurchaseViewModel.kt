@@ -5,6 +5,7 @@ import android.app.Application
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.ProductDetails
 import com.jobik.shkiper.NotepadApplication
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,8 +23,8 @@ class PurchaseViewModel @Inject constructor(
     val screenState: State<PurchaseScreenState> = _screenState
 
     init {
-        _screenState.value =
-            _screenState.value.copy(purchases = (application as NotepadApplication).billingClientLifecycle.productDetails.value)
+        val billingClient = (application as NotepadApplication).billingClientLifecycle
+        _screenState.value = _screenState.value.copy(purchases = billingClient.productDetails.value)
     }
 
     fun makePurchase(productDetails: ProductDetails, activity: Activity){
