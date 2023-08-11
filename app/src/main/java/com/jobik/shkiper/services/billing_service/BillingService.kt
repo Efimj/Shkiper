@@ -7,25 +7,48 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import com.android.billingclient.api.*
 import kotlinx.coroutines.*
 import java.lang.Runnable
 import kotlin.math.pow
 
 class BillingService private constructor(
-    private val context: Context,
+    private val applicationContext: Context,
     private val externalScope: CoroutineScope =
         CoroutineScope(SupervisorJob() + Dispatchers.Default)
-) : PurchasesUpdatedListener, BillingClientStateListener {
-    private var billingClient = BillingClient.newBuilder(context)
-        .setListener(this)
-        .enablePendingPurchases()
-        .build()
+) : PurchasesUpdatedListener, BillingClientStateListener, DefaultLifecycleObserver {
 
     var productDetails = mutableStateOf(emptyList<ProductDetails>())
 
-    init {
-        startConnection()
+    /**
+     * Instantiate a new BillingClient instance.
+     */
+    private lateinit var billingClient: BillingClient
+    override fun onCreate(owner: LifecycleOwner) {
+        Log.d(TAG, "ON_CREATE")
+        // Create a new BillingClient in onCreate().
+        // Since the BillingClient can only be used once, we need to create a new instance
+        // after ending the previous connection to the Google Play Store in onDestroy().
+        billingClient = BillingClient.newBuilder(applicationContext)
+            .setListener(this)
+            .enablePendingPurchases() // Not used for subscriptions.
+            .build()
+        if (!billingClient.isReady) {
+            Log.d(TAG, "BillingClient: Start connection...")
+            billingClient.startConnection(this)
+        }
+    }
+
+    override fun onDestroy(owner: LifecycleOwner) {
+        Log.d(TAG, "ON_DESTROY")
+        if (billingClient.isReady) {
+            Log.d(TAG, "BillingClient can only be used once -- closing connection")
+            // BillingClient can only be used once.
+            // After calling endConnection(), we must create a new BillingClient.
+            billingClient.endConnection()
+        }
     }
 
     override fun onBillingSetupFinished(billingResult: BillingResult) {
@@ -64,16 +87,6 @@ class BillingService private constructor(
         }
 
         handler.postDelayed(retryRunnable, initialDelayMillis)
-    }
-
-    override fun onPurchasesUpdated(billingResult: BillingResult, purchases: List<Purchase>?) {
-        if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && purchases != null) {
-            // Handle successful purchase here.
-        } else if (billingResult.responseCode == BillingClient.BillingResponseCode.USER_CANCELED) {
-            // Handle user cancellation here.
-        } else {
-            // Handle other error cases here.
-        }
     }
 
     private object billingClientStateListener : BillingClientStateListener {
