@@ -18,6 +18,7 @@ import com.jobik.shkiper.screens.SettingsScreen.SettingsScreen
 import com.jobik.shkiper.screens.StatisticsScreen.StatisticsScreen
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
+import com.jobik.shkiper.screens.PurchaseScreen.PurchaseScreen
 
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -136,5 +137,11 @@ fun SetupAppScreenNavGraph(
             enterTransition = { fadeIn() + slideInHorizontally() },
             exitTransition = { fadeOut() + slideOutHorizontally() }
         ) { StatisticsScreen() }
+
+        composable(
+            route = AppScreens.Purchases.route,
+            enterTransition = { fadeIn() + slideInHorizontally() },
+            exitTransition = { fadeOut() + slideOutHorizontally() }
+        ) { PurchaseScreen() }
     }
 }

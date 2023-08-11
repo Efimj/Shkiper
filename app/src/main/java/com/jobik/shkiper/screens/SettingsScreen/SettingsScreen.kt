@@ -123,20 +123,26 @@ fun SettingsScreen(navController: NavController, settingsViewModel: SettingsView
             )
             Spacer(Modifier.height(8.dp))
             SettingsItem(
+                stringResource(R.string.StatisticsPage),
+                stringResource(R.string.Show),
+                Icons.Outlined.DataUsage
+            ) { navController.navigate(AppScreens.Statistics.route) }
+            SettingsItem(
                 stringResource(R.string.RateTheApp),
                 stringResource(R.string.Open),
                 Icons.Outlined.Stars
             ) { settingsViewModel.rateTheApp() }
             SettingsItem(
+                stringResource(R.string.SupportDevelopment),
+                stringResource(R.string.Donate),
+                Icons.Outlined.LocalMall
+            ) { navController.navigate(AppScreens.Purchases.route) }
+            SettingsItem(
                 stringResource(R.string.OnboardingPage),
                 stringResource(R.string.Open),
                 Icons.Outlined.ViewCarousel
             ) { navController.navigate(AppScreens.Onboarding.route) }
-            SettingsItem(
-                stringResource(R.string.StatisticsPage),
-                stringResource(R.string.Open),
-                Icons.Outlined.DataUsage
-            ) { navController.navigate(AppScreens.Statistics.route) }
+
         }
         SettingsItemGroup {
             Text(

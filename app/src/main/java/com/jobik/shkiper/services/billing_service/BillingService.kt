@@ -66,7 +66,7 @@ class BillingService private constructor(
         }
     }
 
-     override fun onBillingServiceDisconnected() {
+    override fun onBillingServiceDisconnected() {
         Log.d(TAG, "onBillingServiceDisconnected")
         val initialDelayMillis = 1000L // Initial delay in milliseconds
         var currentRetry = 0
@@ -127,7 +127,7 @@ class BillingService private constructor(
         }
     }
 
-    fun makePurchase(activity: Activity, productDetails: ProductDetails) {
+    fun makePurchase(activity: Activity, productDetails: ProductDetails): BillingResult {
         val productDetailsParamsList =
             if (productDetails.productType == BillingClient.ProductType.INAPP)
                 listOf(
@@ -151,7 +151,7 @@ class BillingService private constructor(
             .setProductDetailsParamsList(productDetailsParamsList)
             .build()
 
-        val billingResult = billingClient.launchBillingFlow(activity, billingFlowParams)
+        return billingClient.launchBillingFlow(activity, billingFlowParams)
     }
 
     /**

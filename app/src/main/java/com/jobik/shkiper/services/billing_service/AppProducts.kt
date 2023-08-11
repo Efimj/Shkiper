@@ -5,7 +5,7 @@ import androidx.annotation.Keep
 @Keep
 object AppProducts {
     //Product IDs
-    const val ExampleProduct = "product_id_example"
+    const val ExampleProduct = "cup_of_tea"
 
     val ListOfProducts = listOf(
         ExampleProduct

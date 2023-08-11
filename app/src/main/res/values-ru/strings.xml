@@ -133,6 +133,11 @@
     <string name="Restart">Перезагрузить</string>
     <string name="UpdateDownloaded">Обновление загружено</string>
     <string name="Add">Добавить</string>
+    <string name="SupportDevelopment">Поддержка разработки</string>
+    <string name="Donate">Спонсировать</string>
+    <string name="Show">Показать</string>
+    <string name="PurchaseScreenTitle">Каждый вклад важен!</string>
+    <string name="PurchaseScreenDescription">Ваша поддержка помогает усовершенствовать наше приложение: делать его удобнее, функциональнее и инновационнее. Присоединяйтесь к нам – сделайте пожертвование и станьте частью истории Shkiper!</string>
 
     <!-- Statistics components -->
     <string name="Thinker">Мыслитель</string>

@@ -23,19 +23,22 @@ sealed class AppScreens(val route: String) {
         }
     }
 
-    object Settings : AppScreens(route = "settings")
-    object Statistics : AppScreens(route = "statistics")
     object Note : AppScreens(route = "note/{$Argument_Note_Id}") {
         fun noteId(id: String): String {
             return this.route.replace(oldValue = "{$Argument_Note_Id}", newValue = id)
         }
     }
 
+    object Settings : AppScreens(route = "settings")
+    object Statistics : AppScreens(route = "statistics")
+
+    object Purchases : AppScreens(route = "purchases")
+
     /**
      * This routes not show navigation button
      */
     object SecondaryRoutes {
-        val secondaryRoutes = listOf(Onboarding, Note, Statistics)
+        val secondaryRoutes = listOf(Onboarding, Note, Statistics, Purchases)
         fun isSecondaryRoute(route: String): Boolean {
             return secondaryRoutes.any { it.route.substringBefore("/") == route }
         }
