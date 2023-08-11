@@ -124,6 +124,8 @@ class BillingService private constructor(
             // process returned productDetailsList
             if (billingResult.responseCode == BillingClient.BillingResponseCode.OK)
                 productDetails.value = productDetailsList
+            else
+                Log.d(TAG, "Retrying connection, attempt $billingResult.responseCode")
         }
     }
 

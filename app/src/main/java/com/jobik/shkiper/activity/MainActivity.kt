@@ -23,6 +23,7 @@ import com.jobik.shkiper.app_handlers.ThemePreferenceManager
 import com.jobik.shkiper.database.models.NotePosition
 import com.jobik.shkiper.services.localization.LocaleHelper
 import com.jobik.shkiper.navigation.AppScreens
+import com.jobik.shkiper.services.billing_service.BillingService
 import com.jobik.shkiper.services.in_app_updates_service.InAppUpdatesService
 import com.jobik.shkiper.services.review_service.ReviewService
 import com.jobik.shkiper.services.statistics_service.StatisticsService
@@ -40,6 +41,8 @@ import kotlinx.coroutines.launch
 @ExperimentalAnimationApi
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+    private lateinit var billingClientLifecycle: BillingService
+
     override fun attachBaseContext(newBase: Context) {
         super.attachBaseContext(
             LocaleHelper.setLocale(newBase, NotepadApplication.currentLanguage)
@@ -51,6 +54,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Billing APIs are all handled in the this lifecycle observer.
+        billingClientLifecycle = (application as NotepadApplication).billingClientLifecycle
+        lifecycle.addObserver(billingClientLifecycle)
+
         ThemeUtil.theme = ThemePreferenceManager(this).getSavedUserTheme()
         val startDestination = getStartDestination()
         val canShowOfferReview = mutableStateOf(ReviewService(applicationContext).needShowOfferReview())
