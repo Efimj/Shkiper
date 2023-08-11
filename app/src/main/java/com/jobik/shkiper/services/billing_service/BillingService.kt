@@ -22,7 +22,7 @@ class BillingService private constructor(
         .enablePendingPurchases()
         .build()
 
-    var basicProductWithProductDetails = mutableStateOf(emptyList<ProductDetails>())
+    var productDetails = mutableStateOf(emptyList<ProductDetails>())
 
     init {
         startConnection()
@@ -43,7 +43,7 @@ class BillingService private constructor(
         }
     }
 
-    override fun onBillingServiceDisconnected() {
+     override fun onBillingServiceDisconnected() {
         Log.d(TAG, "onBillingServiceDisconnected")
         val initialDelayMillis = 1000L // Initial delay in milliseconds
         var currentRetry = 0
@@ -110,7 +110,7 @@ class BillingService private constructor(
             // check billingResult
             // process returned productDetailsList
             if (billingResult.responseCode == BillingClient.BillingResponseCode.OK)
-                basicProductWithProductDetails.value = productDetailsList
+                productDetails.value = productDetailsList
         }
     }
 
