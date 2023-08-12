@@ -2,6 +2,7 @@ package com.jobik.shkiper.services.in_app_updates_service
 
 import android.app.Activity
 import android.content.Context
+import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.IntentSenderRequest
 import androidx.compose.material3.SnackbarDuration
@@ -16,6 +17,7 @@ import com.google.android.play.core.ktx.isFlexibleUpdateAllowed
 import com.google.android.play.core.ktx.isImmediateUpdateAllowed
 import com.jobik.shkiper.R
 import com.jobik.shkiper.SharedPreferencesKeys
+import com.jobik.shkiper.database.models.NotePosition
 import com.jobik.shkiper.util.SnackbarHostUtil
 import com.jobik.shkiper.util.SnackbarVisualsCustom
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -51,6 +53,7 @@ class InAppUpdatesService(val activity: Activity) {
     }
 
     fun checkForUpdate(updateActivityResultLauncher: ActivityResultLauncher<IntentSenderRequest>) {
+        _isUpdatedChecked = true
         appUpdateManager = AppUpdateManagerFactory.create(activity)
         val appUpdateInfoTask = appUpdateManager.appUpdateInfo.addOnSuccessListener { updateInfo ->
             val isUpdateAvailable = updateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
@@ -95,5 +98,11 @@ class InAppUpdatesService(val activity: Activity) {
                 )
             )
         }
+    }
+
+    companion object{
+        private var _isUpdatedChecked = false
+        val isUpdatedChecked: Boolean
+            get() = _isUpdatedChecked
     }
 }

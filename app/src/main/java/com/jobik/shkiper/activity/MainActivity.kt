@@ -42,6 +42,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var billingClientLifecycle: BillingService
+    private lateinit var inAppUpdatesService: InAppUpdatesService
 
     override fun attachBaseContext(newBase: Context) {
         super.attachBaseContext(
@@ -49,22 +50,19 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
-    private lateinit var inAppUpdatesService: InAppUpdatesService
-    private var updateChecked = false
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         // Billing APIs are all handled in the this lifecycle observer.
         billingClientLifecycle = (application as NotepadApplication).billingClientLifecycle
         lifecycle.addObserver(billingClientLifecycle)
+        inAppUpdatesService = InAppUpdatesService(this)
 
         ThemeUtil.theme = ThemePreferenceManager(this).getSavedUserTheme()
         val startDestination = getStartDestination()
         val canShowOfferReview = mutableStateOf(ReviewService(applicationContext).needShowOfferReview())
 
-        if (!updateChecked)
-            checkForUpdates()
+        checkForUpdates()
 
         setContent {
             CustomAppTheme(ThemeUtil.themeColors) {
@@ -89,8 +87,7 @@ class MainActivity : AppCompatActivity() {
         }
 
     private fun checkForUpdates() {
-        updateChecked = true
-        inAppUpdatesService = InAppUpdatesService(this)
+        if (InAppUpdatesService.isUpdatedChecked) return
         // Initialize the updateActivityResultLauncher.
         inAppUpdatesService.checkForUpdate(updateActivityResultLauncher)
     }
