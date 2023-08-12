@@ -106,7 +106,7 @@ class BillingService private constructor(
         billingClient.startConnection(billingClientStateListener)
     }
 
-    fun queryProductDetails() {
+    private fun queryProductDetails() {
         val queryProductDetailsParams =
             QueryProductDetailsParams.newBuilder()
                 .setProductList(
@@ -198,15 +198,31 @@ class BillingService private constructor(
 
     private suspend fun handlePurchase(purchases: MutableList<Purchase>) {
         purchases.forEach { purchase ->
-            if (purchase.purchaseState === Purchase.PurchaseState.PURCHASED) {
-                if (!purchase.isAcknowledged) {
-                    val acknowledgePurchaseParams = AcknowledgePurchaseParams.newBuilder()
-                        .setPurchaseToken(purchase.purchaseToken)
-                    val ackPurchaseResult = withContext(Dispatchers.IO) {
-                        billingClient.acknowledgePurchase(acknowledgePurchaseParams.build())
-                    }
-                }
+            if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
+                acknowledgePurchase(purchase)
+                consumePurchase(purchase)
             }
+        }
+    }
+
+    suspend fun acknowledgePurchase(purchase: Purchase): BillingResult? {
+        if (purchase.purchaseState != Purchase.PurchaseState.PURCHASED) return null
+        if (purchase.isAcknowledged) return null
+        val acknowledgePurchaseParams = AcknowledgePurchaseParams.newBuilder()
+            .setPurchaseToken(purchase.purchaseToken)
+        return withContext(Dispatchers.IO) {
+            billingClient.acknowledgePurchase(acknowledgePurchaseParams.build())
+        }
+    }
+
+    suspend fun consumePurchase(purchase: Purchase): ConsumeResult? {
+        if (purchase.purchaseState != Purchase.PurchaseState.PURCHASED) return null
+        val consumeParams =
+            ConsumeParams.newBuilder()
+                .setPurchaseToken(purchase.getPurchaseToken())
+                .build()
+        return withContext(Dispatchers.IO) {
+            billingClient.consumePurchase(consumeParams)
         }
     }
 
