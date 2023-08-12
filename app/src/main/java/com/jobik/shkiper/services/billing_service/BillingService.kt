@@ -1,15 +1,16 @@
 package com.jobik.shkiper.services.billing_service
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import com.android.billingclient.api.*
+import com.jobik.shkiper.database.models.NotePosition
 import kotlinx.coroutines.*
 import java.lang.Runnable
 import kotlin.math.pow
@@ -18,9 +19,16 @@ class BillingService private constructor(
     private val applicationContext: Context,
     private val externalScope: CoroutineScope =
         CoroutineScope(SupervisorJob() + Dispatchers.Default)
-) : PurchasesUpdatedListener, BillingClientStateListener, DefaultLifecycleObserver {
+) : PurchasesUpdatedListener, BillingClientStateListener, DefaultLifecycleObserver, PurchasesResponseListener {
 
-    var productDetails = mutableStateOf(emptyList<ProductDetails>())
+    private var _productDetails = mutableStateOf(emptyList<ProductDetails>())
+    private var _subscriptionsDetails = mutableStateOf(emptyList<ProductDetails>())
+
+    val productDetails: State<List<ProductDetails>>
+        get() = _productDetails
+
+    val subscriptionsDetails: State<List<ProductDetails>>
+        get() = _subscriptionsDetails
 
     /**
      * Instantiate a new BillingClient instance.
@@ -58,11 +66,10 @@ class BillingService private constructor(
         if (responseCode == BillingClient.BillingResponseCode.OK) {
             // The billing client is ready.
             // You can query product details and purchases here.
-            queryProductDetails()
-//            querySubscriptionProductDetails()
-//            queryOneTimeProductDetails()
-//            querySubscriptionPurchases()
-//            queryOneTimeProductPurchases()
+            queryProductsDetails()
+            querySubscriptionsDetails()
+            queryProductPurchases()
+            querySubscriptionPurchases()
         }
     }
 
@@ -102,11 +109,7 @@ class BillingService private constructor(
         }
     }
 
-    private fun startConnection() {
-        billingClient.startConnection(billingClientStateListener)
-    }
-
-    private fun queryProductDetails() {
+    private fun queryProductsDetails() {
         val queryProductDetailsParams =
             QueryProductDetailsParams.newBuilder()
                 .setProductList(
@@ -123,9 +126,80 @@ class BillingService private constructor(
             // check billingResult
             // process returned productDetailsList
             if (billingResult.responseCode == BillingClient.BillingResponseCode.OK)
-                productDetails.value = productDetailsList
+                _productDetails.value = productDetailsList
             else
                 Log.d(TAG, "Retrying connection, attempt $billingResult.responseCode")
+        }
+    }
+
+    private fun querySubscriptionsDetails() {
+        val queryProductDetailsParams =
+            QueryProductDetailsParams.newBuilder()
+                .setProductList(
+                    AppProducts.ListOfSubscriptions.map { prodId ->
+                        QueryProductDetailsParams.Product.newBuilder()
+                            .setProductId(prodId)
+                            .setProductType(BillingClient.ProductType.SUBS)
+                            .build()
+                    }
+                )
+                .build()
+
+        billingClient.queryProductDetailsAsync(queryProductDetailsParams) { billingResult, productDetailsList ->
+            // check billingResult
+            // process returned productDetailsList
+            if (billingResult.responseCode == BillingClient.BillingResponseCode.OK)
+                _subscriptionsDetails.value = productDetailsList
+            else
+                Log.d(TAG, "Retrying connection, attempt $billingResult.responseCode")
+        }
+    }
+
+    /**
+     * Query Google Play Billing for existing subscription purchases.
+     *
+     * New purchases will be provided to the PurchasesUpdatedListener.
+     * You still need to check the Google Play Billing API to know when purchase tokens are removed.
+     */
+    fun querySubscriptionPurchases() {
+        if (!billingClient.isReady) {
+            Log.e(TAG, "querySubscriptionPurchases: BillingClient is not ready")
+            billingClient.startConnection(this)
+        }
+        billingClient.queryPurchasesAsync(
+            QueryPurchasesParams.newBuilder()
+                .setProductType(BillingClient.ProductType.SUBS)
+                .build(), this
+        )
+    }
+
+    /**
+     * Query Google Play Billing for existing one-time product purchases.
+     *
+     * New purchases will be provided to the PurchasesUpdatedListener.
+     * You still need to check the Google Play Billing API to know when purchase tokens are removed.
+     */
+    fun queryProductPurchases() {
+        if (!billingClient.isReady) {
+            Log.e(TAG, "queryOneTimeProductPurchases: BillingClient is not ready")
+            billingClient.startConnection(this)
+        }
+        billingClient.queryPurchasesAsync(
+            QueryPurchasesParams.newBuilder()
+                .setProductType(BillingClient.ProductType.INAPP)
+                .build(), this
+        )
+    }
+
+    /**
+     * Callback from the billing library when queryPurchasesAsync is called.
+     */
+    override fun onQueryPurchasesResponse(
+        billingResult: BillingResult,
+        purchasesList: MutableList<Purchase>
+    ) {
+        externalScope.launch {
+            handlePurchase(purchasesList)
         }
     }
 

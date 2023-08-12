@@ -10,4 +10,7 @@ object AppProducts {
     val ListOfProducts = listOf(
         ExampleProduct
     )
+    val ListOfSubscriptions = listOf(
+        ExampleProduct
+    )
 }

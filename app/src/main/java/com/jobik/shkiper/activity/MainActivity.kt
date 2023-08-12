@@ -94,6 +94,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        billingClientLifecycle.queryProductPurchases()
         inAppUpdatesService.checkForDownloadedUpdate()
     }
 
