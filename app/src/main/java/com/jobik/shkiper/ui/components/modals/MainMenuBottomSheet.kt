@@ -114,7 +114,7 @@ private fun MainPageLayout(
     LaunchedEffect(Unit) {
         if (isInitialized.value) return@LaunchedEffect
         isInitialized.value = true
-        if (startDestination != AppScreens.NoteList.route && startDestination != AppScreens.Onboarding.route)
+        if (startDestination != AppScreens.NoteList.notePosition(NotePosition.MAIN.name) && startDestination != AppScreens.Onboarding.route)
             navController.navigate(startDestination)
     }
 }
