@@ -39,7 +39,7 @@ fun StatisticsScreen() {
     Column(Modifier.fillMaxSize()) {
         LazyVerticalGrid(
             columns = lazyVerticalGridCellsMode,
-            contentPadding = PaddingValues(10.dp)
+            contentPadding = PaddingValues(5.dp)
         ) {
             item(span = {
                 GridItemSpan(maxLineSpan)
@@ -52,12 +52,12 @@ fun StatisticsScreen() {
                         stringResource(R.string.Statistics),
                         color = CustomAppTheme.colors.text,
                         style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Bold),
-                        modifier = Modifier.padding(horizontal = 10.dp)
+                        modifier = Modifier.padding(horizontal = 5.dp)
                     )
                 }
             }
             items(statistics) { property ->
-                Box(Modifier.padding(7.dp)) {
+                Box(Modifier.padding(5.dp)) {
                     StatisticsCard(property) { openedStatistics.value = property }
                 }
             }
