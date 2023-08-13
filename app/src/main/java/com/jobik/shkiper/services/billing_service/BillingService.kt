@@ -10,7 +10,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import com.android.billingclient.api.*
-import com.jobik.shkiper.database.models.NotePosition
 import kotlinx.coroutines.*
 import java.lang.Runnable
 import kotlin.math.pow
@@ -29,6 +28,15 @@ class BillingService private constructor(
 
     val subscriptionsDetails: State<List<ProductDetails>>
         get() = _subscriptionsDetails
+
+    private var _productsPurchasesHistory = mutableStateOf(emptyList<PurchaseHistoryRecord>())
+    private var _subscriptionsPurchasesHistory = mutableStateOf(emptyList<PurchaseHistoryRecord>())
+
+    val productsPurchasesHistory: State<List<PurchaseHistoryRecord>>
+        get() = _productsPurchasesHistory
+
+    val subscriptionsPurchasesHistory: State<List<PurchaseHistoryRecord>>
+        get() = _subscriptionsPurchasesHistory
 
     /**
      * Instantiate a new BillingClient instance.
@@ -70,6 +78,10 @@ class BillingService private constructor(
             querySubscriptionsDetails()
             queryProductPurchases()
             querySubscriptionPurchases()
+            externalScope.launch {
+                getProductsPurchasesHistory()
+                getSubscriptionsPurchasesHistory()
+            }
         }
     }
 
@@ -200,6 +212,34 @@ class BillingService private constructor(
     ) {
         externalScope.launch {
             handlePurchase(purchasesList)
+        }
+    }
+
+    suspend fun getProductsPurchasesHistory() {
+        val params = QueryPurchaseHistoryParams.newBuilder()
+            .setProductType(BillingClient.ProductType.INAPP)
+
+        // uses queryPurchaseHistory Kotlin extension function
+        val purchaseHistoryResult = billingClient.queryPurchaseHistory(params.build())
+
+        if (purchaseHistoryResult.billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+            purchaseHistoryResult.purchaseHistoryRecordList?.let {
+                _productsPurchasesHistory.value = it
+            }
+        }
+    }
+
+    suspend fun getSubscriptionsPurchasesHistory() {
+        val params = QueryPurchaseHistoryParams.newBuilder()
+            .setProductType(BillingClient.ProductType.SUBS)
+
+        // uses queryPurchaseHistory Kotlin extension function
+        val purchaseHistoryResult = billingClient.queryPurchaseHistory(params.build())
+
+        if (purchaseHistoryResult.billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+            purchaseHistoryResult.purchaseHistoryRecordList?.let {
+                _subscriptionsPurchasesHistory.value = it
+            }
         }
     }
 
