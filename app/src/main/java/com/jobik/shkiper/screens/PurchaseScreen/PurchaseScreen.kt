@@ -60,25 +60,43 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
             horizontalArrangement = Arrangement.Center
         ) {
             val productList = listOf(
-                purchaseViewModel.screenState.value.purchases.find { it.productId == AppProducts.CupOfTea }?.let {
-                    PurchaseCardContent(
-                        product = it,
-                        image = R.drawable.ic_notification
-                    )
-                },
-                purchaseViewModel.screenState.value.purchases.find { it.productId == AppProducts.PepperoniPizza }?.let {
-                    PurchaseCardContent(
-                        product = it,
-                        image = R.drawable.ic_notification,
-                        isHighlighted = true
-                    )
-                },
-                purchaseViewModel.screenState.value.purchases.find { it.productId == AppProducts.GymPass }?.let {
-                    PurchaseCardContent(
-                        product = it,
-                        image = R.drawable.ic_notification
-                    )
-                }
+                purchaseViewModel.screenState.value.purchases.find { it.productId == AppProducts.CupOfTea }
+                    ?.let { productDetails ->
+                        PurchaseCardContent(
+                            product = productDetails,
+                            image = R.drawable.ic_notification,
+                            isPurchased = purchaseViewModel.screenState.value.productsPurchasesHistory.any { historyRecord ->
+                                historyRecord.products.any {
+                                    productDetails.productId == it
+                                }
+                            }
+                        )
+                    },
+                purchaseViewModel.screenState.value.purchases.find { it.productId == AppProducts.PepperoniPizza }
+                    ?.let { productDetails ->
+                        PurchaseCardContent(
+                            product = productDetails,
+                            image = R.drawable.ic_notification,
+                            isHighlighted = true,
+                            isPurchased = purchaseViewModel.screenState.value.productsPurchasesHistory.any { historyRecord ->
+                                historyRecord.products.any {
+                                    productDetails.productId == it
+                                }
+                            }
+                        )
+                    },
+                purchaseViewModel.screenState.value.purchases.find { it.productId == AppProducts.GymPass }
+                    ?.let { productDetails ->
+                        PurchaseCardContent(
+                            product = productDetails,
+                            image = R.drawable.ic_notification,
+                            isPurchased = purchaseViewModel.screenState.value.productsPurchasesHistory.any { historyRecord ->
+                                historyRecord.products.any {
+                                    productDetails.productId == it
+                                }
+                            }
+                        )
+                    }
             )
             for (product in productList)
                 if (product != null)

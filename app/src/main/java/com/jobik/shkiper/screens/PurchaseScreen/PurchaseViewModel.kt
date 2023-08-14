@@ -6,6 +6,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.android.billingclient.api.BillingClient
+import com.android.billingclient.api.BillingResult
 import com.android.billingclient.api.ProductDetails
 import com.android.billingclient.api.PurchaseHistoryRecord
 import com.jobik.shkiper.NotepadApplication
@@ -36,7 +37,19 @@ class PurchaseViewModel @Inject constructor(
         )
     }
 
+    private fun updatePurchasesHistory() {
+        val billingClient = (application as NotepadApplication).billingClientLifecycle
+        _screenState.value = _screenState.value.copy(
+            productsPurchasesHistory = billingClient.productsPurchasesHistory.value,
+            subscriptionsPurchasesHistory = billingClient.subscriptionsPurchasesHistory.value
+        )
+    }
+
     fun makePurchase(productDetails: ProductDetails, activity: Activity) {
-        (application as NotepadApplication).billingClientLifecycle.makePurchase(activity, productDetails)
+        val billingResult =
+            (application as NotepadApplication).billingClientLifecycle.makePurchase(activity, productDetails)
+        if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+            updatePurchasesHistory()
+        }
     }
 }

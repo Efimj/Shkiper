@@ -1,12 +1,17 @@
 package com.jobik.shkiper.ui.components.cards
 
 import androidx.annotation.DrawableRes
-import androidx.compose.foundation.*
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material3.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.TaskAlt
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -29,8 +34,8 @@ data class PurchaseCardContent(
     val product: ProductDetails,
     @DrawableRes
     val image: Int,
-    val isHighlighted: Boolean = false,
     val isPurchased: Boolean = false,
+    val isHighlighted: Boolean = false,
 )
 
 @Composable
@@ -50,16 +55,16 @@ fun PurchaseCard(purchaseCardContent: PurchaseCardContent, onClick: () -> Unit) 
         backgroundColor = CustomAppTheme.colors.secondaryBackground,
         contentColor = CustomAppTheme.colors.text,
     ) {
-        Box(modifier = Modifier.padding(end = 10.dp, top = 10.dp)) {
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-                Text(
-                    text = "X",
-                    color = CustomAppTheme.colors.text,
-                    style = MaterialTheme.typography.body1.copy(fontSize = 14.sp),
-                    textAlign = TextAlign.Center,
-                )
+        if (purchaseCardContent.isPurchased)
+            Box(modifier = Modifier.padding(end = 6.dp, top = 6.dp)) {
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
+                    Icon(
+                        imageVector = Icons.Outlined.TaskAlt,
+                        contentDescription = null,
+                        tint = CustomAppTheme.colors.active,
+                    )
+                }
             }
-        }
         Column(
             modifier = Modifier.padding(10.dp).fillMaxSize(),
             verticalArrangement = Arrangement.Center,
