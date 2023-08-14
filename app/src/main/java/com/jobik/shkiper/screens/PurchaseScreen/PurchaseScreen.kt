@@ -31,7 +31,7 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
     val context = LocalContext.current
 
     ColumnForItems() {
-        Column(modifier = Modifier.fillMaxWidth().padding(top = 85.dp, bottom = 20.dp)) {
+        Column(modifier = Modifier.fillMaxWidth().padding(top = 85.dp, bottom = 10.dp)) {
             Text(
                 stringResource(R.string.PurchaseScreenTitle),
                 color = CustomAppTheme.colors.text,
