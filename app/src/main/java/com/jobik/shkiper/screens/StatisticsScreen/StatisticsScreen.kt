@@ -45,7 +45,7 @@ fun StatisticsScreen() {
                 GridItemSpan(maxLineSpan)
             }) {
                 Row(
-                    modifier = Modifier.padding(top = 75.dp, bottom = 20.dp),
+                    modifier = Modifier.padding(top = 75.dp, bottom = 8.dp),
                     horizontalArrangement = Arrangement.Center
                 ) {
                     Text(
