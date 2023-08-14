@@ -37,28 +37,16 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
                 color = CustomAppTheme.colors.text,
                 style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Bold),
                 textAlign = TextAlign.Center,
-                modifier = Modifier.padding(horizontal = 10.dp).padding(bottom = 12.dp).fillMaxWidth()
+                modifier = Modifier.padding(horizontal = 10.dp).padding(bottom = 15.dp).fillMaxWidth()
             )
-            Row(
-                Modifier.fillMaxWidth().padding(horizontal = 20.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.DataExploration,
-                    contentDescription = stringResource(R.string.Info),
-                    tint = CustomAppTheme.colors.textSecondary
-                )
-                Spacer(Modifier.width(10.dp))
-                Text(
-                    text = stringResource(R.string.PurchaseScreenDescription),
-                    color = CustomAppTheme.colors.text,
-                    fontSize = 16.sp,
-                    lineHeight = 24.sp,
-                    style = MaterialTheme.typography.body1,
-                    modifier = Modifier.fillMaxWidth()
-                )
-            }
+            Text(
+                text = stringResource(R.string.PurchaseScreenDescription),
+                color = CustomAppTheme.colors.text,
+                fontSize = 16.sp,
+                lineHeight = 24.sp,
+                style = MaterialTheme.typography.body1,
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp)
+            )
         }
         Text(
             stringResource(R.string.BuyMe),
@@ -105,8 +93,28 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
             color = CustomAppTheme.colors.text,
             style = MaterialTheme.typography.h6,
             textAlign = TextAlign.Left,
-            modifier = Modifier.padding(horizontal = 20.dp).padding(bottom = 4.dp).padding(top = 8.dp).fillMaxWidth()
+            modifier = Modifier.padding(horizontal = 20.dp).padding(bottom = 4.dp).padding(top = 12.dp).fillMaxWidth()
         )
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 7.dp),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            val productList = listOf(
+                purchaseViewModel.screenState.value.subscriptions.find { it.productId == AppProducts.Monthly }?.let {
+                    PurchaseCardContent(
+                        product = it,
+                        image = R.drawable.ic_notification
+                    )
+                },
+            )
+            for (product in productList)
+                if (product != null)
+                    Box(modifier = Modifier.weight(1f).padding(horizontal = 4.dp)) {
+                        PurchaseCard(product) {
+                            purchaseViewModel.makePurchase(product.product, context as Activity)
+                        }
+                    }
+        }
     }
 }
 
@@ -117,7 +125,7 @@ private fun ColumnForItems(content: @Composable () -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Column(
-            modifier = Modifier.widthIn(max = 550.dp).verticalScroll(rememberScrollState()),
+            modifier = Modifier.widthIn(max = 550.dp).verticalScroll(rememberScrollState()).padding(bottom = 30.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             content()

@@ -32,7 +32,6 @@ data class PurchaseCardContent(
     val isBestOffer: Boolean = false
 )
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PurchaseCard(purchaseCardContent: PurchaseCardContent, onClick: () -> Unit) {
     val multipleEventsCutter = remember { MultipleEventsCutter.get() }
@@ -50,17 +49,19 @@ fun PurchaseCard(purchaseCardContent: PurchaseCardContent, onClick: () -> Unit) 
         backgroundColor = CustomAppTheme.colors.secondaryBackground,
         contentColor = CustomAppTheme.colors.text,
     ) {
+        Box(modifier = Modifier.padding(end = 10.dp, top = 10.dp)){
+            Text(
+                text = "X",
+                color = CustomAppTheme.colors.text,
+                style = MaterialTheme.typography.body1.copy(fontSize = 14.sp),
+                textAlign = TextAlign.Center,
+            )
+        }
         Column(
             modifier = Modifier.padding(10.dp).fillMaxSize(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-//            Image(
-//                modifier = Modifier.height(60.dp).padding(vertical = 5.dp),
-//                painter = painterResource(id = statistic.image),
-//                contentDescription = stringResource(R.string.StatisticsImage),
-//                contentScale = ContentScale.Fit
-//            )
             Column(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Center,
@@ -84,11 +85,6 @@ fun PurchaseCard(purchaseCardContent: PurchaseCardContent, onClick: () -> Unit) 
                         textAlign = TextAlign.Center,
                     )
                 }
-//                Text(
-//                    product.description,
-//                    color = CustomAppTheme.colors.textSecondary,
-//                    style = MaterialTheme.typography.body1.copy(fontSize = 14.sp),
-//                )
             }
         }
     }

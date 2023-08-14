@@ -2,6 +2,7 @@ package com.jobik.shkiper.screens.SettingsScreen
 
 import android.app.Activity
 import android.content.Context
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
@@ -40,6 +41,7 @@ import com.jobik.shkiper.util.ThemeUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.math.log
 
 
 @Composable
@@ -107,11 +109,6 @@ fun SettingsScreen(navController: NavController, settingsViewModel: SettingsView
                 isLoading = settingsViewModel.settingsScreenState.value.isLocalBackupUploading,
                 isEnabled = !settingsViewModel.isBackupHandling(),
                 onClick = { fileSearch.launch(arrayOf("*/*")) })
-//            SettingsItem(
-//                stringResource(R.string.CloudStorage),
-//                stringResource(R.string.Connect),
-//                Icons.Outlined.CloudOff,
-//                onClick = {})
         }
         SettingsItemGroup {
             Text(
@@ -232,10 +229,10 @@ private fun SettingsItemSelectLanguage(settingsViewModel: SettingsViewModel) {
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
     val currentLanguage = NotepadApplication.currentLanguage
+    val dropDownItems = settingsViewModel.getLocalizationList(context).map { DropDownItem(text = it) }
 
-    val dropDownItems = settingsViewModel.localizationList.value.map { DropDownItem(text = it) }
-
-    DropDownButton(dropDownItems,
+    DropDownButton(
+        dropDownItems,
         currentLanguage.ordinal,
         Modifier.width(150.dp),
         DropDownButtonSizeMode.STRERCHBYBUTTONWIDTH,

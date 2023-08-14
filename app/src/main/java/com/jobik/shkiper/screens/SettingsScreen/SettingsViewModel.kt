@@ -1,6 +1,7 @@
 package com.jobik.shkiper.screens.SettingsScreen
 
 import android.app.Application
+import android.content.Context
 import android.net.Uri
 import android.util.Log
 import androidx.compose.material.icons.Icons
@@ -65,11 +66,9 @@ class SettingsViewModel @Inject constructor(
      * App languages
      *******************/
 
-    val localizationList = mutableStateOf(getLocalizationList())
-
-    private fun getLocalizationList(): List<String> {
+    fun getLocalizationList(localContext: Context): List<String> {
         return Localization.values().filter { it.name != NotepadApplication.currentLanguage.name }
-            .map { it.getLocalizedValue(application.applicationContext) }
+            .map { it.getLocalizedValue(localContext) }
     }
 
     fun selectLocalization(selectedIndex: Int) {
@@ -77,7 +76,6 @@ class SettingsViewModel @Inject constructor(
             val newLocalization: Localization =
                 Localization.values().filter { it.name != NotepadApplication.currentLanguage.name }[selectedIndex]
             LocaleHelper.setLocale(application.applicationContext, newLocalization)
-            localizationList.value = getLocalizationList()
         } catch (e: Exception) {
             Log.d("ChangeLocalizationError", e.message.toString())
         }

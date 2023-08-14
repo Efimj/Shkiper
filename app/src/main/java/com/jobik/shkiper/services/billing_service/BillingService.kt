@@ -163,7 +163,7 @@ class BillingService private constructor(
             if (billingResult.responseCode == BillingClient.BillingResponseCode.OK)
                 _subscriptionsDetails.value = productDetailsList
             else
-                Log.d(TAG, "Retrying connection, attempt $billingResult.responseCode")
+                Log.d(TAG, "Retrying connection, attempt ${billingResult.responseCode}")
         }
     }
 
@@ -317,6 +317,10 @@ class BillingService private constructor(
                 consumePurchase(purchase)
             }
         }
+
+        // Update purchases history
+        getProductsPurchasesHistory()
+        getSubscriptionsPurchasesHistory()
     }
 
     suspend fun acknowledgePurchase(purchase: Purchase): BillingResult? {

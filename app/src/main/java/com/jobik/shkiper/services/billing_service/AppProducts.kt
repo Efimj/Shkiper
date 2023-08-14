@@ -10,7 +10,7 @@ object AppProducts {
     const val GymPass = "gym_pass"
 
     //Subscriptions IDs
-    const val Monthly = "monthly"
+    const val Monthly = "monthly_subscription"
 
     val ListOfProducts = listOf(
         CupOfTea,

@@ -7,12 +7,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.ProductDetails
+import com.android.billingclient.api.PurchaseHistoryRecord
 import com.jobik.shkiper.NotepadApplication
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 data class PurchaseScreenState(
-    val purchases: List<ProductDetails> = emptyList()
+    val purchases: List<ProductDetails> = emptyList(),
+    val subscriptions: List<ProductDetails> = emptyList(),
+    val productsPurchasesHistory: List<PurchaseHistoryRecord> = emptyList(),
+    val subscriptionsPurchasesHistory: List<PurchaseHistoryRecord> = emptyList(),
 )
 
 @HiltViewModel
@@ -24,10 +28,15 @@ class PurchaseViewModel @Inject constructor(
 
     init {
         val billingClient = (application as NotepadApplication).billingClientLifecycle
-        _screenState.value = _screenState.value.copy(purchases = billingClient.productDetails.value)
+        _screenState.value = _screenState.value.copy(
+            purchases = billingClient.productDetails.value,
+            subscriptions = billingClient.subscriptionsDetails.value,
+            productsPurchasesHistory = billingClient.productsPurchasesHistory.value,
+            subscriptionsPurchasesHistory = billingClient.subscriptionsPurchasesHistory.value
+        )
     }
 
-    fun makePurchase(productDetails: ProductDetails, activity: Activity){
+    fun makePurchase(productDetails: ProductDetails, activity: Activity) {
         (application as NotepadApplication).billingClientLifecycle.makePurchase(activity, productDetails)
     }
 }
