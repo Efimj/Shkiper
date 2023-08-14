@@ -229,7 +229,7 @@ private fun SettingsItemSelectLanguage(settingsViewModel: SettingsViewModel) {
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
     val currentLanguage = NotepadApplication.currentLanguage
-    val dropDownItems = settingsViewModel.getLocalizationList(context).map { DropDownItem(text = it) }
+    val dropDownItems = remember { settingsViewModel.getLocalizationList(context).map { DropDownItem(text = it) } }
 
     DropDownButton(
         dropDownItems,

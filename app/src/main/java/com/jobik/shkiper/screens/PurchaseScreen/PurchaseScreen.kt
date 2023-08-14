@@ -70,7 +70,7 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
                     PurchaseCardContent(
                         product = it,
                         image = R.drawable.ic_notification,
-                        isBestOffer = true
+                        isHighlighted = true
                     )
                 },
                 purchaseViewModel.screenState.value.purchases.find { it.productId == AppProducts.GymPass }?.let {

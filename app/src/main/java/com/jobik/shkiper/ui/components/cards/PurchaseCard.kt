@@ -29,7 +29,8 @@ data class PurchaseCardContent(
     val product: ProductDetails,
     @DrawableRes
     val image: Int,
-    val isBestOffer: Boolean = false
+    val isHighlighted: Boolean = false,
+    val isPurchased: Boolean = false,
 )
 
 @Composable
@@ -45,17 +46,19 @@ fun PurchaseCard(purchaseCardContent: PurchaseCardContent, onClick: () -> Unit) 
             .clickable(onClick = { multipleEventsCutter.processEvent { onClick() } }),
         elevation = 0.dp,
         shape = RoundedCornerShape(15.dp),
-        border = if (purchaseCardContent.isBestOffer) BorderStroke(2.dp, CustomAppTheme.colors.active) else null,
+        border = if (purchaseCardContent.isHighlighted) BorderStroke(2.dp, CustomAppTheme.colors.active) else null,
         backgroundColor = CustomAppTheme.colors.secondaryBackground,
         contentColor = CustomAppTheme.colors.text,
     ) {
-        Box(modifier = Modifier.padding(end = 10.dp, top = 10.dp)){
-            Text(
-                text = "X",
-                color = CustomAppTheme.colors.text,
-                style = MaterialTheme.typography.body1.copy(fontSize = 14.sp),
-                textAlign = TextAlign.Center,
-            )
+        Box(modifier = Modifier.padding(end = 10.dp, top = 10.dp)) {
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
+                Text(
+                    text = "X",
+                    color = CustomAppTheme.colors.text,
+                    style = MaterialTheme.typography.body1.copy(fontSize = 14.sp),
+                    textAlign = TextAlign.Center,
+                )
+            }
         }
         Column(
             modifier = Modifier.padding(10.dp).fillMaxSize(),
