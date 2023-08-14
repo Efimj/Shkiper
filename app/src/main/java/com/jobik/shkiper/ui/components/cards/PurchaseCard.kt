@@ -15,6 +15,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.android.billingclient.api.ProductDetails
@@ -66,18 +67,23 @@ fun PurchaseCard(purchaseCardContent: PurchaseCardContent, onClick: () -> Unit) 
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Image(
-                    modifier = Modifier.height(60.dp).fillMaxWidth(),
+                    modifier = Modifier.height(75.dp).fillMaxWidth(),
                     painter = painterResource(id = purchaseCardContent.image),
                     contentDescription = stringResource(R.string.StatisticsImage),
                     contentScale = ContentScale.Fit
                 )
-                Text(
-                    text = purchaseCardContent.product.name,
-                    color = CustomAppTheme.colors.textSecondary,
-                    style = MaterialTheme.typography.body1.copy(fontSize = 14.sp),
-                    modifier = Modifier.basicMarquee(),
-                    maxLines = 1,
-                )
+                Row(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = purchaseCardContent.product.name,
+                        color = CustomAppTheme.colors.text,
+                        style = MaterialTheme.typography.body1.copy(fontSize = 14.sp),
+                        textAlign = TextAlign.Center,
+                    )
+                }
 //                Text(
 //                    product.description,
 //                    color = CustomAppTheme.colors.textSecondary,
