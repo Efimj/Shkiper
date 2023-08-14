@@ -138,6 +138,8 @@
     <string name="Show">Показать</string>
     <string name="PurchaseScreenTitle">Каждый вклад важен!</string>
     <string name="PurchaseScreenDescription">Ваша поддержка помогает усовершенствовать наше приложение: делать его удобнее, функциональнее и инновационнее. Присоединяйтесь к нам – сделайте пожертвование и станьте частью истории Shkiper!</string>
+    <string name="BuyMe">Купить мне</string>
+    <string name="BuySubscription">Купить подписку</string>
 
     <!-- Statistics components -->
     <string name="Thinker">Мыслитель</string>
