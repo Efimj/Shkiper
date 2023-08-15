@@ -11,14 +11,12 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Shop
-import androidx.compose.material.icons.outlined.Description
 import androidx.compose.material.icons.outlined.SignalWifiOff
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -27,7 +25,6 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.jobik.shkiper.R
 import com.jobik.shkiper.services.billing_service.AppProducts
-import com.jobik.shkiper.services.billing_service.PurchaseEvent
 import com.jobik.shkiper.ui.components.cards.PurchaseCard
 import com.jobik.shkiper.ui.components.cards.PurchaseCardContent
 import com.jobik.shkiper.ui.components.layouts.ScreenContentIfNoData
@@ -39,6 +36,8 @@ import com.jobik.shkiper.ui.theme.CustomAppTheme
 fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
     val context = LocalContext.current
     val connectivityManager = remember { context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager }
+    val isNetworkActive =
+        remember { connectivityManager.activeNetworkInfo != null && connectivityManager.activeNetworkInfo!!.isConnected }
 
     if (purchaseViewModel.screenState.value.showGratitude)
         ImageActionDialog(
@@ -53,7 +52,7 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
             )
         )
 
-    if (!connectivityManager.isDefaultNetworkActive)
+    if (!isNetworkActive)
         ScreenContentIfNoData(R.string.CheckInternetConnection, Icons.Outlined.SignalWifiOff)
     else if (purchaseViewModel.screenState.value.purchases.isEmpty() && purchaseViewModel.screenState.value.subscriptions.isEmpty())
         ScreenContentIfNoData(R.string.CheckUpdatesGooglePlay, Icons.Default.Shop)

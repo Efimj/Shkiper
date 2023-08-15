@@ -76,6 +76,15 @@ class PurchaseViewModel @Inject constructor(
                     )
                 }
             }
+
+            else -> {
+                viewModelScope.launch {
+                    showSnackbar(
+                        message = application.applicationContext.getString(R.string.UnspecifiedErrorOccurred),
+                        icon = Icons.Default.Info
+                    )
+                }
+            }
         }
     }
 
