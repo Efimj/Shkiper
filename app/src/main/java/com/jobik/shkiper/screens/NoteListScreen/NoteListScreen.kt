@@ -45,7 +45,7 @@ import com.jobik.shkiper.ui.components.layouts.CustomTopAppBar
 import com.jobik.shkiper.ui.components.layouts.TopAppBarItem
 import com.jobik.shkiper.ui.components.modals.CreateReminderDialog
 import com.jobik.shkiper.ui.components.modals.ReminderDialogProperties
-import com.jobik.shkiper.viewModels.NotesViewModel
+import com.jobik.shkiper.ViewModels.NotesViewModel
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable

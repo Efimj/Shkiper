@@ -37,7 +37,7 @@ import com.jobik.shkiper.ui.components.layouts.ScreenContentIfNoData
 import com.jobik.shkiper.ui.components.layouts.TopAppBarItem
 import com.jobik.shkiper.ui.components.modals.ActionDialog
 import com.jobik.shkiper.ui.theme.CustomAppTheme
-import com.jobik.shkiper.viewModels.NotesViewModel
+import com.jobik.shkiper.ViewModels.NotesViewModel
 import kotlin.math.roundToInt
 import com.jobik.shkiper.R
 

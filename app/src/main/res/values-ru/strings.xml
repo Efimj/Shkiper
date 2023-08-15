@@ -140,6 +140,7 @@
     <string name="PurchaseScreenDescription">Ваша поддержка помогает усовершенствовать наше приложение. Присоединяйтесь к нам – сделайте пожертвование и станьте частью истории Shkiper!</string>
     <string name="BuyMe">Купить мне</string>
     <string name="BuySubscription">Купить подписку</string>
+    <string name="ItemAlreadyOwned">Этот товар уже куплен</string>
 
     <!-- Statistics components -->
     <string name="Thinker">Мыслитель</string>

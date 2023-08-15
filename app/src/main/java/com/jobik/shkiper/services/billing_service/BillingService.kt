@@ -9,6 +9,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.MutableLiveData
 import com.android.billingclient.api.*
 import kotlinx.coroutines.*
 import java.lang.Runnable
@@ -19,6 +20,8 @@ class BillingService private constructor(
     private val externalScope: CoroutineScope =
         CoroutineScope(SupervisorJob() + Dispatchers.Default)
 ) : PurchasesUpdatedListener, BillingClientStateListener, DefaultLifecycleObserver, PurchasesResponseListener {
+
+    val purchaseEvents = MutableLiveData<PurchaseEvent>()
 
     private var _productDetails = mutableStateOf(emptyList<ProductDetails>())
     private var _subscriptionsDetails = mutableStateOf(emptyList<ProductDetails>())
@@ -286,16 +289,19 @@ class BillingService private constructor(
                 if (purchases != null) {
                     externalScope.launch {
                         handlePurchase(purchases)
+                        purchaseEvents.postValue(PurchaseEvent.PurchaseSuccess(purchases))
                     }
                 }
             }
 
             BillingClient.BillingResponseCode.USER_CANCELED -> {
                 Log.i(TAG, "onPurchasesUpdated: User canceled the purchase")
+                purchaseEvents.postValue(PurchaseEvent.PurchaseFailure(responseCode))
             }
 
             BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED -> {
                 Log.i(TAG, "onPurchasesUpdated: The user already owns this item")
+                purchaseEvents.postValue(PurchaseEvent.PurchaseFailure(responseCode))
             }
 
             BillingClient.BillingResponseCode.DEVELOPER_ERROR -> {
@@ -306,6 +312,7 @@ class BillingService private constructor(
                             "Google Play Console. The product ID must match and the APK you " +
                             "are using must be signed with release keys."
                 )
+                purchaseEvents.postValue(PurchaseEvent.PurchaseFailure(responseCode))
             }
         }
     }

@@ -1,6 +1,7 @@
 package com.jobik.shkiper.screens.PurchaseScreen
 
 import android.app.Activity
+import android.util.Log
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -14,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -22,6 +24,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.jobik.shkiper.R
 import com.jobik.shkiper.services.billing_service.AppProducts
+import com.jobik.shkiper.services.billing_service.PurchaseEvent
 import com.jobik.shkiper.ui.components.cards.PurchaseCard
 import com.jobik.shkiper.ui.components.cards.PurchaseCardContent
 import com.jobik.shkiper.ui.theme.CustomAppTheme
@@ -29,15 +32,30 @@ import com.jobik.shkiper.ui.theme.CustomAppTheme
 @Composable
 fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
     val context = LocalContext.current
+    val lifecycle = LocalLifecycleOwner.current
 
-    ColumnForItems() {
+    purchaseViewModel.purchaseEvents.observe(lifecycle) { purchaseEvent ->
+        purchaseViewModel.updatePurchasesHistory()
+        when (purchaseEvent) {
+            is PurchaseEvent.PurchaseSuccess -> {
+                val purchases = purchaseEvent.purchases
+                purchaseViewModel.showCompletedPurchase()
+            }
+
+            is PurchaseEvent.PurchaseFailure -> {
+                purchaseViewModel.showSnackbarFailurePurchase(purchaseEvent.responseCode)
+            }
+        }
+    }
+
+    ColumnForItems {
         Column(modifier = Modifier.fillMaxWidth().padding(top = 85.dp, bottom = 10.dp)) {
             Text(
                 stringResource(R.string.PurchaseScreenTitle),
                 color = CustomAppTheme.colors.text,
                 style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Bold),
                 textAlign = TextAlign.Center,
-                modifier = Modifier.padding(horizontal = 10.dp).padding(bottom = 15.dp).fillMaxWidth()
+                modifier = Modifier.padding(horizontal = 15.dp).padding(bottom = 15.dp).fillMaxWidth()
             )
             Text(
                 text = stringResource(R.string.PurchaseScreenDescription),
@@ -45,7 +63,7 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
                 fontSize = 16.sp,
                 lineHeight = 24.sp,
                 style = MaterialTheme.typography.body1,
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp)
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 15.dp)
             )
         }
         Text(
@@ -65,11 +83,7 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
                         PurchaseCardContent(
                             product = productDetails,
                             image = R.drawable.ic_notification,
-                            isPurchased = purchaseViewModel.screenState.value.productsPurchasesHistory.any { historyRecord ->
-                                historyRecord.products.any {
-                                    productDetails.productId == it
-                                }
-                            }
+                            isPurchased = purchaseViewModel.checkIsProductPurchased(productDetails.productId)
                         )
                     },
                 purchaseViewModel.screenState.value.purchases.find { it.productId == AppProducts.PepperoniPizza }
@@ -78,11 +92,7 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
                             product = productDetails,
                             image = R.drawable.ic_notification,
                             isHighlighted = true,
-                            isPurchased = purchaseViewModel.screenState.value.productsPurchasesHistory.any { historyRecord ->
-                                historyRecord.products.any {
-                                    productDetails.productId == it
-                                }
-                            }
+                            isPurchased = purchaseViewModel.checkIsProductPurchased(productDetails.productId)
                         )
                     },
                 purchaseViewModel.screenState.value.purchases.find { it.productId == AppProducts.GymPass }
@@ -90,11 +100,7 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
                         PurchaseCardContent(
                             product = productDetails,
                             image = R.drawable.ic_notification,
-                            isPurchased = purchaseViewModel.screenState.value.productsPurchasesHistory.any { historyRecord ->
-                                historyRecord.products.any {
-                                    productDetails.productId == it
-                                }
-                            }
+                            isPurchased = purchaseViewModel.checkIsProductPurchased(productDetails.productId)
                         )
                     }
             )
@@ -118,12 +124,14 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
             horizontalArrangement = Arrangement.Center
         ) {
             val productList = listOf(
-                purchaseViewModel.screenState.value.subscriptions.find { it.productId == AppProducts.Monthly }?.let {
-                    PurchaseCardContent(
-                        product = it,
-                        image = R.drawable.ic_notification
-                    )
-                },
+                purchaseViewModel.screenState.value.subscriptions.find { it.productId == AppProducts.Monthly }
+                    ?.let { productDetails ->
+                        PurchaseCardContent(
+                            product = productDetails,
+                            image = R.drawable.ic_notification,
+                            isPurchased = purchaseViewModel.checkIsProductPurchased(productDetails.productId)
+                        )
+                    },
             )
             for (product in productList)
                 if (product != null)
