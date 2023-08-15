@@ -2,27 +2,18 @@ package com.jobik.shkiper.screens.PurchaseScreen
 
 import android.app.Activity
 import android.app.Application
-import android.util.Log
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddAlert
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Undo
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.billingclient.api.BillingClient
+import com.android.billingclient.api.*
 import com.android.billingclient.api.BillingClient.BillingResponseCode
-import com.android.billingclient.api.BillingResult
-import com.android.billingclient.api.ProductDetails
-import com.android.billingclient.api.PurchaseHistoryRecord
 import com.jobik.shkiper.NotepadApplication
 import com.jobik.shkiper.R
-import com.jobik.shkiper.database.models.NotePosition
-import com.jobik.shkiper.services.billing_service.BillingService
-import com.jobik.shkiper.services.billing_service.PurchaseEvent
+import com.jobik.shkiper.services.billing_service.PurchaseCallback
 import com.jobik.shkiper.util.SnackbarHostUtil
 import com.jobik.shkiper.util.SnackbarVisualsCustom
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -34,19 +25,16 @@ data class PurchaseScreenState(
     val subscriptions: List<ProductDetails> = emptyList(),
     val productsPurchasesHistory: List<PurchaseHistoryRecord> = emptyList(),
     val subscriptionsPurchasesHistory: List<PurchaseHistoryRecord> = emptyList(),
-    val isPurchaseComplete: Boolean = false,
+    val showGratitude: Boolean = false,
 )
 
 @HiltViewModel
 class PurchaseViewModel @Inject constructor(
     private val application: Application,
-) : ViewModel() {
+) : ViewModel(), PurchaseCallback {
     private val _screenState = mutableStateOf(PurchaseScreenState())
     val screenState: State<PurchaseScreenState> = _screenState
     private val billingClient = (application as NotepadApplication).billingClientLifecycle
-
-    val purchaseEvents: LiveData<PurchaseEvent>
-        get() = billingClient.purchaseEvents
 
     init {
         _screenState.value = _screenState.value.copy(
@@ -55,9 +43,41 @@ class PurchaseViewModel @Inject constructor(
             productsPurchasesHistory = billingClient.productsPurchasesHistory.value,
             subscriptionsPurchasesHistory = billingClient.subscriptionsPurchasesHistory.value
         )
+        billingClient.registerPurchaseCallback(this)
     }
 
-    fun updatePurchasesHistory() {
+    override fun onPurchaseResult(resultCode: Int, purchases: List<Purchase>?) {
+        when (resultCode) {
+            BillingResponseCode.OK -> {
+                showCompletedPurchase()
+                updatePurchasesHistory()
+            }
+
+            BillingResponseCode.USER_CANCELED -> {
+
+            }
+
+            BillingResponseCode.ITEM_ALREADY_OWNED -> {
+                viewModelScope.launch {
+                    showSnackbar(
+                        message = application.applicationContext.getString(R.string.ItemAlreadyOwned),
+                        icon = Icons.Default.Info
+                    )
+                }
+            }
+
+            BillingResponseCode.DEVELOPER_ERROR -> {
+                viewModelScope.launch {
+                    showSnackbar(
+                        message = application.applicationContext.getString(R.string.UnspecifiedErrorOccurred),
+                        icon = Icons.Default.Info
+                    )
+                }
+            }
+        }
+    }
+
+    private fun updatePurchasesHistory() {
         _screenState.value = _screenState.value.copy(
             productsPurchasesHistory = billingClient.productsPurchasesHistory.value,
             subscriptionsPurchasesHistory = billingClient.subscriptionsPurchasesHistory.value
@@ -66,9 +86,6 @@ class PurchaseViewModel @Inject constructor(
 
     fun makePurchase(productDetails: ProductDetails, activity: Activity) {
         val billingResult = billingClient.makePurchase(activity, productDetails)
-        if (billingResult.responseCode == BillingResponseCode.OK) {
-            updatePurchasesHistory()
-        }
     }
 
     fun checkIsProductPurchased(productId: String): Boolean {
@@ -83,34 +100,16 @@ class PurchaseViewModel @Inject constructor(
         }
     }
 
-    fun showCompletedPurchase() {
+    private fun showCompletedPurchase() {
         _screenState.value = _screenState.value.copy(
-            isPurchaseComplete = true,
+            showGratitude = true,
         )
     }
 
-    fun showSnackbarFailurePurchase(responseCode: Int) {
-        viewModelScope.launch {
-            when (responseCode) {
-                BillingResponseCode.USER_CANCELED -> {
-
-                }
-
-                BillingResponseCode.ITEM_ALREADY_OWNED -> {
-                    showSnackbar(
-                        message = application.applicationContext.getString(R.string.ItemAlreadyOwned),
-                        icon = Icons.Default.Info
-                    )
-                }
-
-                BillingResponseCode.DEVELOPER_ERROR -> {
-                    showSnackbar(
-                        message = application.applicationContext.getString(R.string.UnspecifiedErrorOccurred),
-                        icon = Icons.Default.Info
-                    )
-                }
-            }
-        }
+    fun hideCompletedPurchase() {
+        _screenState.value = _screenState.value.copy(
+            showGratitude = false,
+        )
     }
 
     private suspend fun showSnackbar(message: String, icon: ImageVector?) {

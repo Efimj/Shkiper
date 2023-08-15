@@ -1,16 +1,13 @@
 package com.jobik.shkiper.screens.PurchaseScreen
 
 import android.app.Activity
-import android.util.Log
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.DataExploration
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,26 +24,26 @@ import com.jobik.shkiper.services.billing_service.AppProducts
 import com.jobik.shkiper.services.billing_service.PurchaseEvent
 import com.jobik.shkiper.ui.components.cards.PurchaseCard
 import com.jobik.shkiper.ui.components.cards.PurchaseCardContent
+import com.jobik.shkiper.ui.components.modals.ImageActionDialog
+import com.jobik.shkiper.ui.components.modals.ImageActionDialogButton
 import com.jobik.shkiper.ui.theme.CustomAppTheme
 
 @Composable
 fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
     val context = LocalContext.current
-    val lifecycle = LocalLifecycleOwner.current
 
-    purchaseViewModel.purchaseEvents.observe(lifecycle) { purchaseEvent ->
-        purchaseViewModel.updatePurchasesHistory()
-        when (purchaseEvent) {
-            is PurchaseEvent.PurchaseSuccess -> {
-                val purchases = purchaseEvent.purchases
-                purchaseViewModel.showCompletedPurchase()
-            }
-
-            is PurchaseEvent.PurchaseFailure -> {
-                purchaseViewModel.showSnackbarFailurePurchase(purchaseEvent.responseCode)
-            }
-        }
-    }
+    if (purchaseViewModel.screenState.value.showGratitude)
+        ImageActionDialog(
+            image = R.drawable.two_phones_preview,
+            header = "Thenks",
+            onGoBack = {},
+            confirmButton = ImageActionDialogButton(
+                text = "sd",
+                icon = Icons.Default.Favorite,
+                isActive = true,
+                onClick = purchaseViewModel::hideCompletedPurchase
+            )
+        )
 
     ColumnForItems {
         Column(modifier = Modifier.fillMaxWidth().padding(top = 85.dp, bottom = 10.dp)) {

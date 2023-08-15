@@ -15,13 +15,20 @@ import kotlinx.coroutines.*
 import java.lang.Runnable
 import kotlin.math.pow
 
+interface PurchaseCallback {
+    fun onPurchaseResult(resultCode: Int, purchases: List<Purchase>?)
+}
+
 class BillingService private constructor(
     private val applicationContext: Context,
     private val externalScope: CoroutineScope =
         CoroutineScope(SupervisorJob() + Dispatchers.Default)
 ) : PurchasesUpdatedListener, BillingClientStateListener, DefaultLifecycleObserver, PurchasesResponseListener {
+    private var purchaseCallback: PurchaseCallback? = null
 
-    val purchaseEvents = MutableLiveData<PurchaseEvent>()
+    fun registerPurchaseCallback(callback: PurchaseCallback) {
+        purchaseCallback = callback
+    }
 
     private var _productDetails = mutableStateOf(emptyList<ProductDetails>())
     private var _subscriptionsDetails = mutableStateOf(emptyList<ProductDetails>())
@@ -283,25 +290,25 @@ class BillingService private constructor(
         val responseCode = billingResult.responseCode
         val debugMessage = billingResult.debugMessage
         Log.d(TAG, "onPurchasesUpdated: $responseCode $debugMessage")
+
+        purchaseCallback?.onPurchaseResult(responseCode, purchases)
+
         when (responseCode) {
             BillingClient.BillingResponseCode.OK -> {
                 // ToDo Make response
                 if (purchases != null) {
                     externalScope.launch {
                         handlePurchase(purchases)
-                        purchaseEvents.postValue(PurchaseEvent.PurchaseSuccess(purchases))
                     }
                 }
             }
 
             BillingClient.BillingResponseCode.USER_CANCELED -> {
                 Log.i(TAG, "onPurchasesUpdated: User canceled the purchase")
-                purchaseEvents.postValue(PurchaseEvent.PurchaseFailure(responseCode))
             }
 
             BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED -> {
                 Log.i(TAG, "onPurchasesUpdated: The user already owns this item")
-                purchaseEvents.postValue(PurchaseEvent.PurchaseFailure(responseCode))
             }
 
             BillingClient.BillingResponseCode.DEVELOPER_ERROR -> {
@@ -312,7 +319,6 @@ class BillingService private constructor(
                             "Google Play Console. The product ID must match and the APK you " +
                             "are using must be signed with release keys."
                 )
-                purchaseEvents.postValue(PurchaseEvent.PurchaseFailure(responseCode))
             }
         }
     }
