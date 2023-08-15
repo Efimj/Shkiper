@@ -25,8 +25,6 @@ import javax.inject.Inject
 data class PurchaseScreenState(
     val purchases: List<ProductDetails> = emptyList(),
     val subscriptions: List<ProductDetails> = emptyList(),
-    val productsPurchasesHistory: List<PurchaseHistoryRecord> = emptyList(),
-    val subscriptionsPurchasesHistory: List<PurchaseHistoryRecord> = emptyList(),
     val showGratitude: Boolean = false,
 )
 
@@ -42,8 +40,6 @@ class PurchaseViewModel @Inject constructor(
         _screenState.value = _screenState.value.copy(
             purchases = billingClient.productDetails.value,
             subscriptions = billingClient.subscriptionsDetails.value,
-            productsPurchasesHistory = billingClient.productsPurchasesHistory.value,
-            subscriptionsPurchasesHistory = billingClient.subscriptionsPurchasesHistory.value
         )
         billingClient.registerPurchaseCallback(this)
     }
@@ -52,7 +48,6 @@ class PurchaseViewModel @Inject constructor(
         when (resultCode) {
             BillingResponseCode.OK -> {
                 showCompletedPurchase()
-                updatePurchasesHistory()
             }
 
             BillingResponseCode.USER_CANCELED -> {
@@ -88,23 +83,16 @@ class PurchaseViewModel @Inject constructor(
         }
     }
 
-    private fun updatePurchasesHistory() {
-        _screenState.value = _screenState.value.copy(
-            productsPurchasesHistory = billingClient.productsPurchasesHistory.value,
-            subscriptionsPurchasesHistory = billingClient.subscriptionsPurchasesHistory.value
-        )
-    }
-
     fun makePurchase(productDetails: ProductDetails, activity: Activity) {
         val billingResult = billingClient.makePurchase(activity, productDetails)
     }
 
     fun checkIsProductPurchased(productId: String): Boolean {
-        return screenState.value.productsPurchasesHistory.any { historyRecord ->
+        return billingClient.productsPurchasesHistory.value.any { historyRecord ->
             historyRecord.products.any {
                 productId == it
             }
-        } || screenState.value.subscriptionsPurchasesHistory.any { historyRecord ->
+        } || billingClient.subscriptionsPurchasesHistory.value.any { historyRecord ->
             historyRecord.products.any {
                 productId == it
             }

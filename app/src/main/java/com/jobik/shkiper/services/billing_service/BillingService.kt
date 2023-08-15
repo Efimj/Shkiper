@@ -39,8 +39,6 @@ class BillingService private constructor(
     val subscriptionsDetails: State<List<ProductDetails>>
         get() = _subscriptionsDetails
 
-
-
     private var _productsPurchasesHistory = mutableStateOf(emptyList<PurchaseHistoryRecord>())
     private var _subscriptionsPurchasesHistory = mutableStateOf(emptyList<PurchaseHistoryRecord>())
 
