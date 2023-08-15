@@ -142,6 +142,8 @@
     <string name="BuyMe">Купити мені</string>
     <string name="BuySubscription">Купити підписку</string>
     <string name="ItemAlreadyOwned">Цей товар вже придбано</string>
+    <string name="CheckInternetConnection">Перевірте підключення до Інтернету</string>
+    <string name="CheckUpdatesGooglePlay">Перевірити оновлення Google Play</string>
 
     <!-- Statistics components -->
     <string name="Thinker">Міркуючий</string>

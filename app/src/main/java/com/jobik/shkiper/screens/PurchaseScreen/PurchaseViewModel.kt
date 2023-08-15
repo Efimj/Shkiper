@@ -2,6 +2,8 @@ package com.jobik.shkiper.screens.PurchaseScreen
 
 import android.app.Activity
 import android.app.Application
+import android.content.Context
+import android.net.ConnectivityManager
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.runtime.State
