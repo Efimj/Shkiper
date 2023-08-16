@@ -1,4 +1,4 @@
-package com.jobik.shkiper.app_handlers
+package com.jobik.shkiper.util
 
 import android.app.UiModeManager
 import android.content.Context
@@ -9,7 +9,7 @@ import com.jobik.shkiper.ui.theme.ColorThemes
 import com.jobik.shkiper.ui.theme.UserTheme
 import com.google.gson.Gson
 
-class ThemePreferenceManager(val context: Context) {
+class ThemePreferenceUtil(val context: Context) {
     private val sharedPreferences =
         context.getSharedPreferences(SharedPreferencesKeys.ThemePreferencesName, Context.MODE_PRIVATE)
     private val uiModeManager = context.getSystemService(Context.UI_MODE_SERVICE) as UiModeManager

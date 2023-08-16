@@ -1,5 +1,8 @@
 package com.jobik.shkiper
 
+import androidx.annotation.Keep
+
+@Keep
 object SharedPreferencesKeys {
     // Theme preferences
     const val ThemePreferencesName = "ThemePreferencesName"
@@ -16,4 +19,5 @@ object SharedPreferencesKeys {
     const val CountOfferReview = "CountOfferReview"
     const val Localization = "Localization"
     const val Statistics = "Statistics"
+    const val LastBannerSupportDeveloperShowingDate = "LastBannerSupportDeveloperShowingDate"
 }

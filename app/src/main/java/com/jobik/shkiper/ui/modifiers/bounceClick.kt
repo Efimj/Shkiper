@@ -16,6 +16,9 @@ import androidx.compose.ui.input.pointer.pointerInput
 
 private enum class ItemState { Pressed, Idle }
 
+/**
+ * Shrinks the card when clicked
+ */
 fun Modifier.bounceClick(
     targetValue: Float = 0.90f
 ) = composed {

@@ -3,7 +3,6 @@ package com.jobik.shkiper.activity
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -11,32 +10,22 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.SnackbarDuration
-import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.jobik.shkiper.NotepadApplication
-import com.jobik.shkiper.R
 import com.jobik.shkiper.SharedPreferencesKeys
-import com.jobik.shkiper.app_handlers.ThemePreferenceManager
+import com.jobik.shkiper.util.ThemePreferenceUtil
 import com.jobik.shkiper.database.models.NotePosition
 import com.jobik.shkiper.services.localization.LocaleHelper
 import com.jobik.shkiper.navigation.AppScreens
 import com.jobik.shkiper.services.billing_service.BillingService
 import com.jobik.shkiper.services.in_app_updates_service.InAppUpdatesService
 import com.jobik.shkiper.services.review_service.ReviewService
-import com.jobik.shkiper.services.statistics_service.StatisticsService
 import com.jobik.shkiper.ui.components.modals.MainMenuBottomSheet
 import com.jobik.shkiper.ui.components.modals.OfferWriteReview
 import com.jobik.shkiper.ui.theme.CustomAppTheme
-import com.jobik.shkiper.util.SnackbarHostUtil
-import com.jobik.shkiper.util.SnackbarVisualsCustom
 import com.jobik.shkiper.util.ThemeUtil
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 @ExperimentalAnimationApi
 @AndroidEntryPoint
@@ -58,7 +47,7 @@ class MainActivity : AppCompatActivity() {
         lifecycle.addObserver(billingClientLifecycle)
         inAppUpdatesService = InAppUpdatesService(this)
 
-        ThemeUtil.theme = ThemePreferenceManager(this).getSavedUserTheme()
+        ThemeUtil.theme = ThemePreferenceUtil(this).getSavedUserTheme()
         val startDestination = getStartDestination()
         val canShowOfferReview = mutableStateOf(ReviewService(applicationContext).needShowOfferReview())
 

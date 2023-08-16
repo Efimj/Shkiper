@@ -143,6 +143,9 @@
     <string name="ItemAlreadyOwned">Этот товар уже куплен</string>
     <string name="CheckInternetConnection">Проверьте подключение к интернету</string>
     <string name="CheckUpdatesGooglePlay">Проверить обновления Google Play</string>
+    <string name="Close">Закрыть</string>
+    <string name="DonateBannerHeader">Нравится Shkiper?</string>
+    <string name="DonateBannerBody">Поддержите разработчика монеткой!</string>
 
     <!-- Statistics components -->
     <string name="Thinker">Мыслитель</string>
@@ -162,8 +165,8 @@
     <string name="NoteDestroyer">Уничтожитель заметок</string>
     <string name="NoteDestroyerDescription">Я породил тебя и уничтожу! «Тарас Бульба»</string>
 
-    <string name="thankForPurchase1">Спасибо, что выбрали наше приложение! Ваша поддержка очень много значит для нас.</string>
-    <string name="thankForPurchase2">Мы ценим вашу поддержку и доверие к нашему приложению. Спасибо за покупку!</string>
-    <string name="thankForPurchase3">Ваша поддержка — лучшая награда для нас. Спасибо за покупку в нашем приложении!</string>
+    <string name="ThankForPurchase1">Спасибо, что выбрали наше приложение! Ваша поддержка очень много значит для нас.</string>
+    <string name="ThankForPurchase2">Мы ценим вашу поддержку и доверие к нашему приложению. Спасибо за покупку!</string>
+    <string name="ThankForPurchase3">Ваша поддержка — лучшая награда для нас. Спасибо за покупку в нашем приложении!</string>
 
 </resources>

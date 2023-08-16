@@ -23,6 +23,7 @@ import com.jobik.shkiper.navigation.AppScreens
 import com.jobik.shkiper.navigation.Argument_Note_Position
 import com.jobik.shkiper.util.SnackbarHostUtil
 import com.jobik.shkiper.util.SnackbarVisualsCustom
+import com.jobik.shkiper.util.SupportTheDeveloperBannerUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

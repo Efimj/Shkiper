@@ -144,6 +144,9 @@
     <string name="ItemAlreadyOwned">Цей товар вже придбано</string>
     <string name="CheckInternetConnection">Перевірте підключення до Інтернету</string>
     <string name="CheckUpdatesGooglePlay">Перевірити оновлення Google Play</string>
+    <string name="Close">Закрити</string>
+    <string name="DonateBannerHeader">Подобається Shkiper?</string>
+    <string name="DonateBannerBody">Підтримайте розробника монетою!</string>
 
     <!-- Statistics components -->
     <string name="Thinker">Міркуючий</string>

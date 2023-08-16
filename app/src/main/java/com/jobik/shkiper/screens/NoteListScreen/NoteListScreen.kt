@@ -15,6 +15,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -22,6 +23,7 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
@@ -35,17 +37,16 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.jobik.shkiper.R
 import com.jobik.shkiper.navigation.AppScreens
 import com.jobik.shkiper.ui.components.cards.NoteCard
-import com.jobik.shkiper.ui.components.layouts.LazyGridNotes
 import com.jobik.shkiper.ui.theme.CustomAppTheme
 import kotlin.math.roundToInt
 import com.jobik.shkiper.ui.components.buttons.CreateNoteButton
 import com.jobik.shkiper.ui.components.buttons.HashtagButton
-import com.jobik.shkiper.ui.components.layouts.ScreenContentIfNoData
-import com.jobik.shkiper.ui.components.layouts.CustomTopAppBar
-import com.jobik.shkiper.ui.components.layouts.TopAppBarItem
 import com.jobik.shkiper.ui.components.modals.CreateReminderDialog
 import com.jobik.shkiper.ui.components.modals.ReminderDialogProperties
 import com.jobik.shkiper.ViewModels.NotesViewModel
+import com.jobik.shkiper.ui.components.cards.DonateBanner
+import com.jobik.shkiper.ui.components.layouts.*
+import com.jobik.shkiper.util.SupportTheDeveloperBannerUtil
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -162,21 +163,25 @@ private fun ScreenContent(
         gridState = lazyGridNotes
     ) {
         item(span = StaggeredGridItemSpan.FullLine) {
-            LazyRow(
-                modifier = Modifier.wrapContentSize(unbounded = true)
-                    .width(LocalConfiguration.current.screenWidthDp.dp),
-                state = rememberLazyListState(),
-                contentPadding = PaddingValues(10.dp, 0.dp, 10.dp, 0.dp)
-            ) {
-                items(items = notesViewModel.screenState.value.hashtags.toList()) { item ->
-                    HashtagButton(item, item == notesViewModel.screenState.value.currentHashtag) {
-                        notesViewModel.setCurrentHashtag(
-                            item
-                        )
+            BannerList(navController)
+        }
+        if (notesViewModel.screenState.value.hashtags.isNotEmpty())
+            item(span = StaggeredGridItemSpan.FullLine) {
+                LazyRow(
+                    modifier = Modifier.wrapContentSize(unbounded = true)
+                        .width(LocalConfiguration.current.screenWidthDp.dp),
+                    state = rememberLazyListState(),
+                    contentPadding = PaddingValues(10.dp, 0.dp, 10.dp, 0.dp)
+                ) {
+                    items(items = notesViewModel.screenState.value.hashtags.toList()) { item ->
+                        HashtagButton(item, item == notesViewModel.screenState.value.currentHashtag) {
+                            notesViewModel.setCurrentHashtag(
+                                item
+                            )
+                        }
                     }
                 }
             }
-        }
         if (pinnedNotes.isNotEmpty()) {
             item(span = StaggeredGridItemSpan.FullLine) {
                 Column {

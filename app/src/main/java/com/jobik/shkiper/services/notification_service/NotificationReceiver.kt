@@ -11,7 +11,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.core.app.NotificationCompat
 import com.jobik.shkiper.SharedPreferencesKeys
 import com.jobik.shkiper.activity.MainActivity
-import com.jobik.shkiper.app_handlers.ThemePreferenceManager
+import com.jobik.shkiper.util.ThemePreferenceUtil
 import com.jobik.shkiper.database.models.RepeatMode
 import com.jobik.shkiper.services.statistics_service.StatisticsService
 import com.jobik.shkiper.util.ThemeUtil
@@ -47,7 +47,7 @@ class NotificationReceiver : BroadcastReceiver() {
     private fun sendNotification(intent: Intent, context: Context) {
         val requestCode = intent.getIntExtra("requestCode", 0)
         val notification = NotificationStorage(context).getNotification(requestCode) ?: return
-        val savedColors = ThemeUtil.getCurrentColors(ThemePreferenceManager(context).getSavedUserTheme())
+        val savedColors = ThemeUtil.getCurrentColors(ThemePreferenceUtil(context).getSavedUserTheme())
 
         // Create an Intent for the activity you want to start
         val mainIntent = Intent(context, MainActivity::class.java)

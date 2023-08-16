@@ -143,6 +143,9 @@
     <string name="ItemAlreadyOwned">This product has already been purchased</string>
     <string name="CheckInternetConnection">Check internet connection</string>
     <string name="CheckUpdatesGooglePlay">Check updates Google Play</string>
+    <string name="Close">Close</string>
+    <string name="DonateBannerHeader">Did you like the Shkiper?</string>
+    <string name="DonateBannerBody">Support the developer with a coin!</string>
 
     <!--    Statistics components   -->
     <string name="Thinker">Thinker</string>

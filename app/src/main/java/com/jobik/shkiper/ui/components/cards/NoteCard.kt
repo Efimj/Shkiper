@@ -42,7 +42,7 @@ fun NoteCard(
     onLongClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
-    val headerStyle = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Bold, fontSize = 18.sp)
+    val headerStyle = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.SemiBold, fontSize = 18.sp)
     val bodyStyle = MaterialTheme.typography.body1
     val multipleEventsCutter = remember { MultipleEventsCutter.get() }
 
@@ -145,7 +145,7 @@ private fun NoteContent(header: String?, text: String?, headerStyle: TextStyle, 
         )
     }
     if (!text.isNullOrEmpty() && !header.isNullOrEmpty())
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(4.dp))
     if (!text.isNullOrEmpty()) {
         Text(
             text = text,

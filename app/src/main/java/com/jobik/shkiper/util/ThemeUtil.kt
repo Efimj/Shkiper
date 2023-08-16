@@ -3,7 +3,6 @@ package com.jobik.shkiper.util
 import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.*
-import com.jobik.shkiper.app_handlers.ThemePreferenceManager
 import com.jobik.shkiper.ui.theme.ColorThemes
 import com.jobik.shkiper.ui.theme.ExtendedColors
 import com.jobik.shkiper.ui.theme.UserTheme
@@ -44,8 +43,8 @@ object ThemeUtil {
     }
 
     private fun saveTheme(context: Context) {
-        val themePreferenceManager = ThemePreferenceManager(context)
-        themePreferenceManager.saveTheme(
+        val themePreferenceUtil = ThemePreferenceUtil(context)
+        themePreferenceUtil.saveTheme(
             UserTheme(
                 _theme.isDarkTheme,
                 _theme.darkThemeName,
