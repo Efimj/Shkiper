@@ -12,6 +12,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
@@ -24,6 +25,7 @@ import com.jobik.shkiper.ui.components.cards.StatisticsCard
 import com.jobik.shkiper.ui.components.modals.StatisticsInformationDialog
 import com.jobik.shkiper.ui.theme.CustomAppTheme
 import com.jobik.shkiper.R
+import com.jobik.shkiper.ui.components.layouts.ScreenWrapper
 
 @Composable
 fun StatisticsScreen() {
@@ -31,21 +33,16 @@ fun StatisticsScreen() {
     val statistics = remember { StatisticsService(context).appStatistics.getStatisticsPreviews() }
     val openedStatistics = remember { mutableStateOf<StatisticsItem?>(null) }
 
-    val isPortrait = LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT
-    val lazyVerticalGridCellsMode: GridCells = remember {
-        if (isPortrait) GridCells.Fixed(3) else GridCells.Adaptive(128.dp)
-    }
-
-    Column(Modifier.fillMaxSize()) {
+    ScreenWrapper{
         LazyVerticalGrid(
-            columns = lazyVerticalGridCellsMode,
+            columns = GridCells.Fixed(3),
             contentPadding = PaddingValues(5.dp)
         ) {
             item(span = {
                 GridItemSpan(maxLineSpan)
             }) {
                 Row(
-                    modifier = Modifier.padding(top = 75.dp, bottom = 8.dp),
+                    modifier = Modifier.padding(top = 80.dp, bottom = 8.dp),
                     horizontalArrangement = Arrangement.Center
                 ) {
                     Text(

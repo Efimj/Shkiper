@@ -28,9 +28,11 @@ import com.jobik.shkiper.services.billing_service.AppProducts
 import com.jobik.shkiper.ui.components.cards.PurchaseCard
 import com.jobik.shkiper.ui.components.cards.PurchaseCardContent
 import com.jobik.shkiper.ui.components.layouts.ScreenContentIfNoData
+import com.jobik.shkiper.ui.components.layouts.ScreenWrapper
 import com.jobik.shkiper.ui.components.modals.ImageActionDialog
 import com.jobik.shkiper.ui.components.modals.ImageActionDialogButton
 import com.jobik.shkiper.ui.theme.CustomAppTheme
+import kotlin.random.Random
 
 @Composable
 fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
@@ -39,26 +41,26 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
     val isNetworkActive =
         remember { connectivityManager.activeNetworkInfo != null && connectivityManager.activeNetworkInfo!!.isConnected }
 
-    if (purchaseViewModel.screenState.value.showGratitude)
+    if (purchaseViewModel.screenState.value.showGratitude) {
+        val stringResources = listOf(R.string.ThankForPurchase1, R.string.ThankForPurchase2, R.string.ThankForPurchase3)
         ImageActionDialog(
-            image = R.drawable.two_phones_preview,
-            header = "Thenks",
+            header = stringResource(stringResources[Random.nextInt(stringResources.size)]),
             onGoBack = {},
             confirmButton = ImageActionDialogButton(
-                text = "sd",
                 icon = Icons.Default.Favorite,
                 isActive = true,
                 onClick = purchaseViewModel::hideCompletedPurchase
             )
         )
+    }
 
     if (!isNetworkActive)
         ScreenContentIfNoData(R.string.CheckInternetConnection, Icons.Outlined.SignalWifiOff)
     else if (purchaseViewModel.screenState.value.purchases.isEmpty() && purchaseViewModel.screenState.value.subscriptions.isEmpty())
         ScreenContentIfNoData(R.string.CheckUpdatesGooglePlay, Icons.Default.Shop)
     else
-        ColumnForItems {
-            Column(modifier = Modifier.fillMaxWidth().padding(top = 85.dp, bottom = 10.dp)) {
+        ScreenWrapper(modifier = Modifier.verticalScroll(rememberScrollState()).padding(top = 85.dp, bottom = 30.dp)) {
+            Column(modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp)) {
                 Text(
                     stringResource(R.string.PurchaseScreenTitle),
                     color = CustomAppTheme.colors.text,
@@ -152,19 +154,4 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
                         }
             }
         }
-}
-
-@Composable
-private fun ColumnForItems(content: @Composable () -> Unit) {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Column(
-            modifier = Modifier.widthIn(max = 550.dp).verticalScroll(rememberScrollState()).padding(bottom = 30.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            content()
-        }
-    }
 }

@@ -215,7 +215,7 @@ private fun SettingsColorThemePicker(settingsViewModel: SettingsViewModel) {
 @Composable
 private fun SettingsItemGroup(columnScope: @Composable ColumnScope.() -> Unit) {
     Column(
-        Modifier.padding(horizontal = 20.dp),
+        modifier = Modifier.padding(horizontal = 20.dp).widthIn(max = 500.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(Modifier.height(10.dp))

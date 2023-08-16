@@ -48,7 +48,7 @@ fun ImageActionDialog(
             image?.let { image ->
                 Row(
                     modifier = Modifier.fillMaxWidth().height(210.dp)
-                        .padding(vertical = 20.dp),
+                        .padding(top = 20.dp),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
                 ) {
@@ -61,7 +61,7 @@ fun ImageActionDialog(
                 }
             }
             Column(
-                modifier = Modifier.padding(top = 10.dp).padding(horizontal = 20.dp),
+                modifier = Modifier.padding(top = 20.dp).padding(horizontal = 20.dp),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
