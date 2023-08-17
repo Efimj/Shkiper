@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Shkiper</string>
-
     <!--    Repeating   -->
     <string name="none">Не повторять</string>
     <string name="daily">Каждый день</string>
@@ -149,6 +147,9 @@
     <string name="AboutNotepad">Про Shkiper</string>
     <string name="Support">Поддержать</string>
     <string name="AboutAppDescription">Создавайте, организовывайте и запоминайте. Ваш идеальный спутник для дел, заметок и напоминаний – простой, красивый и всегда под рукой.</string>
+    <string name="Contact">Связаться</string>
+    <string name="ChooseEmailClient">Выберите почтовый клиент:</string>
+    <string name="DevMailHeader">Привет Ефим</string>
 
     <!-- Statistics components -->
     <string name="Thinker">Мыслитель</string>
@@ -171,5 +172,8 @@
     <string name="ThankForPurchase1">Спасибо, что выбрали наше приложение! Ваша поддержка очень много значит для нас.</string>
     <string name="ThankForPurchase2">Мы ценим вашу поддержку и доверие к нашему приложению. Спасибо за покупку!</string>
     <string name="ThankForPurchase3">Ваша поддержка — лучшая награда для нас. Спасибо за покупку в нашем приложении!</string>
+
+    <string name="Efim">Ефим</string>
+    <string name="EfimDescription">Android/Web и еще..</string>
 
 </resources>
