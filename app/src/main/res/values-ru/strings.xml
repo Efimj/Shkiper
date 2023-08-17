@@ -146,6 +146,9 @@
     <string name="Close">Закрыть</string>
     <string name="DonateBannerHeader">Нравится Shkiper?</string>
     <string name="DonateBannerBody">Поддержите разработчика монеткой!</string>
+    <string name="AboutNotepad">Про Shkiper</string>
+    <string name="Support">Поддержать</string>
+    <string name="AboutAppDescription">Создавайте, организовывайте и запоминайте. Ваш идеальный спутник для дел, заметок и напоминаний – простой, красивый и всегда под рукой.</string>
 
     <!-- Statistics components -->
     <string name="Thinker">Мыслитель</string>

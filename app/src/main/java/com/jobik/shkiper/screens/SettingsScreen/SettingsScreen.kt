@@ -120,10 +120,30 @@ fun SettingsScreen(navController: NavController, settingsViewModel: SettingsView
             )
             Spacer(Modifier.height(8.dp))
             SettingsItem(
+                stringResource(R.string.AboutNotepad),
+                stringResource(R.string.Show),
+                Icons.Outlined.Info
+            ) { navController.navigate(AppScreens.AboutNotepad.route) }
+            SettingsItem(
                 stringResource(R.string.StatisticsPage),
                 stringResource(R.string.Show),
                 Icons.Outlined.DataUsage
             ) { navController.navigate(AppScreens.Statistics.route) }
+            SettingsItem(
+                stringResource(R.string.OnboardingPage),
+                stringResource(R.string.Open),
+                Icons.Outlined.ViewCarousel
+            ) { navController.navigate(AppScreens.Onboarding.route) }
+        }
+        SettingsItemGroup {
+            Text(
+                color = CustomAppTheme.colors.text,
+                text = stringResource(R.string.Support),
+                fontWeight = FontWeight.SemiBold,
+                fontSize = 20.sp,
+                style = MaterialTheme.typography.body1,
+            )
+            Spacer(Modifier.height(8.dp))
             SettingsItem(
                 stringResource(R.string.RateTheApp),
                 stringResource(R.string.Open),
@@ -134,12 +154,6 @@ fun SettingsScreen(navController: NavController, settingsViewModel: SettingsView
                 stringResource(R.string.Donate),
                 Icons.Outlined.LocalMall
             ) { navController.navigate(AppScreens.Purchases.route) }
-            SettingsItem(
-                stringResource(R.string.OnboardingPage),
-                stringResource(R.string.Open),
-                Icons.Outlined.ViewCarousel
-            ) { navController.navigate(AppScreens.Onboarding.route) }
-
         }
         SettingsItemGroup {
             Text(

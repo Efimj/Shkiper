@@ -18,6 +18,7 @@ import com.jobik.shkiper.screens.SettingsScreen.SettingsScreen
 import com.jobik.shkiper.screens.StatisticsScreen.StatisticsScreen
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
+import com.jobik.shkiper.screens.AboutNotepadScreen.AboutNotepadScreen
 import com.jobik.shkiper.screens.PurchaseScreen.PurchaseScreen
 
 
@@ -143,5 +144,11 @@ fun SetupAppScreenNavGraph(
             enterTransition = { fadeIn() + slideInHorizontally() },
             exitTransition = { fadeOut() + slideOutHorizontally() }
         ) { PurchaseScreen() }
+
+        composable(
+            route = AppScreens.AboutNotepad.route,
+            enterTransition = { fadeIn() + slideInHorizontally() },
+            exitTransition = { fadeOut() + slideOutHorizontally() }
+        ) { AboutNotepadScreen() }
     }
 }

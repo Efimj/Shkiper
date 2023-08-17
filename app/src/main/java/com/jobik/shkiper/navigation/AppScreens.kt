@@ -31,14 +31,14 @@ sealed class AppScreens(val route: String) {
 
     object Settings : AppScreens(route = "settings")
     object Statistics : AppScreens(route = "statistics")
-
+    object AboutNotepad : AppScreens(route = "about_notepad")
     object Purchases : AppScreens(route = "purchases")
 
     /**
      * This routes not show navigation button
      */
     object SecondaryRoutes {
-        val secondaryRoutes = listOf(Onboarding, Note, Statistics, Purchases)
+        val secondaryRoutes = listOf(Onboarding, Note, Statistics, Purchases, AboutNotepad)
         fun isSecondaryRoute(route: String): Boolean {
             return secondaryRoutes.any { it.route.substringBefore("/") == route }
         }
