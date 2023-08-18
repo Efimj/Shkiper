@@ -52,6 +52,8 @@
     <string name="RemindersDescription">Напоминания позволяют запланировать уведомление о важном событии в указанный
         день и время с выбранным интервалом.
     </string>
+    <string name="Themes">Темы</string>
+    <string name="ThemesDescription">Выберите цветовую тему, которая вам больше всего нравится.</string>
 
     <!--    Nate page   -->
     <string name="Header">Заголовок</string>

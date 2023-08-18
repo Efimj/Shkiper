@@ -30,8 +30,14 @@ sealed class OnBoardingPage(
         description = R.string.RemindersDescription
     )
 
+    object Themes : OnBoardingPage(
+        image = R.drawable.onboarding_themes,
+        title = R.string.Themes,
+        description = R.string.ThemesDescription
+    )
+
     object PageList {
-        val PageList = listOf(Greetings, Hashtags, Reminders)
+        val PageList = listOf(Greetings, Hashtags, Reminders, Themes)
         val Count = PageList.size
     }
 }

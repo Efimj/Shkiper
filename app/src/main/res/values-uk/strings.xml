@@ -53,6 +53,8 @@
     <string name="RemindersDescription">Нагадування дозволяють запланувати повідомлення про важливу подію у вказаний
         день та час з вибраним інтервалом.
     </string>
+    <string name="Themes">Теми</string>
+    <string name="ThemesDescription">Виберіть кольорову тему, яка особисто вам подобається найбільше.</string>
 
     <!--    Nate page   -->
     <string name="Header">Заголовок</string>

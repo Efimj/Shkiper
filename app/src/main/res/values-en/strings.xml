@@ -52,6 +52,8 @@
     <string name="RemindersDescription">Reminders allow you to schedule a notification for an important event on a
         specified day and time, with a chosen interval.
     </string>
+    <string name="Themes">Themes</string>
+    <string name="ThemesDescription">Choose the color theme that you personally like the most.</string>
 
     <!--    Nate page   -->
     <string name="Header">Header</string>
