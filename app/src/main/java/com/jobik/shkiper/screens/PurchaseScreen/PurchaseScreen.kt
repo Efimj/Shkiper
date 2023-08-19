@@ -13,6 +13,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Shop
 import androidx.compose.material.icons.outlined.SignalWifiOff
+import androidx.compose.material.icons.outlined.TaskAlt
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -63,7 +65,7 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
         ScreenContentIfNoData(R.string.CheckUpdatesGooglePlay, Icons.Default.Shop)
     else
         ScreenWrapper(modifier = Modifier.verticalScroll(rememberScrollState()).padding(top = 85.dp, bottom = 30.dp)) {
-            Column(modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp)) {
+            Column(modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp)) {
                 Text(
                     stringResource(R.string.PurchaseScreenTitle),
                     color = CustomAppTheme.colors.text,
@@ -126,15 +128,28 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
                             }
                         }
             }
+            Spacer(Modifier.height(4.dp))
             purchaseViewModel.screenState.value.subscription?.let { productDetails ->
-                Text(
-                    stringResource(R.string.BuySubscription),
-                    color = CustomAppTheme.colors.text,
-                    style = MaterialTheme.typography.h6,
-                    textAlign = TextAlign.Left,
-                    modifier = Modifier.padding(horizontal = 20.dp).padding(bottom = 4.dp).padding(top = 12.dp)
-                        .fillMaxWidth()
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.padding(horizontal = 20.dp).fillMaxWidth()
+                ) {
+                    Text(
+                        stringResource(R.string.BuySubscription),
+                        color = CustomAppTheme.colors.text,
+                        style = MaterialTheme.typography.h6,
+                        textAlign = TextAlign.Left,
+                        modifier = Modifier.padding(bottom = 4.dp)
+                            .padding(top = 12.dp)
+                    )
+                    Spacer(Modifier.width(8.dp))
+                    if (purchaseViewModel.checkIsProductPurchased(productDetails.productId))
+                        Icon(
+                            imageVector = Icons.Outlined.TaskAlt,
+                            contentDescription = null,
+                            tint = CustomAppTheme.colors.active,
+                        )
+                }
                 Row(
                     modifier = Modifier.fillMaxWidth().padding(horizontal = 7.dp),
                     horizontalArrangement = Arrangement.Center
@@ -146,7 +161,7 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
                                     TitlePurchaseCardContent(
                                         titleRes = R.string.Monthly,
                                         imageRes = R.drawable.ic_notification,
-                                        isPurchased = purchaseViewModel.checkIsProductPurchased(productDetails.productId)
+                                        isPurchased = false
                                     )
                                 ) {
                                     purchaseViewModel.makePurchaseSubscription(
@@ -164,7 +179,7 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
                                     TitlePurchaseCardContent(
                                         titleRes = R.string.Annually,
                                         imageRes = R.drawable.ic_notification,
-                                        isPurchased = purchaseViewModel.checkIsProductPurchased(productDetails.productId)
+                                        isPurchased = false
                                     )
                                 ) {
                                     purchaseViewModel.makePurchaseSubscription(
