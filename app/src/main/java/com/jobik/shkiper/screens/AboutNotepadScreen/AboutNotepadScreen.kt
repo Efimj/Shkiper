@@ -1,11 +1,9 @@
 package com.jobik.shkiper.screens.AboutNotepadScreen
 
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material3.IconButton
@@ -57,7 +55,7 @@ fun AboutNotepadScreen() {
         Column(modifier = Modifier, horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
                 text = stringResource(R.string.app_name),
-                color = CustomAppTheme.colors.text,
+                color = CustomAppTheme.colors.active,
                 style = MaterialTheme.typography.h6.copy(fontSize = 28.sp, fontWeight = FontWeight.SemiBold),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -95,7 +93,10 @@ private fun UserCard() {
     val emailHeader = stringResource(R.string.DevMailHeader)
 
     Column(
-        modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(10.dp)),
+        modifier = Modifier.fillMaxWidth()
+            .background(CustomAppTheme.colors.secondaryBackground, RoundedCornerShape(15.dp))
+            .border(BorderStroke(width = 1.dp, color = CustomAppTheme.colors.stroke), RoundedCornerShape(15.dp))
+            .clip(RoundedCornerShape(15.dp)).padding(8.dp),
         verticalArrangement = Arrangement.Center
     ) {
         Row(
