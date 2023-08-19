@@ -124,12 +124,14 @@
     <string name="NoteUnarchived">Заметка разархивирована</string>
     <string name="NotesMovedToBasket">Заметки перемещены в корзину</string>
     <string name="NotesRestored">Заметки восстановлены</string>
-    <string name="DaysBeforeDeletingNote">Дней до удаления заметки: </string>
+    <string name="DaysBeforeDeletingNote">Дней до удаления заметки:</string>
     <string name="DeleteForever">Удалить навсегда?</string>
     <string name="RateTheApp">Оценить Shkiper</string>
     <string name="Image">Изображение</string>
     <string name="OfferWriteReviewTitle">Нравится Shkiper?</string>
-    <string name="OfferWriteReviewDescription">Если у вас остались несколько минут, пожалуйста, оставьте свой отзыв в Google Play Маркете.</string>
+    <string name="OfferWriteReviewDescription">Если у вас остались несколько минут, пожалуйста, оставьте свой отзыв в
+        Google Play Маркете.
+    </string>
     <string name="Restart">Перезагрузить</string>
     <string name="UpdateDownloaded">Обновление загружено</string>
     <string name="Add">Добавить</string>
@@ -137,7 +139,9 @@
     <string name="Donate">Спонсировать</string>
     <string name="Show">Показать</string>
     <string name="PurchaseScreenTitle">Каждый вклад важен!</string>
-    <string name="PurchaseScreenDescription">Ваша поддержка помогает усовершенствовать наше приложение. Присоединяйтесь к нам – сделайте пожертвование и станьте частью истории Shkiper!</string>
+    <string name="PurchaseScreenDescription">Ваша поддержка помогает усовершенствовать наше приложение. Присоединяйтесь
+        к нам – сделайте пожертвование и станьте частью истории Shkiper!
+    </string>
     <string name="BuyMe">Купить мне</string>
     <string name="BuySubscription">Купить подписку</string>
     <string name="ItemAlreadyOwned">Этот товар уже куплен</string>
@@ -148,7 +152,9 @@
     <string name="DonateBannerBody">Поддержите разработчика монеткой!</string>
     <string name="AboutNotepad">Про Shkiper</string>
     <string name="Support">Поддержать</string>
-    <string name="AboutAppDescription">Создавайте, организовывайте и запоминайте. Ваш идеальный спутник для дел, заметок и напоминаний – простой, красивый и всегда под рукой.</string>
+    <string name="AboutAppDescription">Создавайте, организовывайте и запоминайте. Ваш идеальный спутник для дел, заметок
+        и напоминаний – простой, красивый и всегда под рукой.
+    </string>
     <string name="Contact">Связаться</string>
     <string name="ChooseEmailClient">Выберите почтовый клиент:</string>
     <string name="DevMailHeader">Привет Ефим</string>
@@ -171,11 +177,15 @@
     <string name="NoteDestroyer">Уничтожитель заметок</string>
     <string name="NoteDestroyerDescription">Я породил тебя, я тебя и уничтожу! «Тарас Бульба»</string>
 
-    <string name="ThankForPurchase1">Спасибо, что выбрали наше приложение! Ваша поддержка очень много значит для нас.</string>
+    <string name="ThankForPurchase1">Спасибо, что выбрали наше приложение! Ваша поддержка очень много значит для нас.
+    </string>
     <string name="ThankForPurchase2">Мы ценим вашу поддержку и доверие к нашему приложению. Спасибо за покупку!</string>
-    <string name="ThankForPurchase3">Ваша поддержка — лучшая награда для нас. Спасибо за покупку в нашем приложении!</string>
+    <string name="ThankForPurchase3">Ваша поддержка — лучшая награда для нас. Спасибо за покупку в нашем приложении!
+    </string>
 
     <string name="Efim">Ефим</string>
     <string name="EfimDescription">Android/Web и еще..</string>
+    <string name="Annually">Ежегодно</string>
+    <string name="Monthly">Ежемесячно</string>
 
 </resources>

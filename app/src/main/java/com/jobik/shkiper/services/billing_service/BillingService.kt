@@ -255,23 +255,33 @@ class BillingService private constructor(
 
     fun makePurchase(activity: Activity, productDetails: ProductDetails): BillingResult {
         val productDetailsParamsList =
-            if (productDetails.productType == BillingClient.ProductType.INAPP)
-                listOf(
-                    BillingFlowParams.ProductDetailsParams.newBuilder()
-                        .setProductDetails(productDetails)
-                        .build()
-                )
-            else
-                listOf(
-                    productDetails.subscriptionOfferDetails?.get(0)?.let {
-                        BillingFlowParams.ProductDetailsParams.newBuilder()
-                            .setProductDetails(productDetails)
-                            // to get an offer token, call ProductDetails.subscriptionOfferDetails()
-                            // for a list of offers that are available to the user
-                            .setOfferToken(it.offerToken)
-                            .build()
-                    }
-                )
+            listOf(
+                BillingFlowParams.ProductDetailsParams.newBuilder()
+                    .setProductDetails(productDetails)
+                    .build()
+            )
+
+        val billingFlowParams = BillingFlowParams.newBuilder()
+            .setProductDetailsParamsList(productDetailsParamsList)
+            .build()
+
+        return billingClient.launchBillingFlow(activity, billingFlowParams)
+    }
+
+    fun makePurchaseSubscription(
+        activity: Activity,
+        productDetails: ProductDetails,
+        subscriptionOfferDetails: ProductDetails.SubscriptionOfferDetails
+    ): BillingResult {
+        val productDetailsParamsList =
+            listOf(
+                BillingFlowParams.ProductDetailsParams.newBuilder()
+                    .setProductDetails(productDetails)
+                    // to get an offer token, call ProductDetails.subscriptionOfferDetails()
+                    // for a list of offers that are available to the user
+                    .setOfferToken(subscriptionOfferDetails.offerToken)
+                    .build()
+            )
 
         val billingFlowParams = BillingFlowParams.newBuilder()
             .setProductDetailsParamsList(productDetailsParamsList)

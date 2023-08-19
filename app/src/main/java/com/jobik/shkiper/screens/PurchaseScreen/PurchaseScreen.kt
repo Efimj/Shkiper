@@ -3,6 +3,7 @@ package com.jobik.shkiper.screens.PurchaseScreen
 import android.app.Activity
 import android.content.Context
 import android.net.ConnectivityManager
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -25,8 +26,10 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.jobik.shkiper.R
 import com.jobik.shkiper.services.billing_service.AppProducts
+import com.jobik.shkiper.ui.components.cards.ProductPurchaseCardContent
 import com.jobik.shkiper.ui.components.cards.PurchaseCard
 import com.jobik.shkiper.ui.components.cards.PurchaseCardContent
+import com.jobik.shkiper.ui.components.cards.TitlePurchaseCardContent
 import com.jobik.shkiper.ui.components.layouts.ScreenContentIfNoData
 import com.jobik.shkiper.ui.components.layouts.ScreenWrapper
 import com.jobik.shkiper.ui.components.modals.ImageActionDialog
@@ -56,7 +59,7 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
 
     if (!isNetworkActive)
         ScreenContentIfNoData(R.string.CheckInternetConnection, Icons.Outlined.SignalWifiOff)
-    else if (purchaseViewModel.screenState.value.purchases.isEmpty() && purchaseViewModel.screenState.value.subscriptions.isEmpty())
+    else if (purchaseViewModel.screenState.value.purchases.isEmpty() && purchaseViewModel.screenState.value.subscription != null)
         ScreenContentIfNoData(R.string.CheckUpdatesGooglePlay, Icons.Default.Shop)
     else
         ScreenWrapper(modifier = Modifier.verticalScroll(rememberScrollState()).padding(top = 85.dp, bottom = 30.dp)) {
@@ -91,26 +94,26 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
                 val productList = listOf(
                     purchaseViewModel.screenState.value.purchases.find { it.productId == AppProducts.CupOfTea }
                         ?.let { productDetails ->
-                            PurchaseCardContent(
+                            ProductPurchaseCardContent(
                                 product = productDetails,
-                                image = R.drawable.ic_notification,
+                                imageRes = R.drawable.ic_notification,
                                 isPurchased = purchaseViewModel.checkIsProductPurchased(productDetails.productId)
                             )
                         },
-                    purchaseViewModel.screenState.value.purchases.find { it.productId == AppProducts.PepperoniPizza }
+                    purchaseViewModel.screenState.value.purchases.find { it.productId == AppProducts.SweetsForMyCat }
                         ?.let { productDetails ->
-                            PurchaseCardContent(
+                            ProductPurchaseCardContent(
                                 product = productDetails,
-                                image = R.drawable.ic_notification,
+                                imageRes = R.drawable.ic_notification,
                                 isHighlighted = true,
                                 isPurchased = purchaseViewModel.checkIsProductPurchased(productDetails.productId)
                             )
                         },
-                    purchaseViewModel.screenState.value.purchases.find { it.productId == AppProducts.GymPass }
+                    purchaseViewModel.screenState.value.purchases.find { it.productId == AppProducts.GymMembership }
                         ?.let { productDetails ->
-                            PurchaseCardContent(
+                            ProductPurchaseCardContent(
                                 product = productDetails,
-                                image = R.drawable.ic_notification,
+                                imageRes = R.drawable.ic_notification,
                                 isPurchased = purchaseViewModel.checkIsProductPurchased(productDetails.productId)
                             )
                         }
@@ -123,35 +126,56 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
                             }
                         }
             }
-            Text(
-                stringResource(R.string.BuySubscription),
-                color = CustomAppTheme.colors.text,
-                style = MaterialTheme.typography.h6,
-                textAlign = TextAlign.Left,
-                modifier = Modifier.padding(horizontal = 20.dp).padding(bottom = 4.dp).padding(top = 12.dp)
-                    .fillMaxWidth()
-            )
-            Row(
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 7.dp),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                val productList = listOf(
-                    purchaseViewModel.screenState.value.subscriptions.find { it.productId == AppProducts.Monthly }
-                        ?.let { productDetails ->
-                            PurchaseCardContent(
-                                product = productDetails,
-                                image = R.drawable.ic_notification,
-                                isPurchased = purchaseViewModel.checkIsProductPurchased(productDetails.productId)
-                            )
-                        },
+            purchaseViewModel.screenState.value.subscription?.let { productDetails ->
+                Text(
+                    stringResource(R.string.BuySubscription),
+                    color = CustomAppTheme.colors.text,
+                    style = MaterialTheme.typography.h6,
+                    textAlign = TextAlign.Left,
+                    modifier = Modifier.padding(horizontal = 20.dp).padding(bottom = 4.dp).padding(top = 12.dp)
+                        .fillMaxWidth()
                 )
-                for (product in productList)
-                    if (product != null)
-                        Box(modifier = Modifier.weight(1f).padding(horizontal = 4.dp)) {
-                            PurchaseCard(product) {
-                                purchaseViewModel.makePurchase(product.product, context as Activity)
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 7.dp),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    productDetails.subscriptionOfferDetails?.find { it.basePlanId == AppProducts.Monthly }
+                        ?.let { subscriptionOffer ->
+                            Box(modifier = Modifier.weight(1f).padding(horizontal = 4.dp)) {
+                                PurchaseCard(
+                                    TitlePurchaseCardContent(
+                                        titleRes = R.string.Monthly,
+                                        imageRes = R.drawable.ic_notification,
+                                        isPurchased = purchaseViewModel.checkIsProductPurchased(productDetails.productId)
+                                    )
+                                ) {
+                                    purchaseViewModel.makePurchaseSubscription(
+                                        productDetails,
+                                        subscriptionOffer,
+                                        context as Activity
+                                    )
+                                }
                             }
                         }
+                    productDetails.subscriptionOfferDetails?.find { it.basePlanId == AppProducts.Yearly }
+                        ?.let { subscriptionOffer ->
+                            Box(modifier = Modifier.weight(1f).padding(horizontal = 4.dp)) {
+                                PurchaseCard(
+                                    TitlePurchaseCardContent(
+                                        titleRes = R.string.Annually,
+                                        imageRes = R.drawable.ic_notification,
+                                        isPurchased = purchaseViewModel.checkIsProductPurchased(productDetails.productId)
+                                    )
+                                ) {
+                                    purchaseViewModel.makePurchaseSubscription(
+                                        productDetails,
+                                        subscriptionOffer,
+                                        context as Activity
+                                    )
+                                }
+                            }
+                        }
+                }
             }
         }
 }

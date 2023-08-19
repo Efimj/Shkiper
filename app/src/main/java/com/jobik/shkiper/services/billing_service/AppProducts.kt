@@ -6,18 +6,25 @@ import androidx.annotation.Keep
 object AppProducts {
     //Product IDs
     const val CupOfTea = "cup_of_tea"
-    const val PepperoniPizza = "pepperoni_pizza"
-    const val GymPass = "gym_pass"
+    const val SweetsForMyCat = "sweets_for_my_cat"
+    const val GymMembership = "gym_membership"
 
     //Subscriptions IDs
-    const val Monthly = "monthly_subscription"
+    const val SimpleSubscription = "simple_subscription"
+    const val Monthly = "simple-monthly"
+    const val Yearly = "simple-yearly"
 
     val ListOfProducts = listOf(
         CupOfTea,
-        GymPass,
-        PepperoniPizza
+        SweetsForMyCat,
+        GymMembership
     )
     val ListOfSubscriptions = listOf(
-        Monthly
+        SimpleSubscription,
+    )
+
+    val ListOfSubscriptionsPlans = listOf(
+        Monthly,
+        Yearly
     )
 }

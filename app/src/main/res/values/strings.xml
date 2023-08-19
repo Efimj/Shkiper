@@ -180,5 +180,7 @@
 
     <string name="Efim">Efim</string>
     <string name="EfimDescription">Android/Web and more..</string>
+    <string name="Annually">Annually</string>
+    <string name="Monthly">Monthly</string>
 
 </resources>

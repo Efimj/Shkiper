@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.billingclient.api.*
 import com.android.billingclient.api.BillingClient.BillingResponseCode
+import com.android.billingclient.api.ProductDetails.SubscriptionOfferDetails
 import com.jobik.shkiper.NotepadApplication
 import com.jobik.shkiper.R
 import com.jobik.shkiper.services.billing_service.PurchaseCallback
@@ -24,7 +25,7 @@ import javax.inject.Inject
 
 data class PurchaseScreenState(
     val purchases: List<ProductDetails> = emptyList(),
-    val subscriptions: List<ProductDetails> = emptyList(),
+    val subscription: ProductDetails? = null,
     val showGratitude: Boolean = false,
 )
 
@@ -39,7 +40,7 @@ class PurchaseViewModel @Inject constructor(
     init {
         _screenState.value = _screenState.value.copy(
             purchases = billingClient.productDetails.value,
-            subscriptions = billingClient.subscriptionsDetails.value,
+            subscription = if (billingClient.subscriptionsDetails.value.isNotEmpty()) billingClient.subscriptionsDetails.value.first() else null,
         )
         billingClient.registerPurchaseCallback(this)
     }
@@ -85,6 +86,14 @@ class PurchaseViewModel @Inject constructor(
 
     fun makePurchase(productDetails: ProductDetails, activity: Activity) {
         val billingResult = billingClient.makePurchase(activity, productDetails)
+    }
+
+    fun makePurchaseSubscription(
+        productDetails: ProductDetails,
+        subscriptionOfferDetails: SubscriptionOfferDetails,
+        activity: Activity
+    ) {
+        val billingResult = billingClient.makePurchaseSubscription(activity, productDetails, subscriptionOfferDetails)
     }
 
     fun checkIsProductPurchased(productId: String): Boolean {

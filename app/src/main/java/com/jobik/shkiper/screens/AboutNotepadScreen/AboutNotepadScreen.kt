@@ -73,7 +73,7 @@ fun AboutNotepadScreen() {
                 textAlign = TextAlign.Center,
             )
         }
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(16.dp))
         Column {
             Text(
                 text = stringResource(R.string.Contact),

@@ -7,11 +7,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
-import androidx.compose.material3.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.TaskAlt
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -30,13 +30,25 @@ import com.jobik.shkiper.ui.helpers.get
 import com.jobik.shkiper.ui.modifiers.bounceClick
 import com.jobik.shkiper.ui.theme.CustomAppTheme
 
-data class PurchaseCardContent(
+sealed class PurchaseCardContent {
+    abstract val imageRes: Int
+    abstract val isPurchased: Boolean
+    abstract val isHighlighted: Boolean
+}
+
+data class ProductPurchaseCardContent(
     val product: ProductDetails,
-    @DrawableRes
-    val image: Int,
-    val isPurchased: Boolean = false,
-    val isHighlighted: Boolean = false,
-)
+    override val imageRes: Int,
+    override val isPurchased: Boolean = false,
+    override val isHighlighted: Boolean = false,
+) : PurchaseCardContent()
+
+data class TitlePurchaseCardContent(
+    val titleRes: Int,
+    override val imageRes: Int,
+    override val isPurchased: Boolean = false,
+    override val isHighlighted: Boolean = false,
+) : PurchaseCardContent()
 
 @Composable
 fun PurchaseCard(purchaseCardContent: PurchaseCardContent, onClick: () -> Unit) {
@@ -77,7 +89,7 @@ fun PurchaseCard(purchaseCardContent: PurchaseCardContent, onClick: () -> Unit) 
             ) {
                 Image(
                     modifier = Modifier.height(75.dp).fillMaxWidth(),
-                    painter = painterResource(id = purchaseCardContent.image),
+                    painter = painterResource(id = purchaseCardContent.imageRes),
                     contentDescription = stringResource(R.string.StatisticsImage),
                     contentScale = ContentScale.Fit
                 )
@@ -86,8 +98,12 @@ fun PurchaseCard(purchaseCardContent: PurchaseCardContent, onClick: () -> Unit) 
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
                 ) {
+                    val title = when (purchaseCardContent) {
+                        is ProductPurchaseCardContent -> purchaseCardContent.product.name
+                        is TitlePurchaseCardContent -> stringResource(purchaseCardContent.titleRes)
+                    }
                     Text(
-                        text = purchaseCardContent.product.name,
+                        text = title,
                         color = CustomAppTheme.colors.text,
                         style = MaterialTheme.typography.body1.copy(fontSize = 14.sp),
                         textAlign = TextAlign.Center,

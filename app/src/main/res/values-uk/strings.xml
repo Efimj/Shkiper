@@ -178,5 +178,7 @@
 
     <string name="Efim">Юхим</string>
     <string name="EfimDescription">Android/Web й більше..</string>
+    <string name="Annually">Щорічно</string>
+    <string name="Monthly">Щомісяця</string>
 
 </resources>
