@@ -106,7 +106,7 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
                         ?.let { productDetails ->
                             ProductPurchaseCardContent(
                                 product = productDetails,
-                                imageRes = R.drawable.ic_notification,
+                                imageRes = R.drawable.photo_my_favorite_cat,
                                 isHighlighted = true,
                                 isPurchased = purchaseViewModel.checkIsProductPurchased(productDetails.productId)
                             )
