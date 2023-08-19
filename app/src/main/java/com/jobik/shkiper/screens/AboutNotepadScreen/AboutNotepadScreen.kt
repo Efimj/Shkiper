@@ -1,7 +1,5 @@
 package com.jobik.shkiper.screens.AboutNotepadScreen
 
-import android.content.Context
-import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -50,7 +48,7 @@ fun AboutNotepadScreen() {
     ) {
         Row(modifier = Modifier.padding(bottom = 10.dp), horizontalArrangement = Arrangement.Center) {
             Image(
-                modifier = Modifier.widthIn(max = 120.dp),
+                modifier = Modifier.widthIn(max = 100.dp),
                 painter = painterResource(id = R.drawable.ic_app),
                 contentDescription = stringResource(R.string.Image),
                 contentScale = ContentScale.Fit
@@ -60,7 +58,7 @@ fun AboutNotepadScreen() {
             Text(
                 text = stringResource(R.string.app_name),
                 color = CustomAppTheme.colors.text,
-                style = MaterialTheme.typography.h6.copy(fontSize = 25.sp, fontWeight = FontWeight.SemiBold),
+                style = MaterialTheme.typography.h6.copy(fontSize = 28.sp, fontWeight = FontWeight.SemiBold),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.padding(bottom = 5.dp)
@@ -81,9 +79,10 @@ fun AboutNotepadScreen() {
                 style = MaterialTheme.typography.h6,
                 overflow = TextOverflow.Ellipsis,
                 textAlign = TextAlign.Center,
+                fontWeight = FontWeight.SemiBold,
                 maxLines = 1
             )
-            Spacer(modifier = Modifier.height(2.dp))
+            Spacer(modifier = Modifier.height(5.dp))
             UserCard()
         }
     }
@@ -104,9 +103,9 @@ private fun UserCard() {
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Image(
-                painter = painterResource(id = R.drawable.onboarding_first),
+                painter = painterResource(id = R.drawable.photo_my_favorite_cat),
                 modifier = Modifier.widthIn(max = 60.dp).clip(RoundedCornerShape(15.dp)),
-                contentDescription = stringResource(R.string.Image),
+                contentDescription = stringResource(R.string.DevMailHeader),
                 contentScale = ContentScale.Fit
             )
             Spacer(modifier = Modifier.width(10.dp))
