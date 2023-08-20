@@ -34,17 +34,17 @@ fun StatisticsInformationDialog(
                 .padding(vertical = 20.dp).height(340.dp)
         ) {
             Column(
-                modifier = Modifier.padding(10.dp).fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Image(
-                    modifier = Modifier.height(170.dp).padding(vertical = 15.dp),
+                    modifier = Modifier.weight(.65f).padding(vertical = 15.dp),
                     painter = painterResource(id = statistics.image),
                     contentDescription = stringResource(R.string.StatisticsImage),
-                    contentScale = ContentScale.Fit
+                    contentScale = ContentScale.Crop
                 )
                 Column(
-                    modifier = Modifier.fillMaxSize().padding(horizontal = 25.dp),
+                    modifier = Modifier.weight(.45f).padding(horizontal = 25.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center,
                 ) {
