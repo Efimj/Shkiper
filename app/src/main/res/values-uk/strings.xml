@@ -152,22 +152,22 @@
     <string name="DevMailHeader">Привіт Юхим</string>
 
     <!-- Statistics components -->
-    <string name="Thinker">Міркуючий</string>
-    <string name="ThinkerDescription">Кількість відкриттів блокнота</string>
+    <string name="Thinker">Мислитель</string>
+    <string name="ThinkerDescription">Кількість відкриттів Shkiper</string>
     <string name="Creator">Творець</string>
     <string name="CreatorDescription">Кількість створених нотаток</string>
-    <string name="Eternal">Вічний</string>
-    <string name="EternalDescription">Не хочеш забути? Створи нагадування</string>
-    <string name="Remembered">Пам\'ятаючий</string>
-    <string name="RememberedDescription">\"Дорогий, ти нічого не забув?\" - \"Ні\"</string>
+    <string name="Eternal">Пунктуальність</string>
+    <string name="EternalDescription">Не хочеш забути? Створи нагадування. Кількість створених нагадувань</string>
+    <string name="Remembered">Завжди в курсі</string>
+    <string name="RememberedDescription">\"Дорогий, ти нічого не забув?\" - \"Ні.\" Кількість отриманих сповіщень</string>
     <string name="FirstAppOpenDate">Перше відкриття</string>
-    <string name="FirstAppOpenDateDescription">Дата першого відкриття програми</string>
-    <string name="Pioneer">Першопрохідник</string>
+    <string name="FirstAppOpenDateDescription">Дата першого відкриття Shkiper</string>
+    <string name="Pioneer">Першопрохідець</string>
     <string name="PioneerDescription">Встановити додаток до 01–01–2024</string>
     <string name="TruthSeeker">Шукач істини</string>
-    <string name="TruthSeekerDescription">Відкрити сторінку програми</string>
+    <string name="TruthSeekerDescription">Відкрити сторінку про додаток</string>
     <string name="NoteDestroyer">Знищувач нотаток</string>
-    <string name="NoteDestroyerDescription">Я породив тебе, я тебе і знищу! "Тарас Бульба"</string>
+    <string name="NoteDestroyerDescription">Я тебе породив, я тебе й знищу! «Тарас Бульба». Кількість видалених нотаток</string>
 
     <string name="ThankForPurchase1">Дякуємо, що вибрали нашу програму! Ваша підтримка дуже важлива для нас.</string>
     <string name="ThankForPurchase2">Ми цінуємо вашу підтримку та довіру до нашого додатка. Дякуємо за покупку!</string>

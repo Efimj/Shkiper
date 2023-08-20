@@ -158,21 +158,21 @@
 
     <!-- Statistics components -->
     <string name="Thinker">Мыслитель</string>
-    <string name="ThinkerDescription">Количество открытий блокнота</string>
-    <string name="Creator">Создатель</string>
+    <string name="ThinkerDescription">Количество открытий Shkiper</string>
+    <string name="Creator">Творец</string>
     <string name="CreatorDescription">Количество созданных заметок</string>
-    <string name="Eternal">Вечный</string>
-    <string name="EternalDescription">Не хочешь забыть? Создай напоминание</string>
-    <string name="Remembered">Помнящий</string>
-    <string name="RememberedDescription">\"Дорогой, ты ничего не забыл?\" - \"Нет\"</string>
+    <string name="Eternal">Пунктуальность</string>
+    <string name="EternalDescription">Не хочешь забыть? Создай напоминание. Количество созданных напоминаний</string>
+    <string name="Remembered">Всегда в курсе</string>
+    <string name="RememberedDescription">"Дорогой, ты ничего не забыл?" - "Нет." Количество полученных уведомлений</string>
     <string name="FirstAppOpenDate">Первое открытие</string>
-    <string name="FirstAppOpenDateDescription">Дата первого открытия приложения</string>
+    <string name="FirstAppOpenDateDescription">Дата первого открытия Shkiper</string>
     <string name="Pioneer">Первопроходец</string>
     <string name="PioneerDescription">Установить приложение до 01–01–2024</string>
     <string name="TruthSeeker">Искатель истины</string>
-    <string name="TruthSeekerDescription">Открыть страницу приложения</string>
-    <string name="NoteDestroyer">Уничтожитель заметок</string>
-    <string name="NoteDestroyerDescription">Я породил тебя, я тебя и уничтожу! «Тарас Бульба»</string>
+    <string name="TruthSeekerDescription">Открыть страницу о приложении</string>
+    <string name="NoteDestroyer">Разрушитель заметок</string>
+    <string name="NoteDestroyerDescription">Я тебя породил, я тубя и уничтожу! «Тарас Бульба». Количество удаленных заметок</string>
 
     <string name="ThankForPurchase1">Спасибо, что выбрали наше приложение! Ваша поддержка очень много значит для нас.
     </string>

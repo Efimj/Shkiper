@@ -155,21 +155,21 @@
 
     <!--    Statistics components   -->
     <string name="Thinker">Thinker</string>
-    <string name="ThinkerDescription">Number of open notebooks</string>
+    <string name="ThinkerDescription">Number of Shkiper openings</string>
     <string name="Creator">Creator</string>
     <string name="CreatorDescription">Number of notes created</string>
-    <string name="Eternal">Eternal</string>
-    <string name="EternalDescription">Don\'t forget? Create a reminder</string>
-    <string name="Remembered">Remembered</string>
-    <string name="RememberedDescription">\"Darling, did you forget anything?\" - \"No.\"</string>
-    <string name="Pioneer">Pioneer</string>
+    <string name="Eternal">Punctuality</string>
+    <string name="EternalDescription">Don\'t forget? Create a reminder. Number of reminders created</string>
+    <string name="Remembered">Always up to date</string>
+    <string name="RememberedDescription">\"Darling, did you forget anything?\" - \"No.\" Number of notifications received</string>
     <string name="FirstAppOpenDate">First opening</string>
-    <string name="FirstAppOpenDateDescription">The date the app was first opened</string>
+    <string name="FirstAppOpenDateDescription">The date the Shkiper was first opened</string>
+    <string name="Pioneer">Pioneer</string>
     <string name="PioneerDescription">Install the application before 01–01–2024</string>
     <string name="TruthSeeker">Truth seeker</string>
     <string name="TruthSeekerDescription">Open app page</string>
     <string name="NoteDestroyer">Note destroyer</string>
-    <string name="NoteDestroyerDescription">I gave birth to you and I will destroy you! «Taras Bulba»</string>
+    <string name="NoteDestroyerDescription">I gave birth to you and I will destroy you! «Taras Bulba». Number of deleted notes</string>
 
     <string name="ThankForPurchase1">Thank you for choosing our app! Your support means a lot to us.</string>
     <string name="ThankForPurchase2">We appreciate your support and trust in our app. Thanks for your purchase!</string>
