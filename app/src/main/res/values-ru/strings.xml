@@ -184,5 +184,6 @@
     <string name="EfimDescription">Android/Web и еще..</string>
     <string name="Annually">Ежегодно</string>
     <string name="Monthly">Ежемесячно</string>
+    <string name="Localizers">Локализаторы</string>
 
 </resources>
