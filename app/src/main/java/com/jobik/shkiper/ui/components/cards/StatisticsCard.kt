@@ -14,6 +14,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jobik.shkiper.R
@@ -43,33 +44,35 @@ fun StatisticsCard(statistic: StatisticsItem, onClick: () -> Unit) {
         contentColor = CustomAppTheme.colors.text,
     ) {
         Column(
-            modifier = Modifier.padding(10.dp).fillMaxSize(),
+            modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Image(
-                modifier = Modifier.height(60.dp).padding(vertical = 5.dp),
+                modifier = Modifier.weight(.6f).padding(top = 12.dp, bottom = 8.dp),
                 painter = painterResource(id = statistic.image),
                 contentDescription = stringResource(R.string.StatisticsImage),
-                contentScale = ContentScale.Fit
+                contentScale = ContentScale.FillHeight
             )
             Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
+                modifier = Modifier.weight(.4f),
+                verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
                     statistic.getStringValue(),
                     color = CustomAppTheme.colors.text,
-                    style = MaterialTheme.typography.h6,
-                    modifier = Modifier.basicMarquee(),
+                    style = MaterialTheme.typography.h6.copy(fontSize = 18.sp),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.basicMarquee().padding(horizontal = 12.dp),
                     maxLines = 1,
                 )
                 Text(
                     stringResource(statistic.title),
                     color = CustomAppTheme.colors.textSecondary,
                     style = MaterialTheme.typography.body1.copy(fontSize = 14.sp),
-                    modifier = Modifier.basicMarquee(),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth().basicMarquee().padding(horizontal = 12.dp),
                     maxLines = 1,
                 )
             }
