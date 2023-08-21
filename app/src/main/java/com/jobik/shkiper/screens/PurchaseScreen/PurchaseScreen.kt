@@ -98,7 +98,7 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
                         ?.let { productDetails ->
                             ProductPurchaseCardContent(
                                 product = productDetails,
-                                imageRes = R.drawable.ic_notification,
+                                imageRes = R.drawable.tea,
                                 isPurchased = purchaseViewModel.checkIsProductPurchased(productDetails.productId)
                             )
                         },
@@ -115,7 +115,7 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
                         ?.let { productDetails ->
                             ProductPurchaseCardContent(
                                 product = productDetails,
-                                imageRes = R.drawable.ic_notification,
+                                imageRes = R.drawable.fitness,
                                 isPurchased = purchaseViewModel.checkIsProductPurchased(productDetails.productId)
                             )
                         }
@@ -160,7 +160,7 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
                                 PurchaseCard(
                                     TitlePurchaseCardContent(
                                         titleRes = R.string.Monthly,
-                                        imageRes = R.drawable.ic_notification,
+                                        imageRes = R.drawable.one_month,
                                         isPurchased = false
                                     )
                                 ) {
@@ -178,7 +178,7 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
                                 PurchaseCard(
                                     TitlePurchaseCardContent(
                                         titleRes = R.string.Annually,
-                                        imageRes = R.drawable.ic_notification,
+                                        imageRes = R.drawable.full_year,
                                         isPurchased = false
                                     )
                                 ) {

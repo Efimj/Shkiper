@@ -34,13 +34,11 @@ fun SnackbarCard(snackbarData: SnackbarVisualsCustom) {
             contentColor = CustomAppTheme.colors.text,
         ) {
             Row(
-                Modifier.padding(horizontal = 13.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Spacer(Modifier.width(17.dp))
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.basicMarquee().weight(1f)
+                    modifier = Modifier.basicMarquee().padding(start = 17.dp).padding(horizontal = 13.dp).weight(1f)
                 ) {
                     if (snackbarData.icon != null) {
                         Icon(

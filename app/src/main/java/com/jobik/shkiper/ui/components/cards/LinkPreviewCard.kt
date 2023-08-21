@@ -43,24 +43,18 @@ import com.jobik.shkiper.util.SnackbarHostUtil
 import com.jobik.shkiper.util.SnackbarVisualsCustom
 import kotlinx.coroutines.launch
 import com.jobik.shkiper.R
+import com.jobik.shkiper.helpers.IntentHelper
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun LinkPreviewCard(openGraphData: LinkHelper.LinkPreview) {
-    val openLinkLauncher =
-        rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                // Handling successful link opens
-            } else {
-                // Handling failure when opening links
-            }
-        }
     val clipboardManager = LocalContext.current.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
     val isImageError = remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
     val onLinkCopiedText = stringResource(R.string.LinkCopied)
     val linkTextLabel = stringResource(R.string.Link)
     val multipleEventsCutter = remember { MultipleEventsCutter.get() }
+    val context = LocalContext.current
 
     Card(
         modifier = Modifier
@@ -72,9 +66,7 @@ fun LinkPreviewCard(openGraphData: LinkHelper.LinkPreview) {
                 onClick = {
                     multipleEventsCutter.processEvent {
                         try {
-                            val intent = Intent(Intent.ACTION_VIEW)
-                            intent.data = Uri.parse(openGraphData.link)
-                            openLinkLauncher.launch(intent)
+                            openGraphData.link?.let { IntentHelper().openBrowserIntent(context, it) }
                         } catch (
                             e: Exception
                         ) {

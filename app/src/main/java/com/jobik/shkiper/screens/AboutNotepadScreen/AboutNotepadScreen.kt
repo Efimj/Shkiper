@@ -1,5 +1,6 @@
 package com.jobik.shkiper.screens.AboutNotepadScreen
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -24,6 +25,8 @@ import androidx.compose.ui.unit.sp
 import com.jobik.shkiper.R
 import com.jobik.shkiper.helpers.IntentHelper
 import com.jobik.shkiper.services.statistics_service.StatisticsService
+import com.jobik.shkiper.ui.components.cards.UserCard
+import com.jobik.shkiper.ui.components.cards.UserCardLink
 import com.jobik.shkiper.ui.components.layouts.ScreenWrapper
 import com.jobik.shkiper.ui.theme.CustomAppTheme
 
@@ -78,75 +81,45 @@ fun AboutNotepadScreen() {
                 overflow = TextOverflow.Ellipsis,
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.SemiBold,
-                maxLines = 1
+                maxLines = 1,
+                modifier = Modifier.padding(bottom = 8.dp)
             )
-            Spacer(modifier = Modifier.height(5.dp))
-            UserCard()
-        }
-    }
-}
-
-@Composable
-private fun UserCard() {
-    val context = LocalContext.current
-    val email = stringResource(R.string.jobik_link)
-    val emailHeader = stringResource(R.string.DevMailHeader)
-
-    Column(
-        modifier = Modifier.fillMaxWidth()
-            .background(CustomAppTheme.colors.secondaryBackground, RoundedCornerShape(15.dp))
-            .border(BorderStroke(width = 1.dp, color = CustomAppTheme.colors.stroke), RoundedCornerShape(15.dp))
-            .clip(RoundedCornerShape(15.dp)).padding(8.dp),
-        verticalArrangement = Arrangement.Center
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth().height(60.dp).padding(bottom = 4.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.photo_my_favorite_cat),
-                modifier = Modifier.widthIn(max = 60.dp).clip(RoundedCornerShape(15.dp)),
-                contentDescription = stringResource(R.string.DevMailHeader),
-                contentScale = ContentScale.Fit
+            val email = stringResource(R.string.jobik_link)
+            val emailHeader = stringResource(R.string.DevMailHeader)
+            UserCard(
+                photo = R.drawable.photo_my_favorite_cat,
+                name = stringResource(R.string.Efim),
+                description = stringResource(R.string.EfimDescription),
+                links = listOf(
+                    UserCardLink(
+                        image = R.drawable.ic_gmail,
+                        description = stringResource(R.string.Image),
+                    ) { IntentHelper().sendMailIntent(context, listOf(email), emailHeader) }
+                )
             )
-            Spacer(modifier = Modifier.width(10.dp))
-            Column {
-                Text(
-                    text = stringResource(R.string.Efim),
-                    color = CustomAppTheme.colors.text,
-                    style = MaterialTheme.typography.h6,
-                    overflow = TextOverflow.Ellipsis,
-                    textAlign = TextAlign.Center,
-                    maxLines = 1
-                )
-                Text(
-                    text = stringResource(R.string.EfimDescription),
-                    color = CustomAppTheme.colors.textSecondary,
-                    style = MaterialTheme.typography.body1,
-                    overflow = TextOverflow.Ellipsis,
-                    textAlign = TextAlign.Center,
-                    maxLines = 1
-                )
-            }
-        }
-        Row(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            IconButton(
-                onClick = {
-                    IntentHelper().sendMailIntent(context, listOf(email), emailHeader)
-                },
-                modifier = Modifier.size(40.dp).clip(CircleShape).padding(0.dp),
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_gmail),
-                    contentDescription = stringResource(R.string.Image),
-                    contentScale = ContentScale.Fit,
-                    modifier = Modifier.padding(2.dp)
-                )
-            }
+            Text(
+                text = stringResource(R.string.Icons),
+                color = CustomAppTheme.colors.text,
+                style = MaterialTheme.typography.h6,
+                overflow = TextOverflow.Ellipsis,
+                textAlign = TextAlign.Center,
+                fontWeight = FontWeight.SemiBold,
+                maxLines = 1,
+                modifier = Modifier.padding(vertical = 8.dp)
+            )
+            val rakibHassanRahimLink = stringResource(R.string.RakibHassanRahimLink)
+            UserCard(
+                photo = R.drawable.rakib_hassan_rahim,
+                name = stringResource(R.string.RakibHassanRahim),
+                onClick = { IntentHelper().openBrowserIntent(context, rakibHassanRahimLink) }
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            val freepikLink = stringResource(R.string.FreepikLink)
+            UserCard(
+                photo = R.drawable.freepik,
+                name = stringResource(R.string.Freepik),
+                onClick = { IntentHelper().openBrowserIntent(context, freepikLink) }
+            )
         }
     }
 }

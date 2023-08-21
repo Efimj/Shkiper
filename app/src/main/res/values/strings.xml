@@ -2,6 +2,10 @@
 <resources>
     <string name="app_name" translatable="false">Shkiper</string>
     <string name="jobik_link" translatable="false">jetappdroid@gmail.com</string>
+    <string name="Freepik" translatable="false">Freepik</string>
+    <string name="FreepikLink" translatable="false">https://www.flaticon.com/authors/freepik</string>
+    <string name="RakibHassanRahim" translatable="false">Rakib Hassan Rahim</string>
+    <string name="RakibHassanRahimLink" translatable="false">https://www.flaticon.com/authors/rakib-hassan-rahim</string>
 
     <!--    Repeating   -->
     <string name="none">Does not repeat</string>
@@ -180,5 +184,6 @@
     <string name="Annually">Annually</string>
     <string name="Monthly">Monthly</string>
     <string name="Localizers">Localizers</string>
+    <string name="Icons">Icons</string>
 
 </resources>

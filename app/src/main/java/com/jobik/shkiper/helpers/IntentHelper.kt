@@ -1,7 +1,11 @@
 package com.jobik.shkiper.helpers
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import com.jobik.shkiper.R
 
 class IntentHelper {
@@ -18,5 +22,11 @@ class IntentHelper {
             intent.setPackage(null)
             context.startActivity(Intent.createChooser(intent, context.getString(R.string.ChooseEmailClient)))
         }
+    }
+
+    fun openBrowserIntent(context: Context, link:String){
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.data = Uri.parse(link)
+        context.startActivity(intent)
     }
 }

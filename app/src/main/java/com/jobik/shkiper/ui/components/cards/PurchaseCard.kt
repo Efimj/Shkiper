@@ -83,7 +83,7 @@ fun PurchaseCard(purchaseCardContent: PurchaseCardContent, onClick: () -> Unit) 
                         modifier = Modifier.fillMaxSize(),
                         painter = painterResource(id = purchaseCardContent.imageRes),
                         contentDescription = stringResource(R.string.StatisticsImage),
-                        contentScale = ContentScale.Crop
+                        contentScale = ContentScale.FillHeight
                     )
                     val title = when (purchaseCardContent) {
                         is ProductPurchaseCardContent -> purchaseCardContent.product.name
