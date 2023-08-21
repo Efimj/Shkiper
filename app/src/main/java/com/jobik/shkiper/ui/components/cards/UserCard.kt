@@ -32,28 +32,28 @@ data class UserCardLink(
 @Composable
 fun UserCard(
     @DrawableRes photo: Int,
-    name: String,
+    name: String? = null,
     description: String? = null,
     onClick: (() -> Unit)? = null,
     links: List<UserCardLink>? = null
 ) {
-    val modifier = if (onClick != null) Modifier.bounceClick().fillMaxWidth()
+    val modifier = if (onClick != null) Modifier.bounceClick().clip(RoundedCornerShape(15.dp))
+        .clickable(enabled = true) { onClick() }.fillMaxWidth()
         .background(CustomAppTheme.colors.secondaryBackground, RoundedCornerShape(15.dp))
         .border(BorderStroke(width = 1.dp, color = CustomAppTheme.colors.stroke), RoundedCornerShape(15.dp))
-        .clip(RoundedCornerShape(15.dp)).padding(8.dp).clickable(enabled = onClick != null) {
-            onClick()
-        } else Modifier.fillMaxWidth()
-        .background(CustomAppTheme.colors.secondaryBackground, RoundedCornerShape(15.dp))
-        .border(BorderStroke(width = 1.dp, color = CustomAppTheme.colors.stroke), RoundedCornerShape(15.dp))
-        .clip(RoundedCornerShape(15.dp)).padding(8.dp).clickable(enabled = false) {
-        }
+        .padding(8.dp)
+    else
+        Modifier.fillMaxWidth()
+            .background(CustomAppTheme.colors.secondaryBackground, RoundedCornerShape(15.dp))
+            .border(BorderStroke(width = 1.dp, color = CustomAppTheme.colors.stroke), RoundedCornerShape(15.dp))
+            .clip(RoundedCornerShape(15.dp)).padding(8.dp)
 
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.Center
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth().height(60.dp).padding(bottom = 4.dp),
+            modifier = Modifier.fillMaxWidth().height(60.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Image(
@@ -62,30 +62,46 @@ fun UserCard(
                 contentDescription = stringResource(R.string.DevMailHeader),
                 contentScale = ContentScale.Fit
             )
-            Spacer(modifier = Modifier.width(10.dp))
-            Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center) {
-                Text(
-                    text = name,
-                    color = CustomAppTheme.colors.text,
-                    style = MaterialTheme.typography.h6,
-                    overflow = TextOverflow.Ellipsis,
-                    textAlign = TextAlign.Center,
-                    maxLines = 1
-                )
-                description?.let {
-                    Text(
-                        text = it,
-                        color = CustomAppTheme.colors.textSecondary,
-                        style = MaterialTheme.typography.body1,
-                        overflow = TextOverflow.Ellipsis,
-                        textAlign = TextAlign.Center,
-                        maxLines = 1
-                    )
+            if (name !== null || description !== null)
+                Column(
+                    modifier = Modifier.fillMaxSize().padding(start = 10.dp),
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    name?.let {
+                        Text(
+                            text = name,
+                            color = CustomAppTheme.colors.text,
+                            style = MaterialTheme.typography.h6,
+                            overflow = TextOverflow.Ellipsis,
+                            textAlign = TextAlign.Center,
+                            maxLines = 1
+                        )
+                    }
+                    description?.let {
+                        Text(
+                            text = it,
+                            color = CustomAppTheme.colors.textSecondary,
+                            style = MaterialTheme.typography.body1,
+                            overflow = TextOverflow.Ellipsis,
+                            textAlign = TextAlign.Center,
+                            maxLines = 1
+                        )
+                    }
                 }
-
-            }
+            else if (links !== null)
+                Row(
+                    modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState())
+                        .padding(horizontal = 20.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    links.map {
+                        LinkButton(it)
+                    }
+                }
         }
-        if (links != null)
+        if (links !== null && (name !== null || description !== null)) {
+            Spacer(Modifier.height(4.dp))
             Row(
                 modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).padding(horizontal = 20.dp),
                 verticalAlignment = Alignment.CenterVertically,
@@ -95,6 +111,7 @@ fun UserCard(
                     LinkButton(it)
                 }
             }
+        }
     }
 }
 

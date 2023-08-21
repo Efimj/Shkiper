@@ -82,7 +82,7 @@ fun AboutNotepadScreen() {
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.SemiBold,
                 maxLines = 1,
-                modifier = Modifier.padding(bottom = 8.dp)
+                modifier = Modifier.padding(bottom = 8.dp).padding(start = 10.dp)
             )
             val email = stringResource(R.string.jobik_link)
             val emailHeader = stringResource(R.string.DevMailHeader)
@@ -105,21 +105,25 @@ fun AboutNotepadScreen() {
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.SemiBold,
                 maxLines = 1,
-                modifier = Modifier.padding(vertical = 8.dp)
+                modifier = Modifier.padding(vertical = 8.dp).padding(start = 10.dp)
             )
-            val rakibHassanRahimLink = stringResource(R.string.RakibHassanRahimLink)
-            UserCard(
-                photo = R.drawable.rakib_hassan_rahim,
-                name = stringResource(R.string.RakibHassanRahim),
-                onClick = { IntentHelper().openBrowserIntent(context, rakibHassanRahimLink) }
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            val freepikLink = stringResource(R.string.FreepikLink)
-            UserCard(
-                photo = R.drawable.freepik,
-                name = stringResource(R.string.Freepik),
-                onClick = { IntentHelper().openBrowserIntent(context, freepikLink) }
-            )
+            Row (modifier = Modifier.horizontalScroll(rememberScrollState())){
+                val rakibHassanRahimLink = stringResource(R.string.RakibHassanRahimLink)
+                UserCard(
+                    photo = R.drawable.rakib_hassan_rahim,
+                    //name = stringResource(R.string.RakibHassanRahim),
+                    onClick = { IntentHelper().openBrowserIntent(context, rakibHassanRahimLink) }
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                val freepikLink = stringResource(R.string.FreepikLink)
+                UserCard(
+                    photo = R.drawable.freepik,
+                    //name = stringResource(R.string.Freepik),
+                    onClick = { IntentHelper().openBrowserIntent(context, freepikLink) }
+                )
+            }
+
+
         }
     }
 }
