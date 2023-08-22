@@ -1,8 +1,10 @@
 package com.jobik.shkiper.services.localization
 
 import android.content.Context
+import androidx.annotation.Keep
 import com.jobik.shkiper.R
 
+@Keep
 enum class Localization(val localeKey: String) {
     DE("de"),
     EN("en"),
