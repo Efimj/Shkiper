@@ -2,10 +2,9 @@
 <resources>
     <string name="app_name" translatable="false">Shkiper</string>
     <string name="jobik_link" translatable="false">jetappdroid@gmail.com</string>
-    <string name="Freepik" translatable="false">Freepik</string>
     <string name="FreepikLink" translatable="false">https://www.flaticon.com/authors/freepik</string>
-    <string name="RakibHassanRahim" translatable="false">Rakib Hassan Rahim</string>
     <string name="RakibHassanRahimLink" translatable="false">https://www.flaticon.com/authors/rakib-hassan-rahim</string>
+    <string name="StickersLink" translatable="false">https://www.flaticon.com/authors/stickers?type=sticker</string>
 
     <!--    Repeating   -->
     <string name="none">Does not repeat</string>
