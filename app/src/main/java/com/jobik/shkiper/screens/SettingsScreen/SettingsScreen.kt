@@ -249,7 +249,7 @@ private fun SettingsItemSelectLanguage(settingsViewModel: SettingsViewModel) {
         dropDownItems,
         currentLanguage.ordinal,
         Modifier.width(150.dp),
-        DropDownButtonSizeMode.STRERCHBYBUTTONWIDTH,
+        DropDownButtonSizeMode.STRERCHBYCONTENT,
         onChangedSelection = {
             settingsViewModel.selectLocalization(it)
             recreateActivity(context, coroutineScope)

@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Repeating -->
+
+
+    <string name="none">不重复</string>
+
+    <string name="daily">日常的</string>
+
+    <string name="weekly">每周</string>
+
+    <string name="monthly">每月</string>
+
+    <string name="yearly">每年</string>
+
+    <!-- Expressions -->
+
+
+    <!-- settings page -->
+
+
+    <string name="ChoseLocalization">选择本地化</string>
+
+    <string name="AppDataPolitics">您的数据仅存储在您的设备上。删除应用程序的数据可能会导致数据永久丢失。为防止出现这种情况，请记住在执行重置之前保存数据文件。</string>
+
+    <string name="Info">信息</string>
+
+    <string name="Information">信息</string>
+
+    <string name="Open">打开</string>
+
+    <string name="OnboardingPage">入职页面</string>
+
+    <string name="Other">其他</string>
+
+    <string name="Connect">连接</string>
+
+    <string name="CloudStorage">云储存</string>
+
+    <string name="Upload">上传</string>
+
+    <string name="UploadNotes">上传笔记</string>
+
+    <string name="SaveAllNotesLocally">将所有笔记保存在本地</string>
+
+    <string name="Save">节省</string>
+
+    <string name="Backup">备份</string>
+
+    <string name="ApplicationTheme">应用主题</string>
+
+    <string name="LightTheme">光</string>
+
+    <string name="DarkTheme">黑暗的</string>
+
+    <string name="Application">应用</string>
+
+    <string name="ApplicationColors">应用颜色</string>
+
+    <string name="StatisticsPage">统计页面</string>
+
+    <!-- Onboarding page -->
+
+
+    <string name="Back">后退</string>
+
+    <string name="Finish">结束</string>
+
+    <string name="Next">下一个</string>
+
+    <string name="PagerImage">寻呼机图像</string>
+
+    <string name="Tags">标签</string>
+
+    <string name="TagsDescription">标签是快速过滤笔记所必需的，每个笔记可以添加多个标签。</string>
+
+    <string name="AppDescription">快速、简单、方便的记事本。</string>
+
+    <string name="Reminders">提醒事项</string>
+
+    <string name="RemindersDescription">提醒允许您安排在指定日期和时间以选定的时间间隔发送重要事件的通知。</string>
+
+    <string name="Themes">主题</string>
+
+    <string name="ThemesDescription">选择您个人最喜欢的颜色主题。</string>
+
+    <!-- Nate page -->
+
+
+    <string name="Header">标头</string>
+
+    <string name="Text">文本</string>
+
+    <string name="GoBack">回去</string>
+
+    <string name="AttachNote">附上注释</string>
+
+    <string name="AddToNotification">添加到通知</string>
+
+    <string name="AddToArchive">添加到档案</string>
+
+    <string name="ChangedAt">更改于</string>
+
+    <string name="GoForward">前进</string>
+
+    <string name="AddToBasket">添加到购物车</string>
+
+    <string name="ShareNote">分享笔记</string>
+
+    <!-- NateList page -->
+
+
+    <string name="Pinned">已固定</string>
+
+    <!-- Other components -->
+
+
+    <string name="CreateNote">创建笔记</string>
+
+    <string name="Hashtags">标签</string>
+
+    <string name="Cancel">取消</string>
+
+    <string name="HashtagExample">编写主题标签，例如家庭作业</string>
+
+    <string name="Delete">删除</string>
+
+    <string name="Reminder">提醒</string>
+
+    <string name="Event">事件</string>
+
+    <string name="Schedule">日程</string>
+
+    <string name="Repeat">重复</string>
+
+    <string name="ErrorDateMastBeFuture">该日期必须是将来的日期</string>
+
+    <string name="Menu">菜单</string>
+
+    <string name="Notes">笔记</string>
+
+    <string name="Archive">档案</string>
+
+    <string name="Basket">篮子</string>
+
+    <string name="Settings">设置</string>
+
+    <string name="Clear">清除</string>
+
+    <string name="Search">搜索</string>
+
+    <string name="Links">链接</string>
+
+    <string name="Hide">隐藏</string>
+
+    <string name="ShowAll">显示所有</string>
+
+    <string name="Link">关联</string>
+
+    <string name="LinkCopied">链接已复制</string>
+
+    <string name="LinkImage">链接图片</string>
+
+    <string name="EmptyNote">空注</string>
+
+    <string name="Loading">加载中</string>
+
+    <string name="Statistics">统计数据</string>
+
+    <string name="StatisticsImage">统计图像</string>
+
+    <string name="Complete">完全的</string>
+
+    <string name="Uncompleted">未完成</string>
+
+    <string name="DoneEmoji">✔️</string>
+
+    <string name="NotDoneEmoji">➖</string>
+
+    <string name="Saving">保存</string>
+
+    <string name="BackupCreated">已创建备份</string>
+
+    <string name="BackupUploaded">备份已上传</string>
+
+    <string name="UnspecifiedErrorOccurred">发生未指定的错误</string>
+
+    <string name="CannotPerformedWithoutPermission">未经许可不得进行</string>
+
+    <string name="EmptyNotesPageHeader">您添加的注释将显示在此处。</string>
+
+    <string name="ArchiveNotesPageHeader">存档的笔记将位于此处。</string>
+
+    <string name="UnarchiveNotes">取消存档笔记</string>
+
+    <string name="BasketNotesPageHeader">一篮子已删除的笔记。</string>
+
+    <string name="Restore">恢复</string>
+
+    <string name="BasketPageHeader">7 天后，纸币将从篮子中移除。</string>
+
+    <string name="DeleteSelectedNotesDialogText">删除选定的笔记？</string>
+
+    <string name="DeleteNoteDialogText">删除注释？</string>
+
+    <string name="Confirm">确认</string>
+
+    <string name="NotesAreBeenDeleted">注释已被删除</string>
+
+    <string name="NoteAreBeenDeleted">注释已被删除</string>
+
+    <string name="NotesArchived">笔记移至存档</string>
+
+    <string name="NoteArchived">注释已移至存档</string>
+
+    <string name="NoteUnarchived">注释未存档</string>
+
+    <string name="NotesUnarchived">笔记未存档</string>
+
+    <string name="NotesMovedToBasket">笔记已移至购物篮</string>
+
+    <string name="NotesRestored">笔记已恢复</string>
+
+    <string name="DaysBeforeDeletingNote">删除注释前的天数：</string>
+
+    <string name="DeleteForever">永久删除？</string>
+
+    <string name="RateTheApp">评价施凯珀</string>
+
+    <string name="Image">图像</string>
+
+    <string name="OfferWriteReviewTitle">你喜欢施凯珀吗？</string>
+
+    <string name="OfferWriteReviewDescription">如果您还有几分钟时间，请在 Google Play 商店中留下您的评论。</string>
+
+    <string name="Restart">重新开始</string>
+
+    <string name="UpdateDownloaded">已下载更新</string>
+
+    <string name="Add">添加</string>
+
+    <string name="SupportDevelopment">支持发展</string>
+
+    <string name="Donate">捐</string>
+
+    <string name="Show">展示</string>
+
+    <string name="PurchaseScreenTitle">每一个贡献都很重要！</string>
+
+    <string name="PurchaseScreenDescription">您的支持有助于改进我们的应用程序。加入我们——捐款并成为 Shkiper 故事的一部分！</string>
+
+    <string name="BuyMe">给我买</string>
+
+    <string name="BuySubscription">购买订阅</string>
+
+    <string name="ItemAlreadyOwned">该产品已被购买</string>
+
+    <string name="CheckInternetConnection">检查互联网连接</string>
+
+    <string name="CheckUpdatesGooglePlay">检查更新 Google Play</string>
+
+    <string name="Close">关闭</string>
+
+    <string name="DonateBannerHeader">你喜欢 Shkiper 吗？</string>
+
+    <string name="DonateBannerBody">给开发者一个硬币支持！</string>
+
+    <string name="AboutNotepad">关于施基珀</string>
+
+    <string name="Support">支持</string>
+
+    <string name="AboutAppDescription">创造、组织、记忆。您的任务、笔记和提醒的完美伴侣 - 简单、美观且随时可用。</string>
+
+    <string name="Contact">接触</string>
+
+    <string name="ChooseEmailClient">选择电子邮件客户端：</string>
+
+    <string name="DevMailHeader">海伊·埃菲姆</string>
+
+    <!-- Statistics components -->
+
+
+    <string name="Thinker">思想家</string>
+
+    <string name="ThinkerDescription">Shkiper 职位空缺数量</string>
+
+    <string name="Creator">创作者</string>
+
+    <string name="CreatorDescription">创建的笔记数量</string>
+
+    <string name="Eternal">准时</string>
+
+    <string name="EternalDescription">别忘了？创建提醒。创建的提醒数量</string>
+
+    <string name="Remembered">始终保持最新状态</string>
+
+    <string name="RememberedDescription">“亲爱的，你是不是忘记了什么？”- “不。”收到的通知数量</string>
+
+    <string name="FirstAppOpenDate">首次开业</string>
+
+    <string name="FirstAppOpenDateDescription">Shkiper 首次开业的日期</string>
+
+    <string name="Pioneer">先锋</string>
+
+    <string name="PioneerDescription">在 2024 年 1 月 1 日之前安装应用程序</string>
+
+    <string name="TruthSeeker">真像探寻者</string>
+
+    <string name="TruthSeekerDescription">打开应用程序页面</string>
+
+    <string name="NoteDestroyer">注意毁灭者</string>
+
+    <string name="NoteDestroyerDescription">我生了你，也将毁了你！“塔拉斯·布尔巴”。删除的笔记数量</string>
+
+    <string name="ThankForPurchase1">感谢您选择我们的应用程序！您的支持对我们来说意义重大。</string>
+
+    <string name="ThankForPurchase2">我们感谢您对我们的应用程序的支持和信任。谢谢你的惠顾！</string>
+
+    <string name="ThankForPurchase3">您的支持是对我们最好的回报。感谢您在我们的应用程序中购买！</string>
+
+    <string name="Efim">埃菲姆</string>
+
+    <string name="EfimDescription">安卓/网络等等..</string>
+
+    <string name="Annually">每年</string>
+
+    <string name="Monthly">每月</string>
+
+    <string name="Localizers">定位器</string>
+
+    <string name="Icons">图标</string>
+</resources>

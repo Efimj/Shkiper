@@ -6,17 +6,26 @@
     <string name="RakibHassanRahimLink" translatable="false">https://www.flaticon.com/authors/rakib-hassan-rahim</string>
     <string name="StickersLink" translatable="false">https://www.flaticon.com/authors/stickers?type=sticker</string>
 
+    <!--    Languages   -->
+    <string name="en" translatable="false">English</string>
+    <string name="uk" translatable="false">Український</string>
+    <string name="ru" translatable="false">Русский</string>
+    <string name="de" translatable="false">Deutsch</string>
+    <string name="in" translatable="false">Bahasa Indonesia</string>
+    <string name="es" translatable="false">Español</string>
+    <string name="it" translatable="false">Italiano</string>
+    <string name="zh" translatable="false">简体中文 (Chinese Simplified)</string>
+    <string name="pt" translatable="false">Português</string>
+    <string name="th" translatable="false">ไทย (Thai)</string>
+    <string name="fr" translatable="false">Français</string>
+    <string name="ja" translatable="false">日本語 (Japanese)</string>
+
     <!--    Repeating   -->
     <string name="none">Does not repeat</string>
     <string name="daily">Daily</string>
     <string name="weekly">Weekly</string>
     <string name="monthly">Monthly</string>
     <string name="yearly">Yearly</string>
-
-    <!--    Languages   -->
-    <string name="en">English</string>
-    <string name="uk">Ukrainian</string>
-    <string name="ru">Russian</string>
 
     <!--    Expressions   -->
     <!--    settings page   -->
