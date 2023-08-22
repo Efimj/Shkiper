@@ -1,7 +1,9 @@
 package com.jobik.shkiper.database.models
 
 import androidx.annotation.Keep
+import io.realm.kotlin.ext.realmListOf
 import io.realm.kotlin.ext.realmSetOf
+import io.realm.kotlin.types.RealmList
 import io.realm.kotlin.types.RealmObject
 import io.realm.kotlin.types.RealmSet
 import io.realm.kotlin.types.annotations.Index
@@ -29,9 +31,11 @@ class Note : RealmObject {
     var creationDateString: String = ""
     var updateDateString: String = ""
     var deletionDateString: String? = null
+    var photos: RealmList<String> = realmListOf()
 
     @Index
     var isPinned: Boolean = false
+    var isTaskList: Boolean = false
 
     @Index
     var positionString: String = NotePosition.MAIN.name
