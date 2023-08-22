@@ -103,49 +103,49 @@ data class AppStatistics(
     var statisticsData: StatisticsData = StatisticsData(),
 
     val fistOpenDate: StatisticsItem = StatisticsItem(
-        R.drawable.ic_notification,
+        R.drawable.ic_achievements_first_open_date,
         R.string.FirstAppOpenDate,
         R.string.FirstAppOpenDateDescription,
         statisticsData.firstOpenDate
     ),
     val openAppCount: StatisticsItem = StatisticsItem(
-        R.drawable.onboarding_reminder,
+        R.drawable.ic_achievements_open_app_count,
         R.string.Thinker,
         R.string.ThinkerDescription,
         statisticsData.openAppCount
     ),
     val createdNotesCount: StatisticsItem = StatisticsItem(
-        R.drawable.ic_splash,
+        R.drawable.ic_achievements_created_notes,
         R.string.Creator,
         R.string.CreatorDescription,
         statisticsData.createdNotesCount
     ),
     val createdRemindersCount: StatisticsItem = StatisticsItem(
-        R.drawable.ic_notification,
+        R.drawable.ic_achievements_created_reminders_count,
         R.string.Eternal,
         R.string.EternalDescription,
         statisticsData.createdRemindersCount
     ),
     val notificationCount: StatisticsItem = StatisticsItem(
-        R.drawable.ic_splash,
+        R.drawable.ic_achievements_notifications_count,
         R.string.Remembered,
         R.string.RememberedDescription,
         statisticsData.notificationCount
     ),
     val isPioneer: StatisticsItem = StatisticsItem(
-        R.drawable.ic_launcher_background,
+        R.drawable.ic_achievements_pioneer,
         R.string.Pioneer,
         R.string.PioneerDescription,
         statisticsData.isPioneer
     ),
     val truthSeeker: StatisticsItem = StatisticsItem(
-        R.drawable.ic_launcher_background,
+        R.drawable.ic_achievements_truth_seeker,
         R.string.TruthSeeker,
         R.string.TruthSeekerDescription,
         statisticsData.truthSeeker
     ),
     val noteDeletedCount: StatisticsItem = StatisticsItem(
-        R.drawable.ic_launcher_background,
+        R.drawable.ic_achievements_deleted_notes,
         R.string.NoteDestroyer,
         R.string.NoteDestroyerDescription,
         statisticsData.noteDeletedCount

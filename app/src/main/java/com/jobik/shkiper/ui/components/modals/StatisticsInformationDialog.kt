@@ -41,7 +41,7 @@ fun StatisticsInformationDialog(
                     modifier = Modifier.weight(.65f).padding(vertical = 15.dp),
                     painter = painterResource(id = statistics.image),
                     contentDescription = stringResource(R.string.StatisticsImage),
-                    contentScale = ContentScale.Crop
+                    contentScale = ContentScale.FillHeight
                 )
                 Column(
                     modifier = Modifier.weight(.45f).padding(horizontal = 25.dp),
