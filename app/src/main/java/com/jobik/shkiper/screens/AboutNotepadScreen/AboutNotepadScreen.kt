@@ -87,7 +87,7 @@ fun AboutNotepadScreen() {
             val email = stringResource(R.string.jobik_link)
             val emailHeader = stringResource(R.string.DevMailHeader)
             UserCard(
-                photo = R.drawable.photo_my_favorite_cat,
+                photo = R.drawable.photo_my_favorite_cat_2,
                 name = stringResource(R.string.Efim),
                 description = stringResource(R.string.EfimDescription),
                 links = listOf(
