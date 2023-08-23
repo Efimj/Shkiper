@@ -1,5 +1,5 @@
-<h1 align="center" style="display: flex; align-items: center;">
-    <img src="./assets/icon-app.png" width="50" style="margin-right: 10px;" />
+<h1 align="center">
+    <img src="./assets/icon-app.png"  width="25" />
     Shkiper
 </h1>
 
