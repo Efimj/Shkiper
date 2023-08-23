@@ -36,6 +36,7 @@ class Note : RealmObject {
     @Index
     var isPinned: Boolean = false
     var isTaskList: Boolean = false
+    var linkPreviewEnabled: Boolean = false
 
     @Index
     var positionString: String = NotePosition.MAIN.name

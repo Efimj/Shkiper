@@ -29,7 +29,6 @@ android {
     buildTypes {
         release {
             minifyEnabled true
-            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             ndk {
                 debugSymbolLevel 'SYMBOL_TABLE'
@@ -39,6 +38,16 @@ android {
             signingConfig signingConfigs.debug
             matchingFallbacks = ['release']
             debuggable false
+        }
+    }
+
+    bundle {
+        language {
+            // Specifies that the app bundle should not support
+            // configuration APKs for language resources. These
+            // resources are instead packaged with each base and
+            // dynamic feature APK.
+            enableSplit = false
         }
     }
 
