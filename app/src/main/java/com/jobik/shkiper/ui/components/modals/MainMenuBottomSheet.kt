@@ -3,6 +3,7 @@ package com.jobik.shkiper.ui.components.modals
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.TweenSpec
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -13,6 +14,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -90,7 +92,13 @@ private fun MainPageLayout(
             }
         }
         Box(
-            Modifier.offset(y = offsetY).align(Alignment.BottomCenter)
+            modifier =  Modifier.offset(y = offsetY).align(Alignment.BottomCenter).fillMaxWidth().background(
+                Brush.verticalGradient(
+                    0F to CustomAppTheme.colors.mainBackground.copy(alpha = 0.0F),
+                    0.8F to CustomAppTheme.colors.mainBackground.copy(alpha = 1F)
+                )
+            ),
+            contentAlignment = Alignment.BottomCenter
         ) {
             RoundedButton(
                 text = getCurrentMenuText(currentRoute),
