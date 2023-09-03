@@ -15,7 +15,6 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="com.android.vending.BILLING" />
 
-
     <application
             android:name=".NotepadApplication"
             android:allowBackup="true"
@@ -32,6 +31,20 @@
                 android:shell="true"
                 tools:targetApi="34"/>
 
+        <!--    widget receiver    -->
+        <receiver
+                android:name=".widgets.services.NoteWidgetReceiver"
+                android:enabled="true"
+                android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                    android:name="android.appwidget.provider"
+                    android:resource="@xml/note_widget_info" />
+        </receiver>
+
+        <!--    notification receiver    -->
         <receiver
                 android:name=".services.notification_service.NotificationReceiver"
                 android:enabled="true"
@@ -44,6 +57,13 @@
             </intent-filter>
         </receiver>
 
+        <!--    widget config activity    -->
+        <activity android:name=".widgets.config.ConfigWidgetActivity"
+                  android:imeOptions="actionSend|flagNoEnterAction"
+                  android:theme="@style/Theme.NotePadApp"
+                  android:windowSoftInputMode="adjustResize"/>
+
+        <!--    splash activity    -->
         <activity
                 android:name=".activity.SplashActivity"
                 android:exported="true"
@@ -55,6 +75,8 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <!--    moin activity    -->
         <activity
                 android:name=".activity.MainActivity"
                 android:exported="true"

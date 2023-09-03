@@ -2,14 +2,17 @@ package com.jobik.shkiper.database.data.note
 
 import android.content.Context
 import android.util.Log
+import androidx.glance.appwidget.GlanceAppWidgetManager
 import com.jobik.shkiper.database.data.reminder.ReminderMongoRepositoryImpl
 import com.jobik.shkiper.database.models.Note
 import com.jobik.shkiper.database.models.NotePosition
 import com.jobik.shkiper.services.notification_service.NotificationScheduler
 import com.jobik.shkiper.services.statistics_service.StatisticsService
+import com.jobik.shkiper.widgets.handlers.mapNoteToWidget
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.realm.kotlin.Realm
 import io.realm.kotlin.UpdatePolicy
+import io.realm.kotlin.ext.copyFromRealm
 import io.realm.kotlin.ext.query
 import io.realm.kotlin.query.Sort
 import kotlinx.coroutines.flow.Flow
@@ -90,20 +93,19 @@ class NoteMongoRepositoryImpl(val realm: Realm, @ApplicationContext val context:
     }
 
     override suspend fun insertOrUpdateNotes(notes: List<Note>, updateStatistics: Boolean) {
-        realm.writeBlocking {
-            for (note in notes) {
+        for (note in notes) {
+            realm.writeBlocking {
                 val existedNote = getNote(note._id)
-                if (existedNote == null) {
-                    copyToRealm(note)
-                    continue
-                }
                 try {
-                    copyToRealm(note, UpdatePolicy.ALL)
-                    updateNotification(note)
+                    if (existedNote == null)
+                        copyToRealm(note)
+                    else
+                        copyToRealm(note, UpdatePolicy.ALL)
                 } catch (e: Exception) {
                     Log.d("NoteMongoRepositoryImpl", "${e.message}")
                 }
             }
+            getNote(note._id)?.let { note -> updateNotification(note) }
         }
         if (!updateStatistics) return
         // Statistics update
@@ -118,13 +120,14 @@ class NoteMongoRepositoryImpl(val realm: Realm, @ApplicationContext val context:
 
     override suspend fun updateNote(id: ObjectId, updateParams: (Note) -> Unit) {
         getNote(id)?.also { currentNote ->
+            var queriedNote: Note? = null
             realm.writeBlocking {
-                val queriedNote = findLatest(currentNote) ?: return@writeBlocking
-                queriedNote.apply {
+                queriedNote = findLatest(currentNote) ?: return@writeBlocking
+                queriedNote?.apply {
                     updateParams(this)
                 }
-                updateNotification(queriedNote)
             }
+            getNote(id)?.let { note -> updateNotification(note) }
         }
     }
 
@@ -132,17 +135,19 @@ class NoteMongoRepositoryImpl(val realm: Realm, @ApplicationContext val context:
         ids: List<ObjectId>,
         updateParams: (Note) -> Unit
     ) {
-        realm.writeBlocking {
-            for (id in ids) {
-                val note = getNote(id) ?: continue
+        for (id in ids) {
+            var latest: Note? = null
+            realm.writeBlocking {
                 try {
-                    val latest = findLatest(note) ?: continue
-                    latest.let(updateParams)
-                    updateNotification(latest)
+                    val note = getNote(id)
+                    if (note != null)
+                        latest = findLatest(note)
+                    latest?.let(updateParams)
                 } catch (e: Exception) {
                     Log.d("NoteMongoRepositoryImpl", "${e.message}")
                 }
             }
+            getNote(id)?.let { note -> updateNotification(note) }
         }
     }
 
@@ -187,9 +192,11 @@ class NoteMongoRepositoryImpl(val realm: Realm, @ApplicationContext val context:
             ReminderMongoRepositoryImpl(realm, context).deleteReminderForNote(id)
     }
 
-    private fun updateNotification(
+    private suspend fun updateNotification(
         newNote: Note
     ) {
+        GlanceAppWidgetManager(context).mapNoteToWidget(context, newNote)
+
         val notificationScheduler = NotificationScheduler(context)
         if (newNote.position == NotePosition.DELETE) {
             notificationScheduler.cancelNotification(newNote._id.toHexString())
