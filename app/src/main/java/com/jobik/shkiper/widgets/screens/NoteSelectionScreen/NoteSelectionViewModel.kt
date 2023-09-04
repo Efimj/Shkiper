@@ -1,11 +1,7 @@
 package com.jobik.shkiper.widgets.screens.NoteSelectionScreen
 
-import android.app.Application
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jobik.shkiper.database.data.note.NoteMongoRepository
@@ -13,9 +9,6 @@ import com.jobik.shkiper.database.data.reminder.ReminderMongoRepository
 import com.jobik.shkiper.database.models.Note
 import com.jobik.shkiper.database.models.NotePosition
 import com.jobik.shkiper.database.models.Reminder
-import com.jobik.shkiper.navigation.Argument_Note_Position
-import com.jobik.shkiper.util.SnackbarHostUtil
-import com.jobik.shkiper.util.SnackbarVisualsCustom
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -37,10 +30,7 @@ data class NoteSelectScreenState(
 class NoteSelectionViewModel @Inject constructor(
     private val noteRepository: NoteMongoRepository,
     private val reminderRepository: ReminderMongoRepository,
-    savedStateHandle: SavedStateHandle,
-    private val application: Application,
 ) : ViewModel() {
-    private val notePosition: NotePosition
     private val _screenState = mutableStateOf(NoteSelectScreenState())
     val screenState: State<NoteSelectScreenState> = _screenState
 
@@ -51,12 +41,6 @@ class NoteSelectionViewModel @Inject constructor(
     private var notesFlowJob: Job? = null
 
     init {
-        notePosition = try {
-            NotePosition.valueOf(savedStateHandle[Argument_Note_Position] ?: NotePosition.MAIN.name)
-        } catch (e: Exception) {
-            Log.i("savedStateHandle", "notePositionError", e)
-            NotePosition.MAIN
-        }
         viewModelScope.launch(Dispatchers.IO) {
             getHashtags()
             getNotes()
@@ -66,11 +50,11 @@ class NoteSelectionViewModel @Inject constructor(
 
     private fun getNotes() {
         notesFlowJob?.cancel()
-
         notesFlowJob = viewModelScope.launch {
-            noteRepository.getNotesFlow(notePosition).collect() {
-                _screenState.value = _screenState.value.copy(notes = it, isNotesInitialized = true)
-            }
+            _screenState.value = _screenState.value.copy(
+                notes = noteRepository.getAllNotes().filter { it.position != NotePosition.DELETE },
+                isNotesInitialized = true
+            )
         }
     }
 
@@ -87,11 +71,13 @@ class NoteSelectionViewModel @Inject constructor(
         }
     }
 
-    private suspend fun getNotesByText(newString: String) {
+    private fun getNotesByText(newString: String) {
         _screenState.value = screenState.value.copy(currentHashtag = null)
-        noteRepository.filterNotesByContains(newString, notePosition).collect {
-            _screenState.value = _screenState.value.copy(notes = it)
-        }
+        _screenState.value = _screenState.value.copy(
+            notes = noteRepository.getAllNotes().filter {
+                it.position != NotePosition.DELETE && it.header.contains(newString) || it.body.contains(newString)
+            },
+        )
     }
 
     fun clickOnNote(noteId: ObjectId?) {
@@ -123,9 +109,10 @@ class NoteSelectionViewModel @Inject constructor(
 
     fun getHashtags() {
         viewModelScope.launch {
-            noteRepository.getHashtags(notePosition).collect() {
-                _screenState.value = screenState.value.copy(hashtags = it)
-            }
+            _screenState.value = screenState.value.copy(
+                hashtags = noteRepository.getAllNotes().filter { it.position != NotePosition.DELETE }
+                    .flatMap { it.hashtags }.toSet()
+            )
         }
     }
 
@@ -143,9 +130,11 @@ class NoteSelectionViewModel @Inject constructor(
         notesFlowJob?.cancel()
 
         notesFlowJob = viewModelScope.launch {
-            noteRepository.getNotesByHashtag(notePosition, hashtag).collect() {
-                _screenState.value = _screenState.value.copy(notes = it)
-            }
+            _screenState.value = _screenState.value.copy(
+                notes = noteRepository.getAllNotes().filter {
+                    it.position != NotePosition.DELETE && it.hashtags.contains(hashtag)
+                },
+            )
         }
     }
 
@@ -159,18 +148,5 @@ class NoteSelectionViewModel @Inject constructor(
                 _screenState.value = screenState.value.copy(reminders = it)
             }
         }
-    }
-
-    fun getReminder(noteId: ObjectId): Reminder? {
-        return reminderRepository.getReminderForNote(noteId)
-    }
-
-    private suspend fun showSnackbar(message: String, icon: ImageVector?) {
-        SnackbarHostUtil.snackbarHostState.showSnackbar(
-            SnackbarVisualsCustom(
-                message = message,
-                icon = icon
-            )
-        )
     }
 }
