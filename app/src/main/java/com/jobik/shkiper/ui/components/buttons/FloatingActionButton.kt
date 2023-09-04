@@ -12,6 +12,7 @@ import androidx.compose.material.icons.outlined.Add
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -22,7 +23,8 @@ import com.jobik.shkiper.ui.modifiers.bounceClick
 import com.jobik.shkiper.ui.theme.CustomAppTheme
 
 @Composable
-fun CreateNoteButton(
+fun FloatingActionButton(
+    icon: ImageVector = Icons.Outlined.Add,
     isActive: Boolean = true,
     onClick: () -> Unit = {},
 ) {
@@ -44,7 +46,7 @@ fun CreateNoteButton(
         contentColor = CustomAppTheme.colors.text,
     ) {
         androidx.compose.material3.Icon(
-            imageVector = Icons.Outlined.Add,
+            imageVector = icon,
             contentDescription = stringResource(R.string.CreateNote),
             tint = CustomAppTheme.colors.textSecondary,
             modifier = Modifier.size(53.dp).padding(6.dp)

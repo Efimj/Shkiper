@@ -18,7 +18,9 @@ import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Description
+import androidx.compose.material.icons.outlined.Done
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -39,7 +41,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.Note
-import com.jobik.shkiper.ui.components.buttons.CreateNoteButton
+import com.jobik.shkiper.ui.components.buttons.FloatingActionButton
 import com.jobik.shkiper.ui.components.buttons.HashtagButton
 import com.jobik.shkiper.ui.components.cards.NoteCard
 import com.jobik.shkiper.ui.components.layouts.LazyGridNotes
@@ -103,7 +105,7 @@ fun NoteSelectionScreen(notesViewModel: NoteSelectionViewModel = hiltViewModel()
                 enter = fadeIn(tween(200, easing = LinearOutSlowInEasing)),
                 exit = fadeOut(tween(200, easing = FastOutSlowInEasing)),
             ) {
-                CreateNoteButton(notesViewModel.screenState.value.selectedNoteId != null) {
+                FloatingActionButton(icon = Icons.Outlined.Done,notesViewModel.screenState.value.selectedNoteId != null) {
                     notesViewModel.getSelectedNote()?.let { selectNote(it) }
                 }
             }

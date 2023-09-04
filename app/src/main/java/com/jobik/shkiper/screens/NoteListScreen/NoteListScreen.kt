@@ -15,7 +15,6 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -23,7 +22,6 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
@@ -39,14 +37,12 @@ import com.jobik.shkiper.navigation.AppScreens
 import com.jobik.shkiper.ui.components.cards.NoteCard
 import com.jobik.shkiper.ui.theme.CustomAppTheme
 import kotlin.math.roundToInt
-import com.jobik.shkiper.ui.components.buttons.CreateNoteButton
+import com.jobik.shkiper.ui.components.buttons.FloatingActionButton
 import com.jobik.shkiper.ui.components.buttons.HashtagButton
 import com.jobik.shkiper.ui.components.modals.CreateReminderDialog
 import com.jobik.shkiper.ui.components.modals.ReminderDialogProperties
 import com.jobik.shkiper.ViewModels.NotesViewModel
-import com.jobik.shkiper.ui.components.cards.DonateBanner
 import com.jobik.shkiper.ui.components.layouts.*
-import com.jobik.shkiper.util.SupportTheDeveloperBannerUtil
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -137,7 +133,7 @@ fun NoteListScreen(navController: NavController, notesViewModel: NotesViewModel 
                 enter = fadeIn(tween(200, easing = LinearOutSlowInEasing)),
                 exit = fadeOut(tween(200, easing = FastOutSlowInEasing)),
             ) {
-                CreateNoteButton(notesViewModel.screenState.value.selectedNotes.isEmpty()) {
+                FloatingActionButton(isActive = notesViewModel.screenState.value.selectedNotes.isEmpty()) {
                     notesViewModel.createNewNote()
                 }
             }
