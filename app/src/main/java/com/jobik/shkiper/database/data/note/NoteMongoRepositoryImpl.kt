@@ -71,7 +71,7 @@ class NoteMongoRepositoryImpl(val realm: Realm, @ApplicationContext val context:
     }
 
     override fun getAllNotes(): List<Note> {
-        return realm.query<Note>().find()
+        return realm.query<Note>().sort("_id", Sort.DESCENDING).find()
     }
 
     override fun filterNotesByContains(text: String, position: NotePosition): Flow<List<Note>> {

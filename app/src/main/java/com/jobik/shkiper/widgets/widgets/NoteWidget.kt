@@ -8,6 +8,9 @@ import androidx.glance.appwidget.provideContent
 import androidx.glance.currentState
 import androidx.glance.state.GlanceStateDefinition
 import androidx.glance.state.PreferencesGlanceStateDefinition
+import com.jobik.shkiper.ui.theme.CustomAppTheme
+import com.jobik.shkiper.util.ThemePreferenceUtil
+import com.jobik.shkiper.util.ThemeUtil
 import com.jobik.shkiper.widgets.components.NoteWidgetContent
 
 class NoteWidget : GlanceAppWidget() {
@@ -15,7 +18,6 @@ class NoteWidget : GlanceAppWidget() {
     override var stateDefinition: GlanceStateDefinition<*> = PreferencesGlanceStateDefinition
 
     override suspend fun provideGlance(context: Context, id: GlanceId) {
-
         // In this method, load data needed to render the AppWidget.
         // Use `withContext` to switch to another thread for long running
         // operations.

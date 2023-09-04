@@ -35,6 +35,11 @@ class DateHelper {
             return date.format(formatter)
         }
 
+        fun getLocalizedDate(date: LocalDateTime): String {
+            val formatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG).withLocale(Locale.getDefault())
+            return date.format(formatter)
+        }
+
         fun nextDateWithRepeating(
             date: LocalDate, time: LocalTime, repeatMode: RepeatMode
         ): LocalDateTime {
