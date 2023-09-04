@@ -165,7 +165,6 @@ class NoteMongoRepositoryImpl(val realm: Realm, @ApplicationContext val context:
             }
         }
         ReminderMongoRepositoryImpl(realm, context).deleteReminderForNote(id)
-        deleteWidget(id.toHexString())
     }
 
     override suspend fun deleteNote(ids: List<ObjectId>) {
@@ -185,7 +184,6 @@ class NoteMongoRepositoryImpl(val realm: Realm, @ApplicationContext val context:
         for (id in ids) {
             try {
                 ReminderMongoRepositoryImpl(realm, context).deleteReminderForNote(id)
-                deleteWidget(id.toHexString())
             } catch (e: Exception) {
                 Log.d("NoteMongoRepositoryImpl - deleteNote", "${e.message}")
             }
@@ -198,10 +196,6 @@ class NoteMongoRepositoryImpl(val realm: Realm, @ApplicationContext val context:
             noteDeletedCount.increment()
         }
         statisticsService.saveStatistics()
-    }
-
-    private suspend fun deleteWidget(noteId: String) {
-        GlanceAppWidgetManager(context).deleteNoteFromWidget(context, noteId)
     }
 
     private suspend fun updateNotification(

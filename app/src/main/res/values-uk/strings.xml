@@ -176,4 +176,7 @@
     <string name="Localizers">Локалізатори</string>
     <string name="Icons">Іконки</string>
 
+    <string name="Deleted">Видалено</string>
+    <string name="CreateWidget">Створити віджет</string>
+
 </resources>

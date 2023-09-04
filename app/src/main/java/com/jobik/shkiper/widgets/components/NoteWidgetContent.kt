@@ -1,11 +1,19 @@
 package com.jobik.shkiper.widgets.components
 
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.datastore.preferences.core.Preferences
 import androidx.glance.GlanceModifier
+import androidx.glance.ImageProvider
 import androidx.glance.LocalContext
+import androidx.glance.action.ActionParameters
+import androidx.glance.action.actionParametersOf
+import androidx.glance.action.actionStartActivity
+import androidx.glance.action.clickable
 import androidx.glance.appwidget.appWidgetBackground
 import androidx.glance.appwidget.cornerRadius
 import androidx.glance.appwidget.lazy.LazyColumn
@@ -13,6 +21,9 @@ import androidx.glance.background
 import androidx.glance.color.ColorProvider
 import androidx.glance.layout.*
 import androidx.glance.text.*
+import com.jobik.shkiper.R
+import com.jobik.shkiper.SharedPreferencesKeys
+import com.jobik.shkiper.activity.MainActivity
 import com.jobik.shkiper.helpers.DateHelper
 import com.jobik.shkiper.util.ThemePreferenceUtil
 import com.jobik.shkiper.util.ThemeUtil
@@ -25,7 +36,7 @@ import java.time.LocalDateTime
 @Composable
 fun NoteWidgetContent(prefs: Preferences) {
     ThemeUtil.theme = ThemePreferenceUtil(LocalContext.current).getSavedUserTheme()
-    val theme = ThemeUtil.themeColors
+    val theme = remember { ThemeUtil.themeColors }
 
     val noteId = prefs[noteId].orEmpty()
     val noteHeader = prefs[noteHeader].orEmpty()
@@ -34,15 +45,20 @@ fun NoteWidgetContent(prefs: Preferences) {
     val updatedDateString = getLocalizedDateTime(updatedAt)
 
     Box(
-        modifier = GlanceModifier.background(theme.mainBackground).cornerRadius(15.dp).appWidgetBackground()
+        modifier = GlanceModifier
+            .background(ImageProvider(R.drawable.widget_background))
+            .cornerRadius(15.dp)
+            .appWidgetBackground()
     ) {
-        LazyColumn {
+        LazyColumn(modifier = GlanceModifier) {
             item {
                 Spacer(modifier = GlanceModifier.height(16.dp))
             }
             if (noteHeader.isNotEmpty()) item {
                 Text(
-                    text = noteHeader, modifier = GlanceModifier.padding(horizontal = 16.dp), style = TextStyle(
+                    text = noteHeader,
+                    modifier = GlanceModifier.openNote(noteId).fillMaxWidth().padding(horizontal = 16.dp),
+                    style = TextStyle(
                         color = ColorProvider(day = theme.text, night = theme.text),
                         fontFamily = FontFamily("Roboto"),
                         fontSize = 20.sp,
@@ -51,11 +67,13 @@ fun NoteWidgetContent(prefs: Preferences) {
                 )
             }
             if (noteBody.isNotEmpty() && noteHeader.isNotEmpty()) item {
-                Spacer(modifier = GlanceModifier.height(3.dp))
+                Spacer(modifier = GlanceModifier.openNote(noteId).fillMaxWidth().height(3.dp))
             }
             if (noteBody.isNotEmpty()) item {
                 Text(
-                    text = noteBody, modifier = GlanceModifier.padding(horizontal = 16.dp), style = TextStyle(
+                    text = noteBody,
+                    modifier = GlanceModifier.openNote(noteId).fillMaxWidth().padding(horizontal = 16.dp),
+                    style = TextStyle(
                         color = ColorProvider(day = theme.text, night = theme.text),
                         fontFamily = FontFamily("Roboto"),
                         fontSize = 16.sp,
@@ -66,7 +84,9 @@ fun NoteWidgetContent(prefs: Preferences) {
             if (noteBody.isNotEmpty() && updatedDateString != null) item {
                 Text(
                     text = updatedDateString.toString(),
-                    modifier = GlanceModifier.padding(end = 16.dp).padding(top = 4.dp).fillMaxWidth(),
+                    modifier = GlanceModifier.openNote(noteId).fillMaxWidth().padding(end = 16.dp)
+                        .padding(top = 4.dp)
+                        .fillMaxWidth(),
                     style = TextStyle(
                         color = ColorProvider(day = theme.textSecondary, night = theme.textSecondary),
                         fontFamily = FontFamily("Roboto"),
@@ -82,6 +102,18 @@ fun NoteWidgetContent(prefs: Preferences) {
         }
     }
 }
+
+@OptIn(ExperimentalAnimationApi::class)
+private fun GlanceModifier.openNote(noteId: String) =
+    if (noteId.isNotEmpty())
+        this.clickable(
+            actionStartActivity<MainActivity>(
+                parameters = actionParametersOf(
+                    ActionParameters.Key<String>(SharedPreferencesKeys.NoteIdExtra) to noteId
+                )
+            )
+        ) else this
+
 
 private fun getLocalizedDateTime(dateTime: String): String? {
     return try {

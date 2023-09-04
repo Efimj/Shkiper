@@ -183,4 +183,7 @@
     <string name="Localizers">Локализаторы</string>
     <string name="Icons">Иконки</string>
 
+    <string name="Deleted">Удалено</string>
+    <string name="CreateWidget">Создать виджет</string>
+
 </resources>
