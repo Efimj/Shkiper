@@ -8,7 +8,6 @@ import com.jobik.shkiper.database.models.Note
 import com.jobik.shkiper.database.models.NotePosition
 import com.jobik.shkiper.services.notification_service.NotificationScheduler
 import com.jobik.shkiper.services.statistics_service.StatisticsService
-import com.jobik.shkiper.widgets.handlers.deleteNoteFromWidget
 import com.jobik.shkiper.widgets.handlers.mapNoteToWidget
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.realm.kotlin.Realm

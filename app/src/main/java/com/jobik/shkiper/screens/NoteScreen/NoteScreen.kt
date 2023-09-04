@@ -119,7 +119,8 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
                         placeholder = stringResource(R.string.Text),
                         textStyle = MaterialTheme.typography.body1,
                         enabled = enabled,
-                        modifier = Modifier.testTag("note_body_input").fillMaxWidth().padding(bottom = 10.dp).padding(horizontal = 20.dp)
+                        modifier = Modifier.testTag("note_body_input").fillMaxWidth().padding(bottom = 10.dp)
+                            .padding(horizontal = 20.dp)
                             .focusRequester(bodyFieldFocusRequester)
                     )
                 }
@@ -334,6 +335,10 @@ private fun NoteScreenFooter(navController: NavController, noteViewModel: NoteVi
                                 icon = Icons.Outlined.Share
                             ),
                             DropDownItem(
+                                text = stringResource(R.string.CreateWidget),
+                                icon = Icons.Outlined.Widgets
+                            ),
+                            DropDownItem(
                                 text = stringResource(R.string.Delete),
                                 icon = if (noteViewModel.screenState.value.notePosition == NotePosition.DELETE) Icons.Outlined.DeleteForever else Icons.Outlined.Delete
                             )
@@ -353,7 +358,8 @@ private fun NoteScreenFooter(navController: NavController, noteViewModel: NoteVi
                         else
                             when (index) {
                                 0 -> noteViewModel.shareNoteText(context)
-                                1 -> {
+                                1 -> noteViewModel.createWidget()
+                                2 -> {
                                     if (noteViewModel.screenState.value.notePosition == NotePosition.DELETE)
                                         noteViewModel.deleteNote()
                                     else

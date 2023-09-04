@@ -20,6 +20,7 @@ import com.jobik.shkiper.helpers.LinkHelper
 import com.jobik.shkiper.navigation.Argument_Note_Id
 import com.jobik.shkiper.util.SnackbarHostUtil
 import com.jobik.shkiper.util.SnackbarVisualsCustom
+import com.jobik.shkiper.widgets.handlers.handleNoteWidgetPin
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.realm.kotlin.ext.realmSetOf
 import kotlinx.coroutines.*
@@ -234,6 +235,12 @@ class NoteViewModel @Inject constructor(
     /*******************
      * Note handlers
      *******************/
+
+    fun createWidget() {
+        viewModelScope.launch {
+            handleNoteWidgetPin(application.applicationContext, screenState.value.noteId.toHexString())
+        }
+    }
 
     fun updateNoteHeader(text: String) {
         changeNoteHeader(text)

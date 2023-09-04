@@ -31,6 +31,12 @@
                 android:shell="true"
                 tools:targetApi="34"/>
 
+        <!--    pin widget receiver    -->
+        <receiver
+                android:name=".widgets.services.PinWidgetReceiver"
+                android:enabled="true"
+                android:exported="true" />
+
         <!--    widget receiver    -->
         <receiver
                 android:name=".widgets.services.NoteWidgetReceiver"
