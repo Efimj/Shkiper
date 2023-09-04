@@ -8,6 +8,7 @@ import com.jobik.shkiper.database.models.Note
 import com.jobik.shkiper.database.models.NotePosition
 import com.jobik.shkiper.services.notification_service.NotificationScheduler
 import com.jobik.shkiper.services.statistics_service.StatisticsService
+import com.jobik.shkiper.widgets.handlers.deleteNoteFromWidget
 import com.jobik.shkiper.widgets.handlers.mapNoteToWidget
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.realm.kotlin.Realm
@@ -164,14 +165,7 @@ class NoteMongoRepositoryImpl(val realm: Realm, @ApplicationContext val context:
             }
         }
         ReminderMongoRepositoryImpl(realm, context).deleteReminderForNote(id)
-    }
-
-    private fun statisticsNoteDeletedIncrement() {
-        val statisticsService = StatisticsService(context)
-        statisticsService.appStatistics.apply {
-            noteDeletedCount.increment()
-        }
-        statisticsService.saveStatistics()
+        deleteWidget(id.toHexString())
     }
 
     override suspend fun deleteNote(ids: List<ObjectId>) {
@@ -188,8 +182,26 @@ class NoteMongoRepositoryImpl(val realm: Realm, @ApplicationContext val context:
                 }
             }
         }
-        for (id in ids)
-            ReminderMongoRepositoryImpl(realm, context).deleteReminderForNote(id)
+        for (id in ids) {
+            try {
+                ReminderMongoRepositoryImpl(realm, context).deleteReminderForNote(id)
+                deleteWidget(id.toHexString())
+            } catch (e: Exception) {
+                Log.d("NoteMongoRepositoryImpl - deleteNote", "${e.message}")
+            }
+        }
+    }
+
+    private fun statisticsNoteDeletedIncrement() {
+        val statisticsService = StatisticsService(context)
+        statisticsService.appStatistics.apply {
+            noteDeletedCount.increment()
+        }
+        statisticsService.saveStatistics()
+    }
+
+    private suspend fun deleteWidget(noteId: String) {
+        GlanceAppWidgetManager(context).deleteNoteFromWidget(context, noteId)
     }
 
     private suspend fun updateNotification(

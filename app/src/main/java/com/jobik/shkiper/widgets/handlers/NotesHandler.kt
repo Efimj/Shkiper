@@ -29,3 +29,16 @@ suspend fun GlanceAppWidgetManager.mapNoteToWidget(context: Context, note: Note)
                 it[noteId] == note._id.toHexString()
             }
         }
+
+suspend fun GlanceAppWidgetManager.deleteNoteFromWidget(context: Context, id: String) =
+    getGlanceIds(NoteWidget::class.java)
+        .forEach { glanceId ->
+            updateAppWidgetState(context, glanceId) { prefs ->
+                if (prefs[noteId] == id) {
+                    prefs[noteId] = ""
+                }
+            }
+            NoteWidget().updateIf<Preferences>(context) {
+                it[noteId] == id
+            }
+        }
