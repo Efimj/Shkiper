@@ -8,9 +8,6 @@ import androidx.glance.appwidget.provideContent
 import androidx.glance.currentState
 import androidx.glance.state.GlanceStateDefinition
 import androidx.glance.state.PreferencesGlanceStateDefinition
-import com.jobik.shkiper.ui.theme.CustomAppTheme
-import com.jobik.shkiper.util.ThemePreferenceUtil
-import com.jobik.shkiper.util.ThemeUtil
 import com.jobik.shkiper.widgets.components.NoteWidgetContent
 
 class NoteWidget : GlanceAppWidget() {
