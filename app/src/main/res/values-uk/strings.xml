@@ -15,7 +15,7 @@
     <string name="Info">Інформація</string>
     <string name="Information">Інформація</string>
     <string name="Open">Відкрити</string>
-    <string name="OnboardingPage">Вступна сторінка</string>
+    <string name="OnboardingPage">Вступ</string>
     <string name="Other">Інше</string>
     <string name="Connect">Підключитися</string>
     <string name="CloudStorage">Хмарне сховище</string>
@@ -29,7 +29,7 @@
     <string name="DarkTheme">Темна</string>
     <string name="Application">Програма</string>
     <string name="ApplicationColors">Кольори додатку</string>
-    <string name="StatisticsPage">Сторінка статистики</string>
+    <string name="StatisticsPage">Статистика</string>
 
 
     <!--    Onboarding page   -->
@@ -66,9 +66,9 @@
 
     <!-- Other components -->
     <string name="CreateNote">Створити нотатку</string>
-    <string name="Hashtags">Хештегі</string>
+    <string name="Hashtags">Мітки</string>
     <string name="Cancel">Скасувати</string>
-    <string name="HashtagExample">Напишіть хештеги, наприклад. Дім Плани</string>
+    <string name="HashtagExample">Напишіть мітки, наприклад. Дім Плани</string>
     <string name="Delete">Видалити</string>
     <string name="Reminder">Нагадування</string>
     <string name="Event">Подія</string>

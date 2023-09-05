@@ -15,7 +15,7 @@
     <string name="Info">Информация</string>
     <string name="Information">Информация</string>
     <string name="Open">Открыть</string>
-    <string name="OnboardingPage">Страница вступления</string>
+    <string name="OnboardingPage">Вступление</string>
     <string name="Other">Другое</string>
     <string name="Connect">Подключить</string>
     <string name="CloudStorage">Облачное хранилище</string>
@@ -29,7 +29,7 @@
     <string name="DarkTheme">Темная</string>
     <string name="Application">Приложение</string>
     <string name="ApplicationColors">Цвета приложения</string>
-    <string name="StatisticsPage">Страница статистики</string>
+    <string name="StatisticsPage">Статистика</string>
 
     <!--    Onboarding page   -->
     <string name="Back">Назад</string>
@@ -65,9 +65,9 @@
 
     <!--    Other components   -->
     <string name="CreateNote">Создать заметку</string>
-    <string name="Hashtags">Хэштеги</string>
+    <string name="Hashtags">Метки</string>
     <string name="Cancel">Отменить</string>
-    <string name="HashtagExample">Напишите хэштеги, например. Планы Встречи</string>
+    <string name="HashtagExample">Напишите метки, например. Планы Встречи</string>
     <string name="Delete">Удалить</string>
     <string name="Reminder">Напоминание</string>
     <string name="Event">Событие</string>

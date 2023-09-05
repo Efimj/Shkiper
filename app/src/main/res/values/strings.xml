@@ -34,7 +34,7 @@
     <string name="Info">Info</string>
     <string name="Information">Information</string>
     <string name="Open">Open</string>
-    <string name="OnboardingPage">Onboarding page</string>
+    <string name="OnboardingPage">Onboarding</string>
     <string name="Other">Other</string>
     <string name="Connect">Connect</string>
     <string name="CloudStorage">Cloud storage</string>
@@ -48,7 +48,7 @@
     <string name="DarkTheme">Dark</string>
     <string name="Application">Application</string>
     <string name="ApplicationColors">Application colors</string>
-    <string name="StatisticsPage">Statistics page</string>
+    <string name="StatisticsPage">Statistics</string>
 
     <!--    Onboarding page   -->
     <string name="Back">Back</string>
@@ -84,9 +84,9 @@
 
     <!--    Other components   -->
     <string name="CreateNote">Create note</string>
-    <string name="Hashtags">Hashtags</string>
+    <string name="Hashtags">Tags</string>
     <string name="Cancel">Cancel</string>
-    <string name="HashtagExample">Write hashtags, e.g. Home Work</string>
+    <string name="HashtagExample">Write tags, e.g. Home Work</string>
     <string name="Delete">Delete</string>
     <string name="Reminder">Reminder</string>
     <string name="Event">Event</string>
