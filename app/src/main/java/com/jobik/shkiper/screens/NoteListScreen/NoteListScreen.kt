@@ -41,7 +41,7 @@ import com.jobik.shkiper.ui.components.buttons.FloatingActionButton
 import com.jobik.shkiper.ui.components.buttons.HashtagButton
 import com.jobik.shkiper.ui.components.modals.CreateReminderDialog
 import com.jobik.shkiper.ui.components.modals.ReminderDialogProperties
-import com.jobik.shkiper.ViewModels.NotesViewModel
+import com.jobik.shkiper.viewmodels.NotesViewModel
 import com.jobik.shkiper.ui.components.layouts.*
 
 @OptIn(ExperimentalFoundationApi::class)

@@ -33,8 +33,8 @@ class PinWidgetReceiver : BroadcastReceiver() {
         val noteId = intent.getStringExtra(SharedPreferencesKeys.NoteIdExtra)
         if(noteId.isNullOrEmpty()) return
         CoroutineScope(EmptyCoroutineContext).launch {
-            delay(3000)
             val note = repository.getNote(ObjectId(noteId)) ?: return@launch
+            delay(3000)
             val glanceManager = GlanceAppWidgetManager(context)
             val lastAddedGlanceId = glanceManager.getGlanceIds(NoteWidget::class.java).last()
             mapNoteToWidget(context, lastAddedGlanceId, note)

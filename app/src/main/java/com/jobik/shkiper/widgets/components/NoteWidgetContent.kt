@@ -2,8 +2,6 @@ package com.jobik.shkiper.widgets.components
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.datastore.preferences.core.Preferences
@@ -36,7 +34,8 @@ import java.time.LocalDateTime
 @Composable
 fun NoteWidgetContent(prefs: Preferences) {
     ThemeUtil.theme = ThemePreferenceUtil(LocalContext.current).getSavedUserTheme()
-    val theme = remember { ThemeUtil.themeColors }
+    val darkColors = ThemeUtil.getColorsForThemeName(ThemeUtil.theme.darkThemeName, true)
+    val lightColors = ThemeUtil.getColorsForThemeName(ThemeUtil.theme.lightThemeName, false)
 
     val noteId = prefs[noteId].orEmpty()
     val noteHeader = prefs[noteHeader].orEmpty()
@@ -59,7 +58,7 @@ fun NoteWidgetContent(prefs: Preferences) {
                     text = noteHeader,
                     modifier = GlanceModifier.openNote(noteId).fillMaxWidth().padding(horizontal = 16.dp),
                     style = TextStyle(
-                        color = ColorProvider(day = theme.text, night = theme.text),
+                        color = ColorProvider(day = lightColors.text, night = darkColors.text),
                         fontFamily = FontFamily("Roboto"),
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Medium
@@ -74,7 +73,7 @@ fun NoteWidgetContent(prefs: Preferences) {
                     text = noteBody,
                     modifier = GlanceModifier.openNote(noteId).fillMaxWidth().padding(horizontal = 16.dp),
                     style = TextStyle(
-                        color = ColorProvider(day = theme.text, night = theme.text),
+                        color = ColorProvider(day = lightColors.text, night = darkColors.text),
                         fontFamily = FontFamily("Roboto"),
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Normal
@@ -88,7 +87,7 @@ fun NoteWidgetContent(prefs: Preferences) {
                         .padding(top = 4.dp)
                         .fillMaxWidth(),
                     style = TextStyle(
-                        color = ColorProvider(day = theme.textSecondary, night = theme.textSecondary),
+                        color = ColorProvider(day = lightColors.textSecondary, night = darkColors.textSecondary),
                         fontFamily = FontFamily("Roboto"),
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Normal,

@@ -26,6 +26,16 @@ object ThemeUtil {
         saveTheme(context)
     }
 
+    fun getColorsForThemeName(theme: String, isDark: Boolean): ExtendedColors {
+        return try {
+            val currentTheme = ColorThemes.valueOf(theme)
+            if (isDark) currentTheme.colorTheme.darkColors else currentTheme.colorTheme.lightColors
+        } catch (ex: IllegalArgumentException) {
+            Log.d("ThemeUtil -> themeColors", ex.toString())
+            if (isDark) ColorThemes.Default.colorTheme.darkColors else ColorThemes.Default.colorTheme.lightColors
+        }
+    }
+
     fun getCurrentColors(userTheme: UserTheme): ExtendedColors {
         return try {
             val currentThemeName = if (userTheme.isDarkTheme) userTheme.darkThemeName else userTheme.lightThemeName

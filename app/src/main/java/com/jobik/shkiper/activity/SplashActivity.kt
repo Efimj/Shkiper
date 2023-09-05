@@ -12,7 +12,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.jobik.shkiper.NotepadApplication
 import com.jobik.shkiper.services.localization.LocaleHelper
 import com.jobik.shkiper.services.statistics_service.StatisticsService
-import com.jobik.shkiper.ViewModels.NotesViewModel
+import com.jobik.shkiper.viewmodels.NotesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
