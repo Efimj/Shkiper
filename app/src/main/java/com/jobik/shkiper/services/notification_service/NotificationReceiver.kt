@@ -13,6 +13,7 @@ import com.jobik.shkiper.SharedPreferencesKeys
 import com.jobik.shkiper.activity.MainActivity
 import com.jobik.shkiper.util.ThemePreferenceUtil
 import com.jobik.shkiper.database.models.RepeatMode
+import com.jobik.shkiper.helpers.IntentHelper
 import com.jobik.shkiper.services.statistics_service.StatisticsService
 import com.jobik.shkiper.util.ThemeUtil
 import java.time.Instant
@@ -43,20 +44,15 @@ class NotificationReceiver : BroadcastReceiver() {
         }
     }
 
-    @OptIn(ExperimentalAnimationApi::class)
     private fun sendNotification(intent: Intent, context: Context) {
         val requestCode = intent.getIntExtra("requestCode", 0)
         val notification = NotificationStorage(context).getNotification(requestCode) ?: return
         val savedColors = ThemeUtil.getCurrentColors(ThemePreferenceUtil(context).getSavedUserTheme())
 
-        // Create an Intent for the activity you want to start
-        val mainIntent = Intent(context, MainActivity::class.java)
-            .putExtra(SharedPreferencesKeys.NoteIdExtra, notification.noteId)
-
         // Create the TaskStackBuilder
         val mainPendingIntent: PendingIntent? = TaskStackBuilder.create(context).run {
             // Add the intent, which inflates the back stack
-            addNextIntentWithParentStack(mainIntent)
+            addNextIntentWithParentStack(IntentHelper().getStartActivityAndOpenNoteIntent(context, notification.noteId))
             // Get the PendingIntent containing the entire back stack
             getPendingIntent(
                 notification.requestCode,

@@ -92,7 +92,7 @@ private fun MainPageLayout(
             }
         }
         Box(
-            modifier =  Modifier.offset(y = offsetY).align(Alignment.BottomCenter).fillMaxWidth().background(
+            modifier = Modifier.offset(y = offsetY).align(Alignment.BottomCenter).fillMaxWidth().background(
                 Brush.verticalGradient(
                     0F to CustomAppTheme.colors.mainBackground.copy(alpha = 0.0F),
                     0.8F to CustomAppTheme.colors.mainBackground.copy(alpha = 1F)
@@ -123,7 +123,9 @@ private fun MainPageLayout(
         if (isInitialized.value) return@LaunchedEffect
         isInitialized.value = true
         if (startDestination != AppScreens.NoteList.notePosition(NotePosition.MAIN.name) && startDestination != AppScreens.Onboarding.route)
-            navController.navigate(startDestination)
+            navController.navigate(startDestination) {
+                launchSingleTop
+            }
     }
 }
 
@@ -243,5 +245,7 @@ private fun goToPage(
         return
     }
     coroutineScope.launch { modalBottomSheetState.hide() }
-    navController.navigate(rout)
+    navController.navigate(rout) {
+        launchSingleTop
+    }
 }
