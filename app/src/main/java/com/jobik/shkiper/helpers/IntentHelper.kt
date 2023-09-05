@@ -27,6 +27,18 @@ class IntentHelper {
         }
     }
 
+    fun shareTextIntent(context: Context, sharedText: String) {
+        val intent = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            putExtra(Intent.EXTRA_TEXT, sharedText)
+        }
+
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
+        val chooser = Intent.createChooser(intent, "Share")
+        context.startActivity(chooser)
+    }
+
     fun openBrowserIntent(context: Context, link: String) {
         val intent = Intent(Intent.ACTION_VIEW)
         intent.data = Uri.parse(link)

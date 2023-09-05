@@ -162,4 +162,15 @@ data class AppStatistics(
         }
         return previewsList
     }
+
+    @Composable
+    fun getStatisticsText(): String {
+        var string = ""
+        getStatisticsPreviews().forEach { statistics ->
+            string = string.plus(
+                "${stringResource(statistics.title)}: ${statistics.getStringValue()}"
+            ).plus("\n")
+        }
+        return string
+    }
 }

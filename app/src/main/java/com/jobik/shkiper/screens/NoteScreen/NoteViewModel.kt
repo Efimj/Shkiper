@@ -16,6 +16,7 @@ import com.jobik.shkiper.database.models.NotePosition
 import com.jobik.shkiper.database.models.Reminder
 import com.jobik.shkiper.database.models.RepeatMode
 import com.jobik.shkiper.helpers.DateHelper
+import com.jobik.shkiper.helpers.IntentHelper
 import com.jobik.shkiper.helpers.LinkHelper
 import com.jobik.shkiper.navigation.Argument_Note_Id
 import com.jobik.shkiper.util.SnackbarHostUtil
@@ -330,16 +331,7 @@ class NoteViewModel @Inject constructor(
 
     fun shareNoteText(context: Context) {
         val sharedText = _screenState.value.noteHeader + "\n\n" + _screenState.value.noteBody
-
-        val intent = Intent(Intent.ACTION_SEND).apply {
-            type = "text/plain"
-            putExtra(Intent.EXTRA_TEXT, sharedText)
-        }
-
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-
-        val chooser = Intent.createChooser(intent, "Share link")
-        context.startActivity(chooser)
+        IntentHelper().shareTextIntent(context, sharedText)
     }
 
     fun archiveNote() {
