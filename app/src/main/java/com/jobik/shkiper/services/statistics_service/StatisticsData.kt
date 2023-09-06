@@ -2,6 +2,7 @@ package com.jobik.shkiper.services.statistics_service
 
 import android.util.Log
 import androidx.annotation.DrawableRes
+import androidx.annotation.Keep
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
@@ -163,9 +164,10 @@ data class AppStatistics(
         return previewsList
     }
 
+    @Keep
     @Composable
     fun getStatisticsText(): String {
-        var string = ""
+        var string = "${stringResource(R.string.MyStatsInShkiper)}\n"
         getStatisticsPreviews().forEach { statistics ->
             string = string.plus(
                 "${stringResource(statistics.title)}: ${statistics.getStringValue()}"

@@ -186,5 +186,6 @@
     <string name="Deleted">Удалено</string>
     <string name="CreateWidget">Создать виджет</string>
     <string name="Share">Поделиться</string>
+    <string name="MyStatsInShkiper">Моя статистика в Shkiper</string>
 
 </resources>
