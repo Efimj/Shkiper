@@ -3,7 +3,7 @@
     <!-- Repeating -->
 
 
-    <string name="none">no repite</string>
+    <string name="none">no se repite</string>
 
     <string name="daily">A diario</string>
 
@@ -13,16 +13,15 @@
 
     <string name="yearly">Anual</string>
 
-
     <!-- Expressions -->
 
 
     <!-- settings page -->
 
 
-    <string name="ChoseLocalization">Elija la localización</string>
+    <string name="ChoseLocalization">Localización</string>
 
-    <string name="AppDataPolitics">Sus datos se almacenan exclusivamente en su dispositivo. La eliminación de los datos de su aplicación podría provocar la pérdida permanente de datos. Para evitar esto, recuerde guardar su archivo de datos antes de realizar un reinicio.</string>
+    <string name="AppDataPolitics">Sus datos se almacenan exclusivamente en su dispositivo. Eliminar los datos de su aplicación podría provocar una pérdida permanente de datos. Para evitar esto, recuerde guardar su archivo de datos antes de realizar un reinicio.</string>
 
     <string name="Info">Información</string>
 
@@ -30,7 +29,7 @@
 
     <string name="Open">Abierto</string>
 
-    <string name="OnboardingPage">página de incorporación</string>
+    <string name="OnboardingPage">Inducción</string>
 
     <string name="Other">Otro</string>
 
@@ -42,13 +41,13 @@
 
     <string name="UploadNotes">Subir notas</string>
 
-    <string name="SaveAllNotesLocally">Guardar todas las notas localmente</string>
+    <string name="SaveAllNotesLocally">Guarde todas las notas localmente</string>
 
     <string name="Save">Ahorrar</string>
 
     <string name="Backup">Respaldo</string>
 
-    <string name="ApplicationTheme">Tema de la aplicación</string>
+    <string name="ApplicationTheme">Tema</string>
 
     <string name="LightTheme">Luz</string>
 
@@ -56,9 +55,9 @@
 
     <string name="Application">Solicitud</string>
 
-    <string name="ApplicationColors">Colores de aplicación</string>
+    <string name="ApplicationColors">Colores</string>
 
-    <string name="StatisticsPage">Página de estadísticas</string>
+    <string name="StatisticsPage">Estadísticas</string>
 
     <!-- Onboarding page -->
 
@@ -75,7 +74,7 @@
 
     <string name="TagsDescription">Las etiquetas son necesarias para filtrar rápidamente sus notas; se pueden agregar varias etiquetas a cada nota.</string>
 
-    <string name="AppDescription">Bloc de notas rápido, simple y conveniente.</string>
+    <string name="AppDescription">Bloc de notas rápido, sencillo y práctico.</string>
 
     <string name="Reminders">Recordatorios</string>
 
@@ -106,7 +105,7 @@
 
     <string name="AddToBasket">Añadir al carrito</string>
 
-    <string name="ShareNote">Comparte una nota</string>
+    <string name="ShareNote">Compartir una nota</string>
 
     <!-- NateList page -->
 
@@ -122,7 +121,7 @@
 
     <string name="Cancel">Cancelar</string>
 
-    <string name="HashtagExample">Escribe hashtags, p. Tarea</string>
+    <string name="HashtagExample">Escribir etiquetas, p. Tarea</string>
 
     <string name="Delete">Borrar</string>
 
@@ -138,7 +137,7 @@
 
     <string name="Menu">Menú</string>
 
-    <string name="Notes">notas</string>
+    <string name="Notes">Notas</string>
 
     <string name="Archive">Archivo</string>
 
@@ -162,7 +161,7 @@
 
     <string name="LinkImage">Imagen del enlace</string>
 
-    <string name="EmptyNote">nota vacía</string>
+    <string name="EmptyNote">nota vacia</string>
 
     <string name="Loading">Cargando</string>
 
@@ -172,7 +171,7 @@
 
     <string name="Complete">Terminado</string>
 
-    <string name="Uncompleted">incompleto</string>
+    <string name="Uncompleted">Incompleto</string>
 
     <string name="DoneEmoji">✔️</string>
 
@@ -186,9 +185,9 @@
 
     <string name="UnspecifiedErrorOccurred">Se produjo un error no especificado</string>
 
-    <string name="CannotPerformedWithoutPermission">No se puede realizar sin permiso</string>
+    <string name="CannotPerformedWithoutPermission">No se puede realizar sin permiso.</string>
 
-    <string name="EmptyNotesPageHeader">Las notas que agrega aparecen aquí.</string>
+    <string name="EmptyNotesPageHeader">Las notas que agregue aparecen aquí.</string>
 
     <string name="ArchiveNotesPageHeader">Las notas archivadas estarán aquí.</string>
 
@@ -198,17 +197,17 @@
 
     <string name="Restore">Restaurar</string>
 
-    <string name="BasketPageHeader">Los billetes se eliminan de la cesta a los 7 días.</string>
+    <string name="BasketPageHeader">Los billetes se retiran de la cesta después de 7 días.</string>
 
-    <string name="DeleteSelectedNotesDialogText">¿Eliminar las notas seleccionadas?</string>
+    <string name="DeleteSelectedNotesDialogText">¿Eliminar notas seleccionadas?</string>
 
     <string name="DeleteNoteDialogText">¿Borrar nota?</string>
 
     <string name="Confirm">Confirmar</string>
 
-    <string name="NotesAreBeenDeleted">Las notas han sido eliminadas</string>
+    <string name="NotesAreBeenDeleted">Las notas han sido eliminadas.</string>
 
-    <string name="NoteAreBeenDeleted">La nota ha sido eliminada</string>
+    <string name="NoteAreBeenDeleted">La nota ha sido eliminada.</string>
 
     <string name="NotesArchived">Notas movidas al archivo</string>
 
@@ -218,15 +217,15 @@
 
     <string name="NotesUnarchived">Notas desarchivadas</string>
 
-    <string name="NotesMovedToBasket">Billetes movidos a la cesta</string>
+    <string name="NotesMovedToBasket">Notas movidas a la cesta</string>
 
     <string name="NotesRestored">Notas restauradas</string>
 
-    <string name="DaysBeforeDeletingNote">Días antes de borrar una nota: </string>
+    <string name="DaysBeforeDeletingNote">Días antes de eliminar una nota: </string>
 
     <string name="DeleteForever">¿Borrar para siempre?</string>
 
-    <string name="RateTheApp">Tasa Shkiper</string>
+    <string name="RateTheApp">Califica Shkiper</string>
 
     <string name="Image">Imagen</string>
 
@@ -248,17 +247,17 @@
 
     <string name="PurchaseScreenTitle">¡Cada contribución importa!</string>
 
-    <string name="PurchaseScreenDescription">Su apoyo ayuda a mejorar nuestra aplicación. ¡Únase a nosotros, haga una donación y forme parte de la historia de Shkiper!</string>
+    <string name="PurchaseScreenDescription">Su apoyo ayuda a mejorar nuestra aplicación. Únase a nosotros: ¡haga una donación y sea parte de la historia de Shkiper!</string>
 
     <string name="BuyMe">Cómprame</string>
 
-    <string name="BuySubscription">comprar una suscripción</string>
+    <string name="BuySubscription">Comprar una suscripción</string>
 
-    <string name="ItemAlreadyOwned">Este producto ya ha sido comprado</string>
+    <string name="ItemAlreadyOwned">Este producto ya ha sido comprado.</string>
 
-    <string name="CheckInternetConnection">Comprobar la conexión a Internet</string>
+    <string name="CheckInternetConnection">comprobar la conexión a internet</string>
 
-    <string name="CheckUpdatesGooglePlay">Comprobar actualizaciones Google Play</string>
+    <string name="CheckUpdatesGooglePlay">Consultar actualizaciones Google Play</string>
 
     <string name="Close">Cerca</string>
 
@@ -270,7 +269,7 @@
 
     <string name="Support">Apoyo</string>
 
-    <string name="AboutAppDescription">Crear, organizar, recordar. Su compañero perfecto para tareas, notas y recordatorios: simple, hermoso y siempre a mano.</string>
+    <string name="AboutAppDescription">Crea, organiza, recuerda. Tu compañero perfecto para tareas, notas y recordatorios: sencillo, bonito y siempre a mano.</string>
 
     <string name="Contact">Contacto</string>
 
@@ -283,7 +282,7 @@
 
     <string name="Thinker">Pensador</string>
 
-    <string name="ThinkerDescription">Número de aperturas de Shkiper</string>
+    <string name="ThinkerDescription">Número de vacantes en Shkiper</string>
 
     <string name="Creator">Creador</string>
 
@@ -291,15 +290,15 @@
 
     <string name="Eternal">Puntualidad</string>
 
-    <string name="EternalDescription">¿No te olvides? Crea un recordatorio. Número de recordatorios creados</string>
+    <string name="EternalDescription">¿No lo olvides? Crea un recordatorio. Número de recordatorios creados</string>
 
     <string name="Remembered">Siempre actualizado</string>
 
-    <string name="RememberedDescription">\"Cariño, ¿olvidaste algo?\" - \"No\" Número de notificaciones recibidas</string>
+    <string name="RememberedDescription">\"Cariño, ¿olvidaste algo?\" - \"No.\" Número de notificaciones recibidas</string>
 
     <string name="FirstAppOpenDate">Primera apertura</string>
 
-    <string name="FirstAppOpenDateDescription">La fecha en que se abrió por primera vez el Shkiper</string>
+    <string name="FirstAppOpenDateDescription">La fecha en que se abrió el Shkiper por primera vez.</string>
 
     <string name="Pioneer">Pionero</string>
 
@@ -309,9 +308,9 @@
 
     <string name="TruthSeekerDescription">Abrir página de la aplicación</string>
 
-    <string name="NoteDestroyer">Nota destructor</string>
+    <string name="NoteDestroyer">Destructor de notas</string>
 
-    <string name="NoteDestroyerDescription">¡Te di a luz y te destruiré! «Taras Bulba». Número de notas eliminadas</string>
+    <string name="NoteDestroyerDescription">¡Yo te di a luz y te destruiré! «Taras Bulba». Número de notas eliminadas</string>
 
     <string name="ThankForPurchase1">¡Gracias por elegir nuestra aplicación! Su apoyo significa mucho para nosotros.</string>
 
@@ -319,9 +318,9 @@
 
     <string name="ThankForPurchase3">Su apoyo es la mejor recompensa para nosotros. ¡Gracias por comprar en nuestra aplicación!</string>
 
-    <string name="Efim">efim</string>
+    <string name="Efim">Efim</string>
 
-    <string name="EfimDescription">Android/Web y más..</string>
+    <string name="EfimDescription">Android/Web y más…</string>
 
     <string name="Annually">Anualmente</string>
 
@@ -330,4 +329,12 @@
     <string name="Localizers">Localizadores</string>
 
     <string name="Icons">Iconos</string>
+
+    <string name="Deleted">Eliminado</string>
+
+    <string name="CreateWidget">Crear un widget</string>
+
+    <string name="Share">Compartir</string>
+
+    <string name="MyStatsInShkiper">Mis estadísticas en Shkiper</string>
 </resources>

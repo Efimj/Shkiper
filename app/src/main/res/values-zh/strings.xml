@@ -19,7 +19,7 @@
     <!-- settings page -->
 
 
-    <string name="ChoseLocalization">选择本地化</string>
+    <string name="ChoseLocalization">本土化</string>
 
     <string name="AppDataPolitics">您的数据仅存储在您的设备上。删除应用程序的数据可能会导致数据永久丢失。为防止出现这种情况，请记住在执行重置之前保存数据文件。</string>
 
@@ -29,7 +29,7 @@
 
     <string name="Open">打开</string>
 
-    <string name="OnboardingPage">入职页面</string>
+    <string name="OnboardingPage">入职</string>
 
     <string name="Other">其他</string>
 
@@ -47,7 +47,7 @@
 
     <string name="Backup">备份</string>
 
-    <string name="ApplicationTheme">应用主题</string>
+    <string name="ApplicationTheme">主题</string>
 
     <string name="LightTheme">光</string>
 
@@ -55,9 +55,9 @@
 
     <string name="Application">应用</string>
 
-    <string name="ApplicationColors">应用颜色</string>
+    <string name="ApplicationColors">颜色</string>
 
-    <string name="StatisticsPage">统计页面</string>
+    <string name="StatisticsPage">统计数据</string>
 
     <!-- Onboarding page -->
 
@@ -121,7 +121,7 @@
 
     <string name="Cancel">取消</string>
 
-    <string name="HashtagExample">编写主题标签，例如家庭作业</string>
+    <string name="HashtagExample">写标签，例如家庭作业</string>
 
     <string name="Delete">删除</string>
 
@@ -302,7 +302,7 @@
 
     <string name="Pioneer">先锋</string>
 
-    <string name="PioneerDescription">在 2024 年 1 月 1 日之前安装应用程序</string>
+    <string name="PioneerDescription">2024 年 1 月 1 日之前安装应用程序</string>
 
     <string name="TruthSeeker">真像探寻者</string>
 
@@ -310,7 +310,7 @@
 
     <string name="NoteDestroyer">注意毁灭者</string>
 
-    <string name="NoteDestroyerDescription">我生了你，也将毁了你！“塔拉斯·布尔巴”。删除的笔记数量</string>
+    <string name="NoteDestroyerDescription">我生了你，也将毁掉你！“塔拉斯·布尔巴”。删除的笔记数量</string>
 
     <string name="ThankForPurchase1">感谢您选择我们的应用程序！您的支持对我们来说意义重大。</string>
 
@@ -329,4 +329,12 @@
     <string name="Localizers">定位器</string>
 
     <string name="Icons">图标</string>
+
+    <string name="Deleted">已删除</string>
+
+    <string name="CreateWidget">创建一个小部件</string>
+
+    <string name="Share">分享</string>
+
+    <string name="MyStatsInShkiper">我在 Shkiper 的统计数据</string>
 </resources>

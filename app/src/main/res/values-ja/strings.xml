@@ -13,14 +13,13 @@
 
     <string name="yearly">毎年</string>
 
-
     <!-- Expressions -->
 
 
     <!-- settings page -->
 
 
-    <string name="ChoseLocalization">ローカリゼーションの選択</string>
+    <string name="ChoseLocalization">ローカリゼーション</string>
 
     <string name="AppDataPolitics">データはデバイスにのみ保存されます。アプリのデータを削除すると、データが永久に失われる可能性があります。これを防ぐには、リセットを実行する前に必ずデータ ファイルを保存してください。</string>
 
@@ -30,7 +29,7 @@
 
     <string name="Open">開ける</string>
 
-    <string name="OnboardingPage">オンボーディングページ</string>
+    <string name="OnboardingPage">オンボーディング</string>
 
     <string name="Other">他の</string>
 
@@ -48,7 +47,7 @@
 
     <string name="Backup">バックアップ</string>
 
-    <string name="ApplicationTheme">アプリケーションテーマ</string>
+    <string name="ApplicationTheme">テーマ</string>
 
     <string name="LightTheme">ライト</string>
 
@@ -56,9 +55,9 @@
 
     <string name="Application">応用</string>
 
-    <string name="ApplicationColors">アプリケーションの色</string>
+    <string name="ApplicationColors">色</string>
 
-    <string name="StatisticsPage">統計ページ</string>
+    <string name="StatisticsPage">統計</string>
 
     <!-- Onboarding page -->
 
@@ -118,11 +117,11 @@
 
     <string name="CreateNote">メモを作成する</string>
 
-    <string name="Hashtags">ハッシュタグ</string>
+    <string name="Hashtags">タグ</string>
 
     <string name="Cancel">キャンセル</string>
 
-    <string name="HashtagExample">ハッシュタグを書きます。宿題</string>
+    <string name="HashtagExample">タグを書きます。宿題</string>
 
     <string name="Delete">消去</string>
 
@@ -184,7 +183,7 @@
 
     <string name="BackupUploaded">バックアップがアップロードされました</string>
 
-    <string name="UnspecifiedErrorOccurred">不明なエラーが発生しました</string>
+    <string name="UnspecifiedErrorOccurred">不特定のエラーが発生しました</string>
 
     <string name="CannotPerformedWithoutPermission">許可なく実行することはできません</string>
 
@@ -330,4 +329,12 @@
     <string name="Localizers">ローカライザー</string>
 
     <string name="Icons">アイコン</string>
+
+    <string name="Deleted">削除されました</string>
+
+    <string name="CreateWidget">ウィジェットを作成する</string>
+
+    <string name="Share">共有</string>
+
+    <string name="MyStatsInShkiper">シュキパーでの私の統計</string>
 </resources>

@@ -3,7 +3,7 @@
     <!-- Repeating -->
 
 
-    <string name="none">Tidak berulang</string>
+    <string name="none">Tidak mengulangi</string>
 
     <string name="daily">Sehari-hari</string>
 
@@ -13,24 +13,23 @@
 
     <string name="yearly">Tahunan</string>
 
-
     <!-- Expressions -->
 
 
     <!-- settings page -->
 
 
-    <string name="ChoseLocalization">Memilih lokalisasi</string>
+    <string name="ChoseLocalization">Lokalisasi</string>
 
-    <string name="AppDataPolitics">Data Anda disimpan secara eksklusif di perangkat Anda. Menghapus data aplikasi Anda dapat mengakibatkan hilangnya data secara permanen. Untuk mencegahnya, ingatlah untuk menyimpan file data Anda sebelum melakukan reset.</string>
+    <string name="AppDataPolitics">Data Anda disimpan secara eksklusif di perangkat Anda. Menghapus data aplikasi Anda dapat menyebabkan hilangnya data secara permanen. Untuk mencegah hal ini, ingatlah untuk menyimpan file data Anda sebelum melakukan reset.</string>
 
-    <string name="Info">Info</string>
+    <string name="Info">Informasi</string>
 
     <string name="Information">Informasi</string>
 
     <string name="Open">Membuka</string>
 
-    <string name="OnboardingPage">Halaman orientasi</string>
+    <string name="OnboardingPage">Orientasi</string>
 
     <string name="Other">Lainnya</string>
 
@@ -48,7 +47,7 @@
 
     <string name="Backup">Cadangan</string>
 
-    <string name="ApplicationTheme">Tema aplikasi</string>
+    <string name="ApplicationTheme">Tema</string>
 
     <string name="LightTheme">Lampu</string>
 
@@ -56,9 +55,9 @@
 
     <string name="Application">Aplikasi</string>
 
-    <string name="ApplicationColors">Warna aplikasi</string>
+    <string name="ApplicationColors">Warna</string>
 
-    <string name="StatisticsPage">halaman statistik</string>
+    <string name="StatisticsPage">Statistik</string>
 
     <!-- Onboarding page -->
 
@@ -69,21 +68,21 @@
 
     <string name="Next">Berikutnya</string>
 
-    <string name="PagerImage">Gambar Halaman</string>
+    <string name="PagerImage">Gambar Pager</string>
 
     <string name="Tags">Tag</string>
 
-    <string name="TagsDescription">Tag diperlukan untuk memfilter catatan Anda dengan cepat, banyak tag dapat ditambahkan ke setiap catatan.</string>
+    <string name="TagsDescription">Tag diperlukan untuk memfilter catatan Anda dengan cepat, beberapa tag dapat ditambahkan ke setiap catatan.</string>
 
     <string name="AppDescription">Notepad yang cepat, sederhana, dan nyaman.</string>
 
     <string name="Reminders">Pengingat</string>
 
-    <string name="RemindersDescription">Pengingat memungkinkan Anda menjadwalkan pemberitahuan untuk acara penting pada hari dan waktu tertentu, dengan interval yang dipilih.</string>
+    <string name="RemindersDescription">Pengingat memungkinkan Anda menjadwalkan pemberitahuan acara penting pada hari dan waktu tertentu, dengan interval yang dipilih.</string>
 
     <string name="Themes">Tema</string>
 
-    <string name="ThemesDescription">Pilih tema warna yang paling Anda sukai.</string>
+    <string name="ThemesDescription">Pilih tema warna yang paling Anda sukai secara pribadi.</string>
 
     <!-- Nate page -->
 
@@ -118,11 +117,11 @@
 
     <string name="CreateNote">Buat catatan</string>
 
-    <string name="Hashtags">Tagar</string>
+    <string name="Hashtags">Tag</string>
 
     <string name="Cancel">Membatalkan</string>
 
-    <string name="HashtagExample">Tulis tagar, mis. Pekerjaan rumah</string>
+    <string name="HashtagExample">Tulis tag, mis. Pekerjaan rumah</string>
 
     <string name="Delete">Menghapus</string>
 
@@ -134,7 +133,7 @@
 
     <string name="Repeat">Mengulang</string>
 
-    <string name="ErrorDateMastBeFuture">Tanggal harus di masa depan</string>
+    <string name="ErrorDateMastBeFuture">Tanggalnya harus di masa depan</string>
 
     <string name="Menu">Menu</string>
 
@@ -222,7 +221,7 @@
 
     <string name="NotesRestored">Catatan dipulihkan</string>
 
-    <string name="DaysBeforeDeletingNote">Beberapa hari sebelum menghapus catatan: </string>
+    <string name="DaysBeforeDeletingNote">Hari sebelum menghapus catatan: </string>
 
     <string name="DeleteForever">Hapus selamanya?</string>
 
@@ -230,9 +229,9 @@
 
     <string name="Image">Gambar</string>
 
-    <string name="OfferWriteReviewTitle">Apakah Anda suka Shkiper?</string>
+    <string name="OfferWriteReviewTitle">Apakah kamu suka Shkiper?</string>
 
-    <string name="OfferWriteReviewDescription">Jika Anda memiliki beberapa menit lagi, silakan tinggalkan ulasan Anda di Google Play Store.</string>
+    <string name="OfferWriteReviewDescription">Jika Anda punya waktu beberapa menit lagi, silakan tinggalkan ulasan Anda di Google Play Store.</string>
 
     <string name="Restart">Mengulang kembali</string>
 
@@ -250,11 +249,11 @@
 
     <string name="PurchaseScreenDescription">Dukungan Anda membantu meningkatkan aplikasi kami. Bergabunglah dengan kami – berikan donasi dan jadilah bagian dari kisah Shkiper!</string>
 
-    <string name="BuyMe">Beli saya</string>
+    <string name="BuyMe">Belikan aku</string>
 
     <string name="BuySubscription">Beli langganan</string>
 
-    <string name="ItemAlreadyOwned">Produk ini sudah dibeli</string>
+    <string name="ItemAlreadyOwned">Produk ini telah dibeli</string>
 
     <string name="CheckInternetConnection">Periksa koneksi internet</string>
 
@@ -262,7 +261,7 @@
 
     <string name="Close">Menutup</string>
 
-    <string name="DonateBannerHeader">Apakah Anda menyukai Shkiper?</string>
+    <string name="DonateBannerHeader">Apakah Anda menyukai Shkipernya?</string>
 
     <string name="DonateBannerBody">Dukung pengembang dengan koin!</string>
 
@@ -276,7 +275,7 @@
 
     <string name="ChooseEmailClient">Pilih klien Email:</string>
 
-    <string name="DevMailHeader">Hai Efim</string>
+    <string name="DevMailHeader">Hay Efim</string>
 
     <!-- Statistics components -->
 
@@ -295,7 +294,7 @@
 
     <string name="Remembered">Selalu terkini</string>
 
-    <string name="RememberedDescription">\"Sayang, apakah kamu melupakan sesuatu?\" - \"Tidak.\" Jumlah notifikasi yang diterima</string>
+    <string name="RememberedDescription">\"Sayang, apakah kamu lupa sesuatu?\" - \"Tidak.\" Jumlah notifikasi yang diterima</string>
 
     <string name="FirstAppOpenDate">Pembukaan pertama</string>
 
@@ -309,7 +308,7 @@
 
     <string name="TruthSeekerDescription">Buka halaman aplikasi</string>
 
-    <string name="NoteDestroyer">Penghancur catatan</string>
+    <string name="NoteDestroyer">Catatan perusak</string>
 
     <string name="NoteDestroyerDescription">Aku melahirkanmu dan aku akan menghancurkanmu! \"Taras Bulba\". Jumlah catatan yang dihapus</string>
 
@@ -321,7 +320,7 @@
 
     <string name="Efim">Efim</string>
 
-    <string name="EfimDescription">Android/Web dan lainnya..</string>
+    <string name="EfimDescription">Android/Web dan banyak lagi..</string>
 
     <string name="Annually">Setiap tahun</string>
 
@@ -330,4 +329,12 @@
     <string name="Localizers">Pelokalan</string>
 
     <string name="Icons">Ikon</string>
+
+    <string name="Deleted">Dihapus</string>
+
+    <string name="CreateWidget">Buat widget</string>
+
+    <string name="Share">Membagikan</string>
+
+    <string name="MyStatsInShkiper">Statistik saya di Shkiper</string>
 </resources>
