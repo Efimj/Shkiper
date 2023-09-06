@@ -167,7 +167,7 @@ data class AppStatistics(
     @Keep
     @Composable
     fun getStatisticsText(): String {
-        var string = "${stringResource(R.string.MyStatsInShkiper)}\n"
+        var string = "${stringResource(R.string.MyStatsInShkiper)}\n\n"
         getStatisticsPreviews().forEach { statistics ->
             string = string.plus(
                 "${stringResource(statistics.title)}: ${statistics.getStringValue()}"
