@@ -9,4 +9,7 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="active">#423FFF</color>
+    <color name="text">#FFFFFF</color>
+    <color name="textSecondary">#959595</color>
+    <color name="background">#0F0F0F</color>
 </resources>
