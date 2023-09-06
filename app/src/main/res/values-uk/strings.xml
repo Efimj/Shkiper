@@ -10,7 +10,7 @@
 
     <!--    Expressions     -->
     <!--    settings page   -->
-    <string name="ChoseLocalization">Локалізація програми</string>
+    <string name="ChoseLocalization">Локалізація</string>
     <string name="AppDataPolitics">Ваші дані зберігаються виключно на вашому пристрої. Видалення даних програми може призвести до остаточної втрати даних. Щоб запобігти цьому, не забудьте зберегти файл даних перед виконанням скидання.</string>
     <string name="Info">Інформація</string>
     <string name="Information">Інформація</string>
@@ -24,11 +24,11 @@
     <string name="SaveAllNotesLocally">Зберегти локально</string>
     <string name="Save">Зберегти</string>
     <string name="Backup">Резервне копіювання</string>
-    <string name="ApplicationTheme">Тема програми</string>
+    <string name="ApplicationTheme">Тема</string>
     <string name="LightTheme">Світла</string>
     <string name="DarkTheme">Темна</string>
     <string name="Application">Програма</string>
-    <string name="ApplicationColors">Кольори додатку</string>
+    <string name="ApplicationColors">Кольори</string>
     <string name="StatisticsPage">Статистика</string>
 
 

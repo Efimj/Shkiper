@@ -10,7 +10,7 @@
 
     <!--    Expressions   -->
     <!--    settings page   -->
-    <string name="ChoseLocalization">Язык приложения</string>
+    <string name="ChoseLocalization">Язык</string>
     <string name="AppDataPolitics">Ваши данные хранятся исключительно на вашем устройстве. Удаление данных вашего приложения может привести к безвозвратной потере данных. Чтобы предотвратить это, не забудьте сохранить файл данных перед выполнением сброса.</string>
     <string name="Info">Информация</string>
     <string name="Information">Информация</string>
@@ -24,11 +24,11 @@
     <string name="SaveAllNotesLocally">Сохранить локально</string>
     <string name="Save">Сохранить</string>
     <string name="Backup">Резервное копирование</string>
-    <string name="ApplicationTheme">Тема приложения</string>
+    <string name="ApplicationTheme">Тема</string>
     <string name="LightTheme">Светлая</string>
     <string name="DarkTheme">Темная</string>
     <string name="Application">Приложение</string>
-    <string name="ApplicationColors">Цвета приложения</string>
+    <string name="ApplicationColors">Цвета</string>
     <string name="StatisticsPage">Статистика</string>
 
     <!--    Onboarding page   -->

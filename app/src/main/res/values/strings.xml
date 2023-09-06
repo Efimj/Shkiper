@@ -29,7 +29,7 @@
 
     <!--    Expressions   -->
     <!--    settings page   -->
-    <string name="ChoseLocalization">Chose localization</string>
+    <string name="ChoseLocalization">Localization</string>
     <string name="AppDataPolitics">Your data is stored exclusively on your device. Deleting your app\'s data could lead to permanent data loss. To prevent this, remember to save your data file before performing a reset.</string>
     <string name="Info">Info</string>
     <string name="Information">Information</string>
@@ -43,11 +43,11 @@
     <string name="SaveAllNotesLocally">Save all notes locally</string>
     <string name="Save">Save</string>
     <string name="Backup">Backup</string>
-    <string name="ApplicationTheme">Application theme</string>
+    <string name="ApplicationTheme">Theme</string>
     <string name="LightTheme">Light</string>
     <string name="DarkTheme">Dark</string>
     <string name="Application">Application</string>
-    <string name="ApplicationColors">Application colors</string>
+    <string name="ApplicationColors">Colors</string>
     <string name="StatisticsPage">Statistics</string>
 
     <!--    Onboarding page   -->

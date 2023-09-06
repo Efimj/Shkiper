@@ -86,7 +86,7 @@ fun StatisticsScreen() {
                         ),
                         border = null,
                         textColor = Color.White,
-                        modifier = Modifier.width(140.dp)
+                        modifier = Modifier.width(160.dp)
                     )
                 }
             }
