@@ -26,6 +26,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -97,7 +98,12 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
                         text = noteViewModel.screenState.value.noteHeader,
                         onTextChange = { noteViewModel.updateNoteHeader(it) },
                         placeholder = stringResource(R.string.Header),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text, imeAction = ImeAction.Next),
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Text,
+                            imeAction = ImeAction.Next,
+                            capitalization = KeyboardCapitalization.Sentences,
+                            autoCorrect = true
+                        ),
                         keyboardActions = KeyboardActions(
                             onAny = {
                                 bodyFieldFocusRequester.requestFocus()

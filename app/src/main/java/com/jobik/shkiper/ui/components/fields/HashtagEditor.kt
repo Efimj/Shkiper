@@ -25,6 +25,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jobik.shkiper.R
@@ -156,7 +157,10 @@ private fun HashtagsEdit(
         placeholder = stringResource(R.string.Text),
         textStyle = MaterialTheme.typography.body1,
         modifier = modifier,
-        keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+        keyboardOptions = KeyboardOptions.Default.copy(
+            imeAction = ImeAction.Done,
+            capitalization = KeyboardCapitalization.Words
+        ),
         keyboardActions = KeyboardActions(
             onDone = { onDone() }
         )

@@ -27,6 +27,7 @@ import androidx.compose.ui.text.ParagraphIntrinsics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.createFontFamilyResolver
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
@@ -48,7 +49,7 @@ fun SearchField(
     val enabled = true
     val textStyle = MaterialTheme.typography.body1.copy(color = CustomAppTheme.colors.text)
     val visualTransformation = VisualTransformation.None
-    val isTrailingIconVisible= search.isNotBlank()
+    val isTrailingIconVisible = search.isNotBlank()
 
     val textFieldColors = TextFieldDefaults.textFieldColors(
         backgroundColor = CustomAppTheme.colors.secondaryBackground,
@@ -85,6 +86,8 @@ fun SearchField(
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Text,
                     imeAction = ImeAction.Done,
+                    capitalization = KeyboardCapitalization.Sentences,
+                    autoCorrect = true
                 ),
                 keyboardActions = KeyboardActions(
                     onDone = {
