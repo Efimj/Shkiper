@@ -111,8 +111,14 @@ class NotesViewModel @Inject constructor(
 
     private suspend fun getNotesByText(newString: String) {
         _screenState.value = screenState.value.copy(currentHashtag = null)
-        noteRepository.filterNotesByContains(newString, notePosition).collect {
-            _screenState.value = _screenState.value.copy(notes = it)
+        noteRepository.getNotesFlow(notePosition).collect {
+            val notes = it.filter {
+                it.body.contains(newString, ignoreCase = true) || it.header.contains(
+                    newString,
+                    ignoreCase = true
+                )
+            }
+            _screenState.value = _screenState.value.copy(notes = notes)
         }
     }
 
@@ -232,7 +238,7 @@ class NotesViewModel @Inject constructor(
             toggleSelectedNoteCard(note._id)
         else {
             if (currentRoute.substringBefore("/") != AppScreens.Note.route.substringBefore("/")) {
-                navController.navigate(AppScreens.Note.noteId(note._id.toHexString())){
+                navController.navigate(AppScreens.Note.noteId(note._id.toHexString())) {
                     launchSingleTop = true
                 }
             }

@@ -16,6 +16,7 @@ import io.realm.kotlin.ext.copyFromRealm
 import io.realm.kotlin.ext.query
 import io.realm.kotlin.query.Sort
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import org.mongodb.kbson.ObjectId
 
@@ -71,14 +72,6 @@ class NoteMongoRepositoryImpl(val realm: Realm, @ApplicationContext val context:
 
     override fun getAllNotes(): List<Note> {
         return realm.query<Note>().sort("_id", Sort.DESCENDING).find()
-    }
-
-    override fun filterNotesByContains(text: String, position: NotePosition): Flow<List<Note>> {
-        return realm.query<Note>(
-            query = "(header CONTAINS[c] $0 OR body CONTAINS[c] $0) AND positionString == $1",
-            text,
-            position.name
-        ).sort("_id", Sort.DESCENDING).asFlow().map { it.list }
     }
 
     override suspend fun insertNote(note: Note) {
