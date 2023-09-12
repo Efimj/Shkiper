@@ -232,7 +232,9 @@ class NotesViewModel @Inject constructor(
             toggleSelectedNoteCard(note._id)
         else {
             if (currentRoute.substringBefore("/") != AppScreens.Note.route.substringBefore("/")) {
-                navController.navigate(AppScreens.Note.noteId(note._id.toHexString()))
+                navController.navigate(AppScreens.Note.noteId(note._id.toHexString())){
+                    launchSingleTop = true
+                }
             }
         }
     }

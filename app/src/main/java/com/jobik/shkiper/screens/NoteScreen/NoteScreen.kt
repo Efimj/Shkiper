@@ -195,7 +195,6 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
 
     DisposableEffect(Unit) {
         onDispose {
-            noteViewModel.saveChanges()
             noteViewModel.deleteNoteIfEmpty()
         }
     }

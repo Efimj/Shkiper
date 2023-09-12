@@ -3,6 +3,7 @@ package com.jobik.shkiper.screens.NoteScreen
 import android.app.Application
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -318,14 +319,6 @@ class NoteViewModel @Inject constructor(
             if (_screenState.value.noteHeader.isEmpty() && _screenState.value.noteBody.isEmpty()) noteRepository.deleteNote(
                 _screenState.value.noteId,
             )
-        }
-    }
-
-    fun saveChanges() {
-        updateNote {
-            it.header = this@NoteViewModel._screenState.value.noteHeader
-            it.body = this@NoteViewModel._screenState.value.noteBody
-            it.updateDate = this@NoteViewModel._screenState.value.updatedDate
         }
     }
 
