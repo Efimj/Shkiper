@@ -73,11 +73,16 @@ class NoteSelectionViewModel @Inject constructor(
 
     private fun getNotesByText(newString: String) {
         _screenState.value = screenState.value.copy(currentHashtag = null)
-        _screenState.value = _screenState.value.copy(
-            notes = noteRepository.getAllNotes().filter {
-                it.position != NotePosition.DELETE && it.header.contains(newString) || it.body.contains(newString)
-            },
-        )
+        noteRepository.getAllNotes().let { listNotes ->
+            val notes = listNotes.filter {
+                it.position != NotePosition.DELETE && (
+                        it.body.contains(newString, ignoreCase = true) || it.header.contains(
+                            newString,
+                            ignoreCase = true
+                        ))
+            }
+            _screenState.value = _screenState.value.copy(notes = notes)
+        }
     }
 
     fun clickOnNote(noteId: ObjectId?) {
