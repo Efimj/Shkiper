@@ -13,4 +13,5 @@ val LocalExtendedColors = staticCompositionLocalOf {
         active = Color.Unspecified,
         secondaryBackground = Color.Unspecified,
     )
+
 }
