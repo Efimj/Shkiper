@@ -1,10 +1,9 @@
 package com.jobik.shkiper.ui.components.modals
 
 import androidx.compose.foundation.*
+import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.PagerState
-import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.pager.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ButtonDefaults
@@ -64,15 +63,26 @@ fun CreateReminderDialog(
     val date = rememberSaveable { mutableStateOf(reminderDialogProperties.date) }
     val time = rememberSaveable { mutableStateOf(reminderDialogProperties.time) }
     val repeatMode = rememberSaveable { mutableStateOf(reminderDialogProperties.repeatMode) }
-    val pagerState = rememberPagerState()
+    val pagerState = rememberPagerState(
+        initialPage = 0,
+        initialPageOffsetFraction = 0f
+    ) {
+        ReminderDialogPages.values().size
+    }
     Dialog(onGoBack, DialogProperties(true, dismissOnClickOutside = true)) {
         Column(
             Modifier.clip(RoundedCornerShape(15.dp)).background(CustomAppTheme.colors.secondaryBackground)
                 .padding(vertical = 20.dp)
         ) {
             HorizontalPager(
-                pageCount = ReminderDialogPages.values().size,
+                modifier = Modifier,
                 state = pagerState,
+                pageSpacing = 0.dp,
+                userScrollEnabled = true,
+                reverseLayout = false,
+                contentPadding = PaddingValues(0.dp),
+                beyondBoundsPageCount = 0,
+                pageSize = PageSize.Fill,
             ) {
                 DialogContent(it, date, time, repeatMode)
             }

@@ -52,12 +52,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     kotlinOptions {
-        jvmTarget = '11'
+        jvmTarget = '1.8'
     }
 
     buildFeatures {
@@ -65,7 +65,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion '1.4.3'
+        kotlinCompilerExtensionVersion '1.5.3'
     }
 
     packagingOptions {
@@ -77,12 +77,12 @@ android {
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.10.1'
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.1'
-    implementation 'androidx.activity:activity-compose:1.7.2'
+    implementation 'androidx.core:core-ktx:1.12.0'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.2'
+    implementation 'androidx.activity:activity-compose:1.8.0'
     implementation "androidx.compose.ui:ui:$compose_version"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
-    implementation 'androidx.compose.material3:material3:1.1.1'
+    implementation 'androidx.compose.material3:material3:1.1.2'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
@@ -95,8 +95,8 @@ dependencies {
     implementation "androidx.core:core-splashscreen:1.0.1"
 
     // Navigation Compose
-    implementation "androidx.navigation:navigation-compose:2.6.0-beta01"
-    implementation "com.google.accompanist:accompanist-navigation-animation:$accompanist_version"
+    implementation "androidx.navigation:navigation-compose:$accompanist_version"
+    implementation "androidx.navigation:navigation-runtime-ktx:2.7.4"
 
     // Pager and Indicators - Accompanist
     implementation "com.google.accompanist:accompanist-pager:$accompanist_version"
@@ -129,7 +129,7 @@ dependencies {
     implementation 'com.github.commandiron:WheelPickerCompose:1.1.11'
 
     // Customize Calendar
-    implementation 'com.kizitonwose.calendar:compose:2.3.0'
+    implementation 'com.kizitonwose.calendar:compose:2.4.0'
 
     // Json serialization
     implementation 'com.google.code.gson:gson:2.10'
@@ -155,8 +155,8 @@ dependencies {
 
     // Glance Widgets
     // For AppWidgets support
-    implementation "androidx.glance:glance-appwidget:1.0.0-rc01"
+    implementation "androidx.glance:glance-appwidget:1.0.0"
 
     // For interop APIs with Material 3
-    implementation "androidx.glance:glance-material3:1.0.0-rc01"
+    implementation "androidx.glance:glance-material3:1.0.0"
 }

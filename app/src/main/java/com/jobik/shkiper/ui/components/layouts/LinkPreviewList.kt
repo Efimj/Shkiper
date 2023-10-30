@@ -1,6 +1,5 @@
 package com.jobik.shkiper.ui.components.layouts
 
-import androidx.compose.animation.core.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items

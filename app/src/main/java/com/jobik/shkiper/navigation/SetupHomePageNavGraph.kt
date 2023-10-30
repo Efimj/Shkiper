@@ -8,18 +8,18 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.jobik.shkiper.screens.AboutNotepadScreen.AboutNotepadScreen
 import com.jobik.shkiper.screens.ArchiveNotesScreen.ArchiveNotesScreen
 import com.jobik.shkiper.screens.BasketNotesScreen.BasketNotesScreen
 import com.jobik.shkiper.screens.NoteListScreen.NoteListScreen
 import com.jobik.shkiper.screens.NoteScreen.NoteScreen
 import com.jobik.shkiper.screens.OnboardingScreen.OnBoardingScreen
+import com.jobik.shkiper.screens.PurchaseScreen.PurchaseScreen
 import com.jobik.shkiper.screens.SettingsScreen.SettingsScreen
 import com.jobik.shkiper.screens.StatisticsScreen.StatisticsScreen
-import com.google.accompanist.navigation.animation.AnimatedNavHost
-import com.google.accompanist.navigation.animation.composable
-import com.jobik.shkiper.screens.AboutNotepadScreen.AboutNotepadScreen
-import com.jobik.shkiper.screens.PurchaseScreen.PurchaseScreen
 
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -33,7 +33,7 @@ fun SetupAppScreenNavGraph(
         return AppScreens.SecondaryRoutes.isSecondaryRoute(targetRoute ?: "")
     }
 
-    AnimatedNavHost(
+    NavHost(
         navController = navController,
         startDestination = startDestination,
         modifier = Modifier.semantics {

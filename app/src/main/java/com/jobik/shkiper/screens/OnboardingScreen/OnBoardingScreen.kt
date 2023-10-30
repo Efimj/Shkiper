@@ -6,10 +6,9 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.PagerState
-import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.pager.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.MaterialTheme
@@ -38,15 +37,22 @@ import com.jobik.shkiper.R
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OnBoardingScreen(navController: NavController) {
-    val pagerState = rememberPagerState()
+    val pagerState = rememberPagerState() {
+        OnBoardingPage.PageList.Count
+    }
 
     Column(modifier = Modifier.fillMaxSize().padding(vertical = 30.dp)) {
         HorizontalPager(
-            pageCount = OnBoardingPage.PageList.Count,
             modifier = Modifier.weight(1f),
             state = pagerState,
-        ) { position ->
-            PagerScreen(OnBoardingPage.PageList.PageList[position])
+            pageSpacing = 0.dp,
+            userScrollEnabled = true,
+            reverseLayout = false,
+            contentPadding = PaddingValues(0.dp),
+            beyondBoundsPageCount = 0,
+            pageSize = PageSize.Fill,
+        ) {
+            PagerScreen(OnBoardingPage.PageList.PageList[it])
         }
         ScreenFooter(navController, pagerState)
     }
