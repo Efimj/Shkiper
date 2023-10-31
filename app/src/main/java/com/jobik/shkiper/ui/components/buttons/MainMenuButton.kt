@@ -14,11 +14,11 @@ import androidx.compose.ui.unit.sp
 import com.jobik.shkiper.ui.theme.CustomTheme
 
 @Composable
-fun MainMenuButton(text: String, icon: ImageVector? = null, isActive: Boolean = false, onClick: () -> Unit = { }){
+fun MainMenuButton(text: String, icon: ImageVector? = null, isActive: Boolean = false, onClick: () -> Unit = { }) {
     val menuButtonModifier = Modifier.fillMaxWidth().height(45.dp)
 
-    if(isActive){
-        RoundedButton(
+    if (isActive) {
+        CustomButton(
             text = text,
             icon = icon,
             modifier = menuButtonModifier,
@@ -29,11 +29,12 @@ fun MainMenuButton(text: String, icon: ImageVector? = null, isActive: Boolean = 
             onClick = onClick,
             iconTint = Color.White
         )
-    }else{
-        RoundedButton(
+    } else {
+        CustomButton(
             text = text,
             icon = icon,
             modifier = menuButtonModifier,
+            colors = ButtonDefaults.buttonColors(backgroundColor = CustomTheme.colors.secondaryBackground),
             border = BorderStroke(0.dp, CustomTheme.colors.mainBackground),
             textStyle = MaterialTheme.typography.h6.copy(fontSize = 17.sp),
             onClick = onClick,

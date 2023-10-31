@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jobik.shkiper.R
 import com.jobik.shkiper.helpers.LinkHelper
-import com.jobik.shkiper.ui.components.buttons.RoundedButton
+import com.jobik.shkiper.ui.components.buttons.CustomButton
 import com.jobik.shkiper.ui.components.cards.LinkPreviewCard
 import com.jobik.shkiper.ui.modifiers.circularRotation
 import com.jobik.shkiper.ui.theme.CustomTheme
@@ -69,7 +69,7 @@ fun LazyListScope.LinkPreviewList(
     }
     if (linkPreviewList.size > 3) {
         item {
-            RoundedButton(
+            CustomButton(
                 text = if (expanded.value) stringResource(R.string.Hide) else stringResource(R.string.ShowAll),
                 onClick = { expanded.value = !expanded.value },
                 colors = ButtonDefaults.buttonColors(

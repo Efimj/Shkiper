@@ -26,7 +26,7 @@ import com.jobik.shkiper.ui.components.cards.StatisticsCard
 import com.jobik.shkiper.ui.components.modals.StatisticsInformationDialog
 import com.jobik.shkiper.R
 import com.jobik.shkiper.helpers.IntentHelper
-import com.jobik.shkiper.ui.components.buttons.RoundedButton
+import com.jobik.shkiper.ui.components.buttons.CustomButton
 import com.jobik.shkiper.ui.components.layouts.ScreenWrapper
 import com.jobik.shkiper.ui.theme.CustomTheme
 
@@ -70,7 +70,7 @@ fun StatisticsScreen() {
                     horizontalArrangement = Arrangement.Center
                 ) {
                     val statisticsText = StatisticsService(context).appStatistics.getStatisticsText()
-                    RoundedButton(
+                    CustomButton(
                         text = stringResource(R.string.Share),
                         onClick = {
                             IntentHelper().shareTextIntent(context, statisticsText)

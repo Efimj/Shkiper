@@ -31,7 +31,7 @@ import com.jobik.shkiper.helpers.DateHelper
 import com.jobik.shkiper.ui.components.buttons.DropDownButton
 import com.jobik.shkiper.ui.components.buttons.DropDownButtonSizeMode
 import com.jobik.shkiper.ui.components.buttons.DropDownItem
-import com.jobik.shkiper.ui.components.buttons.RoundedButton
+import com.jobik.shkiper.ui.components.buttons.CustomButton
 import com.jobik.shkiper.ui.components.fields.CustomDatePicker
 import com.jobik.shkiper.ui.components.fields.CustomTimePicker
 import com.jobik.shkiper.ui.theme.CustomTheme
@@ -105,7 +105,7 @@ private fun DialogFooter(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        if (onDelete != null) RoundedButton(
+        if (onDelete != null) CustomButton(
             text = stringResource(R.string.Delete), onClick = {
                 coroutineScope.launch {
                     onDelete()
@@ -120,7 +120,7 @@ private fun DialogFooter(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Row(Modifier.weight(1f), horizontalArrangement = Arrangement.Start) {
-                RoundedButton(
+                CustomButton(
                     text = if (pagerState.currentPage > 0) stringResource(R.string.Back) else stringResource(R.string.Cancel),
                     onClick = {
                         coroutineScope.launch {
@@ -153,7 +153,7 @@ private fun DialogFooter(
             }
             Row(Modifier.weight(1f), horizontalArrangement = Arrangement.End) {
                 val isEnd = pagerState.currentPage == ReminderDialogPages.values().size - 1
-                RoundedButton(
+                CustomButton(
                     text = if (isEnd) stringResource(R.string.Save) else stringResource(
                         R.string.Next
                     ),
@@ -254,7 +254,7 @@ private fun RepeatModePage(
                     Modifier.width(150.dp),
                     DropDownButtonSizeMode.STRERCHBYBUTTONWIDTH,
                     onChangedSelection = { repeatMode.value = RepeatMode.values()[it] }) {
-                    RoundedButton(
+                    CustomButton(
                         text = repeatMode.value.getLocalizedValue(LocalContext.current),
                         onClick = { it() },
                         border = BorderStroke(1.dp, CustomTheme.colors.stroke),

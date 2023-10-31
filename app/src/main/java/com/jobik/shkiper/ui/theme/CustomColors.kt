@@ -28,11 +28,12 @@ val baseDarkColors = CustomThemeColors(
 
 val DefaultLightColors = baseLightColors.copy(
     active = Color(android.graphics.Color.parseColor("#433FFF")),
-    mainBackground = Color(android.graphics.Color.parseColor("#FFFFFF")),
-    secondaryBackground = Color(android.graphics.Color.parseColor("#FFFFFF")),
-    stroke = Color(android.graphics.Color.parseColor("#D2D2D2")),
-    text = Color(android.graphics.Color.parseColor("#161616")),
-    textSecondary = Color(android.graphics.Color.parseColor("#7A7A7A")),
+    mainBackground = Color(0xFFECEEEF),
+    secondaryBackground = Color(0xFFFFFFFF),
+    stroke = Color(android.graphics.Color.parseColor("#FFFFFF")),
+    text = Color(0xFF161616),
+    textOnActive = Color(0xFFFFFFFF),
+    textSecondary = Color(0xFF7A7A7A),
     modalBackground = Color(0, 0, 0, (255 * 0.2).toInt()),
 )
 

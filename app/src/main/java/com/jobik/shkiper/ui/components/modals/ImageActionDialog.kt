@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.jobik.shkiper.R
-import com.jobik.shkiper.ui.components.buttons.RoundedButton
+import com.jobik.shkiper.ui.components.buttons.CustomButton
 import com.jobik.shkiper.ui.theme.CustomTheme
 
 data class ImageActionDialogButton(
@@ -92,7 +92,7 @@ fun ImageActionDialog(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.Center
                         ) {
-                            RoundedButton(
+                            CustomButton(
                                 text = button.text,
                                 onClick = button.onClick,
                                 icon = button.icon,
@@ -119,7 +119,7 @@ fun ImageActionDialog(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.Center
                         ) {
-                            RoundedButton(
+                            CustomButton(
                                 text = button.text,
                                 onClick = button.onClick,
                                 icon = button.icon,

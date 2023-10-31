@@ -41,8 +41,8 @@ fun FloatingActionButton(
         },
         elevation = 0.dp,
         shape = RoundedCornerShape(15.dp),
-        border = BorderStroke(if (isActive) 1.dp else 0.dp, CustomTheme.colors.active),
-        backgroundColor = CustomTheme.colors.mainBackground,
+        border = BorderStroke(if (isActive) 2.dp else 0.dp, CustomTheme.colors.active),
+        backgroundColor = CustomTheme.colors.secondaryBackground,
         contentColor = CustomTheme.colors.text,
     ) {
         androidx.compose.material3.Icon(

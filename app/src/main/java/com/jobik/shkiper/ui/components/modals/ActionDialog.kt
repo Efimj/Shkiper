@@ -17,7 +17,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.jobik.shkiper.ui.components.buttons.RoundedButton
+import com.jobik.shkiper.ui.components.buttons.CustomButton
 import com.jobik.shkiper.ui.theme.CustomTheme
 
 @Composable
@@ -68,7 +68,7 @@ fun ActionDialog(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    RoundedButton(
+                    CustomButton(
                         text = goBackText,
                         onClick = onGoBack,
                         colors = ButtonDefaults.buttonColors(
@@ -86,7 +86,7 @@ fun ActionDialog(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    RoundedButton(
+                    CustomButton(
                         text = confirmText,
                         onClick = onConfirm,
                         colors = ButtonDefaults.buttonColors(

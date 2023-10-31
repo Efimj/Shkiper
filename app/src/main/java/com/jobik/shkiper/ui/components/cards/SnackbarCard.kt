@@ -15,7 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.jobik.shkiper.R
-import com.jobik.shkiper.ui.components.buttons.RoundedButton
+import com.jobik.shkiper.ui.components.buttons.CustomButton
 import com.jobik.shkiper.ui.theme.CustomTheme
 import com.jobik.shkiper.util.SnackbarVisualsCustom
 
@@ -60,7 +60,7 @@ fun SnackbarCard(snackbarData: SnackbarVisualsCustom) {
                     Spacer(Modifier.width(13.dp))
                 }
                 if (snackbarData.actionLabel != null) {
-                    RoundedButton(
+                    CustomButton(
                         text = snackbarData.actionLabel,
                         onClick = { snackbarData.action?.let { it() } },
                         colors = ButtonDefaults.buttonColors(

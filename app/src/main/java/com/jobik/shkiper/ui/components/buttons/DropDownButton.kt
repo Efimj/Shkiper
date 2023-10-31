@@ -47,7 +47,7 @@ fun DropDownButton(
         if (button != null)
             button { expanded = !expanded }
         else
-            RoundedButton(
+            CustomButton(
                 modifier = Modifier.fillMaxWidth(),
                 text = items[selectedIndex].text,
                 onClick = { expanded = !expanded },

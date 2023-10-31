@@ -33,7 +33,7 @@ import com.jobik.shkiper.navigation.AppScreens
 import com.jobik.shkiper.ui.components.buttons.DropDownButton
 import com.jobik.shkiper.ui.components.buttons.DropDownButtonSizeMode
 import com.jobik.shkiper.ui.components.buttons.DropDownItem
-import com.jobik.shkiper.ui.components.buttons.RoundedButton
+import com.jobik.shkiper.ui.components.buttons.CustomButton
 import com.jobik.shkiper.ui.components.cards.ThemePreview
 import com.jobik.shkiper.ui.theme.CustomTheme
 import com.jobik.shkiper.ui.theme.CustomThemeStyle
@@ -264,7 +264,7 @@ private fun SettingsItemSelectLanguage(settingsViewModel: SettingsViewModel) {
             settingsViewModel.selectLocalization(it)
             recreateActivity(context, coroutineScope)
         }) {
-        RoundedButton(
+        CustomButton(
             modifier = Modifier.width(145.dp),
             text = currentLanguage.getLocalizedValue(context),
             icon = Icons.Outlined.Language,
@@ -321,7 +321,7 @@ private fun SettingsItem(
         Spacer(modifier = Modifier.width(16.dp))
         Box(modifier = Modifier.weight(1f)) {
             if (buttonComponent == null)
-                RoundedButton(
+                CustomButton(
                     text = buttonText,
                     icon = buttonIcon,
                     modifier = Modifier.width(145.dp),

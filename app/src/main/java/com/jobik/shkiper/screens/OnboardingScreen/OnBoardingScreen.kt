@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.jobik.shkiper.SharedPreferencesKeys
 import com.jobik.shkiper.navigation.AppScreens
-import com.jobik.shkiper.ui.components.buttons.RoundedButton
+import com.jobik.shkiper.ui.components.buttons.CustomButton
 import kotlinx.coroutines.launch
 import com.jobik.shkiper.R
 import com.jobik.shkiper.ui.theme.CustomTheme
@@ -70,7 +70,7 @@ private fun ScreenFooter(navController: NavController, pagerState: PagerState) {
     ) {
         Row(Modifier.weight(1f)) {
             if (pagerState.currentPage > 0)
-                RoundedButton(
+                CustomButton(
                     text = stringResource(R.string.Back), onClick = {
                         coroutineScope.launch {
                             pagerState.animateScrollToPage(pagerState.currentPage - 1)
@@ -92,7 +92,7 @@ private fun ScreenFooter(navController: NavController, pagerState: PagerState) {
             }
         }
         Row(Modifier.weight(1f), horizontalArrangement = Arrangement.End) {
-            RoundedButton(
+            CustomButton(
                 modifier = Modifier.testTag("button_next"),
                 text = if (pagerState.currentPage == OnBoardingPage.PageList.Count - 1) stringResource(R.string.Finish) else stringResource(
                     R.string.Next

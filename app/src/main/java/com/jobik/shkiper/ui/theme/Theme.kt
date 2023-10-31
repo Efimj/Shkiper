@@ -30,7 +30,7 @@ fun ShkiperTheme(
 
     val systemUiController = rememberSystemUiController()
     systemUiController.setSystemBarsColor(
-        color = colors.mainBackground
+        color = colors.secondaryBackground
     )
 
     CompositionLocalProvider(

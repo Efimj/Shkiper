@@ -27,7 +27,7 @@ import com.jobik.shkiper.R
 import com.jobik.shkiper.ui.components.buttons.DropDownButton
 import com.jobik.shkiper.ui.components.buttons.DropDownButtonSizeMode
 import com.jobik.shkiper.ui.components.buttons.DropDownItem
-import com.jobik.shkiper.ui.components.buttons.RoundedButton
+import com.jobik.shkiper.ui.components.buttons.CustomButton
 import com.jobik.shkiper.ui.theme.CustomTheme
 
 @Composable
@@ -61,14 +61,14 @@ fun HashtagEditor(
             )
             if (editModeEnabled.value) {
                 Row {
-                    RoundedButton(
+                    CustomButton(
                         Modifier,
                         text = stringResource(R.string.Cancel),
                         onClick = { editModeEnabled.value = false },
                         border = BorderStroke(0.dp, Color.Transparent)
                     )
                     Spacer(Modifier.width(8.dp))
-                    RoundedButton(
+                    CustomButton(
                         Modifier,
                         text = stringResource(R.string.Save),
                         onClick = {
@@ -92,7 +92,7 @@ fun HashtagEditor(
                             textFieldValue.value = newTagString
                         }
                     ) {
-                        RoundedButton(
+                        CustomButton(
                             Modifier,
                             text = stringResource(R.string.Add),
                             icon = Icons.Outlined.Label,

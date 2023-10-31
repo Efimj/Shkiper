@@ -24,7 +24,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.jobik.shkiper.R
 import com.jobik.shkiper.services.review_service.ReviewService
-import com.jobik.shkiper.ui.components.buttons.RoundedButton
+import com.jobik.shkiper.ui.components.buttons.CustomButton
 import com.jobik.shkiper.ui.theme.CustomTheme
 import kotlinx.coroutines.delay
 
@@ -84,7 +84,7 @@ fun OfferWriteReview(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.Center
                     ) {
-                        RoundedButton(
+                        CustomButton(
                             text = stringResource(R.string.Cancel),
                             onClick = goBackFunDelay,
                             colors = ButtonDefaults.buttonColors(
@@ -104,7 +104,7 @@ fun OfferWriteReview(
                         horizontalArrangement = Arrangement.Center
                     ) {
                         val context = LocalContext.current
-                        RoundedButton(
+                        CustomButton(
                             text = stringResource(R.string.RateTheApp),
                             onClick = { ReviewService(context).openRateScreen(); onGoBack() },
                             colors = ButtonDefaults.buttonColors(

@@ -15,6 +15,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -26,7 +27,7 @@ import com.jobik.shkiper.database.models.NotePosition
 import com.jobik.shkiper.navigation.SetupAppScreenNavGraph
 import com.jobik.shkiper.navigation.AppScreens
 import com.jobik.shkiper.ui.components.buttons.MainMenuButton
-import com.jobik.shkiper.ui.components.buttons.RoundedButton
+import com.jobik.shkiper.ui.components.buttons.CustomButton
 import com.jobik.shkiper.ui.components.cards.SnackbarCard
 import com.jobik.shkiper.ui.theme.CustomTheme
 import com.jobik.shkiper.util.SnackbarHostUtil
@@ -43,7 +44,7 @@ fun MainMenuBottomSheet(startDestination: String = AppScreens.NoteList.route) {
         rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden, skipHalfExpanded = true)
 
     ModalBottomSheetLayout(
-        sheetBackgroundColor = CustomTheme.colors.mainBackground,
+        sheetBackgroundColor = CustomTheme.colors.secondaryBackground,
         sheetState = bottomSheetState,
         scrimColor = CustomTheme.colors.modalBackground,
         sheetShape = RoundedCornerShape(topStart = 26.dp, topEnd = 26.dp),
@@ -100,7 +101,7 @@ private fun MainPageLayout(
             ),
             contentAlignment = Alignment.BottomCenter
         ) {
-            RoundedButton(
+            CustomButton(
                 text = getCurrentMenuText(currentRoute),
                 icon = navController.currentBackStackEntryAsState().value?.destination?.route?.let {
                     getCurrentMenuIcon(
@@ -112,6 +113,12 @@ private fun MainPageLayout(
                         bottomSheetState.show()
                     }
                 },
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = CustomTheme.colors.secondaryBackground,
+                    disabledBackgroundColor = Color.Transparent
+                ),
+                iconTint = CustomTheme.colors.text,
+                textColor = CustomTheme.colors.text,
                 shape = RoundedCornerShape(topStart = 36.dp, topEnd = 36.dp),
                 modifier = Modifier.height(menuContainerHeight.dp).width(160.dp).offset(y = 1.dp),
                 horizontalPaddings = 10.dp

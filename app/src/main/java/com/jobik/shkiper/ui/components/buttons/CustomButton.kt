@@ -1,7 +1,6 @@
 package com.jobik.shkiper.ui.components.buttons
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -22,9 +21,8 @@ import com.jobik.shkiper.ui.helpers.get
 import com.jobik.shkiper.ui.modifiers.circularRotation
 import com.jobik.shkiper.ui.theme.CustomTheme
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun RoundedButton(
+fun CustomButton(
     modifier: Modifier = Modifier,
     text: String? = null,
     icon: ImageVector? = null,
@@ -34,7 +32,7 @@ fun RoundedButton(
     shape: Shape = RoundedCornerShape(15.dp),
     border: BorderStroke? = BorderStroke(1.dp, CustomTheme.colors.stroke),
     colors: ButtonColors = ButtonDefaults.buttonColors(
-        backgroundColor = CustomTheme.colors.mainBackground,
+        backgroundColor = CustomTheme.colors.secondaryBackground,
         disabledBackgroundColor = Color.Transparent
     ),
     horizontalPaddings: Dp = 0.dp,
@@ -71,7 +69,6 @@ fun RoundedButton(
             if (text != null) {
                 Text(
                     text = text,
-                    //letterSpacing = 0.sp,
                     color = textColor,
                     style = textStyle,
                     maxLines = 1,
