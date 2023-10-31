@@ -1,11 +1,15 @@
 package com.jobik.shkiper.ui.components.modals
 
-import androidx.compose.foundation.*
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
+import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.pager.*
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PageSize
+import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
@@ -13,12 +17,14 @@ import androidx.compose.material.icons.filled.Event
 import androidx.compose.material.icons.filled.Repeat
 import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -28,10 +34,7 @@ import androidx.compose.ui.window.DialogProperties
 import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.RepeatMode
 import com.jobik.shkiper.helpers.DateHelper
-import com.jobik.shkiper.ui.components.buttons.DropDownButton
-import com.jobik.shkiper.ui.components.buttons.DropDownButtonSizeMode
-import com.jobik.shkiper.ui.components.buttons.DropDownItem
-import com.jobik.shkiper.ui.components.buttons.CustomButton
+import com.jobik.shkiper.ui.components.buttons.*
 import com.jobik.shkiper.ui.components.fields.CustomDatePicker
 import com.jobik.shkiper.ui.components.fields.CustomTimePicker
 import com.jobik.shkiper.ui.theme.CustomTheme
@@ -110,9 +113,8 @@ private fun DialogFooter(
                 coroutineScope.launch {
                     onDelete()
                 }
-            }, border = BorderStroke(0.dp, Color.Transparent), colors = ButtonDefaults.buttonColors(
-                backgroundColor = Color.Transparent, disabledBackgroundColor = Color.Transparent
-            )
+            },
+            style = ButtonStyle.Text
         )
         Row(
             modifier = if (onDelete == null) Modifier.fillMaxWidth() else Modifier,
@@ -130,10 +132,7 @@ private fun DialogFooter(
                             }
                         }
                     },
-                    border = BorderStroke(0.dp, Color.Transparent),
-                    colors = ButtonDefaults.buttonColors(
-                        backgroundColor = Color.Transparent, disabledBackgroundColor = Color.Transparent
-                    )
+                    style = ButtonStyle.Text
                 )
             }
             if (onDelete == null) {
@@ -164,14 +163,7 @@ private fun DialogFooter(
                             pagerState.animateScrollToPage(pagerState.currentPage + 1)
                         }
                     },
-                    colors = if (isEnd) ButtonDefaults.buttonColors(
-                        backgroundColor = CustomTheme.colors.active,
-                        disabledBackgroundColor = Color.Transparent
-                    ) else ButtonDefaults.buttonColors(
-                        backgroundColor = CustomTheme.colors.mainBackground,
-                        disabledBackgroundColor = Color.Transparent
-                    ),
-                    textColor = if (isEnd) Color.White else CustomTheme.colors.text
+                    style = if (isEnd) ButtonStyle.Filled else ButtonStyle.Outlined,
                 )
             }
         }
@@ -257,10 +249,7 @@ private fun RepeatModePage(
                     CustomButton(
                         text = repeatMode.value.getLocalizedValue(LocalContext.current),
                         onClick = { it() },
-                        border = BorderStroke(1.dp, CustomTheme.colors.stroke),
-                        colors = ButtonDefaults.buttonColors(
-                            backgroundColor = Color.Transparent, disabledBackgroundColor = Color.Transparent
-                        )
+                        style = ButtonStyle.Outlined
                     )
                 }
             }

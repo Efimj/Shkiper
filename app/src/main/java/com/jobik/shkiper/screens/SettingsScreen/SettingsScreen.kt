@@ -4,19 +4,17 @@ import android.app.Activity
 import android.content.Context
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
@@ -30,10 +28,7 @@ import androidx.navigation.NavController
 import com.jobik.shkiper.NotepadApplication
 import com.jobik.shkiper.R
 import com.jobik.shkiper.navigation.AppScreens
-import com.jobik.shkiper.ui.components.buttons.DropDownButton
-import com.jobik.shkiper.ui.components.buttons.DropDownButtonSizeMode
-import com.jobik.shkiper.ui.components.buttons.DropDownItem
-import com.jobik.shkiper.ui.components.buttons.CustomButton
+import com.jobik.shkiper.ui.components.buttons.*
 import com.jobik.shkiper.ui.components.cards.ThemePreview
 import com.jobik.shkiper.ui.theme.CustomTheme
 import com.jobik.shkiper.ui.theme.CustomThemeStyle
@@ -238,14 +233,16 @@ private fun SettingsColorThemePicker(settingsViewModel: SettingsViewModel) {
 
 @Composable
 private fun SettingsItemGroup(columnScope: @Composable ColumnScope.() -> Unit) {
+    Spacer(Modifier.height(5.dp))
     Column(
-        modifier = Modifier.padding(horizontal = 20.dp).widthIn(max = 500.dp),
+        modifier = Modifier.widthIn(max = 500.dp).padding(horizontal = 10.dp)
+            .clip(CustomTheme.shapes.large).background(CustomTheme.colors.secondaryBackground)
+            .padding(horizontal = 15.dp, vertical = 7.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(Modifier.height(10.dp))
         columnScope()
-        Spacer(Modifier.height(10.dp))
     }
+    Spacer(Modifier.height(5.dp))
 }
 
 @Composable
@@ -269,10 +266,7 @@ private fun SettingsItemSelectLanguage(settingsViewModel: SettingsViewModel) {
             text = currentLanguage.getLocalizedValue(context),
             icon = Icons.Outlined.Language,
             onClick = { it() },
-            border = BorderStroke(1.dp, CustomTheme.colors.stroke),
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = Color.Transparent, disabledBackgroundColor = Color.Transparent
-            )
+            style = ButtonStyle.Outlined
         )
     }
 }
@@ -328,15 +322,17 @@ private fun SettingsItem(
                     onClick = onClick,
                     enabled = !isLoading && isEnabled,
                     loading = isLoading,
-                    colors = if (isLoading) ButtonDefaults.buttonColors(
-                        backgroundColor = CustomTheme.colors.active,
-                        disabledBackgroundColor = CustomTheme.colors.active
-                    ) else ButtonDefaults.buttonColors(
-                        backgroundColor = CustomTheme.colors.mainBackground,
-                        disabledBackgroundColor = Color.Transparent
+                    properties = DefaultButtonProperties(
+                        buttonColors = if (isLoading) ButtonDefaults.buttonColors(
+                            backgroundColor = CustomTheme.colors.active,
+                            disabledBackgroundColor = CustomTheme.colors.active
+                        ) else ButtonDefaults.buttonColors(
+                            backgroundColor = CustomTheme.colors.mainBackground,
+                            disabledBackgroundColor = Color.Transparent
+                        ),
+                        textColor = if (isLoading) Color.White else CustomTheme.colors.text,
+                        iconTint = if (isLoading) Color.White else CustomTheme.colors.text,
                     ),
-                    textColor = if (isLoading) Color.White else CustomTheme.colors.text,
-                    iconTint = if (isLoading) Color.White else CustomTheme.colors.text,
                 )
             else {
                 buttonComponent()

@@ -15,6 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.jobik.shkiper.R
+import com.jobik.shkiper.ui.components.buttons.ButtonStyle
 import com.jobik.shkiper.ui.components.buttons.CustomButton
 import com.jobik.shkiper.ui.theme.CustomTheme
 import com.jobik.shkiper.util.SnackbarVisualsCustom
@@ -63,12 +64,7 @@ fun SnackbarCard(snackbarData: SnackbarVisualsCustom) {
                     CustomButton(
                         text = snackbarData.actionLabel,
                         onClick = { snackbarData.action?.let { it() } },
-                        colors = ButtonDefaults.buttonColors(
-                            backgroundColor = CustomTheme.colors.active,
-                            disabledBackgroundColor = Color.Transparent
-                        ),
-                        border = null,
-                        textColor = Color.White
+                        style = ButtonStyle.Filled
                     )
                 }
             }

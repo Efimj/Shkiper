@@ -17,6 +17,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.jobik.shkiper.ui.components.buttons.ButtonStyle
 import com.jobik.shkiper.ui.components.buttons.CustomButton
 import com.jobik.shkiper.ui.theme.CustomTheme
 
@@ -33,7 +34,7 @@ fun ActionDialog(
         Column(
             Modifier
                 .clip(RoundedCornerShape(15.dp))
-                .background(CustomTheme.colors.mainBackground)
+                .background(CustomTheme.colors.secondaryBackground)
                 .padding(horizontal = 25.dp).padding(top = 25.dp, bottom = 10.dp)
         ) {
             Row(
@@ -71,12 +72,7 @@ fun ActionDialog(
                     CustomButton(
                         text = goBackText,
                         onClick = onGoBack,
-                        colors = ButtonDefaults.buttonColors(
-                            backgroundColor = CustomTheme.colors.mainBackground,
-                            disabledBackgroundColor = Color.Transparent
-                        ),
-                        border = null,
-                        textColor = CustomTheme.colors.text,
+                        style = ButtonStyle.Text,
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
@@ -89,12 +85,7 @@ fun ActionDialog(
                     CustomButton(
                         text = confirmText,
                         onClick = onConfirm,
-                        colors = ButtonDefaults.buttonColors(
-                            backgroundColor = CustomTheme.colors.active,
-                            disabledBackgroundColor = Color.Transparent
-                        ),
-                        border = null,
-                        textColor = Color.White,
+                        style = ButtonStyle.Filled,
                         modifier = Modifier.fillMaxWidth()
                     )
                 }

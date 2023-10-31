@@ -26,6 +26,7 @@ import com.jobik.shkiper.ui.components.cards.StatisticsCard
 import com.jobik.shkiper.ui.components.modals.StatisticsInformationDialog
 import com.jobik.shkiper.R
 import com.jobik.shkiper.helpers.IntentHelper
+import com.jobik.shkiper.ui.components.buttons.ButtonStyle
 import com.jobik.shkiper.ui.components.buttons.CustomButton
 import com.jobik.shkiper.ui.components.layouts.ScreenWrapper
 import com.jobik.shkiper.ui.theme.CustomTheme
@@ -76,13 +77,7 @@ fun StatisticsScreen() {
                             IntentHelper().shareTextIntent(context, statisticsText)
                         },
                         icon = Icons.Default.Share,
-                        iconTint = Color.White,
-                        colors = ButtonDefaults.buttonColors(
-                            backgroundColor = CustomTheme.colors.active,
-                            disabledBackgroundColor = Color.Transparent
-                        ),
-                        border = null,
-                        textColor = Color.White,
+                        style = ButtonStyle.Filled,
                         modifier = Modifier.width(160.dp)
                     )
                 }

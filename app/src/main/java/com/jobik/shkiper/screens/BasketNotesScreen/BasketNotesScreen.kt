@@ -1,6 +1,7 @@
 package com.jobik.shkiper.screens.BasketNotesScreen
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.animation.core.tween
@@ -16,9 +17,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
@@ -30,6 +29,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.jobik.shkiper.ui.components.cards.NoteCard
 import com.jobik.shkiper.ui.components.layouts.CustomTopAppBar
 import com.jobik.shkiper.ui.components.layouts.LazyGridNotes
@@ -142,6 +142,15 @@ private fun ScreenContent(
 private fun ActionBar(
     actionBarHeight: Dp, offsetX: Animatable<Float, AnimationVector1D>, notesViewModel: NotesViewModel
 ) {
+    val systemUiController = rememberSystemUiController()
+    val backgroundColor by animateColorAsState(
+        if (notesViewModel.screenState.value.selectedNotes.isNotEmpty()) CustomTheme.colors.secondaryBackground else CustomTheme.colors.mainBackground,
+        animationSpec = tween(200),
+    )
+    SideEffect {
+        systemUiController.setStatusBarColor(backgroundColor)
+    }
+
     val topAppBarElevation = if (offsetX.value.roundToInt() < -actionBarHeight.value.roundToInt()) 0.dp else 2.dp
     Box(
         modifier = Modifier.height(actionBarHeight).offset { IntOffset(x = 0, y = offsetX.value.roundToInt()) },
@@ -149,7 +158,7 @@ private fun ActionBar(
         CustomTopAppBar(
             modifier = Modifier.fillMaxWidth(),
             elevation = topAppBarElevation,
-            backgroundColor = CustomTheme.colors.mainBackground,
+            backgroundColor = CustomTheme.colors.secondaryBackground,
             text = notesViewModel.screenState.value.selectedNotes.count().toString(),
             navigation = TopAppBarItem(
                 isActive = false,

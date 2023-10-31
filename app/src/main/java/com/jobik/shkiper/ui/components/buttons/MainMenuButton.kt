@@ -22,21 +22,25 @@ fun MainMenuButton(text: String, icon: ImageVector? = null, isActive: Boolean = 
             text = text,
             icon = icon,
             modifier = menuButtonModifier,
-            border = BorderStroke(0.dp, CustomTheme.colors.mainBackground),
-            colors = ButtonDefaults.buttonColors(backgroundColor = CustomTheme.colors.active),
-            textColor = Color.White,
-            textStyle = MaterialTheme.typography.h6.copy(fontSize = 17.sp),
+            properties = DefaultButtonProperties(
+                border = BorderStroke(0.dp, CustomTheme.colors.mainBackground),
+                buttonColors = ButtonDefaults.buttonColors(backgroundColor = CustomTheme.colors.active),
+                textColor = CustomTheme.colors.textOnActive,
+                textStyle = MaterialTheme.typography.h6.copy(fontSize = 17.sp),
+                iconTint = CustomTheme.colors.textOnActive
+            ),
             onClick = onClick,
-            iconTint = Color.White
         )
     } else {
         CustomButton(
             text = text,
             icon = icon,
             modifier = menuButtonModifier,
-            colors = ButtonDefaults.buttonColors(backgroundColor = CustomTheme.colors.secondaryBackground),
-            border = BorderStroke(0.dp, CustomTheme.colors.mainBackground),
-            textStyle = MaterialTheme.typography.h6.copy(fontSize = 17.sp),
+            properties = DefaultButtonProperties(
+                buttonColors = ButtonDefaults.buttonColors(backgroundColor = CustomTheme.colors.secondaryBackground),
+                border = BorderStroke(0.dp, CustomTheme.colors.mainBackground),
+                textStyle = MaterialTheme.typography.h6.copy(fontSize = 17.sp),
+            ),
             onClick = onClick,
         )
     }

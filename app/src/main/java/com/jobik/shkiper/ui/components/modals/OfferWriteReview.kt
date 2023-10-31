@@ -24,7 +24,9 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.jobik.shkiper.R
 import com.jobik.shkiper.services.review_service.ReviewService
+import com.jobik.shkiper.ui.components.buttons.ButtonStyle
 import com.jobik.shkiper.ui.components.buttons.CustomButton
+import com.jobik.shkiper.ui.components.buttons.DefaultButtonProperties
 import com.jobik.shkiper.ui.theme.CustomTheme
 import kotlinx.coroutines.delay
 
@@ -87,13 +89,15 @@ fun OfferWriteReview(
                         CustomButton(
                             text = stringResource(R.string.Cancel),
                             onClick = goBackFunDelay,
-                            colors = ButtonDefaults.buttonColors(
-                                backgroundColor = Color.Transparent,
-                                disabledBackgroundColor = Color.Transparent
+                            properties = DefaultButtonProperties(
+                                buttonColors = ButtonDefaults.buttonColors(
+                                    backgroundColor = Color.Transparent,
+                                    disabledBackgroundColor = Color.Transparent
+                                ),
+                                border = null,
+                                textColor = if (timeHasPassed.value) CustomTheme.colors.text else CustomTheme.colors.textSecondary,
                             ),
                             enabled = timeHasPassed.value,
-                            border = null,
-                            textColor = if (timeHasPassed.value) CustomTheme.colors.text else CustomTheme.colors.textSecondary,
                             modifier = Modifier.fillMaxWidth()
                         )
                     }
@@ -107,12 +111,7 @@ fun OfferWriteReview(
                         CustomButton(
                             text = stringResource(R.string.RateTheApp),
                             onClick = { ReviewService(context).openRateScreen(); onGoBack() },
-                            colors = ButtonDefaults.buttonColors(
-                                backgroundColor = CustomTheme.colors.active,
-                                disabledBackgroundColor = Color.Transparent
-                            ),
-                            border = null,
-                            textColor = Color.White,
+                            style = ButtonStyle.Filled,
                             modifier = Modifier.fillMaxWidth()
                         )
                     }

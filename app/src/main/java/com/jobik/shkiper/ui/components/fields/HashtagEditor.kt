@@ -24,10 +24,7 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jobik.shkiper.R
-import com.jobik.shkiper.ui.components.buttons.DropDownButton
-import com.jobik.shkiper.ui.components.buttons.DropDownButtonSizeMode
-import com.jobik.shkiper.ui.components.buttons.DropDownItem
-import com.jobik.shkiper.ui.components.buttons.CustomButton
+import com.jobik.shkiper.ui.components.buttons.*
 import com.jobik.shkiper.ui.theme.CustomTheme
 
 @Composable
@@ -65,7 +62,7 @@ fun HashtagEditor(
                         Modifier,
                         text = stringResource(R.string.Cancel),
                         onClick = { editModeEnabled.value = false },
-                        border = BorderStroke(0.dp, Color.Transparent)
+                        style = ButtonStyle.Text
                     )
                     Spacer(Modifier.width(8.dp))
                     CustomButton(

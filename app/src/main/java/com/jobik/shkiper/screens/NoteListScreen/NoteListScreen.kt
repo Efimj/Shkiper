@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.jobik.shkiper.R
 import com.jobik.shkiper.navigation.AppScreens
 import com.jobik.shkiper.ui.components.cards.NoteCard
@@ -142,7 +143,6 @@ fun NoteListScreen(navController: NavController, notesViewModel: NotesViewModel 
 }
 
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun ScreenContent(
     lazyGridNotes: LazyStaggeredGridState,
@@ -243,6 +243,15 @@ private fun ScreenContent(
 private fun ActionBar(
     actionBarHeight: Dp, offsetX: Animatable<Float, AnimationVector1D>, notesViewModel: NotesViewModel
 ) {
+    val systemUiController = rememberSystemUiController()
+    val backgroundColor by animateColorAsState(
+        if (notesViewModel.screenState.value.selectedNotes.isNotEmpty()) CustomTheme.colors.secondaryBackground else CustomTheme.colors.mainBackground,
+        animationSpec = tween(200),
+    )
+    SideEffect {
+        systemUiController.setStatusBarColor(backgroundColor)
+    }
+
     val topAppBarElevation = if (offsetX.value.roundToInt() < -actionBarHeight.value.roundToInt()) 0.dp else 2.dp
     Box(
         modifier = Modifier.height(actionBarHeight).offset { IntOffset(x = 0, y = offsetX.value.roundToInt()) },

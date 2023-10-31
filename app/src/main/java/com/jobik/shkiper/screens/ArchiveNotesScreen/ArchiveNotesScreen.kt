@@ -1,11 +1,13 @@
 package com.jobik.shkiper.screens.ArchiveNotesScreen
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -16,10 +18,7 @@ import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridS
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.outlined.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
@@ -33,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.jobik.shkiper.navigation.AppScreens
 import com.jobik.shkiper.ui.components.buttons.HashtagButton
 import com.jobik.shkiper.ui.components.cards.NoteCard
@@ -163,14 +163,6 @@ private fun ScreenContent(
                 }
             }
         }
-//        item(span = StaggeredGridItemSpan.FullLine) {
-//            Text(
-//                stringResource(R.string.Notes),
-//                color = CustomAppTheme.colors.textSecondary,
-//                style = MaterialTheme.typography.body1.copy(fontSize = 17.sp),
-//                modifier = Modifier.padding(horizontal = 10.dp)
-//            )
-//        }
         items(items = notesViewModel.screenState.value.notes) { item ->
             NoteCard(item.header,
                 item.body,
@@ -205,6 +197,15 @@ private fun ScreenContent(
 private fun ActionBar(
     actionBarHeight: Dp, offsetX: Animatable<Float, AnimationVector1D>, notesViewModel: NotesViewModel
 ) {
+    val systemUiController = rememberSystemUiController()
+    val backgroundColor by animateColorAsState(
+        if (notesViewModel.screenState.value.selectedNotes.isNotEmpty()) CustomTheme.colors.secondaryBackground else CustomTheme.colors.mainBackground,
+        animationSpec = tween(200),
+    )
+    SideEffect {
+        systemUiController.setStatusBarColor(backgroundColor)
+    }
+
     val topAppBarElevation = if (offsetX.value.roundToInt() < -actionBarHeight.value.roundToInt()) 0.dp else 2.dp
     Box(
         modifier = Modifier.height(actionBarHeight).offset { IntOffset(x = 0, y = offsetX.value.roundToInt()) },
@@ -212,7 +213,7 @@ private fun ActionBar(
         CustomTopAppBar(
             modifier = Modifier.fillMaxWidth(),
             elevation = topAppBarElevation,
-            backgroundColor = CustomTheme.colors.mainBackground,
+            backgroundColor = CustomTheme.colors.secondaryBackground,
             text = notesViewModel.screenState.value.selectedNotes.count().toString(),
             navigation = TopAppBarItem(
                 isActive = false,

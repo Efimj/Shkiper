@@ -212,7 +212,6 @@ private fun NoteScreenHeader(navController: NavController, noteViewModel: NoteVi
         if (noteViewModel.screenState.value.isTopAppBarHover) CustomTheme.colors.secondaryBackground else CustomTheme.colors.mainBackground,
         animationSpec = tween(200),
     )
-
     SideEffect {
         systemUiController.setStatusBarColor(backgroundColor)
     }

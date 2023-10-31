@@ -1,8 +1,10 @@
 package com.jobik.shkiper.ui.components.modals
 
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.TweenSpec
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -22,12 +24,15 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.NotePosition
 import com.jobik.shkiper.navigation.SetupAppScreenNavGraph
 import com.jobik.shkiper.navigation.AppScreens
+import com.jobik.shkiper.ui.components.buttons.ButtonProperties
 import com.jobik.shkiper.ui.components.buttons.MainMenuButton
 import com.jobik.shkiper.ui.components.buttons.CustomButton
+import com.jobik.shkiper.ui.components.buttons.DefaultButtonProperties
 import com.jobik.shkiper.ui.components.cards.SnackbarCard
 import com.jobik.shkiper.ui.theme.CustomTheme
 import com.jobik.shkiper.util.SnackbarHostUtil
@@ -96,7 +101,7 @@ private fun MainPageLayout(
             modifier = Modifier.offset(y = offsetY).align(Alignment.BottomCenter).fillMaxWidth().background(
                 Brush.verticalGradient(
                     0F to CustomTheme.colors.mainBackground.copy(alpha = 0.0F),
-                    0.8F to CustomTheme.colors.mainBackground.copy(alpha = 1F)
+                    0.8F to CustomTheme.colors.secondaryBackground.copy(alpha = 1F)
                 )
             ),
             contentAlignment = Alignment.BottomCenter
@@ -113,15 +118,17 @@ private fun MainPageLayout(
                         bottomSheetState.show()
                     }
                 },
-                colors = ButtonDefaults.buttonColors(
-                    backgroundColor = CustomTheme.colors.secondaryBackground,
-                    disabledBackgroundColor = Color.Transparent
+                properties = DefaultButtonProperties(
+                    buttonColors = ButtonDefaults.buttonColors(
+                        backgroundColor = CustomTheme.colors.secondaryBackground,
+                        disabledBackgroundColor = Color.Transparent
+                    ),
+                    iconTint = CustomTheme.colors.text,
+                    textColor = CustomTheme.colors.text,
+                    shape = RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp),
+                    horizontalPaddings = 10.dp,
                 ),
-                iconTint = CustomTheme.colors.text,
-                textColor = CustomTheme.colors.text,
-                shape = RoundedCornerShape(topStart = 36.dp, topEnd = 36.dp),
                 modifier = Modifier.height(menuContainerHeight.dp).width(160.dp).offset(y = 1.dp),
-                horizontalPaddings = 10.dp
             )
         }
     }

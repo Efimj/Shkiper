@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.jobik.shkiper.R
+import com.jobik.shkiper.ui.components.buttons.ButtonStyle
 import com.jobik.shkiper.ui.components.buttons.CustomButton
 import com.jobik.shkiper.ui.theme.CustomTheme
 
@@ -96,18 +97,7 @@ fun ImageActionDialog(
                                 text = button.text,
                                 onClick = button.onClick,
                                 icon = button.icon,
-                                iconTint = if (button.isActive) Color.White else CustomTheme.colors.textSecondary,
-                                colors =
-                                if (button.isActive) ButtonDefaults.buttonColors(
-                                    backgroundColor = CustomTheme.colors.active,
-                                    disabledBackgroundColor = Color.Transparent
-                                )
-                                else ButtonDefaults.buttonColors(
-                                    backgroundColor = Color.Transparent,
-                                    disabledBackgroundColor = Color.Transparent
-                                ),
-                                border = null,
-                                textColor = if (button.isActive) Color.White else CustomTheme.colors.textSecondary,
+                                style = if (button.isActive) ButtonStyle.Filled else ButtonStyle.Text,
                                 modifier = Modifier.fillMaxWidth()
                             )
                         }
@@ -123,18 +113,7 @@ fun ImageActionDialog(
                                 text = button.text,
                                 onClick = button.onClick,
                                 icon = button.icon,
-                                iconTint = if (button.isActive) Color.White else CustomTheme.colors.text,
-                                colors =
-                                if (button.isActive) ButtonDefaults.buttonColors(
-                                    backgroundColor = CustomTheme.colors.active,
-                                    disabledBackgroundColor = Color.Transparent
-                                )
-                                else ButtonDefaults.buttonColors(
-                                    backgroundColor = Color.Transparent,
-                                    disabledBackgroundColor = Color.Transparent
-                                ),
-                                border = null,
-                                textColor = if (button.isActive) Color.White else CustomTheme.colors.text,
+                                style = if (button.isActive) ButtonStyle.Filled else ButtonStyle.Text,
                                 modifier = Modifier.fillMaxWidth()
                             )
                         }

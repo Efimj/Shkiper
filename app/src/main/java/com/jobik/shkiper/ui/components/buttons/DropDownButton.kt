@@ -57,7 +57,7 @@ fun DropDownButton(
             onDismissRequest = { expanded = false },
             modifier = (if (stretchMode == DropDownButtonSizeMode.STRERCHBYBUTTONWIDTH)
                 Modifier.width(maxWidth) else Modifier)
-                .background(CustomTheme.colors.mainBackground)
+                .background(CustomTheme.colors.secondaryBackground)
                 .clip(RoundedCornerShape(15.dp))
                 .border(1.dp, CustomTheme.colors.stroke, RoundedCornerShape(15.dp))
 
