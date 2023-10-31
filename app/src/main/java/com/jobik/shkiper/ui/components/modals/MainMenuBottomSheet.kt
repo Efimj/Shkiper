@@ -28,7 +28,7 @@ import com.jobik.shkiper.navigation.AppScreens
 import com.jobik.shkiper.ui.components.buttons.MainMenuButton
 import com.jobik.shkiper.ui.components.buttons.RoundedButton
 import com.jobik.shkiper.ui.components.cards.SnackbarCard
-import com.jobik.shkiper.ui.theme.CustomAppTheme
+import com.jobik.shkiper.ui.theme.CustomTheme
 import com.jobik.shkiper.util.SnackbarHostUtil
 import com.jobik.shkiper.util.SnackbarVisualsCustom
 import kotlinx.coroutines.CoroutineScope
@@ -43,9 +43,9 @@ fun MainMenuBottomSheet(startDestination: String = AppScreens.NoteList.route) {
         rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden, skipHalfExpanded = true)
 
     ModalBottomSheetLayout(
-        sheetBackgroundColor = CustomAppTheme.colors.mainBackground,
+        sheetBackgroundColor = CustomTheme.colors.mainBackground,
         sheetState = bottomSheetState,
-        scrimColor = CustomAppTheme.colors.modalBackground,
+        scrimColor = CustomTheme.colors.modalBackground,
         sheetShape = RoundedCornerShape(topStart = 26.dp, topEnd = 26.dp),
         sheetContent = {
             BottomSheetContent(navController, coroutineScope, bottomSheetState)
@@ -94,8 +94,8 @@ private fun MainPageLayout(
         Box(
             modifier = Modifier.offset(y = offsetY).align(Alignment.BottomCenter).fillMaxWidth().background(
                 Brush.verticalGradient(
-                    0F to CustomAppTheme.colors.mainBackground.copy(alpha = 0.0F),
-                    0.8F to CustomAppTheme.colors.mainBackground.copy(alpha = 1F)
+                    0F to CustomTheme.colors.mainBackground.copy(alpha = 0.0F),
+                    0.8F to CustomTheme.colors.mainBackground.copy(alpha = 1F)
                 )
             ),
             contentAlignment = Alignment.BottomCenter

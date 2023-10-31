@@ -2,13 +2,12 @@ package com.jobik.shkiper.screens.SettingsScreen
 
 import android.app.Activity
 import android.content.Context
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -36,12 +35,12 @@ import com.jobik.shkiper.ui.components.buttons.DropDownButtonSizeMode
 import com.jobik.shkiper.ui.components.buttons.DropDownItem
 import com.jobik.shkiper.ui.components.buttons.RoundedButton
 import com.jobik.shkiper.ui.components.cards.ThemePreview
-import com.jobik.shkiper.ui.theme.CustomAppTheme
+import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.CustomThemeStyle
 import com.jobik.shkiper.util.ThemeUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlin.math.log
 
 
 @Composable
@@ -61,7 +60,7 @@ fun SettingsScreen(navController: NavController, settingsViewModel: SettingsView
         Spacer(Modifier.height(75.dp))
         SettingsItemGroup {
             Text(
-                color = CustomAppTheme.colors.text,
+                color = CustomTheme.colors.text,
                 text = stringResource(R.string.Application),
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 20.sp,
@@ -70,8 +69,12 @@ fun SettingsScreen(navController: NavController, settingsViewModel: SettingsView
             )
             SettingsItem(
                 stringResource(R.string.ApplicationTheme),
-                ThemeUtil.theme.let { if (it.isDarkTheme) stringResource(R.string.LightTheme) else stringResource(R.string.DarkTheme) },
-                buttonIcon = if (ThemeUtil.theme.isDarkTheme) Icons.Outlined.LightMode else Icons.Outlined.DarkMode,
+                if (ThemeUtil.isDarkMode.value
+                        ?: isSystemInDarkTheme()
+                ) stringResource(R.string.LightTheme) else stringResource(R.string.DarkTheme),
+                buttonIcon = if (ThemeUtil.isDarkMode.value
+                        ?: isSystemInDarkTheme()
+                ) Icons.Outlined.LightMode else Icons.Outlined.DarkMode,
                 onClick = { settingsViewModel.toggleAppTheme() }
             )
             SettingsColorThemePicker(settingsViewModel)
@@ -83,7 +86,7 @@ fun SettingsScreen(navController: NavController, settingsViewModel: SettingsView
         }
         SettingsItemGroup {
             Text(
-                color = CustomAppTheme.colors.text,
+                color = CustomTheme.colors.text,
                 text = stringResource(R.string.Backup),
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 20.sp,
@@ -112,7 +115,7 @@ fun SettingsScreen(navController: NavController, settingsViewModel: SettingsView
         }
         SettingsItemGroup {
             Text(
-                color = CustomAppTheme.colors.text,
+                color = CustomTheme.colors.text,
                 text = stringResource(R.string.Other),
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 20.sp,
@@ -137,7 +140,7 @@ fun SettingsScreen(navController: NavController, settingsViewModel: SettingsView
         }
         SettingsItemGroup {
             Text(
-                color = CustomAppTheme.colors.text,
+                color = CustomTheme.colors.text,
                 text = stringResource(R.string.Support),
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 20.sp,
@@ -157,7 +160,7 @@ fun SettingsScreen(navController: NavController, settingsViewModel: SettingsView
         }
         SettingsItemGroup {
             Text(
-                color = CustomAppTheme.colors.text,
+                color = CustomTheme.colors.text,
                 text = stringResource(R.string.Information),
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 20.sp,
@@ -171,12 +174,12 @@ fun SettingsScreen(navController: NavController, settingsViewModel: SettingsView
                 Icon(
                     imageVector = Icons.Outlined.Info,
                     contentDescription = stringResource(R.string.Info),
-                    tint = CustomAppTheme.colors.textSecondary
+                    tint = CustomTheme.colors.textSecondary
                 )
                 Spacer(Modifier.width(10.dp))
                 Text(
                     text = stringResource(R.string.AppDataPolitics),
-                    color = CustomAppTheme.colors.textSecondary,
+                    color = CustomTheme.colors.textSecondary,
                     fontSize = 16.sp,
                     lineHeight = 24.sp,
                     style = MaterialTheme.typography.body1,
@@ -190,8 +193,13 @@ fun SettingsScreen(navController: NavController, settingsViewModel: SettingsView
 
 @Composable
 private fun SettingsColorThemePicker(settingsViewModel: SettingsViewModel) {
-    val isDark = ThemeUtil.theme.isDarkTheme
-    val selectedThemeName = if (isDark) ThemeUtil.theme.darkThemeName else ThemeUtil.theme.lightThemeName
+//    val isDark = ThemeUtil.theme.isDarkTheme
+//    val selectedThemeName = if (isDark) ThemeUtil.theme.darkThemeName else ThemeUtil.theme.lightThemeName
+
+    val colorValues =
+        if (ThemeUtil.isDarkMode.value != false) CustomThemeStyle.entries.map { it.dark } else CustomThemeStyle.entries.map { it.light }
+    val colorValuesName = CustomThemeStyle.entries
+    val selectedThemeName = ThemeUtil.themeStyle.value?.name ?: CustomThemeStyle.DarkPurple.name
 
     Column(
         Modifier.padding(vertical = 5.dp),
@@ -201,7 +209,7 @@ private fun SettingsColorThemePicker(settingsViewModel: SettingsViewModel) {
         Row {
             Box(modifier = Modifier.weight(1f)) {
                 Text(
-                    color = CustomAppTheme.colors.text,
+                    color = CustomTheme.colors.text,
                     text = stringResource(R.string.ApplicationColors),
                     style = MaterialTheme.typography.body1,
                     modifier = Modifier.align(Alignment.CenterEnd),
@@ -214,11 +222,13 @@ private fun SettingsColorThemePicker(settingsViewModel: SettingsViewModel) {
         }
         Spacer(Modifier.height(6.dp))
         LazyRow(state = rememberLazyListState(), contentPadding = PaddingValues(start = 10.dp)) {
-            items(settingsViewModel.themeColorList.value) { theme ->
+            items(colorValues.size) { theme ->
                 Box(Modifier.padding(end = 10.dp).height(70.dp).width(55.dp)) {
-                    val colors = if (isDark) theme.colorTheme.darkColors else theme.colorTheme.lightColors
-                    ThemePreview(colors, theme.name == selectedThemeName) {
-                        settingsViewModel.selectColorTheme(theme.name)
+                    ThemePreview(
+                        colors = colorValues[theme],
+                        selected = colorValuesName[theme].name == selectedThemeName
+                    ) {
+                        settingsViewModel.selectColorTheme(theme = colorValuesName[theme])
                     }
                 }
             }
@@ -259,7 +269,7 @@ private fun SettingsItemSelectLanguage(settingsViewModel: SettingsViewModel) {
             text = currentLanguage.getLocalizedValue(context),
             icon = Icons.Outlined.Language,
             onClick = { it() },
-            border = BorderStroke(1.dp, CustomAppTheme.colors.stroke),
+            border = BorderStroke(1.dp, CustomTheme.colors.stroke),
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = Color.Transparent, disabledBackgroundColor = Color.Transparent
             )
@@ -300,7 +310,7 @@ private fun SettingsItem(
     ) {
         Box(modifier = Modifier.weight(1f)) {
             Text(
-                color = CustomAppTheme.colors.text,
+                color = CustomTheme.colors.text,
                 text = description,
                 style = MaterialTheme.typography.body1,
                 modifier = Modifier.align(Alignment.CenterEnd),
@@ -319,14 +329,14 @@ private fun SettingsItem(
                     enabled = !isLoading && isEnabled,
                     loading = isLoading,
                     colors = if (isLoading) ButtonDefaults.buttonColors(
-                        backgroundColor = CustomAppTheme.colors.active,
-                        disabledBackgroundColor = CustomAppTheme.colors.active
+                        backgroundColor = CustomTheme.colors.active,
+                        disabledBackgroundColor = CustomTheme.colors.active
                     ) else ButtonDefaults.buttonColors(
-                        backgroundColor = CustomAppTheme.colors.mainBackground,
+                        backgroundColor = CustomTheme.colors.mainBackground,
                         disabledBackgroundColor = Color.Transparent
                     ),
-                    textColor = if (isLoading) Color.White else CustomAppTheme.colors.text,
-                    iconTint = if (isLoading) Color.White else CustomAppTheme.colors.text,
+                    textColor = if (isLoading) Color.White else CustomTheme.colors.text,
+                    iconTint = if (isLoading) Color.White else CustomTheme.colors.text,
                 )
             else {
                 buttonComponent()

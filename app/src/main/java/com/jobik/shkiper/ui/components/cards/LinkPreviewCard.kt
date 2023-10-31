@@ -1,14 +1,9 @@
 package com.jobik.shkiper.ui.components.cards
 
-import android.app.Activity
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.util.Log
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
@@ -38,12 +33,12 @@ import com.jobik.shkiper.helpers.LinkHelper
 import com.jobik.shkiper.ui.helpers.MultipleEventsCutter
 import com.jobik.shkiper.ui.helpers.get
 import com.jobik.shkiper.ui.modifiers.bounceClick
-import com.jobik.shkiper.ui.theme.CustomAppTheme
 import com.jobik.shkiper.util.SnackbarHostUtil
 import com.jobik.shkiper.util.SnackbarVisualsCustom
 import kotlinx.coroutines.launch
 import com.jobik.shkiper.R
 import com.jobik.shkiper.helpers.IntentHelper
+import com.jobik.shkiper.ui.theme.CustomTheme
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -88,8 +83,8 @@ fun LinkPreviewCard(openGraphData: LinkHelper.LinkPreview) {
             ),
         elevation = 0.dp,
         shape = RoundedCornerShape(10.dp),
-        backgroundColor = CustomAppTheme.colors.secondaryBackground,
-        contentColor = CustomAppTheme.colors.text,
+        backgroundColor = CustomTheme.colors.secondaryBackground,
+        contentColor = CustomTheme.colors.text,
     ) {
         Row {
             AsyncImage(
@@ -99,7 +94,7 @@ fun LinkPreviewCard(openGraphData: LinkHelper.LinkPreview) {
                 contentScale = ContentScale.Crop,
                 error = rememberVectorPainter(Icons.Default.Language),
                 onError = { isImageError.value = true },
-                colorFilter = if (isImageError.value) ColorFilter.tint(CustomAppTheme.colors.textSecondary) else null
+                colorFilter = if (isImageError.value) ColorFilter.tint(CustomTheme.colors.textSecondary) else null
             )
             Column(
                 modifier = Modifier.padding(horizontal = 10.dp).fillMaxSize(),
@@ -111,7 +106,7 @@ fun LinkPreviewCard(openGraphData: LinkHelper.LinkPreview) {
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         style = MaterialTheme.typography.h6.copy(fontSize = 18.sp),
-                        color = CustomAppTheme.colors.textSecondary,
+                        color = CustomTheme.colors.textSecondary,
                     )
                 if (openGraphData.description != null && openGraphData.description!!.isNotEmpty())
                     Text(
@@ -119,7 +114,7 @@ fun LinkPreviewCard(openGraphData: LinkHelper.LinkPreview) {
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         style = MaterialTheme.typography.body1,
-                        color = CustomAppTheme.colors.textSecondary,
+                        color = CustomTheme.colors.textSecondary,
                     )
                 if ((openGraphData.description == null || openGraphData.title == null) && openGraphData.url != null)
                     Text(
@@ -127,7 +122,7 @@ fun LinkPreviewCard(openGraphData: LinkHelper.LinkPreview) {
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         style = MaterialTheme.typography.body1,
-                        color = CustomAppTheme.colors.textSecondary,
+                        color = CustomTheme.colors.textSecondary,
                     )
             }
         }

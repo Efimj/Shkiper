@@ -36,10 +36,10 @@ import com.jobik.shkiper.ui.components.layouts.LazyGridNotes
 import com.jobik.shkiper.ui.components.layouts.ScreenContentIfNoData
 import com.jobik.shkiper.ui.components.layouts.TopAppBarItem
 import com.jobik.shkiper.ui.components.modals.ActionDialog
-import com.jobik.shkiper.ui.theme.CustomAppTheme
 import com.jobik.shkiper.viewmodels.NotesViewModel
 import kotlin.math.roundToInt
 import com.jobik.shkiper.R
+import com.jobik.shkiper.ui.theme.CustomTheme
 
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -119,7 +119,7 @@ private fun ScreenContent(
             ) {
                 Text(
                     text = stringResource(R.string.BasketPageHeader),
-                    color = CustomAppTheme.colors.textSecondary,
+                    color = CustomTheme.colors.textSecondary,
                     style = MaterialTheme.typography.body1.copy(fontSize = 17.sp),
                     modifier = Modifier.padding(horizontal = 10.dp).basicMarquee(),
                     maxLines = 1
@@ -149,7 +149,7 @@ private fun ActionBar(
         CustomTopAppBar(
             modifier = Modifier.fillMaxWidth(),
             elevation = topAppBarElevation,
-            backgroundColor = CustomAppTheme.colors.mainBackground,
+            backgroundColor = CustomTheme.colors.mainBackground,
             text = notesViewModel.screenState.value.selectedNotes.count().toString(),
             navigation = TopAppBarItem(
                 isActive = false,

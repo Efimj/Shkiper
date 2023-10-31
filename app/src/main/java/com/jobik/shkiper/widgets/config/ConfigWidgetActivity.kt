@@ -6,16 +6,17 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
 import androidx.glance.appwidget.GlanceAppWidgetManager
 import androidx.glance.appwidget.state.updateAppWidgetState
 import androidx.lifecycle.lifecycleScope
-import com.jobik.shkiper.database.data.note.NoteMongoRepository
 import com.jobik.shkiper.database.models.Note
-import com.jobik.shkiper.ui.theme.CustomAppTheme
-import com.jobik.shkiper.util.ThemePreferenceUtil
+import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.CustomThemeStyle
+import com.jobik.shkiper.ui.theme.ShkiperTheme
 import com.jobik.shkiper.util.ThemeUtil
 import com.jobik.shkiper.widgets.WidgetKeys
 import com.jobik.shkiper.widgets.screens.NoteSelectionScreen.NoteSelectionScreen
@@ -23,8 +24,6 @@ import com.jobik.shkiper.widgets.widgets.NoteWidget
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.mongodb.kbson.BsonObjectId
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class ConfigWidgetActivity : AppCompatActivity() {
@@ -36,11 +35,14 @@ class ConfigWidgetActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupActivity()
-        ThemeUtil.theme = ThemePreferenceUtil(this).getSavedUserTheme()
+        ThemeUtil.restoreSavedTheme(this)
         setContent {
-            CustomAppTheme(ThemeUtil.themeColors) {
+            ShkiperTheme(
+                darkTheme = ThemeUtil.isDarkMode.value ?: isSystemInDarkTheme(),
+                style = ThemeUtil.themeStyle.value ?: CustomThemeStyle.DarkPurple
+            ) {
                 Box(
-                    Modifier.fillMaxSize().background(CustomAppTheme.colors.mainBackground)
+                    Modifier.fillMaxSize().background(CustomTheme.colors.mainBackground)
                 ) {
                     NoteSelectionScreen {
                         handleSelectNote(it)

@@ -1,6 +1,5 @@
 package com.jobik.shkiper.ui.components.cards
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -16,7 +15,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -28,7 +26,7 @@ import com.jobik.shkiper.R
 import com.jobik.shkiper.ui.helpers.MultipleEventsCutter
 import com.jobik.shkiper.ui.helpers.get
 import com.jobik.shkiper.ui.modifiers.bounceClick
-import com.jobik.shkiper.ui.theme.CustomAppTheme
+import com.jobik.shkiper.ui.theme.CustomTheme
 
 sealed class PurchaseCardContent {
     abstract val imageRes: Int
@@ -64,9 +62,9 @@ fun PurchaseCard(purchaseCardContent: PurchaseCardContent, onClick: () -> Unit) 
             .clickable(onClick = { multipleEventsCutter.processEvent { onClick() } }),
         elevation = 0.dp,
         shape = RoundedCornerShape(15.dp),
-        border = if (purchaseCardContent.isHighlighted) BorderStroke(2.dp, CustomAppTheme.colors.active) else null,
-        backgroundColor = CustomAppTheme.colors.secondaryBackground,
-        contentColor = CustomAppTheme.colors.text,
+        border = if (purchaseCardContent.isHighlighted) BorderStroke(2.dp, CustomTheme.colors.active) else null,
+        backgroundColor = CustomTheme.colors.secondaryBackground,
+        contentColor = CustomTheme.colors.text,
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -93,15 +91,15 @@ fun PurchaseCard(purchaseCardContent: PurchaseCardContent, onClick: () -> Unit) 
                         modifier = Modifier.align(Alignment.BottomStart).height(40.dp)
                             .fillMaxWidth().background(
                                 Brush.verticalGradient(
-                                    0F to CustomAppTheme.colors.mainBackground.copy(alpha = 0.0F),
-                                    .4F to CustomAppTheme.colors.mainBackground.copy(alpha = 0.70F),
-                                    1F to CustomAppTheme.colors.mainBackground.copy(alpha = 0.9F)
+                                    0F to CustomTheme.colors.mainBackground.copy(alpha = 0.0F),
+                                    .4F to CustomTheme.colors.mainBackground.copy(alpha = 0.70F),
+                                    1F to CustomTheme.colors.mainBackground.copy(alpha = 0.9F)
                                 )
                             )
                     ) {
                         Text(
                             text = title,
-                            color = CustomAppTheme.colors.text,
+                            color = CustomTheme.colors.text,
                             style = MaterialTheme.typography.body1.copy(fontSize = 16.sp),
                             textAlign = TextAlign.Center,
                             maxLines = 1,
@@ -118,7 +116,7 @@ fun PurchaseCard(purchaseCardContent: PurchaseCardContent, onClick: () -> Unit) 
                     Icon(
                         imageVector = Icons.Outlined.TaskAlt,
                         contentDescription = null,
-                        tint = CustomAppTheme.colors.active,
+                        tint = CustomTheme.colors.active,
                     )
                 }
             }

@@ -18,7 +18,6 @@ import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Description
 import androidx.compose.material.icons.outlined.Done
 import androidx.compose.material3.Text
@@ -46,7 +45,7 @@ import com.jobik.shkiper.ui.components.buttons.HashtagButton
 import com.jobik.shkiper.ui.components.cards.NoteCard
 import com.jobik.shkiper.ui.components.layouts.LazyGridNotes
 import com.jobik.shkiper.ui.components.layouts.ScreenContentIfNoData
-import com.jobik.shkiper.ui.theme.CustomAppTheme
+import com.jobik.shkiper.ui.theme.CustomTheme
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -149,7 +148,7 @@ private fun ScreenContent(
                 Column {
                     Text(
                         stringResource(R.string.Pinned),
-                        color = CustomAppTheme.colors.textSecondary,
+                        color = CustomTheme.colors.textSecondary,
                         style = MaterialTheme.typography.body1.copy(fontSize = 17.sp),
                         modifier = Modifier.padding(horizontal = 10.dp)
                     )
@@ -169,7 +168,7 @@ private fun ScreenContent(
             item(span = StaggeredGridItemSpan.FullLine) {
                 Text(
                     stringResource(R.string.Other),
-                    color = CustomAppTheme.colors.textSecondary,
+                    color = CustomTheme.colors.textSecondary,
                     style = MaterialTheme.typography.body1.copy(fontSize = 17.sp),
                     modifier = Modifier.padding(horizontal = 10.dp)
                 )

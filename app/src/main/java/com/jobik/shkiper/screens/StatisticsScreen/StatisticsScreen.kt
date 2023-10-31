@@ -1,7 +1,5 @@
 package com.jobik.shkiper.screens.StatisticsScreen
 
-import android.content.res.Configuration
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
@@ -18,7 +16,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -27,11 +24,11 @@ import com.jobik.shkiper.services.statistics_service.StatisticsItem
 import com.jobik.shkiper.services.statistics_service.StatisticsService
 import com.jobik.shkiper.ui.components.cards.StatisticsCard
 import com.jobik.shkiper.ui.components.modals.StatisticsInformationDialog
-import com.jobik.shkiper.ui.theme.CustomAppTheme
 import com.jobik.shkiper.R
 import com.jobik.shkiper.helpers.IntentHelper
 import com.jobik.shkiper.ui.components.buttons.RoundedButton
 import com.jobik.shkiper.ui.components.layouts.ScreenWrapper
+import com.jobik.shkiper.ui.theme.CustomTheme
 
 @Composable
 fun StatisticsScreen() {
@@ -53,7 +50,7 @@ fun StatisticsScreen() {
                 ) {
                     Text(
                         stringResource(R.string.Statistics),
-                        color = CustomAppTheme.colors.text,
+                        color = CustomTheme.colors.text,
                         style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Bold),
                         modifier = Modifier.padding(horizontal = 5.dp)
                     )
@@ -81,7 +78,7 @@ fun StatisticsScreen() {
                         icon = Icons.Default.Share,
                         iconTint = Color.White,
                         colors = ButtonDefaults.buttonColors(
-                            backgroundColor = CustomAppTheme.colors.active,
+                            backgroundColor = CustomTheme.colors.active,
                             disabledBackgroundColor = Color.Transparent
                         ),
                         border = null,

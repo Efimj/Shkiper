@@ -12,7 +12,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.jobik.shkiper.ui.theme.CustomAppTheme
+import com.jobik.shkiper.ui.theme.CustomTheme
 
 @Composable
 fun ScreenContentIfNoData(@StringRes title: Int, icon: ImageVector) {
@@ -28,7 +28,7 @@ fun ScreenContentIfNoData(@StringRes title: Int, icon: ImageVector) {
             Icon(
                 imageVector = icon,
                 contentDescription = null,
-                tint = CustomAppTheme.colors.active,
+                tint = CustomTheme.colors.active,
                 modifier = Modifier.size(90.dp)
             )
             Spacer(Modifier.height(10.dp))
@@ -37,7 +37,7 @@ fun ScreenContentIfNoData(@StringRes title: Int, icon: ImageVector) {
                 style = MaterialTheme.typography.h6,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                color = CustomAppTheme.colors.text
+                color = CustomTheme.colors.text
             )
         }
     }

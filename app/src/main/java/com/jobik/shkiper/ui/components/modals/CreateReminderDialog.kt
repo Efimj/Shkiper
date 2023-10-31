@@ -1,7 +1,6 @@
 package com.jobik.shkiper.ui.components.modals
 
 import androidx.compose.foundation.*
-import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.*
 import androidx.compose.foundation.shape.CircleShape
@@ -35,12 +34,11 @@ import com.jobik.shkiper.ui.components.buttons.DropDownItem
 import com.jobik.shkiper.ui.components.buttons.RoundedButton
 import com.jobik.shkiper.ui.components.fields.CustomDatePicker
 import com.jobik.shkiper.ui.components.fields.CustomTimePicker
-import com.jobik.shkiper.ui.theme.CustomAppTheme
+import com.jobik.shkiper.ui.theme.CustomTheme
 import com.kizitonwose.calendar.compose.ContentHeightMode
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalTime
-import java.util.*
 
 private enum class ReminderDialogPages(val value: Int) {
     DATEPICK(0), TIMEPICK(1), REPEATMODE(2),
@@ -71,7 +69,7 @@ fun CreateReminderDialog(
     }
     Dialog(onGoBack, DialogProperties(true, dismissOnClickOutside = true)) {
         Column(
-            Modifier.clip(RoundedCornerShape(15.dp)).background(CustomAppTheme.colors.secondaryBackground)
+            Modifier.clip(RoundedCornerShape(15.dp)).background(CustomTheme.colors.secondaryBackground)
                 .padding(vertical = 20.dp)
         ) {
             HorizontalPager(
@@ -144,7 +142,7 @@ private fun DialogFooter(
                 ) {
                     repeat(ReminderDialogPages.values().size) { iteration ->
                         val color =
-                            if (pagerState.currentPage == iteration) CustomAppTheme.colors.text else CustomAppTheme.colors.textSecondary
+                            if (pagerState.currentPage == iteration) CustomTheme.colors.text else CustomTheme.colors.textSecondary
                         Box(
                             modifier = Modifier.padding(2.dp).clip(CircleShape).background(color).size(7.dp)
                         )
@@ -167,13 +165,13 @@ private fun DialogFooter(
                         }
                     },
                     colors = if (isEnd) ButtonDefaults.buttonColors(
-                        backgroundColor = CustomAppTheme.colors.active,
+                        backgroundColor = CustomTheme.colors.active,
                         disabledBackgroundColor = Color.Transparent
                     ) else ButtonDefaults.buttonColors(
-                        backgroundColor = CustomAppTheme.colors.mainBackground,
+                        backgroundColor = CustomTheme.colors.mainBackground,
                         disabledBackgroundColor = Color.Transparent
                     ),
-                    textColor = if (isEnd) Color.White else CustomAppTheme.colors.text
+                    textColor = if (isEnd) Color.White else CustomTheme.colors.text
                 )
             }
         }
@@ -213,14 +211,14 @@ private fun RepeatModePage(
         Text(
             stringResource(R.string.Reminder),
             style = MaterialTheme.typography.h5,
-            color = CustomAppTheme.colors.textSecondary,
+            color = CustomTheme.colors.textSecondary,
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(bottom = 15.dp).fillMaxWidth()
         )
         Column(horizontalAlignment = Alignment.Start) {
             Row(Modifier.fillMaxWidth().height(38.dp)) {
                 Icon(
-                    tint = CustomAppTheme.colors.textSecondary,
+                    tint = CustomTheme.colors.textSecondary,
                     imageVector = Icons.Default.Event,
                     contentDescription = stringResource(R.string.Event)
                 )
@@ -228,12 +226,12 @@ private fun RepeatModePage(
                 Text(
                     DateHelper.getLocalizedDate(date.value),
                     style = MaterialTheme.typography.body1,
-                    color = CustomAppTheme.colors.text,
+                    color = CustomTheme.colors.text,
                 )
             }
             Row(Modifier.fillMaxWidth().height(38.dp)) {
                 Icon(
-                    tint = CustomAppTheme.colors.textSecondary,
+                    tint = CustomTheme.colors.textSecondary,
                     imageVector = Icons.Default.Schedule,
                     contentDescription = stringResource(R.string.Schedule)
                 )
@@ -241,12 +239,12 @@ private fun RepeatModePage(
                 Text(
                     time.value.toString(),
                     style = MaterialTheme.typography.body1,
-                    color = CustomAppTheme.colors.text,
+                    color = CustomTheme.colors.text,
                 )
             }
             Row(Modifier.fillMaxWidth().height(38.dp), verticalAlignment = Alignment.CenterVertically) {
                 Icon(
-                    tint = CustomAppTheme.colors.textSecondary,
+                    tint = CustomTheme.colors.textSecondary,
                     imageVector = Icons.Default.Repeat,
                     contentDescription = stringResource(R.string.Repeat)
                 )
@@ -259,7 +257,7 @@ private fun RepeatModePage(
                     RoundedButton(
                         text = repeatMode.value.getLocalizedValue(LocalContext.current),
                         onClick = { it() },
-                        border = BorderStroke(1.dp, CustomAppTheme.colors.stroke),
+                        border = BorderStroke(1.dp, CustomTheme.colors.stroke),
                         colors = ButtonDefaults.buttonColors(
                             backgroundColor = Color.Transparent, disabledBackgroundColor = Color.Transparent
                         )
@@ -269,7 +267,7 @@ private fun RepeatModePage(
             if (!DateHelper.isFutureDateTime(date.value, time.value)) Text(
                 stringResource(R.string.ErrorDateMastBeFuture),
                 style = MaterialTheme.typography.body1,
-                color = CustomAppTheme.colors.text,
+                color = CustomTheme.colors.text,
                 modifier = Modifier.padding(top = 10.dp)
             )
         }
@@ -287,13 +285,13 @@ private fun TimePickPage(
             Text(
                 DateHelper.getLocalizedDate(date.value),
                 style = MaterialTheme.typography.h5,
-                color = CustomAppTheme.colors.textSecondary
+                color = CustomTheme.colors.textSecondary
             )
             Spacer(Modifier.width(8.dp))
             Text(
                 time.value.toString(),
                 style = MaterialTheme.typography.h5,
-                color = CustomAppTheme.colors.text,
+                color = CustomTheme.colors.text,
             )
         }
         Spacer(Modifier.height(20.dp))
@@ -307,7 +305,7 @@ private fun DatePickPage(date: MutableState<LocalDate>) {
         Text(
             DateHelper.getLocalizedDate(date.value),
             style = MaterialTheme.typography.h5,
-            color = CustomAppTheme.colors.text
+            color = CustomTheme.colors.text
         )
         Spacer(Modifier.height(10.dp))
         CustomDatePicker(

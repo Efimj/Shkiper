@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.jobik.shkiper.ui.components.buttons.RoundedButton
-import com.jobik.shkiper.ui.theme.CustomAppTheme
+import com.jobik.shkiper.ui.theme.CustomTheme
 
 @Composable
 fun ActionDialog(
@@ -33,7 +33,7 @@ fun ActionDialog(
         Column(
             Modifier
                 .clip(RoundedCornerShape(15.dp))
-                .background(CustomAppTheme.colors.mainBackground)
+                .background(CustomTheme.colors.mainBackground)
                 .padding(horizontal = 25.dp).padding(top = 25.dp, bottom = 10.dp)
         ) {
             Row(
@@ -45,13 +45,13 @@ fun ActionDialog(
                     Icon(
                         imageVector = icon,
                         contentDescription = "",
-                        tint = CustomAppTheme.colors.textSecondary,
+                        tint = CustomTheme.colors.textSecondary,
                         modifier = Modifier.size(30.dp)
                     )
                     Spacer(Modifier.width(7.dp))
                 }
                 Text(
-                    color = CustomAppTheme.colors.text,
+                    color = CustomTheme.colors.text,
                     text = title,
                     style = MaterialTheme.typography.h6,
                     overflow = TextOverflow.Ellipsis
@@ -72,11 +72,11 @@ fun ActionDialog(
                         text = goBackText,
                         onClick = onGoBack,
                         colors = ButtonDefaults.buttonColors(
-                            backgroundColor = CustomAppTheme.colors.mainBackground,
+                            backgroundColor = CustomTheme.colors.mainBackground,
                             disabledBackgroundColor = Color.Transparent
                         ),
                         border = null,
-                        textColor = CustomAppTheme.colors.text,
+                        textColor = CustomTheme.colors.text,
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
@@ -90,7 +90,7 @@ fun ActionDialog(
                         text = confirmText,
                         onClick = onConfirm,
                         colors = ButtonDefaults.buttonColors(
-                            backgroundColor = CustomAppTheme.colors.active,
+                            backgroundColor = CustomTheme.colors.active,
                             disabledBackgroundColor = Color.Transparent
                         ),
                         border = null,

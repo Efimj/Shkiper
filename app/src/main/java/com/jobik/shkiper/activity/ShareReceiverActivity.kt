@@ -1,22 +1,21 @@
 package com.jobik.shkiper.activity
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.annotation.Keep
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
-import com.jobik.shkiper.SharedPreferencesKeys
 import com.jobik.shkiper.database.data.note.NoteMongoRepository
 import com.jobik.shkiper.database.models.Note
 import com.jobik.shkiper.helpers.IntentHelper
-import com.jobik.shkiper.ui.theme.CustomAppTheme
-import com.jobik.shkiper.util.ThemePreferenceUtil
+import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.CustomThemeStyle
+import com.jobik.shkiper.ui.theme.ShkiperTheme
 import com.jobik.shkiper.util.ThemeUtil
 import com.jobik.shkiper.widgets.screens.NoteSelectionScreen.NoteSelectionScreen
 import dagger.hilt.android.AndroidEntryPoint
@@ -38,11 +37,14 @@ class ShareReceiverActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupActivity()
-        ThemeUtil.theme = ThemePreferenceUtil(this).getSavedUserTheme()
+        ThemeUtil.restoreSavedTheme(this)
         setContent {
-            CustomAppTheme(ThemeUtil.themeColors) {
+            ShkiperTheme(
+                darkTheme = ThemeUtil.isDarkMode.value ?: isSystemInDarkTheme(),
+                style = ThemeUtil.themeStyle.value ?: CustomThemeStyle.DarkPurple
+            ) {
                 Box(
-                    Modifier.fillMaxSize().background(CustomAppTheme.colors.mainBackground)
+                    Modifier.fillMaxSize().background(CustomTheme.colors.mainBackground)
                 ) {
                     NoteSelectionScreen {
                         handleSelectNote(it)

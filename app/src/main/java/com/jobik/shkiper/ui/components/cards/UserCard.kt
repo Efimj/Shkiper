@@ -20,7 +20,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.jobik.shkiper.R
 import com.jobik.shkiper.ui.modifiers.bounceClick
-import com.jobik.shkiper.ui.theme.CustomAppTheme
+import com.jobik.shkiper.ui.theme.CustomTheme
 
 data class UserCardLink(
     @DrawableRes
@@ -39,13 +39,13 @@ fun UserCard(
 ) {
     val modifier = if (onClick != null) Modifier.bounceClick().clip(RoundedCornerShape(15.dp))
         .clickable(enabled = true) { onClick() }.fillMaxWidth()
-        .background(CustomAppTheme.colors.secondaryBackground, RoundedCornerShape(15.dp))
-        .border(BorderStroke(width = 1.dp, color = CustomAppTheme.colors.stroke), RoundedCornerShape(15.dp))
+        .background(CustomTheme.colors.secondaryBackground, RoundedCornerShape(15.dp))
+        .border(BorderStroke(width = 1.dp, color = CustomTheme.colors.stroke), RoundedCornerShape(15.dp))
         .padding(8.dp)
     else
         Modifier.fillMaxWidth()
-            .background(CustomAppTheme.colors.secondaryBackground, RoundedCornerShape(15.dp))
-            .border(BorderStroke(width = 1.dp, color = CustomAppTheme.colors.stroke), RoundedCornerShape(15.dp))
+            .background(CustomTheme.colors.secondaryBackground, RoundedCornerShape(15.dp))
+            .border(BorderStroke(width = 1.dp, color = CustomTheme.colors.stroke), RoundedCornerShape(15.dp))
             .clip(RoundedCornerShape(15.dp)).padding(8.dp)
 
     Column(
@@ -70,7 +70,7 @@ fun UserCard(
                     name?.let {
                         Text(
                             text = name,
-                            color = CustomAppTheme.colors.text,
+                            color = CustomTheme.colors.text,
                             style = MaterialTheme.typography.h6,
                             overflow = TextOverflow.Ellipsis,
                             textAlign = TextAlign.Center,
@@ -80,7 +80,7 @@ fun UserCard(
                     description?.let {
                         Text(
                             text = it,
-                            color = CustomAppTheme.colors.textSecondary,
+                            color = CustomTheme.colors.textSecondary,
                             style = MaterialTheme.typography.body1,
                             overflow = TextOverflow.Ellipsis,
                             textAlign = TextAlign.Center,

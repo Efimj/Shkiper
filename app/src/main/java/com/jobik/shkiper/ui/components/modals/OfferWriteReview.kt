@@ -25,7 +25,7 @@ import androidx.compose.ui.window.DialogProperties
 import com.jobik.shkiper.R
 import com.jobik.shkiper.services.review_service.ReviewService
 import com.jobik.shkiper.ui.components.buttons.RoundedButton
-import com.jobik.shkiper.ui.theme.CustomAppTheme
+import com.jobik.shkiper.ui.theme.CustomTheme
 import kotlinx.coroutines.delay
 
 @Composable
@@ -42,10 +42,10 @@ fun OfferWriteReview(
 
     Dialog(goBackFunDelay, DialogProperties(true, dismissOnClickOutside = true)) {
         Column(
-            Modifier.clip(RoundedCornerShape(15.dp)).background(CustomAppTheme.colors.secondaryBackground)
+            Modifier.clip(RoundedCornerShape(15.dp)).background(CustomTheme.colors.secondaryBackground)
         ) {
             Row(
-                modifier = Modifier.fillMaxWidth().height(210.dp).background(CustomAppTheme.colors.mainBackground)
+                modifier = Modifier.fillMaxWidth().height(210.dp).background(CustomTheme.colors.mainBackground)
                     .padding(vertical = 20.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
@@ -64,13 +64,13 @@ fun OfferWriteReview(
             ) {
                 Text(
                     text = stringResource(R.string.OfferWriteReviewTitle),
-                    color = CustomAppTheme.colors.text,
+                    color = CustomTheme.colors.text,
                     style = MaterialTheme.typography.h6,
                     modifier = Modifier.padding(bottom = 4.dp)
                 )
                 Text(
                     text = stringResource(R.string.OfferWriteReviewDescription),
-                    color = CustomAppTheme.colors.textSecondary,
+                    color = CustomTheme.colors.textSecondary,
                     style = MaterialTheme.typography.body1,
                 )
                 Spacer(modifier = Modifier.height(10.dp))
@@ -93,7 +93,7 @@ fun OfferWriteReview(
                             ),
                             enabled = timeHasPassed.value,
                             border = null,
-                            textColor = if (timeHasPassed.value) CustomAppTheme.colors.text else CustomAppTheme.colors.textSecondary,
+                            textColor = if (timeHasPassed.value) CustomTheme.colors.text else CustomTheme.colors.textSecondary,
                             modifier = Modifier.fillMaxWidth()
                         )
                     }
@@ -108,7 +108,7 @@ fun OfferWriteReview(
                             text = stringResource(R.string.RateTheApp),
                             onClick = { ReviewService(context).openRateScreen(); onGoBack() },
                             colors = ButtonDefaults.buttonColors(
-                                backgroundColor = CustomAppTheme.colors.active,
+                                backgroundColor = CustomTheme.colors.active,
                                 disabledBackgroundColor = Color.Transparent
                             ),
                             border = null,

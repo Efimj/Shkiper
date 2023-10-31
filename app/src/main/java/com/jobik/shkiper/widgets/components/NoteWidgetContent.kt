@@ -7,7 +7,6 @@ import androidx.compose.ui.unit.sp
 import androidx.datastore.preferences.core.Preferences
 import androidx.glance.GlanceModifier
 import androidx.glance.ImageProvider
-import androidx.glance.LocalContext
 import androidx.glance.action.ActionParameters
 import androidx.glance.action.actionParametersOf
 import androidx.glance.action.actionStartActivity
@@ -23,8 +22,8 @@ import com.jobik.shkiper.R
 import com.jobik.shkiper.SharedPreferencesKeys
 import com.jobik.shkiper.activity.MainActivity
 import com.jobik.shkiper.helpers.DateHelper
-import com.jobik.shkiper.util.ThemePreferenceUtil
-import com.jobik.shkiper.util.ThemeUtil
+import com.jobik.shkiper.ui.theme.DefaultDarkColors
+import com.jobik.shkiper.ui.theme.DefaultLightColors
 import com.jobik.shkiper.widgets.WidgetKeys.Prefs.noteBody
 import com.jobik.shkiper.widgets.WidgetKeys.Prefs.noteHeader
 import com.jobik.shkiper.widgets.WidgetKeys.Prefs.noteId
@@ -33,9 +32,8 @@ import java.time.LocalDateTime
 
 @Composable
 fun NoteWidgetContent(prefs: Preferences) {
-    ThemeUtil.theme = ThemePreferenceUtil(LocalContext.current).getSavedUserTheme()
-    val darkColors = ThemeUtil.getColorsForThemeName(ThemeUtil.theme.darkThemeName, true)
-    val lightColors = ThemeUtil.getColorsForThemeName(ThemeUtil.theme.lightThemeName, false)
+    val darkColors = DefaultDarkColors
+    val lightColors = DefaultLightColors
 
     val noteId = prefs[noteId].orEmpty()
     val noteHeader = prefs[noteHeader].orEmpty()

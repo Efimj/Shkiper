@@ -6,7 +6,6 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.*
 import androidx.compose.foundation.shape.CircleShape
@@ -30,9 +29,9 @@ import androidx.navigation.NavController
 import com.jobik.shkiper.SharedPreferencesKeys
 import com.jobik.shkiper.navigation.AppScreens
 import com.jobik.shkiper.ui.components.buttons.RoundedButton
-import com.jobik.shkiper.ui.theme.CustomAppTheme
 import kotlinx.coroutines.launch
 import com.jobik.shkiper.R
+import com.jobik.shkiper.ui.theme.CustomTheme
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -86,7 +85,7 @@ private fun ScreenFooter(navController: NavController, pagerState: PagerState) {
         ) {
             repeat(OnBoardingPage.PageList.Count) { iteration ->
                 val color =
-                    if (pagerState.currentPage == iteration) CustomAppTheme.colors.text else CustomAppTheme.colors.textSecondary
+                    if (pagerState.currentPage == iteration) CustomTheme.colors.text else CustomTheme.colors.textSecondary
                 Box(
                     modifier = Modifier.padding(2.dp).clip(CircleShape).background(color).size(7.dp)
                 )
@@ -105,8 +104,8 @@ private fun ScreenFooter(navController: NavController, pagerState: PagerState) {
                         pagerState.animateScrollToPage(pagerState.currentPage + 1)
                     }
                 },
-                colors = ButtonDefaults.buttonColors(backgroundColor = if (pagerState.currentPage == OnBoardingPage.PageList.Count - 1) CustomAppTheme.colors.active else CustomAppTheme.colors.mainBackground),
-                textColor = if (pagerState.currentPage == OnBoardingPage.PageList.Count - 1) Color.White else CustomAppTheme.colors.text
+                colors = ButtonDefaults.buttonColors(backgroundColor = if (pagerState.currentPage == OnBoardingPage.PageList.Count - 1) CustomTheme.colors.active else CustomTheme.colors.mainBackground),
+                textColor = if (pagerState.currentPage == OnBoardingPage.PageList.Count - 1) Color.White else CustomTheme.colors.text
             )
         }
     }
@@ -148,7 +147,7 @@ fun PagerScreen(onBoardingPage: OnBoardingPage) {
             fontSize = MaterialTheme.typography.h4.fontSize,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,
-            color = CustomAppTheme.colors.text
+            color = CustomTheme.colors.text
         )
         Text(
             modifier = Modifier
@@ -159,7 +158,7 @@ fun PagerScreen(onBoardingPage: OnBoardingPage) {
             fontSize = MaterialTheme.typography.subtitle1.fontSize,
             fontWeight = FontWeight.Medium,
             textAlign = TextAlign.Center,
-            color = CustomAppTheme.colors.textSecondary
+            color = CustomTheme.colors.textSecondary
         )
     }
 }

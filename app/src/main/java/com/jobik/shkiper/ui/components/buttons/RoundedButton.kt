@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.jobik.shkiper.ui.helpers.MultipleEventsCutter
 import com.jobik.shkiper.ui.helpers.get
 import com.jobik.shkiper.ui.modifiers.circularRotation
-import com.jobik.shkiper.ui.theme.CustomAppTheme
+import com.jobik.shkiper.ui.theme.CustomTheme
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -32,15 +32,15 @@ fun RoundedButton(
     enabled: Boolean = true,
     loading: Boolean = false,
     shape: Shape = RoundedCornerShape(15.dp),
-    border: BorderStroke? = BorderStroke(1.dp, CustomAppTheme.colors.stroke),
+    border: BorderStroke? = BorderStroke(1.dp, CustomTheme.colors.stroke),
     colors: ButtonColors = ButtonDefaults.buttonColors(
-        backgroundColor = CustomAppTheme.colors.mainBackground,
+        backgroundColor = CustomTheme.colors.mainBackground,
         disabledBackgroundColor = Color.Transparent
     ),
     horizontalPaddings: Dp = 0.dp,
-    textColor: Color = CustomAppTheme.colors.text,
+    textColor: Color = CustomTheme.colors.text,
     textStyle: TextStyle = MaterialTheme.typography.body1,
-    iconTint: Color = CustomAppTheme.colors.text,
+    iconTint: Color = CustomTheme.colors.text,
     content: @Composable (() -> Unit)? = null,
 ) {
     val multipleEventsCutter = remember { MultipleEventsCutter.get() }

@@ -4,10 +4,6 @@ import androidx.annotation.Keep
 
 @Keep
 object SharedPreferencesKeys {
-    // Theme preferences
-    const val ThemePreferencesName = "ThemePreferencesName"
-    const val AppThemeKey = "AppThemeKey"
-
     // Notification storage
     const val NotificationStorageName = "NotificationStorageName"
     const val NotificationListKey = "NotificationListKey"
@@ -15,9 +11,11 @@ object SharedPreferencesKeys {
 
     // Application storage
     const val ApplicationStorageName = "ApplicationStorageName"
+    const val ApplicationUiMode = "ApplicationUiMode"
     const val IsOnboardingPageFinished = "IsOnboardingPageFinished"
     const val CountOfferReview = "CountOfferReview"
     const val Localization = "Localization"
     const val Statistics = "Statistics"
     const val LastBannerSupportDeveloperShowingDate = "LastBannerSupportDeveloperShowingDate"
+
 }

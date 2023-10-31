@@ -11,7 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.jobik.shkiper.ui.theme.CustomAppTheme
+import com.jobik.shkiper.ui.theme.CustomTheme
 
 @Composable
 fun MainMenuButton(text: String, icon: ImageVector? = null, isActive: Boolean = false, onClick: () -> Unit = { }){
@@ -22,8 +22,8 @@ fun MainMenuButton(text: String, icon: ImageVector? = null, isActive: Boolean = 
             text = text,
             icon = icon,
             modifier = menuButtonModifier,
-            border = BorderStroke(0.dp, CustomAppTheme.colors.mainBackground),
-            colors = ButtonDefaults.buttonColors(backgroundColor = CustomAppTheme.colors.active),
+            border = BorderStroke(0.dp, CustomTheme.colors.mainBackground),
+            colors = ButtonDefaults.buttonColors(backgroundColor = CustomTheme.colors.active),
             textColor = Color.White,
             textStyle = MaterialTheme.typography.h6.copy(fontSize = 17.sp),
             onClick = onClick,
@@ -34,7 +34,7 @@ fun MainMenuButton(text: String, icon: ImageVector? = null, isActive: Boolean = 
             text = text,
             icon = icon,
             modifier = menuButtonModifier,
-            border = BorderStroke(0.dp, CustomAppTheme.colors.mainBackground),
+            border = BorderStroke(0.dp, CustomTheme.colors.mainBackground),
             textStyle = MaterialTheme.typography.h6.copy(fontSize = 17.sp),
             onClick = onClick,
         )

@@ -9,7 +9,7 @@ import androidx.compose.ui.unit.dp
 import com.commandiron.wheel_picker_compose.WheelTimePicker
 import com.commandiron.wheel_picker_compose.core.TimeFormat
 import com.commandiron.wheel_picker_compose.core.WheelPickerDefaults
-import com.jobik.shkiper.ui.theme.CustomAppTheme
+import com.jobik.shkiper.ui.theme.CustomTheme
 import java.time.LocalTime
 
 @Composable
@@ -27,12 +27,12 @@ fun CustomTimePicker(
         size = DpSize(150.dp, 250.dp),
         rowCount = 5,
         textStyle = MaterialTheme.typography.titleMedium,
-        textColor = CustomAppTheme.colors.text,
+        textColor = CustomTheme.colors.text,
         selectorProperties = WheelPickerDefaults.selectorProperties(
             enabled = true,
             shape = RoundedCornerShape(15.dp),
-            color = CustomAppTheme.colors.secondaryBackground,
-            border = BorderStroke(1.dp, CustomAppTheme.colors.active)
+            color = CustomTheme.colors.secondaryBackground,
+            border = BorderStroke(1.dp, CustomTheme.colors.active)
         )
     ) { snappedDateTime -> onTimeChange(snappedDateTime) }
 }

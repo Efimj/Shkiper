@@ -35,7 +35,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.jobik.shkiper.R
 import com.jobik.shkiper.navigation.AppScreens
 import com.jobik.shkiper.ui.components.cards.NoteCard
-import com.jobik.shkiper.ui.theme.CustomAppTheme
 import kotlin.math.roundToInt
 import com.jobik.shkiper.ui.components.buttons.FloatingActionButton
 import com.jobik.shkiper.ui.components.buttons.HashtagButton
@@ -43,6 +42,7 @@ import com.jobik.shkiper.ui.components.modals.CreateReminderDialog
 import com.jobik.shkiper.ui.components.modals.ReminderDialogProperties
 import com.jobik.shkiper.viewmodels.NotesViewModel
 import com.jobik.shkiper.ui.components.layouts.*
+import com.jobik.shkiper.ui.theme.CustomTheme
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -183,7 +183,7 @@ private fun ScreenContent(
                 Column {
                     Text(
                         stringResource(R.string.Pinned),
-                        color = CustomAppTheme.colors.textSecondary,
+                        color = CustomTheme.colors.textSecondary,
                         style = MaterialTheme.typography.body1.copy(fontSize = 17.sp),
                         modifier = Modifier.padding(horizontal = 10.dp)
                     )
@@ -203,7 +203,7 @@ private fun ScreenContent(
             item(span = StaggeredGridItemSpan.FullLine) {
                 Text(
                     stringResource(R.string.Other),
-                    color = CustomAppTheme.colors.textSecondary,
+                    color = CustomTheme.colors.textSecondary,
                     style = MaterialTheme.typography.body1.copy(fontSize = 17.sp),
                     modifier = Modifier.padding(horizontal = 10.dp)
                 )
@@ -250,7 +250,7 @@ private fun ActionBar(
         CustomTopAppBar(
             modifier = Modifier.fillMaxWidth(),
             elevation = topAppBarElevation,
-            backgroundColor = CustomAppTheme.colors.mainBackground,
+            backgroundColor = CustomTheme.colors.mainBackground,
             text = notesViewModel.screenState.value.selectedNotes.count().toString(),
             navigation = TopAppBarItem(
                 isActive = false,

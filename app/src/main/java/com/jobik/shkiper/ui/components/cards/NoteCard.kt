@@ -26,7 +26,7 @@ import com.jobik.shkiper.helpers.DateHelper
 import com.jobik.shkiper.ui.helpers.MultipleEventsCutter
 import com.jobik.shkiper.ui.helpers.get
 import com.jobik.shkiper.ui.modifiers.bounceClick
-import com.jobik.shkiper.ui.theme.CustomAppTheme
+import com.jobik.shkiper.ui.theme.CustomTheme
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -57,9 +57,9 @@ fun NoteCard(
             ),
         elevation = 0.dp,
         shape = RoundedCornerShape(15.dp),
-        border = BorderStroke(1.dp, if (selected) CustomAppTheme.colors.active else CustomAppTheme.colors.stroke),
-        backgroundColor = CustomAppTheme.colors.secondaryBackground,
-        contentColor = CustomAppTheme.colors.text,
+        border = BorderStroke(1.dp, if (selected) CustomTheme.colors.active else CustomTheme.colors.stroke),
+        backgroundColor = CustomTheme.colors.secondaryBackground,
+        contentColor = CustomTheme.colors.text,
     ) {
         Column(
             modifier = Modifier.padding(16.dp)
@@ -74,7 +74,7 @@ fun NoteCard(
                     maxLines = 10,
                     overflow = TextOverflow.Ellipsis,
                     style = MaterialTheme.typography.body1,
-                    color = CustomAppTheme.colors.textSecondary,
+                    color = CustomTheme.colors.textSecondary,
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
             }
@@ -100,12 +100,12 @@ private fun ReminderInformation(reminder: Reminder?) {
             Modifier
                 .basicMarquee()
                 .clip(shape)
-                .background(CustomAppTheme.colors.secondaryBackground),
+                .background(CustomTheme.colors.secondaryBackground),
             //.padding(horizontal = 5.dp, vertical = 3.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
-                tint = CustomAppTheme.colors.textSecondary,
+                tint = CustomTheme.colors.textSecondary,
                 imageVector = if (reminder.repeat == RepeatMode.NONE) Icons.Default.Event else Icons.Default.Repeat,
                 contentDescription = stringResource(R.string.Event),
                 modifier = Modifier.height(15.dp)
@@ -117,14 +117,14 @@ private fun ReminderInformation(reminder: Reminder?) {
                     fontSize = 13.sp,
                     textDecoration = if (isDateFuture) TextDecoration.None else TextDecoration.LineThrough
                 ),
-                color = CustomAppTheme.colors.textSecondary,
+                color = CustomTheme.colors.textSecondary,
             )
             Spacer(Modifier.width(4.dp))
             if (isDateFuture)
                 androidx.compose.material3.Text(
                     nextReminderDate.toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")),
                     style = MaterialTheme.typography.body1.copy(fontSize = 13.sp),
-                    color = CustomAppTheme.colors.textSecondary,
+                    color = CustomTheme.colors.textSecondary,
                 )
         }
     }
@@ -152,7 +152,7 @@ private fun NoteContent(header: String?, text: String?, headerStyle: TextStyle, 
             maxLines = 8 - headerLineCount,
             overflow = TextOverflow.Ellipsis,
             style = bodyStyle,
-            color = CustomAppTheme.colors.textSecondary,
+            color = CustomTheme.colors.textSecondary,
         )
     }
 }
@@ -168,7 +168,7 @@ private fun NoteAnnotatedContent(
     var headerLineCount by remember { mutableStateOf(1) }
     if (!header.isNullOrEmpty()) {
         Text(
-            text = buildAnnotatedString(header, markedText, CustomAppTheme.colors.active, Color.Transparent),
+            text = buildAnnotatedString(header, markedText, CustomTheme.colors.active, Color.Transparent),
             fontSize = headerStyle.fontSize,
             fontStyle = headerStyle.fontStyle,
             fontFamily = headerStyle.fontFamily,
@@ -185,13 +185,13 @@ private fun NoteAnnotatedContent(
         Spacer(modifier = Modifier.height(8.dp))
     if (!text.isNullOrEmpty()) {
         Text(
-            text = buildAnnotatedString(text, markedText, CustomAppTheme.colors.active, Color.Transparent),
+            text = buildAnnotatedString(text, markedText, CustomTheme.colors.active, Color.Transparent),
             fontSize = bodyStyle.fontSize,
             fontStyle = bodyStyle.fontStyle,
             fontFamily = bodyStyle.fontFamily,
             fontWeight = bodyStyle.fontWeight,
             overflow = TextOverflow.Ellipsis,
-            color = CustomAppTheme.colors.textSecondary,
+            color = CustomTheme.colors.textSecondary,
             maxLines = 8 - headerLineCount,
         )
     }

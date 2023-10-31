@@ -22,7 +22,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.jobik.shkiper.R
 import com.jobik.shkiper.ui.components.buttons.RoundedButton
-import com.jobik.shkiper.ui.theme.CustomAppTheme
+import com.jobik.shkiper.ui.theme.CustomTheme
 
 data class ImageActionDialogButton(
     val text: String? = null,
@@ -43,7 +43,7 @@ fun ImageActionDialog(
 ) {
     Dialog(onGoBack, DialogProperties(true, dismissOnClickOutside = true)) {
         Column(
-            Modifier.clip(RoundedCornerShape(15.dp)).background(CustomAppTheme.colors.secondaryBackground)
+            Modifier.clip(RoundedCornerShape(15.dp)).background(CustomTheme.colors.secondaryBackground)
         ) {
             image?.let { image ->
                 Row(
@@ -68,7 +68,7 @@ fun ImageActionDialog(
                 header?.let { header ->
                     Text(
                         text = header,
-                        color = CustomAppTheme.colors.text,
+                        color = CustomTheme.colors.text,
                         style = MaterialTheme.typography.h6,
                         modifier = Modifier.padding(bottom = 4.dp)
                     )
@@ -76,7 +76,7 @@ fun ImageActionDialog(
                 text?.let { text ->
                     Text(
                         text = text,
-                        color = CustomAppTheme.colors.textSecondary,
+                        color = CustomTheme.colors.textSecondary,
                         style = MaterialTheme.typography.body1,
                     )
                 }
@@ -96,10 +96,10 @@ fun ImageActionDialog(
                                 text = button.text,
                                 onClick = button.onClick,
                                 icon = button.icon,
-                                iconTint = if (button.isActive) Color.White else CustomAppTheme.colors.textSecondary,
+                                iconTint = if (button.isActive) Color.White else CustomTheme.colors.textSecondary,
                                 colors =
                                 if (button.isActive) ButtonDefaults.buttonColors(
-                                    backgroundColor = CustomAppTheme.colors.active,
+                                    backgroundColor = CustomTheme.colors.active,
                                     disabledBackgroundColor = Color.Transparent
                                 )
                                 else ButtonDefaults.buttonColors(
@@ -107,7 +107,7 @@ fun ImageActionDialog(
                                     disabledBackgroundColor = Color.Transparent
                                 ),
                                 border = null,
-                                textColor = if (button.isActive) Color.White else CustomAppTheme.colors.textSecondary,
+                                textColor = if (button.isActive) Color.White else CustomTheme.colors.textSecondary,
                                 modifier = Modifier.fillMaxWidth()
                             )
                         }
@@ -123,10 +123,10 @@ fun ImageActionDialog(
                                 text = button.text,
                                 onClick = button.onClick,
                                 icon = button.icon,
-                                iconTint = if (button.isActive) Color.White else CustomAppTheme.colors.text,
+                                iconTint = if (button.isActive) Color.White else CustomTheme.colors.text,
                                 colors =
                                 if (button.isActive) ButtonDefaults.buttonColors(
-                                    backgroundColor = CustomAppTheme.colors.active,
+                                    backgroundColor = CustomTheme.colors.active,
                                     disabledBackgroundColor = Color.Transparent
                                 )
                                 else ButtonDefaults.buttonColors(
@@ -134,7 +134,7 @@ fun ImageActionDialog(
                                     disabledBackgroundColor = Color.Transparent
                                 ),
                                 border = null,
-                                textColor = if (button.isActive) Color.White else CustomAppTheme.colors.text,
+                                textColor = if (button.isActive) Color.White else CustomTheme.colors.text,
                                 modifier = Modifier.fillMaxWidth()
                             )
                         }

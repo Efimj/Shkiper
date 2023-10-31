@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jobik.shkiper.R
-import com.jobik.shkiper.ui.theme.CustomAppTheme
+import com.jobik.shkiper.ui.theme.CustomTheme
 
 private const val TEXT_SCALE_REDUCTION_INTERVAL = 0.9f
 private val CONTAINERSHAPE = RoundedCornerShape(15.dp)
@@ -47,26 +47,26 @@ fun SearchField(
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val enabled = true
-    val textStyle = MaterialTheme.typography.body1.copy(color = CustomAppTheme.colors.text)
+    val textStyle = MaterialTheme.typography.body1.copy(color = CustomTheme.colors.text)
     val visualTransformation = VisualTransformation.None
     val isTrailingIconVisible = search.isNotBlank()
 
     val textFieldColors = TextFieldDefaults.textFieldColors(
-        backgroundColor = CustomAppTheme.colors.secondaryBackground,
-        placeholderColor = CustomAppTheme.colors.textSecondary,
-        leadingIconColor = CustomAppTheme.colors.textSecondary,
-        trailingIconColor = CustomAppTheme.colors.textSecondary,
-        textColor = CustomAppTheme.colors.text,
-        cursorColor = CustomAppTheme.colors.textSecondary,
-        focusedLabelColor = CustomAppTheme.colors.textSecondary,
-        unfocusedLabelColor = CustomAppTheme.colors.textSecondary,
+        backgroundColor = CustomTheme.colors.secondaryBackground,
+        placeholderColor = CustomTheme.colors.textSecondary,
+        leadingIconColor = CustomTheme.colors.textSecondary,
+        trailingIconColor = CustomTheme.colors.textSecondary,
+        textColor = CustomTheme.colors.text,
+        cursorColor = CustomTheme.colors.textSecondary,
+        focusedLabelColor = CustomTheme.colors.textSecondary,
+        unfocusedLabelColor = CustomTheme.colors.textSecondary,
     )
     val maxFontSize = 18.sp
     val minFontSize = 16.sp
 
     val customTextSelectionColors = TextSelectionColors(
-        handleColor = CustomAppTheme.colors.active,
-        backgroundColor = CustomAppTheme.colors.active.copy(alpha = 0.4f),
+        handleColor = CustomTheme.colors.active,
+        backgroundColor = CustomTheme.colors.active.copy(alpha = 0.4f),
     )
     val focusManager = LocalFocusManager.current
 
@@ -82,7 +82,7 @@ fun SearchField(
                 enabled = enabled,
                 singleLine = true,
                 textStyle = textStyle.copy(fontSize = shrunkFontSize),
-                cursorBrush = SolidColor(CustomAppTheme.colors.active),
+                cursorBrush = SolidColor(CustomTheme.colors.active),
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Text,
                     imeAction = ImeAction.Done,
@@ -97,13 +97,13 @@ fun SearchField(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(
-                        color = CustomAppTheme.colors.secondaryBackground,
+                        color = CustomTheme.colors.secondaryBackground,
                         shape = RoundedCornerShape(15.dp)
                     )
                     .clip(CONTAINERSHAPE)
                     .height(50.dp)
                     .clip(CONTAINERSHAPE)
-                    .border(1.dp, CustomAppTheme.colors.stroke, CONTAINERSHAPE)
+                    .border(1.dp, CustomTheme.colors.stroke, CONTAINERSHAPE)
                     .fillMaxWidth()
                     .padding(10.dp, 0.dp, 0.dp, 0.dp),
             ) {
@@ -191,7 +191,7 @@ private fun trailingIcon(isTrailingIconVisible: Boolean, onTrailingIconClick: ()
             onClick = onTrailingIconClick,
         ) {
             Icon(
-                tint = CustomAppTheme.colors.textSecondary,
+                tint = CustomTheme.colors.textSecondary,
                 imageVector = Icons.Default.Clear,
                 contentDescription = stringResource(R.string.Clear)
             )
@@ -204,7 +204,7 @@ private fun leadingIcon() {
     Icon(
         imageVector = Icons.Default.Search,
         contentDescription = stringResource(R.string.Search),
-        tint = CustomAppTheme.colors.textSecondary
+        tint = CustomTheme.colors.textSecondary
     )
 }
 

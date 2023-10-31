@@ -23,7 +23,7 @@ import com.jobik.shkiper.helpers.LinkHelper
 import com.jobik.shkiper.ui.components.buttons.RoundedButton
 import com.jobik.shkiper.ui.components.cards.LinkPreviewCard
 import com.jobik.shkiper.ui.modifiers.circularRotation
-import com.jobik.shkiper.ui.theme.CustomAppTheme
+import com.jobik.shkiper.ui.theme.CustomTheme
 
 fun LazyListScope.LinkPreviewList(
     linkPreviewList: Set<LinkHelper.LinkPreview>,
@@ -39,13 +39,13 @@ fun LazyListScope.LinkPreviewList(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.SemiBold, fontSize = 18.sp),
-                    color = CustomAppTheme.colors.textSecondary,
+                    color = CustomTheme.colors.textSecondary,
                 )
                 Spacer(Modifier.width(10.dp))
                 Icon(
                     imageVector = Icons.Outlined.Loop,
                     contentDescription = stringResource(R.string.Loading),
-                    tint = CustomAppTheme.colors.textSecondary,
+                    tint = CustomTheme.colors.textSecondary,
                     modifier = Modifier.circularRotation()
                 )
             }
@@ -58,7 +58,7 @@ fun LazyListScope.LinkPreviewList(
             Text(
                 stringResource(R.string.Links),
                 style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.SemiBold, fontSize = 18.sp),
-                color = CustomAppTheme.colors.textSecondary,
+                color = CustomTheme.colors.textSecondary,
             )
         }
     }
@@ -76,7 +76,7 @@ fun LazyListScope.LinkPreviewList(
                     backgroundColor = Color.Transparent,
                     disabledBackgroundColor = Color.Transparent
                 ),
-                textColor = CustomAppTheme.colors.textSecondary,
+                textColor = CustomTheme.colors.textSecondary,
                 modifier = contentPadding
             )
         }

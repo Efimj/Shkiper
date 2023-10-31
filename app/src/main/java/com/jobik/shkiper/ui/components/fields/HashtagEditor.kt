@@ -3,25 +3,20 @@ package com.jobik.shkiper.ui.components.fields
 import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Label
-import androidx.compose.material.icons.outlined.NewLabel
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -29,12 +24,11 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jobik.shkiper.R
-import com.jobik.shkiper.database.models.RepeatMode
 import com.jobik.shkiper.ui.components.buttons.DropDownButton
 import com.jobik.shkiper.ui.components.buttons.DropDownButtonSizeMode
 import com.jobik.shkiper.ui.components.buttons.DropDownItem
 import com.jobik.shkiper.ui.components.buttons.RoundedButton
-import com.jobik.shkiper.ui.theme.CustomAppTheme
+import com.jobik.shkiper.ui.theme.CustomTheme
 
 @Composable
 fun HashtagEditor(
@@ -63,7 +57,7 @@ fun HashtagEditor(
             Text(
                 stringResource(R.string.Hashtags),
                 style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.SemiBold, fontSize = 18.sp),
-                color = CustomAppTheme.colors.textSecondary
+                color = CustomTheme.colors.textSecondary
             )
             if (editModeEnabled.value) {
                 Row {
@@ -177,7 +171,7 @@ private fun HashtagsPresentation(
         Text(
             stringResource(R.string.HashtagExample),
             style = MaterialTheme.typography.body1,
-            color = CustomAppTheme.colors.textSecondary
+            color = CustomTheme.colors.textSecondary
         )
     } else
         FlowRow(Modifier.clickable { setEditMode() }) {
@@ -196,17 +190,17 @@ private fun HashtagItem(chip: String, onChipClicked: (String) -> Unit) {
         onClick = { onChipClicked(chip) },
         shape = RoundedCornerShape(10.dp),
         colors = ChipDefaults.chipColors(
-            backgroundColor = CustomAppTheme.colors.secondaryBackground,
-            contentColor = CustomAppTheme.colors.text
+            backgroundColor = CustomTheme.colors.secondaryBackground,
+            contentColor = CustomTheme.colors.text
         ),
-        border = BorderStroke(1.dp, CustomAppTheme.colors.stroke)
+        border = BorderStroke(1.dp, CustomTheme.colors.stroke)
     ) {
         Text(
             chip,
             modifier = Modifier.basicMarquee().padding(8.dp),
             maxLines = 1,
             style = MaterialTheme.typography.body1,
-            color = CustomAppTheme.colors.text
+            color = CustomTheme.colors.text
         )
     }
 }

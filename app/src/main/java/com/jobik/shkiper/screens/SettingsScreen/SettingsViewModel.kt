@@ -17,14 +17,14 @@ import com.jobik.shkiper.NotepadApplication
 import com.jobik.shkiper.R
 import com.jobik.shkiper.database.data.note.NoteMongoRepository
 import com.jobik.shkiper.database.data.reminder.ReminderMongoRepository
-import com.jobik.shkiper.services.review_service.ReviewService
-import com.jobik.shkiper.services.localization.LocaleHelper
-import com.jobik.shkiper.services.localization.Localization
 import com.jobik.shkiper.services.backup_service.BackupData
 import com.jobik.shkiper.services.backup_service.BackupService
 import com.jobik.shkiper.services.backup_service.BackupServiceResult
+import com.jobik.shkiper.services.localization.LocaleHelper
+import com.jobik.shkiper.services.localization.Localization
+import com.jobik.shkiper.services.review_service.ReviewService
 import com.jobik.shkiper.services.statistics_service.StatisticsService
-import com.jobik.shkiper.ui.theme.ColorThemes
+import com.jobik.shkiper.ui.theme.CustomThemeStyle
 import com.jobik.shkiper.util.SnackbarHostUtil
 import com.jobik.shkiper.util.SnackbarVisualsCustom
 import com.jobik.shkiper.util.ThemeUtil
@@ -32,6 +32,13 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
+data class SettingsScreenState(
+    val isLocalBackupUploading: Boolean = false,
+    val isLocalBackupSaving: Boolean = false,
+    val isGoogleDriveBackupUploading: Boolean = false,
+    val isGoogleDriveBackupUpSaving: Boolean = false,
+)
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
@@ -47,19 +54,20 @@ class SettingsViewModel @Inject constructor(
      * App theming
      *******************/
 
-    val themeColorList = mutableStateOf(getThemeColorList())
-
     fun toggleAppTheme() {
-        ThemeUtil.toggleTheme(application.applicationContext)
+        ThemeUtil.saveThemeMode(
+            context = application.applicationContext,
+            mode = !(ThemeUtil.isDarkMode.value ?: false),
+            newThemeStyle = ThemeUtil.themeStyle.value ?: CustomThemeStyle.DarkPurple
+        )
     }
 
-    fun selectColorTheme(themeName: String) {
-        val selectedTheme = ColorThemes.values().find { it.name == themeName } ?: return
-        ThemeUtil.changeColorTheme(application.applicationContext, selectedTheme)
-    }
-
-    private fun getThemeColorList(): List<ColorThemes> {
-        return ColorThemes.values().toList()
+    fun selectColorTheme(theme: CustomThemeStyle) {
+        ThemeUtil.saveThemeMode(
+            context = application.applicationContext,
+            mode = ThemeUtil.isDarkMode.value ?: false,
+            newThemeStyle = theme
+        )
     }
 
     /*******************

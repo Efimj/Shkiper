@@ -16,12 +16,13 @@ import androidx.compose.ui.unit.dp
 import com.jobik.shkiper.ui.helpers.MultipleEventsCutter
 import com.jobik.shkiper.ui.helpers.get
 import com.jobik.shkiper.ui.modifiers.bounceClick
-import com.jobik.shkiper.ui.theme.ExtendedColors
+import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.CustomThemeColors
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ThemePreview(
-    colors: ExtendedColors,
+    colors: CustomThemeColors,
     selected: Boolean = false,
     onClick: () -> Unit = {}
 ) {

@@ -16,7 +16,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.jobik.shkiper.ui.theme.CustomAppTheme
+import com.jobik.shkiper.ui.theme.CustomTheme
 import com.kizitonwose.calendar.compose.ContentHeightMode
 import com.kizitonwose.calendar.compose.HorizontalCalendar
 import com.kizitonwose.calendar.compose.rememberCalendarState
@@ -79,7 +79,7 @@ fun MonthTitle(month: CalendarMonth) {
             modifier = Modifier,
             textAlign = TextAlign.Center,
             text = formattedDate,
-            color = CustomAppTheme.colors.text,
+            color = CustomTheme.colors.text,
             style = MaterialTheme.typography.body1
         )
     }
@@ -93,7 +93,7 @@ fun DaysOfWeekTitle(daysOfWeek: List<DayOfWeek>) {
                 modifier = Modifier.weight(1f),
                 textAlign = TextAlign.Center,
                 text = dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.getDefault()),
-                color = CustomAppTheme.colors.text,
+                color = CustomTheme.colors.text,
                 style = MaterialTheme.typography.body1
             )
         }
@@ -113,13 +113,13 @@ fun CalendarDayView(day: CalendarDay, currentDate: LocalDate, onClick: (Calendar
                 .border(
                     BorderStroke(
                         1.dp,
-                        if (currentDate == day.date) CustomAppTheme.colors.active else
-                            if (day.date == dateNow) CustomAppTheme.colors.stroke else
+                        if (currentDate == day.date) CustomTheme.colors.active else
+                            if (day.date == dateNow) CustomTheme.colors.stroke else
                                 Color.Transparent
                     ),
                     borderCornerShape
                 )
-                .background(if (currentDate == day.date) CustomAppTheme.colors.secondaryBackground else Color.Transparent)
+                .background(if (currentDate == day.date) CustomTheme.colors.secondaryBackground else Color.Transparent)
                 .aspectRatio(1f)
                 .clickable(
                     enabled = isDateCurrentOrFuture,
@@ -131,8 +131,8 @@ fun CalendarDayView(day: CalendarDay, currentDate: LocalDate, onClick: (Calendar
                 text = day.date.dayOfMonth.toString(),
                 style = MaterialTheme.typography.body1,
                 color =
-                if (isDateCurrentOrFuture) CustomAppTheme.colors.text
-                else CustomAppTheme.colors.textSecondary
+                if (isDateCurrentOrFuture) CustomTheme.colors.text
+                else CustomTheme.colors.textSecondary
 
             )
         }

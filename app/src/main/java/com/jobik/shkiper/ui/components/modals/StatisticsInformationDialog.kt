@@ -18,8 +18,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.jobik.shkiper.services.statistics_service.StatisticsItem
-import com.jobik.shkiper.ui.theme.CustomAppTheme
 import com.jobik.shkiper.R
+import com.jobik.shkiper.ui.theme.CustomTheme
 
 @Composable
 fun StatisticsInformationDialog(
@@ -30,7 +30,7 @@ fun StatisticsInformationDialog(
         Column(
             Modifier
                 .clip(RoundedCornerShape(15.dp))
-                .background(CustomAppTheme.colors.secondaryBackground)
+                .background(CustomTheme.colors.secondaryBackground)
                 .padding(vertical = 20.dp).height(340.dp)
         ) {
             Column(
@@ -50,19 +50,19 @@ fun StatisticsInformationDialog(
                 ) {
                     Text(
                         statistics.getStringValue(),
-                        color = CustomAppTheme.colors.text,
+                        color = CustomTheme.colors.text,
                         style = MaterialTheme.typography.h5,
                         modifier = Modifier.padding(bottom = 4.dp)
                     )
                     Text(
                         stringResource(statistics.title),
-                        color = CustomAppTheme.colors.text,
+                        color = CustomTheme.colors.text,
                         style = MaterialTheme.typography.h6,
                         modifier = Modifier.padding(bottom = 4.dp)
                     )
                     Text(
                         stringResource(statistics.description),
-                        color = CustomAppTheme.colors.textSecondary,
+                        color = CustomTheme.colors.textSecondary,
                         style = MaterialTheme.typography.body1,
                         textAlign = TextAlign.Center
                     )

@@ -18,14 +18,14 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import com.jobik.shkiper.ui.theme.CustomAppTheme
+import com.jobik.shkiper.ui.theme.CustomTheme
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun CustomTextField(
     text: String,
     placeholder: String = "",
-    textColor: Color = CustomAppTheme.colors.text,
+    textColor: Color = CustomTheme.colors.text,
     onTextChange: (String) -> Unit = {},
     textStyle: TextStyle = MaterialTheme.typography.body1,
     enabled: Boolean = true,
@@ -41,19 +41,19 @@ fun CustomTextField(
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val textFieldColors = TextFieldDefaults.textFieldColors(
-        backgroundColor = CustomAppTheme.colors.secondaryBackground,
-        placeholderColor = CustomAppTheme.colors.textSecondary,
-        leadingIconColor = CustomAppTheme.colors.textSecondary,
-        trailingIconColor = CustomAppTheme.colors.textSecondary,
-        textColor = CustomAppTheme.colors.text,
-        cursorColor = CustomAppTheme.colors.active,
-        focusedLabelColor = CustomAppTheme.colors.textSecondary,
-        unfocusedLabelColor = CustomAppTheme.colors.textSecondary,
+        backgroundColor = CustomTheme.colors.secondaryBackground,
+        placeholderColor = CustomTheme.colors.textSecondary,
+        leadingIconColor = CustomTheme.colors.textSecondary,
+        trailingIconColor = CustomTheme.colors.textSecondary,
+        textColor = CustomTheme.colors.text,
+        cursorColor = CustomTheme.colors.active,
+        focusedLabelColor = CustomTheme.colors.textSecondary,
+        unfocusedLabelColor = CustomTheme.colors.textSecondary,
     )
 
     val customTextSelectionColors = TextSelectionColors(
-        handleColor = CustomAppTheme.colors.active,
-        backgroundColor = CustomAppTheme.colors.active.copy(alpha = 0.4f),
+        handleColor = CustomTheme.colors.active,
+        backgroundColor = CustomTheme.colors.active.copy(alpha = 0.4f),
     )
 
     CompositionLocalProvider(
@@ -66,7 +66,7 @@ fun CustomTextField(
             enabled = enabled,
             singleLine = singleLine,
             textStyle = textStyle.copy(color = textColor),
-            cursorBrush = SolidColor(CustomAppTheme.colors.active),
+            cursorBrush = SolidColor(CustomTheme.colors.active),
             keyboardOptions = keyboardOptions,
             keyboardActions = keyboardActions ?: KeyboardActions(
                 onAny = {

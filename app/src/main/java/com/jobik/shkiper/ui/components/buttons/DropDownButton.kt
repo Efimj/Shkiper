@@ -2,12 +2,15 @@ package com.jobik.shkiper.ui.components.buttons
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -17,7 +20,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.jobik.shkiper.R
-import com.jobik.shkiper.ui.theme.CustomAppTheme
+import com.jobik.shkiper.ui.theme.CustomTheme
 
 enum class DropDownButtonSizeMode {
     STRERCHBYBUTTONWIDTH,
@@ -54,9 +57,9 @@ fun DropDownButton(
             onDismissRequest = { expanded = false },
             modifier = (if (stretchMode == DropDownButtonSizeMode.STRERCHBYBUTTONWIDTH)
                 Modifier.width(maxWidth) else Modifier)
-                .background(CustomAppTheme.colors.mainBackground)
+                .background(CustomTheme.colors.mainBackground)
                 .clip(RoundedCornerShape(15.dp))
-                .border(1.dp, CustomAppTheme.colors.stroke, RoundedCornerShape(15.dp))
+                .border(1.dp, CustomTheme.colors.stroke, RoundedCornerShape(15.dp))
 
         ) {
             items.forEachIndexed { index, dropDownItem ->
@@ -65,7 +68,7 @@ fun DropDownButton(
                         text = {
                             Text(
                                 text = dropDownItem.text,
-                                color = CustomAppTheme.colors.text,
+                                color = CustomTheme.colors.text,
                                 style = MaterialTheme.typography.body1
                             )
                         },
@@ -78,7 +81,7 @@ fun DropDownButton(
                         text = {
                             Text(
                                 text = dropDownItem.text,
-                                color = CustomAppTheme.colors.text,
+                                color = CustomTheme.colors.text,
                                 style = MaterialTheme.typography.body1
                             )
                         },
@@ -86,7 +89,7 @@ fun DropDownButton(
                             Icon(
                                 imageVector = dropDownItem.icon,
                                 contentDescription = stringResource(R.string.GoForward),
-                                tint = CustomAppTheme.colors.textSecondary,
+                                tint = CustomTheme.colors.textSecondary,
                             )
                         },
                         onClick = {

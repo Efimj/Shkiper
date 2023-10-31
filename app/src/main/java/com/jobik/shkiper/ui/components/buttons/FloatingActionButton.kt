@@ -20,7 +20,7 @@ import com.jobik.shkiper.R
 import com.jobik.shkiper.ui.helpers.MultipleEventsCutter
 import com.jobik.shkiper.ui.helpers.get
 import com.jobik.shkiper.ui.modifiers.bounceClick
-import com.jobik.shkiper.ui.theme.CustomAppTheme
+import com.jobik.shkiper.ui.theme.CustomTheme
 
 @Composable
 fun FloatingActionButton(
@@ -41,14 +41,14 @@ fun FloatingActionButton(
         },
         elevation = 0.dp,
         shape = RoundedCornerShape(15.dp),
-        border = BorderStroke(if (isActive) 1.dp else 0.dp, CustomAppTheme.colors.active),
-        backgroundColor = CustomAppTheme.colors.mainBackground,
-        contentColor = CustomAppTheme.colors.text,
+        border = BorderStroke(if (isActive) 1.dp else 0.dp, CustomTheme.colors.active),
+        backgroundColor = CustomTheme.colors.mainBackground,
+        contentColor = CustomTheme.colors.text,
     ) {
         androidx.compose.material3.Icon(
             imageVector = icon,
             contentDescription = stringResource(R.string.CreateNote),
-            tint = CustomAppTheme.colors.textSecondary,
+            tint = CustomTheme.colors.textSecondary,
             modifier = Modifier.size(53.dp).padding(6.dp)
         )
     }

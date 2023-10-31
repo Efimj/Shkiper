@@ -1,18 +1,16 @@
 package com.jobik.shkiper.screens.AboutNotepadScreen
 
-import androidx.annotation.DrawableRes
-import androidx.compose.foundation.*
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -28,7 +26,7 @@ import com.jobik.shkiper.services.statistics_service.StatisticsService
 import com.jobik.shkiper.ui.components.cards.UserCard
 import com.jobik.shkiper.ui.components.cards.UserCardLink
 import com.jobik.shkiper.ui.components.layouts.ScreenWrapper
-import com.jobik.shkiper.ui.theme.CustomAppTheme
+import com.jobik.shkiper.ui.theme.CustomTheme
 
 
 @Composable
@@ -58,7 +56,7 @@ fun AboutNotepadScreen() {
         Column(modifier = Modifier, horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
                 text = stringResource(R.string.app_name),
-                color = CustomAppTheme.colors.active,
+                color = CustomTheme.colors.active,
                 style = MaterialTheme.typography.h6.copy(fontSize = 28.sp, fontWeight = FontWeight.SemiBold),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -66,7 +64,7 @@ fun AboutNotepadScreen() {
             )
             Text(
                 text = stringResource(R.string.AboutAppDescription),
-                color = CustomAppTheme.colors.textSecondary,
+                color = CustomTheme.colors.textSecondary,
                 style = MaterialTheme.typography.body1,
                 overflow = TextOverflow.Ellipsis,
                 textAlign = TextAlign.Center,
@@ -76,7 +74,7 @@ fun AboutNotepadScreen() {
         Column {
             Text(
                 text = stringResource(R.string.Contact),
-                color = CustomAppTheme.colors.text,
+                color = CustomTheme.colors.text,
                 style = MaterialTheme.typography.h6,
                 overflow = TextOverflow.Ellipsis,
                 textAlign = TextAlign.Center,
@@ -99,7 +97,7 @@ fun AboutNotepadScreen() {
             )
             Text(
                 text = stringResource(R.string.Icons),
-                color = CustomAppTheme.colors.text,
+                color = CustomTheme.colors.text,
                 style = MaterialTheme.typography.h6,
                 overflow = TextOverflow.Ellipsis,
                 textAlign = TextAlign.Center,

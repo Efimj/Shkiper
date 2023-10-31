@@ -20,7 +20,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.jobik.shkiper.ui.theme.CustomAppTheme
+import com.jobik.shkiper.ui.theme.CustomTheme
 
 data class TopAppBarItem(
     val isActive: Boolean = false,
@@ -36,8 +36,8 @@ fun CustomTopAppBar(
     modifier: Modifier,
     elevation: Dp = 0.dp,
     text: String = "",
-    backgroundColor: Color = CustomAppTheme.colors.secondaryBackground,
-    contentColor: Color = CustomAppTheme.colors.textSecondary,
+    backgroundColor: Color = CustomTheme.colors.secondaryBackground,
+    contentColor: Color = CustomTheme.colors.textSecondary,
     navigation: TopAppBarItem,
     items: List<TopAppBarItem>
 ) {
@@ -52,7 +52,7 @@ fun CustomTopAppBar(
                 text,
                 overflow = TextOverflow.Ellipsis,
                 style = MaterialTheme.typography.body1.copy(fontSize = 18.sp),
-                color = CustomAppTheme.colors.textSecondary,
+                color = CustomTheme.colors.textSecondary,
                 maxLines = 1,
             )
         },
@@ -65,7 +65,7 @@ fun CustomTopAppBar(
                 Icon(
                     imageVector = navigation.icon,
                     contentDescription = stringResource(navigation.iconDescription),
-                    tint = if (navigation.isActive) CustomAppTheme.colors.text else CustomAppTheme.colors.textSecondary,
+                    tint = if (navigation.isActive) CustomTheme.colors.text else CustomTheme.colors.textSecondary,
                 )
             }
         },
@@ -78,7 +78,7 @@ fun CustomTopAppBar(
                     Icon(
                         imageVector = item.icon,
                         contentDescription = stringResource(item.iconDescription),
-                        tint = if (item.isActive) CustomAppTheme.colors.text else CustomAppTheme.colors.textSecondary,
+                        tint = if (item.isActive) CustomTheme.colors.text else CustomTheme.colors.textSecondary,
                     )
                 }
                 Spacer(modifier = Modifier.padding(6.dp, 0.dp, 0.dp, 0.dp))
