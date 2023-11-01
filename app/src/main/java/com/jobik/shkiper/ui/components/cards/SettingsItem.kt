@@ -54,15 +54,15 @@ fun SettingsItem(
         contentSecondaryColor.animateTo(foregroundSecondaryColor, animationSpec = tween(200))
     }
 
-    LaunchedEffect(ThemeUtil.isDarkMode.value) {
+    LaunchedEffect(ThemeUtil.isDarkMode.value, ThemeUtil.themeStyle.value) {
         containerColor.snapTo(backgroundColor)
     }
 
-    LaunchedEffect(ThemeUtil.isDarkMode.value) {
+    LaunchedEffect(ThemeUtil.isDarkMode.value, ThemeUtil.themeStyle.value) {
         contentColor.snapTo(foregroundColor)
     }
 
-    LaunchedEffect(ThemeUtil.isDarkMode.value) {
+    LaunchedEffect(ThemeUtil.isDarkMode.value, ThemeUtil.themeStyle.value) {
         contentSecondaryColor.snapTo(foregroundSecondaryColor)
     }
 
