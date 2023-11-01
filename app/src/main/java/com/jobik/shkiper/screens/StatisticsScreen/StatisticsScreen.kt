@@ -78,7 +78,7 @@ fun StatisticsScreen() {
                         },
                         icon = Icons.Default.Share,
                         style = ButtonStyle.Filled,
-                        modifier = Modifier.width(160.dp)
+                        modifier = Modifier.width(180.dp)
                     )
                 }
             }

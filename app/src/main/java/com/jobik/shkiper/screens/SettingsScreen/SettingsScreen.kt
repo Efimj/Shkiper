@@ -322,7 +322,7 @@ private fun SettingsColorThemePicker(settingsViewModel: SettingsViewModel) {
             overflow = TextOverflow.Ellipsis
         )
         Spacer(Modifier.height(6.dp))
-        LazyRow(state = rememberLazyListState()) {
+        LazyRow(state = rememberLazyListState(), contentPadding = PaddingValues(start = 20.dp)) {
             items(colorValues.size) { theme ->
                 Box(Modifier.padding(end = 10.dp).height(70.dp).width(55.dp)) {
                     ThemePreview(
