@@ -74,7 +74,9 @@ fun getButtonProperties(style: ButtonStyle, properties: ButtonProperties? = null
             ),
             border = null,
             shape = RoundedCornerShape(15.dp),
-            horizontalPaddings = 0.dp,
+            horizontalPaddings = androidx.compose.material3.ButtonDefaults.ContentPadding.calculateLeftPadding(
+                LayoutDirection.Ltr
+            ),
             textColor = CustomTheme.colors.textOnActive,
             textStyle = MaterialTheme.typography.body1,
             iconTint = CustomTheme.colors.textOnActive,
@@ -87,7 +89,9 @@ fun getButtonProperties(style: ButtonStyle, properties: ButtonProperties? = null
             ),
             border = BorderStroke(width = 1.dp, color = CustomTheme.colors.stroke),
             shape = RoundedCornerShape(15.dp),
-            horizontalPaddings = 0.dp,
+            horizontalPaddings = androidx.compose.material3.ButtonDefaults.ContentPadding.calculateLeftPadding(
+                LayoutDirection.Ltr
+            ),
             textColor = CustomTheme.colors.text,
             textStyle = MaterialTheme.typography.body1,
             iconTint = CustomTheme.colors.text,
@@ -122,6 +126,12 @@ fun CustomButton(
 ) {
     val multipleEventsCutter = remember { MultipleEventsCutter.get() }
     val buttonProperties = getButtonProperties(style, properties)
+    val paddingValues = PaddingValues(
+        start = buttonProperties.horizontalPaddings,
+        end = buttonProperties.horizontalPaddings,
+        top = androidx.compose.material3.ButtonDefaults.ContentPadding.calculateTopPadding(),
+        bottom = androidx.compose.material3.ButtonDefaults.ContentPadding.calculateBottomPadding(),
+    )
 
     Button(
         modifier = modifier,
@@ -131,9 +141,9 @@ fun CustomButton(
         border = buttonProperties.border,
         elevation = null,
         enabled = enabled,
-                contentPadding = androidx.compose.material3.ButtonDefaults.ContentPadding
+        contentPadding = paddingValues,
     ) {
-        Spacer(Modifier.width(buttonProperties.horizontalPaddings))
+        //Spacer(Modifier.width(buttonProperties.horizontalPaddings))
         if (content != null) {
             content()
         } else {
@@ -157,6 +167,6 @@ fun CustomButton(
                 )
             }
         }
-        Spacer(Modifier.width(buttonProperties.horizontalPaddings))
+        //Spacer(Modifier.width(buttonProperties.horizontalPaddings))
     }
 }

@@ -10,6 +10,7 @@ import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
@@ -22,9 +23,11 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
@@ -102,68 +105,53 @@ private fun DialogFooter(
     val coroutineScope = rememberCoroutineScope()
     Row(
         Modifier.fillMaxWidth().padding(horizontal = 20.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
+        horizontalArrangement = Arrangement.SpaceAround,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        if (onDelete != null) CustomButton(
-            text = stringResource(R.string.Delete), onClick = {
+        if (onDelete != null)
+            CustomButton(
+                text = stringResource(R.string.Delete), onClick = {
+                    coroutineScope.launch {
+                        onDelete()
+                    }
+                },
+                style = ButtonStyle.Text
+            )
+        CustomButton(
+            text = if (pagerState.currentPage > 0) stringResource(R.string.Back) else stringResource(R.string.Cancel),
+            onClick = {
                 coroutineScope.launch {
-                    onDelete()
+                    if (pagerState.currentPage > 0) pagerState.animateScrollToPage(pagerState.currentPage - 1)
+                    else {
+                        onGoBack()
+                    }
                 }
             },
             style = ButtonStyle.Text
         )
-        Row(
-            modifier = if (onDelete == null) Modifier.fillMaxWidth() else Modifier,
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Row(Modifier.weight(1f), horizontalArrangement = Arrangement.Start) {
-                CustomButton(
-                    text = if (pagerState.currentPage > 0) stringResource(R.string.Back) else stringResource(R.string.Cancel),
-                    onClick = {
-                        coroutineScope.launch {
-                            if (pagerState.currentPage > 0) pagerState.animateScrollToPage(pagerState.currentPage - 1)
-                            else {
-                                onGoBack()
-                            }
-                        }
-                    },
-                    style = ButtonStyle.Text
-                )
-            }
-            if (onDelete == null) {
-                Row(
-                    Modifier.align(Alignment.CenterVertically).weight(1f), horizontalArrangement = Arrangement.Center
-                ) {
-                    repeat(ReminderDialogPages.values().size) { iteration ->
-                        val color =
-                            if (pagerState.currentPage == iteration) CustomTheme.colors.text else CustomTheme.colors.textSecondary
-                        Box(
-                            modifier = Modifier.padding(2.dp).clip(CircleShape).background(color).size(7.dp)
-                        )
-                    }
+        val isEnd = pagerState.currentPage == ReminderDialogPages.values().size - 1
+        CustomButton(
+            text = if (isEnd) stringResource(R.string.Save) else stringResource(
+                R.string.Next
+            ),
+            onClick = {
+                if (isEnd) {
+                    onSave()
+                } else coroutineScope.launch {
+                    pagerState.animateScrollToPage(pagerState.currentPage + 1)
                 }
-            } else {
-                Spacer(Modifier.width(10.dp))
-            }
-            Row(Modifier.weight(1f), horizontalArrangement = Arrangement.End) {
-                val isEnd = pagerState.currentPage == ReminderDialogPages.values().size - 1
-                CustomButton(
-                    text = if (isEnd) stringResource(R.string.Save) else stringResource(
-                        R.string.Next
-                    ),
-                    onClick = {
-                        if (isEnd) {
-                            onSave()
-                        } else coroutineScope.launch {
-                            pagerState.animateScrollToPage(pagerState.currentPage + 1)
-                        }
-                    },
-                    style = if (isEnd) ButtonStyle.Filled else ButtonStyle.Outlined,
-                )
-            }
-        }
+            },
+            style = if (isEnd) ButtonStyle.Filled else ButtonStyle.Text,
+            properties = if (isEnd) DefaultButtonProperties(
+                buttonColors = ButtonDefaults.buttonColors(
+                    backgroundColor = CustomTheme.colors.active,
+                    disabledBackgroundColor = Color.Transparent
+                ),
+                horizontalPaddings = 10.dp,
+                textColor = CustomTheme.colors.textOnActive,
+                iconTint = CustomTheme.colors.textOnActive,
+            ) else null
+        )
     }
 }
 
@@ -226,7 +214,7 @@ private fun RepeatModePage(
                 )
                 Spacer(Modifier.width(8.dp))
                 Text(
-                    time.value.toString(),
+                    text = time.value.toString(),
                     style = MaterialTheme.typography.body1,
                     color = CustomTheme.colors.text,
                 )
@@ -242,13 +230,11 @@ private fun RepeatModePage(
                     items = repeatModeList,
                     expanded = isExpanded,
                     selectedIndex = repeatMode.value.ordinal,
-                    modifier = Modifier.width(150.dp),
-                    stretchMode = DropDownButtonSizeMode.STRERCHBYBUTTONWIDTH,
                     onChangedSelection = { repeatMode.value = RepeatMode.values()[it] }) {
                     CustomButton(
                         text = repeatMode.value.getLocalizedValue(LocalContext.current),
                         onClick = { it() },
-                        style = ButtonStyle.Outlined
+                        style = ButtonStyle.Text
                     )
                 }
             }

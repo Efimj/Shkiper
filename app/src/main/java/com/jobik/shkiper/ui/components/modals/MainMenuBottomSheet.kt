@@ -126,7 +126,7 @@ private fun MainPageLayout(
                     iconTint = CustomTheme.colors.text,
                     textColor = CustomTheme.colors.text,
                     shape = RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp),
-                    horizontalPaddings = 10.dp,
+                    horizontalPaddings = 20.dp,
                 ),
                 modifier = Modifier.height(menuContainerHeight.dp).width(160.dp).offset(y = 1.dp),
             )
