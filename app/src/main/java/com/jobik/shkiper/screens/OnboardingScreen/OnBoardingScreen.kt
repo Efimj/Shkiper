@@ -32,6 +32,7 @@ import com.jobik.shkiper.ui.components.buttons.CustomButton
 import kotlinx.coroutines.launch
 import com.jobik.shkiper.R
 import com.jobik.shkiper.ui.components.buttons.ButtonStyle
+import com.jobik.shkiper.ui.components.buttons.DefaultButtonProperties
 import com.jobik.shkiper.ui.theme.CustomTheme
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -104,7 +105,16 @@ private fun ScreenFooter(navController: NavController, pagerState: PagerState) {
                         pagerState.animateScrollToPage(pagerState.currentPage + 1)
                     }
                 },
-                style = if (pagerState.currentPage == OnBoardingPage.PageList.Count - 1) ButtonStyle.Filled else ButtonStyle.Text
+                style = if (pagerState.currentPage == OnBoardingPage.PageList.Count - 1) ButtonStyle.Filled else ButtonStyle.Text,
+                properties = if (pagerState.currentPage == OnBoardingPage.PageList.Count - 1) DefaultButtonProperties(
+                    buttonColors = ButtonDefaults.buttonColors(
+                        backgroundColor = CustomTheme.colors.active,
+                        disabledBackgroundColor = Color.Transparent
+                    ),
+                    horizontalPaddings = 10.dp,
+                    textColor = CustomTheme.colors.textOnActive,
+                    iconTint = CustomTheme.colors.textOnActive,
+                ) else null
             )
         }
     }
