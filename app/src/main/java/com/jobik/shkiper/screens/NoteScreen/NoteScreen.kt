@@ -348,9 +348,11 @@ private fun NoteScreenFooter(navController: NavController, noteViewModel: NoteVi
                         )
 
                 val context = LocalContext.current
+                val isExpanded = remember { mutableStateOf(false) }
                 DropDownButton(
                     items = dropDownItems,
                     selectedIndex = 0,
+                    expanded = isExpanded,
                     modifier = Modifier,
                     stretchMode = DropDownButtonSizeMode.STRERCHBYCONTENT,
                     onChangedSelection = { index ->

@@ -1,6 +1,7 @@
 package com.jobik.shkiper.ui.components.buttons
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -15,6 +16,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.jobik.shkiper.ui.helpers.MultipleEventsCutter
 import com.jobik.shkiper.ui.helpers.get
@@ -128,7 +130,8 @@ fun CustomButton(
         colors = buttonProperties.buttonColors,
         border = buttonProperties.border,
         elevation = null,
-        enabled = enabled
+        enabled = enabled,
+                contentPadding = androidx.compose.material3.ButtonDefaults.ContentPadding
     ) {
         Spacer(Modifier.width(buttonProperties.horizontalPaddings))
         if (content != null) {

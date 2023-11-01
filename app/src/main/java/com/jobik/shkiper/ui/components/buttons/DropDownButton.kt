@@ -36,25 +36,24 @@ data class DropDownItem(
 fun DropDownButton(
     items: List<DropDownItem>,
     selectedIndex: Int,
+    expanded: MutableState<Boolean>,
     modifier: Modifier = Modifier,
     stretchMode: DropDownButtonSizeMode = DropDownButtonSizeMode.STRERCHBYCONTENT,
     onChangedSelection: (newSelectedIndex: Int) -> Unit,
     button: @Composable ((() -> Unit) -> Unit)? = null,
 ) {
-    var expanded by remember { mutableStateOf(false) }
-
     BoxWithConstraints(modifier = modifier.wrapContentSize(Alignment.TopStart)) {
         if (button != null)
-            button { expanded = !expanded }
+            button { expanded.value = !expanded.value }
         else
             CustomButton(
                 modifier = Modifier.fillMaxWidth(),
                 text = items[selectedIndex].text,
-                onClick = { expanded = !expanded },
+                onClick = { expanded.value = !expanded.value },
             )
         DropdownMenu(
-            expanded = expanded,
-            onDismissRequest = { expanded = false },
+            expanded = expanded.value,
+            onDismissRequest = { expanded.value = false },
             modifier = (if (stretchMode == DropDownButtonSizeMode.STRERCHBYBUTTONWIDTH)
                 Modifier.width(maxWidth) else Modifier)
                 .background(CustomTheme.colors.secondaryBackground)
@@ -74,7 +73,7 @@ fun DropDownButton(
                         },
                         onClick = {
                             onChangedSelection(index)
-                            expanded = false
+                            expanded.value = false
                         })
                 else
                     DropdownMenuItem(
@@ -94,7 +93,7 @@ fun DropDownButton(
                         },
                         onClick = {
                             onChangedSelection(index)
-                            expanded = false
+                            expanded.value = false
                         })
             }
         }

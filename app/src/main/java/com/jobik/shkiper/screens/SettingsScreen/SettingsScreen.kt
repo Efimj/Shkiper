@@ -2,15 +2,26 @@ package com.jobik.shkiper.screens.SettingsScreen
 
 import android.app.Activity
 import android.content.Context
+import android.net.Uri
+import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.Animatable
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.outlined.*
+import androidx.compose.material.icons.rounded.*
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,7 +40,9 @@ import com.jobik.shkiper.NotepadApplication
 import com.jobik.shkiper.R
 import com.jobik.shkiper.navigation.AppScreens
 import com.jobik.shkiper.ui.components.buttons.*
+import com.jobik.shkiper.ui.components.cards.SettingsItem
 import com.jobik.shkiper.ui.components.cards.ThemePreview
+import com.jobik.shkiper.ui.modifiers.circularRotation
 import com.jobik.shkiper.ui.theme.CustomTheme
 import com.jobik.shkiper.ui.theme.CustomThemeStyle
 import com.jobik.shkiper.util.ThemeUtil
@@ -40,6 +53,122 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun SettingsScreen(navController: NavController, settingsViewModel: SettingsViewModel = hiltViewModel()) {
+    Column(
+        Modifier.fillMaxSize().verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Spacer(Modifier.height(75.dp))
+        ProgramSettings(settingsViewModel)
+        BackupSettings(settingsViewModel)
+        OtherSettings(navController)
+        DevSupportSettings(settingsViewModel, navController)
+        InformationSettings()
+        Spacer(Modifier.height(55.dp))
+    }
+}
+
+@Composable
+private fun InformationSettings() {
+    SettingsItemGroup {
+        Text(
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp),
+            fontSize = 16.sp,
+            color = CustomTheme.colors.active,
+            text = stringResource(R.string.Information),
+            fontWeight = FontWeight.SemiBold,
+            style = MaterialTheme.typography.body2,
+        )
+        Row(
+            Modifier.fillMaxWidth().padding(top = 15.dp, bottom = 8.dp).padding(horizontal = 20.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.Info,
+                contentDescription = stringResource(R.string.Info),
+                tint = CustomTheme.colors.textSecondary
+            )
+            Spacer(Modifier.width(20.dp))
+            Text(
+                text = stringResource(R.string.AppDataPolitics),
+                color = CustomTheme.colors.textSecondary,
+                fontSize = 16.sp,
+                lineHeight = 24.sp,
+                style = MaterialTheme.typography.body1,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+    }
+}
+
+@Composable
+private fun DevSupportSettings(
+    settingsViewModel: SettingsViewModel,
+    navController: NavController
+) {
+    SettingsItemGroup(setAccent = true) {
+        Text(
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp),
+            fontSize = 16.sp,
+            color = CustomTheme.colors.active,
+            text = stringResource(R.string.Support),
+            fontWeight = FontWeight.SemiBold,
+            style = MaterialTheme.typography.body2,
+        )
+        Spacer(Modifier.height(8.dp))
+        SettingsItem(
+            modifier = Modifier.heightIn(min = 50.dp),
+            icon = Icons.Rounded.Stars,
+            title = stringResource(R.string.RateTheApp),
+            onClick = { settingsViewModel.rateTheApp() }
+        )
+        SettingsItem(
+            modifier = Modifier.heightIn(min = 50.dp),
+            icon = Icons.Rounded.LocalMall,
+            title = stringResource(R.string.SupportDevelopment),
+            onClick = { navController.navigate(AppScreens.Purchases.route) }
+        )
+    }
+}
+
+@Composable
+private fun OtherSettings(navController: NavController) {
+    SettingsItemGroup {
+        Text(
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp),
+            fontSize = 16.sp,
+            color = CustomTheme.colors.active,
+            text = stringResource(R.string.Other),
+            fontWeight = FontWeight.SemiBold,
+            style = MaterialTheme.typography.body2,
+        )
+        Spacer(Modifier.height(8.dp))
+        SettingsItem(
+            modifier = Modifier.heightIn(min = 50.dp),
+            icon = Icons.Rounded.Info,
+            title = stringResource(R.string.AboutNotepad),
+            onClick = { navController.navigate(AppScreens.AboutNotepad.route) }
+        )
+        SettingsItem(
+            modifier = Modifier.heightIn(min = 50.dp),
+            icon = Icons.Rounded.DataUsage,
+            title = stringResource(R.string.StatisticsPage),
+            onClick = { navController.navigate(AppScreens.Statistics.route) }
+        )
+        SettingsItem(
+            modifier = Modifier.heightIn(min = 50.dp),
+            icon = Icons.Rounded.ViewCarousel,
+            title = stringResource(R.string.OnboardingPage),
+            onClick = { navController.navigate(AppScreens.Onboarding.route) }
+        )
+    }
+}
+
+@Composable
+private fun BackupSettings(
+    settingsViewModel: SettingsViewModel,
+) {
     val fileSearch =
         rememberLauncherForActivityResult(contract = ActivityResultContracts.OpenDocument()) { uri ->
             if (uri != null) {
@@ -47,150 +176,132 @@ fun SettingsScreen(navController: NavController, settingsViewModel: SettingsView
             }
         }
 
-    Column(
-        Modifier.fillMaxSize().verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Spacer(Modifier.height(75.dp))
-        SettingsItemGroup {
-            Text(
-                color = CustomTheme.colors.text,
-                text = stringResource(R.string.Application),
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 20.sp,
-                style = MaterialTheme.typography.body1,
-                modifier = Modifier.padding(bottom = 8.dp)
-            )
-            SettingsItem(
-                stringResource(R.string.ApplicationTheme),
-                if (ThemeUtil.isDarkMode.value
-                        ?: isSystemInDarkTheme()
-                ) stringResource(R.string.LightTheme) else stringResource(R.string.DarkTheme),
-                buttonIcon = if (ThemeUtil.isDarkMode.value
-                        ?: isSystemInDarkTheme()
-                ) Icons.Outlined.LightMode else Icons.Outlined.DarkMode,
-                onClick = { settingsViewModel.toggleAppTheme() }
-            )
-            SettingsColorThemePicker(settingsViewModel)
-            SettingsItem(
-                stringResource(R.string.ChoseLocalization), null, null,
-                {
-                    SettingsItemSelectLanguage(settingsViewModel)
-                })
-        }
-        SettingsItemGroup {
-            Text(
-                color = CustomTheme.colors.text,
-                text = stringResource(R.string.Backup),
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 20.sp,
-                style = MaterialTheme.typography.body1,
-            )
-            Spacer(Modifier.height(8.dp))
-            SettingsItem(
-                description = stringResource(R.string.SaveAllNotesLocally),
-                buttonText = if (settingsViewModel.settingsScreenState.value.isLocalBackupSaving)
-                    stringResource(R.string.Saving) else
-                    stringResource(R.string.Save),
-                buttonIcon = if (settingsViewModel.settingsScreenState.value.isLocalBackupSaving) Icons.Outlined.Loop else Icons.Outlined.Download,
-                isLoading = settingsViewModel.settingsScreenState.value.isLocalBackupSaving,
-                isEnabled = !settingsViewModel.isBackupHandling(),
-                onClick = { settingsViewModel.saveLocalBackup() }
-            )
-            SettingsItem(
-                description = stringResource(R.string.UploadNotes),
-                buttonText = if (settingsViewModel.settingsScreenState.value.isLocalBackupUploading)
-                    stringResource(R.string.Loading) else
-                    stringResource(R.string.Upload),
-                buttonIcon = if (settingsViewModel.settingsScreenState.value.isLocalBackupUploading) Icons.Outlined.Loop else Icons.Outlined.Upload,
-                isLoading = settingsViewModel.settingsScreenState.value.isLocalBackupUploading,
-                isEnabled = !settingsViewModel.isBackupHandling(),
-                onClick = { fileSearch.launch(arrayOf("*/*")) })
-        }
-        SettingsItemGroup {
-            Text(
-                color = CustomTheme.colors.text,
-                text = stringResource(R.string.Other),
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 20.sp,
-                style = MaterialTheme.typography.body1,
-            )
-            Spacer(Modifier.height(8.dp))
-            SettingsItem(
-                stringResource(R.string.AboutNotepad),
-                stringResource(R.string.Show),
-                Icons.Outlined.Info
-            ) { navController.navigate(AppScreens.AboutNotepad.route) }
-            SettingsItem(
-                stringResource(R.string.StatisticsPage),
-                stringResource(R.string.Show),
-                Icons.Outlined.DataUsage
-            ) { navController.navigate(AppScreens.Statistics.route) }
-            SettingsItem(
-                stringResource(R.string.OnboardingPage),
-                stringResource(R.string.Open),
-                Icons.Outlined.ViewCarousel
-            ) { navController.navigate(AppScreens.Onboarding.route) }
-        }
-        SettingsItemGroup {
-            Text(
-                color = CustomTheme.colors.text,
-                text = stringResource(R.string.Support),
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 20.sp,
-                style = MaterialTheme.typography.body1,
-            )
-            Spacer(Modifier.height(8.dp))
-            SettingsItem(
-                stringResource(R.string.RateTheApp),
-                stringResource(R.string.Open),
-                Icons.Outlined.Stars
-            ) { settingsViewModel.rateTheApp() }
-            SettingsItem(
-                stringResource(R.string.SupportDevelopment),
-                stringResource(R.string.Donate),
-                Icons.Outlined.LocalMall
-            ) { navController.navigate(AppScreens.Purchases.route) }
-        }
-        SettingsItemGroup {
-            Text(
-                color = CustomTheme.colors.text,
-                text = stringResource(R.string.Information),
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 20.sp,
-                style = MaterialTheme.typography.body1,
-            )
-            Row(
-                Modifier.fillMaxWidth().padding(top = 15.dp, bottom = 8.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
+    SettingsItemGroup {
+        Text(
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp),
+            fontSize = 16.sp,
+            color = CustomTheme.colors.active,
+            text = stringResource(R.string.Backup),
+            fontWeight = FontWeight.SemiBold,
+            style = MaterialTheme.typography.body2,
+        )
+        Spacer(Modifier.height(8.dp))
+
+        SettingsItem(
+            modifier = Modifier.heightIn(min = 50.dp),
+            icon = Icons.Rounded.Download,
+            isEnabled = !settingsViewModel.isBackupHandling(),
+            isActive = settingsViewModel.settingsScreenState.value.isLocalBackupSaving,
+            title = if (settingsViewModel.settingsScreenState.value.isLocalBackupSaving)
+                stringResource(R.string.Saving) else
+                stringResource(R.string.Save),
+            onClick = { settingsViewModel.saveLocalBackup() }
+        ) {
+            val iconColor =
+                if (settingsViewModel.settingsScreenState.value.isLocalBackupSaving) CustomTheme.colors.textOnActive else CustomTheme.colors.text
+            val contentColor = remember { Animatable(iconColor) }
+
+            LaunchedEffect(settingsViewModel.settingsScreenState.value.isLocalBackupSaving) {
+                contentColor.animateTo(iconColor, animationSpec = tween(200))
+            }
+
+            AnimatedVisibility(
+                visible = settingsViewModel.settingsScreenState.value.isLocalBackupSaving,
+                enter = fadeIn(animationSpec = tween(200)),
+                exit = fadeOut(animationSpec = tween(200))
             ) {
                 Icon(
-                    imageVector = Icons.Outlined.Info,
-                    contentDescription = stringResource(R.string.Info),
-                    tint = CustomTheme.colors.textSecondary
-                )
-                Spacer(Modifier.width(10.dp))
-                Text(
-                    text = stringResource(R.string.AppDataPolitics),
-                    color = CustomTheme.colors.textSecondary,
-                    fontSize = 16.sp,
-                    lineHeight = 24.sp,
-                    style = MaterialTheme.typography.body1,
-                    modifier = Modifier.fillMaxWidth()
+                    imageVector = if (settingsViewModel.settingsScreenState.value.isLocalBackupSaving) Icons.Outlined.Loop else Icons.Outlined.Download,
+                    contentDescription = null,
+                    tint = contentColor.value,
+                    modifier = if (settingsViewModel.settingsScreenState.value.isLocalBackupSaving) Modifier.size(24.dp)
+                        .circularRotation() else Modifier.size(24.dp)
                 )
             }
         }
-        Spacer(Modifier.height(55.dp))
+        SettingsItem(
+            modifier = Modifier.heightIn(min = 50.dp),
+            icon = Icons.Rounded.Upload,
+            isEnabled = !settingsViewModel.isBackupHandling(),
+            isActive = settingsViewModel.settingsScreenState.value.isLocalBackupUploading,
+            title = if (settingsViewModel.settingsScreenState.value.isLocalBackupUploading)
+                stringResource(R.string.Loading) else
+                stringResource(R.string.Upload),
+            onClick = { fileSearch.launch(arrayOf("*/*")) }
+        ) {
+            val iconColor =
+                if (settingsViewModel.settingsScreenState.value.isLocalBackupUploading) CustomTheme.colors.textOnActive else CustomTheme.colors.text
+            val contentColor = remember { Animatable(iconColor) }
+
+            LaunchedEffect(settingsViewModel.settingsScreenState.value.isLocalBackupUploading) {
+                contentColor.animateTo(iconColor, animationSpec = tween(200))
+            }
+
+            AnimatedVisibility(
+                visible = settingsViewModel.settingsScreenState.value.isLocalBackupUploading,
+                enter = fadeIn(animationSpec = tween(200)),
+                exit = fadeOut(animationSpec = tween(200))
+            ) {
+                Icon(
+                    imageVector = if (settingsViewModel.settingsScreenState.value.isLocalBackupUploading) Icons.Outlined.Loop else Icons.Outlined.Upload,
+                    contentDescription = null,
+                    tint = contentColor.value,
+                    modifier = if (settingsViewModel.settingsScreenState.value.isLocalBackupUploading) Modifier.size(
+                        24.dp
+                    )
+                        .circularRotation() else Modifier.size(24.dp)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun ProgramSettings(settingsViewModel: SettingsViewModel) {
+    SettingsItemGroup {
+        Text(
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp),
+            fontSize = 16.sp,
+            color = CustomTheme.colors.active,
+            text = stringResource(R.string.Application),
+            fontWeight = FontWeight.SemiBold,
+            style = MaterialTheme.typography.body2,
+        )
+        Spacer(Modifier.height(8.dp))
+        SettingsItem(
+            icon = Icons.Rounded.Contrast,
+            title = stringResource(R.string.ApplicationTheme),
+            onClick = { settingsViewModel.toggleAppTheme() }
+        ) {
+            CustomSwitch(
+                active = ThemeUtil.isDarkMode.value ?: false,
+                onClick = { settingsViewModel.toggleAppTheme() },
+                thumbContent = if (ThemeUtil.isDarkMode.value == true) {
+                    {
+                        androidx.compose.material3.Icon(
+                            imageVector = Icons.Outlined.LightMode,
+                            contentDescription = null,
+                            modifier = Modifier.size(SwitchDefaults.IconSize),
+                        )
+                    }
+                } else {
+                    {
+                        androidx.compose.material3.Icon(
+                            imageVector = Icons.Default.DarkMode,
+                            contentDescription = null,
+                            modifier = Modifier.size(SwitchDefaults.IconSize),
+                        )
+                    }
+                })
+        }
+        SettingsColorThemePicker(settingsViewModel)
+        Spacer(Modifier.height(4.dp))
+        SettingsItemSelectLanguage(settingsViewModel = settingsViewModel)
     }
 }
 
 @Composable
 private fun SettingsColorThemePicker(settingsViewModel: SettingsViewModel) {
-//    val isDark = ThemeUtil.theme.isDarkTheme
-//    val selectedThemeName = if (isDark) ThemeUtil.theme.darkThemeName else ThemeUtil.theme.lightThemeName
-
     val colorValues =
         if (ThemeUtil.isDarkMode.value != false) CustomThemeStyle.entries.map { it.dark } else CustomThemeStyle.entries.map { it.light }
     val colorValuesName = CustomThemeStyle.entries
@@ -199,24 +310,19 @@ private fun SettingsColorThemePicker(settingsViewModel: SettingsViewModel) {
     Column(
         Modifier.padding(vertical = 5.dp),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.Start
     ) {
-        Row {
-            Box(modifier = Modifier.weight(1f)) {
-                Text(
-                    color = CustomTheme.colors.text,
-                    text = stringResource(R.string.ApplicationColors),
-                    style = MaterialTheme.typography.body1,
-                    modifier = Modifier.align(Alignment.CenterEnd),
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
-            Spacer(modifier = Modifier.width(16.dp))
-            Box(modifier = Modifier.weight(1f))
-        }
+        Text(
+            modifier = Modifier.padding(start = 65.dp),
+            color = CustomTheme.colors.text,
+            text = stringResource(R.string.ApplicationColors),
+            fontSize = 18.sp,
+            style = MaterialTheme.typography.body1,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
         Spacer(Modifier.height(6.dp))
-        LazyRow(state = rememberLazyListState(), contentPadding = PaddingValues(start = 10.dp)) {
+        LazyRow(state = rememberLazyListState()) {
             items(colorValues.size) { theme ->
                 Box(Modifier.padding(end = 10.dp).height(70.dp).width(55.dp)) {
                     ThemePreview(
@@ -232,17 +338,24 @@ private fun SettingsColorThemePicker(settingsViewModel: SettingsViewModel) {
 }
 
 @Composable
-private fun SettingsItemGroup(columnScope: @Composable ColumnScope.() -> Unit) {
-    Spacer(Modifier.height(5.dp))
+private fun SettingsItemGroup(setAccent: Boolean = false, columnScope: @Composable ColumnScope.() -> Unit) {
+    Spacer(Modifier.height(7.dp))
     Column(
-        modifier = Modifier.widthIn(max = 500.dp).padding(horizontal = 10.dp)
-            .clip(CustomTheme.shapes.large).background(CustomTheme.colors.secondaryBackground)
-            .padding(horizontal = 15.dp, vertical = 7.dp),
+        modifier = Modifier.widthIn(max = 500.dp)
+            .padding(horizontal = 10.dp)
+            .clip(CustomTheme.shapes.large)
+            .background(CustomTheme.colors.secondaryBackground)
+            .border(
+                width = if (setAccent) 2.dp else 0.dp,
+                shape = CustomTheme.shapes.large,
+                color = if (setAccent) CustomTheme.colors.active else Color.Transparent
+            )
+            .padding(top = 13.dp, bottom = 7.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         columnScope()
     }
-    Spacer(Modifier.height(5.dp))
+    Spacer(Modifier.height(7.dp))
 }
 
 @Composable
@@ -251,23 +364,31 @@ private fun SettingsItemSelectLanguage(settingsViewModel: SettingsViewModel) {
     val coroutineScope = rememberCoroutineScope()
     val currentLanguage = NotepadApplication.currentLanguage
     val dropDownItems = remember { settingsViewModel.getLocalizationList(context).map { DropDownItem(text = it) } }
+    val isExpanded = remember { mutableStateOf(false) }
 
-    DropDownButton(
-        dropDownItems,
-        currentLanguage.ordinal,
-        Modifier.width(150.dp),
-        DropDownButtonSizeMode.STRERCHBYCONTENT,
-        onChangedSelection = {
-            settingsViewModel.selectLocalization(it)
-            recreateActivity(context, coroutineScope)
-        }) {
-        CustomButton(
-            modifier = Modifier.width(145.dp),
-            text = currentLanguage.getLocalizedValue(context),
-            icon = Icons.Outlined.Language,
-            onClick = { it() },
-            style = ButtonStyle.Outlined
-        )
+    SettingsItem(
+        modifier = Modifier.heightIn(min = 50.dp),
+        icon = Icons.Outlined.Language,
+        title = stringResource(R.string.ChoseLocalization),
+        onClick = { isExpanded.value = true }
+    ) {
+        DropDownButton(
+            items = dropDownItems,
+            selectedIndex = currentLanguage.ordinal,
+            expanded = isExpanded,
+            stretchMode = DropDownButtonSizeMode.STRERCHBYCONTENT,
+            onChangedSelection = {
+                settingsViewModel.selectLocalization(it)
+                recreateActivity(context, coroutineScope)
+            }) {
+            androidx.compose.material3.Text(
+                text = currentLanguage.getLocalizedValue(context),
+                fontSize = 18.sp,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                color = CustomTheme.colors.active
+            )
+        }
     }
 }
 
@@ -284,59 +405,5 @@ private fun recreateActivity(context: Context, scope: CoroutineScope) {
     scope.launch {
         delay(150)
         (context as? Activity)?.recreate()
-    }
-}
-
-@Composable
-private fun SettingsItem(
-    description: String,
-    buttonText: String? = null,
-    buttonIcon: ImageVector? = null,
-    buttonComponent: @Composable (() -> Unit)? = null,
-    isLoading: Boolean = false,
-    isEnabled: Boolean = true,
-    onClick: (() -> Unit) = { },
-) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Box(modifier = Modifier.weight(1f)) {
-            Text(
-                color = CustomTheme.colors.text,
-                text = description,
-                style = MaterialTheme.typography.body1,
-                modifier = Modifier.align(Alignment.CenterEnd),
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-        }
-        Spacer(modifier = Modifier.width(16.dp))
-        Box(modifier = Modifier.weight(1f)) {
-            if (buttonComponent == null)
-                CustomButton(
-                    text = buttonText,
-                    icon = buttonIcon,
-                    modifier = Modifier.width(145.dp),
-                    onClick = onClick,
-                    enabled = !isLoading && isEnabled,
-                    loading = isLoading,
-                    properties = DefaultButtonProperties(
-                        buttonColors = if (isLoading) ButtonDefaults.buttonColors(
-                            backgroundColor = CustomTheme.colors.active,
-                            disabledBackgroundColor = CustomTheme.colors.active
-                        ) else ButtonDefaults.buttonColors(
-                            backgroundColor = CustomTheme.colors.mainBackground,
-                            disabledBackgroundColor = Color.Transparent
-                        ),
-                        textColor = if (isLoading) Color.White else CustomTheme.colors.text,
-                        iconTint = if (isLoading) Color.White else CustomTheme.colors.text,
-                    ),
-                )
-            else {
-                buttonComponent()
-            }
-        }
     }
 }

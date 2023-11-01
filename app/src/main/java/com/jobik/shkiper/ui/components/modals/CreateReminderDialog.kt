@@ -17,10 +17,7 @@ import androidx.compose.material.icons.filled.Event
 import androidx.compose.material.icons.filled.Repeat
 import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -195,7 +192,7 @@ private fun RepeatModePage(
     repeatMode: MutableState<RepeatMode>,
 ) {
     val repeatModeList = RepeatMode.values().map { DropDownItem(text = it.getLocalizedValue(LocalContext.current)) }
-
+    val isExpanded = remember { mutableStateOf(false) }
     Column(
         Modifier.fillMaxSize().padding(horizontal = 20.dp),
         horizontalAlignment = Alignment.Start,
@@ -241,10 +238,12 @@ private fun RepeatModePage(
                     contentDescription = stringResource(R.string.Repeat)
                 )
                 Spacer(Modifier.width(8.dp))
-                DropDownButton(repeatModeList,
-                    repeatMode.value.ordinal,
-                    Modifier.width(150.dp),
-                    DropDownButtonSizeMode.STRERCHBYBUTTONWIDTH,
+                DropDownButton(
+                    items = repeatModeList,
+                    expanded = isExpanded,
+                    selectedIndex = repeatMode.value.ordinal,
+                    modifier = Modifier.width(150.dp),
+                    stretchMode = DropDownButtonSizeMode.STRERCHBYBUTTONWIDTH,
                     onChangedSelection = { repeatMode.value = RepeatMode.values()[it] }) {
                     CustomButton(
                         text = repeatMode.value.getLocalizedValue(LocalContext.current),

@@ -77,10 +77,12 @@ fun HashtagEditor(
             } else
                 if (enabled && selectableTags.isNotEmpty()) {
                     val items = selectableTags.toList()
+                    val isExpanded = remember { mutableStateOf(false) }
                     DropDownButton(
                         items = items.map {
                             DropDownItem(text = it)
                         },
+                        expanded = isExpanded,
                         selectedIndex = 0,
                         stretchMode = DropDownButtonSizeMode.STRERCHBYCONTENT,
                         onChangedSelection = {
