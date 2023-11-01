@@ -3,6 +3,7 @@ package com.jobik.shkiper.screens.PurchaseScreen
 import android.app.Activity
 import android.content.Context
 import android.net.ConnectivityManager
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -18,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -63,29 +65,34 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
         ScreenContentIfNoData(R.string.CheckUpdatesGooglePlay, Icons.Default.Shop)
     else
         ScreenWrapper(modifier = Modifier.verticalScroll(rememberScrollState()).padding(top = 85.dp, bottom = 30.dp)) {
-            Column(modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp)) {
+            Column(
+                modifier = Modifier.fillMaxWidth().padding(bottom = 15.dp, start = 10.dp, end = 10.dp)
+                    .clip(CustomTheme.shapes.large)
+                    .background(CustomTheme.colors.secondaryBackground)
+                    .padding(start = 20.dp, end = 20.dp, top = 10.dp, bottom = 15.dp),
+            ) {
                 Text(
                     stringResource(R.string.PurchaseScreenTitle),
                     color = CustomTheme.colors.text,
                     style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Bold),
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.padding(horizontal = 15.dp).padding(bottom = 15.dp).fillMaxWidth()
+                    modifier = Modifier.padding(bottom = 15.dp, top = 5.dp).fillMaxWidth()
                 )
                 Text(
                     text = stringResource(R.string.PurchaseScreenDescription),
-                    color = CustomTheme.colors.text,
+                    color = CustomTheme.colors.textSecondary,
                     fontSize = 16.sp,
                     lineHeight = 24.sp,
                     style = MaterialTheme.typography.body1,
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 15.dp)
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
             Text(
                 stringResource(R.string.BuyMe),
-                color = CustomTheme.colors.text,
+                color = CustomTheme.colors.textSecondary,
                 style = MaterialTheme.typography.h6,
                 textAlign = TextAlign.Left,
-                modifier = Modifier.padding(horizontal = 20.dp).padding(bottom = 4.dp).fillMaxWidth()
+                modifier = Modifier.padding(horizontal = 20.dp).padding(bottom = 5.dp).fillMaxWidth()
             )
             Row(
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 7.dp),
@@ -134,11 +141,10 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
                 ) {
                     Text(
                         stringResource(R.string.BuySubscription),
-                        color = CustomTheme.colors.text,
+                        color = CustomTheme.colors.textSecondary,
                         style = MaterialTheme.typography.h6,
                         textAlign = TextAlign.Left,
-                        modifier = Modifier.padding(bottom = 4.dp)
-                            .padding(top = 12.dp)
+                        modifier = Modifier.padding(bottom = 5.dp).padding(top = 15.dp)
                     )
                     Spacer(Modifier.width(8.dp))
                     if (purchaseViewModel.checkIsProductPurchased(productDetails.productId))
