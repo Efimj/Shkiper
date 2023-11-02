@@ -36,16 +36,18 @@ object CustomTheme {
 
 @Keep
 enum class CustomThemeStyle(val dark: CustomThemeColors, val light: CustomThemeColors) {
-    DarkPurple(dark = DefaultDarkColors, light = DefaultLightColors),
-    DarkGreen(dark = GreenDarkColors, light = GreenLightColors),
-    LightGreen(dark = VueDarkColors, light = VueLightColors),
-    DarkBlue(dark = TelegramDarkColors, light = TelegramLightColors),
-    LightBlue(dark = BlueDarkColors, light = BlueLightColors),
-    DarkRed(dark = InstagramDarkColors, light = InstagramLightColors),
-    LightRed(dark = LaravelDarkColors, light = LaravelLightColors),
-    DarkOrange(dark = OrangeDarkColors, light = OrangeLightColors),
-    LightOrange(dark = OrangeFlatDarkColors, light = OrangeFlatLightColors);
+    DarkPurple(dark = DarkDeepPurple, light = LightDeepPurple),
+    DarkRed(dark = DarkDeepRed, light = LightDeepRed),
+    DarkOrange(dark = DarkDeepOrange, light = LightDeepOrange),
+    DarkBlue(dark = DarkDeepBlue, light = LightDeepBlue),
+    DarkGreen(dark = DarkDeepGreen, light = LightDeepGreen),
 
+    LightPurple(dark = DarkPastelPurple, light = LightPastelPurple),
+    LightRed(dark = DarkPastelRed, light = LightPastelRed),
+    LightOrange(dark = DarkPastelOrange, light = LightPastelOrange),
+    LightBlue(dark = DarkPastelBlue, light = LightPastelBlue),
+    LightGreen(dark = DarkPastelGreen, light = LightPastelGreen);
+    
     fun getColors(isDarkTheme: Boolean): CustomThemeColors {
         return if (isDarkTheme) dark else light
     }

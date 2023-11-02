@@ -22,8 +22,8 @@ import com.jobik.shkiper.R
 import com.jobik.shkiper.SharedPreferencesKeys
 import com.jobik.shkiper.activity.MainActivity
 import com.jobik.shkiper.helpers.DateHelper
-import com.jobik.shkiper.ui.theme.DefaultDarkColors
-import com.jobik.shkiper.ui.theme.DefaultLightColors
+import com.jobik.shkiper.ui.theme.DarkDeepPurple
+import com.jobik.shkiper.ui.theme.LightDeepPurple
 import com.jobik.shkiper.widgets.WidgetKeys.Prefs.noteBody
 import com.jobik.shkiper.widgets.WidgetKeys.Prefs.noteHeader
 import com.jobik.shkiper.widgets.WidgetKeys.Prefs.noteId
@@ -32,8 +32,8 @@ import java.time.LocalDateTime
 
 @Composable
 fun NoteWidgetContent(prefs: Preferences) {
-    val darkColors = DefaultDarkColors
-    val lightColors = DefaultLightColors
+    val darkColors = DarkDeepPurple
+    val lightColors = LightDeepPurple
 
     val noteId = prefs[noteId].orEmpty()
     val noteHeader = prefs[noteHeader].orEmpty()
