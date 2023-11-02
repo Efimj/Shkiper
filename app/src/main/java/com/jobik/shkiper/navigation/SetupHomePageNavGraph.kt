@@ -49,13 +49,7 @@ fun SetupAppScreenNavGraph(
                         initialOffsetY = { -40 }) + fadeIn()
                 }
             },
-            exitTransition = {
-                when (targetState.destination.route) {
-                    AppScreens.Note.route -> null
-                    else -> if (isSecondaryRoute(targetState.destination.route)) null else slideOutVertically(
-                        targetOffsetY = { 50 }) + fadeOut()
-                }
-            }
+            exitTransition = { null }
         ) {
             NoteListScreen(navController)
         }
@@ -69,13 +63,7 @@ fun SetupAppScreenNavGraph(
                         initialOffsetY = { -40 }) + fadeIn()
                 }
             },
-            exitTransition = {
-                when (targetState.destination.route) {
-                    AppScreens.Note.route -> null
-                    else -> if (isSecondaryRoute(targetState.destination.route)) null else slideOutVertically(
-                        targetOffsetY = { 50 }) + fadeOut()
-                }
-            }
+            exitTransition = { null }
         ) {
             ArchiveNotesScreen(navController)
         }
@@ -89,13 +77,7 @@ fun SetupAppScreenNavGraph(
                         initialOffsetY = { -40 }) + fadeIn()
                 }
             },
-            exitTransition = {
-                when (targetState.destination.route) {
-                    AppScreens.Note.route -> null
-                    else -> if (isSecondaryRoute(targetState.destination.route)) null else slideOutVertically(
-                        targetOffsetY = { 50 }) + fadeOut()
-                }
-            }
+            exitTransition = { null }
         ) {
             BasketNotesScreen(navController)
         }
@@ -109,13 +91,7 @@ fun SetupAppScreenNavGraph(
                         initialOffsetY = { -40 }) + fadeIn()
                 }
             },
-            exitTransition = {
-                when (targetState.destination.route) {
-                    AppScreens.Note.route -> null
-                    else -> if (isSecondaryRoute(targetState.destination.route)) null else slideOutVertically(
-                        targetOffsetY = { 50 }) + fadeOut()
-                }
-            }
+            exitTransition = { null }
         ) {
             SettingsScreen(navController)
         }
