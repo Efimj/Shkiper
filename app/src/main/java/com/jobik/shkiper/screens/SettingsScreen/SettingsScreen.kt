@@ -211,7 +211,7 @@ private fun BackupSettings(
                 exit = fadeOut(animationSpec = tween(200))
             ) {
                 Icon(
-                    imageVector = if (settingsViewModel.settingsScreenState.value.isLocalBackupSaving) Icons.Outlined.Loop else Icons.Outlined.Download,
+                    imageVector = if (settingsViewModel.settingsScreenState.value.isLocalBackupSaving) Icons.Outlined.Loop else Icons.Outlined.Done,
                     contentDescription = null,
                     tint = contentColor.value,
                     modifier = if (settingsViewModel.settingsScreenState.value.isLocalBackupSaving) Modifier.size(24.dp)
@@ -243,7 +243,7 @@ private fun BackupSettings(
                 exit = fadeOut(animationSpec = tween(200))
             ) {
                 Icon(
-                    imageVector = if (settingsViewModel.settingsScreenState.value.isLocalBackupUploading) Icons.Outlined.Loop else Icons.Outlined.Upload,
+                    imageVector = if (settingsViewModel.settingsScreenState.value.isLocalBackupUploading) Icons.Outlined.Loop else Icons.Outlined.Done,
                     contentDescription = null,
                     tint = contentColor.value,
                     modifier = if (settingsViewModel.settingsScreenState.value.isLocalBackupUploading) Modifier.size(
