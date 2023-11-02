@@ -1,6 +1,7 @@
 package com.jobik.shkiper.ui.components.cards
 
 import androidx.compose.animation.Animatable
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -10,9 +11,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.LayoutDirection
@@ -34,41 +37,21 @@ fun SettingsItem(
     contentPadding: PaddingValues = PaddingValues(horizontal = 20.dp, vertical = 5.dp),
     action: (@Composable () -> Unit)? = null
 ) {
-    val backgroundColor = if (isActive) CustomTheme.colors.active else CustomTheme.colors.secondaryBackground
-    val foregroundColor = if (isActive) CustomTheme.colors.textOnActive else CustomTheme.colors.text
-    val foregroundSecondaryColor = if (isActive) CustomTheme.colors.textOnActive else CustomTheme.colors.textSecondary
+    val backgroundColor: Color by animateColorAsState(
+        targetValue = if (isActive) CustomTheme.colors.active else CustomTheme.colors.secondaryBackground
+    )
 
-    val containerColor = remember { Animatable(backgroundColor) }
-    val contentColor = remember { Animatable(foregroundColor) }
-    val contentSecondaryColor = remember { Animatable(foregroundSecondaryColor) }
+    val foregroundColor: Color by animateColorAsState(
+        targetValue = if (isActive) CustomTheme.colors.textOnActive else CustomTheme.colors.text
+    )
 
-    LaunchedEffect(isActive) {
-        containerColor.animateTo(backgroundColor, animationSpec = tween(200))
-    }
-
-    LaunchedEffect(isActive) {
-        contentColor.animateTo(foregroundColor, animationSpec = tween(200))
-    }
-
-    LaunchedEffect(isActive) {
-        contentSecondaryColor.animateTo(foregroundSecondaryColor, animationSpec = tween(200))
-    }
-
-    LaunchedEffect(ThemeUtil.isDarkMode.value, ThemeUtil.themeStyle.value) {
-        containerColor.snapTo(backgroundColor)
-    }
-
-    LaunchedEffect(ThemeUtil.isDarkMode.value, ThemeUtil.themeStyle.value) {
-        contentColor.snapTo(foregroundColor)
-    }
-
-    LaunchedEffect(ThemeUtil.isDarkMode.value, ThemeUtil.themeStyle.value) {
-        contentSecondaryColor.snapTo(foregroundSecondaryColor)
-    }
+    val foregroundSecondaryColor: Color by animateColorAsState(
+        targetValue = if (isActive) CustomTheme.colors.textOnActive else CustomTheme.colors.textSecondary
+    )
 
     Card(onClick = onClick, enabled = isEnabled, shape = CustomTheme.shapes.none) {
         Row(
-            modifier = modifier.fillMaxWidth().background(containerColor.value)
+            modifier = modifier.fillMaxWidth().background(backgroundColor)
                 .padding(top = contentPadding.calculateTopPadding(), bottom = contentPadding.calculateBottomPadding()),
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -80,7 +63,7 @@ fun SettingsItem(
                         imageVector = icon,
                         contentDescription = null,
                         modifier = Modifier.size(24.dp).fillMaxSize(),
-                        tint = contentSecondaryColor.value
+                        tint = foregroundSecondaryColor
                     )
                 }
             Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.Center) {
@@ -89,7 +72,7 @@ fun SettingsItem(
                     fontSize = 18.sp,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    color = contentColor.value
+                    color = foregroundColor
                 )
                 if (description !== null)
                     Spacer(modifier = Modifier.height(3.dp))
@@ -98,7 +81,7 @@ fun SettingsItem(
                         text = description,
                         fontSize = 14.sp,
                         overflow = TextOverflow.Ellipsis,
-                        color = contentSecondaryColor.value
+                        color = foregroundSecondaryColor
                     )
             }
             Row(
