@@ -27,9 +27,8 @@ fun HashtagButton(chip: String, selected: Boolean, onChipClicked: (String) -> Un
         shape = RoundedCornerShape(10.dp),
         colors = ChipDefaults.chipColors(
             backgroundColor = if (selected) CustomTheme.colors.active else CustomTheme.colors.secondaryBackground,
-            contentColor = if (selected) Color.White else CustomTheme.colors.text
+            contentColor = if (selected) CustomTheme.colors.textOnActive else CustomTheme.colors.text
         ),
-        border = BorderStroke(1.dp, CustomTheme.colors.stroke)
     ) {
         Text(
             chip,

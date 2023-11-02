@@ -48,7 +48,7 @@ fun NoteCard(
     val bodyStyle = MaterialTheme.typography.body1
     val multipleEventsCutter = remember { MultipleEventsCutter.get() }
     val borderColor: Color by animateColorAsState(
-        targetValue = if (selected) CustomTheme.colors.active else CustomTheme.colors.stroke,
+        targetValue = if (selected) CustomTheme.colors.active else Color.Transparent,
     )
 
     Card(

@@ -192,7 +192,6 @@ private fun HashtagItem(chip: String, onChipClicked: (String) -> Unit) {
             backgroundColor = CustomTheme.colors.secondaryBackground,
             contentColor = CustomTheme.colors.text
         ),
-        border = BorderStroke(1.dp, CustomTheme.colors.stroke)
     ) {
         Text(
             chip,
