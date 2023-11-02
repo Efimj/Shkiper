@@ -1,5 +1,6 @@
 package com.jobik.shkiper.services.backup_service
 
+import androidx.annotation.Keep
 import com.jobik.shkiper.database.models.Note
 import com.jobik.shkiper.database.models.NotePosition
 import com.jobik.shkiper.database.models.Reminder
@@ -9,6 +10,7 @@ import io.realm.kotlin.ext.toRealmSet
 import org.mongodb.kbson.BsonObjectId
 import org.mongodb.kbson.ObjectId
 
+@Keep
 data class BackupData(
     var noteList: List<NoteBackup> = emptyList(),
     var reminderList: List<ReminderBackup> = emptyList(),
@@ -85,6 +87,7 @@ data class BackupData(
         }
 }
 
+@Keep
 data class NoteBackup(
     val id: String = ObjectId.invoke().toHexString(),
     val header: String = "",
@@ -97,6 +100,7 @@ data class NoteBackup(
     val positionString: String = NotePosition.MAIN.name,
 )
 
+@Keep
 data class ReminderBackup(
     var id: String = ObjectId.invoke().toHexString(),
     var noteId: String = ObjectId.invoke().toHexString(),

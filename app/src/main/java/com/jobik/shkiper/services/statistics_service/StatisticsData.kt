@@ -1,6 +1,5 @@
 package com.jobik.shkiper.services.statistics_service
 
-import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.annotation.Keep
 import androidx.annotation.StringRes
@@ -10,11 +9,13 @@ import com.jobik.shkiper.R
 import com.jobik.shkiper.helpers.NumberHelper
 import java.time.LocalDate
 
+@Keep
 abstract class Statistics {
     abstract fun increment()
 
 }
 
+@Keep
 data class LongStatistics(
     private var _value: ULong
 ) : Statistics() {
@@ -29,6 +30,7 @@ data class LongStatistics(
     }
 }
 
+@Keep
 data class BooleanStatistics(
     private var _value: Boolean
 ) : Statistics() {
@@ -42,7 +44,7 @@ data class BooleanStatistics(
         _value = true
     }
 }
-
+@Keep
 data class DateStatistics(
     private var _value: String?
 ) : Statistics() {
@@ -60,6 +62,7 @@ data class DateStatistics(
     }
 }
 
+@Keep
 data class StatisticsItem(
     @DrawableRes
     val image: Int,
@@ -89,6 +92,7 @@ data class StatisticsItem(
     }
 }
 
+@Keep
 data class StatisticsData(
     val firstOpenDate: DateStatistics = DateStatistics(null),
     val openAppCount: LongStatistics = LongStatistics(0u),
@@ -100,6 +104,7 @@ data class StatisticsData(
     val noteDeletedCount: LongStatistics = LongStatistics(0u),
 )
 
+@Keep
 data class AppStatistics(
     var statisticsData: StatisticsData = StatisticsData(),
 
@@ -152,6 +157,7 @@ data class AppStatistics(
         statisticsData.noteDeletedCount
     ),
 ) {
+    @Keep
     fun getStatisticsPreviews(): List<StatisticsItem> {
         var previewsList = emptyList<StatisticsItem>()
         for (property in this.javaClass.declaredFields) {

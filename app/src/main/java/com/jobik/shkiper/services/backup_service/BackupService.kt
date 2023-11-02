@@ -7,12 +7,14 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
+import androidx.annotation.Keep
 import androidx.annotation.RequiresApi
 import com.google.gson.Gson
 import com.gun0912.tedpermission.coroutine.TedPermission
 import java.io.*
 import java.time.LocalDate
 
+@Keep
 enum class BackupServiceResult {
     Complete,
     WritePermissionDenied,
@@ -20,11 +22,13 @@ enum class BackupServiceResult {
     UnexpectedError
 }
 
+@Keep
 data class UploadResult(
     val backupServiceResult: BackupServiceResult,
     val backupData: BackupData?
 )
 
+@Keep
 class BackupService {
     companion object {
         fun getFileName(): String {
@@ -35,17 +39,20 @@ class BackupService {
     private val gson = Gson()
 
     suspend fun createBackup(backupData: BackupData, context: Context): BackupServiceResult {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            // version >= 29 (Android 10, 11, ...)
-            if (writeFileNewApi(context, backupData)) return BackupServiceResult.Complete
-            return BackupServiceResult.UnexpectedError
-        } else {
-            // version < 29 (Android ..., 7,8,9)
-            if (!checkWritePermission()) return BackupServiceResult.WritePermissionDenied
+        runCatching {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                // version >= 29 (Android 10, 11, ...)
+                if (writeFileNewApi(context, backupData)) return BackupServiceResult.Complete
+                return BackupServiceResult.UnexpectedError
+            } else {
+                // version < 29 (Android ..., 7,8,9)
+                if (!checkWritePermission()) return BackupServiceResult.WritePermissionDenied
 
-            if (writeFileOldApi(backupData)) return BackupServiceResult.Complete
-            return BackupServiceResult.UnexpectedError
+                if (writeFileOldApi(backupData)) return BackupServiceResult.Complete
+                return BackupServiceResult.UnexpectedError
+            }
         }
+        return BackupServiceResult.UnexpectedError
     }
 
     suspend fun uploadBackup(uri: Uri, context: Context): UploadResult {
