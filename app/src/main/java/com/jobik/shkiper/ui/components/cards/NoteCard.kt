@@ -1,5 +1,7 @@
 package com.jobik.shkiper.ui.components.cards
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -45,6 +47,9 @@ fun NoteCard(
     val headerStyle = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.SemiBold, fontSize = 18.sp)
     val bodyStyle = MaterialTheme.typography.body1
     val multipleEventsCutter = remember { MultipleEventsCutter.get() }
+    val borderColor: Color by animateColorAsState(
+        targetValue = if (selected) CustomTheme.colors.active else CustomTheme.colors.stroke,
+    )
 
     Card(
         modifier = modifier
@@ -57,7 +62,7 @@ fun NoteCard(
             ),
         elevation = 0.dp,
         shape = RoundedCornerShape(15.dp),
-        border = BorderStroke(1.dp, if (selected) CustomTheme.colors.active else CustomTheme.colors.stroke),
+        border = BorderStroke(1.dp, borderColor),
         backgroundColor = CustomTheme.colors.secondaryBackground,
         contentColor = CustomTheme.colors.text,
     ) {
