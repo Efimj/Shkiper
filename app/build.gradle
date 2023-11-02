@@ -95,15 +95,15 @@ dependencies {
     implementation "androidx.core:core-splashscreen:1.0.1"
 
     // Navigation Compose
-    implementation "androidx.navigation:navigation-compose:$accompanist_version"
+    //implementation "androidx.navigation:navigation-compose:$accompanist_version"
     implementation "androidx.navigation:navigation-runtime-ktx:2.7.4"
 
     // Pager and Indicators - Accompanist
-    implementation "com.google.accompanist:accompanist-pager:$accompanist_version"
+    //implementation "com.google.accompanist:accompanist-pager:$accompanist_version"
     implementation "com.google.accompanist:accompanist-pager-indicators:$accompanist_version"
 
     // DataStore Preferences
-    implementation("androidx.datastore:datastore-preferences:1.0.0")
+    //implementation("androidx.datastore:datastore-preferences:1.0.0")
 
     // Dagger - Hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
@@ -118,7 +118,7 @@ dependencies {
     implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanist_version"
 
     // livedata
-    implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
+    //implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
 
     // Mongo Realm
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1'
