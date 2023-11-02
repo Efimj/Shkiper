@@ -5,6 +5,7 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.TweenSpec
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -72,11 +73,11 @@ private fun MainPageLayout(
     val currentRoute =
         (navController.currentBackStackEntryAsState().value?.destination?.route ?: "").substringBefore("/")
     val isButtonHide = AppScreens.SecondaryRoutes.isSecondaryRoute(currentRoute)
-    val menuContainerHeight = 37
+    val menuContainerHeight = 40
 
     val offsetY by animateDpAsState(
         if (isButtonHide) (menuContainerHeight).dp else 0.dp,
-        animationSpec = TweenSpec(durationMillis = 300)
+        animationSpec = TweenSpec(durationMillis = 200)
     )
 
     Box(Modifier.fillMaxSize()) {
@@ -125,8 +126,9 @@ private fun MainPageLayout(
                     ),
                     iconTint = CustomTheme.colors.text,
                     textColor = CustomTheme.colors.text,
-                    shape = RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp),
+                    shape = RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp),
                     horizontalPaddings = 20.dp,
+                    border = BorderStroke(width = 1.dp, color = CustomTheme.colors.stroke)
                 ),
                 modifier = Modifier.height(menuContainerHeight.dp).width(160.dp).offset(y = 1.dp),
             )
