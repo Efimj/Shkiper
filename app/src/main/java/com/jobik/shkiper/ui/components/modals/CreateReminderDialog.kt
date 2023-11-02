@@ -8,7 +8,6 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PageSize
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
@@ -27,13 +26,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.RepeatMode
 import com.jobik.shkiper.helpers.DateHelper
+import com.jobik.shkiper.helpers.IntentHelper
+import com.jobik.shkiper.helpers.areChanelNotificationsEnabled
+import com.jobik.shkiper.helpers.areNotificationsEnabled
+import com.jobik.shkiper.services.notification_service.NotificationScheduler
 import com.jobik.shkiper.ui.components.buttons.*
 import com.jobik.shkiper.ui.components.fields.CustomDatePicker
 import com.jobik.shkiper.ui.components.fields.CustomTimePicker
@@ -42,6 +44,7 @@ import com.kizitonwose.calendar.compose.ContentHeightMode
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalTime
+
 
 private enum class ReminderDialogPages(val value: Int) {
     DATEPICK(0), TIMEPICK(1), REPEATMODE(2),
@@ -103,6 +106,8 @@ private fun DialogFooter(
     onSave: () -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
+    val context = LocalContext.current
+
     Row(
         Modifier.fillMaxWidth().padding(horizontal = 20.dp),
         horizontalArrangement = Arrangement.SpaceAround,
@@ -130,16 +135,21 @@ private fun DialogFooter(
             style = ButtonStyle.Text
         )
         val isEnd = pagerState.currentPage == ReminderDialogPages.values().size - 1
+
         CustomButton(
             text = if (isEnd) stringResource(R.string.Save) else stringResource(
                 R.string.Next
             ),
             onClick = {
-                if (isEnd) {
-                    onSave()
-                } else coroutineScope.launch {
-                    pagerState.animateScrollToPage(pagerState.currentPage + 1)
-                }
+//                if (isEnd) {
+//                    onSave()
+//                } else coroutineScope.launch {
+//                    pagerState.animateScrollToPage(pagerState.currentPage + 1)
+//                }
+                IntentHelper().startIntentAppNotificationSettings(
+                    context = context,
+                    channelId = NotificationScheduler.Companion.NotificationChannels.NOTECHANNEL.channelId
+                )
             },
             style = if (isEnd) ButtonStyle.Filled else ButtonStyle.Text,
             properties = if (isEnd) DefaultButtonProperties(
@@ -181,6 +191,18 @@ private fun RepeatModePage(
 ) {
     val repeatModeList = RepeatMode.values().map { DropDownItem(text = it.getLocalizedValue(LocalContext.current)) }
     val isExpanded = remember { mutableStateOf(false) }
+    val isDatePast = !DateHelper.isFutureDateTime(date.value, time.value)
+    val context = LocalContext.current
+    val isNotificationEnabled = remember {
+        mutableStateOf(
+            areNotificationsEnabled(context = context) &&
+                    areChanelNotificationsEnabled(
+                        context = context,
+                        channelId = NotificationScheduler.Companion.NotificationChannels.NOTECHANNEL.channelId
+                    )
+        )
+    }
+
     Column(
         Modifier.fillMaxSize().padding(horizontal = 20.dp),
         horizontalAlignment = Alignment.Start,
@@ -219,6 +241,13 @@ private fun RepeatModePage(
                     color = CustomTheme.colors.text,
                 )
             }
+            if (isDatePast)
+                Text(
+                    text = stringResource(R.string.ErrorDateMastBeFuture),
+                    style = MaterialTheme.typography.body1,
+                    color = CustomTheme.colors.active,
+                    modifier = Modifier.padding(bottom = 10.dp)
+                )
             Row(Modifier.fillMaxWidth().height(38.dp), verticalAlignment = Alignment.CenterVertically) {
                 Icon(
                     tint = CustomTheme.colors.textSecondary,
@@ -238,12 +267,17 @@ private fun RepeatModePage(
                     )
                 }
             }
-            if (!DateHelper.isFutureDateTime(date.value, time.value)) Text(
-                stringResource(R.string.ErrorDateMastBeFuture),
-                style = MaterialTheme.typography.body1,
-                color = CustomTheme.colors.text,
-                modifier = Modifier.padding(top = 10.dp)
-            )
+            Column(
+                modifier = Modifier.fillMaxSize().padding(bottom = 10.dp),
+                verticalArrangement = Arrangement.Bottom
+            ) {
+                if (!isNotificationEnabled.value)
+                    Text(
+                        text = "NotificationDisabled",
+                        style = MaterialTheme.typography.body1,
+                        color = CustomTheme.colors.active,
+                    )
+            }
         }
     }
 }
@@ -254,7 +288,7 @@ private fun TimePickPage(
     date: MutableState<LocalDate>,
     time: MutableState<LocalTime>,
 ) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
         Row(Modifier.basicMarquee().fillMaxWidth().padding(horizontal = 20.dp)) {
             Text(
                 DateHelper.getLocalizedDate(date.value),

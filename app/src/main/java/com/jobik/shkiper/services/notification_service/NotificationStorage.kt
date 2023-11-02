@@ -1,10 +1,12 @@
 package com.jobik.shkiper.services.notification_service
 
 import android.content.Context
+import androidx.annotation.Keep
 import com.jobik.shkiper.SharedPreferencesKeys
 import com.jobik.shkiper.database.models.RepeatMode
 import com.google.gson.Gson
 
+@Keep
 class NotificationStorage(context: Context) {
     private val gson = Gson()
     private val sharedPreferences =

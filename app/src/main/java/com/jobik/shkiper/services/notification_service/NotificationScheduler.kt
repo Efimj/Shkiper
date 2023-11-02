@@ -6,6 +6,7 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import androidx.annotation.Keep
 import androidx.annotation.StringRes
 import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.RepeatMode
@@ -16,6 +17,7 @@ import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.OffsetDateTime
 
+@Keep
 class NotificationScheduler(private val context: Context) {
     companion object {
         enum class NotificationChannels(val channelId: String, @StringRes val channelName: Int, val importance: Int) {

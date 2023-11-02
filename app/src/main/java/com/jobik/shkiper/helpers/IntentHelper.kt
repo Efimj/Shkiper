@@ -1,15 +1,15 @@
 package com.jobik.shkiper.helpers
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
+import android.provider.Settings
+import android.provider.Settings.*
 import androidx.compose.animation.ExperimentalAnimationApi
 import com.jobik.shkiper.R
 import com.jobik.shkiper.SharedPreferencesKeys
 import com.jobik.shkiper.activity.MainActivity
+import com.jobik.shkiper.services.notification_service.NotificationScheduler
 
 class IntentHelper {
     fun sendMailIntent(context: Context, mailList: List<String>, header: String, text: String = "") {
@@ -60,4 +60,28 @@ class IntentHelper {
         mainIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         return mainIntent
     }
+
+    fun startIntentAppNotificationSettings(context: Context, channelId: String) {
+        if (areNotificationsEnabled(context = context)) {
+            val notificationChannelIntent = Intent(ACTION_CHANNEL_NOTIFICATION_SETTINGS)
+                .putExtra(EXTRA_APP_PACKAGE, context.packageName)
+                .putExtra(EXTRA_CHANNEL_ID, channelId)
+            try {
+                context.startActivity(notificationChannelIntent)
+            } catch (e: Exception) {
+                runCatching {
+                    val notificationIntent: Intent = Intent(ACTION_APP_NOTIFICATION_SETTINGS)
+                        .putExtra(EXTRA_APP_PACKAGE, context.packageName)
+                    context.startActivity(notificationIntent)
+                }
+            }
+            return
+        }
+        runCatching {
+            val notificationIntent: Intent = Intent(ACTION_APP_NOTIFICATION_SETTINGS)
+                .putExtra(EXTRA_APP_PACKAGE, context.packageName)
+            context.startActivity(notificationIntent)
+        }
+    }
 }
+
