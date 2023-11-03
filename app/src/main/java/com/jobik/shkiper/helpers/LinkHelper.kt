@@ -1,8 +1,10 @@
 package com.jobik.shkiper.helpers
 
 import android.util.Log
+import androidx.annotation.Keep
 import org.jsoup.Jsoup
 
+@Keep
 class LinkHelper {
     fun findLinks(text: String): Set<String> {
         val regex = Regex("""\b(?:https?://|www\.)\S+\b""")

@@ -5,12 +5,14 @@ import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
 import android.provider.Settings.*
+import androidx.annotation.Keep
 import androidx.compose.animation.ExperimentalAnimationApi
 import com.jobik.shkiper.R
 import com.jobik.shkiper.SharedPreferencesKeys
 import com.jobik.shkiper.activity.MainActivity
 import com.jobik.shkiper.services.notification_service.NotificationScheduler
 
+@Keep
 class IntentHelper {
     fun sendMailIntent(context: Context, mailList: List<String>, header: String, text: String = "") {
         val intent = Intent(Intent.ACTION_SEND)
