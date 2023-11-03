@@ -199,4 +199,6 @@
     <string name="Share">Share</string>
     <string name="MyStatsInShkiper">My stats in Shkiper</string>
 
+    <string name="TurnOnNotifications">Turn on notifications in your phone settings</string>
+
 </resources>

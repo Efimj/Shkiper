@@ -337,4 +337,6 @@
     <string name="Share">Compartir</string>
 
     <string name="MyStatsInShkiper">Mis estadísticas en Shkiper</string>
+
+    <string name="TurnOnNotifications">Activa las notificaciones en la configuración de tu teléfono</string>
 </resources>

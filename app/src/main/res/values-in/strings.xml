@@ -337,4 +337,6 @@
     <string name="Share">Membagikan</string>
 
     <string name="MyStatsInShkiper">Statistik saya di Shkiper</string>
+
+    <string name="TurnOnNotifications">Aktifkan pemberitahuan di pengaturan telepon Anda</string>
 </resources>

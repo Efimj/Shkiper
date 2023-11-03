@@ -1,5 +1,6 @@
 package com.jobik.shkiper.ui.components.modals
 
+import android.content.Context
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
@@ -16,6 +17,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Event
 import androidx.compose.material.icons.filled.Repeat
 import androidx.compose.material.icons.filled.Schedule
+import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material.icons.rounded.Refresh
+import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -64,6 +68,7 @@ fun CreateReminderDialog(
     onDelete: (() -> Unit)? = null,
     onSave: (date: LocalDate, time: LocalTime, repeatMode: RepeatMode) -> Unit,
 ) {
+    val context = LocalContext.current
     val date = rememberSaveable { mutableStateOf(reminderDialogProperties.date) }
     val time = rememberSaveable { mutableStateOf(reminderDialogProperties.time) }
     val repeatMode = rememberSaveable { mutableStateOf(reminderDialogProperties.repeatMode) }
@@ -73,6 +78,10 @@ fun CreateReminderDialog(
     ) {
         ReminderDialogPages.values().size
     }
+    val isNotificationEnabled = remember {
+        mutableStateOf(checkIsNotificationEnabled(context))
+    }
+
     Dialog(onGoBack, DialogProperties(true, dismissOnClickOutside = true)) {
         Column(
             Modifier.clip(RoundedCornerShape(15.dp)).background(CustomTheme.colors.secondaryBackground)
@@ -88,14 +97,31 @@ fun CreateReminderDialog(
                 beyondBoundsPageCount = 0,
                 pageSize = PageSize.Fill,
             ) {
-                DialogContent(it, date, time, repeatMode)
+                DialogContent(
+                    it = it,
+                    date = date,
+                    time = time,
+                    repeatMode = repeatMode,
+                    isNotificationEnabled = isNotificationEnabled
+                )
             }
-            DialogFooter(pagerState, onGoBack, onDelete) {
+            DialogFooter(
+                pagerState = pagerState,
+                onGoBack = onGoBack,
+                onDelete = onDelete,
+                isNotificationEnabled = isNotificationEnabled
+            ) {
                 onSave(date.value, time.value, repeatMode.value)
             }
         }
     }
 }
+
+private fun checkIsNotificationEnabled(context: Context) = areNotificationsEnabled(context = context) &&
+        areChanelNotificationsEnabled(
+            context = context,
+            channelId = NotificationScheduler.Companion.NotificationChannels.NOTECHANNEL.channelId
+        )
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -103,8 +129,10 @@ private fun DialogFooter(
     pagerState: PagerState,
     onGoBack: () -> Unit,
     onDelete: (() -> Unit)? = null,
+    isNotificationEnabled: MutableState<Boolean>,
     onSave: () -> Unit,
 ) {
+    val isEnd = pagerState.currentPage == ReminderDialogPages.values().size - 1
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
 
@@ -134,22 +162,26 @@ private fun DialogFooter(
             },
             style = ButtonStyle.Text
         )
-        val isEnd = pagerState.currentPage == ReminderDialogPages.values().size - 1
-
         CustomButton(
             text = if (isEnd) stringResource(R.string.Save) else stringResource(
                 R.string.Next
             ),
             onClick = {
-//                if (isEnd) {
-//                    onSave()
-//                } else coroutineScope.launch {
-//                    pagerState.animateScrollToPage(pagerState.currentPage + 1)
-//                }
-                IntentHelper().startIntentAppNotificationSettings(
-                    context = context,
-                    channelId = NotificationScheduler.Companion.NotificationChannels.NOTECHANNEL.channelId
-                )
+                if (isEnd) {
+                    if (!isNotificationEnabled.value && !checkIsNotificationEnabled(context)) {
+                        IntentHelper().startIntentAppNotificationSettings(
+                            context = context,
+                            channelId = NotificationScheduler.Companion.NotificationChannels.NOTECHANNEL.channelId
+                        )
+                    } else {
+                        isNotificationEnabled.value = true
+                        onSave()
+                    }
+                } else {
+                    coroutineScope.launch {
+                        pagerState.animateScrollToPage(pagerState.currentPage + 1)
+                    }
+                }
             },
             style = if (isEnd) ButtonStyle.Filled else ButtonStyle.Text,
             properties = if (isEnd) DefaultButtonProperties(
@@ -171,6 +203,7 @@ private fun DialogContent(
     date: MutableState<LocalDate>,
     time: MutableState<LocalTime>,
     repeatMode: MutableState<RepeatMode>,
+    isNotificationEnabled: State<Boolean>
 ) {
     Column(Modifier.height(340.dp)) {
         when (it) {
@@ -178,7 +211,7 @@ private fun DialogContent(
 
             ReminderDialogPages.TIMEPICK.value -> TimePickPage(date, time)
 
-            ReminderDialogPages.REPEATMODE.value -> RepeatModePage(date, time, repeatMode)
+            ReminderDialogPages.REPEATMODE.value -> RepeatModePage(date, time, repeatMode, isNotificationEnabled)
         }
     }
 }
@@ -188,20 +221,11 @@ private fun RepeatModePage(
     date: MutableState<LocalDate>,
     time: MutableState<LocalTime>,
     repeatMode: MutableState<RepeatMode>,
+    isNotificationEnabled: State<Boolean>
 ) {
     val repeatModeList = RepeatMode.values().map { DropDownItem(text = it.getLocalizedValue(LocalContext.current)) }
     val isExpanded = remember { mutableStateOf(false) }
     val isDatePast = !DateHelper.isFutureDateTime(date.value, time.value)
-    val context = LocalContext.current
-    val isNotificationEnabled = remember {
-        mutableStateOf(
-            areNotificationsEnabled(context = context) &&
-                    areChanelNotificationsEnabled(
-                        context = context,
-                        channelId = NotificationScheduler.Companion.NotificationChannels.NOTECHANNEL.channelId
-                    )
-        )
-    }
 
     Column(
         Modifier.fillMaxSize().padding(horizontal = 20.dp),
@@ -267,17 +291,25 @@ private fun RepeatModePage(
                     )
                 }
             }
-            Column(
-                modifier = Modifier.fillMaxSize().padding(bottom = 10.dp),
-                verticalArrangement = Arrangement.Bottom
-            ) {
-                if (!isNotificationEnabled.value)
-                    Text(
-                        text = "NotificationDisabled",
-                        style = MaterialTheme.typography.body1,
-                        color = CustomTheme.colors.active,
-                    )
-            }
+            if (!isNotificationEnabled.value)
+                Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Bottom) {
+                    Row(
+                        modifier = Modifier.padding(bottom = 10.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            tint = CustomTheme.colors.active,
+                            imageVector = Icons.Default.Warning,
+                            contentDescription = stringResource(R.string.TurnOnNotifications)
+                        )
+                        Spacer(Modifier.width(8.dp))
+                        Text(
+                            text = stringResource(R.string.TurnOnNotifications),
+                            style = MaterialTheme.typography.body1,
+                            color = CustomTheme.colors.text,
+                        )
+                    }
+                }
         }
     }
 }

@@ -337,4 +337,6 @@
     <string name="Share">共有</string>
 
     <string name="MyStatsInShkiper">シュキパーでの私の統計</string>
+
+    <string name="TurnOnNotifications">スマートフォンの設定で通知を有効にしてください</string>
 </resources>

@@ -187,5 +187,6 @@
     <string name="CreateWidget">Создать виджет</string>
     <string name="Share">Поделиться</string>
     <string name="MyStatsInShkiper">Моя статистика в Shkiper</string>
+    <string name="TurnOnNotifications">Включите уведомления в настройках телефона</string>
 
 </resources>

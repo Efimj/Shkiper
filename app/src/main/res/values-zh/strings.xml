@@ -21,7 +21,9 @@
 
     <string name="ChoseLocalization">本土化</string>
 
-    <string name="AppDataPolitics">您的数据仅存储在您的设备上。删除应用程序的数据可能会导致数据永久丢失。为防止出现这种情况，请记住在执行重置之前保存数据文件。</string>
+    <string name="AppDataPolitics">
+        您的数据仅存储在您的设备上。删除应用程序的数据可能会导致数据永久丢失。为防止出现这种情况，请记住在执行重置之前保存数据文件。
+    </string>
 
     <string name="Info">信息</string>
 
@@ -247,7 +249,9 @@
 
     <string name="PurchaseScreenTitle">每一个贡献都很重要！</string>
 
-    <string name="PurchaseScreenDescription">您的支持有助于改进我们的应用程序。加入我们——捐款并成为 Shkiper 故事的一部分！</string>
+    <string name="PurchaseScreenDescription">您的支持有助于改进我们的应用程序。加入我们——捐款并成为 Shkiper
+        故事的一部分！
+    </string>
 
     <string name="BuyMe">给我买</string>
 
@@ -337,4 +341,6 @@
     <string name="Share">分享</string>
 
     <string name="MyStatsInShkiper">我在 Shkiper 的统计数据</string>
+
+    <string name="TurnOnNotifications">在手机设置中启用通知</string>
 </resources>
