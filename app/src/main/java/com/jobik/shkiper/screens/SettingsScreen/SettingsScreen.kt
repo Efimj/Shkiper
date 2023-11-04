@@ -2,8 +2,6 @@ package com.jobik.shkiper.screens.SettingsScreen
 
 import android.app.Activity
 import android.content.Context
-import android.net.Uri
-import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.Animatable
@@ -15,7 +13,6 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DarkMode
@@ -27,7 +24,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -305,7 +301,7 @@ private fun SettingsColorThemePicker(settingsViewModel: SettingsViewModel) {
     val colorValues =
         if (ThemeUtil.isDarkMode.value != false) CustomThemeStyle.entries.map { it.dark } else CustomThemeStyle.entries.map { it.light }
     val colorValuesName = CustomThemeStyle.entries
-    val selectedThemeName = ThemeUtil.themeStyle.value?.name ?: CustomThemeStyle.DarkPurple.name
+    val selectedThemeName = ThemeUtil.themeStyle.value?.name ?: CustomThemeStyle.PastelPurple.name
 
     Column(
         Modifier.padding(vertical = 5.dp),

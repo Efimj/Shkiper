@@ -58,7 +58,7 @@ class SettingsViewModel @Inject constructor(
         ThemeUtil.saveThemeMode(
             context = application.applicationContext,
             mode = !(ThemeUtil.isDarkMode.value ?: false),
-            newThemeStyle = ThemeUtil.themeStyle.value ?: CustomThemeStyle.DarkPurple
+            newThemeStyle = ThemeUtil.themeStyle.value ?: CustomThemeStyle.PastelPurple
         )
     }
 

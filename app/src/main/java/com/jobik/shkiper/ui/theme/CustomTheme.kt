@@ -36,17 +36,17 @@ object CustomTheme {
 
 @Keep
 enum class CustomThemeStyle(val dark: CustomThemeColors, val light: CustomThemeColors) {
-    DarkPurple(dark = DarkDeepPurple, light = LightDeepPurple),
-    DarkRed(dark = DarkDeepRed, light = LightDeepRed),
-    DarkOrange(dark = DarkDeepOrange, light = LightDeepOrange),
-    DarkBlue(dark = DarkDeepBlue, light = LightDeepBlue),
-    DarkGreen(dark = DarkDeepGreen, light = LightDeepGreen),
+    DeepPurple(dark = DarkDeepPurple, light = LightDeepPurple),
+    DeepRed(dark = DarkDeepRed, light = LightDeepRed),
+    DeepOrange(dark = DarkDeepOrange, light = LightDeepOrange),
+    DeepBlue(dark = DarkDeepBlue, light = LightDeepBlue),
+    DeepGreen(dark = DarkDeepGreen, light = LightDeepGreen),
 
-    LightPurple(dark = DarkPastelPurple, light = LightPastelPurple),
-    LightRed(dark = DarkPastelRed, light = LightPastelRed),
-    LightOrange(dark = DarkPastelOrange, light = LightPastelOrange),
-    LightBlue(dark = DarkPastelBlue, light = LightPastelBlue),
-    LightGreen(dark = DarkPastelGreen, light = LightPastelGreen);
+    PastelPurple(dark = DarkPastelPurple, light = LightPastelPurple),
+    PastelRed(dark = DarkPastelRed, light = LightPastelRed),
+    PastelOrange(dark = DarkPastelOrange, light = LightPastelOrange),
+    PastelBlue(dark = DarkPastelBlue, light = LightPastelBlue),
+    PastelGreen(dark = DarkPastelGreen, light = LightPastelGreen);
     
     fun getColors(isDarkTheme: Boolean): CustomThemeColors {
         return if (isDarkTheme) dark else light

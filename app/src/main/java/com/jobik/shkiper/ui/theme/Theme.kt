@@ -15,7 +15,7 @@ import com.jobik.shkiper.util.ThemeUtil
 @Composable
 fun ShkiperTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    style: CustomThemeStyle = CustomThemeStyle.DarkPurple,
+    style: CustomThemeStyle = CustomThemeStyle.PastelPurple,
     content: @Composable () -> Unit
 ) {
     val colors = ThemeUtil.getColors(isDark = darkTheme, style = style)

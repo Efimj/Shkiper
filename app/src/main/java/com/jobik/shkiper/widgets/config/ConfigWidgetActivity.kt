@@ -39,7 +39,7 @@ class ConfigWidgetActivity : AppCompatActivity() {
         setContent {
             ShkiperTheme(
                 darkTheme = ThemeUtil.isDarkMode.value ?: isSystemInDarkTheme(),
-                style = ThemeUtil.themeStyle.value ?: CustomThemeStyle.DarkPurple
+                style = ThemeUtil.themeStyle.value ?: CustomThemeStyle.PastelPurple
             ) {
                 Box(
                     Modifier.fillMaxSize().background(CustomTheme.colors.mainBackground)

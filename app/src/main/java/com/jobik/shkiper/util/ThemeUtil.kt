@@ -2,7 +2,6 @@ package com.jobik.shkiper.util
 
 import android.content.Context
 import android.content.res.Configuration
-import android.util.Log
 import androidx.compose.runtime.*
 import com.google.gson.Gson
 import com.jobik.shkiper.SharedPreferencesKeys.ApplicationStorageName
@@ -25,7 +24,7 @@ object ThemeUtil {
         }
 
     fun getColors(isDark: Boolean? = null, style: CustomThemeStyle? = null): CustomThemeColors {
-        val currentStyle = style ?: (themeStyle.value ?: CustomThemeStyle.DarkPurple)
+        val currentStyle = style ?: (themeStyle.value ?: CustomThemeStyle.PastelPurple)
         val currentIsDark = isDark ?: isDarkMode.value ?: true
 
         return currentStyle.getColors(currentIsDark)
@@ -53,7 +52,7 @@ object ThemeUtil {
     private fun setDefaultsStyles(context: Context) {
         isDarkMode.value =
             context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
-        themeStyle.value = CustomThemeStyle.DarkPurple
+        themeStyle.value = CustomThemeStyle.PastelPurple
     }
 
     fun saveThemeMode(context: Context, mode: Boolean, newThemeStyle: CustomThemeStyle) {
