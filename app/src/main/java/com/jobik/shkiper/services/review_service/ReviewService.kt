@@ -5,12 +5,13 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import androidx.annotation.Keep
 import com.jobik.shkiper.SharedPreferencesKeys
 import com.jobik.shkiper.services.statistics_service.StatisticsService
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
-
+@Keep
 class ReviewService(val context: Context) {
     private val appId: String = context.packageName
     private val countOfferReviewKey = SharedPreferencesKeys.CountOfferReview

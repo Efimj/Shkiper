@@ -1,10 +1,12 @@
 package com.jobik.shkiper.util
 
 import android.content.Context
+import androidx.annotation.Keep
 import com.jobik.shkiper.SharedPreferencesKeys
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 
+@Keep
 object SupportTheDeveloperBannerUtil {
     const val MonthsSpan = 3
 
