@@ -102,7 +102,7 @@ private fun MainPageLayout(
             modifier = Modifier.offset(y = offsetY).align(Alignment.BottomCenter).fillMaxWidth().background(
                 Brush.verticalGradient(
                     0F to CustomTheme.colors.mainBackground.copy(alpha = 0.0F),
-                    0.8F to CustomTheme.colors.secondaryBackground.copy(alpha = 1F)
+                    0.8F to CustomTheme.colors.mainBackground.copy(alpha = 1F)
                 )
             ),
             contentAlignment = Alignment.BottomCenter

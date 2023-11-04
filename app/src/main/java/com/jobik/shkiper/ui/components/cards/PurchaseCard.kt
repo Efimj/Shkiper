@@ -91,9 +91,9 @@ fun PurchaseCard(purchaseCardContent: PurchaseCardContent, onClick: () -> Unit) 
                         modifier = Modifier.align(Alignment.BottomStart).height(40.dp)
                             .fillMaxWidth().background(
                                 Brush.verticalGradient(
-                                    0F to CustomTheme.colors.mainBackground.copy(alpha = 0.0F),
-                                    .4F to CustomTheme.colors.mainBackground.copy(alpha = 0.70F),
-                                    1F to CustomTheme.colors.mainBackground.copy(alpha = 0.9F)
+                                    0F to CustomTheme.colors.secondaryBackground.copy(alpha = 0.0F),
+                                    .4F to CustomTheme.colors.secondaryBackground.copy(alpha = 0.70F),
+                                    1F to CustomTheme.colors.secondaryBackground.copy(alpha = 0.9F)
                                 )
                             )
                     ) {
