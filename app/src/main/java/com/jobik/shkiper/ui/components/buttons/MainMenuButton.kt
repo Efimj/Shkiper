@@ -23,7 +23,7 @@ fun MainMenuButton(text: String, icon: ImageVector? = null, isActive: Boolean = 
             icon = icon,
             modifier = menuButtonModifier,
             properties = DefaultButtonProperties(
-                border = BorderStroke(0.dp, CustomTheme.colors.mainBackground),
+                border = null,
                 buttonColors = ButtonDefaults.buttonColors(backgroundColor = CustomTheme.colors.active),
                 textColor = CustomTheme.colors.textOnActive,
                 textStyle = MaterialTheme.typography.h6.copy(fontSize = 17.sp),
@@ -38,7 +38,7 @@ fun MainMenuButton(text: String, icon: ImageVector? = null, isActive: Boolean = 
             modifier = menuButtonModifier,
             properties = DefaultButtonProperties(
                 buttonColors = ButtonDefaults.buttonColors(backgroundColor = CustomTheme.colors.secondaryBackground),
-                border = BorderStroke(0.dp, CustomTheme.colors.mainBackground),
+                border = null,
                 textStyle = MaterialTheme.typography.h6.copy(fontSize = 17.sp),
             ),
             onClick = onClick,
