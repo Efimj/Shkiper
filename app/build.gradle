@@ -159,4 +159,7 @@ dependencies {
 
     // For interop APIs with Material 3
     implementation "androidx.glance:glance-material3:1.0.0"
+
+    // Compose Rich Editor
+    implementation "com.mohamedrejeb.richeditor:richeditor-compose:1.0.0-beta05"
 }
