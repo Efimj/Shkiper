@@ -8,7 +8,9 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Bookmarks
 import androidx.compose.material.icons.outlined.Label
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -47,7 +49,9 @@ fun HashtagEditor(
     ) { if (enabled) editModeEnabled.value = true })
     {
         Row(
-            modifier = Modifier.fillMaxWidth().height(45.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 10.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -56,17 +60,48 @@ fun HashtagEditor(
                 style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.SemiBold, fontSize = 18.sp),
                 color = CustomTheme.colors.textSecondary
             )
+        }
+        Column(Modifier.fillMaxWidth()) {
+            if (editModeEnabled.value) {
+                HashtagsEdit(textFieldValue,
+                    Modifier
+                        .fillMaxWidth()
+                        .focusRequester(textFieldFocusRequester)
+                        .onFocusChanged { isFocused = it.isFocused }) {
+                    saveHandle(onSave, textFieldValue)
+                    editModeEnabled.value = !editModeEnabled.value
+                }
+            } else
+                HashtagsPresentation(tags) { if (enabled) editModeEnabled.value = true }
+        }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 10.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             if (editModeEnabled.value) {
                 Row {
                     CustomButton(
                         Modifier,
+                        properties = DefaultButtonProperties(
+                            buttonColors = androidx.compose.material.ButtonDefaults.buttonColors(
+                                backgroundColor = Color.Transparent,
+                                disabledBackgroundColor = Color.Transparent
+                            ),
+                            horizontalPaddings = 20.dp
+                        ),
                         text = stringResource(R.string.Cancel),
                         onClick = { editModeEnabled.value = false },
                         style = ButtonStyle.Text
                     )
-                    Spacer(Modifier.width(8.dp))
+                    Spacer(Modifier.width(10.dp))
                     CustomButton(
                         Modifier,
+                        properties = DefaultButtonProperties(
+                            horizontalPaddings = 20.dp
+                        ),
                         text = stringResource(R.string.Save),
                         onClick = {
                             if (editModeEnabled.value)
@@ -93,21 +128,14 @@ fun HashtagEditor(
                     ) {
                         CustomButton(
                             Modifier,
+                            properties = DefaultButtonProperties(
+                                horizontalPaddings = 20.dp
+                            ),
                             text = stringResource(R.string.Add),
-                            icon = Icons.Outlined.Label,
+                            icon = Icons.Outlined.Bookmarks,
                             onClick = { it() })
                     }
                 }
-        }
-        Column(Modifier.fillMaxWidth()) {
-            if (editModeEnabled.value) {
-                HashtagsEdit(textFieldValue, Modifier.padding(bottom = 10.dp).fillMaxWidth()
-                    .focusRequester(textFieldFocusRequester).onFocusChanged { isFocused = it.isFocused }) {
-                    saveHandle(onSave, textFieldValue)
-                    editModeEnabled.value = !editModeEnabled.value
-                }
-            } else
-                HashtagsPresentation(tags) { if (enabled) editModeEnabled.value = true }
         }
     }
 
@@ -195,7 +223,9 @@ private fun HashtagItem(chip: String, onChipClicked: (String) -> Unit) {
     ) {
         Text(
             chip,
-            modifier = Modifier.basicMarquee().padding(8.dp),
+            modifier = Modifier
+                .basicMarquee()
+                .padding(8.dp),
             maxLines = 1,
             style = MaterialTheme.typography.body1,
             color = CustomTheme.colors.text
