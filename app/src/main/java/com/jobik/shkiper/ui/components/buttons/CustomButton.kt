@@ -40,7 +40,7 @@ fun DefaultButtonProperties(
         disabledBackgroundColor = Color.Transparent
     ),
     border: BorderStroke? = null,
-    shape: Shape = RoundedCornerShape(15.dp),
+    shape: Shape = RoundedCornerShape(12.dp),
     horizontalPaddings: Dp = 0.dp,
     textColor: Color = CustomTheme.colors.text,
     textStyle: TextStyle = MaterialTheme.typography.body1,
@@ -73,7 +73,7 @@ fun getButtonProperties(style: ButtonStyle, properties: ButtonProperties? = null
                 disabledBackgroundColor = Color.Transparent
             ),
             border = null,
-            shape = RoundedCornerShape(15.dp),
+            shape = RoundedCornerShape(12.dp),
             horizontalPaddings = androidx.compose.material3.ButtonDefaults.ContentPadding.calculateLeftPadding(
                 LayoutDirection.Ltr
             ),
@@ -88,7 +88,7 @@ fun getButtonProperties(style: ButtonStyle, properties: ButtonProperties? = null
                 disabledBackgroundColor = Color.Transparent
             ),
             border = BorderStroke(width = 1.dp, color = CustomTheme.colors.stroke),
-            shape = RoundedCornerShape(15.dp),
+            shape = RoundedCornerShape(12.dp),
             horizontalPaddings = androidx.compose.material3.ButtonDefaults.ContentPadding.calculateLeftPadding(
                 LayoutDirection.Ltr
             ),
@@ -103,7 +103,7 @@ fun getButtonProperties(style: ButtonStyle, properties: ButtonProperties? = null
                 disabledBackgroundColor = Color.Transparent
             ),
             border = null,
-            shape = RoundedCornerShape(15.dp),
+            shape = RoundedCornerShape(12.dp),
             horizontalPaddings = 0.dp,
             textColor = CustomTheme.colors.text,
             textStyle = MaterialTheme.typography.body1,
