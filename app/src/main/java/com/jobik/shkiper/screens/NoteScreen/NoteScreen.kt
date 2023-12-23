@@ -1,6 +1,7 @@
 package com.jobik.shkiper.screens.NoteScreen
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.*
@@ -21,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
@@ -50,7 +52,11 @@ import com.jobik.shkiper.ui.components.modals.CreateReminderDialog
 import com.jobik.shkiper.ui.components.modals.ReminderDialogProperties
 import com.jobik.shkiper.util.SnackbarVisualsCustom
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.jobik.shkiper.ui.components.fields.CustomRichTextEditor
 import com.jobik.shkiper.ui.theme.CustomTheme
+import com.mohamedrejeb.richeditor.model.rememberRichTextState
+import com.mohamedrejeb.richeditor.ui.BasicRichTextEditor
+import com.mohamedrejeb.richeditor.ui.material3.RichTextEditor
 import java.time.Duration
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -70,24 +76,48 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
             noteViewModel.setBottomAppBarHover(false)
         }
     }
-    val bodyFieldFocusRequester = remember { FocusRequester() }
+//    val bodyFieldFocusRequester = remember { FocusRequester() }
     val linkListExpanded = remember { mutableStateOf(false) }
+
+    val richTextState = rememberRichTextState()
+
+    LaunchedEffect(Unit) {
+        richTextState.setMarkdown(noteViewModel.screenState.value.noteBody)
+    }
+
+    LaunchedEffect(richTextState.annotatedString) {
+        if (noteViewModel.screenState.value.noteBody !== richTextState.toMarkdown())
+            noteViewModel.updateNoteBody(richTextState.toMarkdown())
+    }
+
+//    LaunchedEffect(noteViewModel.screenState.value.noteBody) {
+//        if (noteViewModel.screenState.value.noteBody !== richTextState.toMarkdown())
+//            richTextState.setMarkdown(noteViewModel.screenState.value.noteBody)
+//    }
 
     Scaffold(
         backgroundColor = CustomTheme.colors.mainBackground,
         topBar = { NoteScreenHeader(navController, noteViewModel) },
         bottomBar = { NoteScreenFooter(navController, noteViewModel) },
-        modifier = Modifier.imePadding().navigationBarsPadding().fillMaxSize(),
+        modifier = Modifier
+            .imePadding()
+            .navigationBarsPadding()
+            .fillMaxSize(),
     ) { contentPadding ->
-        Box(Modifier.fillMaxSize().padding(contentPadding)) {
+        Box(
+            Modifier
+                .fillMaxSize()
+                .padding(contentPadding)
+        ) {
             LazyColumn(
                 state = scrollState,
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier
+                    .fillMaxSize()
                     .clickable(
                         indication = null,
                         interactionSource = remember { MutableInteractionSource() } // This is mandatory
                     ) {
-                        bodyFieldFocusRequester.requestFocus()
+//                        bodyFieldFocusRequester.requestFocus()
                     }
 
             ) {
@@ -105,7 +135,7 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
                         ),
                         keyboardActions = KeyboardActions(
                             onAny = {
-                                bodyFieldFocusRequester.requestFocus()
+//                                bodyFieldFocusRequester.requestFocus()
                             }
                         ),
                         enabled = enabled,
@@ -113,26 +143,33 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
                             fontWeight = FontWeight.SemiBold,
                             fontSize = 21.sp
                         ),
-                        modifier = Modifier.testTag("note_header_input").fillMaxSize()
-                            .padding(bottom = 6.dp, top = 4.dp).padding(horizontal = 20.dp)
+                        modifier = Modifier
+                            .testTag("note_header_input")
+                            .fillMaxSize()
+                            .padding(bottom = 6.dp, top = 4.dp)
+                            .padding(horizontal = 20.dp)
                     )
                 }
                 item {
-                    CustomTextField(
-                        text = noteViewModel.screenState.value.noteBody,
-                        onTextChange = { noteViewModel.updateNoteBody(it) },
+                    CustomRichTextEditor(
+                        state = richTextState,
                         placeholder = stringResource(R.string.Text),
                         textStyle = MaterialTheme.typography.body1,
                         enabled = enabled,
-                        modifier = Modifier.testTag("note_body_input").fillMaxWidth().padding(bottom = 10.dp)
+                        modifier = Modifier
+                            .testTag("note_body_input")
+                            .fillMaxWidth()
+                            .padding(bottom = 10.dp)
                             .padding(horizontal = 20.dp)
-                            .focusRequester(bodyFieldFocusRequester)
+//                            .focusRequester(bodyFieldFocusRequester)
                     )
                 }
                 item {
                     HashtagEditor(
                         enabled = enabled,
-                        modifier = Modifier.padding(bottom = 15.dp).padding(horizontal = 20.dp),
+                        modifier = Modifier
+                            .padding(bottom = 15.dp)
+                            .padding(horizontal = 20.dp),
                         tags = noteViewModel.screenState.value.hashtags,
                         forSelectionTags = noteViewModel.screenState.value.allHashtags,
                         onSave = noteViewModel::changeNoteHashtags
@@ -149,7 +186,11 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
                 }
             }
             if (noteViewModel.screenState.value.notePosition == NotePosition.DELETE && noteViewModel.screenState.value.deletionDate != null)
-                Box(modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 30.dp)) {
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .padding(bottom = 30.dp)
+                ) {
                     SnackbarCard(
                         SnackbarVisualsCustom(
                             message = "${stringResource(R.string.DaysBeforeDeletingNote)} ${
@@ -279,7 +320,9 @@ private fun NoteScreenFooter(navController: NavController, noteViewModel: NoteVi
         backgroundColor = backgroundColor,
         contentColor = CustomTheme.colors.textSecondary,
         cutoutShape = CircleShape,
-        modifier = Modifier.fillMaxWidth().height(50.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(50.dp),
     ) {
         Row(
             Modifier.fillMaxSize(),
@@ -300,7 +343,10 @@ private fun NoteScreenFooter(navController: NavController, noteViewModel: NoteVi
                 Row {
                     IconButton(
                         onClick = { noteViewModel.noteStateGoBack() },
-                        modifier = Modifier.size(40.dp).clip(CircleShape).padding(0.dp),
+                        modifier = Modifier
+                            .size(40.dp)
+                            .clip(CircleShape)
+                            .padding(0.dp),
                         enabled = noteViewModel.screenState.value.currentIntermediateIndex > 0
                     ) {
                         Icon(
@@ -312,7 +358,10 @@ private fun NoteScreenFooter(navController: NavController, noteViewModel: NoteVi
                     Spacer(modifier = Modifier.padding(6.dp, 0.dp, 0.dp, 0.dp))
                     IconButton(
                         onClick = { noteViewModel.noteStateGoNext() },
-                        modifier = Modifier.size(40.dp).clip(CircleShape).padding(0.dp),
+                        modifier = Modifier
+                            .size(40.dp)
+                            .clip(CircleShape)
+                            .padding(0.dp),
                         enabled = noteViewModel.screenState.value.currentIntermediateIndex < noteViewModel.screenState.value.intermediateStates.size - 1
                     ) {
                         Icon(
@@ -375,7 +424,10 @@ private fun NoteScreenFooter(navController: NavController, noteViewModel: NoteVi
                 ) {
                     IconButton(
                         onClick = { it() },
-                        modifier = Modifier.size(40.dp).clip(CircleShape).padding(0.dp)
+                        modifier = Modifier
+                            .size(40.dp)
+                            .clip(CircleShape)
+                            .padding(0.dp)
                     ) {
                         Icon(
                             imageVector = Icons.Outlined.MoreVert,
