@@ -73,10 +73,9 @@ fun CustomRichTextEditor(
             textStyle = textStyle.copy(color = textColor),
             cursorBrush = SolidColor(CustomTheme.colors.active),
             keyboardOptions = keyboardOptions,
-            keyboardActions = KeyboardActions(
+            keyboardActions = keyboardActions ?: KeyboardActions(
                 onAny = {
-                    Log.i("d","sdsax")
-                    state.setText("\n\n")
+                    state.setText("\n")
                 }
             ),
         ) {

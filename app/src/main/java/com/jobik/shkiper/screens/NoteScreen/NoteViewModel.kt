@@ -2,8 +2,6 @@ package com.jobik.shkiper.screens.NoteScreen
 
 import android.app.Application
 import android.content.Context
-import android.content.Intent
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -38,6 +36,8 @@ data class NoteScreenState(
     val isGoBack: Boolean = false,
     val isTopAppBarHover: Boolean = false,
     val isBottomAppBarHover: Boolean = false,
+    val isStylingEnabled: Boolean = false,
+    val isStyling: Boolean = false,
 
     val noteId: ObjectId = ObjectId(),
     val noteHeader: String = "",
@@ -115,6 +115,18 @@ class NoteViewModel @Inject constructor(
 
     fun switchDeleteDialogShow() {
         _screenState.value = _screenState.value.copy(isDeleteDialogShow = !_screenState.value.isDeleteDialogShow)
+    }
+
+    fun switchStyling(mode: Boolean? = null) {
+        if (mode !== null) _screenState.value = _screenState.value.copy(isStyling = mode)
+        else
+            _screenState.value = _screenState.value.copy(isStyling = !_screenState.value.isStyling)
+    }
+
+    fun switchStylingEnabled(mode: Boolean? = null) {
+        if (mode !== null) _screenState.value = _screenState.value.copy(isStylingEnabled = mode)
+        else
+            _screenState.value = _screenState.value.copy(isStylingEnabled = !_screenState.value.isStylingEnabled)
     }
 
     /*******************
