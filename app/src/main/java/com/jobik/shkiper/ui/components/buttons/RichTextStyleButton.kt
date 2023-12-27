@@ -41,6 +41,8 @@ fun RichTextStyleButton(
             .size(30.dp)
             .clip(RoundedCornerShape(5.dp))
             .clickable(
+                indication = null,
+                interactionSource = remember { MutableInteractionSource() },
                 onClick = onClick
             )
             .focusProperties { canFocus = false },
@@ -71,6 +73,8 @@ fun RichTextStyleButton(
             .size(30.dp)
             .clip(RoundedCornerShape(5.dp))
             .clickable(
+                indication = null,
+                interactionSource = remember { MutableInteractionSource() },
                 onClick = onClick
             )
             .focusProperties { canFocus = false },

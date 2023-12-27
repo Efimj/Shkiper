@@ -21,17 +21,14 @@ fun RichTextHeaderToolBar(
     modifier: Modifier = Modifier,
     state: RichTextState,
 ) {
-    val MainHeaderSize = 22.sp
-    val SecondaryHeaderSize = 19.sp
-    val PlainTextSize = 16.sp
 
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 10.dp)
+            .padding(horizontal = 12.dp)
             .height(56.dp),
         horizontalArrangement = Arrangement.spacedBy(
-            space = 10.dp,
+            space = 12.dp,
             alignment = Alignment.CenterHorizontally
         ),
         verticalAlignment = Alignment.CenterVertically
