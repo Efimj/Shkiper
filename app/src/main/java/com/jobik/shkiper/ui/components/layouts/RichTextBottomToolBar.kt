@@ -82,22 +82,36 @@ fun RichTextBottomToolBar(
             icon = R.drawable.format_italic_fill0_wght400_grad0_opsz24,
             contentDescription = ""
         )
-        RichTextStyleButton(
-            isActive = state.currentSpanStyle.textDecoration == TextDecoration.Underline,
-            onClick = { state.toggleSpanStyle(SpanStyle(textDecoration = TextDecoration.Underline)) },
-            icon = R.drawable.format_underlined_fill0_wght400_grad0_opsz24,
-            contentDescription = ""
-        )
-        RichTextStyleButton(
-            isActive = false,
-            onClick = {
-                state.removeParagraphStyle(state.currentParagraphStyle)
-                state.removeSpanStyle(state.currentSpanStyle)
-                state.removeCode()
-            },
-            icon = R.drawable.format_clear_fill0_wght400_grad0_opsz24,
-            contentDescription = ""
-        )
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(
+                space = 6.dp,
+                alignment = Alignment.CenterHorizontally
+            ),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            RichTextStyleButton(
+                isActive = state.currentSpanStyle.textDecoration == TextDecoration.Underline,
+                onClick = { state.toggleSpanStyle(SpanStyle(textDecoration = TextDecoration.Underline)) },
+                icon = R.drawable.format_underlined_fill0_wght400_grad0_opsz24,
+                contentDescription = ""
+            )
+            Divider(
+                modifier = Modifier
+                    .heightIn(30.dp)
+                    .width(1.dp),
+                color = CustomTheme.colors.textSecondary.copy(alpha = .2f)
+            )
+            RichTextStyleButton(
+                isActive = false,
+                onClick = {
+                    state.removeParagraphStyle(state.currentParagraphStyle)
+                    state.removeSpanStyle(state.currentSpanStyle)
+                    state.removeCode()
+                },
+                icon = R.drawable.format_clear_fill0_wght400_grad0_opsz24,
+                contentDescription = ""
+            )
+        }
 
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
             RichTextStyleButton(

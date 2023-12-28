@@ -1,6 +1,8 @@
 package com.jobik.shkiper.screens.NoteScreen
 
 import android.annotation.SuppressLint
+import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -32,6 +34,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -55,12 +58,14 @@ import com.jobik.shkiper.ui.components.modals.CreateReminderDialog
 import com.jobik.shkiper.ui.components.modals.ReminderDialogProperties
 import com.jobik.shkiper.ui.theme.CustomTheme
 import com.jobik.shkiper.util.SnackbarVisualsCustom
+import com.mohamedrejeb.richeditor.annotation.ExperimentalRichTextApi
 import com.mohamedrejeb.richeditor.model.RichTextState
 import com.mohamedrejeb.richeditor.model.rememberRichTextState
 import java.time.Duration
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
+@OptIn(ExperimentalRichTextApi::class)
 @Composable
 fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hiltViewModel()) {
     LaunchedEffect(noteViewModel.screenState.value.isGoBack) {
@@ -79,9 +84,19 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
     val bodyFieldFocusRequester = remember { FocusRequester() }
     val linkListExpanded = remember { mutableStateOf(false) }
 
+    val codeColor = CustomTheme.colors.textOnActive
+    val codeBackgroundColor = CustomTheme.colors.active.copy(alpha = .2f)
+    val codeStrokeColor = CustomTheme.colors.active
+
     val richTextState = rememberRichTextState()
 
     LaunchedEffect(Unit) {
+        richTextState.setConfig(
+            linkTextDecoration = TextDecoration.Underline,
+            codeColor = codeColor,
+            codeBackgroundColor = codeBackgroundColor,
+            codeStrokeColor = codeStrokeColor
+        )
         richTextState.setHtml(noteViewModel.screenState.value.noteBody)
     }
 
@@ -89,6 +104,13 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
         if (noteViewModel.screenState.value.noteBody !== richTextState.toMarkdown())
             noteViewModel.updateNoteBody(richTextState.toHtml())
     }
+
+    /**
+     * When user styling a note
+     */
+    BackHandler(
+        enabled = noteViewModel.screenState.value.isStyling, onBack = noteViewModel::switchStyling
+    )
 
     Scaffold(
         backgroundColor = CustomTheme.colors.mainBackground,
@@ -244,7 +266,7 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
 
     DisposableEffect(Unit) {
         onDispose {
-            noteViewModel.deleteNoteIfEmpty()
+            noteViewModel.deleteNoteIfEmpty(richTextState.annotatedString.toString())
         }
     }
 }
