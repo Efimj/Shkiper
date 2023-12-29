@@ -21,16 +21,15 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
 import com.jobik.shkiper.ui.theme.CustomTheme
-import com.mohamedrejeb.richeditor.model.RichTextState
-import com.mohamedrejeb.richeditor.model.rememberRichTextState
-import com.mohamedrejeb.richeditor.ui.BasicRichTextEditor
+import jp.wasabeef.richeditor.RichEditor
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun CustomRichTextEditor(
-    state: RichTextState,
+    text: String,
     placeholder: String = "",
+    onTextChange: (String) -> Unit,
     textColor: Color = CustomTheme.colors.text,
     textStyle: TextStyle = MaterialTheme.typography.body1,
     enabled: Boolean = true,
@@ -64,32 +63,45 @@ fun CustomRichTextEditor(
     CompositionLocalProvider(
         LocalTextSelectionColors provides customTextSelectionColors,
     ) {
-        BasicRichTextEditor(
+        AndroidView(
             modifier = modifier,
-            state = state,
-            enabled = enabled,
-            interactionSource = interactionSource,
-            singleLine = singleLine,
-            textStyle = textStyle.copy(color = textColor),
-            cursorBrush = SolidColor(CustomTheme.colors.active),
-            keyboardOptions = keyboardOptions,
-            keyboardActions = keyboardActions ?: KeyboardActions(
-                onAny = {
-                    state.setText("\n")
-                }
-            ),
-        ) {
-            TextFieldDefaults.TextFieldDecorationBox(
-                value = state.toMarkdown(),
-                visualTransformation = VisualTransformation.None,
-                innerTextField = it,
-                singleLine = singleLine,
-                enabled = enabled,
-                interactionSource = interactionSource,
-                contentPadding = PaddingValues(0.dp),
-                placeholder = { Text(text = placeholder, style = textStyle) },
-                colors = textFieldColors,
-            )
-        }
+            factory = { context ->
+                val textView = RichEditor(context)
+                textView.html = text
+                textView.setPlaceholder(placeholder)
+                textView.setOnTextChangeListener(onTextChange)
+                textView
+            },
+            update = { textView ->
+//                textView.html = text
+            }
+        )
+//        BasicRichTextEditor(
+//            modifier = modifier,
+//            state = state,
+//            enabled = enabled,
+//            interactionSource = interactionSource,
+//            singleLine = singleLine,
+//            textStyle = textStyle.copy(color = textColor),
+//            cursorBrush = SolidColor(CustomTheme.colors.active),
+//            keyboardOptions = keyboardOptions,
+//            keyboardActions = keyboardActions ?: KeyboardActions(
+//                onAny = {
+//                    state.setText("\n")
+//                }
+//            ),
+//        ) {
+//            TextFieldDefaults.TextFieldDecorationBox(
+//                value = state.toMarkdown(),
+//                visualTransformation = VisualTransformation.None,
+//                innerTextField = it,
+//                singleLine = singleLine,
+//                enabled = enabled,
+//                interactionSource = interactionSource,
+//                contentPadding = PaddingValues(0.dp),
+//                placeholder = { Text(text = placeholder, style = textStyle) },
+//                colors = textFieldColors,
+//            )
+//        }
     }
 }

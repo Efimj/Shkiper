@@ -326,9 +326,9 @@ class NoteViewModel @Inject constructor(
         }
     }
 
-    fun deleteNoteIfEmpty(body: String) {
+    fun deleteNoteIfEmpty() {
         viewModelScope.launch {
-            if (_screenState.value.noteHeader.isEmpty() && body.isEmpty()) noteRepository.deleteNote(
+            if (_screenState.value.noteHeader.isEmpty() && _screenState.value.noteBody.isEmpty()) noteRepository.deleteNote(
                 _screenState.value.noteId,
             )
         }

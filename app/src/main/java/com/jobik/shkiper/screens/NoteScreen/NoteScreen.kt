@@ -58,14 +58,10 @@ import com.jobik.shkiper.ui.components.modals.CreateReminderDialog
 import com.jobik.shkiper.ui.components.modals.ReminderDialogProperties
 import com.jobik.shkiper.ui.theme.CustomTheme
 import com.jobik.shkiper.util.SnackbarVisualsCustom
-import com.mohamedrejeb.richeditor.annotation.ExperimentalRichTextApi
-import com.mohamedrejeb.richeditor.model.RichTextState
-import com.mohamedrejeb.richeditor.model.rememberRichTextState
 import java.time.Duration
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-@OptIn(ExperimentalRichTextApi::class)
 @Composable
 fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hiltViewModel()) {
     LaunchedEffect(noteViewModel.screenState.value.isGoBack) {
@@ -88,22 +84,20 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
     val codeBackgroundColor = CustomTheme.colors.active.copy(alpha = .2f)
     val codeStrokeColor = CustomTheme.colors.active
 
-    val richTextState = rememberRichTextState()
-
-    LaunchedEffect(Unit) {
-        richTextState.setConfig(
-            linkTextDecoration = TextDecoration.Underline,
-            codeColor = codeColor,
-            codeBackgroundColor = codeBackgroundColor,
-            codeStrokeColor = codeStrokeColor
-        )
-        richTextState.setHtml(noteViewModel.screenState.value.noteBody)
-    }
-
-    LaunchedEffect(richTextState.annotatedString) {
-        if (noteViewModel.screenState.value.noteBody !== richTextState.toMarkdown())
-            noteViewModel.updateNoteBody(richTextState.toHtml())
-    }
+//    LaunchedEffect(Unit) {
+//        richTextState.setConfig(
+//            linkTextDecoration = TextDecoration.Underline,
+//            codeColor = codeColor,
+//            codeBackgroundColor = codeBackgroundColor,
+//            codeStrokeColor = codeStrokeColor
+//        )
+//        richTextState.setHtml(noteViewModel.screenState.value.noteBody)
+//    }
+//
+//    LaunchedEffect(richTextState.annotatedString) {
+//        if (noteViewModel.screenState.value.noteBody !== richTextState.toMarkdown())
+//            noteViewModel.updateNoteBody(richTextState.toHtml())
+//    }
 
     /**
      * When user styling a note
@@ -114,8 +108,8 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
 
     Scaffold(
         backgroundColor = CustomTheme.colors.mainBackground,
-        topBar = { NoteScreenHeader(navController, noteViewModel, richTextState) },
-        bottomBar = { NoteScreenFooter(navController, noteViewModel, richTextState) },
+        topBar = { NoteScreenHeader(navController, noteViewModel) },
+        bottomBar = { NoteScreenFooter(navController, noteViewModel) },
         modifier = Modifier
             .imePadding()
             .navigationBarsPadding()
@@ -169,7 +163,8 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
                 }
                 item {
                     CustomRichTextEditor(
-                        state = richTextState,
+                        text = noteViewModel.screenState.value.noteBody,
+                        onTextChange = noteViewModel::updateNoteBody,
                         placeholder = stringResource(R.string.Text),
                         textStyle = MaterialTheme.typography.body1,
                         enabled = enabled,
@@ -266,13 +261,13 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
 
     DisposableEffect(Unit) {
         onDispose {
-            noteViewModel.deleteNoteIfEmpty(richTextState.annotatedString.toString())
+            noteViewModel.deleteNoteIfEmpty()
         }
     }
 }
 
 @Composable
-private fun NoteScreenHeader(navController: NavController, noteViewModel: NoteViewModel, richTextState: RichTextState) {
+private fun NoteScreenHeader(navController: NavController, noteViewModel: NoteViewModel) {
     val systemUiController = rememberSystemUiController()
     val backgroundColor by animateColorAsState(
         if (noteViewModel.screenState.value.isTopAppBarHover) CustomTheme.colors.secondaryBackground else CustomTheme.colors.mainBackground,
@@ -337,7 +332,7 @@ private fun NoteScreenHeader(navController: NavController, noteViewModel: NoteVi
                 )
             },
             bottomComponent = {
-                RichTextHeaderToolBar(state = richTextState)
+//                RichTextHeaderToolBar(state = richTextState)
             }
         )
     }
@@ -346,7 +341,7 @@ private fun NoteScreenHeader(navController: NavController, noteViewModel: NoteVi
 @OptIn(ExperimentalFoundationApi::class)
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
-private fun NoteScreenFooter(navController: NavController, noteViewModel: NoteViewModel, richTextState: RichTextState) {
+private fun NoteScreenFooter(navController: NavController, noteViewModel: NoteViewModel) {
     val systemUiController = rememberSystemUiController()
     val backgroundColor by animateColorAsState(
         if (noteViewModel.screenState.value.isBottomAppBarHover) CustomTheme.colors.secondaryBackground else CustomTheme.colors.mainBackground,
@@ -511,7 +506,7 @@ private fun NoteScreenFooter(navController: NavController, noteViewModel: NoteVi
                 }
             },
             bottomComponent = {
-                RichTextBottomToolBar(state = richTextState, onClose = { noteViewModel.switchStyling(false) })
+//                RichTextBottomToolBar(state = richTextState, onClose = { noteViewModel.switchStyling(false) })
             }
         )
     }
