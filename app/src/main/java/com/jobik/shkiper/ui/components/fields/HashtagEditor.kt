@@ -9,8 +9,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Bookmarks
-import androidx.compose.material.icons.outlined.Label
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -172,7 +170,7 @@ private fun HashtagsEdit(
     modifier: Modifier,
     onDone: () -> Unit
 ) {
-    CustomTextField(
+    CustomDefaultTextField(
         text = text.value,
         onTextChange = { text.value = it },
         placeholder = stringResource(R.string.Text),

@@ -1,91 +1,83 @@
 package com.jobik.shkiper.ui.components.fields
 
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.text.selection.LocalTextSelectionColors
-import androidx.compose.foundation.text.selection.TextSelectionColors
-import androidx.compose.material.*
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.Divider
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.jobik.shkiper.ui.theme.CustomTheme
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun CustomTextField(
+    columnModifier: Modifier = Modifier.fillMaxWidth(),
+    fieldModifier: Modifier = Modifier.fillMaxWidth(),
     text: String,
-    placeholder: String = "",
-    textColor: Color = CustomTheme.colors.text,
-    onTextChange: (String) -> Unit = {},
-    textStyle: TextStyle = MaterialTheme.typography.body1,
+    onChange: (text: String) -> Unit,
+    label: String? = "",
+    placeholder: String? = "",
+    singleLine: Boolean = true,
     enabled: Boolean = true,
-    singleLine: Boolean = false,
-    modifier: Modifier = Modifier,
+    textStyle: TextStyle = MaterialTheme.typography.body1,
     keyboardOptions: KeyboardOptions = KeyboardOptions(
         keyboardType = KeyboardType.Text,
         imeAction = ImeAction.Default,
         capitalization = KeyboardCapitalization.Sentences,
         autoCorrect = true
     ),
-    keyboardActions: KeyboardActions? = null,
+    keyboardActions: KeyboardActions? = KeyboardActions.Default,
 ) {
-    val interactionSource = remember { MutableInteractionSource() }
-    val textFieldColors = TextFieldDefaults.textFieldColors(
-        backgroundColor = CustomTheme.colors.secondaryBackground,
-        placeholderColor = CustomTheme.colors.textSecondary,
-        leadingIconColor = CustomTheme.colors.textSecondary,
-        trailingIconColor = CustomTheme.colors.textSecondary,
-        textColor = CustomTheme.colors.text,
-        cursorColor = CustomTheme.colors.active,
-        focusedLabelColor = CustomTheme.colors.textSecondary,
-        unfocusedLabelColor = CustomTheme.colors.textSecondary,
+    var isFocused by remember { mutableStateOf(false) }
+
+    val labelColor: Color by animateColorAsState(
+        targetValue = if (isFocused) CustomTheme.colors.active else CustomTheme.colors.textSecondary,
+        label = "labelColor"
     )
 
-    val customTextSelectionColors = TextSelectionColors(
-        handleColor = CustomTheme.colors.active,
-        backgroundColor = CustomTheme.colors.active.copy(alpha = 0.4f),
+    val bottomDividerColor: Color by animateColorAsState(
+        targetValue = if (isFocused) CustomTheme.colors.active else CustomTheme.colors.secondaryStroke,
+        label = "bottomDividerColor"
     )
 
-    CompositionLocalProvider(
-        LocalTextSelectionColors provides customTextSelectionColors,
-    ) {
-        BasicTextField(
-            value = text,
-            onValueChange = onTextChange,
-            interactionSource = interactionSource,
-            enabled = enabled,
-            singleLine = singleLine,
-            textStyle = textStyle.copy(color = textColor),
-            cursorBrush = SolidColor(CustomTheme.colors.active),
-            keyboardOptions = keyboardOptions,
-            keyboardActions = keyboardActions ?: KeyboardActions(
-                onAny = {
-                    onTextChange("\n")
-                }
-            ),
-            modifier = modifier,
-        ) {
-            TextFieldDefaults.TextFieldDecorationBox(
-                value = text,
-                visualTransformation = VisualTransformation.None,
-                innerTextField = it,
-                singleLine = singleLine,
-                enabled = enabled,
-                interactionSource = interactionSource,
-                contentPadding = PaddingValues(0.dp),
-                placeholder = { Text(text = placeholder, style = textStyle) },
-                colors = textFieldColors,
+    Column(modifier = columnModifier) {
+        if (label != null) {
+            Text(
+                text = label,
+                color = labelColor,
+                style = textStyle.copy(fontSize = 14.sp)
             )
         }
+        Spacer(modifier = Modifier.height(2.dp))
+        CustomDefaultTextField(
+            modifier = fieldModifier.onFocusChanged { state -> isFocused = state.isFocused },
+            text = text,
+            onTextChange = onChange,
+            placeholder = placeholder ?: "",
+            singleLine = singleLine,
+            keyboardOptions = keyboardOptions,
+            keyboardActions = keyboardActions,
+            enabled = enabled,
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        Divider(
+            modifier = Modifier.fillMaxWidth(),
+            thickness = 2.dp,
+            color = bottomDividerColor
+        )
     }
 }

@@ -2,7 +2,8 @@ package com.jobik.shkiper.ui.components.layouts
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Divider
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.SpanStyle
@@ -14,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jobik.shkiper.R
 import com.jobik.shkiper.ui.components.buttons.RichTextStyleButton
+import com.jobik.shkiper.ui.components.modals.InsertLinkDialog
 import com.jobik.shkiper.ui.theme.CustomTheme
 import com.mohamedrejeb.richeditor.model.RichTextState
 
@@ -23,6 +25,7 @@ fun RichTextBottomToolBar(
     state: RichTextState,
     onClose: () -> Unit
 ) {
+    var isInsertLinkDialogOpen by remember { mutableStateOf(false) }
     val MainHeaderSize = 22.sp
     val SecondaryHeaderSize = 19.sp
     val PlainTextSize = 16.sp
@@ -102,16 +105,22 @@ fun RichTextBottomToolBar(
                 color = CustomTheme.colors.textSecondary.copy(alpha = .2f)
             )
             RichTextStyleButton(
-                isActive = false,
-                onClick = {
-                    state.removeParagraphStyle(state.currentParagraphStyle)
-                    state.removeSpanStyle(state.currentSpanStyle)
-                    state.removeCode()
-                },
-                icon = R.drawable.format_clear_fill0_wght400_grad0_opsz24,
+                isActive = state.isLink,
+                onClick = { isInsertLinkDialogOpen = !isInsertLinkDialogOpen },
+                icon = R.drawable.add_link_fill0_wght400_grad0_opsz24,
                 contentDescription = ""
             )
         }
+        RichTextStyleButton(
+            isActive = false,
+            onClick = {
+                state.removeParagraphStyle(state.currentParagraphStyle)
+                state.removeSpanStyle(state.currentSpanStyle)
+                state.removeCode()
+            },
+            icon = R.drawable.format_clear_fill0_wght400_grad0_opsz24,
+            contentDescription = ""
+        )
 
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
             RichTextStyleButton(
@@ -121,6 +130,9 @@ fun RichTextBottomToolBar(
                 contentDescription = ""
             )
         }
-
     }
+    if (isInsertLinkDialogOpen)
+        InsertLinkDialog(
+            onInsert = { text, url -> state.addLink(text, url); isInsertLinkDialogOpen = !isInsertLinkDialogOpen },
+            onGoBack = { isInsertLinkDialogOpen = !isInsertLinkDialogOpen })
 }

@@ -53,6 +53,7 @@ fun RichTextStyleButton(
         contentColor = if (isActive) CustomTheme.colors.textOnActive else CustomTheme.colors.textSecondary,
     ) {
         Icon(
+            modifier = Modifier.padding(2.dp),
             imageVector = icon,
             contentDescription = contentDescription,
             tint = if (isActive) CustomTheme.colors.textOnActive else CustomTheme.colors.textSecondary
@@ -85,6 +86,7 @@ fun RichTextStyleButton(
         contentColor = if (isActive) CustomTheme.colors.textOnActive else CustomTheme.colors.textSecondary,
     ) {
         Icon(
+            modifier = Modifier.padding(2.dp),
             painter = painterResource(id = icon),
             contentDescription = contentDescription,
             tint = if (isActive) CustomTheme.colors.textOnActive else CustomTheme.colors.textSecondary

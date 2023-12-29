@@ -1,7 +1,6 @@
 package com.jobik.shkiper.screens.NoteScreen
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
@@ -50,7 +49,7 @@ import com.jobik.shkiper.ui.components.buttons.DropDownButtonSizeMode
 import com.jobik.shkiper.ui.components.buttons.DropDownItem
 import com.jobik.shkiper.ui.components.cards.SnackbarCard
 import com.jobik.shkiper.ui.components.fields.CustomRichTextEditor
-import com.jobik.shkiper.ui.components.fields.CustomTextField
+import com.jobik.shkiper.ui.components.fields.CustomDefaultTextField
 import com.jobik.shkiper.ui.components.fields.HashtagEditor
 import com.jobik.shkiper.ui.components.layouts.*
 import com.jobik.shkiper.ui.components.modals.ActionDialog
@@ -87,11 +86,13 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
     val codeColor = CustomTheme.colors.textOnActive
     val codeBackgroundColor = CustomTheme.colors.active.copy(alpha = .2f)
     val codeStrokeColor = CustomTheme.colors.active
+    val linkColor = CustomTheme.colors.text
 
     val richTextState = rememberRichTextState()
 
     LaunchedEffect(Unit) {
         richTextState.setConfig(
+            linkColor = linkColor,
             linkTextDecoration = TextDecoration.Underline,
             codeColor = codeColor,
             codeBackgroundColor = codeBackgroundColor,
@@ -140,7 +141,7 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
             ) {
                 val enabled = noteViewModel.screenState.value.notePosition != NotePosition.DELETE
                 item {
-                    CustomTextField(
+                    CustomDefaultTextField(
                         text = noteViewModel.screenState.value.noteHeader,
                         onTextChange = { noteViewModel.updateNoteHeader(it) },
                         placeholder = stringResource(R.string.Header),

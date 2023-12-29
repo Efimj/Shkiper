@@ -1,19 +1,14 @@
 package com.jobik.shkiper.ui.components.fields
 
-import android.util.Log
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.selection.LocalTextSelectionColors
 import androidx.compose.foundation.text.selection.TextSelectionColors
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.TextFieldDefaults
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.remember
+import androidx.compose.material.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
@@ -24,15 +19,14 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.jobik.shkiper.ui.theme.CustomTheme
-import com.mohamedrejeb.richeditor.model.RichTextState
-import com.mohamedrejeb.richeditor.ui.BasicRichTextEditor
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun CustomRichTextEditor(
-    state: RichTextState,
+fun CustomDefaultTextField(
+    text: String,
     placeholder: String = "",
     textColor: Color = CustomTheme.colors.text,
+    onTextChange: (String) -> Unit = {},
     textStyle: TextStyle = MaterialTheme.typography.body1,
     enabled: Boolean = true,
     singleLine: Boolean = false,
@@ -65,23 +59,24 @@ fun CustomRichTextEditor(
     CompositionLocalProvider(
         LocalTextSelectionColors provides customTextSelectionColors,
     ) {
-        BasicRichTextEditor(
-            modifier = modifier,
-            state = state,
-            enabled = enabled,
+        BasicTextField(
+            value = text,
+            onValueChange = onTextChange,
             interactionSource = interactionSource,
+            enabled = enabled,
             singleLine = singleLine,
             textStyle = textStyle.copy(color = textColor),
             cursorBrush = SolidColor(CustomTheme.colors.active),
             keyboardOptions = keyboardOptions,
             keyboardActions = keyboardActions ?: KeyboardActions(
                 onAny = {
-                    state.setText("\n")
+                    onTextChange("\n")
                 }
             ),
+            modifier = modifier,
         ) {
             TextFieldDefaults.TextFieldDecorationBox(
-                value = state.toMarkdown(),
+                value = text,
                 visualTransformation = VisualTransformation.None,
                 innerTextField = it,
                 singleLine = singleLine,
