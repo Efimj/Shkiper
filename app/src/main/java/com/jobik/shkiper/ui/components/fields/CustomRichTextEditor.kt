@@ -1,6 +1,10 @@
 package com.jobik.shkiper.ui.components.fields
 
 import android.util.Log
+import android.view.ActionMode
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.text.KeyboardActions
@@ -15,14 +19,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.platform.LocalTextToolbar
+import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.platform.TextToolbar
+import androidx.compose.ui.platform.TextToolbarStatus
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.glance.appwidget.action.ActionCallback
 import com.jobik.shkiper.ui.theme.CustomTheme
 import com.mohamedrejeb.richeditor.model.RichTextState
 import com.mohamedrejeb.richeditor.ui.BasicRichTextEditor
@@ -64,6 +74,7 @@ fun CustomRichTextEditor(
 
     CompositionLocalProvider(
         LocalTextSelectionColors provides customTextSelectionColors,
+//        LocalTextToolbar provides CustomTextToolbar(LocalView.current), doesn't work in bottomSheetModal
     ) {
         BasicRichTextEditor(
             modifier = modifier,
@@ -91,6 +102,46 @@ fun CustomRichTextEditor(
                 placeholder = { Text(text = placeholder, style = textStyle) },
                 colors = textFieldColors,
             )
+        }
+    }
+}
+
+class CustomTextToolbar(private val view: View) : TextToolbar {
+    override fun hide() {
+        println("hide")
+    }
+
+    override fun showMenu(
+        rect: Rect,
+        onCopyRequested: (() -> Unit)?,
+        onPasteRequested: (() -> Unit)?,
+        onCutRequested: (() -> Unit)?,
+        onSelectAllRequested: (() -> Unit)?
+    ) {
+        view.startActionMode(TextActionModeCallback())
+    }
+
+    override val status: TextToolbarStatus = TextToolbarStatus.Shown
+
+    class TextActionModeCallback(
+    ) : ActionMode.Callback {
+        override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
+            println("onActionItemClicked $mode $item")
+            return true
+        }
+
+        override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
+            println("onActionItemClicked $mode $menu")
+            return false
+        }
+
+        override fun onPrepareActionMode(mode: ActionMode?, menu: Menu?): Boolean {
+            println("onActionItemClicked $mode $menu")
+            return true
+        }
+
+        override fun onDestroyActionMode(mode: ActionMode?) {
+            println("onActionItemClicked $mode")
         }
     }
 }
