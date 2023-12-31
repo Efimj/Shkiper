@@ -1,5 +1,6 @@
 package com.jobik.shkiper.ui.components.cards
 
+import android.util.Log
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.*
@@ -29,6 +30,8 @@ import com.jobik.shkiper.ui.helpers.MultipleEventsCutter
 import com.jobik.shkiper.ui.helpers.get
 import com.jobik.shkiper.ui.modifiers.bounceClick
 import com.jobik.shkiper.ui.theme.CustomTheme
+import com.mohamedrejeb.richeditor.model.rememberRichTextState
+import com.mohamedrejeb.richeditor.ui.material3.RichText
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -98,15 +101,13 @@ private fun getNextReminderDate(reminder: Reminder?): LocalDateTime {
 private fun ReminderInformation(reminder: Reminder?) {
     val nextReminderDate = getNextReminderDate(reminder)
     val isDateFuture = DateHelper.isFutureDateTime(nextReminderDate)
+    val fontSize = 13.sp
+
     if (reminder != null) {
         Spacer(modifier = Modifier.height(4.dp))
         val shape = RoundedCornerShape(5.dp)
         Row(
-            Modifier
-                .basicMarquee()
-                .clip(shape)
-                .background(CustomTheme.colors.secondaryBackground),
-            //.padding(horizontal = 5.dp, vertical = 3.dp),
+            modifier = Modifier.clip(shape),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
@@ -116,21 +117,23 @@ private fun ReminderInformation(reminder: Reminder?) {
                 modifier = Modifier.height(15.dp)
             )
             Spacer(Modifier.width(4.dp))
-            androidx.compose.material3.Text(
-                DateHelper.getLocalizedDate(nextReminderDate.toLocalDate()),
-                style = MaterialTheme.typography.body1.copy(
-                    fontSize = 13.sp,
-                    textDecoration = if (isDateFuture) TextDecoration.None else TextDecoration.LineThrough
-                ),
-                color = CustomTheme.colors.textSecondary,
-            )
-            Spacer(Modifier.width(4.dp))
-            if (isDateFuture)
+            Row(modifier = Modifier.basicMarquee()) {
                 androidx.compose.material3.Text(
-                    nextReminderDate.toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")),
-                    style = MaterialTheme.typography.body1.copy(fontSize = 13.sp),
+                    DateHelper.getLocalizedDate(nextReminderDate.toLocalDate()),
+                    style = MaterialTheme.typography.body1.copy(
+                        fontSize = fontSize,
+                        textDecoration = if (isDateFuture) TextDecoration.None else TextDecoration.LineThrough
+                    ),
                     color = CustomTheme.colors.textSecondary,
                 )
+                Spacer(Modifier.width(4.dp))
+                if (isDateFuture)
+                    androidx.compose.material3.Text(
+                        nextReminderDate.toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")),
+                        style = MaterialTheme.typography.body1.copy(fontSize = fontSize),
+                        color = CustomTheme.colors.textSecondary,
+                    )
+            }
         }
     }
 }
@@ -138,6 +141,16 @@ private fun ReminderInformation(reminder: Reminder?) {
 @Composable
 private fun NoteContent(header: String?, text: String?, headerStyle: TextStyle, bodyStyle: TextStyle) {
     var headerLineCount by remember { mutableStateOf(1) }
+    val maxBodyLines = 10
+    val richTextState = rememberRichTextState()
+
+    LaunchedEffect(text) {
+        if (text !== null && richTextState.annotatedString.text !== text)
+            richTextState.setHtml(text.take(300))
+        else
+            richTextState.setText("")
+    }
+
     if (!header.isNullOrEmpty()) {
         Text(
             text = header,
@@ -152,9 +165,10 @@ private fun NoteContent(header: String?, text: String?, headerStyle: TextStyle, 
     if (!text.isNullOrEmpty() && !header.isNullOrEmpty())
         Spacer(modifier = Modifier.height(4.dp))
     if (!text.isNullOrEmpty()) {
-        Text(
-            text = text,
-            maxLines = 8 - headerLineCount,
+        RichText(
+            modifier = Modifier.heightIn(max = (bodyStyle.fontSize.value * (maxBodyLines - headerLineCount)).dp),
+            state = richTextState,
+//            maxLines = maxBodyLines - headerLineCount, //throws an exception
             overflow = TextOverflow.Ellipsis,
             style = bodyStyle,
             color = CustomTheme.colors.textSecondary,
@@ -171,6 +185,16 @@ private fun NoteAnnotatedContent(
     bodyStyle: TextStyle
 ) {
     var headerLineCount by remember { mutableStateOf(1) }
+    val maxBodyLines = 8
+    val richTextState = rememberRichTextState()
+
+    LaunchedEffect(text) {
+        if (text !== null && richTextState.annotatedString.text !== text)
+            richTextState.setHtml(text.take(300))
+        else
+            richTextState.setText("")
+    }
+
     if (!header.isNullOrEmpty()) {
         Text(
             text = buildAnnotatedString(header, markedText, CustomTheme.colors.active, Color.Transparent),
@@ -190,14 +214,19 @@ private fun NoteAnnotatedContent(
         Spacer(modifier = Modifier.height(8.dp))
     if (!text.isNullOrEmpty()) {
         Text(
-            text = buildAnnotatedString(text, markedText, CustomTheme.colors.active, Color.Transparent),
+            text = buildAnnotatedString(
+                richTextState.annotatedString.text,
+                markedText,
+                CustomTheme.colors.active,
+                Color.Transparent
+            ),
             fontSize = bodyStyle.fontSize,
             fontStyle = bodyStyle.fontStyle,
             fontFamily = bodyStyle.fontFamily,
             fontWeight = bodyStyle.fontWeight,
             overflow = TextOverflow.Ellipsis,
             color = CustomTheme.colors.textSecondary,
-            maxLines = 8 - headerLineCount,
+            maxLines = maxBodyLines - headerLineCount,
         )
     }
 }
