@@ -141,12 +141,12 @@ private fun ReminderInformation(reminder: Reminder?) {
 @Composable
 private fun NoteContent(header: String?, text: String?, headerStyle: TextStyle, bodyStyle: TextStyle) {
     var headerLineCount by remember { mutableStateOf(1) }
-    val maxBodyLines = 10
+    val maxBodyLines = 8
     val richTextState = rememberRichTextState()
 
     LaunchedEffect(text) {
         if (text !== null && richTextState.annotatedString.text !== text)
-            richTextState.setHtml(text.take(300))
+            richTextState.setHtml(text.take(1000))
         else
             richTextState.setText("")
     }
@@ -166,9 +166,8 @@ private fun NoteContent(header: String?, text: String?, headerStyle: TextStyle, 
         Spacer(modifier = Modifier.height(4.dp))
     if (!text.isNullOrEmpty()) {
         RichText(
-            modifier = Modifier.heightIn(max = (bodyStyle.fontSize.value * (maxBodyLines - headerLineCount)).dp),
             state = richTextState,
-//            maxLines = maxBodyLines - headerLineCount, //throws an exception
+            maxLines = maxBodyLines - headerLineCount, //throws an exception
             overflow = TextOverflow.Ellipsis,
             style = bodyStyle,
             color = CustomTheme.colors.textSecondary,

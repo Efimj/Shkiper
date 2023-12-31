@@ -116,7 +116,7 @@ fun RichTextBottomToolBar(
             onClick = {
                 state.removeParagraphStyle(state.currentParagraphStyle)
                 state.removeSpanStyle(state.currentSpanStyle)
-                state.removeCode()
+                state.removeCodeSpan()
             },
             icon = R.drawable.format_clear_fill0_wght400_grad0_opsz24,
             contentDescription = ""

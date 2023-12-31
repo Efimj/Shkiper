@@ -69,8 +69,8 @@ fun RichTextHeaderToolBar(
             verticalAlignment = Alignment.CenterVertically
         ) {
             RichTextStyleButton(
-                isActive = state.isCode,
-                onClick = { state.toggleCode() },
+                isActive = state.isCodeSpan,
+                onClick = { state.toggleCodeSpan() },
                 icon = R.drawable.terminal_fill0_wght400_grad0_opsz24,
                 contentDescription = ""
             )
