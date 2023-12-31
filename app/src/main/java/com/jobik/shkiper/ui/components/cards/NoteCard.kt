@@ -107,7 +107,9 @@ private fun ReminderInformation(reminder: Reminder?) {
         Spacer(modifier = Modifier.height(4.dp))
         val shape = RoundedCornerShape(5.dp)
         Row(
-            modifier = Modifier.clip(shape),
+            modifier = Modifier
+                .clip(shape)
+                .basicMarquee(),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
@@ -117,23 +119,21 @@ private fun ReminderInformation(reminder: Reminder?) {
                 modifier = Modifier.height(15.dp)
             )
             Spacer(Modifier.width(4.dp))
-            Row(modifier = Modifier.basicMarquee()) {
+            androidx.compose.material3.Text(
+                DateHelper.getLocalizedDate(nextReminderDate.toLocalDate()),
+                style = MaterialTheme.typography.body1.copy(
+                    fontSize = fontSize,
+                    textDecoration = if (isDateFuture) TextDecoration.None else TextDecoration.LineThrough
+                ),
+                color = CustomTheme.colors.textSecondary,
+            )
+            Spacer(Modifier.width(4.dp))
+            if (isDateFuture)
                 androidx.compose.material3.Text(
-                    DateHelper.getLocalizedDate(nextReminderDate.toLocalDate()),
-                    style = MaterialTheme.typography.body1.copy(
-                        fontSize = fontSize,
-                        textDecoration = if (isDateFuture) TextDecoration.None else TextDecoration.LineThrough
-                    ),
+                    nextReminderDate.toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")),
+                    style = MaterialTheme.typography.body1.copy(fontSize = fontSize),
                     color = CustomTheme.colors.textSecondary,
                 )
-                Spacer(Modifier.width(4.dp))
-                if (isDateFuture)
-                    androidx.compose.material3.Text(
-                        nextReminderDate.toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")),
-                        style = MaterialTheme.typography.body1.copy(fontSize = fontSize),
-                        color = CustomTheme.colors.textSecondary,
-                    )
-            }
         }
     }
 }
@@ -167,7 +167,7 @@ private fun NoteContent(header: String?, text: String?, headerStyle: TextStyle, 
     if (!text.isNullOrEmpty()) {
         RichText(
             state = richTextState,
-            maxLines = maxBodyLines - headerLineCount, //throws an exception
+            maxLines = maxBodyLines - headerLineCount,
             overflow = TextOverflow.Ellipsis,
             style = bodyStyle,
             color = CustomTheme.colors.textSecondary,
