@@ -14,11 +14,8 @@ import com.jobik.shkiper.widgets.WidgetKeys.Prefs.noteId
 import com.jobik.shkiper.widgets.services.NoteWidgetReceiver
 import com.jobik.shkiper.widgets.services.PinWidgetReceiver
 import com.jobik.shkiper.widgets.widgets.NoteWidget
+import com.mohamedrejeb.richeditor.model.RichTextState
 import org.mongodb.kbson.ObjectId
-
-class NotesHandler {
-
-}
 
 suspend fun handleNoteWidgetPin(context: Context, noteId: String) {
     val intent = Intent(context, PinWidgetReceiver::class.java)
@@ -40,8 +37,11 @@ suspend fun GlanceAppWidgetManager.mapNoteToWidget(context: Context, note: Note)
         .forEach { glanceId ->
             updateAppWidgetState(context, glanceId) { prefs ->
                 if (prefs[noteId] == note._id.toHexString()) {
+                    val richBody = RichTextState()
+                    richBody.setHtml(note.body)
+
                     prefs[WidgetKeys.Prefs.noteHeader] = note.header
-                    prefs[WidgetKeys.Prefs.noteBody] = note.body
+                    prefs[WidgetKeys.Prefs.noteBody] = richBody.annotatedString.text
                     prefs[WidgetKeys.Prefs.noteLastUpdate] = note.updateDateString
                     NoteWidget().update(context, glanceId)
                 }

@@ -21,6 +21,7 @@ import com.jobik.shkiper.util.ThemeUtil
 import com.jobik.shkiper.widgets.WidgetKeys
 import com.jobik.shkiper.widgets.screens.NoteSelectionScreen.NoteSelectionScreen
 import com.jobik.shkiper.widgets.widgets.NoteWidget
+import com.mohamedrejeb.richeditor.model.RichTextState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -61,9 +62,12 @@ class ConfigWidgetActivity : AppCompatActivity() {
     private fun saveWidgetState(note: Note) = lifecycleScope.launch(Dispatchers.IO) {
         val glanceId = GlanceAppWidgetManager(applicationContext).getGlanceIdBy(widgetId)
         updateAppWidgetState(application.applicationContext, glanceId) { prefs ->
+            val richBody = RichTextState()
+            richBody.setHtml(note.body)
+
             prefs[WidgetKeys.Prefs.noteId] = note._id.toHexString()
             prefs[WidgetKeys.Prefs.noteHeader] = note.header
-            prefs[WidgetKeys.Prefs.noteBody] = note.body
+            prefs[WidgetKeys.Prefs.noteBody] = richBody.annotatedString.text
             prefs[WidgetKeys.Prefs.noteLastUpdate] = note.updateDateString
         }
         NoteWidget().update(application.applicationContext, glanceId)
