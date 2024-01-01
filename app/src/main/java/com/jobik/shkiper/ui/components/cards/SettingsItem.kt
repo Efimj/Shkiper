@@ -1,18 +1,10 @@
 package com.jobik.shkiper.ui.components.cards
 
-import androidx.compose.animation.Animatable
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.tween
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Card
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,7 +14,6 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jobik.shkiper.ui.theme.CustomTheme
-import com.jobik.shkiper.util.ThemeUtil
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -34,24 +25,36 @@ fun SettingsItem(
     modifier: Modifier = Modifier,
     description: String? = null,
     onClick: (() -> Unit) = {},
+    containerColor: Color? = null,
     contentPadding: PaddingValues = PaddingValues(horizontal = 20.dp, vertical = 5.dp),
     action: (@Composable () -> Unit)? = null
 ) {
     val backgroundColor: Color by animateColorAsState(
-        targetValue = if (isActive) CustomTheme.colors.active else CustomTheme.colors.secondaryBackground
+        targetValue = if (isActive) CustomTheme.colors.active else containerColor ?: Color.Transparent,
+        label = "backgroundColor"
     )
 
     val foregroundColor: Color by animateColorAsState(
-        targetValue = if (isActive) CustomTheme.colors.textOnActive else CustomTheme.colors.text
+        targetValue = if (isActive) CustomTheme.colors.textOnActive else CustomTheme.colors.text,
+        label = "foregroundColor"
     )
 
     val foregroundSecondaryColor: Color by animateColorAsState(
-        targetValue = if (isActive) CustomTheme.colors.textOnActive else CustomTheme.colors.textSecondary
+        targetValue = if (isActive) CustomTheme.colors.textOnActive else CustomTheme.colors.textSecondary,
+        label = "foregroundSecondaryColor"
     )
 
-    Card(onClick = onClick, enabled = isEnabled, shape = CustomTheme.shapes.none) {
+    Card(
+        onClick = onClick, enabled = isEnabled, colors = CardDefaults.cardColors(
+            containerColor = backgroundColor,
+            contentColor = foregroundColor,
+            disabledContainerColor = backgroundColor,
+            disabledContentColor = foregroundColor
+        ), shape = CustomTheme.shapes.none, border = null
+    ) {
         Row(
-            modifier = modifier.fillMaxWidth().background(backgroundColor)
+            modifier = modifier
+                .fillMaxWidth()
                 .padding(top = contentPadding.calculateTopPadding(), bottom = contentPadding.calculateBottomPadding()),
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -62,7 +65,9 @@ fun SettingsItem(
                     Icon(
                         imageVector = icon,
                         contentDescription = null,
-                        modifier = Modifier.size(24.dp).fillMaxSize(),
+                        modifier = Modifier
+                            .size(24.dp)
+                            .fillMaxSize(),
                         tint = foregroundSecondaryColor
                     )
                 }

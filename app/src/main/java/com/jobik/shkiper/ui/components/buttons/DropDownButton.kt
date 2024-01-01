@@ -2,10 +2,7 @@ package com.jobik.shkiper.ui.components.buttons
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -56,10 +53,10 @@ fun DropDownButton(
             onDismissRequest = { expanded.value = false },
             modifier = (if (stretchMode == DropDownButtonSizeMode.STRERCHBYBUTTONWIDTH)
                 Modifier.width(maxWidth) else Modifier)
+                .heightIn(max = 280.dp)
                 .background(CustomTheme.colors.secondaryBackground)
                 .clip(RoundedCornerShape(15.dp))
                 .border(1.dp, CustomTheme.colors.stroke, RoundedCornerShape(15.dp))
-
         ) {
             items.forEachIndexed { index, dropDownItem ->
                 if (dropDownItem.icon == null)

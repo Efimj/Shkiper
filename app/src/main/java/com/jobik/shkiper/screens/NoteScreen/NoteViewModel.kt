@@ -38,6 +38,7 @@ data class NoteScreenState(
     val isBottomAppBarHover: Boolean = false,
     val isStylingEnabled: Boolean = false,
     val isStyling: Boolean = false,
+    val showShareDialog: Boolean = false,
 
     val noteId: ObjectId = ObjectId(),
     val noteHeader: String = "",
@@ -127,6 +128,12 @@ class NoteViewModel @Inject constructor(
         if (mode !== null) _screenState.value = _screenState.value.copy(isStylingEnabled = mode)
         else
             _screenState.value = _screenState.value.copy(isStylingEnabled = !_screenState.value.isStylingEnabled)
+    }
+
+    fun switchShowShareDialog(mode: Boolean? = null) {
+        if (mode !== null) _screenState.value = _screenState.value.copy(showShareDialog = mode)
+        else
+            _screenState.value = _screenState.value.copy(showShareDialog = !_screenState.value.showShareDialog)
     }
 
     /*******************

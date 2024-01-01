@@ -6,6 +6,7 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -19,6 +20,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.outlined.*
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -48,6 +50,7 @@ import com.jobik.shkiper.ui.animation.AnimateVerticalSwitch
 import com.jobik.shkiper.ui.components.buttons.DropDownButton
 import com.jobik.shkiper.ui.components.buttons.DropDownButtonSizeMode
 import com.jobik.shkiper.ui.components.buttons.DropDownItem
+import com.jobik.shkiper.ui.components.cards.SettingsItem
 import com.jobik.shkiper.ui.components.cards.SnackbarCard
 import com.jobik.shkiper.ui.components.fields.CustomRichTextEditor
 import com.jobik.shkiper.ui.components.fields.CustomDefaultTextField
@@ -55,6 +58,7 @@ import com.jobik.shkiper.ui.components.fields.HashtagEditor
 import com.jobik.shkiper.ui.components.layouts.*
 import com.jobik.shkiper.ui.components.modals.ActionDialog
 import com.jobik.shkiper.ui.components.modals.CreateReminderDialog
+import com.jobik.shkiper.ui.components.modals.CustomModalBottomSheet
 import com.jobik.shkiper.ui.components.modals.ReminderDialogProperties
 import com.jobik.shkiper.ui.theme.CustomTheme
 import com.jobik.shkiper.util.SnackbarVisualsCustom
@@ -65,14 +69,18 @@ import java.time.Duration
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-@OptIn(ExperimentalRichTextApi::class)
+@OptIn(ExperimentalRichTextApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hiltViewModel()) {
+    val systemUiController = rememberSystemUiController()
+
     LaunchedEffect(noteViewModel.screenState.value.isGoBack) {
         noteViewModel.runFetchingLinksMetaData()
         if (noteViewModel.screenState.value.isGoBack) navController.popBackStack()
     }
+    val context = LocalContext.current
     val scrollState = rememberLazyListState()
+    val shareSheetState = androidx.compose.material3.rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route ?: ""
 
     LaunchedEffect(currentRoute) {
@@ -106,8 +114,6 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
         if (noteViewModel.screenState.value.noteBody !== richTextState.toMarkdown())
             noteViewModel.updateNoteBody(richTextState.toHtml())
     }
-
-    Log.d("Wsad", richTextState.toHtml())
 
     /**
      * When user styling a note
@@ -244,6 +250,43 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
             )
     }
 
+    LaunchedEffect(noteViewModel.screenState.value.showShareDialog) {
+        if (!noteViewModel.screenState.value.showShareDialog) {
+            shareSheetState.hide()
+        }
+    }
+
+    if (noteViewModel.screenState.value.showShareDialog) {
+        CustomModalBottomSheet(
+            state = shareSheetState,
+            onCancel = {
+                noteViewModel.switchShowShareDialog(mode = false)
+            },
+            dragHandle = null,
+        ) {
+            SettingsItem(
+                modifier = Modifier.heightIn(min = 50.dp),
+                icon = Icons.Outlined.ContentCopy,
+                title = "Share text",
+                onClick = { noteViewModel.shareNoteText(context);noteViewModel.switchShowShareDialog() })
+            SettingsItem(
+                modifier = Modifier.heightIn(min = 50.dp),
+                icon = Icons.Outlined.Html,
+                title = "Share HTML text",
+                onClick = { noteViewModel.shareNoteText(context) })
+            SettingsItem(
+                modifier = Modifier.heightIn(min = 50.dp),
+                icon = Icons.Outlined.Code,
+                title = "Share markdown text",
+                onClick = { noteViewModel.shareNoteText(context) })
+            SettingsItem(
+                modifier = Modifier.heightIn(min = 50.dp),
+                icon = Icons.Outlined.Screenshot,
+                title = "Share image",
+                onClick = { noteViewModel.shareNoteText(context) })
+        }
+    }
+
     if (noteViewModel.screenState.value.isCreateReminderDialogShow) {
         val reminder = remember { noteViewModel.screenState.value.reminder }
         val reminderDialogProperties = remember {
@@ -268,9 +311,11 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
         }
     }
 
+    val secondaryBackgroundColor = CustomTheme.colors.secondaryBackground
     DisposableEffect(Unit) {
         onDispose {
             noteViewModel.deleteNoteIfEmpty(richTextState.annotatedString.toString())
+            systemUiController.setNavigationBarColor(secondaryBackgroundColor)
         }
     }
 }
@@ -470,7 +515,6 @@ private fun NoteScreenFooter(navController: NavController, noteViewModel: NoteVi
                                             icon = if (noteViewModel.screenState.value.notePosition == NotePosition.DELETE) Icons.Outlined.DeleteForever else Icons.Outlined.Delete
                                         )
                                     )
-                            val context = LocalContext.current
                             val isExpanded = remember { mutableStateOf(false) }
                             DropDownButton(
                                 items = dropDownItems,
@@ -485,7 +529,7 @@ private fun NoteScreenFooter(navController: NavController, noteViewModel: NoteVi
                                         }
                                     else
                                         when (index) {
-                                            0 -> noteViewModel.shareNoteText(context)
+                                            0 -> noteViewModel.switchShowShareDialog()
                                             1 -> noteViewModel.createWidget()
                                             2 -> {
                                                 if (noteViewModel.screenState.value.notePosition == NotePosition.DELETE)
