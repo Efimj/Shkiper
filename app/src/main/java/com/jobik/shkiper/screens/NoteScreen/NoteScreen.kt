@@ -1,6 +1,8 @@
 package com.jobik.shkiper.screens.NoteScreen
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.graphics.Bitmap
 import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.*
@@ -28,6 +30,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
@@ -45,6 +48,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.NotePosition
+import com.jobik.shkiper.helpers.IntentHelper
 import com.jobik.shkiper.navigation.AppScreens
 import com.jobik.shkiper.ui.animation.AnimateVerticalSwitch
 import com.jobik.shkiper.ui.components.buttons.DropDownButton
@@ -65,6 +69,8 @@ import com.jobik.shkiper.util.SnackbarVisualsCustom
 import com.mohamedrejeb.richeditor.annotation.ExperimentalRichTextApi
 import com.mohamedrejeb.richeditor.model.RichTextState
 import com.mohamedrejeb.richeditor.model.rememberRichTextState
+import dev.shreyaspatil.capturable.Capturable
+import dev.shreyaspatil.capturable.controller.rememberCaptureController
 import java.time.Duration
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -98,6 +104,8 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
     val linkColor = CustomTheme.colors.text
 
     val richTextState = rememberRichTextState()
+
+    val captureController = rememberCaptureController()
 
     LaunchedEffect(Unit) {
         richTextState.setConfig(
@@ -136,88 +144,102 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
                 .fillMaxSize()
                 .padding(contentPadding)
         ) {
-            LazyColumn(
-                state = scrollState,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .clickable(
-                        indication = null,
-                        interactionSource = remember { MutableInteractionSource() } // This is mandatory
-                    ) {
-                        bodyFieldFocusRequester.requestFocus()
+            Capturable(
+                controller = captureController,
+                onCaptured = { bitmap, error ->
+                    if (bitmap != null) {
+                        IntentHelper().shareImageToOthers(context = context, text = "", bitmap = bitmap)
                     }
 
+                    if (error != null) {
+                        Log.d("Capturable error", error.toString())
+                        // Error occurred. Handle it!
+                    }
+                }
             ) {
-                val enabled = noteViewModel.screenState.value.notePosition != NotePosition.DELETE
-                item {
-                    CustomDefaultTextField(
-                        text = noteViewModel.screenState.value.noteHeader,
-                        onTextChange = { noteViewModel.updateNoteHeader(it) },
-                        placeholder = stringResource(R.string.Header),
-                        keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Text,
-                            imeAction = ImeAction.Next,
-                            capitalization = KeyboardCapitalization.Sentences,
-                            autoCorrect = true
-                        ),
-                        keyboardActions = KeyboardActions(
-                            onAny = {
-                                bodyFieldFocusRequester.requestFocus()
-                            }
-                        ),
-                        enabled = enabled,
-                        textStyle = MaterialTheme.typography.h6.copy(
-                            fontWeight = FontWeight.SemiBold,
-                            fontSize = 21.sp
-                        ),
-                        modifier = Modifier
-                            .testTag("note_header_input")
-                            .fillMaxSize()
-                            .padding(bottom = 6.dp, top = 4.dp)
-                            .padding(horizontal = 20.dp)
-                    )
-                }
-                item {
-                    CustomRichTextEditor(
-                        state = richTextState,
-                        placeholder = stringResource(R.string.Text),
-                        textStyle = MaterialTheme.typography.body1,
-                        enabled = enabled,
-                        modifier = Modifier
-                            .testTag("note_body_input")
-                            .fillMaxWidth()
-                            .padding(bottom = 10.dp)
-                            .padding(horizontal = 20.dp)
-                            .focusRequester(bodyFieldFocusRequester)
-                            .onFocusChanged { state ->
-                                if (state.isFocused) {
-                                    noteViewModel.switchStylingEnabled(true)
-                                } else {
-                                    noteViewModel.switchStyling(false)
-                                    noteViewModel.switchStylingEnabled(false)
+                LazyColumn(
+                    state = scrollState,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clickable(
+                            indication = null,
+                            interactionSource = remember { MutableInteractionSource() } // This is mandatory
+                        ) {
+                            bodyFieldFocusRequester.requestFocus()
+                        }
+
+                ) {
+                    val enabled = noteViewModel.screenState.value.notePosition != NotePosition.DELETE
+                    item {
+                        CustomDefaultTextField(
+                            text = noteViewModel.screenState.value.noteHeader,
+                            onTextChange = { noteViewModel.updateNoteHeader(it) },
+                            placeholder = stringResource(R.string.Header),
+                            keyboardOptions = KeyboardOptions(
+                                keyboardType = KeyboardType.Text,
+                                imeAction = ImeAction.Next,
+                                capitalization = KeyboardCapitalization.Sentences,
+                                autoCorrect = true
+                            ),
+                            keyboardActions = KeyboardActions(
+                                onAny = {
+                                    bodyFieldFocusRequester.requestFocus()
                                 }
-                            }
+                            ),
+                            enabled = enabled,
+                            textStyle = MaterialTheme.typography.h6.copy(
+                                fontWeight = FontWeight.SemiBold,
+                                fontSize = 21.sp
+                            ),
+                            modifier = Modifier
+                                .testTag("note_header_input")
+                                .fillMaxSize()
+                                .padding(bottom = 6.dp, top = 4.dp)
+                                .padding(horizontal = 20.dp)
+                        )
+                    }
+                    item {
+                        CustomRichTextEditor(
+                            state = richTextState,
+                            placeholder = stringResource(R.string.Text),
+                            textStyle = MaterialTheme.typography.body1,
+                            enabled = enabled,
+                            modifier = Modifier
+                                .testTag("note_body_input")
+                                .fillMaxWidth()
+                                .padding(bottom = 10.dp)
+                                .padding(horizontal = 20.dp)
+                                .focusRequester(bodyFieldFocusRequester)
+                                .onFocusChanged { state ->
+                                    if (state.isFocused) {
+                                        noteViewModel.switchStylingEnabled(true)
+                                    } else {
+                                        noteViewModel.switchStyling(false)
+                                        noteViewModel.switchStylingEnabled(false)
+                                    }
+                                }
+                        )
+                    }
+                    item {
+                        HashtagEditor(
+                            enabled = enabled,
+                            modifier = Modifier
+                                .padding(bottom = 15.dp)
+                                .padding(horizontal = 20.dp),
+                            tags = noteViewModel.screenState.value.hashtags,
+                            forSelectionTags = noteViewModel.screenState.value.allHashtags,
+                            onSave = noteViewModel::changeNoteHashtags
+                        )
+                    }
+                    LinkPreviewList(
+                        noteViewModel.screenState.value.linksMetaData,
+                        linkListExpanded,
+                        noteViewModel.screenState.value.linksLoading,
+                        Modifier.padding(horizontal = 20.dp)
                     )
-                }
-                item {
-                    HashtagEditor(
-                        enabled = enabled,
-                        modifier = Modifier
-                            .padding(bottom = 15.dp)
-                            .padding(horizontal = 20.dp),
-                        tags = noteViewModel.screenState.value.hashtags,
-                        forSelectionTags = noteViewModel.screenState.value.allHashtags,
-                        onSave = noteViewModel::changeNoteHashtags
-                    )
-                }
-                LinkPreviewList(
-                    noteViewModel.screenState.value.linksMetaData,
-                    linkListExpanded,
-                    noteViewModel.screenState.value.linksLoading,
-                    Modifier.padding(horizontal = 20.dp)
-                )
-                item {
-                    Spacer(Modifier.height(45.dp))
+                    item {
+                        Spacer(Modifier.height(45.dp))
+                    }
                 }
             }
             if (noteViewModel.screenState.value.notePosition == NotePosition.DELETE && noteViewModel.screenState.value.deletionDate != null)
@@ -239,16 +261,17 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
                     )
                 }
         }
-        if (noteViewModel.screenState.value.isDeleteDialogShow)
-            ActionDialog(
-                title = stringResource(R.string.DeleteForever),
-                icon = Icons.Outlined.Warning,
-                confirmText = stringResource(R.string.Confirm),
-                onConfirm = noteViewModel::deleteNote,
-                goBackText = stringResource(R.string.Cancel),
-                onGoBack = noteViewModel::switchDeleteDialogShow
-            )
     }
+
+    if (noteViewModel.screenState.value.isDeleteDialogShow)
+        ActionDialog(
+            title = stringResource(R.string.DeleteForever),
+            icon = Icons.Outlined.Warning,
+            confirmText = stringResource(R.string.Confirm),
+            onConfirm = noteViewModel::deleteNote,
+            goBackText = stringResource(R.string.Cancel),
+            onGoBack = noteViewModel::switchDeleteDialogShow
+        )
 
     LaunchedEffect(noteViewModel.screenState.value.showShareDialog) {
         if (!noteViewModel.screenState.value.showShareDialog) {
@@ -271,7 +294,8 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
                     noteViewModel.shareNoteText(
                         context,
                         richTextState.annotatedString.text
-                    );noteViewModel.switchShowShareDialog()
+                    )
+                    noteViewModel.switchShowShareDialog()
                 })
             SettingsItem(
                 icon = Icons.Outlined.Html,
@@ -280,7 +304,8 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
                     noteViewModel.shareNoteText(
                         context,
                         richTextState.toHtml()
-                    );noteViewModel.switchShowShareDialog()
+                    )
+                    noteViewModel.switchShowShareDialog()
                 })
             SettingsItem(
                 icon = Icons.Outlined.Code,
@@ -289,13 +314,17 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
                     noteViewModel.shareNoteText(
                         context,
                         richTextState.toMarkdown()
-                    );noteViewModel.switchShowShareDialog()
+                    )
+                    noteViewModel.switchShowShareDialog()
                 })
             SettingsItem(
                 modifier = Modifier.heightIn(min = 50.dp),
                 icon = Icons.Outlined.Screenshot,
                 title = "Share image",
-                onClick = { })
+                onClick = {
+                    captureController.capture()
+                    noteViewModel.switchShowShareDialog()
+                })
         }
     }
 

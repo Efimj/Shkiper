@@ -162,4 +162,7 @@ dependencies {
 
     // Compose Rich Editor
     implementation "com.mohamedrejeb.richeditor:richeditor-compose:1.0.0-rc01"
+
+    // Compose image capture
+    implementation "dev.shreyaspatil:capturable:1.0.3"
 }

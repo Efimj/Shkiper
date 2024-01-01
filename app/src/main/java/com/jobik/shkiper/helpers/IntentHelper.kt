@@ -2,15 +2,23 @@ package com.jobik.shkiper.helpers
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
+import android.provider.MediaStore
 import android.provider.Settings
 import android.provider.Settings.*
 import androidx.annotation.Keep
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asAndroidBitmap
+import androidx.core.content.FileProvider
 import com.jobik.shkiper.R
 import com.jobik.shkiper.SharedPreferencesKeys
 import com.jobik.shkiper.activity.MainActivity
 import com.jobik.shkiper.services.notification_service.NotificationScheduler
+import java.io.File
+import java.io.FileOutputStream
+import java.io.OutputStream
 
 @Keep
 class IntentHelper {
@@ -84,6 +92,44 @@ class IntentHelper {
                 .putExtra(EXTRA_APP_PACKAGE, context.packageName)
             context.startActivity(notificationIntent)
         }
+    }
+
+    fun shareImageToOthers(context: Context, text: String?, bitmap: ImageBitmap) {
+//        val imageName = "/image.jpg"
+//        try {
+//            File(context.cacheDir, "images").deleteRecursively()
+//            val cachePath = File(context.cacheDir, "images")
+//            cachePath.mkdirs()
+//            val stream = FileOutputStream("$cachePath$imageName")
+//            bitmap.asAndroidBitmap().compress(
+//                Bitmap.CompressFormat.JPEG,90,stream)
+//            stream.close()
+//        } catch (ex: Exception) {}
+//
+//        // SHARE
+//        val imagePath = File(context.cacheDir, "images")
+//        val newFile = File(imagePath, imageName)
+//        val contentUri = FileProvider.getUriForFile(context, "com.src.noveinway.fileprovider", newFile)
+//        if (contentUri != null) {
+//            val shareIntent = Intent()
+//            shareIntent.action = Intent.ACTION_SEND
+//            shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+//            shareIntent.type ="image/jpeg"
+//            shareIntent.putExtra(Intent.EXTRA_STREAM, contentUri)
+//            shareIntent.putExtra(Intent.EXTRA_TEXT, "This is a file for share")
+//            context.startActivity(shareIntent)
+//        }
+        val imagePath = MediaStore.Images.Media.insertImage(
+            context.contentResolver,
+            bitmap.asAndroidBitmap(),
+            "img_",
+            null
+        )
+        val shareIntent = Intent(Intent.ACTION_SEND).apply {
+            type = "image/*"
+            putExtra(Intent.EXTRA_STREAM, Uri.parse(imagePath))
+        }
+        context.startActivity(Intent.createChooser(shareIntent, null))
     }
 }
 
