@@ -1,6 +1,7 @@
 package com.jobik.shkiper.screens.NoteScreen
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
@@ -105,6 +106,8 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
         if (noteViewModel.screenState.value.noteBody !== richTextState.toMarkdown())
             noteViewModel.updateNoteBody(richTextState.toHtml())
     }
+
+    Log.d("Wsad", richTextState.toHtml())
 
     /**
      * When user styling a note

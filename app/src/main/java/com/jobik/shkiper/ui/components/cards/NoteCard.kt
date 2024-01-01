@@ -189,7 +189,7 @@ private fun NoteAnnotatedContent(
 
     LaunchedEffect(text) {
         if (text !== null && richTextState.annotatedString.text !== text)
-            richTextState.setHtml(text.take(300))
+            richTextState.setHtml(text.take(1000))
         else
             richTextState.setText("")
     }
