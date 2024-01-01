@@ -25,6 +25,7 @@ import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
@@ -32,6 +33,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -75,10 +77,12 @@ import java.time.Duration
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-@OptIn(ExperimentalRichTextApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalRichTextApi::class, ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hiltViewModel()) {
     val systemUiController = rememberSystemUiController()
+    val keyboardController = LocalSoftwareKeyboardController.current
+
 
     LaunchedEffect(noteViewModel.screenState.value.isGoBack) {
         noteViewModel.runFetchingLinksMetaData()
@@ -355,6 +359,7 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
     val secondaryBackgroundColor = CustomTheme.colors.secondaryBackground
     DisposableEffect(Unit) {
         onDispose {
+            keyboardController?.hide()
             noteViewModel.deleteNoteIfEmpty(richTextState.annotatedString.toString())
             systemUiController.setNavigationBarColor(secondaryBackgroundColor)
         }
