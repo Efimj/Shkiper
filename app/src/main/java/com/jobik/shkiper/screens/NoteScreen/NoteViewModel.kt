@@ -341,8 +341,8 @@ class NoteViewModel @Inject constructor(
         }
     }
 
-    fun shareNoteText(context: Context) {
-        val sharedText = _screenState.value.noteHeader + "\n\n" + _screenState.value.noteBody
+    fun shareNoteText(context: Context, text: String) {
+        val sharedText = _screenState.value.noteHeader + "\n" + text
         IntentHelper().shareTextIntent(context, sharedText)
     }
 

@@ -22,7 +22,7 @@ fun SettingsItem(
     title: String,
     isEnabled: Boolean = true,
     isActive: Boolean = false,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier.heightIn(min = 50.dp),
     description: String? = null,
     onClick: (() -> Unit) = {},
     containerColor: Color? = null,

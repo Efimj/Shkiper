@@ -265,25 +265,37 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
             dragHandle = null,
         ) {
             SettingsItem(
-                modifier = Modifier.heightIn(min = 50.dp),
                 icon = Icons.Outlined.ContentCopy,
                 title = "Share text",
-                onClick = { noteViewModel.shareNoteText(context);noteViewModel.switchShowShareDialog() })
+                onClick = {
+                    noteViewModel.shareNoteText(
+                        context,
+                        richTextState.annotatedString.text
+                    );noteViewModel.switchShowShareDialog()
+                })
             SettingsItem(
-                modifier = Modifier.heightIn(min = 50.dp),
                 icon = Icons.Outlined.Html,
                 title = "Share HTML text",
-                onClick = { noteViewModel.shareNoteText(context) })
+                onClick = {
+                    noteViewModel.shareNoteText(
+                        context,
+                        richTextState.toHtml()
+                    );noteViewModel.switchShowShareDialog()
+                })
             SettingsItem(
-                modifier = Modifier.heightIn(min = 50.dp),
                 icon = Icons.Outlined.Code,
                 title = "Share markdown text",
-                onClick = { noteViewModel.shareNoteText(context) })
+                onClick = {
+                    noteViewModel.shareNoteText(
+                        context,
+                        richTextState.toMarkdown()
+                    );noteViewModel.switchShowShareDialog()
+                })
             SettingsItem(
                 modifier = Modifier.heightIn(min = 50.dp),
                 icon = Icons.Outlined.Screenshot,
                 title = "Share image",
-                onClick = { noteViewModel.shareNoteText(context) })
+                onClick = { })
         }
     }
 
