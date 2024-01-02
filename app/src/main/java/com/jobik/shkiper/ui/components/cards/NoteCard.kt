@@ -146,7 +146,7 @@ private fun NoteContent(header: String?, text: String?, headerStyle: TextStyle, 
 
     LaunchedEffect(text) {
         if (text !== null && richTextState.annotatedString.text !== text)
-            richTextState.setHtml(text.take(1000))
+            richTextState.setHtml(text)
         else
             richTextState.setText("")
     }
@@ -189,7 +189,7 @@ private fun NoteAnnotatedContent(
 
     LaunchedEffect(text) {
         if (text !== null && richTextState.annotatedString.text !== text)
-            richTextState.setHtml(text.take(1000))
+            richTextState.setHtml(text)
         else
             richTextState.setText("")
     }
