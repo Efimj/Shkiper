@@ -1,11 +1,10 @@
 package com.jobik.shkiper.screens.NoteScreen
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.graphics.Bitmap
 import android.util.Log
 import androidx.activity.compose.BackHandler
-import androidx.compose.animation.*
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -31,7 +30,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.testTag
@@ -58,8 +56,8 @@ import com.jobik.shkiper.ui.components.buttons.DropDownButtonSizeMode
 import com.jobik.shkiper.ui.components.buttons.DropDownItem
 import com.jobik.shkiper.ui.components.cards.SettingsItem
 import com.jobik.shkiper.ui.components.cards.SnackbarCard
-import com.jobik.shkiper.ui.components.fields.CustomRichTextEditor
 import com.jobik.shkiper.ui.components.fields.CustomDefaultTextField
+import com.jobik.shkiper.ui.components.fields.CustomRichTextEditor
 import com.jobik.shkiper.ui.components.fields.HashtagEditor
 import com.jobik.shkiper.ui.components.layouts.*
 import com.jobik.shkiper.ui.components.modals.ActionDialog
@@ -82,7 +80,6 @@ import java.time.format.DateTimeFormatter
 fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hiltViewModel()) {
     val systemUiController = rememberSystemUiController()
     val keyboardController = LocalSoftwareKeyboardController.current
-
 
     LaunchedEffect(noteViewModel.screenState.value.isGoBack) {
         noteViewModel.runFetchingLinksMetaData()
@@ -108,7 +105,6 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
     val linkColor = CustomTheme.colors.text
 
     val richTextState = rememberRichTextState()
-
     val captureController = rememberCaptureController()
 
     LaunchedEffect(Unit) {
@@ -152,7 +148,7 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
                 controller = captureController,
                 onCaptured = { bitmap, error ->
                     if (bitmap != null) {
-                        IntentHelper().shareImageToOthers(context = context, text = "", bitmap = bitmap)
+                        IntentHelper().shareImageToOthers(context = context, text = "", bitmap = bitmap, format = Bitmap.CompressFormat.PNG)
                     }
 
                     if (error != null) {
@@ -171,7 +167,6 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
                         ) {
                             bodyFieldFocusRequester.requestFocus()
                         }
-
                 ) {
                     val enabled = noteViewModel.screenState.value.notePosition != NotePosition.DELETE
                     item {
@@ -322,7 +317,6 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
                     noteViewModel.switchShowShareDialog()
                 })
             SettingsItem(
-                modifier = Modifier.heightIn(min = 50.dp),
                 icon = Icons.Outlined.Screenshot,
                 title = "Share image",
                 onClick = {

@@ -100,11 +100,20 @@ class IntentHelper {
         bitmap: ImageBitmap,
         format: CompressFormat = CompressFormat.JPEG
     ) {
+        shareImageToOthers(context, text, bitmap.asAndroidBitmap(), format)
+    }
+
+    fun shareImageToOthers(
+        context: Context,
+        text: String?,
+        bitmap: Bitmap,
+        format: CompressFormat = CompressFormat.JPEG
+    ) {
         try {
             val cachePath = File(context.cacheDir, "images")
             cachePath.mkdirs()
             val stream = FileOutputStream("$cachePath/image.${format.name}")
-            bitmap.asAndroidBitmap().compress(format, 100, stream)
+            bitmap.compress(format, 100, stream)
             stream.close()
         } catch (e: IOException) {
             e.printStackTrace()
