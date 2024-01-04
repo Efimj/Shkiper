@@ -148,7 +148,12 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
                 controller = captureController,
                 onCaptured = { bitmap, error ->
                     if (bitmap != null) {
-                        IntentHelper().shareImageToOthers(context = context, text = "", bitmap = bitmap, format = Bitmap.CompressFormat.PNG)
+                        IntentHelper().shareImageToOthers(
+                            context = context,
+                            text = "",
+                            bitmap = bitmap,
+                            format = Bitmap.CompressFormat.PNG
+                        )
                     }
 
                     if (error != null) {
