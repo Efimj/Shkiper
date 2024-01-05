@@ -7,7 +7,6 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -60,10 +59,7 @@ import com.jobik.shkiper.ui.components.fields.CustomDefaultTextField
 import com.jobik.shkiper.ui.components.fields.CustomRichTextEditor
 import com.jobik.shkiper.ui.components.fields.HashtagEditor
 import com.jobik.shkiper.ui.components.layouts.*
-import com.jobik.shkiper.ui.components.modals.ActionDialog
-import com.jobik.shkiper.ui.components.modals.CreateReminderDialog
-import com.jobik.shkiper.ui.components.modals.CustomModalBottomSheet
-import com.jobik.shkiper.ui.components.modals.ReminderDialogProperties
+import com.jobik.shkiper.ui.components.modals.*
 import com.jobik.shkiper.ui.theme.CustomTheme
 import com.jobik.shkiper.util.SnackbarVisualsCustom
 import com.mohamedrejeb.richeditor.annotation.ExperimentalRichTextApi
@@ -105,7 +101,6 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
     val linkColor = CustomTheme.colors.text
 
     val richTextState = rememberRichTextState()
-    val captureController = rememberCaptureController()
 
     LaunchedEffect(Unit) {
         richTextState.setConfig(
@@ -144,106 +139,87 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
                 .fillMaxSize()
                 .padding(contentPadding)
         ) {
-            Capturable(
-                controller = captureController,
-                onCaptured = { bitmap, error ->
-                    if (bitmap != null) {
-                        IntentHelper().shareImageToOthers(
-                            context = context,
-                            text = "",
-                            bitmap = bitmap,
-                            format = Bitmap.CompressFormat.PNG
-                        )
+            LazyColumn(
+                state = scrollState,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .clickable(
+                        indication = null,
+                        interactionSource = remember { MutableInteractionSource() } // This is mandatory
+                    ) {
+                        bodyFieldFocusRequester.requestFocus()
                     }
-
-                    if (error != null) {
-                        Log.d("Capturable error", error.toString())
-                        // Error occurred. Handle it!
-                    }
-                }
             ) {
-                LazyColumn(
-                    state = scrollState,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .clickable(
-                            indication = null,
-                            interactionSource = remember { MutableInteractionSource() } // This is mandatory
-                        ) {
-                            bodyFieldFocusRequester.requestFocus()
-                        }
-                ) {
-                    val enabled = noteViewModel.screenState.value.notePosition != NotePosition.DELETE
-                    item {
-                        CustomDefaultTextField(
-                            text = noteViewModel.screenState.value.noteHeader,
-                            onTextChange = { noteViewModel.updateNoteHeader(it) },
-                            placeholder = stringResource(R.string.Header),
-                            keyboardOptions = KeyboardOptions(
-                                keyboardType = KeyboardType.Text,
-                                imeAction = ImeAction.Next,
-                                capitalization = KeyboardCapitalization.Sentences,
-                                autoCorrect = true
-                            ),
-                            keyboardActions = KeyboardActions(
-                                onAny = {
-                                    bodyFieldFocusRequester.requestFocus()
-                                }
-                            ),
-                            enabled = enabled,
-                            textStyle = MaterialTheme.typography.h6.copy(
-                                fontWeight = FontWeight.SemiBold,
-                                fontSize = 21.sp
-                            ),
-                            modifier = Modifier
-                                .testTag("note_header_input")
-                                .fillMaxSize()
-                                .padding(bottom = 6.dp, top = 4.dp)
-                                .padding(horizontal = 20.dp)
-                        )
-                    }
-                    item {
-                        CustomRichTextEditor(
-                            state = richTextState,
-                            placeholder = stringResource(R.string.Text),
-                            textStyle = MaterialTheme.typography.body1,
-                            enabled = enabled,
-                            modifier = Modifier
-                                .testTag("note_body_input")
-                                .fillMaxWidth()
-                                .padding(bottom = 10.dp)
-                                .padding(horizontal = 20.dp)
-                                .focusRequester(bodyFieldFocusRequester)
-                                .onFocusChanged { state ->
-                                    if (state.isFocused) {
-                                        noteViewModel.switchStylingEnabled(true)
-                                    } else {
-                                        noteViewModel.switchStyling(false)
-                                        noteViewModel.switchStylingEnabled(false)
-                                    }
-                                }
-                        )
-                    }
-                    item {
-                        HashtagEditor(
-                            enabled = enabled,
-                            modifier = Modifier
-                                .padding(bottom = 15.dp)
-                                .padding(horizontal = 20.dp),
-                            tags = noteViewModel.screenState.value.hashtags,
-                            forSelectionTags = noteViewModel.screenState.value.allHashtags,
-                            onSave = noteViewModel::changeNoteHashtags
-                        )
-                    }
-                    LinkPreviewList(
-                        noteViewModel.screenState.value.linksMetaData,
-                        linkListExpanded,
-                        noteViewModel.screenState.value.linksLoading,
-                        Modifier.padding(horizontal = 20.dp)
+                val enabled = noteViewModel.screenState.value.notePosition != NotePosition.DELETE
+                item {
+                    CustomDefaultTextField(
+                        text = noteViewModel.screenState.value.noteHeader,
+                        onTextChange = { noteViewModel.updateNoteHeader(it) },
+                        placeholder = stringResource(R.string.Header),
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Text,
+                            imeAction = ImeAction.Next,
+                            capitalization = KeyboardCapitalization.Sentences,
+                            autoCorrect = true
+                        ),
+                        keyboardActions = KeyboardActions(
+                            onAny = {
+                                bodyFieldFocusRequester.requestFocus()
+                            }
+                        ),
+                        enabled = enabled,
+                        textStyle = MaterialTheme.typography.h6.copy(
+                            fontWeight = FontWeight.SemiBold,
+                            fontSize = 21.sp
+                        ),
+                        modifier = Modifier
+                            .testTag("note_header_input")
+                            .fillMaxSize()
+                            .padding(bottom = 6.dp, top = 4.dp)
+                            .padding(horizontal = 20.dp)
                     )
-                    item {
-                        Spacer(Modifier.height(45.dp))
-                    }
+                }
+                item {
+                    CustomRichTextEditor(
+                        state = richTextState,
+                        placeholder = stringResource(R.string.Text),
+                        textStyle = MaterialTheme.typography.body1,
+                        enabled = enabled,
+                        modifier = Modifier
+                            .testTag("note_body_input")
+                            .fillMaxWidth()
+                            .padding(bottom = 10.dp)
+                            .padding(horizontal = 20.dp)
+                            .focusRequester(bodyFieldFocusRequester)
+                            .onFocusChanged { state ->
+                                if (state.isFocused) {
+                                    noteViewModel.switchStylingEnabled(true)
+                                } else {
+                                    noteViewModel.switchStyling(false)
+                                    noteViewModel.switchStylingEnabled(false)
+                                }
+                            }
+                    )
+                }
+                item {
+                    HashtagEditor(
+                        enabled = enabled,
+                        modifier = Modifier
+                            .padding(bottom = 15.dp)
+                            .padding(horizontal = 20.dp),
+                        tags = noteViewModel.screenState.value.hashtags,
+                        forSelectionTags = noteViewModel.screenState.value.allHashtags,
+                        onSave = noteViewModel::changeNoteHashtags
+                    )
+                }
+                LinkPreviewList(
+                    noteViewModel.screenState.value.linksMetaData,
+                    linkListExpanded,
+                    noteViewModel.screenState.value.linksLoading,
+                    Modifier.padding(horizontal = 20.dp)
+                )
+                item {
+                    Spacer(Modifier.height(45.dp))
                 }
             }
             if (noteViewModel.screenState.value.notePosition == NotePosition.DELETE && noteViewModel.screenState.value.deletionDate != null)
@@ -325,10 +301,19 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
                 icon = Icons.Outlined.Screenshot,
                 title = "Share image",
                 onClick = {
-                    captureController.capture()
+                    noteViewModel.switchShowShareNoteDialog()
                     noteViewModel.switchShowShareDialog()
                 })
         }
+    }
+
+    if (noteViewModel.screenState.value.showShareNoteDialog) {
+        ShareNoteDialog(
+            noteHeader = noteViewModel.screenState.value.noteHeader,
+            noteContent = noteViewModel.screenState.value.noteBody,
+            onConfirm = noteViewModel::switchShowShareNoteDialog,
+            onGoBack = noteViewModel::switchShowShareNoteDialog,
+        )
     }
 
     if (noteViewModel.screenState.value.isCreateReminderDialogShow) {

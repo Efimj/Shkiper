@@ -30,6 +30,7 @@ import com.jobik.shkiper.ui.helpers.MultipleEventsCutter
 import com.jobik.shkiper.ui.helpers.get
 import com.jobik.shkiper.ui.modifiers.bounceClick
 import com.jobik.shkiper.ui.theme.CustomTheme
+import com.mohamedrejeb.richeditor.annotation.ExperimentalRichTextApi
 import com.mohamedrejeb.richeditor.model.rememberRichTextState
 import com.mohamedrejeb.richeditor.ui.material3.RichText
 import java.time.LocalDateTime
@@ -51,7 +52,7 @@ fun NoteCard(
     val bodyStyle = MaterialTheme.typography.body1
     val multipleEventsCutter = remember { MultipleEventsCutter.get() }
     val borderColor: Color by animateColorAsState(
-        targetValue = if (selected) CustomTheme.colors.active else Color.Transparent,
+        targetValue = if (selected) CustomTheme.colors.active else Color.Transparent, label = "borderColor",
     )
 
     Card(
@@ -138,11 +139,27 @@ private fun ReminderInformation(reminder: Reminder?) {
     }
 }
 
+@OptIn(ExperimentalRichTextApi::class)
 @Composable
 private fun NoteContent(header: String?, text: String?, headerStyle: TextStyle, bodyStyle: TextStyle) {
     var headerLineCount by remember { mutableStateOf(1) }
     val maxBodyLines = 8
     val richTextState = rememberRichTextState()
+
+    val codeColor = CustomTheme.colors.textOnActive
+    val codeBackgroundColor = CustomTheme.colors.active.copy(alpha = .2f)
+    val codeStrokeColor = CustomTheme.colors.active
+    val linkColor = CustomTheme.colors.text
+
+    LaunchedEffect(Unit) {
+        richTextState.setConfig(
+            linkColor = linkColor,
+            linkTextDecoration = TextDecoration.Underline,
+            codeColor = codeColor,
+            codeBackgroundColor = codeBackgroundColor,
+            codeStrokeColor = codeStrokeColor
+        )
+    }
 
     LaunchedEffect(text) {
         if (text !== null && richTextState.annotatedString.text !== text)
