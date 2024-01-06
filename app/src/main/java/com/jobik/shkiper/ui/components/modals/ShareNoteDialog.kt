@@ -155,7 +155,6 @@ fun ShareNoteDialog(
                     style = ButtonStyle.Filled,
                 )
             }
-
         }
     }
 }
