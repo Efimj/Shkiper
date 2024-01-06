@@ -201,7 +201,7 @@ fun StatisticsScreen() {
         ) {
             SettingsItem(
                 icon = Icons.Outlined.ContentCopy,
-                title = "Share text",
+                title = stringResource(R.string.ShareText),
                 onClick = {
                     showShareDialog = !showShareDialog
                     IntentHelper().shareTextIntent(context, statisticsText)
@@ -209,7 +209,7 @@ fun StatisticsScreen() {
                 })
             SettingsItem(
                 icon = Icons.Outlined.Screenshot,
-                title = "Share image",
+                title = stringResource(R.string.ShareImage),
                 onClick = {
                     showShareDialog = !showShareDialog
                     captureController.capture();

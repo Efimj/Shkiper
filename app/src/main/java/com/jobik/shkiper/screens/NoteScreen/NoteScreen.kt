@@ -269,7 +269,7 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
         ) {
             SettingsItem(
                 icon = Icons.Outlined.ContentCopy,
-                title = "Share text",
+                title = stringResource(R.string.ShareText),
                 onClick = {
                     noteViewModel.shareNoteText(
                         context,
@@ -279,7 +279,7 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
                 })
             SettingsItem(
                 icon = Icons.Outlined.Html,
-                title = "Share HTML text",
+                title = stringResource(R.string.ShareHTMLText),
                 onClick = {
                     noteViewModel.shareNoteText(
                         context,
@@ -289,7 +289,7 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
                 })
             SettingsItem(
                 icon = Icons.Outlined.Code,
-                title = "Share markdown text",
+                title = stringResource(R.string.ShareMarkdownText),
                 onClick = {
                     noteViewModel.shareNoteText(
                         context,
@@ -299,7 +299,7 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
                 })
             SettingsItem(
                 icon = Icons.Outlined.Screenshot,
-                title = "Share image",
+                title = stringResource(R.string.ShareImage),
                 onClick = {
                     noteViewModel.switchShowShareNoteDialog()
                     noteViewModel.switchShowShareDialog()
