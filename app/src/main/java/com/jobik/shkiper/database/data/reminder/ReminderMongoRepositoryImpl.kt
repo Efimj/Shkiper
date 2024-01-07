@@ -11,6 +11,7 @@ import com.jobik.shkiper.helpers.DateHelper
 import com.jobik.shkiper.services.notification_service.NotificationData
 import com.jobik.shkiper.services.notification_service.NotificationScheduler
 import com.jobik.shkiper.services.statistics_service.StatisticsService
+import com.mohamedrejeb.richeditor.model.RichTextState
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.realm.kotlin.Realm
 import io.realm.kotlin.UpdatePolicy
@@ -177,6 +178,9 @@ class ReminderMongoRepositoryImpl(val realm: Realm, @ApplicationContext val cont
         reminder: Reminder,
         note: Note,
     ) {
+        val richBody = RichTextState()
+        richBody.setHtml(note.body)
+
         val notificationScheduler = NotificationScheduler(context)
         notificationScheduler.createNotificationChannel(NotificationScheduler.Companion.NotificationChannels.NOTECHANNEL, context)
         var reminderDateTime = LocalDateTime.of(reminder.date, reminder.time)
@@ -189,7 +193,7 @@ class ReminderMongoRepositoryImpl(val realm: Realm, @ApplicationContext val cont
             note._id.toHexString(),
             reminder._id.timestamp,
             note.header,
-            note.body,
+            richBody.annotatedString.text,
             R.drawable.ic_notification,
             reminder.repeat,
             reminder._id.timestamp,

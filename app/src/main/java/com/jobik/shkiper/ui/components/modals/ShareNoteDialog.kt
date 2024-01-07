@@ -128,7 +128,7 @@ fun ShareNoteDialog(
                             RichText(
                                 state = richTextState,
                                 style = MaterialTheme.typography.body1,
-                                color = CustomTheme.colors.textSecondary,
+                                color = CustomTheme.colors.text,
                             )
                         }
                     }
