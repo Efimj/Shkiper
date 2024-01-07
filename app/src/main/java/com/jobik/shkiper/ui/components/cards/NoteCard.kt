@@ -182,13 +182,20 @@ private fun NoteContent(header: String?, text: String?, headerStyle: TextStyle, 
     if (!text.isNullOrEmpty() && !header.isNullOrEmpty())
         Spacer(modifier = Modifier.height(4.dp))
     if (!text.isNullOrEmpty()) {
-        RichText(
-            state = richTextState,
+        Text(
+            text = richTextState.annotatedString.text,
             maxLines = maxBodyLines - headerLineCount,
             overflow = TextOverflow.Ellipsis,
             style = bodyStyle,
             color = CustomTheme.colors.textSecondary,
         )
+//        RichText(
+//            state = richTextState,
+//            maxLines = maxBodyLines - headerLineCount,
+//            overflow = TextOverflow.Ellipsis,
+//            style = bodyStyle,
+//            color = CustomTheme.colors.textSecondary,
+//        )
     }
 }
 
