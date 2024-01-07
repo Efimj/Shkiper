@@ -1,8 +1,6 @@
 package com.jobik.shkiper.screens.NoteScreen
 
 import android.annotation.SuppressLint
-import android.graphics.Bitmap
-import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
@@ -47,7 +45,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.NotePosition
-import com.jobik.shkiper.helpers.IntentHelper
 import com.jobik.shkiper.navigation.AppScreens
 import com.jobik.shkiper.ui.animation.AnimateVerticalSwitch
 import com.jobik.shkiper.ui.components.buttons.DropDownButton
@@ -65,8 +62,6 @@ import com.jobik.shkiper.util.SnackbarVisualsCustom
 import com.mohamedrejeb.richeditor.annotation.ExperimentalRichTextApi
 import com.mohamedrejeb.richeditor.model.RichTextState
 import com.mohamedrejeb.richeditor.model.rememberRichTextState
-import dev.shreyaspatil.capturable.Capturable
-import dev.shreyaspatil.capturable.controller.rememberCaptureController
 import java.time.Duration
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -114,7 +109,7 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
     }
 
     LaunchedEffect(richTextState.annotatedString) {
-        if (noteViewModel.screenState.value.noteBody !== richTextState.toMarkdown())
+        if (noteViewModel.screenState.value.noteBody != richTextState.toHtml())
             noteViewModel.updateNoteBody(richTextState.toHtml())
     }
 
@@ -493,7 +488,10 @@ private fun NoteScreenFooter(navController: NavController, noteViewModel: NoteVi
                                 horizontalArrangement = Arrangement.spacedBy(6.dp, Alignment.CenterHorizontally)
                             ) {
                                 IconButton(
-                                    onClick = { noteViewModel.noteStateGoBack() },
+                                    onClick = {
+                                        noteViewModel.noteStateGoBack()
+                                        richTextState.setHtml(noteViewModel.screenState.value.intermediateStates[noteViewModel.screenState.value.currentIntermediateIndex].body)
+                                    },
                                     modifier = Modifier
                                         .size(40.dp)
                                         .clip(CircleShape)
@@ -507,7 +505,10 @@ private fun NoteScreenFooter(navController: NavController, noteViewModel: NoteVi
                                     )
                                 }
                                 IconButton(
-                                    onClick = { noteViewModel.noteStateGoNext() },
+                                    onClick = {
+                                        noteViewModel.noteStateGoNext()
+                                        richTextState.setHtml(noteViewModel.screenState.value.intermediateStates[noteViewModel.screenState.value.currentIntermediateIndex].body)
+                                    },
                                     modifier = Modifier
                                         .size(40.dp)
                                         .clip(CircleShape)
