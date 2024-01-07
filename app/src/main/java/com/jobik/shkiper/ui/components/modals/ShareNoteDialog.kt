@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextLayoutResult
@@ -78,8 +79,9 @@ fun ShareNoteDialog(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
+                .padding(bottom = 10.dp)
                 .clip(CustomTheme.shapes.medium)
-                .background(CustomTheme.colors.mainBackground),
+                .background(CustomTheme.colors.mainBackground)
         ) {
             Column(
                 modifier = Modifier
