@@ -340,4 +340,10 @@
 
     <string name="TurnOnNotifications">Aktivieren Sie Benachrichtigungen in den Einstellungen Ihres Telefons</string>
 
+    <string name="InsertLink">Link einfügen</string>
+    <string name="ShareText">Text teilen</string>
+    <string name="ShareImage">Bild teilen</string>
+    <string name="ShareHTMLText">Als HTML-Text teilen</string>
+    <string name="ShareMarkdownText">Als Markdown-Text teilen</string>
+
 </resources>

@@ -339,4 +339,10 @@
     <string name="MyStatsInShkiper">Le mie statistiche a Scutari</string>
 
     <string name="TurnOnNotifications">Attiva le notifiche nelle impostazioni del tuo telefono</string>
+
+    <string name="InsertLink">Inserisci collegamento</string>
+    <string name="ShareText">Condividi testo</string>
+    <string name="ShareImage">Condividi l\'immagine</string>
+    <string name="ShareHTMLText">Condividi come testo HTML</string>
+    <string name="ShareMarkdownText">Condividi come testo di ribasso</string>
 </resources>

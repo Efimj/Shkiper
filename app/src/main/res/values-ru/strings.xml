@@ -189,4 +189,10 @@
     <string name="MyStatsInShkiper">Моя статистика в Shkiper</string>
     <string name="TurnOnNotifications">Включите уведомления в настройках телефона</string>
 
+    <string name="InsertLink">Добавить ссылку</string>
+    <string name="ShareText">Подельться текстом</string>
+    <string name="ShareImage">Поделиться изображением</string>
+    <string name="ShareHTMLText">Поделиться HTML текстом</string>
+    <string name="ShareMarkdownText">Поделиться markdown текстом</string>
+
 </resources>

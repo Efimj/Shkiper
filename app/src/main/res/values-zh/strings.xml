@@ -343,4 +343,10 @@
     <string name="MyStatsInShkiper">我在 Shkiper 的统计数据</string>
 
     <string name="TurnOnNotifications">在手机设置中启用通知</string>
+
+    <string name="InsertLink">插入链接</string>
+    <string name="ShareText">分享文字</string>
+    <string name="ShareImage">分享图像</string>
+    <string name="ShareHTMLText">以 HTML 文本形式共享</string>
+    <string name="ShareMarkdownText">分享为 Markdown 文本</string>
 </resources>

@@ -339,4 +339,10 @@
     <string name="MyStatsInShkiper">Statistik saya di Shkiper</string>
 
     <string name="TurnOnNotifications">Aktifkan pemberitahuan di pengaturan telepon Anda</string>
+
+    <string name="InsertLink">Sisipkan tautan</string>
+    <string name="ShareText">Bagikan teks</string>
+    <string name="ShareImage">Bagikan gambar</string>
+    <string name="ShareHTMLText">Bagikan sebagai teks HTML</string>
+    <string name="ShareMarkdownText">Bagikan sebagai teks penurunan harga</string>
 </resources>
