@@ -23,6 +23,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -461,6 +462,7 @@ private fun NoteScreenFooter(navController: NavController, noteViewModel: NoteVi
                             IconButton(
                                 onClick = { noteViewModel.switchStyling() },
                                 modifier = Modifier
+                                    .alpha(if (noteViewModel.screenState.value.isStylingEnabled) 1f else .5f)
                                     .size(40.dp)
                                     .clip(CircleShape)
                                     .padding(0.dp),
@@ -475,7 +477,7 @@ private fun NoteScreenFooter(navController: NavController, noteViewModel: NoteVi
                         }
                         if (noteViewModel.screenState.value.intermediateStates.size < 2) {
                             Text(
-                                "${stringResource(R.string.ChangedAt)} ${getUpdatedTime(noteViewModel)}",
+                                text = "${stringResource(R.string.ChangedAt)} ${getUpdatedTime(noteViewModel)}",
                                 modifier = Modifier
                                     .weight(1f)
                                     .padding(horizontal = 10.dp)
