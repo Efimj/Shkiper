@@ -47,9 +47,9 @@ fun NoteWidgetContent(prefs: Preferences) {
             .cornerRadius(15.dp)
             .appWidgetBackground()
     ) {
-        LazyColumn(modifier = GlanceModifier) {
+        LazyColumn(modifier = GlanceModifier.fillMaxWidth(), horizontalAlignment = Alignment.Start) {
             item {
-                Spacer(modifier = GlanceModifier.height(16.dp))
+                Spacer(modifier = GlanceModifier.fillMaxWidth().height(16.dp))
             }
             if (noteHeader.isNotEmpty()) item {
                 Text(
@@ -59,7 +59,8 @@ fun NoteWidgetContent(prefs: Preferences) {
                         color = ColorProvider(day = lightColors.text, night = darkColors.text),
                         fontFamily = FontFamily("Roboto"),
                         fontSize = 20.sp,
-                        fontWeight = FontWeight.Medium
+                        fontWeight = FontWeight.Medium,
+                        textAlign = TextAlign.Left
                     )
                 )
             }
@@ -74,7 +75,8 @@ fun NoteWidgetContent(prefs: Preferences) {
                         color = ColorProvider(day = lightColors.text, night = darkColors.text),
                         fontFamily = FontFamily("Roboto"),
                         fontSize = 16.sp,
-                        fontWeight = FontWeight.Normal
+                        fontWeight = FontWeight.Normal,
+                        textAlign = TextAlign.Left
                     )
                 )
             }
