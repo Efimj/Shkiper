@@ -179,11 +179,11 @@ class ReminderMongoRepositoryImpl(val realm: Realm, @ApplicationContext val cont
         reminder: Reminder,
         note: Note,
     ) {
-        val richBody = RichTextState()
-        richBody.setHtml(note.body)
-
         val notificationScheduler = NotificationScheduler(context)
-        notificationScheduler.createNotificationChannel(NotificationScheduler.Companion.NotificationChannels.NOTECHANNEL, context)
+        notificationScheduler.createNotificationChannel(
+            NotificationScheduler.Companion.NotificationChannels.NOTECHANNEL,
+            context
+        )
         var reminderDateTime = LocalDateTime.of(reminder.date, reminder.time)
         if (LocalDateTime.now().isAfter(reminderDateTime)) {
             if (reminder.repeat == RepeatMode.NONE) return
@@ -191,14 +191,14 @@ class ReminderMongoRepositoryImpl(val realm: Realm, @ApplicationContext val cont
                 reminderDateTime = DateHelper.nextDateWithRepeating(reminder.date, reminder.time, reminder.repeat)
         }
         val notificationData = NotificationData(
-            note._id.toHexString(),
-            reminder._id.timestamp,
-            note.header,
-            TextHelper.removeMarkdownStyles(richBody.toMarkdown()),
-            R.drawable.ic_notification,
-            reminder.repeat,
-            reminder._id.timestamp,
-            reminderDateTime.toInstant(OffsetDateTime.now().offset).toEpochMilli()
+            noteId = note._id.toHexString(),
+            notificationId = reminder._id.timestamp,
+            title = note.header,
+            message = note.body,
+            icon = R.drawable.ic_notification,
+            repeatMode = reminder.repeat,
+            requestCode = reminder._id.timestamp,
+            trigger = reminderDateTime.toInstant(OffsetDateTime.now().offset).toEpochMilli()
         )
         notificationScheduler.scheduleNotification(notificationData)
     }
