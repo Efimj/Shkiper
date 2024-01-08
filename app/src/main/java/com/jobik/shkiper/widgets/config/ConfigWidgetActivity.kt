@@ -14,6 +14,7 @@ import androidx.glance.appwidget.GlanceAppWidgetManager
 import androidx.glance.appwidget.state.updateAppWidgetState
 import androidx.lifecycle.lifecycleScope
 import com.jobik.shkiper.database.models.Note
+import com.jobik.shkiper.helpers.TextHelper
 import com.jobik.shkiper.ui.theme.CustomTheme
 import com.jobik.shkiper.ui.theme.CustomThemeStyle
 import com.jobik.shkiper.ui.theme.ShkiperTheme
@@ -43,7 +44,9 @@ class ConfigWidgetActivity : AppCompatActivity() {
                 style = ThemeUtil.themeStyle.value ?: CustomThemeStyle.PastelPurple
             ) {
                 Box(
-                    Modifier.fillMaxSize().background(CustomTheme.colors.mainBackground)
+                    Modifier
+                        .fillMaxSize()
+                        .background(CustomTheme.colors.mainBackground)
                 ) {
                     NoteSelectionScreen {
                         handleSelectNote(it)
@@ -67,7 +70,7 @@ class ConfigWidgetActivity : AppCompatActivity() {
 
             prefs[WidgetKeys.Prefs.noteId] = note._id.toHexString()
             prefs[WidgetKeys.Prefs.noteHeader] = note.header
-            prefs[WidgetKeys.Prefs.noteBody] = richBody.annotatedString.text
+            prefs[WidgetKeys.Prefs.noteBody] = TextHelper.removeMarkdownStyles(richBody.toMarkdown())
             prefs[WidgetKeys.Prefs.noteLastUpdate] = note.updateDateString
         }
         NoteWidget().update(application.applicationContext, glanceId)

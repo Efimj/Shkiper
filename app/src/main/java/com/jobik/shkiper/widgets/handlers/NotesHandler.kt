@@ -9,6 +9,7 @@ import androidx.glance.appwidget.state.updateAppWidgetState
 import androidx.glance.appwidget.updateIf
 import com.jobik.shkiper.SharedPreferencesKeys
 import com.jobik.shkiper.database.models.Note
+import com.jobik.shkiper.helpers.TextHelper
 import com.jobik.shkiper.widgets.WidgetKeys
 import com.jobik.shkiper.widgets.WidgetKeys.Prefs.noteId
 import com.jobik.shkiper.widgets.services.NoteWidgetReceiver
@@ -41,7 +42,7 @@ suspend fun GlanceAppWidgetManager.mapNoteToWidget(context: Context, note: Note)
                     richBody.setHtml(note.body)
 
                     prefs[WidgetKeys.Prefs.noteHeader] = note.header
-                    prefs[WidgetKeys.Prefs.noteBody] = richBody.annotatedString.text
+                    prefs[WidgetKeys.Prefs.noteBody] = TextHelper.removeMarkdownStyles(richBody.toMarkdown())
                     prefs[WidgetKeys.Prefs.noteLastUpdate] = note.updateDateString
                     NoteWidget().update(context, glanceId)
                 }

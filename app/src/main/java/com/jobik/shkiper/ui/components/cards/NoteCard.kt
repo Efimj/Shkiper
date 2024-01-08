@@ -26,6 +26,7 @@ import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.Reminder
 import com.jobik.shkiper.database.models.RepeatMode
 import com.jobik.shkiper.helpers.DateHelper
+import com.jobik.shkiper.helpers.TextHelper
 import com.jobik.shkiper.ui.helpers.MultipleEventsCutter
 import com.jobik.shkiper.ui.helpers.get
 import com.jobik.shkiper.ui.modifiers.bounceClick
@@ -183,7 +184,7 @@ private fun NoteContent(header: String?, text: String?, headerStyle: TextStyle, 
         Spacer(modifier = Modifier.height(4.dp))
     if (!text.isNullOrEmpty()) {
         Text(
-            text = richTextState.annotatedString.text,
+            text = TextHelper.removeMarkdownStyles(richTextState.toMarkdown()),
             maxLines = maxBodyLines - headerLineCount,
             overflow = TextOverflow.Ellipsis,
             style = bodyStyle,
@@ -238,7 +239,7 @@ private fun NoteAnnotatedContent(
     if (!text.isNullOrEmpty()) {
         Text(
             text = buildAnnotatedString(
-                richTextState.annotatedString.text,
+                TextHelper.removeMarkdownStyles(richTextState.toMarkdown()),
                 markedText,
                 CustomTheme.colors.active,
                 Color.Transparent

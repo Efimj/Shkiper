@@ -8,6 +8,7 @@ import com.jobik.shkiper.database.models.Note
 import com.jobik.shkiper.database.models.Reminder
 import com.jobik.shkiper.database.models.RepeatMode
 import com.jobik.shkiper.helpers.DateHelper
+import com.jobik.shkiper.helpers.TextHelper
 import com.jobik.shkiper.services.notification_service.NotificationData
 import com.jobik.shkiper.services.notification_service.NotificationScheduler
 import com.jobik.shkiper.services.statistics_service.StatisticsService
@@ -193,7 +194,7 @@ class ReminderMongoRepositoryImpl(val realm: Realm, @ApplicationContext val cont
             note._id.toHexString(),
             reminder._id.timestamp,
             note.header,
-            richBody.annotatedString.text,
+            TextHelper.removeMarkdownStyles(richBody.toMarkdown()),
             R.drawable.ic_notification,
             reminder.repeat,
             reminder._id.timestamp,

@@ -9,6 +9,7 @@ import androidx.glance.appwidget.state.updateAppWidgetState
 import com.jobik.shkiper.SharedPreferencesKeys
 import com.jobik.shkiper.database.data.note.NoteMongoRepository
 import com.jobik.shkiper.database.models.Note
+import com.jobik.shkiper.helpers.TextHelper
 import com.jobik.shkiper.widgets.WidgetKeys
 import com.jobik.shkiper.widgets.WidgetKeys.Prefs.noteBody
 import com.jobik.shkiper.widgets.WidgetKeys.Prefs.noteHeader
@@ -49,7 +50,7 @@ class PinWidgetReceiver : BroadcastReceiver() {
 
             prefs[noteId] = note._id.toHexString()
             prefs[noteHeader] = note.header
-            prefs[noteBody] = richBody.annotatedString.text
+            prefs[noteBody] = TextHelper.removeMarkdownStyles(richBody.toMarkdown())
             prefs[noteLastUpdate] = note.updateDateString
         }
         NoteWidget().update(context, lastAddedGlanceId)
