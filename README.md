@@ -16,17 +16,25 @@ flexible repeat modes (daily, weekly, monthly, yearly) and don't forget importan
 
 - Create notes and group them with tags for easy organization.
 - View a preview of the links if they are in the note.
-- Go back to similar actions when editing notes so you don't lose anything.
+- Go back to similar actions when editing notes, so you don't lose anything.
 - Customize the themes of the app to make it prestigious and customized to your style.
 - Back up your data or download it for quick transitions.
 - View application usage statistics, because it can be interesting.
+- Convenient reminders for important occasions.
+- Create widgets for quick access and viewing.
+- Styling notes and text formatting.
+- Ability to share a note and statistics as an image.
 
 ### App features
 
 - Switch language (localization)
+- Push notifications
 - Custom color themes
 - In-app updates
 - In-app purchases
+- Glance app widgets
+- Image share
+- Text formatting
 
 <p> 
     ⭐ Shkiper is still under development, if you have any questions or suggestions, please contact me! We value all of your feedback.
