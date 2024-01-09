@@ -9,6 +9,7 @@ import com.jobik.shkiper.database.data.reminder.ReminderMongoRepository
 import com.jobik.shkiper.database.models.Note
 import com.jobik.shkiper.database.models.NotePosition
 import com.jobik.shkiper.database.models.Reminder
+import com.mohamedrejeb.richeditor.model.RichTextState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -74,15 +75,21 @@ class NoteSelectionViewModel @Inject constructor(
     private fun getNotesByText(newString: String) {
         _screenState.value = screenState.value.copy(currentHashtag = null)
         noteRepository.getAllNotes().let { listNotes ->
-            val notes = listNotes.filter {
-                it.position != NotePosition.DELETE && (
-                        it.body.contains(newString, ignoreCase = true) || it.header.contains(
-                            newString,
-                            ignoreCase = true
-                        ))
-            }
+            val notes = listNotes.filter { note -> noteTextIsContains(note, newString) }
             _screenState.value = _screenState.value.copy(notes = notes)
         }
+    }
+
+    private fun noteTextIsContains(note: Note, newString: String): Boolean {
+        if (note.position == NotePosition.DELETE) return false
+        val bodyContent = RichTextState()
+        bodyContent.setHtml(note.body)
+        val annotatedBodyText = bodyContent.annotatedString.text
+
+        return annotatedBodyText.contains(newString, ignoreCase = true) || note.header.contains(
+            newString,
+            ignoreCase = true
+        )
     }
 
     fun clickOnNote(noteId: ObjectId?) {
