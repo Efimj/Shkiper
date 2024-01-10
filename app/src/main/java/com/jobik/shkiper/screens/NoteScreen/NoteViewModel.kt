@@ -21,6 +21,7 @@ import com.jobik.shkiper.navigation.Argument_Note_Id
 import com.jobik.shkiper.util.SnackbarHostUtil
 import com.jobik.shkiper.util.SnackbarVisualsCustom
 import com.jobik.shkiper.widgets.handlers.handleNoteWidgetPin
+import com.mohamedrejeb.richeditor.model.RichTextState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.realm.kotlin.ext.realmSetOf
 import kotlinx.coroutines.*
@@ -175,7 +176,10 @@ class NoteViewModel @Inject constructor(
 
     private fun fetchLinkMetaData() {
         viewModelScope.launch(Dispatchers.IO) {
-            val links = LinkHelper().findLinks(_screenState.value.noteBody)
+            val richTextState = RichTextState()
+            richTextState.setHtml(_screenState.value.noteBody)
+            val links = LinkHelper().findLinks(richTextState.annotatedString.text)
+
             allLinksMetaData = allLinksMetaData.filter { it.link in links }.toSet()
 
             val newLinkData = mutableListOf<LinkHelper.LinkPreview>()

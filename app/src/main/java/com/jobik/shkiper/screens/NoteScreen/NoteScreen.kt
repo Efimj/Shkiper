@@ -46,6 +46,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.NotePosition
+import com.jobik.shkiper.helpers.TextHelper
 import com.jobik.shkiper.navigation.AppScreens
 import com.jobik.shkiper.ui.animation.AnimateVerticalSwitch
 import com.jobik.shkiper.ui.components.buttons.DropDownButton
@@ -269,7 +270,7 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
                 onClick = {
                     noteViewModel.shareNoteText(
                         context,
-                        richTextState.annotatedString.text
+                        TextHelper.removeMarkdownStyles(richTextState.toMarkdown())
                     )
                     noteViewModel.switchShowShareDialog()
                 })

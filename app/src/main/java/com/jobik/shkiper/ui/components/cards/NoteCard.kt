@@ -182,7 +182,7 @@ private fun NoteContent(header: String?, text: String?, headerStyle: TextStyle, 
     }
     if (!text.isNullOrEmpty() && !header.isNullOrEmpty())
         Spacer(modifier = Modifier.height(4.dp))
-    if (!text.isNullOrEmpty()) {
+    if (richTextState.annotatedString.text.isNotEmpty()) {
         Text(
             text = TextHelper.removeMarkdownStyles(richTextState.toMarkdown()),
             maxLines = maxBodyLines - headerLineCount,
@@ -236,7 +236,7 @@ private fun NoteAnnotatedContent(
     }
     if (!text.isNullOrEmpty() && !header.isNullOrEmpty())
         Spacer(modifier = Modifier.height(8.dp))
-    if (!text.isNullOrEmpty()) {
+    if (richTextState.annotatedString.text.isNotEmpty()) {
         Text(
             text = buildAnnotatedString(
                 TextHelper.removeMarkdownStyles(richTextState.toMarkdown()),
