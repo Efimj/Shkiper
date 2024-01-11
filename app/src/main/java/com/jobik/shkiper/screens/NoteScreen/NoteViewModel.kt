@@ -178,7 +178,7 @@ class NoteViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             val richTextState = RichTextState()
             richTextState.setHtml(_screenState.value.noteBody)
-            val links = LinkHelper().findLinks(richTextState.annotatedString.text)
+            val links = LinkHelper().findLinks(richTextState.toMarkdown())
 
             allLinksMetaData = allLinksMetaData.filter { it.link in links }.toSet()
 
