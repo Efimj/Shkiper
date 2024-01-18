@@ -14,6 +14,7 @@ import androidx.glance.appwidget.GlanceAppWidgetManager
 import androidx.glance.appwidget.state.updateAppWidgetState
 import androidx.lifecycle.lifecycleScope
 import com.jobik.shkiper.database.models.Note
+import com.jobik.shkiper.helpers.TextHelper
 import com.jobik.shkiper.ui.theme.CustomTheme
 import com.jobik.shkiper.ui.theme.CustomThemeStyle
 import com.jobik.shkiper.ui.theme.ShkiperTheme
@@ -21,6 +22,7 @@ import com.jobik.shkiper.util.ThemeUtil
 import com.jobik.shkiper.widgets.WidgetKeys
 import com.jobik.shkiper.widgets.screens.NoteSelectionScreen.NoteSelectionScreen
 import com.jobik.shkiper.widgets.widgets.NoteWidget
+import com.mohamedrejeb.richeditor.model.RichTextState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -42,7 +44,9 @@ class ConfigWidgetActivity : AppCompatActivity() {
                 style = ThemeUtil.themeStyle.value ?: CustomThemeStyle.PastelPurple
             ) {
                 Box(
-                    Modifier.fillMaxSize().background(CustomTheme.colors.mainBackground)
+                    Modifier
+                        .fillMaxSize()
+                        .background(CustomTheme.colors.mainBackground)
                 ) {
                     NoteSelectionScreen {
                         handleSelectNote(it)
@@ -61,9 +65,12 @@ class ConfigWidgetActivity : AppCompatActivity() {
     private fun saveWidgetState(note: Note) = lifecycleScope.launch(Dispatchers.IO) {
         val glanceId = GlanceAppWidgetManager(applicationContext).getGlanceIdBy(widgetId)
         updateAppWidgetState(application.applicationContext, glanceId) { prefs ->
+            val richBody = RichTextState()
+            richBody.setHtml(note.body)
+
             prefs[WidgetKeys.Prefs.noteId] = note._id.toHexString()
             prefs[WidgetKeys.Prefs.noteHeader] = note.header
-            prefs[WidgetKeys.Prefs.noteBody] = note.body
+            prefs[WidgetKeys.Prefs.noteBody] = TextHelper.removeMarkdownStyles(richBody.toMarkdown())
             prefs[WidgetKeys.Prefs.noteLastUpdate] = note.updateDateString
         }
         NoteWidget().update(application.applicationContext, glanceId)

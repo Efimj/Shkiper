@@ -235,7 +235,6 @@ private fun ScreenContent(
             onDelete = if (reminder != null) notesViewModel::deleteSelectedReminder else null,
             onSave = notesViewModel::createReminder,
         )
-
     }
 }
 

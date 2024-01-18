@@ -9,12 +9,14 @@ import androidx.glance.appwidget.state.updateAppWidgetState
 import com.jobik.shkiper.SharedPreferencesKeys
 import com.jobik.shkiper.database.data.note.NoteMongoRepository
 import com.jobik.shkiper.database.models.Note
+import com.jobik.shkiper.helpers.TextHelper
 import com.jobik.shkiper.widgets.WidgetKeys
 import com.jobik.shkiper.widgets.WidgetKeys.Prefs.noteBody
 import com.jobik.shkiper.widgets.WidgetKeys.Prefs.noteHeader
 import com.jobik.shkiper.widgets.WidgetKeys.Prefs.noteId
 import com.jobik.shkiper.widgets.WidgetKeys.Prefs.noteLastUpdate
 import com.jobik.shkiper.widgets.widgets.NoteWidget
+import com.mohamedrejeb.richeditor.model.RichTextState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
@@ -43,9 +45,12 @@ class PinWidgetReceiver : BroadcastReceiver() {
 
     private suspend fun mapNoteToWidget(context: Context, lastAddedGlanceId: GlanceId, note: Note) {
         updateAppWidgetState(context, lastAddedGlanceId) { prefs ->
+            val richBody = RichTextState()
+            richBody.setHtml(note.body)
+
             prefs[noteId] = note._id.toHexString()
             prefs[noteHeader] = note.header
-            prefs[noteBody] = note.body
+            prefs[noteBody] = TextHelper.removeMarkdownStyles(richBody.toMarkdown())
             prefs[noteLastUpdate] = note.updateDateString
         }
         NoteWidget().update(context, lastAddedGlanceId)

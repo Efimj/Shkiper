@@ -201,4 +201,11 @@
 
     <string name="TurnOnNotifications">Turn on notifications in your phone settings</string>
 
+    <string name="InsertLink">Insert link</string>
+    <string name="ShareText">Share text</string>
+    <string name="ShareImage">Share image</string>
+    <string name="ShareHTMLText">Share as HTML text</string>
+    <string name="ShareMarkdownText">Share as markdown text</string>
+
+
 </resources>

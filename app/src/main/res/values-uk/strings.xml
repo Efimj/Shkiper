@@ -183,4 +183,10 @@
 
     <string name="TurnOnNotifications">Увімкніть сповіщення в налаштуваннях вашого телефону</string>
 
+    <string name="InsertLink">Додати посилання</string>
+    <string name="ShareText">Поширити текстом</string>
+    <string name="ShareImage">Поширити як зображення</string>
+    <string name="ShareHTMLText">Поширити як HTML текст</string>
+    <string name="ShareMarkdownText">Поширити як markdown текст</string>
+
 </resources>

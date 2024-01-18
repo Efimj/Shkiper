@@ -14,8 +14,10 @@ import com.jobik.shkiper.SharedPreferencesKeys
 import com.jobik.shkiper.activity.MainActivity
 import com.jobik.shkiper.database.models.RepeatMode
 import com.jobik.shkiper.helpers.IntentHelper
+import com.jobik.shkiper.helpers.TextHelper
 import com.jobik.shkiper.services.statistics_service.StatisticsService
 import com.jobik.shkiper.util.ThemeUtil
+import com.mohamedrejeb.richeditor.model.RichTextState
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
@@ -63,6 +65,10 @@ class NotificationReceiver : BroadcastReceiver() {
             )
         }
 
+        val richBody = RichTextState()
+        richBody.setHtml(notification.message)
+        val message = TextHelper.removeMarkdownStyles(richBody.toMarkdown())
+
         val notificationBuilder =
             NotificationCompat.Builder(context, notification.channel.channelId)
                 .setSmallIcon(notification.icon)
@@ -72,12 +78,12 @@ class NotificationReceiver : BroadcastReceiver() {
                 .setContentIntent(mainPendingIntent)
         if (notification.title.isNotEmpty())
             notificationBuilder.setContentTitle(notification.title)
-        if (notification.message.isNotEmpty())
-            notificationBuilder.setContentText(notification.message)
+        if (message.isNotEmpty())
+            notificationBuilder.setContentText(message)
                 .setStyle(
                     NotificationCompat
                         .BigTextStyle()
-                        .bigText(notification.message)
+                        .bigText(message)
                 )
 
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager

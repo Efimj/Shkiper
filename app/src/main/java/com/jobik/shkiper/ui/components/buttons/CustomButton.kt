@@ -64,9 +64,9 @@ enum class ButtonStyle {
 }
 
 @Composable
-fun getButtonProperties(style: ButtonStyle, properties: ButtonProperties? = null): ButtonProperties {
+fun getButtonProperties(style: ButtonStyle, properties: ButtonProperties? = null, enabled: Boolean): ButtonProperties {
     if (properties !== null) return properties
-    return when (style) {
+    val style = when (style) {
         ButtonStyle.Filled -> ButtonProperties(
             buttonColors = ButtonDefaults.buttonColors(
                 backgroundColor = CustomTheme.colors.active,
@@ -110,6 +110,15 @@ fun getButtonProperties(style: ButtonStyle, properties: ButtonProperties? = null
             iconTint = CustomTheme.colors.text,
         )
     }
+
+    if (!enabled) {
+        return style.copy(
+            textColor = CustomTheme.colors.textSecondary,
+            iconTint = CustomTheme.colors.textSecondary,
+        )
+    }
+
+    return style
 }
 
 @Composable
@@ -125,7 +134,7 @@ fun CustomButton(
     content: @Composable (() -> Unit)? = null,
 ) {
     val multipleEventsCutter = remember { MultipleEventsCutter.get() }
-    val buttonProperties = getButtonProperties(style, properties)
+    val buttonProperties = getButtonProperties(style, properties, enabled)
     val paddingValues = PaddingValues(
         start = buttonProperties.horizontalPaddings,
         end = buttonProperties.horizontalPaddings,
@@ -152,7 +161,9 @@ fun CustomButton(
                     imageVector = icon,
                     contentDescription = null,
                     tint = buttonProperties.iconTint,
-                    modifier = if (loading) Modifier.size(20.dp).circularRotation() else Modifier.size(20.dp)
+                    modifier = if (loading) Modifier
+                        .size(20.dp)
+                        .circularRotation() else Modifier.size(20.dp)
                 )
                 if (text != null)
                     Spacer(Modifier.width(5.dp))

@@ -47,7 +47,6 @@ import com.jobik.shkiper.ui.components.layouts.LazyGridNotes
 import com.jobik.shkiper.ui.components.layouts.ScreenContentIfNoData
 import com.jobik.shkiper.ui.theme.CustomTheme
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun NoteSelectionScreen(notesViewModel: NoteSelectionViewModel = hiltViewModel(), selectNote: (note: Note) -> Unit) {
     val searchBarHeight = 60.dp
@@ -112,7 +111,6 @@ fun NoteSelectionScreen(notesViewModel: NoteSelectionViewModel = hiltViewModel()
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun ScreenContent(
     lazyGridNotes: LazyStaggeredGridState,

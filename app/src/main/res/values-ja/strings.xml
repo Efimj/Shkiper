@@ -339,4 +339,10 @@
     <string name="MyStatsInShkiper">シュキパーでの私の統計</string>
 
     <string name="TurnOnNotifications">スマートフォンの設定で通知を有効にしてください</string>
+
+    <string name="InsertLink">リンクを挿入</string>
+    <string name="ShareText">テキストを共有する</string>
+    <string name="ShareImage">画像を共有する</string>
+    <string name="ShareHTMLText">HTML テキストとして共有</string>
+    <string name="ShareMarkdownText">マークダウンテキストとして共有</string>
 </resources>

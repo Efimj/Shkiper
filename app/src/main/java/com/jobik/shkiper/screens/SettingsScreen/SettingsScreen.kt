@@ -50,7 +50,9 @@ import kotlinx.coroutines.launch
 @Composable
 fun SettingsScreen(navController: NavController, settingsViewModel: SettingsViewModel = hiltViewModel()) {
     Column(
-        Modifier.fillMaxSize().verticalScroll(rememberScrollState()),
+        Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -68,7 +70,9 @@ fun SettingsScreen(navController: NavController, settingsViewModel: SettingsView
 private fun InformationSettings() {
     SettingsItemGroup {
         Text(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp),
             fontSize = 16.sp,
             color = CustomTheme.colors.active,
             text = stringResource(R.string.Information),
@@ -76,7 +80,10 @@ private fun InformationSettings() {
             style = MaterialTheme.typography.body2,
         )
         Row(
-            Modifier.fillMaxWidth().padding(top = 15.dp, bottom = 8.dp).padding(horizontal = 20.dp),
+            Modifier
+                .fillMaxWidth()
+                .padding(top = 15.dp, bottom = 8.dp)
+                .padding(horizontal = 20.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
@@ -105,7 +112,9 @@ private fun DevSupportSettings(
 ) {
     SettingsItemGroup(setAccent = true) {
         Text(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp),
             fontSize = 16.sp,
             color = CustomTheme.colors.active,
             text = stringResource(R.string.Support),
@@ -132,7 +141,9 @@ private fun DevSupportSettings(
 private fun OtherSettings(navController: NavController) {
     SettingsItemGroup {
         Text(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp),
             fontSize = 16.sp,
             color = CustomTheme.colors.active,
             text = stringResource(R.string.Other),
@@ -174,7 +185,9 @@ private fun BackupSettings(
 
     SettingsItemGroup {
         Text(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp),
             fontSize = 16.sp,
             color = CustomTheme.colors.active,
             text = stringResource(R.string.Backup),
@@ -210,7 +223,8 @@ private fun BackupSettings(
                     imageVector = if (settingsViewModel.settingsScreenState.value.isLocalBackupSaving) Icons.Outlined.Loop else Icons.Outlined.Done,
                     contentDescription = null,
                     tint = contentColor.value,
-                    modifier = if (settingsViewModel.settingsScreenState.value.isLocalBackupSaving) Modifier.size(24.dp)
+                    modifier = if (settingsViewModel.settingsScreenState.value.isLocalBackupSaving) Modifier
+                        .size(24.dp)
                         .circularRotation() else Modifier.size(24.dp)
                 )
             }
@@ -242,9 +256,10 @@ private fun BackupSettings(
                     imageVector = if (settingsViewModel.settingsScreenState.value.isLocalBackupUploading) Icons.Outlined.Loop else Icons.Outlined.Done,
                     contentDescription = null,
                     tint = contentColor.value,
-                    modifier = if (settingsViewModel.settingsScreenState.value.isLocalBackupUploading) Modifier.size(
-                        24.dp
-                    )
+                    modifier = if (settingsViewModel.settingsScreenState.value.isLocalBackupUploading) Modifier
+                        .size(
+                            24.dp
+                        )
                         .circularRotation() else Modifier.size(24.dp)
                 )
             }
@@ -256,7 +271,9 @@ private fun BackupSettings(
 private fun ProgramSettings(settingsViewModel: SettingsViewModel) {
     SettingsItemGroup {
         Text(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp),
             fontSize = 16.sp,
             color = CustomTheme.colors.active,
             text = stringResource(R.string.Application),
@@ -320,7 +337,11 @@ private fun SettingsColorThemePicker(settingsViewModel: SettingsViewModel) {
         Spacer(Modifier.height(6.dp))
         LazyRow(state = rememberLazyListState(), contentPadding = PaddingValues(start = 20.dp)) {
             items(colorValues.size) { theme ->
-                Box(Modifier.padding(end = 10.dp).height(70.dp).width(55.dp)) {
+                Box(
+                    Modifier
+                        .padding(end = 10.dp)
+                        .height(70.dp)
+                        .width(55.dp)) {
                     ThemePreview(
                         colors = colorValues[theme],
                         selected = colorValuesName[theme].name == selectedThemeName
@@ -337,7 +358,8 @@ private fun SettingsColorThemePicker(settingsViewModel: SettingsViewModel) {
 private fun SettingsItemGroup(setAccent: Boolean = false, columnScope: @Composable ColumnScope.() -> Unit) {
     Spacer(Modifier.height(7.dp))
     Column(
-        modifier = Modifier.widthIn(max = 500.dp)
+        modifier = Modifier
+            .widthIn(max = 500.dp)
             .padding(horizontal = 10.dp)
             .clip(CustomTheme.shapes.large)
             .background(CustomTheme.colors.secondaryBackground)

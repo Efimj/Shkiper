@@ -2,15 +2,23 @@ package com.jobik.shkiper.helpers
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.Bitmap.CompressFormat
 import android.net.Uri
-import android.provider.Settings
 import android.provider.Settings.*
 import androidx.annotation.Keep
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asAndroidBitmap
+import androidx.core.content.FileProvider
+import com.jobik.shkiper.BuildConfig
 import com.jobik.shkiper.R
 import com.jobik.shkiper.SharedPreferencesKeys
 import com.jobik.shkiper.activity.MainActivity
-import com.jobik.shkiper.services.notification_service.NotificationScheduler
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+
 
 @Keep
 class IntentHelper {
@@ -83,6 +91,45 @@ class IntentHelper {
             val notificationIntent: Intent = Intent(ACTION_APP_NOTIFICATION_SETTINGS)
                 .putExtra(EXTRA_APP_PACKAGE, context.packageName)
             context.startActivity(notificationIntent)
+        }
+    }
+
+    fun shareImageToOthers(
+        context: Context,
+        text: String?,
+        bitmap: ImageBitmap,
+        format: CompressFormat = CompressFormat.JPEG
+    ) {
+        shareImageToOthers(context, text, bitmap.asAndroidBitmap(), format)
+    }
+
+    fun shareImageToOthers(
+        context: Context,
+        text: String?,
+        bitmap: Bitmap,
+        format: CompressFormat = CompressFormat.JPEG
+    ) {
+        try {
+            val cachePath = File(context.cacheDir, "images")
+            cachePath.mkdirs()
+            val stream = FileOutputStream("$cachePath/image.${format.name}")
+            bitmap.compress(format, 100, stream)
+            stream.close()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        val imagePath = File(context.getCacheDir(), "images")
+        val newFile = File(imagePath, "image.${format.name}")
+        val contentUri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".file_provider", newFile)
+
+        if (contentUri != null) {
+            val shareIntent = Intent()
+            shareIntent.setAction(Intent.ACTION_SEND)
+            shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            shareIntent.setDataAndType(contentUri, context.contentResolver.getType(contentUri))
+            shareIntent.putExtra(Intent.EXTRA_STREAM, contentUri)
+            shareIntent.setType("image/${format.name}")
+            context.startActivity(Intent.createChooser(shareIntent, "Choose an app"))
         }
     }
 }

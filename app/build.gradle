@@ -15,8 +15,8 @@ android {
         applicationId "com.jobik.shkiper"
         minSdk 27
         targetSdk 34
-        versionCode 42
-        versionName "1.5.8"
+        versionCode 49
+        versionName "1.6.4"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -31,7 +31,7 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             ndk {
-                debugSymbolLevel 'SYMBOL_TABLE'
+                debugSymbolLevel = 'FULL'
             }
         }
         benchmark {
@@ -159,4 +159,10 @@ dependencies {
 
     // For interop APIs with Material 3
     implementation "androidx.glance:glance-material3:1.0.0"
+
+    // Compose Rich Editor
+    implementation "com.mohamedrejeb.richeditor:richeditor-compose:1.0.0-rc01"
+
+    // Compose image capture
+    implementation "dev.shreyaspatil:capturable:1.0.3"
 }

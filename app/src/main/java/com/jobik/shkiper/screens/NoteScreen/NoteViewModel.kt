@@ -2,8 +2,6 @@ package com.jobik.shkiper.screens.NoteScreen
 
 import android.app.Application
 import android.content.Context
-import android.content.Intent
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -23,6 +21,7 @@ import com.jobik.shkiper.navigation.Argument_Note_Id
 import com.jobik.shkiper.util.SnackbarHostUtil
 import com.jobik.shkiper.util.SnackbarVisualsCustom
 import com.jobik.shkiper.widgets.handlers.handleNoteWidgetPin
+import com.mohamedrejeb.richeditor.model.RichTextState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.realm.kotlin.ext.realmSetOf
 import kotlinx.coroutines.*
@@ -38,6 +37,10 @@ data class NoteScreenState(
     val isGoBack: Boolean = false,
     val isTopAppBarHover: Boolean = false,
     val isBottomAppBarHover: Boolean = false,
+    val isStylingEnabled: Boolean = false,
+    val isStyling: Boolean = false,
+    val showShareDialog: Boolean = false,
+    val showShareNoteDialog: Boolean = false,
 
     val noteId: ObjectId = ObjectId(),
     val noteHeader: String = "",
@@ -117,6 +120,30 @@ class NoteViewModel @Inject constructor(
         _screenState.value = _screenState.value.copy(isDeleteDialogShow = !_screenState.value.isDeleteDialogShow)
     }
 
+    fun switchStyling(mode: Boolean? = null) {
+        if (mode !== null) _screenState.value = _screenState.value.copy(isStyling = mode)
+        else
+            _screenState.value = _screenState.value.copy(isStyling = !_screenState.value.isStyling)
+    }
+
+    fun switchStylingEnabled(mode: Boolean? = null) {
+        if (mode !== null) _screenState.value = _screenState.value.copy(isStylingEnabled = mode)
+        else
+            _screenState.value = _screenState.value.copy(isStylingEnabled = !_screenState.value.isStylingEnabled)
+    }
+
+    fun switchShowShareDialog(mode: Boolean? = null) {
+        if (mode !== null) _screenState.value = _screenState.value.copy(showShareDialog = mode)
+        else
+            _screenState.value = _screenState.value.copy(showShareDialog = !_screenState.value.showShareDialog)
+    }
+
+    fun switchShowShareNoteDialog(mode: Boolean? = null) {
+        if (mode !== null) _screenState.value = _screenState.value.copy(showShareNoteDialog = mode)
+        else
+            _screenState.value = _screenState.value.copy(showShareNoteDialog = !_screenState.value.showShareNoteDialog)
+    }
+
     /*******************
      * Note links handler
      *******************/
@@ -149,7 +176,10 @@ class NoteViewModel @Inject constructor(
 
     private fun fetchLinkMetaData() {
         viewModelScope.launch(Dispatchers.IO) {
-            val links = LinkHelper().findLinks(_screenState.value.noteBody)
+            val richTextState = RichTextState()
+            richTextState.setHtml(_screenState.value.noteBody)
+            val links = LinkHelper().findLinks(richTextState.toMarkdown())
+
             allLinksMetaData = allLinksMetaData.filter { it.link in links }.toSet()
 
             val newLinkData = mutableListOf<LinkHelper.LinkPreview>()
@@ -314,16 +344,16 @@ class NoteViewModel @Inject constructor(
         }
     }
 
-    fun deleteNoteIfEmpty() {
+    fun deleteNoteIfEmpty(body: String) {
         viewModelScope.launch {
-            if (_screenState.value.noteHeader.isEmpty() && _screenState.value.noteBody.isEmpty()) noteRepository.deleteNote(
+            if (_screenState.value.noteHeader.isEmpty() && body.isEmpty()) noteRepository.deleteNote(
                 _screenState.value.noteId,
             )
         }
     }
 
-    fun shareNoteText(context: Context) {
-        val sharedText = _screenState.value.noteHeader + "\n\n" + _screenState.value.noteBody
+    fun shareNoteText(context: Context, text: String) {
+        val sharedText = _screenState.value.noteHeader + "\n" + text
         IntentHelper().shareTextIntent(context, sharedText)
     }
 
