@@ -84,7 +84,7 @@ class NotificationReceiver : BroadcastReceiver() {
                 .setColor(savedColors.active.toArgb())
                 .setColorized(true)
                 .setContentIntent(mainPendingIntent)
-        if (notification.title.isNotEmpty())
+        if (notification.title.isNotBlank())
             notificationBuilder.setContentTitle(notification.title)
         if (message.isNotEmpty())
             notificationBuilder.setContentText(message)
