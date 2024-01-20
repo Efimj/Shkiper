@@ -1,5 +1,6 @@
 package com.jobik.shkiper.screens.NoteListScreen
 
+import android.content.Context
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
@@ -12,9 +13,11 @@ import androidx.compose.foundation.lazy.staggeredgrid.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -22,6 +25,7 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
@@ -29,12 +33,18 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.jobik.shkiper.R
+import com.jobik.shkiper.helpers.IntentHelper
+import com.jobik.shkiper.helpers.areChanelNotificationsEnabled
+import com.jobik.shkiper.helpers.areEXACTNotificationsEnabled
+import com.jobik.shkiper.helpers.areNotificationsEnabled
 import com.jobik.shkiper.navigation.AppScreens
+import com.jobik.shkiper.services.notification_service.NotificationScheduler
 import com.jobik.shkiper.ui.components.cards.NoteCard
 import kotlin.math.roundToInt
 import com.jobik.shkiper.ui.components.buttons.FloatingActionButton
@@ -43,9 +53,11 @@ import com.jobik.shkiper.ui.components.modals.CreateReminderDialog
 import com.jobik.shkiper.ui.components.modals.ReminderDialogProperties
 import com.jobik.shkiper.viewmodels.NotesViewModel
 import com.jobik.shkiper.ui.components.layouts.*
+import com.jobik.shkiper.ui.components.modals.ActionDialog
 import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.util.SnackbarHostUtil
+import com.jobik.shkiper.util.SnackbarVisualsCustom
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun NoteListScreen(navController: NavController, notesViewModel: NotesViewModel = hiltViewModel()) {
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route ?: ""
@@ -113,7 +125,11 @@ fun NoteListScreen(navController: NavController, notesViewModel: NotesViewModel 
         }
     }
 
-    Box(Modifier.fillMaxSize().nestedScroll(nestedScrollConnection)) {
+    Box(
+        Modifier
+            .fillMaxSize()
+            .nestedScroll(nestedScrollConnection)
+    ) {
         if (notesViewModel.screenState.value.isNotesInitialized && notesViewModel.screenState.value.notes.isEmpty())
             ScreenContentIfNoData(R.string.EmptyNotesPageHeader, Icons.Outlined.Description)
         else
@@ -128,7 +144,11 @@ fun NoteListScreen(navController: NavController, notesViewModel: NotesViewModel 
             )
             ActionBar(actionBarHeight, offsetX, notesViewModel)
         }
-        Box(modifier = Modifier.align(Alignment.BottomEnd).padding(35.dp)) {
+        Box(
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(35.dp)
+        ) {
             AnimatedVisibility(
                 notesViewModel.screenState.value.selectedNotes.isEmpty(),
                 enter = fadeIn(tween(200, easing = LinearOutSlowInEasing)),
@@ -140,8 +160,64 @@ fun NoteListScreen(navController: NavController, notesViewModel: NotesViewModel 
             }
         }
     }
+
+    ReminderCheck(notesViewModel)
 }
 
+@Composable
+private fun ReminderCheck(notesViewModel: NotesViewModel) {
+    val context = LocalContext.current
+
+    var reminderNeededDialog by rememberSaveable {
+        mutableStateOf(false)
+    }
+    var clickedOnEnabled by rememberSaveable {
+        mutableStateOf(false)
+    }
+
+    if (reminderNeededDialog)
+        ActionDialog(
+            dialogProperties = DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false),
+            icon = if (clickedOnEnabled) Icons.Outlined.CheckCircleOutline else Icons.Outlined.NotificationImportant,
+            title = if (clickedOnEnabled) "This is important for reminders to work." else "Needed to enable notifications for them to work.",
+            confirmText = if (clickedOnEnabled) stringResource(id = R.string.Confirm) else "Enable",
+            onConfirm = {
+                clickedOnEnabled = true
+                if (!areNotificationsEnabled(context = context) || !areChanelNotificationsEnabled(
+                        context = context,
+                        channelId = NotificationScheduler.Companion.NotificationChannels.NOTECHANNEL.channelId
+                    )
+                ) {
+                    IntentHelper().startIntentAppNotificationSettings(
+                        context = context,
+                        channelId = NotificationScheduler.Companion.NotificationChannels.NOTECHANNEL.channelId
+                    )
+                }
+                if (!areEXACTNotificationsEnabled(context = context)) {
+                    IntentHelper().startIntentAppEXACTNotificationSettings(context)
+                }
+                if (checkIsNotificationEnabled(context = context)) {
+                    reminderNeededDialog = false
+                }
+            },
+            goBackText = stringResource(id = R.string.Cancel),
+            onGoBack = {
+                reminderNeededDialog = false
+            }
+        )
+
+    LaunchedEffect(notesViewModel.screenState.value.reminders.size, reminderNeededDialog) {
+        if (notesViewModel.screenState.value.reminders.size > 0 && !checkIsNotificationEnabled(context = context))
+            reminderNeededDialog = true
+    }
+}
+
+private fun checkIsNotificationEnabled(context: Context) = areNotificationsEnabled(context = context) &&
+        areEXACTNotificationsEnabled(context = context) &&
+        areChanelNotificationsEnabled(
+            context = context,
+            channelId = NotificationScheduler.Companion.NotificationChannels.NOTECHANNEL.channelId
+        )
 
 @Composable
 private fun ScreenContent(
@@ -155,7 +231,9 @@ private fun ScreenContent(
 
     LazyGridNotes(
         contentPadding = PaddingValues(10.dp, 70.dp, 10.dp, 80.dp),
-        modifier = Modifier.fillMaxSize().testTag("notes_list"),
+        modifier = Modifier
+            .fillMaxSize()
+            .testTag("notes_list"),
         gridState = lazyGridNotes
     ) {
         item(span = StaggeredGridItemSpan.FullLine) {
@@ -164,7 +242,8 @@ private fun ScreenContent(
         if (notesViewModel.screenState.value.hashtags.isNotEmpty())
             item(span = StaggeredGridItemSpan.FullLine) {
                 LazyRow(
-                    modifier = Modifier.wrapContentSize(unbounded = true)
+                    modifier = Modifier
+                        .wrapContentSize(unbounded = true)
                         .width(LocalConfiguration.current.screenWidthDp.dp),
                     state = rememberLazyListState(),
                     contentPadding = PaddingValues(10.dp, 0.dp, 10.dp, 0.dp)
@@ -253,7 +332,9 @@ private fun ActionBar(
 
     val topAppBarElevation = if (offsetX.value.roundToInt() < -actionBarHeight.value.roundToInt()) 0.dp else 2.dp
     Box(
-        modifier = Modifier.height(actionBarHeight).offset { IntOffset(x = 0, y = offsetX.value.roundToInt()) },
+        modifier = Modifier
+            .height(actionBarHeight)
+            .offset { IntOffset(x = 0, y = offsetX.value.roundToInt()) },
     ) {
         CustomTopAppBar(
             modifier = Modifier.fillMaxWidth(),

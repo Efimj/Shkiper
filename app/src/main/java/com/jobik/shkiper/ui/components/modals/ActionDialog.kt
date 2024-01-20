@@ -23,17 +23,18 @@ import com.jobik.shkiper.ui.theme.CustomTheme
 fun ActionDialog(
     title: String,
     icon: ImageVector? = null,
+    dialogProperties: DialogProperties = DialogProperties(true, dismissOnClickOutside = true),
     confirmText: String,
     onConfirm: () -> Unit,
     goBackText: String,
     onGoBack: () -> Unit,
 ) {
-    Dialog(onGoBack, DialogProperties(true, dismissOnClickOutside = true)) {
+    Dialog(onGoBack, dialogProperties) {
         Column(
             Modifier
-                .clip(RoundedCornerShape(15.dp))
+                .clip(CustomTheme.shapes.medium)
                 .background(CustomTheme.colors.secondaryBackground)
-                .padding(horizontal = 25.dp).padding(top = 25.dp, bottom = 10.dp)
+                .padding(15.dp)
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -47,7 +48,7 @@ fun ActionDialog(
                         tint = CustomTheme.colors.textSecondary,
                         modifier = Modifier.size(30.dp)
                     )
-                    Spacer(Modifier.width(7.dp))
+                    Spacer(Modifier.width(15.dp))
                 }
                 Text(
                     color = CustomTheme.colors.text,
@@ -74,7 +75,7 @@ fun ActionDialog(
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
-                Spacer(Modifier.width(7.dp))
+                Spacer(Modifier.width(10.dp))
                 Row(
                     modifier = Modifier.weight(1f),
                     verticalAlignment = Alignment.CenterVertically,

@@ -14,6 +14,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
@@ -78,7 +80,7 @@ fun getButtonProperties(style: ButtonStyle, properties: ButtonProperties? = null
                 LayoutDirection.Ltr
             ),
             textColor = CustomTheme.colors.textOnActive,
-            textStyle = MaterialTheme.typography.body1,
+            textStyle = MaterialTheme.typography.body1.copy(fontWeight = FontWeight.SemiBold),
             iconTint = CustomTheme.colors.textOnActive,
         )
 
@@ -93,7 +95,7 @@ fun getButtonProperties(style: ButtonStyle, properties: ButtonProperties? = null
                 LayoutDirection.Ltr
             ),
             textColor = CustomTheme.colors.text,
-            textStyle = MaterialTheme.typography.body1,
+            textStyle = MaterialTheme.typography.body1.copy(fontWeight = FontWeight.SemiBold),
             iconTint = CustomTheme.colors.text,
         )
 
@@ -106,7 +108,7 @@ fun getButtonProperties(style: ButtonStyle, properties: ButtonProperties? = null
             shape = RoundedCornerShape(12.dp),
             horizontalPaddings = 0.dp,
             textColor = CustomTheme.colors.text,
-            textStyle = MaterialTheme.typography.body1,
+            textStyle = MaterialTheme.typography.body1.copy(fontWeight = FontWeight.SemiBold),
             iconTint = CustomTheme.colors.text,
         )
     }

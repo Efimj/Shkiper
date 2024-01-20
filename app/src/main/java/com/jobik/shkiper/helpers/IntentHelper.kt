@@ -8,6 +8,7 @@ import android.graphics.Bitmap.CompressFormat
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings.*
+import android.util.Log
 import androidx.annotation.Keep
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.ui.graphics.ImageBitmap
@@ -87,6 +88,7 @@ class IntentHelper {
                         .putExtra(EXTRA_APP_PACKAGE, context.packageName)
                     context.startActivity(notificationIntent)
                 }
+                Log.i("startIntentAppNotificationSettings", e.message.toString())
             }
             return
         }
