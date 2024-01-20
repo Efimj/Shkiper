@@ -207,5 +207,9 @@
     <string name="ShareHTMLText">Share as HTML text</string>
     <string name="ShareMarkdownText">Share as markdown text</string>
 
+    <string name="NeededPermissionForNotifications">Needed to enable permissions to receive notifications</string>
+    <string name="ImportantForRemindersWork">This is important for reminders to work</string>
+    <string name="Enable">Enable</string>
+
 
 </resources>

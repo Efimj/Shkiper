@@ -179,8 +179,8 @@ private fun ReminderCheck(notesViewModel: NotesViewModel) {
         ActionDialog(
             dialogProperties = DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false),
             icon = if (clickedOnEnabled) Icons.Outlined.CheckCircleOutline else Icons.Outlined.NotificationImportant,
-            title = if (clickedOnEnabled) "This is important for reminders to work." else "Needed to enable notifications for them to work.",
-            confirmText = if (clickedOnEnabled) stringResource(id = R.string.Confirm) else "Enable",
+            title = if (clickedOnEnabled) stringResource(id = R.string.ImportantForRemindersWork) else stringResource(id = R.string.NeededPermissionForNotifications),
+            confirmText = if (clickedOnEnabled) stringResource(id = R.string.Confirm) else stringResource(id = R.string.Enable),
             onConfirm = {
                 clickedOnEnabled = true
                 if (!areNotificationsEnabled(context = context) || !areChanelNotificationsEnabled(
