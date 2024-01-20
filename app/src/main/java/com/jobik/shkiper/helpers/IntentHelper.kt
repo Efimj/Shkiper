@@ -1,15 +1,18 @@
 package com.jobik.shkiper.helpers
 
+import android.app.AlarmManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Bitmap.CompressFormat
 import android.net.Uri
+import android.os.Build
 import android.provider.Settings.*
 import androidx.annotation.Keep
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asAndroidBitmap
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.jobik.shkiper.BuildConfig
 import com.jobik.shkiper.R
@@ -91,6 +94,20 @@ class IntentHelper {
             val notificationIntent: Intent = Intent(ACTION_APP_NOTIFICATION_SETTINGS)
                 .putExtra(EXTRA_APP_PACKAGE, context.packageName)
             context.startActivity(notificationIntent)
+        }
+    }
+
+    fun startIntentAppEXACTNotificationSettings(context: Context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            val alarmManager = ContextCompat.getSystemService(context, AlarmManager::class.java)
+            if (alarmManager?.canScheduleExactAlarms() == false) {
+                runCatching {
+                    Intent().also { intent ->
+                        intent.action = ACTION_REQUEST_SCHEDULE_EXACT_ALARM
+                        context.startActivity(intent)
+                    }
+                }
+            }
         }
     }
 

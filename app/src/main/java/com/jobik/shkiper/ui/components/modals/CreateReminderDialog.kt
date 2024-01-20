@@ -35,10 +35,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.RepeatMode
-import com.jobik.shkiper.helpers.DateHelper
-import com.jobik.shkiper.helpers.IntentHelper
-import com.jobik.shkiper.helpers.areChanelNotificationsEnabled
-import com.jobik.shkiper.helpers.areNotificationsEnabled
+import com.jobik.shkiper.helpers.*
 import com.jobik.shkiper.services.notification_service.NotificationScheduler
 import com.jobik.shkiper.ui.components.buttons.*
 import com.jobik.shkiper.ui.components.fields.CustomDatePicker
@@ -76,7 +73,7 @@ fun CreateReminderDialog(
         initialPage = 0,
         initialPageOffsetFraction = 0f
     ) {
-        ReminderDialogPages.values().size
+        ReminderDialogPages.entries.size
     }
     val isNotificationEnabled = remember {
         mutableStateOf(checkIsNotificationEnabled(context))
@@ -84,7 +81,9 @@ fun CreateReminderDialog(
 
     Dialog(onGoBack, DialogProperties(true, dismissOnClickOutside = true)) {
         Column(
-            Modifier.clip(RoundedCornerShape(15.dp)).background(CustomTheme.colors.secondaryBackground)
+            Modifier
+                .clip(RoundedCornerShape(15.dp))
+                .background(CustomTheme.colors.secondaryBackground)
                 .padding(vertical = 20.dp)
         ) {
             HorizontalPager(
@@ -118,6 +117,7 @@ fun CreateReminderDialog(
 }
 
 private fun checkIsNotificationEnabled(context: Context) = areNotificationsEnabled(context = context) &&
+        areEXACTNotificationsEnabled(context = context) &&
         areChanelNotificationsEnabled(
             context = context,
             channelId = NotificationScheduler.Companion.NotificationChannels.NOTECHANNEL.channelId
@@ -132,12 +132,14 @@ private fun DialogFooter(
     isNotificationEnabled: MutableState<Boolean>,
     onSave: () -> Unit,
 ) {
-    val isEnd = pagerState.currentPage == ReminderDialogPages.values().size - 1
+    val isEnd = pagerState.currentPage == ReminderDialogPages.entries.size - 1
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
 
     Row(
-        Modifier.fillMaxWidth().padding(horizontal = 20.dp),
+        Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp),
         horizontalArrangement = Arrangement.SpaceAround,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -168,11 +170,8 @@ private fun DialogFooter(
             ),
             onClick = {
                 if (isEnd) {
-                    if (!isNotificationEnabled.value && !checkIsNotificationEnabled(context)) {
-                        IntentHelper().startIntentAppNotificationSettings(
-                            context = context,
-                            channelId = NotificationScheduler.Companion.NotificationChannels.NOTECHANNEL.channelId
-                        )
+                    if (!isNotificationEnabled.value && !checkIsNotificationEnabled(context = context)) {
+                        enableNotificationIfDisabled(context = context)
                     } else {
                         isNotificationEnabled.value = true
                         onSave()
@@ -194,6 +193,22 @@ private fun DialogFooter(
                 iconTint = CustomTheme.colors.textOnActive,
             ) else null
         )
+    }
+}
+
+fun enableNotificationIfDisabled(context: Context) {
+    if (!areNotificationsEnabled(context = context) || !areChanelNotificationsEnabled(
+            context = context,
+            channelId = NotificationScheduler.Companion.NotificationChannels.NOTECHANNEL.channelId
+        )
+    ) {
+        IntentHelper().startIntentAppNotificationSettings(
+            context = context,
+            channelId = NotificationScheduler.Companion.NotificationChannels.NOTECHANNEL.channelId
+        )
+    }
+    if (!areEXACTNotificationsEnabled(context = context)) {
+        IntentHelper().startIntentAppEXACTNotificationSettings(context)
     }
 }
 
@@ -223,12 +238,14 @@ private fun RepeatModePage(
     repeatMode: MutableState<RepeatMode>,
     isNotificationEnabled: State<Boolean>
 ) {
-    val repeatModeList = RepeatMode.values().map { DropDownItem(text = it.getLocalizedValue(LocalContext.current)) }
+    val repeatModeList = RepeatMode.entries.map { DropDownItem(text = it.getLocalizedValue(LocalContext.current)) }
     val isExpanded = remember { mutableStateOf(false) }
     val isDatePast = !DateHelper.isFutureDateTime(date.value, time.value)
 
     Column(
-        Modifier.fillMaxSize().padding(horizontal = 20.dp),
+        Modifier
+            .fillMaxSize()
+            .padding(horizontal = 20.dp),
         horizontalAlignment = Alignment.Start,
     ) {
         Text(
@@ -236,10 +253,16 @@ private fun RepeatModePage(
             style = MaterialTheme.typography.h5,
             color = CustomTheme.colors.textSecondary,
             textAlign = TextAlign.Center,
-            modifier = Modifier.padding(bottom = 15.dp).fillMaxWidth()
+            modifier = Modifier
+                .padding(bottom = 15.dp)
+                .fillMaxWidth()
         )
         Column(horizontalAlignment = Alignment.Start) {
-            Row(Modifier.fillMaxWidth().height(38.dp)) {
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .height(38.dp)
+            ) {
                 Icon(
                     tint = CustomTheme.colors.textSecondary,
                     imageVector = Icons.Default.Event,
@@ -252,7 +275,11 @@ private fun RepeatModePage(
                     color = CustomTheme.colors.text,
                 )
             }
-            Row(Modifier.fillMaxWidth().height(38.dp)) {
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .height(38.dp)
+            ) {
                 Icon(
                     tint = CustomTheme.colors.textSecondary,
                     imageVector = Icons.Default.Schedule,
@@ -272,7 +299,11 @@ private fun RepeatModePage(
                     color = CustomTheme.colors.active,
                     modifier = Modifier.padding(bottom = 10.dp)
                 )
-            Row(Modifier.fillMaxWidth().height(38.dp), verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .height(38.dp), verticalAlignment = Alignment.CenterVertically
+            ) {
                 Icon(
                     tint = CustomTheme.colors.textSecondary,
                     imageVector = Icons.Default.Repeat,
@@ -321,7 +352,12 @@ private fun TimePickPage(
     time: MutableState<LocalTime>,
 ) {
     Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-        Row(Modifier.basicMarquee().fillMaxWidth().padding(horizontal = 20.dp)) {
+        Row(
+            Modifier
+                .basicMarquee()
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp)
+        ) {
             Text(
                 DateHelper.getLocalizedDate(date.value),
                 style = MaterialTheme.typography.h5,

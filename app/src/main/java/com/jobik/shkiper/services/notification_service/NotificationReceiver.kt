@@ -1,11 +1,13 @@
 package com.jobik.shkiper.services.notification_service
 
+import android.app.AlarmManager
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.TaskStackBuilder
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import androidx.annotation.Keep
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.ui.graphics.toArgb
@@ -27,6 +29,12 @@ class NotificationReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         val notificationScheduler = NotificationScheduler(context)
         when (intent.action) {
+
+            // when permission granted
+            AlarmManager.ACTION_SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED -> {
+                notificationScheduler.restoreNotifications()
+            }
+
             Intent.ACTION_DATE_CHANGED -> {
                 notificationScheduler.restoreNotifications()
             }
