@@ -1,5 +1,7 @@
 package com.jobik.shkiper.ui.components.layouts
 
+import android.util.Log
+import androidx.annotation.Keep
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Divider
 import androidx.compose.runtime.*
@@ -43,13 +45,13 @@ fun RichTextBottomToolBar(
     ) {
         RichTextStyleButton(
             isActive = state.currentSpanStyle.fontSize == MainHeaderSize,
-            onClick = { state.toggleSpanStyle(SpanStyle(fontSize = if (state.currentSpanStyle.fontSize == MainHeaderSize) PlainTextSize else MainHeaderSize)) },
+            onClick = { tryCatchWrapper { state.toggleSpanStyle(SpanStyle(fontSize = if (state.currentSpanStyle.fontSize == MainHeaderSize) PlainTextSize else MainHeaderSize)) } },
             icon = R.drawable.format_h1_fill0_wght400_grad0_opsz24,
             contentDescription = ""
         )
         RichTextStyleButton(
             isActive = state.currentSpanStyle.fontSize == SecondaryHeaderSize,
-            onClick = { state.toggleSpanStyle(SpanStyle(fontSize = if (state.currentSpanStyle.fontSize == SecondaryHeaderSize) PlainTextSize else SecondaryHeaderSize)) },
+            onClick = { tryCatchWrapper { state.toggleSpanStyle(SpanStyle(fontSize = if (state.currentSpanStyle.fontSize == SecondaryHeaderSize) PlainTextSize else SecondaryHeaderSize)) } },
             icon = R.drawable.format_h2_fill0_wght400_grad0_opsz24,
             contentDescription = ""
         )
@@ -62,7 +64,7 @@ fun RichTextBottomToolBar(
         ) {
             RichTextStyleButton(
                 isActive = state.currentSpanStyle.fontSize == PlainTextSize || state.currentSpanStyle.fontSize == TextUnit.Unspecified,
-                onClick = { state.toggleSpanStyle(SpanStyle(fontSize = PlainTextSize)) },
+                onClick = { tryCatchWrapper { state.toggleSpanStyle(SpanStyle(fontSize = PlainTextSize)) } },
                 icon = R.drawable.match_case_fill0_wght400_grad0_opsz24,
                 contentDescription = ""
             )
@@ -74,14 +76,14 @@ fun RichTextBottomToolBar(
             )
             RichTextStyleButton(
                 isActive = state.currentSpanStyle.fontWeight == FontWeight.Bold,
-                onClick = { state.toggleSpanStyle(SpanStyle(fontWeight = FontWeight.Bold)) },
+                onClick = { tryCatchWrapper { state.toggleSpanStyle(SpanStyle(fontWeight = FontWeight.Bold)) } },
                 icon = R.drawable.format_bold_fill0_wght400_grad0_opsz24,
                 contentDescription = ""
             )
         }
         RichTextStyleButton(
             isActive = state.currentSpanStyle.fontStyle == FontStyle.Italic,
-            onClick = { state.toggleSpanStyle(SpanStyle(fontStyle = FontStyle.Italic)) },
+            onClick = { tryCatchWrapper { state.toggleSpanStyle(SpanStyle(fontStyle = FontStyle.Italic)) } },
             icon = R.drawable.format_italic_fill0_wght400_grad0_opsz24,
             contentDescription = ""
         )
@@ -94,7 +96,7 @@ fun RichTextBottomToolBar(
         ) {
             RichTextStyleButton(
                 isActive = state.currentSpanStyle.textDecoration == TextDecoration.Underline,
-                onClick = { state.toggleSpanStyle(SpanStyle(textDecoration = TextDecoration.Underline)) },
+                onClick = { tryCatchWrapper { state.toggleSpanStyle(SpanStyle(textDecoration = TextDecoration.Underline)) } },
                 icon = R.drawable.format_underlined_fill0_wght400_grad0_opsz24,
                 contentDescription = ""
             )
@@ -106,7 +108,7 @@ fun RichTextBottomToolBar(
             )
             RichTextStyleButton(
                 isActive = state.isLink,
-                onClick = { isInsertLinkDialogOpen = !isInsertLinkDialogOpen },
+                onClick = { tryCatchWrapper { isInsertLinkDialogOpen = !isInsertLinkDialogOpen } },
                 icon = R.drawable.add_link_fill0_wght400_grad0_opsz24,
                 contentDescription = ""
             )
@@ -114,9 +116,11 @@ fun RichTextBottomToolBar(
         RichTextStyleButton(
             isActive = false,
             onClick = {
-                state.removeParagraphStyle(state.currentParagraphStyle)
-                state.removeSpanStyle(state.currentSpanStyle)
-                state.removeCodeSpan()
+                tryCatchWrapper {
+                    state.removeParagraphStyle(state.currentParagraphStyle)
+                    state.removeSpanStyle(state.currentSpanStyle)
+                    state.removeCodeSpan()
+                }
             },
             icon = R.drawable.format_clear_fill0_wght400_grad0_opsz24,
             contentDescription = ""
@@ -135,4 +139,13 @@ fun RichTextBottomToolBar(
         InsertLinkDialog(
             onInsert = { text, url -> state.addLink(text, url); isInsertLinkDialogOpen = !isInsertLinkDialogOpen },
             onGoBack = { isInsertLinkDialogOpen = !isInsertLinkDialogOpen })
+}
+
+@Keep
+private fun tryCatchWrapper(function: () -> Unit) {
+    try {
+        function()
+    } catch (e: Exception) {
+        Log.i("RichTextBottomToolBar", e.message.toString())
+    }
 }
