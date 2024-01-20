@@ -45,7 +45,7 @@ fun DefaultButtonProperties(
     shape: Shape = RoundedCornerShape(12.dp),
     horizontalPaddings: Dp = 0.dp,
     textColor: Color = CustomTheme.colors.text,
-    textStyle: TextStyle = MaterialTheme.typography.body1,
+    textStyle: TextStyle = MaterialTheme.typography.body1.copy(fontWeight = FontWeight.SemiBold),
     iconTint: Color = CustomTheme.colors.text,
 ): ButtonProperties {
     return ButtonProperties(
