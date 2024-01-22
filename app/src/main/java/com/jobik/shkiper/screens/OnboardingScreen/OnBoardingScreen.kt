@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
@@ -48,19 +49,25 @@ fun OnBoardingScreen(navController: NavController) {
 
     Column(modifier = Modifier.fillMaxSize()) {
         HorizontalPager(
-            modifier = Modifier
-                .weight(1f)
-                .verticalScroll(scrollState),
+            modifier = Modifier.weight(1f),
             verticalAlignment = Alignment.CenterVertically,
             state = pagerState,
             pageSpacing = 10.dp,
             userScrollEnabled = true,
             reverseLayout = false,
-            contentPadding = PaddingValues(bottom = 20.dp),
+            contentPadding = PaddingValues(top = 0.dp, start = 0.dp, end = 0.dp, bottom = 20.dp),
             beyondBoundsPageCount = 0,
             pageSize = PageSize.Fill,
         ) {
-            PagerScreen(OnBoardingPage.PageList.PageList[it])
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(scrollState),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                PagerScreen(OnBoardingPage.PageList.PageList[it])
+            }
         }
         ScreenFooter(navController, pagerState, scrollState)
     }
@@ -182,49 +189,46 @@ fun onFinished(context: Context, navController: NavController) {
 @Composable
 fun PagerScreen(onBoardingPage: OnBoardingPage) {
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .widthIn(max = 500.dp)
+            .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Top
+        verticalArrangement = Arrangement.Top,
     ) {
-        Column(
-            modifier = Modifier
-                .widthIn(max = 500.dp)
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Top,
-        ) {
+        Box(modifier = Modifier.height(480.dp), contentAlignment = Alignment.Center) {
             Image(
                 modifier = Modifier
                     .clip(RoundedCornerShape(20.dp))
-                    .fillMaxHeight(0.7f),
+                    .fillMaxHeight(),
                 painter = painterResource(id = onBoardingPage.image),
+                contentScale = ContentScale.FillHeight,
                 contentDescription = stringResource(R.string.PagerImage)
             )
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 20.dp),
-                text = stringResource(onBoardingPage.title),
-                style = MaterialTheme.typography.h4,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center,
-                color = CustomTheme.colors.text,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 20.dp)
-                    .padding(top = 20.dp),
-                text = stringResource(onBoardingPage.description),
-                style = MaterialTheme.typography.h6,
-                textAlign = TextAlign.Center,
-                color = CustomTheme.colors.textSecondary,
-                minLines = 4,
-                maxLines = 4,
-                overflow = TextOverflow.Ellipsis
-            )
         }
+        Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 20.dp),
+            text = stringResource(onBoardingPage.title),
+            style = MaterialTheme.typography.h4,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center,
+            color = CustomTheme.colors.text,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
+        Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp)
+                .padding(top = 20.dp),
+            text = stringResource(onBoardingPage.description),
+            style = MaterialTheme.typography.h6,
+            textAlign = TextAlign.Center,
+            color = CustomTheme.colors.textSecondary,
+            minLines = 4,
+            maxLines = 4,
+            overflow = TextOverflow.Ellipsis
+        )
     }
 }
