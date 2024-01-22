@@ -105,6 +105,7 @@ fun AboutNotepadScreen() {
                         style = MaterialTheme.typography.body1,
                         fontSize = 18.sp,
                         textAlign = TextAlign.Center,
+                        fontWeight = FontWeight.SemiBold
                     )
                 }
             }
