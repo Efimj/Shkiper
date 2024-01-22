@@ -231,5 +231,4 @@ fun PagerScreen(onBoardingPage: OnBoardingPage) {
             overflow = TextOverflow.Ellipsis
         )
     }
-
 }
