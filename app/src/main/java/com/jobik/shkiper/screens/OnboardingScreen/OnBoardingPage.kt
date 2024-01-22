@@ -12,32 +12,44 @@ sealed class OnBoardingPage(
     @StringRes
     val description: Int
 ) {
-    object Greetings : OnBoardingPage(
-        image = R.drawable.onboarding_first,
-        title = R.string.app_name,
-        description = R.string.AppDescription,
-    )
-
-    object Hashtags : OnBoardingPage(
-        image = R.drawable.onboarding_hashtag,
+    data object Hashtags : OnBoardingPage(
+        image = R.drawable.onboarding_1,
         title = R.string.Tags,
         description = R.string.TagsDescription,
     )
 
-    object Reminders : OnBoardingPage(
-        image = R.drawable.onboarding_reminder,
+    data object TextFormatting : OnBoardingPage(
+        image = R.drawable.onboarding_2,
+        title = R.string.TextFormatting,
+        description = R.string.TextFormattingDescription,
+    )
+
+    data object Reminders : OnBoardingPage(
+        image = R.drawable.onboarding_3,
         title = R.string.Reminders,
         description = R.string.RemindersDescription
     )
 
-    object Themes : OnBoardingPage(
-        image = R.drawable.onboarding_themes,
-        title = R.string.Themes,
-        description = R.string.ThemesDescription
+    data object Statistics : OnBoardingPage(
+        image = R.drawable.onboarding_4,
+        title = R.string.StatisticsPage,
+        description = R.string.StatisticsPageDescription
+    )
+
+    data object Widgets : OnBoardingPage(
+        image = R.drawable.onboarding_5,
+        title = R.string.Widgets,
+        description = R.string.WidgetsDescription
+    )
+
+    data object MadeWithLove : OnBoardingPage(
+        image = R.drawable.onboarding_6,
+        title = R.string.MadeWithLove,
+        description = R.string.MadeWithLoveDescription
     )
 
     object PageList {
-        val PageList = listOf(Greetings, Hashtags, Reminders, Themes)
+        val PageList = listOf(Hashtags, TextFormatting, Reminders, Statistics, Widgets, MadeWithLove)
         val Count = PageList.size
     }
 }
