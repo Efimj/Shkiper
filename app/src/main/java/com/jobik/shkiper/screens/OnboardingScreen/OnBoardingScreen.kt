@@ -26,6 +26,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.jobik.shkiper.R
@@ -194,9 +195,8 @@ fun PagerScreen(onBoardingPage: OnBoardingPage) {
         ) {
             Image(
                 modifier = Modifier
-                    .fillMaxHeight(0.7f)
-                    .fillMaxWidth()
-                    .clip(RoundedCornerShape(20.dp)),
+                    .clip(RoundedCornerShape(20.dp))
+                    .fillMaxHeight(0.7f),
                 painter = painterResource(id = onBoardingPage.image),
                 contentDescription = stringResource(R.string.PagerImage)
             )
@@ -208,7 +208,9 @@ fun PagerScreen(onBoardingPage: OnBoardingPage) {
                 style = MaterialTheme.typography.h4,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,
-                color = CustomTheme.colors.text
+                color = CustomTheme.colors.text,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
             Text(
                 modifier = Modifier
@@ -219,7 +221,9 @@ fun PagerScreen(onBoardingPage: OnBoardingPage) {
                 style = MaterialTheme.typography.h6,
                 textAlign = TextAlign.Center,
                 color = CustomTheme.colors.textSecondary,
-                minLines = 4
+                minLines = 4,
+                maxLines = 4,
+                overflow = TextOverflow.Ellipsis
             )
         }
     }
