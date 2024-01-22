@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jobik.shkiper.ui.theme.CustomTheme
@@ -26,7 +27,7 @@ fun MainMenuButton(text: String, icon: ImageVector? = null, isActive: Boolean = 
                 border = null,
                 buttonColors = ButtonDefaults.buttonColors(backgroundColor = CustomTheme.colors.active),
                 textColor = CustomTheme.colors.textOnActive,
-                textStyle = MaterialTheme.typography.h6.copy(fontSize = 17.sp),
+                textStyle = MaterialTheme.typography.h6.copy(fontSize = 17.sp).copy(fontWeight = FontWeight.SemiBold),
                 iconTint = CustomTheme.colors.textOnActive
             ),
             onClick = onClick,

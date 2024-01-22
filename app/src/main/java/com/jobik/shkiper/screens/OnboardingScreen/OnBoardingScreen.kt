@@ -50,7 +50,7 @@ fun OnBoardingScreen(navController: NavController) {
             modifier = Modifier
                 .weight(1f)
                 .verticalScroll(scrollState),
-            verticalAlignment = Alignment.CenterVertically,
+            verticalAlignment = Alignment.Top,
             state = pagerState,
             pageSpacing = 10.dp,
             userScrollEnabled = true,
