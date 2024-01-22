@@ -50,7 +50,7 @@ fun OnBoardingScreen(navController: NavController) {
             modifier = Modifier
                 .weight(1f)
                 .verticalScroll(scrollState),
-            verticalAlignment = Alignment.Top,
+            verticalAlignment = Alignment.CenterVertically,
             state = pagerState,
             pageSpacing = 10.dp,
             userScrollEnabled = true,
@@ -195,6 +195,7 @@ fun PagerScreen(onBoardingPage: OnBoardingPage) {
             Image(
                 modifier = Modifier
                     .fillMaxHeight(0.7f)
+                    .fillMaxWidth()
                     .clip(RoundedCornerShape(20.dp)),
                 painter = painterResource(id = onBoardingPage.image),
                 contentDescription = stringResource(R.string.PagerImage)
@@ -217,7 +218,8 @@ fun PagerScreen(onBoardingPage: OnBoardingPage) {
                 text = stringResource(onBoardingPage.description),
                 style = MaterialTheme.typography.h6,
                 textAlign = TextAlign.Center,
-                color = CustomTheme.colors.textSecondary
+                color = CustomTheme.colors.textSecondary,
+                minLines = 4
             )
         }
     }
