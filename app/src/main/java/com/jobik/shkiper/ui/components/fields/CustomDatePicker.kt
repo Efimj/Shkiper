@@ -104,7 +104,7 @@ fun DaysOfWeekTitle(daysOfWeek: List<DayOfWeek>) {
 fun CalendarDayView(day: CalendarDay, currentDate: LocalDate, onClick: (CalendarDay) -> Unit) {
     val dateNow = LocalDate.now()
     val isDateCurrentOrFuture = isDateCurrentOrFuture(day.date, dateNow)
-    val borderCornerShape = RoundedCornerShape(15.dp)
+    val borderCornerShape = RoundedCornerShape(12.dp)
 
     if (day.position == DayPosition.MonthDate)
         Box(
@@ -112,14 +112,14 @@ fun CalendarDayView(day: CalendarDay, currentDate: LocalDate, onClick: (Calendar
                 .clip(borderCornerShape)
                 .border(
                     BorderStroke(
-                        1.dp,
+                        2.dp,
                         if (currentDate == day.date) CustomTheme.colors.active else
                             if (day.date == dateNow) CustomTheme.colors.stroke else
                                 Color.Transparent
                     ),
                     borderCornerShape
                 )
-                .background(if (currentDate == day.date) CustomTheme.colors.secondaryBackground else Color.Transparent)
+                .background(Color.Transparent)
                 .aspectRatio(1f)
                 .clickable(
                     enabled = isDateCurrentOrFuture,

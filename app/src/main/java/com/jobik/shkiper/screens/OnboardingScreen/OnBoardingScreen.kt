@@ -174,14 +174,18 @@ private fun ScreenFooter(navController: NavController, pagerState: PagerState, s
                         text = stringResource(R.string.Finish),
                         style = MaterialTheme.typography.body1,
                         fontWeight = FontWeight.SemiBold,
-                        color = buttonNextContentColor
+                        color = buttonNextContentColor,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                 } else {
                     Text(
                         text = stringResource(R.string.Next),
                         style = MaterialTheme.typography.body1,
                         fontWeight = FontWeight.SemiBold,
-                        color = buttonNextContentColor
+                        color = buttonNextContentColor,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
             }

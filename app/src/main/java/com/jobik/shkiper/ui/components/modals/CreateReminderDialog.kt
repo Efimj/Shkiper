@@ -19,8 +19,11 @@ import androidx.compose.material.icons.filled.Event
 import androidx.compose.material.icons.filled.Repeat
 import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material.icons.outlined.KeyboardArrowLeft
+import androidx.compose.material.icons.outlined.NotificationsOff
 import androidx.compose.material.icons.rounded.Refresh
 import androidx.compose.material.icons.rounded.Settings
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -30,13 +33,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.RepeatMode
 import com.jobik.shkiper.helpers.*
+import com.jobik.shkiper.screens.OnboardingScreen.OnBoardingPage
 import com.jobik.shkiper.services.notification_service.NotificationScheduler
 import com.jobik.shkiper.ui.components.buttons.*
 import com.jobik.shkiper.ui.components.fields.CustomDatePicker
@@ -84,7 +90,7 @@ fun CreateReminderDialog(
         Column(
             Modifier
                 .clip(RoundedCornerShape(15.dp))
-                .background(CustomTheme.colors.secondaryBackground)
+                .background(CustomTheme.colors.mainBackground)
                 .padding(vertical = 20.dp)
         ) {
             HorizontalPager(
@@ -137,11 +143,22 @@ private fun DialogFooter(
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
 
+    val buttonNextContentColor: Color by animateColorAsState(
+        targetValue = if (isEnd) CustomTheme.colors.textOnActive else CustomTheme.colors.text,
+        label = "buttonNextContentColor"
+    )
+
+    val buttonNextBackgroundColor: Color by animateColorAsState(
+        targetValue = if (isEnd) CustomTheme.colors.active else CustomTheme.colors.secondaryBackground,
+        label = "buttonNextBackgroundColor"
+    )
+
     Row(
         Modifier
             .fillMaxWidth()
-            .padding(horizontal = 20.dp),
-        horizontalArrangement = Arrangement.SpaceAround,
+            .padding(horizontal = 20.dp)
+            .height(50.dp),
+        horizontalArrangement = Arrangement.spacedBy(20.dp, alignment = Alignment.CenterHorizontally),
         verticalAlignment = Alignment.CenterVertically
     ) {
         AnimatedVisibility(
@@ -150,57 +167,149 @@ private fun DialogFooter(
             exit = slideOutHorizontally() + shrinkHorizontally(clip = false) + fadeOut(),
         )
         {
-            CustomButton(
-                text = stringResource(R.string.Delete), onClick = {
+            Button(
+                modifier = Modifier.fillMaxHeight(),
+                shape = CustomTheme.shapes.small,
+                colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                    contentColor = CustomTheme.colors.text,
+                    containerColor = CustomTheme.colors.secondaryBackground
+                ),
+                border = null,
+                elevation = null,
+                contentPadding = PaddingValues(horizontal = 15.dp),
+                onClick = {
                     if (onDelete != null)
                         coroutineScope.launch {
                             onDelete()
                         }
-                },
-                style = ButtonStyle.Text
-            )
+                }
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.NotificationsOff,
+                    contentDescription = stringResource(R.string.Delete),
+                    tint = CustomTheme.colors.text
+                )
+            }
         }
-        CustomButton(
-            text = if (pagerState.currentPage > 0) stringResource(R.string.Back) else stringResource(R.string.Cancel),
-            onClick = {
-                coroutineScope.launch {
-                    if (pagerState.currentPage > 0) pagerState.animateScrollToPage(pagerState.currentPage - 1)
-                    else {
-                        onGoBack()
-                    }
-                }
-            },
-            style = ButtonStyle.Text
-        )
-        CustomButton(
-            text = if (isEnd) stringResource(R.string.Save) else stringResource(
-                R.string.Next
-            ),
-            onClick = {
-                if (isEnd) {
-                    if (!isNotificationEnabled.value && !checkIsNotificationEnabled(context = context)) {
-                        enableNotificationIfDisabled(context = context)
-                    } else {
-                        isNotificationEnabled.value = true
-                        onSave()
-                    }
-                } else {
-                    coroutineScope.launch {
-                        pagerState.animateScrollToPage(pagerState.currentPage + 1)
-                    }
-                }
-            },
-            style = if (isEnd) ButtonStyle.Filled else ButtonStyle.Text,
-            properties = if (isEnd) DefaultButtonProperties(
-                buttonColors = ButtonDefaults.buttonColors(
-                    backgroundColor = CustomTheme.colors.active,
-                    disabledBackgroundColor = Color.Transparent
+        Row(
+            modifier = Modifier.fillMaxSize(),
+            horizontalArrangement = Arrangement.spacedBy(10.dp, alignment = Alignment.CenterHorizontally)
+        ) {
+            Button(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .weight(.5f),
+                shape = CustomTheme.shapes.small,
+                colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                    contentColor = CustomTheme.colors.text,
+                    containerColor = CustomTheme.colors.secondaryBackground
                 ),
-                horizontalPaddings = 10.dp,
-                textColor = CustomTheme.colors.textOnActive,
-                iconTint = CustomTheme.colors.textOnActive,
-            ) else null
-        )
+                border = null,
+                elevation = null,
+                contentPadding = PaddingValues(horizontal = 15.dp),
+                onClick = {
+                    coroutineScope.launch {
+                        if (pagerState.currentPage > 0) pagerState.animateScrollToPage(pagerState.currentPage - 1)
+                        else {
+                            onGoBack()
+                        }
+                    }
+                },
+            ) {
+                AnimatedContent(
+                    targetState = pagerState.currentPage > 0,
+                    transitionSpec = {
+                        if (targetState > initialState) {
+                            (slideInHorizontally { height -> height } + fadeIn()).togetherWith(slideOutHorizontally { height -> -height } + fadeOut())
+                        } else {
+                            (slideInHorizontally { height -> -height } + fadeIn()).togetherWith(slideOutHorizontally { height -> height } + fadeOut())
+                        }.using(
+                            SizeTransform(clip = false)
+                        )
+                    }, label = ""
+                ) { value ->
+                    if (value) {
+                        Text(
+                            text = stringResource(R.string.Back),
+                            style = MaterialTheme.typography.body1,
+                            fontWeight = FontWeight.SemiBold,
+                            color = CustomTheme.colors.text,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    } else {
+                        Text(
+                            text = stringResource(R.string.Cancel),
+                            style = MaterialTheme.typography.body1,
+                            fontWeight = FontWeight.SemiBold,
+                            color = CustomTheme.colors.text,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
+                }
+            }
+            Button(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .weight(.5f),
+                shape = CustomTheme.shapes.small,
+                colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                    contentColor = buttonNextContentColor,
+                    containerColor = buttonNextBackgroundColor
+                ),
+                border = null,
+                elevation = null,
+                contentPadding = PaddingValues(horizontal = 15.dp),
+                onClick = {
+                    if (isEnd) {
+                        if (!isNotificationEnabled.value && !checkIsNotificationEnabled(context = context)) {
+                            enableNotificationIfDisabled(context = context)
+                        } else {
+                            isNotificationEnabled.value = true
+                            onSave()
+                        }
+                    } else {
+                        coroutineScope.launch {
+                            pagerState.animateScrollToPage(pagerState.currentPage + 1)
+                        }
+                    }
+                },
+            ) {
+                AnimatedContent(
+                    targetState = isEnd,
+                    transitionSpec = {
+                        if (targetState > initialState) {
+                            (slideInHorizontally { height -> height } + fadeIn()).togetherWith(slideOutHorizontally { height -> -height } + fadeOut())
+                        } else {
+                            (slideInHorizontally { height -> -height } + fadeIn()).togetherWith(slideOutHorizontally { height -> height } + fadeOut())
+                        }.using(
+                            SizeTransform(clip = false)
+                        )
+                    }, label = ""
+                ) { value ->
+                    if (value) {
+                        Text(
+                            text = stringResource(R.string.Save),
+                            style = MaterialTheme.typography.body1,
+                            fontWeight = FontWeight.SemiBold,
+                            color = buttonNextContentColor,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    } else {
+                        Text(
+                            text = stringResource(R.string.Next),
+                            style = MaterialTheme.typography.body1,
+                            fontWeight = FontWeight.SemiBold,
+                            color = buttonNextContentColor,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
+                }
+            }
+        }
     }
 }
 
