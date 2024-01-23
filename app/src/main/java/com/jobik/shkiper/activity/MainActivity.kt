@@ -15,6 +15,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import com.jobik.shkiper.NotepadApplication
 import com.jobik.shkiper.SharedPreferencesKeys
+import com.jobik.shkiper.SharedPreferencesKeys.OnboardingFinishedData
 import com.jobik.shkiper.database.models.NotePosition
 import com.jobik.shkiper.services.localization.LocaleHelper
 import com.jobik.shkiper.navigation.AppScreens
@@ -28,6 +29,7 @@ import com.jobik.shkiper.ui.theme.CustomThemeStyle
 import com.jobik.shkiper.ui.theme.ShkiperTheme
 import com.jobik.shkiper.util.ThemeUtil
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.*
 
 @ExperimentalAnimationApi
 @AndroidEntryPoint
@@ -61,7 +63,9 @@ class MainActivity : ComponentActivity() {
                 style = ThemeUtil.themeStyle.value ?: CustomThemeStyle.PastelPurple
             ) {
                 Box(
-                    Modifier.fillMaxSize().background(CustomTheme.colors.mainBackground)
+                    Modifier
+                        .fillMaxSize()
+                        .background(CustomTheme.colors.mainBackground)
                 ) {
                     MainMenuBottomSheet(startDestination)
                 }
@@ -102,9 +106,8 @@ class MainActivity : ComponentActivity() {
     private fun getOnboardingRoute(context: Context): String? {
         val sharedPreferences =
             context.getSharedPreferences(SharedPreferencesKeys.ApplicationStorageName, Context.MODE_PRIVATE)
-        val isOnboardingPageFinished =
-            sharedPreferences.getBoolean(SharedPreferencesKeys.IsOnboardingPageFinished, false)
-        return if (isOnboardingPageFinished) null else AppScreens.Onboarding.route
+        val isOnboardingPageFinished = sharedPreferences.getString(SharedPreferencesKeys.OnboardingPageFinishedData, "")
+        return if (isOnboardingPageFinished == OnboardingFinishedData) null else AppScreens.Onboarding.route
     }
 
     private fun getNotificationRoute(): String? {

@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.jobik.shkiper.R
 import com.jobik.shkiper.SharedPreferencesKeys
+import com.jobik.shkiper.SharedPreferencesKeys.OnboardingFinishedData
 import com.jobik.shkiper.navigation.AppScreens
 import com.jobik.shkiper.ui.theme.CustomTheme
 import kotlinx.coroutines.launch
@@ -198,7 +199,8 @@ fun onFinished(context: Context, navController: NavController) {
     try {
         val sharedPreferences =
             context.getSharedPreferences(SharedPreferencesKeys.ApplicationStorageName, Context.MODE_PRIVATE)
-        sharedPreferences.edit().putBoolean(SharedPreferencesKeys.IsOnboardingPageFinished, true).apply()
+        sharedPreferences.edit().putString(SharedPreferencesKeys.OnboardingPageFinishedData, OnboardingFinishedData)
+            .apply()
     } catch (e: Exception) {
         Log.i("onboarding - onFinished", e.toString())
     }
