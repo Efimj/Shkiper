@@ -2,9 +2,7 @@ package com.jobik.shkiper.ui.components.modals
 
 import android.content.Context
 import androidx.compose.animation.*
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
-import androidx.compose.foundation.basicMarquee
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PageSize
@@ -89,6 +87,7 @@ fun CreateReminderDialog(
     Dialog(onGoBack, DialogProperties(true, dismissOnClickOutside = true)) {
         Column(
             Modifier
+                .verticalScroll(rememberScrollState())
                 .clip(RoundedCornerShape(15.dp))
                 .background(CustomTheme.colors.mainBackground)
                 .padding(vertical = 20.dp)
