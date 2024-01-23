@@ -5,20 +5,22 @@ import android.util.Log
 import androidx.compose.animation.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.pager.*
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PageSize
+import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.NavigateNext
+import androidx.compose.material.icons.outlined.KeyboardArrowLeft
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -33,8 +35,6 @@ import androidx.navigation.NavController
 import com.jobik.shkiper.R
 import com.jobik.shkiper.SharedPreferencesKeys
 import com.jobik.shkiper.navigation.AppScreens
-import com.jobik.shkiper.ui.components.buttons.ButtonStyle
-import com.jobik.shkiper.ui.components.buttons.CustomButton
 import com.jobik.shkiper.ui.theme.CustomTheme
 import kotlinx.coroutines.launch
 
@@ -46,30 +46,34 @@ fun OnBoardingScreen(navController: NavController) {
     val pagerState = rememberPagerState() {
         OnBoardingPage.PageList.Count
     }
-
-    Column(modifier = Modifier.fillMaxSize()) {
+    Box {
         HorizontalPager(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.fillMaxSize(),
             verticalAlignment = Alignment.CenterVertically,
             state = pagerState,
             pageSpacing = 10.dp,
             userScrollEnabled = true,
             reverseLayout = false,
-            contentPadding = PaddingValues(top = 0.dp, start = 0.dp, end = 0.dp, bottom = 20.dp),
+            contentPadding = PaddingValues(0.dp),
             beyondBoundsPageCount = 0,
             pageSize = PageSize.Fill,
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .verticalScroll(scrollState),
+                    .verticalScroll(scrollState)
+                    .padding(bottom = 90.dp),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 PagerScreen(OnBoardingPage.PageList.PageList[it])
             }
         }
-        ScreenFooter(navController, pagerState, scrollState)
+        Box(
+            modifier = Modifier.align(Alignment.BottomCenter)
+        ) {
+            ScreenFooter(navController, pagerState, scrollState)
+        }
     }
 }
 
@@ -79,62 +83,82 @@ private fun ScreenFooter(navController: NavController, pagerState: PagerState, s
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
 
-    val actionsBackgroundColor: Color by animateColorAsState(
-        targetValue = if (!scrollState.canScrollForward) CustomTheme.colors.mainBackground else CustomTheme.colors.secondaryBackground,
-        label = "actionsBackgroundColor"
+    val buttonNextContentColor: Color by animateColorAsState(
+        targetValue = if (pagerState.currentPage == OnBoardingPage.PageList.Count - 1) CustomTheme.colors.textOnActive else CustomTheme.colors.text,
+        label = "buttonNextContentColor"
+    )
+
+    val buttonNextBackgroundColor: Color by animateColorAsState(
+        targetValue = if (pagerState.currentPage == OnBoardingPage.PageList.Count - 1) CustomTheme.colors.active else CustomTheme.colors.secondaryBackground,
+        label = "buttonNextBackgroundColor"
     )
 
     Row(
         Modifier
-            .fillMaxWidth()
-            .background(actionsBackgroundColor)
+            .widthIn(max = 500.dp)
+            .height(70.dp)
             .padding(horizontal = 20.dp)
             .padding(bottom = 20.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
+        horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Row(Modifier.weight(1f)) {
-            AnimatedVisibility(
-                visible = pagerState.currentPage > 0,
-                enter = slideInHorizontally {
-                    it
-                } + expandHorizontally(
-                    // Expand from the left.
-                    expandFrom = Alignment.Start
-                ) + fadeIn(
-                    // Fade in with the initial alpha of 0.3f.
-                    initialAlpha = 0.3f
-                ),
-                exit = slideOutHorizontally() + shrinkHorizontally() + fadeOut()
-            ) {
-                CustomButton(
-                    text = stringResource(R.string.Back), onClick = {
+        AnimatedVisibility(
+            visible = pagerState.currentPage > 0,
+            enter = slideInHorizontally() + expandHorizontally(clip = false) + fadeIn(),
+            exit = slideOutHorizontally() + shrinkHorizontally(clip = false) + fadeOut(),
+        )
+        {
+            Row {
+                Button(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .testTag("button_next"),
+                    shape = CustomTheme.shapes.small,
+                    colors = ButtonDefaults.buttonColors(
+                        contentColor = CustomTheme.colors.text,
+                        containerColor = CustomTheme.colors.secondaryBackground
+                    ),
+                    border = null,
+                    elevation = null,
+                    contentPadding = PaddingValues(horizontal = 15.dp),
+                    onClick = {
                         coroutineScope.launch {
                             pagerState.animateScrollToPage(pagerState.currentPage - 1)
                         }
-                    },
-                    style = ButtonStyle.Text
-                )
+                    }
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.KeyboardArrowLeft,
+                        contentDescription = stringResource(R.string.Back),
+                        tint = CustomTheme.colors.text
+                    )
+                }
+                Spacer(modifier = Modifier.padding(end = 10.dp))
             }
         }
-        Row(
-            Modifier
-                .align(Alignment.CenterVertically)
-                .weight(1f), horizontalArrangement = Arrangement.Center
+        Button(
+            modifier = Modifier
+                .testTag("button_next")
+                .fillMaxHeight()
+                .fillMaxWidth(),
+            shape = CustomTheme.shapes.small,
+            colors = ButtonDefaults.buttonColors(
+                contentColor = buttonNextContentColor,
+                containerColor = buttonNextBackgroundColor
+            ),
+            border = null,
+            elevation = null,
+            contentPadding = PaddingValues(horizontal = 15.dp),
+            onClick = {
+                if (pagerState.currentPage == OnBoardingPage.PageList.Count - 1) {
+                    onFinished(context, navController)
+                } else {
+                    coroutineScope.launch {
+                        pagerState.animateScrollToPage(pagerState.currentPage + 1)
+                    }
+                }
+            }
         ) {
-            repeat(OnBoardingPage.PageList.Count) { iteration ->
-                val color =
-                    if (pagerState.currentPage == iteration) CustomTheme.colors.text else CustomTheme.colors.textSecondary
-                Box(
-                    modifier = Modifier
-                        .padding(2.dp)
-                        .clip(CircleShape)
-                        .background(color)
-                        .size(7.dp)
-                )
-            }
-        }
-        Row(Modifier.weight(1f), horizontalArrangement = Arrangement.End) {
             AnimatedContent(
                 targetState = pagerState.currentPage == OnBoardingPage.PageList.Count - 1,
                 transitionSpec = {
@@ -148,28 +172,25 @@ private fun ScreenFooter(navController: NavController, pagerState: PagerState, s
                 }, label = ""
             ) { value ->
                 if (value) {
-                    CustomButton(
-                        modifier = Modifier.testTag("button_next"),
+                    Text(
                         text = stringResource(R.string.Finish),
-                        onClick = { onFinished(context, navController) },
-                        style = ButtonStyle.Filled,
+                        style = MaterialTheme.typography.body1,
+                        fontWeight = FontWeight.SemiBold,
+                        color = buttonNextContentColor
                     )
                 } else {
-                    CustomButton(
-                        modifier = Modifier.testTag("button_next"),
+                    Text(
                         text = stringResource(R.string.Next),
-                        onClick = {
-                            coroutineScope.launch {
-                                pagerState.animateScrollToPage(pagerState.currentPage + 1)
-                            }
-                        },
-                        style = ButtonStyle.Text,
+                        style = MaterialTheme.typography.body1,
+                        fontWeight = FontWeight.SemiBold,
+                        color = buttonNextContentColor
                     )
                 }
             }
         }
     }
 }
+
 
 fun onFinished(context: Context, navController: NavController) {
     try {
