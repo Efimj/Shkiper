@@ -39,7 +39,7 @@ fun StatisticsCard(statistic: StatisticsItem, onClick: () -> Unit) {
             .clickable(onClick = { multipleEventsCutter.processEvent { onClick() } }),
         elevation = 0.dp,
         shape = RoundedCornerShape(15.dp),
-        border = BorderStroke(1.dp, CustomTheme.colors.stroke),
+        //border = BorderStroke(1.dp, CustomTheme.colors.stroke),
         backgroundColor = CustomTheme.colors.secondaryBackground,
         contentColor = CustomTheme.colors.text,
     ) {
