@@ -110,9 +110,7 @@ private fun ScreenFooter(navController: NavController, pagerState: PagerState, s
         {
             Row {
                 Button(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .testTag("button_next"),
+                    modifier = Modifier.fillMaxHeight(),
                     shape = CustomTheme.shapes.small,
                     colors = ButtonDefaults.buttonColors(
                         contentColor = CustomTheme.colors.text,

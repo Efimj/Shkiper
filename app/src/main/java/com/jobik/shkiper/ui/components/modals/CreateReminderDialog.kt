@@ -1,6 +1,7 @@
 package com.jobik.shkiper.ui.components.modals
 
 import android.content.Context
+import androidx.compose.animation.*
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
@@ -143,15 +144,22 @@ private fun DialogFooter(
         horizontalArrangement = Arrangement.SpaceAround,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        if (onDelete != null)
+        AnimatedVisibility(
+            visible = onDelete != null,
+            enter = slideInHorizontally() + expandHorizontally(clip = false) + fadeIn(),
+            exit = slideOutHorizontally() + shrinkHorizontally(clip = false) + fadeOut(),
+        )
+        {
             CustomButton(
                 text = stringResource(R.string.Delete), onClick = {
-                    coroutineScope.launch {
-                        onDelete()
-                    }
+                    if (onDelete != null)
+                        coroutineScope.launch {
+                            onDelete()
+                        }
                 },
                 style = ButtonStyle.Text
             )
+        }
         CustomButton(
             text = if (pagerState.currentPage > 0) stringResource(R.string.Back) else stringResource(R.string.Cancel),
             onClick = {
