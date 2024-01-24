@@ -4,12 +4,20 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Language
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CardElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -19,6 +27,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.jobik.shkiper.BuildConfig
 import com.jobik.shkiper.R
 import com.jobik.shkiper.helpers.IntentHelper
@@ -27,8 +36,10 @@ import com.jobik.shkiper.ui.components.cards.UserCard
 import com.jobik.shkiper.ui.components.cards.UserCardLink
 import com.jobik.shkiper.ui.components.layouts.ScreenWrapper
 import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.util.ThemeUtil
 
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AboutNotepadScreen() {
     val context = LocalContext.current
@@ -42,7 +53,9 @@ fun AboutNotepadScreen() {
     }
 
     ScreenWrapper(
-        modifier = Modifier.verticalScroll(rememberScrollState()).padding(top = 85.dp, bottom = 30.dp)
+        modifier = Modifier
+            .verticalScroll(rememberScrollState())
+            .padding(top = 85.dp, bottom = 30.dp)
             .padding(horizontal = 20.dp)
     ) {
         Row(modifier = Modifier.height(IntrinsicSize.Min), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
@@ -50,7 +63,7 @@ fun AboutNotepadScreen() {
                 modifier = Modifier
                     .fillMaxHeight(1f)
                     .fillMaxWidth(.65f)
-                    .clip(CustomTheme.shapes.large)
+                    .clip(CustomTheme.shapes.medium)
                     .background(CustomTheme.colors.secondaryBackground)
                     .padding(start = 20.dp, end = 20.dp, top = 10.dp, bottom = 15.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -72,13 +85,17 @@ fun AboutNotepadScreen() {
                 )
             }
             Column(
-                modifier = Modifier.fillMaxHeight(1f).fillMaxWidth(1.33f),
+                modifier = Modifier
+                    .fillMaxHeight(1f)
+                    .fillMaxWidth(1.33f),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 Column(
-                    modifier = Modifier.fillMaxHeight(.65f).fillMaxWidth()
-                        .clip(CustomTheme.shapes.large)
+                    modifier = Modifier
+                        .fillMaxHeight(.65f)
+                        .fillMaxWidth()
+                        .clip(CustomTheme.shapes.medium)
                         .background(CustomTheme.colors.secondaryBackground)
                         .padding(horizontal = 20.dp, vertical = 10.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -92,8 +109,10 @@ fun AboutNotepadScreen() {
                     )
                 }
                 Column(
-                    modifier = Modifier.fillMaxHeight(1.35f).fillMaxWidth()
-                        .clip(CustomTheme.shapes.large)
+                    modifier = Modifier
+                        .fillMaxHeight(1.35f)
+                        .fillMaxWidth()
+                        .clip(CustomTheme.shapes.medium)
                         .background(CustomTheme.colors.secondaryBackground)
                         .padding(horizontal = 20.dp, vertical = 10.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -106,6 +125,55 @@ fun AboutNotepadScreen() {
                         fontSize = 18.sp,
                         textAlign = TextAlign.Center,
                         fontWeight = FontWeight.SemiBold
+                    )
+                }
+            }
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+        Card(
+            shape = CustomTheme.shapes.medium,
+            colors = CardDefaults.cardColors(
+                containerColor = CustomTheme.colors.secondaryBackground,
+                contentColor = CustomTheme.colors.text,
+                disabledContainerColor = CustomTheme.colors.secondaryBackground,
+                disabledContentColor = CustomTheme.colors.text
+            ),
+            elevation = CardDefaults.outlinedCardElevation(),
+            border = null,
+        ) {
+            Row(
+                modifier = Modifier.padding(20.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(20.dp)
+            ) {
+                Image(
+                    painter = painterResource(if (ThemeUtil.isDarkMode.value == true) R.drawable.github_dark else R.drawable.github_light),
+                    contentDescription = stringResource(
+                        id = R.string.Image
+                    ),
+                    contentScale = ContentScale.FillHeight,
+                    modifier = Modifier.height(80.dp)
+                )
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.spacedBy(3.dp, alignment = Alignment.CenterVertically)
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.OpenSource),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        style = MaterialTheme.typography.h5,
+                        fontWeight = FontWeight.SemiBold,
+                        color = CustomTheme.colors.text,
+                        modifier = Modifier.basicMarquee()
+                    )
+                    Text(
+                        text = stringResource(id = R.string.OpenSourceDescription),
+                        minLines = 2,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
+                        style = MaterialTheme.typography.body1,
+                        color = CustomTheme.colors.textSecondary,
                     )
                 }
             }

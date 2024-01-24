@@ -40,12 +40,12 @@ fun UserCard(
     val modifier = if (onClick != null) Modifier.bounceClick().clip(RoundedCornerShape(15.dp))
         .clickable(enabled = true) { onClick() }.fillMaxWidth()
         .background(CustomTheme.colors.secondaryBackground, RoundedCornerShape(15.dp))
-        .border(BorderStroke(width = 1.dp, color = CustomTheme.colors.stroke), RoundedCornerShape(15.dp))
+        //.border(BorderStroke(width = 1.dp, color = CustomTheme.colors.stroke), RoundedCornerShape(15.dp))
         .padding(8.dp)
     else
         Modifier.fillMaxWidth()
             .background(CustomTheme.colors.secondaryBackground, RoundedCornerShape(15.dp))
-            .border(BorderStroke(width = 1.dp, color = CustomTheme.colors.stroke), RoundedCornerShape(15.dp))
+            //.border(BorderStroke(width = 1.dp, color = CustomTheme.colors.stroke), RoundedCornerShape(15.dp))
             .clip(RoundedCornerShape(15.dp)).padding(8.dp)
 
     Column(

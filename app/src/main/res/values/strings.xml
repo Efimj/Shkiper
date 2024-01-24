@@ -217,6 +217,9 @@
     <string name="WidgetsDescription">Pin the note to the main screen to always keep it visible.</string>
     <string name="MadeWithLove">Liked?</string>
     <string name="MadeWithLoveDescription">Tell your friends about the app or support the developer with a kind coin.</string>
+    <string name="OpenSource">Open Source</string>
+    <string name="OpenSourceDescription">Shkiper is open-source, and the entire code is published on GitHub</string>
+
 
 
 </resources>
