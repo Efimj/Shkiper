@@ -345,4 +345,18 @@
     <string name="ShareImage">แบ่งปันภาพ</string>
     <string name="ShareHTMLText">แบ่งปันเป็นข้อความ HTML</string>
     <string name="ShareMarkdownText">แบ่งปันเป็นข้อความมาร์กดาวน์</string>
+
+    <string name="NeededPermissionForNotifications">จำเป็นต้องเปิดใช้งานการอนุญาตเพื่อรับการแจ้งเตือน</string>
+    <string name="ImportantForRemindersWork">นี่เป็นสิ่งสำคัญสำหรับการแจ้งเตือนให้ทำงาน</string>
+    <string name="Enable">เปิดใช้งาน</string>
+    <string name="TextFormatting">การจัดรูปแบบข้อความ</string>
+    <string name="TextFormattingDescription">แสดงวิสัยทัศน์ที่สร้างสรรค์ของคุณโดยกำหนดสไตล์ข้อความตามรสนิยมของคุณ</string>
+    <string name="StatisticsPageDescription">สถิติไม่จำเป็นต้องน่าเบื่อ มันก็น่าสนใจเหมือนกัน!</string>
+    <string name="Widgets">วิดเจ็ต</string>
+    <string name="WidgetsDescription">ปักหมุดบันทึกย่อไว้ที่หน้าจอหลักเพื่อให้มองเห็นได้เสมอ</string>
+    <string name="MadeWithLove">ชอบไหม?</string>
+    <string name="MadeWithLoveDescription">บอกเพื่อนของคุณเกี่ยวกับแอปหรือสนับสนุนนักพัฒนาด้วยเหรียญชนิดดี</string>
+    <string name="OpenSource">โอเพ่นซอร์ส</string>
+    <string name="OpenSourceDescription">Shkiper เป็นโอเพ่นซอร์ส และโค้ดทั้งหมดได้รับการเผยแพร่บน GitHub</string>
+
 </resources>

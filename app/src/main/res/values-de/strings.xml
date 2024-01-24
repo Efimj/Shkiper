@@ -346,4 +346,29 @@
     <string name="ShareHTMLText">Als HTML-Text teilen</string>
     <string name="ShareMarkdownText">Als Markdown-Text teilen</string>
 
+
+    <string name="NeededPermissionForNotifications">Wird benötigt, um Berechtigungen zum Empfangen von Benachrichtigungen zu aktivieren</string>
+
+    <string name="ImportantForRemindersWork">Dies ist wichtig, damit Erinnerungen funktionieren</string>
+
+    <string name="Enable">Aktivieren</string>
+
+    <string name="TextFormatting">Textformatierung</string>
+
+    <string name="TextFormattingDescription">Bringen Sie Ihre kreative Vision zum Ausdruck, indem Sie dem Text einen Stil geben, der Ihrem Geschmack entspricht.</string>
+
+    <string name="StatisticsPageDescription">Statistiken müssen nicht langweilig sein; es kann auch interessant sein!</string>
+
+    <string name="Widgets">Widgets</string>
+
+    <string name="WidgetsDescription">Heften Sie die Notiz an den Hauptbildschirm, damit sie immer sichtbar bleibt.</string>
+
+    <string name="MadeWithLove">Gefallen?</string>
+
+    <string name="MadeWithLoveDescription">Erzählen Sie Ihren Freunden von der App oder unterstützen Sie den Entwickler mit einer netten Münze.</string>
+
+    <string name="OpenSource">Open Source</string>
+
+    <string name="OpenSourceDescription">Shkiper ist Open Source und der gesamte Code wird auf GitHub veröffentlicht</string>
+
 </resources>

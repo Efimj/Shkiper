@@ -345,4 +345,18 @@
     <string name="ShareImage">画像を共有する</string>
     <string name="ShareHTMLText">HTML テキストとして共有</string>
     <string name="ShareMarkdownText">マークダウンテキストとして共有</string>
+
+    <string name="NeededPermissionForNotifications">通知を受信する権限を有効にするために必要です</string>
+    <string name="ImportantForRemindersWork">これはリマインダーが機能するために重要です</string>
+    <string name="Enable">有効にする</string>
+    <string name="TextFormatting">テキストの書式設定</string>
+    <string name="TextFormattingDescription">テキストに好みに応じたスタイルを与えて、クリエイティブなビジョンを表現します。</string>
+    <string name="StatisticsPageDescription">統計は退屈である必要はありません。それも面白いかもしれません！</string>
+    <string name="Widgets">ウィジェット</string>
+    <string name="WidgetsDescription">メモをメイン画面に固定して、常に表示されるようにします。</string>
+    <string name="MadeWithLove">気に入りましたか?</string>
+    <string name="MadeWithLoveDescription">友達にアプリについて教えたり、親切なコインで開発者をサポートしたりできます。</string>
+    <string name="OpenSource">オープンソース</string>
+    <string name="OpenSourceDescription">Shkiper はオープンソースであり、コード全体が GitHub で公開されています</string>
+
 </resources>

@@ -189,4 +189,17 @@
     <string name="ShareHTMLText">Поширити як HTML текст</string>
     <string name="ShareMarkdownText">Поширити як markdown текст</string>
 
+    <string name="NeededPermissionForNotifications">Потрібно для надання дозволу на отримання сповіщень</string>
+    <string name="ImportantForRemindersWork">Це важливо, щоб нагадування працювали</string>
+    <string name="Enable">Увімкнути</string>
+    <string name="TextFormatting">Форматування тексту</string>
+    <string name="TextFormattingDescription">Висловіть своє творче бачення, надавши тексту стиль відповідно до свого смаку.</string>
+    <string name="StatisticsPageDescription">Статистика не має бути нудною; це теж може бути цікаво!</string>
+    <string name="Widgets">Віджети</string>
+    <string name="WidgetsDescription">Закріпіть нотатку на головному екрані, щоб вона завжди була видимою.</string>
+    <string name="MadeWithLove">Сподобалося?</string>
+    <string name="MadeWithLoveDescription">Розкажіть друзям про програму або підтримайте розробника доброю монетою.</string>
+    <string name="OpenSource">Відкритий код</string>
+    <string name="OpenSourceDescription">Shkiper є відкритим кодом, і весь код опубліковано на GitHub</string>
+
 </resources>

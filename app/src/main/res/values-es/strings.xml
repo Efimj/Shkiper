@@ -345,4 +345,17 @@
     <string name="ShareImage">Compartir imagen</string>
     <string name="ShareHTMLText">Compartir como texto HTML</string>
     <string name="ShareMarkdownText">Compartir como texto de rebajas</string>
+
+    <string name="NeededPermissionForNotifications">Necesario para habilitar permisos para recibir notificaciones</string>
+    <string name="ImportantForRemindersWork">Esto es importante para que los recordatorios funcionen.</string>
+    <string name="Enable">Permitir</string>
+    <string name="TextFormatting">Formato de texto</string>
+    <string name="TextFormattingDescription">Expresa tu visión creativa dándole al texto un estilo acorde a tu gusto.</string>
+    <string name="StatisticsPageDescription">Las estadísticas no tienen por qué ser aburridas; ¡También puede ser interesante!</string>
+    <string name="Widgets">widgets</string>
+    <string name="WidgetsDescription">Fija la nota a la pantalla principal para mantenerla siempre visible.</string>
+    <string name="MadeWithLove">¿Apreciado?</string>
+    <string name="MadeWithLoveDescription">Cuéntale a tus amigos sobre la aplicación o apoya al desarrollador con una buena moneda.</string>
+    <string name="OpenSource">Fuente abierta</string>
+    <string name="OpenSourceDescription">Shkiper es de código abierto y el código completo está publicado en GitHub.</string>
 </resources>

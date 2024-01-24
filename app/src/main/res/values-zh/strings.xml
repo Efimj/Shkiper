@@ -349,4 +349,18 @@
     <string name="ShareImage">分享图像</string>
     <string name="ShareHTMLText">以 HTML 文本形式共享</string>
     <string name="ShareMarkdownText">分享为 Markdown 文本</string>
+
+    <string name="NeededPermissionForNotifications">需要启用接收通知的权限</string>
+    <string name="ImportantForRemindersWork">这对于提醒的工作很重要</string>
+    <string name="Enable">使能够</string>
+    <string name="TextFormatting">文本格式</string>
+    <string name="TextFormattingDescription">根据您的品味赋予文本风格，表达您的创意愿景。</string>
+    <string name="StatisticsPageDescription">统计不一定是无聊的；它也可以很有趣！</string>
+    <string name="Widgets">小部件</string>
+    <string name="WidgetsDescription">将注释固定到主屏幕以始终保持可见。</string>
+    <string name="MadeWithLove">喜欢吗？</string>
+    <string name="MadeWithLoveDescription">向您的朋友介绍该应用程序或通过硬币支持开发者。</string>
+    <string name="OpenSource">开源</string>
+    <string name="OpenSourceDescription">Shkiper 是开源的，整个代码发布在 GitHub 上</string>
+
 </resources>

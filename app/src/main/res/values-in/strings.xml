@@ -345,4 +345,17 @@
     <string name="ShareImage">Bagikan gambar</string>
     <string name="ShareHTMLText">Bagikan sebagai teks HTML</string>
     <string name="ShareMarkdownText">Bagikan sebagai teks penurunan harga</string>
+
+    <string name="NeededPermissionForNotifications">Diperlukan untuk mengaktifkan izin untuk menerima notifikasi</string>
+    <string name="ImportantForRemindersWork">Ini penting agar pengingat berfungsi</string>
+    <string name="Enable">Memungkinkan</string>
+    <string name="TextFormatting">Pemformatan teks</string>
+    <string name="TextFormattingDescription">Ekspresikan visi kreatif Anda dengan memberi gaya pada teks sesuai selera Anda.</string>
+    <string name="StatisticsPageDescription">Statistik tidak harus membosankan; itu bisa menarik juga!</string>
+    <string name="Widgets">Widget</string>
+    <string name="WidgetsDescription">Sematkan catatan ke layar utama agar selalu terlihat.</string>
+    <string name="MadeWithLove">Menyukai?</string>
+    <string name="MadeWithLoveDescription">Beri tahu teman Anda tentang aplikasi tersebut atau dukung pengembang dengan koin sejenis.</string>
+    <string name="OpenSource">Sumber Terbuka</string>
+    <string name="OpenSourceDescription">Shkiper adalah sumber terbuka, dan seluruh kode dipublikasikan di GitHub</string>
 </resources>

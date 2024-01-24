@@ -195,4 +195,18 @@
     <string name="ShareHTMLText">Поделиться HTML текстом</string>
     <string name="ShareMarkdownText">Поделиться markdown текстом</string>
 
+    <string name="NeededPermissionForNotifications">Необходимо включить разрешения на получение уведомлений</string>
+    <string name="ImportantForRemindersWork">Это важно для работы напоминаний</string>
+    <string name="Enable">Включить</string>
+    <string name="TextFormatting">Форматирование текста</string>
+    <string name="TextFormattingDescription">Выразите свое творческое видение, придав тексту стиль по своему вкусу.</string>
+    <string name="StatisticsPageDescription">Статистика не обязательно должна быть скучной; это тоже может быть интересно!</string>
+    <string name="Widgets">Виджеты</string>
+    <string name="WidgetsDescription">Закрепите заметку на главном экране, чтобы она всегда была видна.</string>
+    <string name="MadeWithLove">Понравилось?</string>
+    <string name="MadeWithLoveDescription">Расскажите друзьям о приложении или поддержите разработчика доброй монетой.</string>
+    <string name="OpenSource">Open Source</string>
+    <string name="OpenSourceDescription">Shkiper имеет открытый исходный код, весь код опубликован на GitHub</string>
+
+
 </resources>
