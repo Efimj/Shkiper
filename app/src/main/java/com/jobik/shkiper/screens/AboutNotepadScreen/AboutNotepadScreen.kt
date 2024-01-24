@@ -9,22 +9,15 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.Link
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CardElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.paint
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -34,11 +27,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.AsyncImage
 import com.jobik.shkiper.BuildConfig
 import com.jobik.shkiper.R
 import com.jobik.shkiper.helpers.IntentHelper
 import com.jobik.shkiper.services.statistics_service.StatisticsService
+import com.jobik.shkiper.ui.components.cards.LinkCard
 import com.jobik.shkiper.ui.components.cards.UserCard
 import com.jobik.shkiper.ui.components.cards.UserCardLink
 import com.jobik.shkiper.ui.components.layouts.ScreenWrapper
@@ -47,6 +40,7 @@ import com.jobik.shkiper.ui.theme.CustomTheme
 import com.jobik.shkiper.util.SnackbarHostUtil
 import com.jobik.shkiper.util.SnackbarVisualsCustom
 import com.jobik.shkiper.util.ThemeUtil
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 
@@ -142,87 +136,11 @@ fun AboutNotepadScreen() {
         }
         Spacer(modifier = Modifier.height(16.dp))
 
-
         val shkiperLink = stringResource(id = R.string.shkiper_github_link)
-        val coroutineScope = rememberCoroutineScope()
-        val clipboardManager = LocalContext.current.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         val onLinkCopiedText = stringResource(R.string.LinkCopied)
         val linkTextLabel = stringResource(R.string.Link)
+        LinkCard(shkiperLink, linkTextLabel, onLinkCopiedText)
 
-
-        Card(
-            shape = CustomTheme.shapes.medium,
-            colors = CardDefaults.cardColors(
-                containerColor = CustomTheme.colors.secondaryBackground,
-                contentColor = CustomTheme.colors.text,
-                disabledContainerColor = CustomTheme.colors.secondaryBackground,
-                disabledContentColor = CustomTheme.colors.text
-            ),
-            elevation = CardDefaults.outlinedCardElevation(),
-            border = null,
-            modifier = Modifier
-                .bounceClick(0.95f)
-                .clip(CustomTheme.shapes.medium)
-                .combinedClickable(
-                    onClick = {
-                        try {
-                            IntentHelper().openBrowserIntent(context = context, link = shkiperLink)
-                        } catch (
-                            e: Exception
-                        ) {
-                            Log.e("LinkCard", "OnClick", e)
-                        }
-                    },
-                    onLongClick = {
-                        clipboardManager.setPrimaryClip(ClipData.newPlainText(linkTextLabel, shkiperLink))
-                        coroutineScope.launch {
-                            SnackbarHostUtil.snackbarHostState.showSnackbar(
-                                SnackbarVisualsCustom(
-                                    message = onLinkCopiedText,
-                                    icon = Icons.Default.Link
-                                )
-                            )
-                        }
-                    },
-                ),
-        ) {
-            Row(
-                modifier = Modifier.padding(20.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(20.dp)
-            ) {
-                Image(
-                    painter = painterResource(if (ThemeUtil.isDarkMode.value == true) R.drawable.github_dark else R.drawable.github_light),
-                    contentDescription = stringResource(
-                        id = R.string.Image
-                    ),
-                    contentScale = ContentScale.FillHeight,
-                    modifier = Modifier.height(80.dp)
-                )
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.spacedBy(3.dp, alignment = Alignment.CenterVertically)
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.OpenSource),
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        style = MaterialTheme.typography.h5,
-                        fontWeight = FontWeight.SemiBold,
-                        color = CustomTheme.colors.text,
-                        modifier = Modifier.basicMarquee()
-                    )
-                    Text(
-                        text = stringResource(id = R.string.OpenSourceDescription),
-                        minLines = 2,
-                        maxLines = 2,
-                        overflow = TextOverflow.Ellipsis,
-                        style = MaterialTheme.typography.body1,
-                        color = CustomTheme.colors.textSecondary,
-                    )
-                }
-            }
-        }
         Spacer(modifier = Modifier.height(16.dp))
         Column {
             Text(
