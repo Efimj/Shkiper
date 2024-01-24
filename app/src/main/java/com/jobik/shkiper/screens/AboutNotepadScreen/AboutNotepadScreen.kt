@@ -1,20 +1,27 @@
 package com.jobik.shkiper.screens.AboutNotepadScreen
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Language
+import androidx.compose.material.icons.filled.Link
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
@@ -35,8 +42,12 @@ import com.jobik.shkiper.services.statistics_service.StatisticsService
 import com.jobik.shkiper.ui.components.cards.UserCard
 import com.jobik.shkiper.ui.components.cards.UserCardLink
 import com.jobik.shkiper.ui.components.layouts.ScreenWrapper
+import com.jobik.shkiper.ui.modifiers.bounceClick
 import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.util.SnackbarHostUtil
+import com.jobik.shkiper.util.SnackbarVisualsCustom
 import com.jobik.shkiper.util.ThemeUtil
+import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -130,6 +141,15 @@ fun AboutNotepadScreen() {
             }
         }
         Spacer(modifier = Modifier.height(16.dp))
+
+
+        val shkiperLink = stringResource(id = R.string.shkiper_github_link)
+        val coroutineScope = rememberCoroutineScope()
+        val clipboardManager = LocalContext.current.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val onLinkCopiedText = stringResource(R.string.LinkCopied)
+        val linkTextLabel = stringResource(R.string.Link)
+
+
         Card(
             shape = CustomTheme.shapes.medium,
             colors = CardDefaults.cardColors(
@@ -140,6 +160,31 @@ fun AboutNotepadScreen() {
             ),
             elevation = CardDefaults.outlinedCardElevation(),
             border = null,
+            modifier = Modifier
+                .bounceClick(0.95f)
+                .clip(CustomTheme.shapes.medium)
+                .combinedClickable(
+                    onClick = {
+                        try {
+                            IntentHelper().openBrowserIntent(context = context, link = shkiperLink)
+                        } catch (
+                            e: Exception
+                        ) {
+                            Log.e("LinkCard", "OnClick", e)
+                        }
+                    },
+                    onLongClick = {
+                        clipboardManager.setPrimaryClip(ClipData.newPlainText(linkTextLabel, shkiperLink))
+                        coroutineScope.launch {
+                            SnackbarHostUtil.snackbarHostState.showSnackbar(
+                                SnackbarVisualsCustom(
+                                    message = onLinkCopiedText,
+                                    icon = Icons.Default.Link
+                                )
+                            )
+                        }
+                    },
+                ),
         ) {
             Row(
                 modifier = Modifier.padding(20.dp),

@@ -37,34 +37,43 @@ fun UserCard(
     onClick: (() -> Unit)? = null,
     links: List<UserCardLink>? = null
 ) {
-    val modifier = if (onClick != null) Modifier.bounceClick().clip(RoundedCornerShape(15.dp))
-        .clickable(enabled = true) { onClick() }.fillMaxWidth()
+    val modifier = if (onClick != null) Modifier
+        .bounceClick()
+        .clip(RoundedCornerShape(15.dp))
+        .clickable(enabled = true) { onClick() }
+        .fillMaxWidth()
         .background(CustomTheme.colors.secondaryBackground, RoundedCornerShape(15.dp))
-        //.border(BorderStroke(width = 1.dp, color = CustomTheme.colors.stroke), RoundedCornerShape(15.dp))
         .padding(8.dp)
     else
-        Modifier.fillMaxWidth()
+        Modifier
+            .fillMaxWidth()
             .background(CustomTheme.colors.secondaryBackground, RoundedCornerShape(15.dp))
-            //.border(BorderStroke(width = 1.dp, color = CustomTheme.colors.stroke), RoundedCornerShape(15.dp))
-            .clip(RoundedCornerShape(15.dp)).padding(8.dp)
+            .clip(RoundedCornerShape(15.dp))
+            .padding(8.dp)
 
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.Center
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth().height(60.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(60.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Image(
                 painter = painterResource(id = photo),
-                modifier = Modifier.widthIn(max = 60.dp).clip(RoundedCornerShape(15.dp)),
+                modifier = Modifier
+                    .widthIn(max = 60.dp)
+                    .clip(RoundedCornerShape(15.dp)),
                 contentDescription = stringResource(R.string.DevMailHeader),
                 contentScale = ContentScale.Fit
             )
             if (name !== null || description !== null)
                 Column(
-                    modifier = Modifier.fillMaxSize().padding(start = 10.dp),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(start = 10.dp),
                     verticalArrangement = Arrangement.Center
                 ) {
                     name?.let {
@@ -90,7 +99,9 @@ fun UserCard(
                 }
             else if (links !== null)
                 Row(
-                    modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState())
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .horizontalScroll(rememberScrollState())
                         .padding(horizontal = 20.dp),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
@@ -103,7 +114,10 @@ fun UserCard(
         if (links !== null && (name !== null || description !== null)) {
             Spacer(Modifier.height(4.dp))
             Row(
-                modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).padding(horizontal = 20.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .horizontalScroll(rememberScrollState())
+                    .padding(horizontal = 20.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
@@ -119,7 +133,10 @@ fun UserCard(
 private fun LinkButton(link: UserCardLink) {
     IconButton(
         onClick = link.onClick,
-        modifier = Modifier.size(40.dp).clip(CircleShape).padding(0.dp),
+        modifier = Modifier
+            .size(40.dp)
+            .clip(CircleShape)
+            .padding(0.dp),
     ) {
         Image(
             painter = painterResource(id = link.image),
