@@ -220,7 +220,7 @@ fun PagerScreen(onBoardingPage: OnBoardingPage) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top,
     ) {
-        Box(modifier = Modifier.height(480.dp), contentAlignment = Alignment.Center) {
+        Box(modifier = Modifier.height(440.dp), contentAlignment = Alignment.Center) {
             Image(
                 modifier = Modifier
                     .clip(RoundedCornerShape(20.dp))
