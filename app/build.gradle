@@ -15,7 +15,7 @@ android {
         applicationId "com.jobik.shkiper"
         minSdk 27
         targetSdk 34
-        versionCode 51
+        versionCode 52
         versionName "1.6.11"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
