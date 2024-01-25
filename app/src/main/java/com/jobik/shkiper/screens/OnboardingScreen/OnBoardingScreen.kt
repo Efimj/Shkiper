@@ -246,7 +246,7 @@ fun PagerScreen(onBoardingPage: OnBoardingPage) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp)
-                .padding(top = 20.dp),
+                .padding(top = 10.dp),
             text = stringResource(onBoardingPage.description),
             style = MaterialTheme.typography.h6,
             textAlign = TextAlign.Center,
