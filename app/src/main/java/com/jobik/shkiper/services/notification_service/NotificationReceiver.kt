@@ -7,13 +7,10 @@ import android.app.TaskStackBuilder
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import androidx.annotation.Keep
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.app.NotificationCompat
-import com.jobik.shkiper.SharedPreferencesKeys
-import com.jobik.shkiper.activity.MainActivity
+import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.RepeatMode
 import com.jobik.shkiper.helpers.IntentHelper
 import com.jobik.shkiper.helpers.TextHelper
@@ -79,7 +76,7 @@ class NotificationReceiver : BroadcastReceiver() {
 
         val notificationBuilder =
             NotificationCompat.Builder(context, notification.channel.channelId)
-                .setSmallIcon(notification.icon)
+                .setSmallIcon(R.drawable.ic_notification)
                 .setAutoCancel(true)
                 .setColor(savedColors.active.toArgb())
                 .setColorized(true)

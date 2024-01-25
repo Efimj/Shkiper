@@ -8,11 +8,9 @@ import com.jobik.shkiper.database.models.Note
 import com.jobik.shkiper.database.models.Reminder
 import com.jobik.shkiper.database.models.RepeatMode
 import com.jobik.shkiper.helpers.DateHelper
-import com.jobik.shkiper.helpers.TextHelper
 import com.jobik.shkiper.services.notification_service.NotificationData
 import com.jobik.shkiper.services.notification_service.NotificationScheduler
 import com.jobik.shkiper.services.statistics_service.StatisticsService
-import com.mohamedrejeb.richeditor.model.RichTextState
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.realm.kotlin.Realm
 import io.realm.kotlin.UpdatePolicy
@@ -195,7 +193,6 @@ class ReminderMongoRepositoryImpl(val realm: Realm, @ApplicationContext val cont
             notificationId = reminder._id.timestamp,
             title = note.header,
             message = note.body,
-            icon = R.drawable.ic_notification,
             repeatMode = reminder.repeat,
             requestCode = reminder._id.timestamp,
             trigger = reminderDateTime.toInstant(OffsetDateTime.now().offset).toEpochMilli()
