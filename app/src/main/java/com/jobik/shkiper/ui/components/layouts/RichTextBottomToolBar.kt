@@ -2,7 +2,9 @@ package com.jobik.shkiper.ui.components.layouts
 
 import android.util.Log
 import androidx.annotation.Keep
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Divider
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -35,6 +37,7 @@ fun RichTextBottomToolBar(
     Row(
         modifier = modifier
             .fillMaxWidth()
+            .horizontalScroll(rememberScrollState())
             .padding(horizontal = 12.dp)
             .height(56.dp),
         horizontalArrangement = Arrangement.spacedBy(
