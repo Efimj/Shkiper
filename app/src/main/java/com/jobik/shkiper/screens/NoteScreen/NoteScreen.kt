@@ -1,6 +1,7 @@
 package com.jobik.shkiper.screens.NoteScreen
 
 import android.annotation.SuppressLint
+import android.content.Context
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
@@ -19,6 +20,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.SheetState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -68,9 +70,18 @@ import java.time.Duration
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-@OptIn(ExperimentalRichTextApi::class, ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hiltViewModel()) {
+
+    NoteContent(noteViewModel, navController)
+}
+
+@Composable
+@OptIn(ExperimentalRichTextApi::class, ExperimentalComposeUiApi::class)
+private fun NoteContent(
+    noteViewModel: NoteViewModel,
+    navController: NavController
+) {
     val systemUiController = rememberSystemUiController()
     val keyboardController = LocalSoftwareKeyboardController.current
 
@@ -78,9 +89,7 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
         noteViewModel.runFetchingLinksMetaData()
         if (noteViewModel.screenState.value.isGoBack) navController.popBackStack()
     }
-    val context = LocalContext.current
     val scrollState = rememberLazyListState()
-    val shareSheetState = androidx.compose.material3.rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route ?: ""
 
     LaunchedEffect(currentRoute) {
@@ -250,6 +259,51 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
             onGoBack = noteViewModel::switchDeleteDialogShow
         )
 
+    ShareComponent(noteViewModel, richTextState)
+
+    if (noteViewModel.screenState.value.isCreateReminderDialogShow) {
+        val reminder = remember { noteViewModel.screenState.value.reminder }
+        val reminderDialogProperties = remember {
+            if (reminder != null) ReminderDialogProperties(reminder.date, reminder.time, reminder.repeat)
+            else ReminderDialogProperties()
+        }
+        CreateReminderDialog(
+            reminderDialogProperties = reminderDialogProperties,
+            onGoBack = noteViewModel::switchReminderDialogShow,
+            onDelete = if (reminder != null) noteViewModel::deleteReminder else null,
+            onSave = noteViewModel::createReminder,
+        )
+    }
+
+    LaunchedEffect(scrollState.canScrollBackward, scrollState.canScrollForward) {
+        if (scrollState.canScrollBackward || scrollState.canScrollForward) {
+            noteViewModel.setTopAppBarHover(scrollState.canScrollBackward)
+            noteViewModel.setBottomAppBarHover(scrollState.canScrollForward)
+        } else {
+            noteViewModel.setTopAppBarHover(false)
+            noteViewModel.setBottomAppBarHover(false)
+        }
+    }
+
+    val secondaryBackgroundColor = CustomTheme.colors.secondaryBackground
+    DisposableEffect(Unit) {
+        onDispose {
+            keyboardController?.hide()
+            noteViewModel.deleteNoteIfEmpty(richTextState.annotatedString.toString())
+            systemUiController.setNavigationBarColor(secondaryBackgroundColor)
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ShareComponent(
+    noteViewModel: NoteViewModel,
+    richTextState: RichTextState
+) {
+    val context = LocalContext.current
+    val shareSheetState = androidx.compose.material3.rememberModalBottomSheetState(skipPartiallyExpanded = true)
+
     LaunchedEffect(noteViewModel.screenState.value.showShareDialog) {
         if (!noteViewModel.screenState.value.showShareDialog) {
             shareSheetState.hide()
@@ -311,39 +365,6 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
             onConfirm = noteViewModel::switchShowShareNoteDialog,
             onGoBack = noteViewModel::switchShowShareNoteDialog,
         )
-    }
-
-    if (noteViewModel.screenState.value.isCreateReminderDialogShow) {
-        val reminder = remember { noteViewModel.screenState.value.reminder }
-        val reminderDialogProperties = remember {
-            if (reminder != null) ReminderDialogProperties(reminder.date, reminder.time, reminder.repeat)
-            else ReminderDialogProperties()
-        }
-        CreateReminderDialog(
-            reminderDialogProperties = reminderDialogProperties,
-            onGoBack = noteViewModel::switchReminderDialogShow,
-            onDelete = if (reminder != null) noteViewModel::deleteReminder else null,
-            onSave = noteViewModel::createReminder,
-        )
-    }
-
-    LaunchedEffect(scrollState.canScrollBackward, scrollState.canScrollForward) {
-        if (scrollState.canScrollBackward || scrollState.canScrollForward) {
-            noteViewModel.setTopAppBarHover(scrollState.canScrollBackward)
-            noteViewModel.setBottomAppBarHover(scrollState.canScrollForward)
-        } else {
-            noteViewModel.setTopAppBarHover(false)
-            noteViewModel.setBottomAppBarHover(false)
-        }
-    }
-
-    val secondaryBackgroundColor = CustomTheme.colors.secondaryBackground
-    DisposableEffect(Unit) {
-        onDispose {
-            keyboardController?.hide()
-            noteViewModel.deleteNoteIfEmpty(richTextState.annotatedString.toString())
-            systemUiController.setNavigationBarColor(secondaryBackgroundColor)
-        }
     }
 }
 
