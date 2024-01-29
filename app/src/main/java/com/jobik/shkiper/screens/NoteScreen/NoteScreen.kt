@@ -6,13 +6,19 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PageSize
+import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -40,6 +46,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -50,6 +57,7 @@ import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.NotePosition
 import com.jobik.shkiper.helpers.TextHelper
 import com.jobik.shkiper.navigation.AppScreens
+import com.jobik.shkiper.screens.OnboardingScreen.OnBoardingPage
 import com.jobik.shkiper.ui.animation.AnimateVerticalSwitch
 import com.jobik.shkiper.ui.components.buttons.DropDownButton
 import com.jobik.shkiper.ui.components.buttons.DropDownButtonSizeMode
@@ -69,11 +77,20 @@ import com.mohamedrejeb.richeditor.model.rememberRichTextState
 import java.time.Duration
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import kotlin.math.roundToInt
 
 @Composable
 fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hiltViewModel()) {
+    val systemUiController = rememberSystemUiController()
 
     NoteContent(noteViewModel, navController)
+
+    val secondaryBackgroundColor = CustomTheme.colors.secondaryBackground
+    DisposableEffect(Unit) {
+        onDispose {
+            systemUiController.setNavigationBarColor(secondaryBackgroundColor)
+        }
+    }
 }
 
 @Composable
@@ -82,7 +99,6 @@ private fun NoteContent(
     noteViewModel: NoteViewModel,
     navController: NavController
 ) {
-    val systemUiController = rememberSystemUiController()
     val keyboardController = LocalSoftwareKeyboardController.current
 
     LaunchedEffect(noteViewModel.screenState.value.isGoBack) {
@@ -285,12 +301,10 @@ private fun NoteContent(
         }
     }
 
-    val secondaryBackgroundColor = CustomTheme.colors.secondaryBackground
     DisposableEffect(Unit) {
         onDispose {
             keyboardController?.hide()
             noteViewModel.deleteNoteIfEmpty(richTextState.annotatedString.toString())
-            systemUiController.setNavigationBarColor(secondaryBackgroundColor)
         }
     }
 }
