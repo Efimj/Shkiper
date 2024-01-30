@@ -36,6 +36,7 @@ fun CustomTopAppBar(
     modifier: Modifier,
     elevation: Dp = 0.dp,
     text: String = "",
+    counter: Int? = null,
     backgroundColor: Color = CustomTheme.colors.secondaryBackground,
     contentColor: Color = CustomTheme.colors.textSecondary,
     navigation: TopAppBarItem,
@@ -48,19 +49,27 @@ fun CustomTopAppBar(
         modifier = modifier,
         title = {
             Spacer(modifier = Modifier.padding(6.dp, 0.dp, 0.dp, 0.dp))
-            Text(
-                text,
-                overflow = TextOverflow.Ellipsis,
-                style = MaterialTheme.typography.body1.copy(fontSize = 18.sp),
-                color = CustomTheme.colors.textSecondary,
-                maxLines = 1,
-            )
+            if (text.isNotBlank())
+                Text(
+                    text = text,
+                    overflow = TextOverflow.Ellipsis,
+                    style = MaterialTheme.typography.body1.copy(fontSize = 18.sp),
+                    color = CustomTheme.colors.textSecondary,
+                    maxLines = 1,
+                )
+            if (text.isNotBlank() && counter != null)
+                Spacer(modifier = Modifier.padding(6.dp, 0.dp, 0.dp, 0.dp))
+            if (counter != null)
+                Counter(count = counter, color = CustomTheme.colors.textSecondary)
         },
         navigationIcon = {
             Spacer(modifier = Modifier.padding(6.dp, 0.dp, 0.dp, 0.dp))
             IconButton(
                 onClick = navigation.onClick,
-                modifier = navigation.modifier.size(40.dp).clip(CircleShape).padding(0.dp),
+                modifier = navigation.modifier
+                    .size(40.dp)
+                    .clip(CircleShape)
+                    .padding(0.dp),
             ) {
                 Icon(
                     imageVector = navigation.icon,
@@ -73,7 +82,10 @@ fun CustomTopAppBar(
             for (item in items) {
                 IconButton(
                     onClick = item.onClick,
-                    modifier = item.modifier.size(40.dp).clip(CircleShape).padding(0.dp),
+                    modifier = item.modifier
+                        .size(40.dp)
+                        .clip(CircleShape)
+                        .padding(0.dp),
                 ) {
                     Icon(
                         imageVector = item.icon,
