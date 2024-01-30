@@ -40,6 +40,7 @@ private val CONTAINERSHAPE = RoundedCornerShape(15.dp)
 
 @Composable
 fun SearchField(
+    modifier: Modifier = Modifier,
     search: String,
     placeholder: String = stringResource(R.string.Search),
     onValueChange: (String) -> Unit,
@@ -94,7 +95,7 @@ fun SearchField(
                         focusManager.clearFocus()
                     }
                 ),
-                modifier = Modifier
+                modifier = modifier
                     .fillMaxWidth()
                     .background(
                         color = CustomTheme.colors.secondaryBackground,
@@ -103,7 +104,7 @@ fun SearchField(
                     .clip(CONTAINERSHAPE)
                     .height(50.dp)
                     .clip(CONTAINERSHAPE)
-                    .border(1.dp, CustomTheme.colors.stroke, CONTAINERSHAPE)
+                    .border(1.dp, CustomTheme.colors.mainBackground, CONTAINERSHAPE)
                     .fillMaxWidth()
                     .padding(10.dp, 0.dp, 0.dp, 0.dp),
             ) {

@@ -385,10 +385,14 @@ private fun ShareComponent(
 @Composable
 private fun NoteScreenHeader(navController: NavController, noteViewModel: NoteViewModel, richTextState: RichTextState) {
     val systemUiController = rememberSystemUiController()
+
+    val backgroundColorValue =
+        if (noteViewModel.screenState.value.isTopAppBarHover) CustomTheme.colors.secondaryBackground else CustomTheme.colors.mainBackground
+
     val backgroundColor by animateColorAsState(
-        if (noteViewModel.screenState.value.isTopAppBarHover) CustomTheme.colors.secondaryBackground else CustomTheme.colors.mainBackground,
-        animationSpec = tween(200),
+        backgroundColorValue, animationSpec = tween(200),
     )
+
     SideEffect {
         systemUiController.setStatusBarColor(backgroundColor)
     }

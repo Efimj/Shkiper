@@ -2,20 +2,24 @@ package com.jobik.shkiper.screens.NoteListScreen
 
 import android.content.Context
 import androidx.activity.compose.BackHandler
-import androidx.compose.animation.*
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.*
-import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.lazy.staggeredgrid.*
+import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridState
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
+import androidx.compose.foundation.lazy.staggeredgrid.items
+import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.outlined.*
-import androidx.compose.material3.*
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -45,18 +49,16 @@ import com.jobik.shkiper.helpers.areEXACTNotificationsEnabled
 import com.jobik.shkiper.helpers.areNotificationsEnabled
 import com.jobik.shkiper.navigation.AppScreens
 import com.jobik.shkiper.services.notification_service.NotificationScheduler
-import com.jobik.shkiper.ui.components.cards.NoteCard
-import kotlin.math.roundToInt
 import com.jobik.shkiper.ui.components.buttons.FloatingActionButton
 import com.jobik.shkiper.ui.components.buttons.HashtagButton
-import com.jobik.shkiper.ui.components.modals.CreateReminderDialog
-import com.jobik.shkiper.ui.components.modals.ReminderDialogProperties
-import com.jobik.shkiper.viewmodels.NotesViewModel
+import com.jobik.shkiper.ui.components.cards.NoteCard
 import com.jobik.shkiper.ui.components.layouts.*
 import com.jobik.shkiper.ui.components.modals.ActionDialog
+import com.jobik.shkiper.ui.components.modals.CreateReminderDialog
+import com.jobik.shkiper.ui.components.modals.ReminderDialogProperties
 import com.jobik.shkiper.ui.theme.CustomTheme
-import com.jobik.shkiper.util.SnackbarHostUtil
-import com.jobik.shkiper.util.SnackbarVisualsCustom
+import com.jobik.shkiper.viewmodels.NotesViewModel
+import kotlin.math.roundToInt
 
 @Composable
 fun NoteListScreen(navController: NavController, notesViewModel: NotesViewModel = hiltViewModel()) {
@@ -322,12 +324,11 @@ private fun ActionBar(
     actionBarHeight: Dp, offsetX: Animatable<Float, AnimationVector1D>, notesViewModel: NotesViewModel
 ) {
     val systemUiController = rememberSystemUiController()
-    val backgroundColor by animateColorAsState(
-        if (notesViewModel.screenState.value.selectedNotes.isNotEmpty()) CustomTheme.colors.secondaryBackground else CustomTheme.colors.mainBackground,
-        animationSpec = tween(200),
-    )
-    SideEffect {
-        systemUiController.setStatusBarColor(backgroundColor)
+    val backgroundColorValue =
+        if (notesViewModel.screenState.value.selectedNotes.isNotEmpty()) CustomTheme.colors.secondaryBackground else CustomTheme.colors.mainBackground
+
+    LaunchedEffect(notesViewModel.screenState.value.selectedNotes.isNotEmpty()) {
+        systemUiController.setStatusBarColor(backgroundColorValue)
     }
 
     val topAppBarElevation = if (offsetX.value.roundToInt() < -actionBarHeight.value.roundToInt()) 0.dp else 2.dp

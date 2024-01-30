@@ -198,12 +198,11 @@ private fun ActionBar(
     actionBarHeight: Dp, offsetX: Animatable<Float, AnimationVector1D>, notesViewModel: NotesViewModel
 ) {
     val systemUiController = rememberSystemUiController()
-    val backgroundColor by animateColorAsState(
-        if (notesViewModel.screenState.value.selectedNotes.isNotEmpty()) CustomTheme.colors.secondaryBackground else CustomTheme.colors.mainBackground,
-        animationSpec = tween(200),
-    )
-    SideEffect {
-        systemUiController.setStatusBarColor(backgroundColor)
+    val backgroundColorValue =
+        if (notesViewModel.screenState.value.selectedNotes.isNotEmpty()) CustomTheme.colors.secondaryBackground else CustomTheme.colors.mainBackground
+
+    LaunchedEffect(notesViewModel.screenState.value.selectedNotes.isNotEmpty()) {
+        systemUiController.setStatusBarColor(backgroundColorValue)
     }
 
     val topAppBarElevation = if (offsetX.value.roundToInt() < -actionBarHeight.value.roundToInt()) 0.dp else 2.dp
