@@ -341,7 +341,7 @@ private fun ActionBar(
             modifier = Modifier.fillMaxWidth(),
             elevation = topAppBarElevation,
             backgroundColor = CustomTheme.colors.secondaryBackground,
-            text = notesViewModel.screenState.value.selectedNotes.count().toString(),
+            counter = notesViewModel.screenState.value.selectedNotes.count(),
             navigation = TopAppBarItem(
                 isActive = false,
                 icon = Icons.Default.Close,
