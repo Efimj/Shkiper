@@ -78,6 +78,7 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
     val systemUiController = rememberSystemUiController()
 
     NoteContent(noteViewModel, navController)
+    RemindersContent(noteViewModel)
 
     val secondaryBackgroundColor = CustomTheme.colors.secondaryBackground
     DisposableEffect(Unit) {
@@ -87,6 +88,31 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
     }
 
     LeaveScreenIfNeeded(noteViewModel, navController)
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun RemindersContent(noteViewModel: NoteViewModel) {
+    val context = LocalContext.current
+    val shareSheetState = androidx.compose.material3.rememberModalBottomSheetState(skipPartiallyExpanded = true)
+
+    LaunchedEffect(noteViewModel.screenState.value.showShareDialog) {
+        if (!noteViewModel.screenState.value.showShareDialog) {
+            shareSheetState.hide()
+        }
+    }
+
+    if (noteViewModel.screenState.value.showShareDialog) {
+        CustomModalBottomSheet(
+            state = shareSheetState,
+            onCancel = {
+                noteViewModel.switchReminderDialogShow()
+            },
+            dragHandle = null,
+        ) {
+
+        }
+    }
 }
 
 @Composable
@@ -229,7 +255,7 @@ private fun NoteContent(
             SnackbarWhenNoteDeleted(noteViewModel)
         }
     }
-    
+
     ShareComponent(noteViewModel, richTextState)
     DeleteonDialog(noteViewModel)
     CreateReminderDialog(noteViewModel)
