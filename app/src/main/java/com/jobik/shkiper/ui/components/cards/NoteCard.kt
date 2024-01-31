@@ -27,6 +27,7 @@ import com.jobik.shkiper.helpers.DateHelper
 import com.jobik.shkiper.helpers.TextHelper
 import com.jobik.shkiper.helpers.TextHelper.Companion.removeMarkdownStyles
 import com.jobik.shkiper.ui.helpers.MultipleEventsCutter
+import com.jobik.shkiper.ui.helpers.SetRichTextDefaultStyles
 import com.jobik.shkiper.ui.helpers.get
 import com.jobik.shkiper.ui.modifiers.bounceClick
 import com.jobik.shkiper.ui.theme.CustomTheme
@@ -56,7 +57,7 @@ fun NoteCard(
     )
 
     val bodyRichTextState = rememberRichTextState()
-    SetRichTextStyles(bodyRichTextState)
+    SetRichTextDefaultStyles(bodyRichTextState)
 
     LaunchedEffect(text) {
         if (text !== null && bodyRichTextState.annotatedString.text !== text)
@@ -99,24 +100,6 @@ fun NoteCard(
             }
             ReminderInformation(reminder)
         }
-    }
-}
-
-@Composable
-private fun SetRichTextStyles(bodyRichTextState: RichTextState) {
-    val codeColor = CustomTheme.colors.textOnActive
-    val codeBackgroundColor = CustomTheme.colors.active.copy(alpha = .2f)
-    val codeStrokeColor = CustomTheme.colors.active
-    val linkColor = CustomTheme.colors.text
-
-    LaunchedEffect(Unit) {
-        bodyRichTextState.setConfig(
-            linkColor = linkColor,
-            linkTextDecoration = TextDecoration.Underline,
-            codeColor = codeColor,
-            codeBackgroundColor = codeBackgroundColor,
-            codeStrokeColor = codeStrokeColor
-        )
     }
 }
 

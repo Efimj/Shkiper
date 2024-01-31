@@ -10,6 +10,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
@@ -61,6 +62,7 @@ import com.jobik.shkiper.ui.components.fields.HashtagEditor
 import com.jobik.shkiper.ui.components.layouts.*
 import com.jobik.shkiper.ui.components.modals.*
 import com.jobik.shkiper.ui.helpers.Keyboard
+import com.jobik.shkiper.ui.helpers.SetRichTextDefaultStyles
 import com.jobik.shkiper.ui.helpers.keyboardAsState
 import com.jobik.shkiper.ui.theme.CustomTheme
 import com.jobik.shkiper.util.SnackbarVisualsCustom
@@ -83,6 +85,19 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
             systemUiController.setNavigationBarColor(secondaryBackgroundColor)
         }
     }
+
+    LeaveScreenIfNeeded(noteViewModel, navController)
+}
+
+@Composable
+private fun LeaveScreenIfNeeded(
+    noteViewModel: NoteViewModel,
+    navController: NavController
+) {
+    LaunchedEffect(noteViewModel.screenState.value.isGoBack) {
+        noteViewModel.runFetchingLinksMetaData()
+        if (noteViewModel.screenState.value.isGoBack) navController.popBackStack()
+    }
 }
 
 @Composable
@@ -92,13 +107,11 @@ private fun NoteContent(
     navController: NavController
 ) {
     RemoveIndicatorWhenKeyboardHiden()
-
-    LaunchedEffect(noteViewModel.screenState.value.isGoBack) {
-        noteViewModel.runFetchingLinksMetaData()
-        if (noteViewModel.screenState.value.isGoBack) navController.popBackStack()
-    }
+    val richTextState = rememberRichTextState()
+    val bodyFieldFocusRequester = remember { FocusRequester() }
     val scrollState = rememberLazyListState()
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route ?: ""
+    val linkListExpanded = remember { mutableStateOf(false) }
 
     LaunchedEffect(currentRoute) {
         if (currentRoute.substringBefore("/") != AppScreens.Note.route.substringBefore("/")) {
@@ -106,38 +119,16 @@ private fun NoteContent(
             noteViewModel.setBottomAppBarHover(false)
         }
     }
-    val bodyFieldFocusRequester = remember { FocusRequester() }
-    val linkListExpanded = remember { mutableStateOf(false) }
 
-    val codeColor = CustomTheme.colors.textOnActive
-    val codeBackgroundColor = CustomTheme.colors.active.copy(alpha = .2f)
-    val codeStrokeColor = CustomTheme.colors.active
-    val linkColor = CustomTheme.colors.text
-
-    val richTextState = rememberRichTextState()
-
+    SetRichTextDefaultStyles(richTextState)
     LaunchedEffect(Unit) {
-        richTextState.setConfig(
-            linkColor = linkColor,
-            linkTextDecoration = TextDecoration.Underline,
-            codeColor = codeColor,
-            codeBackgroundColor = codeBackgroundColor,
-            codeStrokeColor = codeStrokeColor
-        )
         richTextState.setHtml(noteViewModel.screenState.value.noteBody)
     }
-
     LaunchedEffect(richTextState.annotatedString) {
         if (noteViewModel.screenState.value.noteBody != richTextState.toHtml())
             noteViewModel.updateNoteBody(richTextState.toHtml())
     }
-
-    /**
-     * When user styling a note
-     */
-    BackHandler(
-        enabled = noteViewModel.screenState.value.isStyling, onBack = noteViewModel::switchStyling
-    )
+    BackHandlerWithStylingState(noteViewModel)
 
     Scaffold(
         backgroundColor = CustomTheme.colors.mainBackground,
@@ -236,39 +227,46 @@ private fun NoteContent(
                     Spacer(Modifier.height(45.dp))
                 }
             }
-            if (noteViewModel.screenState.value.notePosition == NotePosition.DELETE && noteViewModel.screenState.value.deletionDate != null)
-                Box(
-                    modifier = Modifier
-                        .align(Alignment.BottomCenter)
-                        .padding(bottom = 30.dp)
-                ) {
-                    SnackbarCard(
-                        SnackbarVisualsCustom(
-                            message = "${stringResource(R.string.DaysBeforeDeletingNote)} ${
-                                7 - Duration.between(
-                                    noteViewModel.screenState.value.deletionDate,
-                                    LocalDateTime.now()
-                                ).toDays()
-                            }",
-                            icon = Icons.Outlined.Warning
-                        )
-                    )
-                }
+            SnackbarWhenNoteDeleted(noteViewModel)
         }
     }
-
-    if (noteViewModel.screenState.value.isDeleteDialogShow)
-        ActionDialog(
-            title = stringResource(R.string.DeleteForever),
-            icon = Icons.Outlined.Warning,
-            confirmText = stringResource(R.string.Confirm),
-            onConfirm = noteViewModel::deleteNote,
-            goBackText = stringResource(R.string.Cancel),
-            onGoBack = noteViewModel::switchDeleteDialogShow
-        )
-
+    
     ShareComponent(noteViewModel, richTextState)
+    DeleteonDialog(noteViewModel)
+    CreateReminderDialog(noteViewModel)
+    AndroidBarColorManager(scrollState, noteViewModel)
+    CheckAndDeleteNoteOnExit(noteViewModel, richTextState)
+    HideKeyboardWhenLeaveScreen()
+}
 
+@Composable
+private fun BackHandlerWithStylingState(noteViewModel: NoteViewModel) {
+    /**
+     * When user styling a note
+     */
+    BackHandler(
+        enabled = noteViewModel.screenState.value.isStyling, onBack = noteViewModel::switchStyling
+    )
+}
+
+@Composable
+private fun AndroidBarColorManager(
+    scrollState: LazyListState,
+    noteViewModel: NoteViewModel
+) {
+    LaunchedEffect(scrollState.canScrollBackward, scrollState.canScrollForward) {
+        if (scrollState.canScrollBackward || scrollState.canScrollForward) {
+            noteViewModel.setTopAppBarHover(scrollState.canScrollBackward)
+            noteViewModel.setBottomAppBarHover(scrollState.canScrollForward)
+        } else {
+            noteViewModel.setTopAppBarHover(false)
+            noteViewModel.setBottomAppBarHover(false)
+        }
+    }
+}
+
+@Composable
+private fun CreateReminderDialog(noteViewModel: NoteViewModel) {
     if (noteViewModel.screenState.value.isCreateReminderDialogShow) {
         val reminder = remember { noteViewModel.screenState.value.reminder }
         val reminderDialogProperties = remember {
@@ -282,19 +280,41 @@ private fun NoteContent(
             onSave = noteViewModel::createReminder,
         )
     }
+}
 
-    LaunchedEffect(scrollState.canScrollBackward, scrollState.canScrollForward) {
-        if (scrollState.canScrollBackward || scrollState.canScrollForward) {
-            noteViewModel.setTopAppBarHover(scrollState.canScrollBackward)
-            noteViewModel.setBottomAppBarHover(scrollState.canScrollForward)
-        } else {
-            noteViewModel.setTopAppBarHover(false)
-            noteViewModel.setBottomAppBarHover(false)
+@Composable
+private fun DeleteonDialog(noteViewModel: NoteViewModel) {
+    if (noteViewModel.screenState.value.isDeleteDialogShow)
+        ActionDialog(
+            title = stringResource(R.string.DeleteForever),
+            icon = Icons.Outlined.Warning,
+            confirmText = stringResource(R.string.Confirm),
+            onConfirm = noteViewModel::deleteNote,
+            goBackText = stringResource(R.string.Cancel),
+            onGoBack = noteViewModel::switchDeleteDialogShow
+        )
+}
+
+@Composable
+private fun BoxScope.SnackbarWhenNoteDeleted(noteViewModel: NoteViewModel) {
+    if (noteViewModel.screenState.value.notePosition == NotePosition.DELETE && noteViewModel.screenState.value.deletionDate != null)
+        Box(
+            modifier = Modifier.Companion
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 30.dp)
+        ) {
+            SnackbarCard(
+                SnackbarVisualsCustom(
+                    message = "${stringResource(R.string.DaysBeforeDeletingNote)} ${
+                        7 - Duration.between(
+                            noteViewModel.screenState.value.deletionDate,
+                            LocalDateTime.now()
+                        ).toDays()
+                    }",
+                    icon = Icons.Outlined.Warning
+                )
+            )
         }
-    }
-
-    CheckAndDeleteNoteOnExit(noteViewModel, richTextState)
-    HideKeyboardWhenLeaveScreen()
 }
 
 @Composable
