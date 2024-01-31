@@ -2,7 +2,6 @@ package com.jobik.shkiper.ui.components.fields
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -16,7 +15,6 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -58,16 +56,16 @@ fun SearchBar(
     val topPadding by animateDpAsState(if (isFocused) 0.dp else 10.dp, label = "topPadding")
     val barHeight by animateDpAsState(if (isFocused) 60.dp else 50.dp, label = "barHeight")
     val cornerRadius by animateDpAsState(if (isFocused) 0.dp else 15.dp, label = "cornerRadius")
-    val backgoundColorValue =
+    val backgroundColorValue =
         if (isFocused) CustomTheme.colors.secondaryBackground else CustomTheme.colors.mainBackground
     val backgroundColorStatusBarColor by animateColorAsState(
-        backgoundColorValue,
+        backgroundColorValue,
         label = "backgroundColorStatusBarColor",
     )
 
     LaunchedEffect(isFocused) {
         systemUiController.setStatusBarColor(
-            backgoundColorValue
+            backgroundColorValue
         )
     }
 
@@ -112,7 +110,6 @@ fun SearchBar(
                 )
                 {
                     Icon(
-                        modifier = Modifier.padding(end = 10.dp),
                         imageVector = Icons.Default.Search,
                         contentDescription = stringResource(R.string.Search),
                         tint = CustomTheme.colors.textSecondary
@@ -121,6 +118,7 @@ fun SearchBar(
                 CustomDefaultTextField(
                     modifier = Modifier
                         .weight(1f)
+                        .padding(horizontal = 10.dp)
                         .focusRequester(focusRequester)
                         .onFocusChanged { isFocused = it.isFocused },
                     text = value,
@@ -146,9 +144,7 @@ fun SearchBar(
                 )
                 {
                     IconButton(
-                        modifier = Modifier
-                            .padding(start = 10.dp)
-                            .size(30.dp),
+                        modifier = Modifier.size(30.dp),
                         onClick = { onChange("") },
                     ) {
                         Icon(
