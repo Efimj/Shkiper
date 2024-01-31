@@ -101,7 +101,6 @@ private fun LeaveScreenIfNeeded(
 }
 
 @Composable
-@OptIn(ExperimentalRichTextApi::class)
 private fun NoteContent(
     noteViewModel: NoteViewModel,
     navController: NavController
