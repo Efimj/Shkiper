@@ -1,8 +1,6 @@
 package com.jobik.shkiper.ui.components.cards
 
-import android.util.Log
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -27,13 +25,13 @@ import com.jobik.shkiper.database.models.Reminder
 import com.jobik.shkiper.database.models.RepeatMode
 import com.jobik.shkiper.helpers.DateHelper
 import com.jobik.shkiper.helpers.TextHelper
+import com.jobik.shkiper.helpers.TextHelper.Companion.removeMarkdownStyles
 import com.jobik.shkiper.ui.helpers.MultipleEventsCutter
 import com.jobik.shkiper.ui.helpers.get
 import com.jobik.shkiper.ui.modifiers.bounceClick
 import com.jobik.shkiper.ui.theme.CustomTheme
 import com.mohamedrejeb.richeditor.annotation.ExperimentalRichTextApi
 import com.mohamedrejeb.richeditor.model.rememberRichTextState
-import com.mohamedrejeb.richeditor.ui.material3.RichText
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -55,6 +53,29 @@ fun NoteCard(
     val borderColor: Color by animateColorAsState(
         targetValue = if (selected) CustomTheme.colors.active else Color.Transparent, label = "borderColor",
     )
+
+    val bodyRichTextState = rememberRichTextState()
+    val codeColor = CustomTheme.colors.textOnActive
+    val codeBackgroundColor = CustomTheme.colors.active.copy(alpha = .2f)
+    val codeStrokeColor = CustomTheme.colors.active
+    val linkColor = CustomTheme.colors.text
+
+    LaunchedEffect(Unit) {
+        bodyRichTextState.setConfig(
+            linkColor = linkColor,
+            linkTextDecoration = TextDecoration.Underline,
+            codeColor = codeColor,
+            codeBackgroundColor = codeBackgroundColor,
+            codeStrokeColor = codeStrokeColor
+        )
+    }
+
+    LaunchedEffect(text) {
+        if (text !== null && bodyRichTextState.annotatedString.text !== text)
+            bodyRichTextState.setHtml(text)
+        else
+            bodyRichTextState.setText("")
+    }
 
     Card(
         modifier = modifier
@@ -78,7 +99,7 @@ fun NoteCard(
                 NoteContent(header, text, headerStyle, bodyStyle)
             else
                 NoteAnnotatedContent(header, text, markedText, headerStyle, bodyStyle)
-            if (header.isNullOrEmpty() && text.isNullOrEmpty()) {
+            if (header.isNullOrEmpty() && removeMarkdownStyles(bodyRichTextState.toMarkdown()).isEmpty() ) {
                 Text(
                     text = stringResource(R.string.EmptyNote),
                     maxLines = 10,
