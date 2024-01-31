@@ -86,21 +86,12 @@ fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hilt
 }
 
 @Composable
-@OptIn(ExperimentalRichTextApi::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalRichTextApi::class)
 private fun NoteContent(
     noteViewModel: NoteViewModel,
     navController: NavController
 ) {
-    val isKeyboardVisible by keyboardAsState()
-    val focusManager = LocalFocusManager.current
-
-    LaunchedEffect(isKeyboardVisible) {
-        if (isKeyboardVisible == Keyboard.Closed) {
-            focusManager.clearFocus()
-        }
-    }
-
-    val keyboardController = LocalSoftwareKeyboardController.current
+    RemoveIndicatorWhenKeyboardHiden()
 
     LaunchedEffect(noteViewModel.screenState.value.isGoBack) {
         noteViewModel.runFetchingLinksMetaData()
@@ -302,10 +293,41 @@ private fun NoteContent(
         }
     }
 
+    CheckAndDeleteNoteOnExit(noteViewModel, richTextState)
+    HideKeyboardWhenLeaveScreen()
+}
+
+@Composable
+private fun CheckAndDeleteNoteOnExit(
+    noteViewModel: NoteViewModel,
+    richTextState: RichTextState
+) {
+    DisposableEffect(Unit) {
+        onDispose {
+            noteViewModel.deleteNoteIfEmpty(richTextState.annotatedString.toString())
+        }
+    }
+}
+
+@Composable
+@OptIn(ExperimentalComposeUiApi::class)
+private fun HideKeyboardWhenLeaveScreen() {
+    val keyboardController = LocalSoftwareKeyboardController.current
     DisposableEffect(Unit) {
         onDispose {
             keyboardController?.hide()
-            noteViewModel.deleteNoteIfEmpty(richTextState.annotatedString.toString())
+        }
+    }
+}
+
+@Composable
+private fun RemoveIndicatorWhenKeyboardHiden() {
+    val isKeyboardVisible by keyboardAsState()
+    val focusManager = LocalFocusManager.current
+
+    LaunchedEffect(isKeyboardVisible) {
+        if (isKeyboardVisible == Keyboard.Closed) {
+            focusManager.clearFocus()
         }
     }
 }
