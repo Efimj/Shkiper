@@ -96,13 +96,13 @@ private fun RemindersContent(noteViewModel: NoteViewModel) {
     val context = LocalContext.current
     val shareSheetState = androidx.compose.material3.rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
-    LaunchedEffect(noteViewModel.screenState.value.showShareDialog) {
-        if (!noteViewModel.screenState.value.showShareDialog) {
+    LaunchedEffect(noteViewModel.screenState.value.isCreateReminderDialogShow) {
+        if (!noteViewModel.screenState.value.isCreateReminderDialogShow) {
             shareSheetState.hide()
         }
     }
 
-    if (noteViewModel.screenState.value.showShareDialog) {
+    if (noteViewModel.screenState.value.isCreateReminderDialogShow) {
         CustomModalBottomSheet(
             state = shareSheetState,
             onCancel = {
