@@ -1,24 +1,17 @@
 package com.jobik.shkiper.screens.NoteScreen
 
 import android.annotation.SuppressLint
-import android.content.Context
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.PageSize
-import androidx.compose.foundation.pager.PagerState
-import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -26,7 +19,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.SheetState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -37,6 +29,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
@@ -46,7 +39,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -57,7 +49,6 @@ import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.NotePosition
 import com.jobik.shkiper.helpers.TextHelper
 import com.jobik.shkiper.navigation.AppScreens
-import com.jobik.shkiper.screens.OnboardingScreen.OnBoardingPage
 import com.jobik.shkiper.ui.animation.AnimateVerticalSwitch
 import com.jobik.shkiper.ui.components.buttons.DropDownButton
 import com.jobik.shkiper.ui.components.buttons.DropDownButtonSizeMode
@@ -69,6 +60,8 @@ import com.jobik.shkiper.ui.components.fields.CustomRichTextEditor
 import com.jobik.shkiper.ui.components.fields.HashtagEditor
 import com.jobik.shkiper.ui.components.layouts.*
 import com.jobik.shkiper.ui.components.modals.*
+import com.jobik.shkiper.ui.helpers.Keyboard
+import com.jobik.shkiper.ui.helpers.keyboardAsState
 import com.jobik.shkiper.ui.theme.CustomTheme
 import com.jobik.shkiper.util.SnackbarVisualsCustom
 import com.mohamedrejeb.richeditor.annotation.ExperimentalRichTextApi
@@ -77,7 +70,6 @@ import com.mohamedrejeb.richeditor.model.rememberRichTextState
 import java.time.Duration
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import kotlin.math.roundToInt
 
 @Composable
 fun NoteScreen(navController: NavController, noteViewModel: NoteViewModel = hiltViewModel()) {
@@ -99,6 +91,15 @@ private fun NoteContent(
     noteViewModel: NoteViewModel,
     navController: NavController
 ) {
+    val isKeyboardVisible by keyboardAsState()
+    val focusManager = LocalFocusManager.current
+
+    LaunchedEffect(isKeyboardVisible) {
+        if (isKeyboardVisible == Keyboard.Closed) {
+            focusManager.clearFocus()
+        }
+    }
+
     val keyboardController = LocalSoftwareKeyboardController.current
 
     LaunchedEffect(noteViewModel.screenState.value.isGoBack) {
@@ -517,7 +518,7 @@ private fun NoteScreenFooter(navController: NavController, noteViewModel: NoteVi
                         }
                         if (noteViewModel.screenState.value.intermediateStates.size < 2) {
                             Text(
-                                text = "${stringResource(R.string.ChangedAt)} ${getUpdatedTime(noteViewModel)}",
+                                text = "${stringResource(R.string.ChangedAt)} ${getLastUpdatedNoteTime(noteViewModel)}",
                                 modifier = Modifier
                                     .weight(1f)
                                     .padding(horizontal = 10.dp)
@@ -638,8 +639,7 @@ private fun NoteScreenFooter(navController: NavController, noteViewModel: NoteVi
     }
 }
 
-
-private fun getUpdatedTime(noteViewModel: NoteViewModel): String {
+private fun getLastUpdatedNoteTime(noteViewModel: NoteViewModel): String {
     val duration = Duration.between(noteViewModel.screenState.value.updatedDate, LocalDateTime.now())
     return if (duration.toDays() > 0)
         noteViewModel.screenState.value.updatedDate.format(DateTimeFormatter.ofPattern("d MMMM yyyy, HH:mm"))
