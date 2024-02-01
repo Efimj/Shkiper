@@ -26,7 +26,6 @@ import com.jobik.shkiper.ui.theme.CustomTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NoteScreenRemindersContent(noteViewModel: NoteViewModel) {
-    val context = LocalContext.current
     val shareSheetState = androidx.compose.material3.rememberModalBottomSheetState()
 
     LaunchedEffect(noteViewModel.screenState.value.isCreateReminderDialogShow) {
@@ -34,6 +33,8 @@ fun NoteScreenRemindersContent(noteViewModel: NoteViewModel) {
             shareSheetState.hide()
         }
     }
+
+    shareSheetState.currentValue
 
     if (noteViewModel.screenState.value.isCreateReminderDialogShow) {
         CustomModalBottomSheet(
@@ -55,8 +56,176 @@ fun NoteScreenRemindersContent(noteViewModel: NoteViewModel) {
 
                                 }
                         }
-
                     }
+                    item {
+                        noteViewModel.screenState.value.reminder.let {
+                            if (it != null)
+                                ReminderCard(reminder = it) {
+
+                                }
+                        }
+                    }
+                    item {
+                        noteViewModel.screenState.value.reminder.let {
+                            if (it != null)
+                                ReminderCard(reminder = it) {
+
+                                }
+                        }
+                    }
+                    item {
+                        noteViewModel.screenState.value.reminder.let {
+                            if (it != null)
+                                ReminderCard(reminder = it) {
+
+                                }
+                        }
+                    }
+                    item {
+                        noteViewModel.screenState.value.reminder.let {
+                            if (it != null)
+                                ReminderCard(reminder = it) {
+
+                                }
+                        }
+                    }
+                    item {
+                        noteViewModel.screenState.value.reminder.let {
+                            if (it != null)
+                                ReminderCard(reminder = it) {
+
+                                }
+                        }
+                    }
+                    item {
+                        noteViewModel.screenState.value.reminder.let {
+                            if (it != null)
+                                ReminderCard(reminder = it) {
+
+                                }
+                        }
+                    }
+                    item {
+                        noteViewModel.screenState.value.reminder.let {
+                            if (it != null)
+                                ReminderCard(reminder = it) {
+
+                                }
+                        }
+                    }
+                    item {
+                        noteViewModel.screenState.value.reminder.let {
+                            if (it != null)
+                                ReminderCard(reminder = it) {
+
+                                }
+                        }
+                    }
+                    item {
+                        noteViewModel.screenState.value.reminder.let {
+                            if (it != null)
+                                ReminderCard(reminder = it) {
+
+                                }
+                        }
+                    }
+                    item {
+                        noteViewModel.screenState.value.reminder.let {
+                            if (it != null)
+                                ReminderCard(reminder = it) {
+
+                                }
+                        }
+                    }
+                    item {
+                        noteViewModel.screenState.value.reminder.let {
+                            if (it != null)
+                                ReminderCard(reminder = it) {
+
+                                }
+                        }
+                    }
+                    item {
+                        noteViewModel.screenState.value.reminder.let {
+                            if (it != null)
+                                ReminderCard(reminder = it) {
+
+                                }
+                        }
+                    }
+                    item {
+                        noteViewModel.screenState.value.reminder.let {
+                            if (it != null)
+                                ReminderCard(reminder = it) {
+
+                                }
+                        }
+                    }
+                    item {
+                        noteViewModel.screenState.value.reminder.let {
+                            if (it != null)
+                                ReminderCard(reminder = it) {
+
+                                }
+                        }
+                    }
+                    item {
+                        noteViewModel.screenState.value.reminder.let {
+                            if (it != null)
+                                ReminderCard(reminder = it) {
+
+                                }
+                        }
+                    }
+                    item {
+                        noteViewModel.screenState.value.reminder.let {
+                            if (it != null)
+                                ReminderCard(reminder = it) {
+
+                                }
+                        }
+                    }
+                    item {
+                        noteViewModel.screenState.value.reminder.let {
+                            if (it != null)
+                                ReminderCard(reminder = it) {
+
+                                }
+                        }
+                    }
+                    item {
+                        noteViewModel.screenState.value.reminder.let {
+                            if (it != null)
+                                ReminderCard(reminder = it) {
+
+                                }
+                        }
+                    }
+                    item {
+                        noteViewModel.screenState.value.reminder.let {
+                            if (it != null)
+                                ReminderCard(reminder = it) {
+
+                                }
+                        }
+                    }
+                    item {
+                        noteViewModel.screenState.value.reminder.let {
+                            if (it != null)
+                                ReminderCard(reminder = it) {
+
+                                }
+                        }
+                    }
+                    item {
+                        noteViewModel.screenState.value.reminder.let {
+                            if (it != null)
+                                ReminderCard(reminder = it) {
+
+                                }
+                        }
+                    }
+
                     item {
                         Spacer(modifier = Modifier.padding(bottom = 80.dp))
                     }
