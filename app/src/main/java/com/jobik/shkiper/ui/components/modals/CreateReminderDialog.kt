@@ -1,6 +1,7 @@
 package com.jobik.shkiper.ui.components.modals
 
 import android.content.Context
+import androidx.annotation.Keep
 import androidx.compose.animation.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -51,7 +52,7 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalTime
 
-
+@Keep
 private enum class ReminderDialogPages(val value: Int) {
     DATEPICK(0), TIMEPICK(1), REPEATMODE(2),
 }

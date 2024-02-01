@@ -41,7 +41,6 @@ import com.jobik.shkiper.ui.components.fields.CustomRichTextEditor
 import com.jobik.shkiper.ui.components.fields.HashtagEditor
 import com.jobik.shkiper.ui.components.layouts.LinkPreviewList
 import com.jobik.shkiper.ui.components.modals.ActionDialog
-import com.jobik.shkiper.ui.components.modals.ReminderDialogProperties
 import com.jobik.shkiper.ui.helpers.Keyboard
 import com.jobik.shkiper.ui.helpers.SetRichTextDefaultStyles
 import com.jobik.shkiper.ui.helpers.keyboardAsState
@@ -184,7 +183,6 @@ fun NoteScreenContent(
 
     NoteScreenShareComponent(noteViewModel, richTextState)
     DeleteonDialog(noteViewModel)
-    CreateReminderDialog(noteViewModel)
     AndroidBarColorManager(scrollState, noteViewModel)
     CheckAndDeleteNoteOnExit(noteViewModel, richTextState)
     HideKeyboardWhenLeaveScreen()
@@ -213,23 +211,6 @@ private fun AndroidBarColorManager(
             noteViewModel.setTopAppBarHover(false)
             noteViewModel.setBottomAppBarHover(false)
         }
-    }
-}
-
-@Composable
-private fun CreateReminderDialog(noteViewModel: NoteViewModel) {
-    if (noteViewModel.screenState.value.isCreateReminderDialogShow) {
-        val reminder = remember { noteViewModel.screenState.value.reminder }
-        val reminderDialogProperties = remember {
-            if (reminder != null) ReminderDialogProperties(reminder.date, reminder.time, reminder.repeat)
-            else ReminderDialogProperties()
-        }
-        com.jobik.shkiper.ui.components.modals.CreateReminderDialog(
-            reminderDialogProperties = reminderDialogProperties,
-            onGoBack = noteViewModel::switchReminderDialogShow,
-            onDelete = if (reminder != null) noteViewModel::deleteReminder else null,
-            onSave = noteViewModel::createReminder,
-        )
     }
 }
 
