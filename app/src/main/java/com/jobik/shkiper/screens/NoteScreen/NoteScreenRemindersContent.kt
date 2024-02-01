@@ -2,6 +2,7 @@ package com.jobik.shkiper.screens.NoteScreen
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -12,7 +13,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -45,189 +45,18 @@ fun NoteScreenRemindersContent(noteViewModel: NoteViewModel) {
             dragHandle = null,
         ) {
             Box {
-                LazyColumn(
-                    contentPadding = PaddingValues(horizontal = 20.dp),
-                    verticalArrangement = Arrangement.spacedBy(10.dp)
-                ) {
-                    item {
-                        noteViewModel.screenState.value.reminder.let {
-                            if (it != null)
-                                ReminderCard(reminder = it) {
+                Column {
 
-                                }
+                    LazyColumn(
+                        modifier = Modifier,
+                        contentPadding = PaddingValues(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 80.dp),
+                        verticalArrangement = Arrangement.spacedBy(10.dp)
+                    ) {
+                        items(items = noteViewModel.screenState.value.reminders) { item ->
+                            ReminderCard(reminder = item) {
+
+                            }
                         }
-                    }
-                    item {
-                        noteViewModel.screenState.value.reminder.let {
-                            if (it != null)
-                                ReminderCard(reminder = it) {
-
-                                }
-                        }
-                    }
-                    item {
-                        noteViewModel.screenState.value.reminder.let {
-                            if (it != null)
-                                ReminderCard(reminder = it) {
-
-                                }
-                        }
-                    }
-                    item {
-                        noteViewModel.screenState.value.reminder.let {
-                            if (it != null)
-                                ReminderCard(reminder = it) {
-
-                                }
-                        }
-                    }
-                    item {
-                        noteViewModel.screenState.value.reminder.let {
-                            if (it != null)
-                                ReminderCard(reminder = it) {
-
-                                }
-                        }
-                    }
-                    item {
-                        noteViewModel.screenState.value.reminder.let {
-                            if (it != null)
-                                ReminderCard(reminder = it) {
-
-                                }
-                        }
-                    }
-                    item {
-                        noteViewModel.screenState.value.reminder.let {
-                            if (it != null)
-                                ReminderCard(reminder = it) {
-
-                                }
-                        }
-                    }
-                    item {
-                        noteViewModel.screenState.value.reminder.let {
-                            if (it != null)
-                                ReminderCard(reminder = it) {
-
-                                }
-                        }
-                    }
-                    item {
-                        noteViewModel.screenState.value.reminder.let {
-                            if (it != null)
-                                ReminderCard(reminder = it) {
-
-                                }
-                        }
-                    }
-                    item {
-                        noteViewModel.screenState.value.reminder.let {
-                            if (it != null)
-                                ReminderCard(reminder = it) {
-
-                                }
-                        }
-                    }
-                    item {
-                        noteViewModel.screenState.value.reminder.let {
-                            if (it != null)
-                                ReminderCard(reminder = it) {
-
-                                }
-                        }
-                    }
-                    item {
-                        noteViewModel.screenState.value.reminder.let {
-                            if (it != null)
-                                ReminderCard(reminder = it) {
-
-                                }
-                        }
-                    }
-                    item {
-                        noteViewModel.screenState.value.reminder.let {
-                            if (it != null)
-                                ReminderCard(reminder = it) {
-
-                                }
-                        }
-                    }
-                    item {
-                        noteViewModel.screenState.value.reminder.let {
-                            if (it != null)
-                                ReminderCard(reminder = it) {
-
-                                }
-                        }
-                    }
-                    item {
-                        noteViewModel.screenState.value.reminder.let {
-                            if (it != null)
-                                ReminderCard(reminder = it) {
-
-                                }
-                        }
-                    }
-                    item {
-                        noteViewModel.screenState.value.reminder.let {
-                            if (it != null)
-                                ReminderCard(reminder = it) {
-
-                                }
-                        }
-                    }
-                    item {
-                        noteViewModel.screenState.value.reminder.let {
-                            if (it != null)
-                                ReminderCard(reminder = it) {
-
-                                }
-                        }
-                    }
-                    item {
-                        noteViewModel.screenState.value.reminder.let {
-                            if (it != null)
-                                ReminderCard(reminder = it) {
-
-                                }
-                        }
-                    }
-                    item {
-                        noteViewModel.screenState.value.reminder.let {
-                            if (it != null)
-                                ReminderCard(reminder = it) {
-
-                                }
-                        }
-                    }
-                    item {
-                        noteViewModel.screenState.value.reminder.let {
-                            if (it != null)
-                                ReminderCard(reminder = it) {
-
-                                }
-                        }
-                    }
-                    item {
-                        noteViewModel.screenState.value.reminder.let {
-                            if (it != null)
-                                ReminderCard(reminder = it) {
-
-                                }
-                        }
-                    }
-                    item {
-                        noteViewModel.screenState.value.reminder.let {
-                            if (it != null)
-                                ReminderCard(reminder = it) {
-
-                                }
-                        }
-                    }
-
-                    item {
-                        Spacer(modifier = Modifier.padding(bottom = 80.dp))
                     }
                 }
                 Box(
@@ -274,17 +103,17 @@ private fun BottomBar() {
 
 @Composable
 private fun CreateReminderDialog(noteViewModel: NoteViewModel) {
-    if (noteViewModel.screenState.value.isCreateReminderDialogShow) {
-        val reminder = remember { noteViewModel.screenState.value.reminder }
-        val reminderDialogProperties = remember {
-            if (reminder != null) ReminderDialogProperties(reminder.date, reminder.time, reminder.repeat)
-            else ReminderDialogProperties()
-        }
-        com.jobik.shkiper.ui.components.modals.CreateReminderDialog(
-            reminderDialogProperties = reminderDialogProperties,
-            onGoBack = noteViewModel::switchReminderDialogShow,
-            onDelete = if (reminder != null) noteViewModel::deleteReminder else null,
-            onSave = noteViewModel::createReminder,
-        )
-    }
+//    if (noteViewModel.screenState.value.isCreateReminderDialogShow) {
+//        val reminder = remember { noteViewModel.screenState.value.reminders }
+//        val reminderDialogProperties = remember {
+//            if (reminder != null) ReminderDialogProperties(reminder.date, reminder.time, reminder.repeat)
+//            else ReminderDialogProperties()
+//        }
+//        com.jobik.shkiper.ui.components.modals.CreateReminderDialog(
+//            reminderDialogProperties = reminderDialogProperties,
+//            onGoBack = noteViewModel::switchReminderDialogShow,
+//            onDelete = if (reminder != null) noteViewModel::deleteReminder else null,
+//            onSave = noteViewModel::createReminder,
+//        )
+//    }
 }

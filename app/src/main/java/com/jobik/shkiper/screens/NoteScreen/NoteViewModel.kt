@@ -14,7 +14,6 @@ import com.jobik.shkiper.database.models.Note
 import com.jobik.shkiper.database.models.NotePosition
 import com.jobik.shkiper.database.models.Reminder
 import com.jobik.shkiper.database.models.RepeatMode
-import com.jobik.shkiper.helpers.DateHelper
 import com.jobik.shkiper.helpers.IntentHelper
 import com.jobik.shkiper.helpers.LinkHelper
 import com.jobik.shkiper.navigation.Argument_Note_Id
@@ -57,7 +56,7 @@ data class NoteScreenState(
         NoteViewModel.IntermediateState(noteHeader, noteBody)
     ),
     val currentIntermediateIndex: Int = intermediateStates.size - 1,
-    val reminder: Reminder? = null,
+    val reminders: List<Reminder> = emptyList(),
     val isCreateReminderDialogShow: Boolean = false,
     val isDeleteDialogShow: Boolean = false,
     val allHashtags: Set<String> = emptySet(),
@@ -77,7 +76,7 @@ class NoteViewModel @Inject constructor(
     init {
         initializeNote(ObjectId(savedStateHandle[Argument_Note_Id] ?: ""))
         viewModelScope.launch {
-            getReminder()
+            getReminders()
             getHashtags()
         }
     }
@@ -437,38 +436,37 @@ class NoteViewModel @Inject constructor(
      * Reminder region
      *******************/
 
-    private fun getReminder() {
+    private fun getReminders() {
         viewModelScope.launch {
-            val reminderValue = reminderRepository.getReminderForNote(_screenState.value.noteId)
-            _screenState.value = _screenState.value.copy(reminder = reminderValue)
+            reminderRepository.getRemindersForNote(_screenState.value.noteId).collect() {
+                _screenState.value = _screenState.value.copy(reminders = it)
+            }
+
         }
     }
 
     fun createReminder(date: LocalDate, time: LocalTime, repeatMode: RepeatMode) {
-        if (DateHelper.isFutureDateTime(date, time)) {
-            viewModelScope.launch {
-                val note = noteRepository.getNote(_screenState.value.noteId) ?: return@launch
-                val noteList = listOf(note)
-                reminderRepository.updateOrCreateReminderForNotes(
-                    noteList
-                ) { updatedReminder ->
-                    updatedReminder.date = date
-                    updatedReminder.time = time
-                    updatedReminder.repeat = repeatMode
-                }
-                getReminder()
-            }
-            switchReminderDialogShow()
-        }
+//        if (DateHelper.isFutureDateTime(date, time)) {
+//            viewModelScope.launch {
+//                val note = noteRepository.getNote(_screenState.value.noteId) ?: return@launch
+//                val noteList = listOf(note)
+//                reminderRepository.updateOrCreateReminderForNotes(
+//                    noteList
+//                ) { updatedReminder ->
+//                    updatedReminder.date = date
+//                    updatedReminder.time = time
+//                    updatedReminder.repeat = repeatMode
+//                }
+//                getReminders()
+//            }
+//            switchReminderDialogShow()
+//        }
     }
 
-    fun deleteReminder() {
+    fun deleteReminder(reminderId: ObjectId) {
         viewModelScope.launch {
-            val reminderId = _screenState.value.reminder?._id ?: return@launch
             reminderRepository.deleteReminder(reminderId)
-            _screenState.value = _screenState.value.copy(reminder = null)
         }
-        switchReminderDialogShow()
     }
 
     fun switchReminderDialogShow() {

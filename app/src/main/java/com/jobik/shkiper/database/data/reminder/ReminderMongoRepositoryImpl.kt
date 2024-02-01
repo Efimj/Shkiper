@@ -2,7 +2,6 @@ package com.jobik.shkiper.database.data.reminder
 
 import android.content.Context
 import android.util.Log
-import com.jobik.shkiper.R
 import com.jobik.shkiper.database.data.note.NoteMongoRepositoryImpl
 import com.jobik.shkiper.database.models.Note
 import com.jobik.shkiper.database.models.Reminder
@@ -18,6 +17,7 @@ import io.realm.kotlin.ext.query
 import io.realm.kotlin.query.Sort
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.toList
 import org.mongodb.kbson.ObjectId
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
@@ -39,8 +39,9 @@ class ReminderMongoRepositoryImpl(val realm: Realm, @ApplicationContext val cont
         return realm.query<Reminder>(query = "_id == $0", id).first().find()
     }
 
-    override fun getReminderForNote(noteId: ObjectId): Reminder? {
-        return realm.query<Reminder>(query = "noteId == $0", noteId).first().find()
+    override fun getRemindersForNote(noteId: ObjectId): Flow<List<Reminder>> {
+        return realm.query<Reminder>(query = "noteId == $0", noteId).asFlow()
+            .map { it.list }
     }
 
     override suspend fun insertReminder(reminder: Reminder) {
@@ -88,32 +89,32 @@ class ReminderMongoRepositoryImpl(val realm: Realm, @ApplicationContext val cont
         }
     }
 
-    override suspend fun updateOrCreateReminderForNotes(
-        notes: List<Note>,
-        updateParams: (Reminder) -> Unit
-    ) {
-        realm.writeBlocking {
-            for (note in notes) {
-                try {
-                    var reminder = getReminderForNote(note._id)
-                    if (reminder != null) {
-                        val latest = findLatest(reminder) ?: continue
-                        latest.let(updateParams)
-                        reminder = latest
-                    } else {
-                        reminder = Reminder()
-                        reminder.noteId = note._id
-                        reminder.let(updateParams)
-                        copyToRealm(reminder)
-                        updateStatisticsCreatedRemindersCount()
-                    }
-                    scheduleNotification(reminder, note)
-                } catch (e: Exception) {
-                    Log.d("ReminderMongoRepositoryImpl", "${e.message}")
-                }
-            }
-        }
-    }
+//    override suspend fun updateOrCreateReminderForNotes(
+//        notes: List<Note>,
+//        updateParams: (Reminder) -> Unit
+//    ) {
+//        realm.writeBlocking {
+//            for (note in notes) {
+//                try {
+//                    var reminder = getRemindersForNote(note._id)
+//                    if (reminder != null) {
+//                        val latest = findLatest(reminder) ?: continue
+//                        latest.let(updateParams)
+//                        reminder = latest
+//                    } else {
+//                        reminder = Reminder()
+//                        reminder.noteId = note._id
+//                        reminder.let(updateParams)
+//                        copyToRealm(reminder)
+//                        updateStatisticsCreatedRemindersCount()
+//                    }
+//                    scheduleNotification(reminder, note)
+//                } catch (e: Exception) {
+//                    Log.d("ReminderMongoRepositoryImpl", "${e.message}")
+//                }
+//            }
+//        }
+//    }
 
     override suspend fun deleteReminder(id: ObjectId) {
         realm.write {
@@ -142,14 +143,16 @@ class ReminderMongoRepositoryImpl(val realm: Realm, @ApplicationContext val cont
         }
     }
 
-    override suspend fun deleteReminderForNote(noteId: ObjectId) {
+    override suspend fun deleteAllRemindersForNote(noteId: ObjectId) {
         realm.write {
-            val reminder = getReminderForNote(noteId) ?: return@write
-            try {
-                findLatest(reminder)?.let { delete(it) }
-                deleteNotification(reminder._id)
-            } catch (e: Exception) {
-                Log.d("ReminderMongoRepositoryImpl", "${e.message}")
+            val reminders = realm.query<Reminder>(query = "noteId == $0", noteId).find()
+            for (reminder in reminders) {
+                try {
+                    findLatest(reminder)?.let { delete(it) }
+                    deleteNotification(reminder._id)
+                } catch (e: Exception) {
+                    Log.d("ReminderMongoRepositoryImpl", "${e.message}")
+                }
             }
         }
     }
