@@ -221,5 +221,8 @@
     <string name="OpenSource">Open Source</string>
     <string name="OpenSourceDescription">Shkiper is open-source, and the entire code is published on GitHub</string>
 
+    <string name="CreateReminder">Create reminder</string>
+
+
 
 </resources>
