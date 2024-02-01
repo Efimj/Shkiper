@@ -1,6 +1,7 @@
 package com.jobik.shkiper.database.di
 
 import android.content.Context
+import androidx.annotation.Keep
 import com.jobik.shkiper.database.data.note.NoteMongoRepository
 import com.jobik.shkiper.database.data.note.NoteMongoRepositoryImpl
 import com.jobik.shkiper.database.data.reminder.ReminderMongoRepository
@@ -29,6 +30,7 @@ object DatabaseModule {
             )
         )
             .compactOnLaunch()
+//            .schemaVersion(0)
             .build()
         return Realm.open(config)
     }
