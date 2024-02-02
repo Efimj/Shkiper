@@ -10,6 +10,7 @@ import androidx.compose.material.Text
 import androidx.compose.material3.Button
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -54,21 +55,23 @@ fun MainMenuButton(text: String, icon: ImageVector? = null, isActive: Boolean = 
         contentPadding = PaddingValues(horizontal = 15.dp),
         onClick = onClick
     ) {
-        if (icon != null) {
-            Icon(
-                imageVector = icon,
-                contentDescription = null,
-                tint = buttonContentColor,
+        Row(horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
+            if (icon != null) {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = null,
+                    tint = buttonContentColor,
+                )
+                Spacer(Modifier.width(5.dp))
+            }
+            Text(
+                text = text,
+                style = MaterialTheme.typography.h6,
+                fontWeight = if (isActive) FontWeight.SemiBold else FontWeight.Normal,
+                color = buttonContentColor,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
-            Spacer(Modifier.width(5.dp))
         }
-        Text(
-            text = text,
-            style = MaterialTheme.typography.h6,
-            fontWeight = if (isActive) FontWeight.SemiBold else FontWeight.Normal,
-            color = buttonContentColor,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
-        )
     }
 }

@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.NotificationsOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -19,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.Reminder
 import com.jobik.shkiper.ui.components.cards.ReminderCard
+import com.jobik.shkiper.ui.components.layouts.ScreenContentIfNoData
 import com.jobik.shkiper.ui.components.modals.CustomModalBottomSheet
 import com.jobik.shkiper.ui.components.modals.ReminderDialogProperties
 import com.jobik.shkiper.ui.theme.CustomTheme
@@ -54,7 +57,7 @@ fun NoteScreenRemindersContent(noteViewModel: NoteViewModel) {
                 Column {
                     Header()
                     if (noteViewModel.screenState.value.reminders.isEmpty()) {
-
+                        ScreenContentIfNoData(modifier = Modifier.fillMaxHeight(.3f), title = R.string.Reminders, icon = Icons.Outlined.NotificationsOff)
                     } else {
                         LazyColumn(
                             modifier = Modifier,
