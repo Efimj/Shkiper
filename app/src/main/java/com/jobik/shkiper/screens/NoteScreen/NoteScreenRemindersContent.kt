@@ -18,9 +18,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.Reminder
-import com.jobik.shkiper.screens.OnboardingScreen.OnBoardingPage
 import com.jobik.shkiper.ui.components.cards.ReminderCard
-import com.jobik.shkiper.ui.components.layouts.ScreenContentIfNoData
 import com.jobik.shkiper.ui.components.modals.CustomModalBottomSheet
 import com.jobik.shkiper.ui.components.modals.ReminderDialogProperties
 import com.jobik.shkiper.ui.theme.CustomTheme
@@ -28,7 +26,7 @@ import com.jobik.shkiper.ui.theme.CustomTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NoteScreenRemindersContent(noteViewModel: NoteViewModel) {
-    val shareSheetState = androidx.compose.material3.rememberModalBottomSheetState()
+    val shareSheetState = rememberModalBottomSheetState()
     var currentReminder by rememberSaveable { mutableStateOf<Reminder?>(null) }
     val openCreateReminderDialog = rememberSaveable { mutableStateOf(false) }
 
