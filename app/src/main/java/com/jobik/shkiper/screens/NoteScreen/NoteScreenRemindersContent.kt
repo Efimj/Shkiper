@@ -6,10 +6,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.NotificationsOff
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -57,7 +54,7 @@ fun NoteScreenRemindersContent(noteViewModel: NoteViewModel) {
                 Column {
                     Header()
                     if (noteViewModel.screenState.value.reminders.isEmpty()) {
-                        ScreenContentIfNoData(modifier = Modifier.fillMaxHeight(.3f), title = R.string.Reminders, icon = Icons.Outlined.NotificationsOff)
+                        EmptyRemindersContent()
                     } else {
                         LazyColumn(
                             modifier = Modifier,
@@ -93,6 +90,33 @@ fun NoteScreenRemindersContent(noteViewModel: NoteViewModel) {
         currentReminder = currentReminder,
         noteViewModel = noteViewModel
     )
+}
+
+@Composable
+private fun EmptyRemindersContent() {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 100.dp, top = 30.dp)
+            .heightIn(max = 240.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Icon(
+            imageVector = Icons.Outlined.NotificationsOff,
+            contentDescription = null,
+            tint = CustomTheme.colors.active,
+            modifier = Modifier.size(90.dp)
+        )
+        Spacer(Modifier.height(10.dp))
+        Text(
+            text = stringResource(R.string.NoReminders),
+            style = MaterialTheme.typography.h6,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            color = CustomTheme.colors.text
+        )
+    }
 }
 
 @Composable
