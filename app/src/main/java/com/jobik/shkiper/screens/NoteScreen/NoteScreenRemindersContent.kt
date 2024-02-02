@@ -70,18 +70,7 @@ fun NoteScreenRemindersContent(noteViewModel: NoteViewModel) {
                         if (it) {
                             EmptyRemindersContent()
                         } else {
-                            LazyColumn(
-                                modifier = Modifier,
-                                contentPadding = PaddingValues(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 80.dp),
-                                verticalArrangement = Arrangement.spacedBy(10.dp)
-                            ) {
-                                items(items = noteViewModel.screenState.value.reminders) { item ->
-                                    ReminderCard(reminder = item) {
-                                        currentReminder = item
-                                        openCreateReminderDialog.value = true
-                                    }
-                                }
-                            }
+                            RemindersList(noteViewModel, currentReminder, openCreateReminderDialog)
                         }
                     }
                 }
@@ -105,6 +94,27 @@ fun NoteScreenRemindersContent(noteViewModel: NoteViewModel) {
         currentReminder = currentReminder,
         noteViewModel = noteViewModel
     )
+}
+
+@Composable
+private fun RemindersList(
+    noteViewModel: NoteViewModel,
+    currentReminder: Reminder?,
+    openCreateReminderDialog: MutableState<Boolean>
+) {
+    var currentReminder1 = currentReminder
+    LazyColumn(
+        modifier = Modifier,
+        contentPadding = PaddingValues(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 80.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        items(items = noteViewModel.screenState.value.reminders) { item ->
+            ReminderCard(reminder = item) {
+                currentReminder1 = item
+                openCreateReminderDialog.value = true
+            }
+        }
+    }
 }
 
 @Composable
