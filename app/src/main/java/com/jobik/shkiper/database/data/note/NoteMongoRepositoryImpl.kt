@@ -194,11 +194,13 @@ class NoteMongoRepositoryImpl(val realm: Realm, @ApplicationContext val context:
         GlanceAppWidgetManager(context).mapNoteToWidget(context, newNote)
 
         val notificationScheduler = NotificationScheduler(context)
+        val noteIdString = newNote._id.toHexString()
+
         if (newNote.position == NotePosition.DELETE) {
-            notificationScheduler.cancelNotification(newNote._id.toHexString())
+            notificationScheduler.cancelNotification(noteIdString)
         } else {
             notificationScheduler.updateNotificationData(
-                newNote._id.toHexString(),
+                noteIdString,
                 newNote.header,
                 newNote.body,
                 true
