@@ -1,5 +1,6 @@
 package com.jobik.shkiper.screens.NoteScreen
 
+import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -17,6 +18,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.Reminder
+import com.jobik.shkiper.screens.OnboardingScreen.OnBoardingPage
 import com.jobik.shkiper.ui.components.cards.ReminderCard
 import com.jobik.shkiper.ui.components.layouts.ScreenContentIfNoData
 import com.jobik.shkiper.ui.components.modals.CustomModalBottomSheet
@@ -53,18 +55,31 @@ fun NoteScreenRemindersContent(noteViewModel: NoteViewModel) {
             Box {
                 Column {
                     Header()
-                    if (noteViewModel.screenState.value.reminders.isEmpty()) {
-                        EmptyRemindersContent()
-                    } else {
-                        LazyColumn(
-                            modifier = Modifier,
-                            contentPadding = PaddingValues(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 80.dp),
-                            verticalArrangement = Arrangement.spacedBy(10.dp)
-                        ) {
-                            items(items = noteViewModel.screenState.value.reminders) { item ->
-                                ReminderCard(reminder = item) {
-                                    currentReminder = item
-                                    openCreateReminderDialog.value = true
+                    AnimatedContent(
+                        targetState = noteViewModel.screenState.value.reminders.isEmpty(),
+                        transitionSpec = {
+                            if (initialState) {
+                                (slideInVertically { height -> height } + fadeIn()).togetherWith(slideOutVertically { height -> -height } + fadeOut())
+                            } else {
+                                (slideInVertically { height -> -height } + fadeIn()).togetherWith(slideOutVertically { height -> height } + fadeOut())
+                            }.using(
+                                SizeTransform(clip = false)
+                            )
+                        }, label = ""
+                    ) {
+                        if (it) {
+                            EmptyRemindersContent()
+                        } else {
+                            LazyColumn(
+                                modifier = Modifier,
+                                contentPadding = PaddingValues(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 80.dp),
+                                verticalArrangement = Arrangement.spacedBy(10.dp)
+                            ) {
+                                items(items = noteViewModel.screenState.value.reminders) { item ->
+                                    ReminderCard(reminder = item) {
+                                        currentReminder = item
+                                        openCreateReminderDialog.value = true
+                                    }
                                 }
                             }
                         }
