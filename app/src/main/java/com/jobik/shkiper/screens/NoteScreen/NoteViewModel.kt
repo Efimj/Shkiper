@@ -14,6 +14,7 @@ import com.jobik.shkiper.database.models.Note
 import com.jobik.shkiper.database.models.NotePosition
 import com.jobik.shkiper.database.models.Reminder
 import com.jobik.shkiper.database.models.RepeatMode
+import com.jobik.shkiper.helpers.DateHelper
 import com.jobik.shkiper.helpers.IntentHelper
 import com.jobik.shkiper.helpers.LinkHelper
 import com.jobik.shkiper.navigation.Argument_Note_Id
@@ -445,22 +446,24 @@ class NoteViewModel @Inject constructor(
         }
     }
 
-    fun createReminder(date: LocalDate, time: LocalTime, repeatMode: RepeatMode) {
-//        if (DateHelper.isFutureDateTime(date, time)) {
-//            viewModelScope.launch {
-//                val note = noteRepository.getNote(_screenState.value.noteId) ?: return@launch
-//                val noteList = listOf(note)
-//                reminderRepository.updateOrCreateReminderForNotes(
-//                    noteList
-//                ) { updatedReminder ->
-//                    updatedReminder.date = date
-//                    updatedReminder.time = time
-//                    updatedReminder.repeat = repeatMode
-//                }
-//                getReminders()
-//            }
-//            switchReminderDialogShow()
-//        }
+    fun createOrUpdateReminder(reminder: Reminder?, date: LocalDate, time: LocalTime, repeatMode: RepeatMode) {
+        if (!DateHelper.isFutureDateTime(date, time)) return
+
+        viewModelScope.launch {
+            val updateFunction: (Reminder) -> Unit = {
+                it.date = date
+                it.time = time
+                it.repeat = repeatMode
+            }
+
+            val note = noteRepository.getNote(_screenState.value.noteId) ?: return@launch
+
+            if (reminder != null) {
+                reminderRepository.updateReminder(reminder._id, note, updateFunction)
+            } else {
+                reminderRepository.createReminderForNotes(listOf(note), updateFunction)
+            }
+        }
     }
 
     fun deleteReminder(reminderId: ObjectId) {

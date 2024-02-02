@@ -17,7 +17,6 @@ import io.realm.kotlin.ext.query
 import io.realm.kotlin.query.Sort
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.toList
 import org.mongodb.kbson.ObjectId
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
@@ -77,44 +76,39 @@ class ReminderMongoRepositoryImpl(val realm: Realm, @ApplicationContext val cont
         statisticsService.saveStatistics()
     }
 
-    override suspend fun updateReminder(id: ObjectId, updateParams: (Reminder) -> Unit) {
-        getReminder(id)?.also { currentReminder ->
-            realm.writeBlocking {
-                val queriedReminder = findLatest(currentReminder) ?: return@writeBlocking
-                queriedReminder.apply {
-                    updateParams(this)
-                }
-                updateNotification(id, queriedReminder)
+    override suspend fun updateReminder(reminderId: ObjectId, note: Note, updateParams: (Reminder) -> Unit) {
+        realm.writeBlocking {
+            try {
+                var reminder = getReminder(reminderId) ?: return@writeBlocking
+                val latest = findLatest(reminder) ?: return@writeBlocking
+                latest.let(updateParams)
+                reminder = latest
+                scheduleNotification(reminder, note)
+            } catch (e: Exception) {
+                Log.d("ReminderMongoRepositoryImpl", "${e.message}")
             }
         }
     }
 
-//    override suspend fun updateOrCreateReminderForNotes(
-//        notes: List<Note>,
-//        updateParams: (Reminder) -> Unit
-//    ) {
-//        realm.writeBlocking {
-//            for (note in notes) {
-//                try {
-//                    var reminder = getRemindersForNote(note._id)
-//                    if (reminder != null) {
-//                        val latest = findLatest(reminder) ?: continue
-//                        latest.let(updateParams)
-//                        reminder = latest
-//                    } else {
-//                        reminder = Reminder()
-//                        reminder.noteId = note._id
-//                        reminder.let(updateParams)
-//                        copyToRealm(reminder)
-//                        updateStatisticsCreatedRemindersCount()
-//                    }
-//                    scheduleNotification(reminder, note)
-//                } catch (e: Exception) {
-//                    Log.d("ReminderMongoRepositoryImpl", "${e.message}")
-//                }
-//            }
-//        }
-//    }
+    override suspend fun createReminderForNotes(
+        notes: List<Note>,
+        updateParams: (Reminder) -> Unit
+    ) {
+        realm.writeBlocking {
+            for (note in notes) {
+                try {
+                    val reminder = Reminder()
+                    reminder.noteId = note._id
+                    reminder.let(updateParams)
+                    copyToRealm(reminder)
+                    updateStatisticsCreatedRemindersCount()
+                    scheduleNotification(reminder, note)
+                } catch (e: Exception) {
+                    Log.d("ReminderMongoRepositoryImpl", "${e.message}")
+                }
+            }
+        }
+    }
 
     override suspend fun deleteReminder(id: ObjectId) {
         realm.write {
@@ -160,20 +154,6 @@ class ReminderMongoRepositoryImpl(val realm: Realm, @ApplicationContext val cont
     private fun deleteNotification(reminderId: ObjectId) {
         val notificationScheduler = NotificationScheduler(context)
         notificationScheduler.deleteNotification(reminderId.timestamp)
-    }
-
-    private fun updateNotification(
-        reminderId: ObjectId,
-        queriedReminder: Reminder
-    ) {
-        // Update notification
-        val notificationScheduler = NotificationScheduler(context)
-        notificationScheduler.updateNotificationTime(
-            reminderId.timestamp,
-            queriedReminder.date,
-            queriedReminder.time,
-            queriedReminder.repeat
-        )
     }
 
     private fun scheduleNotification(

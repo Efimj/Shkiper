@@ -79,7 +79,7 @@ fun NoteScreenHeader(navController: NavController, noteViewModel: NoteViewModel,
                                 onClick = noteViewModel::switchNotePinnedMode
                             ),
                             TopAppBarItem(
-                                isActive = noteViewModel.screenState.value.reminders != null,
+                                isActive = noteViewModel.screenState.value.reminders.isNotEmpty(),
                                 icon = Icons.Outlined.NotificationAdd,
                                 iconDescription = R.string.AddToNotification,
                                 onClick = noteViewModel::switchReminderDialogShow

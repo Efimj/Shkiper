@@ -8,9 +8,8 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -18,6 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.jobik.shkiper.R
+import com.jobik.shkiper.database.models.Reminder
 import com.jobik.shkiper.ui.components.cards.ReminderCard
 import com.jobik.shkiper.ui.components.modals.CustomModalBottomSheet
 import com.jobik.shkiper.ui.components.modals.ReminderDialogProperties
@@ -27,9 +27,13 @@ import com.jobik.shkiper.ui.theme.CustomTheme
 @Composable
 fun NoteScreenRemindersContent(noteViewModel: NoteViewModel) {
     val shareSheetState = androidx.compose.material3.rememberModalBottomSheetState()
+    var currentReminder by rememberSaveable { mutableStateOf<Reminder?>(null) }
+    val openCreateReminderDialog = rememberSaveable { mutableStateOf(false) }
 
     LaunchedEffect(noteViewModel.screenState.value.isCreateReminderDialogShow) {
         if (!noteViewModel.screenState.value.isCreateReminderDialogShow) {
+            currentReminder = null
+            openCreateReminderDialog.value = false
             shareSheetState.hide()
         }
     }
@@ -46,7 +50,7 @@ fun NoteScreenRemindersContent(noteViewModel: NoteViewModel) {
         ) {
             Box {
                 Column {
-
+                    Header()
                     LazyColumn(
                         modifier = Modifier,
                         contentPadding = PaddingValues(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 80.dp),
@@ -54,7 +58,8 @@ fun NoteScreenRemindersContent(noteViewModel: NoteViewModel) {
                     ) {
                         items(items = noteViewModel.screenState.value.reminders) { item ->
                             ReminderCard(reminder = item) {
-
+                                currentReminder = item
+                                openCreateReminderDialog.value = true
                             }
                         }
                     }
@@ -65,15 +70,29 @@ fun NoteScreenRemindersContent(noteViewModel: NoteViewModel) {
                         .padding(horizontal = 30.dp)
                         .padding(bottom = 10.dp)
                 ) {
-                    BottomBar()
+                    BottomBar() {
+                        currentReminder = null
+                        openCreateReminderDialog.value = true
+                    }
                 }
             }
         }
     }
+
+    CreateReminderDialog(
+        openDialogState = openCreateReminderDialog,
+        currentReminder = currentReminder,
+        noteViewModel = noteViewModel
+    )
 }
 
 @Composable
-private fun BottomBar() {
+private fun Header() {
+
+}
+
+@Composable
+private fun BottomBar(onCreateReminderClick: () -> Unit) {
     Button(
         modifier = Modifier
             .fillMaxWidth()
@@ -86,9 +105,7 @@ private fun BottomBar() {
         border = null,
         elevation = null,
         contentPadding = PaddingValues(horizontal = 15.dp),
-        onClick = {
-
-        }
+        onClick = onCreateReminderClick
     ) {
         Text(
             text = stringResource(R.string.CreateReminder),
@@ -102,18 +119,35 @@ private fun BottomBar() {
 }
 
 @Composable
-private fun CreateReminderDialog(noteViewModel: NoteViewModel) {
-//    if (noteViewModel.screenState.value.isCreateReminderDialogShow) {
-//        val reminder = remember { noteViewModel.screenState.value.reminders }
-//        val reminderDialogProperties = remember {
-//            if (reminder != null) ReminderDialogProperties(reminder.date, reminder.time, reminder.repeat)
-//            else ReminderDialogProperties()
-//        }
-//        com.jobik.shkiper.ui.components.modals.CreateReminderDialog(
-//            reminderDialogProperties = reminderDialogProperties,
-//            onGoBack = noteViewModel::switchReminderDialogShow,
-//            onDelete = if (reminder != null) noteViewModel::deleteReminder else null,
-//            onSave = noteViewModel::createReminder,
-//        )
-//    }
+private fun CreateReminderDialog(
+    openDialogState: MutableState<Boolean>,
+    currentReminder: Reminder?,
+    noteViewModel: NoteViewModel
+) {
+    if (openDialogState.value) {
+        com.jobik.shkiper.ui.components.modals.CreateReminderDialog(
+            reminderDialogProperties = if (currentReminder != null) ReminderDialogProperties(
+                currentReminder.date,
+                currentReminder.time,
+                currentReminder.repeat
+            )
+            else ReminderDialogProperties(),
+            onGoBack = { openDialogState.value = false },
+            onDelete = {
+                if (currentReminder != null) {
+                    noteViewModel.deleteReminder(currentReminder._id)
+                    openDialogState.value = false
+                }
+            },
+            onSave = { date, time, repeat ->
+                noteViewModel.createOrUpdateReminder(
+                    reminder = currentReminder,
+                    date = date,
+                    time = time,
+                    repeatMode = repeat
+                )
+                openDialogState.value = false
+            },
+        )
+    }
 }

@@ -32,7 +32,7 @@ class NotificationScheduler(private val context: Context) {
     private val notificationStorage: NotificationStorage = NotificationStorage(context)
 
     fun scheduleNotification(notificationData: NotificationData) {
-        notificationStorage.addOrUpdate(notificationData)
+        notificationStorage.addOrUpdate(listOf(notificationData))
         setNotification(notificationData.requestCode, notificationData.trigger)
     }
 
