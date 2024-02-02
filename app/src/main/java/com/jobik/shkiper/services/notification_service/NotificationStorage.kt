@@ -22,9 +22,9 @@ class NotificationStorage(context: Context) {
         return findNotification(notifications, requestId)
     }
 
-    fun getNotification(noteId: String): NotificationData? {
+    fun getNotificationsForNote(noteId: String): List<NotificationData> {
         val notifications = getAll()
-        return findNotification(notifications, noteId)
+        return findNotificationsForNote(notifications, noteId)
     }
 
     fun save(notifications: List<NotificationData>) {
@@ -95,16 +95,11 @@ class NotificationStorage(context: Context) {
         return notification
     }
 
-    private fun findNotification(
+    private fun findNotificationsForNote(
         notifications: MutableList<NotificationData>,
         noteId: String
-    ): NotificationData? {
-        val index = notifications.indexOfFirst { it.noteId == noteId } // if exists
-        var notification: NotificationData? = null
-        if (index != -1) {
-            notification = notifications[index]
-        }
-        return notification
+    ): List<NotificationData> {
+        return notifications.filter { it.noteId == noteId }
     }
 
     private fun removeElement(list: MutableList<NotificationData>, element: NotificationData) {

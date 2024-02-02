@@ -197,7 +197,7 @@ class NoteMongoRepositoryImpl(val realm: Realm, @ApplicationContext val context:
         val noteIdString = newNote._id.toHexString()
 
         if (newNote.position == NotePosition.DELETE) {
-            notificationScheduler.cancelNotification(noteIdString)
+            notificationScheduler.cancelNotificationsForNote(noteIdString)
         } else {
             notificationScheduler.updateNotificationData(
                 noteIdString,
