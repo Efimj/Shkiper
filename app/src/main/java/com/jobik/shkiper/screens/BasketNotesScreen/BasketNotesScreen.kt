@@ -78,7 +78,7 @@ fun BasketNotesScreen(navController: NavController, basketViewModel: NotesViewMo
 
     Box(Modifier.fillMaxSize()) {
         if (basketViewModel.screenState.value.isNotesInitialized && basketViewModel.screenState.value.notes.isEmpty())
-            ScreenContentIfNoData(R.string.BasketNotesPageHeader, Icons.Outlined.DeleteSweep)
+            ScreenContentIfNoData(title = R.string.BasketNotesPageHeader, icon = Icons.Outlined.DeleteSweep)
         else
             ScreenContent(lazyGridNotes, basketViewModel, currentRoute, navController)
         Box(modifier = Modifier) {

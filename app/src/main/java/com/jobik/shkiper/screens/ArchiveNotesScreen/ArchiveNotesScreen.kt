@@ -116,7 +116,7 @@ fun ArchiveNotesScreen(navController: NavController, archiveViewModel: NotesView
 
     Box(Modifier.fillMaxSize().nestedScroll(nestedScrollConnection)) {
         if (archiveViewModel.screenState.value.isNotesInitialized && archiveViewModel.screenState.value.notes.isEmpty())
-            ScreenContentIfNoData(R.string.ArchiveNotesPageHeader, Icons.Outlined.Inbox)
+            ScreenContentIfNoData(title = R.string.ArchiveNotesPageHeader, icon = Icons.Outlined.Inbox)
         else
             ScreenContent(lazyGridNotes, archiveViewModel, currentRoute, navController)
         Box(modifier = Modifier) {

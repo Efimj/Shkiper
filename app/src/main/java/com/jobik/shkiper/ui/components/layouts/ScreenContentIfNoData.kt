@@ -15,9 +15,9 @@ import androidx.compose.ui.unit.dp
 import com.jobik.shkiper.ui.theme.CustomTheme
 
 @Composable
-fun ScreenContentIfNoData(@StringRes title: Int, icon: ImageVector) {
+fun ScreenContentIfNoData(modifier: Modifier = Modifier, @StringRes title: Int, icon: ImageVector) {
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

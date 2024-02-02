@@ -133,7 +133,7 @@ fun NoteListScreen(navController: NavController, notesViewModel: NotesViewModel 
             .nestedScroll(nestedScrollConnection)
     ) {
         if (notesViewModel.screenState.value.isNotesInitialized && notesViewModel.screenState.value.notes.isEmpty())
-            ScreenContentIfNoData(R.string.EmptyNotesPageHeader, Icons.Outlined.Description)
+            ScreenContentIfNoData(title = R.string.EmptyNotesPageHeader, icon = Icons.Outlined.Description)
         else
             ScreenContent(lazyGridNotes, notesViewModel, currentRoute, navController)
         Box(modifier = Modifier) {

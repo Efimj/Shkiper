@@ -85,7 +85,7 @@ fun NoteSelectionScreen(notesViewModel: NoteSelectionViewModel = hiltViewModel()
 
     Box(Modifier.fillMaxSize().nestedScroll(nestedScrollConnection)) {
         if (notesViewModel.screenState.value.isNotesInitialized && notesViewModel.screenState.value.notes.isEmpty())
-            ScreenContentIfNoData(R.string.EmptyNotesPageHeader, Icons.Outlined.Description)
+            ScreenContentIfNoData(title = R.string.EmptyNotesPageHeader, icon = Icons.Outlined.Description)
         else
             ScreenContent(lazyGridNotes, notesViewModel)
         Box(modifier = Modifier) {

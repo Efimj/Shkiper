@@ -30,17 +30,19 @@ fun NoteScreenRemindersContent(noteViewModel: NoteViewModel) {
     var currentReminder by rememberSaveable { mutableStateOf<Reminder?>(null) }
     val openCreateReminderDialog = rememberSaveable { mutableStateOf(false) }
 
-    LaunchedEffect(noteViewModel.screenState.value.isCreateReminderDialogShow) {
-        if (!noteViewModel.screenState.value.isCreateReminderDialogShow) {
+    LaunchedEffect(noteViewModel.screenState.value.isReminderMenuNeeded) {
+        if (!noteViewModel.screenState.value.isReminderMenuNeeded) {
             currentReminder = null
             openCreateReminderDialog.value = false
             shareSheetState.hide()
+        } else {
+            if (noteViewModel.screenState.value.reminders.isEmpty()) {
+                openCreateReminderDialog.value = true
+            }
         }
     }
 
-    shareSheetState.currentValue
-
-    if (noteViewModel.screenState.value.isCreateReminderDialogShow) {
+    if (noteViewModel.screenState.value.isReminderMenuNeeded) {
         CustomModalBottomSheet(
             state = shareSheetState,
             onCancel = {
@@ -51,15 +53,19 @@ fun NoteScreenRemindersContent(noteViewModel: NoteViewModel) {
             Box {
                 Column {
                     Header()
-                    LazyColumn(
-                        modifier = Modifier,
-                        contentPadding = PaddingValues(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 80.dp),
-                        verticalArrangement = Arrangement.spacedBy(10.dp)
-                    ) {
-                        items(items = noteViewModel.screenState.value.reminders) { item ->
-                            ReminderCard(reminder = item) {
-                                currentReminder = item
-                                openCreateReminderDialog.value = true
+                    if (noteViewModel.screenState.value.reminders.isEmpty()) {
+
+                    } else {
+                        LazyColumn(
+                            modifier = Modifier,
+                            contentPadding = PaddingValues(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 80.dp),
+                            verticalArrangement = Arrangement.spacedBy(10.dp)
+                        ) {
+                            items(items = noteViewModel.screenState.value.reminders) { item ->
+                                ReminderCard(reminder = item) {
+                                    currentReminder = item
+                                    openCreateReminderDialog.value = true
+                                }
                             }
                         }
                     }

@@ -60,13 +60,17 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
     }
 
     if (!isNetworkActive)
-        ScreenContentIfNoData(R.string.CheckInternetConnection, Icons.Outlined.SignalWifiOff)
+        ScreenContentIfNoData(title = R.string.CheckInternetConnection, icon = Icons.Outlined.SignalWifiOff)
     else if (purchaseViewModel.screenState.value.purchases.isEmpty() && purchaseViewModel.screenState.value.subscription != null)
-        ScreenContentIfNoData(R.string.CheckUpdatesGooglePlay, Icons.Default.Shop)
+        ScreenContentIfNoData(title = R.string.CheckUpdatesGooglePlay, icon = Icons.Default.Shop)
     else
-        ScreenWrapper(modifier = Modifier.verticalScroll(rememberScrollState()).padding(top = 85.dp, bottom = 30.dp)) {
+        ScreenWrapper(modifier = Modifier
+            .verticalScroll(rememberScrollState())
+            .padding(top = 85.dp, bottom = 30.dp)) {
             Column(
-                modifier = Modifier.fillMaxWidth().padding(bottom = 15.dp, start = 10.dp, end = 10.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 15.dp, start = 10.dp, end = 10.dp)
                     .clip(CustomTheme.shapes.large)
                     .background(CustomTheme.colors.secondaryBackground)
                     .padding(start = 20.dp, end = 20.dp, top = 10.dp, bottom = 15.dp),
@@ -76,7 +80,9 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
                     color = CustomTheme.colors.text,
                     style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Bold),
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.padding(bottom = 15.dp, top = 5.dp).fillMaxWidth()
+                    modifier = Modifier
+                        .padding(bottom = 15.dp, top = 5.dp)
+                        .fillMaxWidth()
                 )
                 Text(
                     text = stringResource(R.string.PurchaseScreenDescription),
@@ -92,10 +98,15 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
                 color = CustomTheme.colors.textSecondary,
                 style = MaterialTheme.typography.h6,
                 textAlign = TextAlign.Left,
-                modifier = Modifier.padding(horizontal = 20.dp).padding(bottom = 5.dp).fillMaxWidth()
+                modifier = Modifier
+                    .padding(horizontal = 20.dp)
+                    .padding(bottom = 5.dp)
+                    .fillMaxWidth()
             )
             Row(
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 7.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 7.dp),
                 horizontalArrangement = Arrangement.Center
             ) {
                 val productList = listOf(
@@ -127,7 +138,9 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
                 )
                 for (product in productList)
                     if (product != null)
-                        Box(modifier = Modifier.weight(1f).padding(horizontal = 4.dp)) {
+                        Box(modifier = Modifier
+                            .weight(1f)
+                            .padding(horizontal = 4.dp)) {
                             PurchaseCard(product) {
                                 purchaseViewModel.makePurchase(product.product, context as Activity)
                             }
@@ -137,14 +150,18 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
             purchaseViewModel.screenState.value.subscription?.let { productDetails ->
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(horizontal = 20.dp).fillMaxWidth()
+                    modifier = Modifier
+                        .padding(horizontal = 20.dp)
+                        .fillMaxWidth()
                 ) {
                     Text(
                         stringResource(R.string.BuySubscription),
                         color = CustomTheme.colors.textSecondary,
                         style = MaterialTheme.typography.h6,
                         textAlign = TextAlign.Left,
-                        modifier = Modifier.padding(bottom = 5.dp).padding(top = 15.dp)
+                        modifier = Modifier
+                            .padding(bottom = 5.dp)
+                            .padding(top = 15.dp)
                     )
                     Spacer(Modifier.width(8.dp))
                     if (purchaseViewModel.checkIsProductPurchased(productDetails.productId))
@@ -155,12 +172,16 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
                         )
                 }
                 Row(
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 7.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 7.dp),
                     horizontalArrangement = Arrangement.Center
                 ) {
                     productDetails.subscriptionOfferDetails?.find { it.basePlanId == AppProducts.Monthly }
                         ?.let { subscriptionOffer ->
-                            Box(modifier = Modifier.weight(1f).padding(horizontal = 4.dp)) {
+                            Box(modifier = Modifier
+                                .weight(1f)
+                                .padding(horizontal = 4.dp)) {
                                 PurchaseCard(
                                     TitlePurchaseCardContent(
                                         titleRes = R.string.Monthly,
@@ -178,7 +199,9 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
                         }
                     productDetails.subscriptionOfferDetails?.find { it.basePlanId == AppProducts.Yearly }
                         ?.let { subscriptionOffer ->
-                            Box(modifier = Modifier.weight(1f).padding(horizontal = 4.dp)) {
+                            Box(modifier = Modifier
+                                .weight(1f)
+                                .padding(horizontal = 4.dp)) {
                                 PurchaseCard(
                                     TitlePurchaseCardContent(
                                         titleRes = R.string.Annually,

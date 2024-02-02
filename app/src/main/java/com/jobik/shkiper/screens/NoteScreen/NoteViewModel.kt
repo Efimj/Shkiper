@@ -58,7 +58,7 @@ data class NoteScreenState(
     ),
     val currentIntermediateIndex: Int = intermediateStates.size - 1,
     val reminders: List<Reminder> = emptyList(),
-    val isCreateReminderDialogShow: Boolean = false,
+    val isReminderMenuNeeded: Boolean = false,
     val isDeleteDialogShow: Boolean = false,
     val allHashtags: Set<String> = emptySet(),
 )
@@ -474,7 +474,7 @@ class NoteViewModel @Inject constructor(
 
     fun switchReminderDialogShow() {
         _screenState.value =
-            _screenState.value.copy(isCreateReminderDialogShow = !_screenState.value.isCreateReminderDialogShow)
+            _screenState.value.copy(isReminderMenuNeeded = !_screenState.value.isReminderMenuNeeded)
     }
 
     fun getHashtags() {
