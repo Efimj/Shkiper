@@ -179,6 +179,11 @@ private fun CreateReminderDialog(
     currentReminder: MutableState<Reminder?>,
     noteViewModel: NoteViewModel
 ) {
+    val clearCurrentReminder = {
+        openDialogState.value = false
+        currentReminder.value = null
+    }
+
     if (openDialogState.value) {
         com.jobik.shkiper.ui.components.modals.CreateReminderDialog(
             reminderDialogProperties = currentReminder.value.let {
@@ -197,8 +202,7 @@ private fun CreateReminderDialog(
                 currentReminder.value.let {
                     if (it != null) {
                         noteViewModel.deleteReminder(it._id)
-                        openDialogState.value = false
-                        currentReminder.value = null
+                        clearCurrentReminder()
                     } else {
                         ReminderDialogProperties()
                     }
@@ -211,8 +215,7 @@ private fun CreateReminderDialog(
                     time = time,
                     repeatMode = repeat
                 )
-                openDialogState.value = false
-                currentReminder.value = null
+                clearCurrentReminder()
             },
         )
     }

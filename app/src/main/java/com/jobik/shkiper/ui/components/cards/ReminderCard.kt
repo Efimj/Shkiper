@@ -1,7 +1,7 @@
 package com.jobik.shkiper.ui.components.cards
 
 import androidx.annotation.Keep
-import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.*
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -76,48 +76,62 @@ fun ReminderCard(reminder: Reminder, onClick: () -> Unit) {
             .clickable { onClick() }
     ) {
         Row(
-            modifier = Modifier.padding(15.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(15.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             Column(
-                modifier = Modifier.heightIn(min = 40.dp),
-                verticalArrangement = Arrangement.spacedBy(2.dp, Alignment.CenterVertically),
+                verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Icon(
                     imageVector = if (isRepeatable) Icons.Outlined.Repeat else Icons.Outlined.Event,
                     contentDescription = stringResource(id = R.string.Repeat),
-                    modifier = Modifier.size(iconSize),
-                    tint = contentColor
+                    modifier = Modifier.size(35.dp),
+                    tint = CustomTheme.colors.textSecondary
                 )
-                if (isRepeatable)
+            }
+            Column(
+                horizontalAlignment = Alignment.Start,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(15.dp, alignment = Alignment.CenterHorizontally),
+                    verticalAlignment = Alignment.Top
+                ) {
+                    Text(
+                        text = nextReminderDate.toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        style = MaterialTheme.typography.h6,
+                        color = contentColor,
+                    )
+                    Text(
+                        modifier = Modifier
+                            .weight(1f)
+                            .basicMarquee(),
+                        text = DateHelper.getLocalizedDate(nextReminderDate.toLocalDate()),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        style = MaterialTheme.typography.h6,
+                        color = contentColor,
+                    )
+                }
+                AnimatedVisibility(
+                    visible = isRepeatable,
+                    enter = slideInVertically() + expandVertically() + fadeIn(),
+                    exit = slideOutVertically() + shrinkVertically() + fadeOut(),
+                ) {
                     Text(
                         text = reminder.repeat.getLocalizedValue(context = context),
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-                        style = MaterialTheme.typography.body1,
+                        style = MaterialTheme.typography.body2,
                         color = CustomTheme.colors.textSecondary,
                     )
-            }
-            Row(
-                modifier = Modifier.basicMarquee()
-            ) {
-                Text(
-                    text = DateHelper.getLocalizedDate(nextReminderDate.toLocalDate()),
-                    minLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    style = MaterialTheme.typography.h6,
-                    color = contentColor,
-                )
-                Spacer(modifier = Modifier.width(10.dp))
-                Text(
-                    text = nextReminderDate.toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")),
-                    minLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    style = MaterialTheme.typography.h6,
-                    color = contentColor,
-                )
+                }
             }
         }
     }
