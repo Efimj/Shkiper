@@ -113,6 +113,8 @@ fun CreateReminderDialog(
             }
             DialogFooter(
                 pagerState = pagerState,
+                date = date,
+                time = time,
                 onGoBack = onGoBack,
                 onDelete = onDelete,
                 isNotificationEnabled = isNotificationEnabled
@@ -134,6 +136,8 @@ private fun checkIsNotificationEnabled(context: Context) = areNotificationsEnabl
 @Composable
 private fun DialogFooter(
     pagerState: PagerState,
+    date: MutableState<LocalDate>,
+    time: MutableState<LocalTime>,
     onGoBack: () -> Unit,
     onDelete: (() -> Unit)? = null,
     isNotificationEnabled: MutableState<Boolean>,
@@ -263,6 +267,7 @@ private fun DialogFooter(
                 contentPadding = PaddingValues(horizontal = 15.dp),
                 onClick = {
                     if (isEnd) {
+                        if (!DateHelper.isFutureDateTime(date.value, time.value)) return@Button
                         if (!isNotificationEnabled.value && !checkIsNotificationEnabled(context = context)) {
                             enableNotificationIfDisabled(context = context)
                         } else {

@@ -54,11 +54,6 @@ fun ReminderCard(reminder: Reminder, onClick: () -> Unit) {
         label = "ReminderCardStrokeColor",
     )
 
-    val iconSize by animateDpAsState(
-        if (isRepeatable) 25.dp else 35.dp,
-        label = "iconSize",
-    )
-
     Card(
         shape = CustomTheme.shapes.medium,
         colors = CardDefaults.cardColors(

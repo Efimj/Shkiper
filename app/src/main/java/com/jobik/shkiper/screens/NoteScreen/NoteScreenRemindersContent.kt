@@ -18,6 +18,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.Reminder
+import com.jobik.shkiper.helpers.DateHelper
 import com.jobik.shkiper.ui.components.cards.ReminderCard
 import com.jobik.shkiper.ui.components.modals.CustomModalBottomSheet
 import com.jobik.shkiper.ui.components.modals.ReminderDialogProperties
@@ -103,11 +104,11 @@ fun sortReminders(reminders: List<Reminder>): List<Reminder> {
     val currentDate = LocalDate.now()
 
     val comparator = compareBy<Reminder>(
-        { it.date },
-        { it.time }
+        { DateHelper.nextDateWithRepeating(it.date, it.time, it.repeat) },
     )
 
-    return reminders.sortedWith (comparator)
+    return reminders.sortedWith(comparator)
+//    return reminders
 }
 
 @Composable
