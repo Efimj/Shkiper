@@ -46,21 +46,26 @@ class DateHelper {
             val oldReminderDate = LocalDateTime.of(date, time)
 
             // get current date with old values
-            val updatedReminderDate = when (repeatMode) {
-                RepeatMode.NONE -> oldReminderDate
-                RepeatMode.DAILY -> LocalDateTime.now().withHour(oldReminderDate.hour)
-                    .withMinute(oldReminderDate.minute)
+            val updatedReminderDate = LocalDateTime.now().let {
+                it.withNano(oldReminderDate.nano).withSecond(oldReminderDate.second)
 
-                RepeatMode.WEEKLY -> LocalDateTime.now().with(DayOfWeek.from(oldReminderDate.dayOfWeek))
-                    .withHour(oldReminderDate.hour).withMinute(oldReminderDate.minute)
+                when (repeatMode) {
+                    RepeatMode.NONE -> oldReminderDate
+                    RepeatMode.DAILY -> it.withHour(oldReminderDate.hour)
+                        .withMinute(oldReminderDate.minute)
 
-                RepeatMode.MONTHLY -> LocalDateTime.now().withDayOfMonth(oldReminderDate.dayOfMonth)
-                    .withHour(oldReminderDate.hour).withMinute(oldReminderDate.minute)
+                    RepeatMode.WEEKLY -> it.with(DayOfWeek.from(oldReminderDate.dayOfWeek))
+                        .withHour(oldReminderDate.hour).withMinute(oldReminderDate.minute)
 
-                RepeatMode.YEARLY -> LocalDateTime.now().withMonth(oldReminderDate.monthValue)
-                    .withDayOfMonth(oldReminderDate.dayOfMonth).withHour(oldReminderDate.hour)
-                    .withMinute(oldReminderDate.minute)
+                    RepeatMode.MONTHLY -> it.withDayOfMonth(oldReminderDate.dayOfMonth)
+                        .withHour(oldReminderDate.hour).withMinute(oldReminderDate.minute)
+
+                    RepeatMode.YEARLY -> it.withMonth(oldReminderDate.monthValue)
+                        .withDayOfMonth(oldReminderDate.dayOfMonth).withHour(oldReminderDate.hour)
+                        .withMinute(oldReminderDate.minute)
+                }
             }
+
 
             // update date with adding repeating value
             return if (updatedReminderDate.isBefore(LocalDateTime.now())) {

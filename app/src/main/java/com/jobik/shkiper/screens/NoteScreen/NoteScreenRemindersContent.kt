@@ -1,5 +1,6 @@
 package com.jobik.shkiper.screens.NoteScreen
 
+import android.util.Log
 import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -18,6 +19,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.Reminder
+import com.jobik.shkiper.database.models.RepeatMode
 import com.jobik.shkiper.helpers.DateHelper
 import com.jobik.shkiper.ui.components.cards.ReminderCard
 import com.jobik.shkiper.ui.components.modals.CustomModalBottomSheet
@@ -33,6 +35,14 @@ fun NoteScreenRemindersContent(noteViewModel: NoteViewModel) {
     val shareSheetState = rememberModalBottomSheetState()
     val currentReminder = rememberSaveable { mutableStateOf<Reminder?>(null) }
     val openCreateReminderDialog = rememberSaveable { mutableStateOf(false) }
+
+    val d = LocalDate.now()
+    val t = LocalTime.now()
+    val d1 = DateHelper.nextDateWithRepeating(d, t, RepeatMode.DAILY)
+    val d2 = LocalDateTime.now()
+    Log.d("Date1", d1.toString())
+    Log.d("Date2", d2.toString())
+    Log.d("Date2 is after Date1", d2.isAfter(d1).toString())
 
     LaunchedEffect(noteViewModel.screenState.value.isReminderMenuNeeded) {
         if (!noteViewModel.screenState.value.isReminderMenuNeeded) {
