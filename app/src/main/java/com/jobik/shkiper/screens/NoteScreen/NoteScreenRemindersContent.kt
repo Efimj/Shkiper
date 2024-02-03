@@ -27,12 +27,12 @@ import com.jobik.shkiper.ui.theme.CustomTheme
 @Composable
 fun NoteScreenRemindersContent(noteViewModel: NoteViewModel) {
     val shareSheetState = rememberModalBottomSheetState()
-    var currentReminder by rememberSaveable { mutableStateOf<Reminder?>(null) }
+    val currentReminder = rememberSaveable { mutableStateOf<Reminder?>(null) }
     val openCreateReminderDialog = rememberSaveable { mutableStateOf(false) }
 
     LaunchedEffect(noteViewModel.screenState.value.isReminderMenuNeeded) {
         if (!noteViewModel.screenState.value.isReminderMenuNeeded) {
-            currentReminder = null
+            currentReminder.value = null
             openCreateReminderDialog.value = false
             shareSheetState.hide()
         } else {
@@ -79,7 +79,7 @@ fun NoteScreenRemindersContent(noteViewModel: NoteViewModel) {
                         .padding(bottom = 10.dp)
                 ) {
                     BottomBar() {
-                        currentReminder = null
+                        currentReminder.value = null
                         openCreateReminderDialog.value = true
                     }
                 }
@@ -97,10 +97,9 @@ fun NoteScreenRemindersContent(noteViewModel: NoteViewModel) {
 @Composable
 private fun RemindersList(
     noteViewModel: NoteViewModel,
-    currentReminder: Reminder?,
+    currentReminder: MutableState<Reminder?>,
     openCreateReminderDialog: MutableState<Boolean>
 ) {
-    var currentReminder1 = currentReminder
     LazyColumn(
         modifier = Modifier,
         contentPadding = PaddingValues(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 80.dp),
@@ -108,7 +107,7 @@ private fun RemindersList(
     ) {
         items(items = noteViewModel.screenState.value.reminders) { item ->
             ReminderCard(reminder = item) {
-                currentReminder1 = item
+                currentReminder.value = item
                 openCreateReminderDialog.value = true
             }
         }
@@ -177,32 +176,43 @@ private fun BottomBar(onCreateReminderClick: () -> Unit) {
 @Composable
 private fun CreateReminderDialog(
     openDialogState: MutableState<Boolean>,
-    currentReminder: Reminder?,
+    currentReminder: MutableState<Reminder?>,
     noteViewModel: NoteViewModel
 ) {
     if (openDialogState.value) {
         com.jobik.shkiper.ui.components.modals.CreateReminderDialog(
-            reminderDialogProperties = if (currentReminder != null) ReminderDialogProperties(
-                currentReminder.date,
-                currentReminder.time,
-                currentReminder.repeat
-            )
-            else ReminderDialogProperties(),
+            reminderDialogProperties = currentReminder.value.let {
+                if (it != null) {
+                    ReminderDialogProperties(
+                        it.date,
+                        it.time,
+                        it.repeat
+                    )
+                } else {
+                    ReminderDialogProperties()
+                }
+            },
             onGoBack = { openDialogState.value = false },
             onDelete = {
-                if (currentReminder != null) {
-                    noteViewModel.deleteReminder(currentReminder._id)
-                    openDialogState.value = false
+                currentReminder.value.let {
+                    if (it != null) {
+                        noteViewModel.deleteReminder(it._id)
+                        openDialogState.value = false
+                        currentReminder.value = null
+                    } else {
+                        ReminderDialogProperties()
+                    }
                 }
             },
             onSave = { date, time, repeat ->
                 noteViewModel.createOrUpdateReminder(
-                    reminder = currentReminder,
+                    reminder = currentReminder.value,
                     date = date,
                     time = time,
                     repeatMode = repeat
                 )
                 openDialogState.value = false
+                currentReminder.value = null
             },
         )
     }
