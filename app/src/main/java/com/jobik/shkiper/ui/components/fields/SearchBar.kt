@@ -138,7 +138,7 @@ fun SearchBar(
                     ),
                 )
                 AnimatedVisibility(
-                    visible = value.isNotEmpty(),
+                    visible = value.isNotEmpty() && isFocused,
                     enter = fadeIn(),
                     exit = fadeOut(),
                 )
