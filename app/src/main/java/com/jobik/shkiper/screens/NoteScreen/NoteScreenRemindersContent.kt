@@ -33,7 +33,7 @@ import java.time.LocalTime
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NoteScreenRemindersContent(noteViewModel: NoteViewModel) {
-    val shareSheetState = rememberModalBottomSheetState()
+    val shareSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val currentReminder = rememberSaveable { mutableStateOf<Reminder?>(null) }
     val openCreateReminderDialog = rememberSaveable { mutableStateOf(false) }
 
