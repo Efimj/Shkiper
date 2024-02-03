@@ -45,68 +45,35 @@ class DateHelper {
         ): LocalDateTime {
             val oldReminderDate = LocalDateTime.of(date, time)
 
-            val newReminderDate = when (repeatMode) {
-                RepeatMode.NONE -> {
-                    if (oldReminderDate.isBefore(LocalDateTime.now())) {
-                        oldReminderDate
-                    } else {
-                        oldReminderDate
-                    }
-                }
+            // get current date with old values
+            val updatedReminderDate = when (repeatMode) {
+                RepeatMode.NONE -> oldReminderDate
+                RepeatMode.DAILY -> LocalDateTime.now().withHour(oldReminderDate.hour)
+                    .withMinute(oldReminderDate.minute)
 
-                RepeatMode.DAILY -> {
-                    val updatedReminderDate = LocalDateTime.now()
-                        .withHour(oldReminderDate.hour)
-                        .withMinute(oldReminderDate.minute)
+                RepeatMode.WEEKLY -> LocalDateTime.now().with(DayOfWeek.from(oldReminderDate.dayOfWeek))
+                    .withHour(oldReminderDate.hour).withMinute(oldReminderDate.minute)
 
-                    if (updatedReminderDate.isBefore(LocalDateTime.now())) {
-                        updatedReminderDate.plusDays(1)
-                    } else {
-                        updatedReminderDate
-                    }
-                }
+                RepeatMode.MONTHLY -> LocalDateTime.now().withDayOfMonth(oldReminderDate.dayOfMonth)
+                    .withHour(oldReminderDate.hour).withMinute(oldReminderDate.minute)
 
-                RepeatMode.WEEKLY -> {
-                    val updatedReminderDate = LocalDateTime.now()
-                        .with(DayOfWeek.from(oldReminderDate.dayOfWeek))
-                        .withHour(oldReminderDate.hour)
-                        .withMinute(oldReminderDate.minute)
-
-                    if (updatedReminderDate.isBefore(LocalDateTime.now())) {
-                        updatedReminderDate.plusDays(7)
-                    } else {
-                        updatedReminderDate
-                    }
-                }
-
-                RepeatMode.MONTHLY -> {
-                    val updatedReminderDate = LocalDateTime.now()
-                        .withDayOfMonth(oldReminderDate.dayOfMonth)
-                        .withHour(oldReminderDate.hour)
-                        .withMinute(oldReminderDate.minute)
-
-                    if (updatedReminderDate.isBefore(LocalDateTime.now())) {
-                        updatedReminderDate.plusMonths(1)
-                    } else {
-                        updatedReminderDate
-                    }
-                }
-
-                RepeatMode.YEARLY -> {
-                    val updatedReminderDate = LocalDateTime.now()
-                        .withMonth(oldReminderDate.monthValue)
-                        .withDayOfMonth(oldReminderDate.dayOfMonth)
-                        .withHour(oldReminderDate.hour)
-                        .withMinute(oldReminderDate.minute)
-
-                    if (updatedReminderDate.isBefore(LocalDateTime.now())) {
-                        updatedReminderDate.plusYears(1)
-                    } else {
-                        updatedReminderDate
-                    }
-                }
+                RepeatMode.YEARLY -> LocalDateTime.now().withMonth(oldReminderDate.monthValue)
+                    .withDayOfMonth(oldReminderDate.dayOfMonth).withHour(oldReminderDate.hour)
+                    .withMinute(oldReminderDate.minute)
             }
-            return newReminderDate
+
+            // update date with adding repeating value
+            return if (updatedReminderDate.isBefore(LocalDateTime.now())) {
+                when (repeatMode) {
+                    RepeatMode.DAILY -> updatedReminderDate.plusDays(1)
+                    RepeatMode.WEEKLY -> updatedReminderDate.plusDays(7)
+                    RepeatMode.MONTHLY -> updatedReminderDate.plusMonths(1)
+                    RepeatMode.YEARLY -> updatedReminderDate.plusYears(1)
+                    else -> updatedReminderDate
+                }
+            } else {
+                updatedReminderDate
+            }
         }
     }
 }

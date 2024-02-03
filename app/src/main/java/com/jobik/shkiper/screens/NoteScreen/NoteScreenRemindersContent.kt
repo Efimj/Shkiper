@@ -22,6 +22,9 @@ import com.jobik.shkiper.ui.components.cards.ReminderCard
 import com.jobik.shkiper.ui.components.modals.CustomModalBottomSheet
 import com.jobik.shkiper.ui.components.modals.ReminderDialogProperties
 import com.jobik.shkiper.ui.theme.CustomTheme
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -94,6 +97,19 @@ fun NoteScreenRemindersContent(noteViewModel: NoteViewModel) {
     )
 }
 
+
+fun sortReminders(reminders: List<Reminder>): List<Reminder> {
+    val currentTime = LocalTime.now()
+    val currentDate = LocalDate.now()
+
+    val comparator = compareBy<Reminder>(
+        { it.date },
+        { it.time }
+    )
+
+    return reminders.sortedWith (comparator)
+}
+
 @Composable
 private fun RemindersList(
     noteViewModel: NoteViewModel,
@@ -105,7 +121,7 @@ private fun RemindersList(
         contentPadding = PaddingValues(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 80.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        items(items = noteViewModel.screenState.value.reminders) { item ->
+        items(items = sortReminders(noteViewModel.screenState.value.reminders)) { item ->
             ReminderCard(reminder = item) {
                 currentReminder.value = item
                 openCreateReminderDialog.value = true
