@@ -66,9 +66,11 @@ class DateHelper {
                 }
             }
 
+            val isDateEqualOrBefore = updatedReminderDate.isBefore(LocalDateTime.now()) || LocalDateTime.now()
+                .isEqual(updatedReminderDate)
 
             // update date with adding repeating value
-            return if (updatedReminderDate.isBefore(LocalDateTime.now())) {
+            return if (isDateEqualOrBefore) {
                 when (repeatMode) {
                     RepeatMode.DAILY -> updatedReminderDate.plusDays(1)
                     RepeatMode.WEEKLY -> updatedReminderDate.plusDays(7)
