@@ -246,7 +246,6 @@ private fun Header(
                 onClick = {
                     noteViewModel.deleteReminder(reminderIds = selectedReminderIds.value)
                     clearSelectedReminders()
-
                 }
             ) {
                 Text(
