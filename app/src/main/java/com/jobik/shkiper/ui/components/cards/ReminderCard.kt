@@ -1,10 +1,7 @@
 package com.jobik.shkiper.ui.components.cards
 
 import androidx.compose.animation.*
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.basicMarquee
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -33,7 +30,7 @@ import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ReminderCard(reminder: Reminder, onClick: () -> Unit) {
+fun ReminderCard(reminder: Reminder, isSelected: Boolean, onClick: () -> Unit, onLongClick: () -> Unit) {
     val context = LocalContext.current
     val nextReminderDate = DateHelper.nextDateWithRepeating(reminder.date, reminder.time, reminder.repeat)
     val isDateFuture = DateHelper.isFutureDateTime(nextReminderDate)
@@ -44,8 +41,13 @@ fun ReminderCard(reminder: Reminder, onClick: () -> Unit) {
         label = "ReminderCardBackgroundColor",
     )
 
+    val strokeColorValue = when {
+        isSelected -> CustomTheme.colors.active
+        isDateFuture -> CustomTheme.colors.secondaryBackground
+        else -> CustomTheme.colors.stroke
+    }
     val strokeColor by animateColorAsState(
-        if (isDateFuture) CustomTheme.colors.secondaryBackground else CustomTheme.colors.stroke,
+        strokeColorValue,
         label = "ReminderCardStrokeColor",
     )
 
@@ -68,7 +70,10 @@ fun ReminderCard(reminder: Reminder, onClick: () -> Unit) {
             .fillMaxWidth()
             .bounceClick(0.95f)
             .clip(CustomTheme.shapes.medium)
-            .clickable { onClick() }
+            .combinedClickable(
+                onClick = onClick,
+                onLongClick = onLongClick,
+            ),
     ) {
         Row(
             modifier = Modifier

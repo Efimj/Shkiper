@@ -59,7 +59,7 @@ data class NoteScreenState(
     ),
     val currentIntermediateIndex: Int = intermediateStates.size - 1,
     val reminders: List<Reminder> = emptyList(),
-    val isReminderMenuNeeded: Boolean = false,
+    val isReminderMenuOpen: Boolean = false,
     val isDeleteDialogShow: Boolean = false,
     val allHashtags: Set<String> = emptySet(),
 )
@@ -103,6 +103,13 @@ class NoteViewModel @Inject constructor(
                 deletionDate = note.deletionDate,
                 intermediateStates = listOf(IntermediateState(note.header, note.body))
             )
+    }
+
+    fun goBackScreen() {
+        _screenState.value = _screenState.value.copy(
+            isLoading = false,
+            isGoBack = true
+        )
     }
 
     /*******************
@@ -347,9 +354,12 @@ class NoteViewModel @Inject constructor(
 
     fun deleteNoteIfEmpty(body: String) {
         viewModelScope.launch {
-            if (_screenState.value.noteHeader.isEmpty() && body.isEmpty()) noteRepository.deleteNote(
-                _screenState.value.noteId,
-            )
+            if (_screenState.value.noteHeader.isEmpty() && body.isEmpty()) {
+                goBackScreen()
+                noteRepository.deleteNote(
+                    _screenState.value.noteId,
+                )
+            }
         }
     }
 
@@ -474,7 +484,7 @@ class NoteViewModel @Inject constructor(
 
     fun switchReminderDialogShow() {
         _screenState.value =
-            _screenState.value.copy(isReminderMenuNeeded = !_screenState.value.isReminderMenuNeeded)
+            _screenState.value.copy(isReminderMenuOpen = !_screenState.value.isReminderMenuOpen)
     }
 
     fun getHashtags() {

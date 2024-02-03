@@ -1,13 +1,15 @@
 package com.jobik.shkiper.screens.NoteScreen
 
-import android.util.Log
 import androidx.compose.animation.*
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.KeyboardArrowLeft
+import androidx.compose.material.icons.outlined.KeyboardArrowRight
 import androidx.compose.material.icons.outlined.NotificationsOff
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -20,15 +22,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.Reminder
-import com.jobik.shkiper.database.models.RepeatMode
-import com.jobik.shkiper.helpers.DateHelper
 import com.jobik.shkiper.ui.components.cards.ReminderCard
 import com.jobik.shkiper.ui.components.modals.CustomModalBottomSheet
 import com.jobik.shkiper.ui.components.modals.ReminderDialogProperties
 import com.jobik.shkiper.ui.theme.CustomTheme
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.LocalTime
+import org.mongodb.kbson.ObjectId
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -36,11 +34,13 @@ fun NoteScreenRemindersContent(noteViewModel: NoteViewModel) {
     val shareSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val currentReminder = rememberSaveable { mutableStateOf<Reminder?>(null) }
     val openCreateReminderDialog = rememberSaveable { mutableStateOf(false) }
+    val selectedReminderIds = rememberSaveable { mutableStateOf<List<ObjectId>>(emptyList()) }
 
-    LaunchedEffect(noteViewModel.screenState.value.isReminderMenuNeeded) {
-        if (!noteViewModel.screenState.value.isReminderMenuNeeded) {
+    LaunchedEffect(noteViewModel.screenState.value.isReminderMenuOpen) {
+        if (!noteViewModel.screenState.value.isReminderMenuOpen) {
             currentReminder.value = null
             openCreateReminderDialog.value = false
+            selectedReminderIds.value = emptyList()
             shareSheetState.hide()
         } else {
             if (noteViewModel.screenState.value.reminders.isEmpty()) {
@@ -49,7 +49,7 @@ fun NoteScreenRemindersContent(noteViewModel: NoteViewModel) {
         }
     }
 
-    if (noteViewModel.screenState.value.isReminderMenuNeeded) {
+    if (noteViewModel.screenState.value.isReminderMenuOpen) {
         CustomModalBottomSheet(
             state = shareSheetState,
             onCancel = {
@@ -59,7 +59,10 @@ fun NoteScreenRemindersContent(noteViewModel: NoteViewModel) {
         ) {
             Box {
                 Column {
-                    Header()
+                    Header(
+                        noteViewModel = noteViewModel,
+                        selectedReminderIds = selectedReminderIds
+                    )
                     AnimatedContent(
                         targetState = noteViewModel.screenState.value.reminders.isEmpty(),
                         transitionSpec = {
@@ -75,20 +78,18 @@ fun NoteScreenRemindersContent(noteViewModel: NoteViewModel) {
                         if (it) {
                             EmptyRemindersContent()
                         } else {
-                            RemindersList(noteViewModel, currentReminder, openCreateReminderDialog)
+                            RemindersList(
+                                noteViewModel = noteViewModel,
+                                currentReminder = currentReminder,
+                                selectedReminderIds = selectedReminderIds,
+                                openCreateReminderDialog = openCreateReminderDialog
+                            )
                         }
                     }
                 }
-                Box(
-                    modifier = Modifier
-                        .align(Alignment.BottomCenter)
-                        .padding(horizontal = 30.dp)
-                        .padding(bottom = 10.dp)
-                ) {
-                    BottomBar() {
-                        currentReminder.value = null
-                        openCreateReminderDialog.value = true
-                    }
+                BottomBar(isHidden = selectedReminderIds.value.isNotEmpty()) {
+                    currentReminder.value = null
+                    openCreateReminderDialog.value = true
                 }
             }
         }
@@ -105,24 +106,59 @@ fun NoteScreenRemindersContent(noteViewModel: NoteViewModel) {
 private fun RemindersList(
     noteViewModel: NoteViewModel,
     currentReminder: MutableState<Reminder?>,
+    selectedReminderIds: MutableState<List<ObjectId>>,
     openCreateReminderDialog: MutableState<Boolean>
 ) {
     val lazyListState = rememberLazyListState()
 
+    val topPaddingValues = if (selectedReminderIds.value.isEmpty()) 20.dp else 10.dp
+    val topPadding by animateDpAsState(targetValue = topPaddingValues, label = "topPadding")
+
+    val bottomPaddingValues = if (selectedReminderIds.value.isEmpty()) 80.dp else 10.dp
+    val bottomPadding by animateDpAsState(targetValue = bottomPaddingValues, label = "bottomPadding")
+
     LazyColumn(
         modifier = Modifier,
         state = lazyListState,
-        contentPadding = PaddingValues(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 80.dp),
+        contentPadding = PaddingValues(start = 20.dp, end = 20.dp, top = topPadding, bottom = bottomPadding),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         items(
             items = noteViewModel.screenState.value.reminders,
-            key = { it._id.toHexString() }) { item ->
-            ReminderCard(reminder = item) {
-                currentReminder.value = item
-                openCreateReminderDialog.value = true
-            }
+            key = { it._id.toHexString() }) { reminder ->
+            ReminderCard(
+                reminder = reminder,
+                isSelected = selectedReminderIds.value.contains(reminder._id),
+                onClick = {
+                    onReminderClick(selectedReminderIds, reminder, currentReminder, openCreateReminderDialog)
+                },
+                onLongClick = {
+                    onReminderLongClick(selectedReminderIds, reminder)
+                })
         }
+    }
+}
+
+private fun onReminderLongClick(
+    selectedReminderIds: MutableState<List<ObjectId>>,
+    reminder: Reminder
+) {
+    selectedReminderIds.value = selectedReminderIds.value.let {
+        if (it.contains(reminder._id)) it - reminder._id else it + reminder._id
+    }
+}
+
+private fun onReminderClick(
+    selectedReminderIds: MutableState<List<ObjectId>>,
+    reminder: Reminder,
+    currentReminder: MutableState<Reminder?>,
+    openCreateReminderDialog: MutableState<Boolean>
+) {
+    if (selectedReminderIds.value.isNotEmpty()) {
+        onReminderLongClick(selectedReminderIds, reminder)
+    } else {
+        currentReminder.value = reminder
+        openCreateReminderDialog.value = true
     }
 }
 
@@ -154,34 +190,115 @@ private fun EmptyRemindersContent() {
 }
 
 @Composable
-private fun Header() {
-
+private fun Header(
+    noteViewModel: NoteViewModel,
+    selectedReminderIds: MutableState<List<ObjectId>>
+) {
+    AnimatedVisibility(
+        visible = selectedReminderIds.value.isNotEmpty(),
+        enter = slideInVertically() + expandVertically(
+            clip = false
+        ) + fadeIn(),
+        exit = slideOutVertically() + shrinkVertically(
+            clip = false
+        ) + fadeOut(),
+    )
+    {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 30.dp)
+                .padding(bottom = 10.dp, top = 20.dp)
+                .height(50.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(space = 10.dp, alignment = Alignment.CenterHorizontally)
+        ) {
+            Button(
+                modifier = Modifier.fillMaxHeight(),
+                shape = CustomTheme.shapes.small,
+                colors = ButtonDefaults.buttonColors(
+                    contentColor = CustomTheme.colors.text,
+                    containerColor = CustomTheme.colors.secondaryBackground
+                ),
+                border = null,
+                elevation = null,
+                contentPadding = PaddingValues(horizontal = 15.dp),
+                onClick = { selectedReminderIds.value = emptyList() }
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.KeyboardArrowLeft,
+                    contentDescription = stringResource(R.string.Back),
+                    tint = CustomTheme.colors.text
+                )
+            }
+            Button(
+                modifier = Modifier.fillMaxSize(),
+                shape = CustomTheme.shapes.small,
+                colors = ButtonDefaults.buttonColors(
+                    contentColor = CustomTheme.colors.text,
+                    containerColor = CustomTheme.colors.secondaryBackground
+                ),
+                border = null,
+                elevation = null,
+                contentPadding = PaddingValues(horizontal = 15.dp),
+                onClick = { }
+            ) {
+                Text(
+                    text = stringResource(R.string.Delete),
+                    style = MaterialTheme.typography.body1,
+                    fontWeight = FontWeight.SemiBold,
+                    color = CustomTheme.colors.textOnActive,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+        }
+    }
 }
 
 @Composable
-private fun BottomBar(onCreateReminderClick: () -> Unit) {
-    Button(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(50.dp),
-        shape = CustomTheme.shapes.small,
-        colors = ButtonDefaults.buttonColors(
-            contentColor = CustomTheme.colors.textOnActive,
-            containerColor = CustomTheme.colors.active
-        ),
-        border = null,
-        elevation = null,
-        contentPadding = PaddingValues(horizontal = 15.dp),
-        onClick = onCreateReminderClick
+private fun BoxScope.BottomBar(isHidden: Boolean, onCreateReminderClick: () -> Unit) {
+    Box(
+        modifier = Modifier.align(Alignment.BottomCenter)
     ) {
-        Text(
-            text = stringResource(R.string.CreateReminder),
-            style = MaterialTheme.typography.body1,
-            fontWeight = FontWeight.SemiBold,
-            color = CustomTheme.colors.textOnActive,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
+        AnimatedVisibility(
+            visible = isHidden.not(),
+            enter = slideInVertically { it / 2 } + expandVertically(
+                expandFrom = Alignment.Top,
+                clip = false
+            ) + fadeIn(),
+            exit = slideOutVertically { -it / 2 } + shrinkVertically(
+                shrinkTowards = Alignment.Top,
+                clip = false
+            ) + fadeOut(),
         )
+        {
+            Button(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 30.dp)
+                    .padding(bottom = 10.dp)
+                    .height(50.dp),
+                shape = CustomTheme.shapes.small,
+                colors = ButtonDefaults.buttonColors(
+                    contentColor = CustomTheme.colors.textOnActive,
+                    containerColor = CustomTheme.colors.active
+                ),
+                border = null,
+                elevation = null,
+                contentPadding = PaddingValues(horizontal = 15.dp),
+                onClick = onCreateReminderClick
+            ) {
+                Text(
+                    text = stringResource(R.string.CreateReminder),
+                    style = MaterialTheme.typography.body1,
+                    fontWeight = FontWeight.SemiBold,
+                    color = CustomTheme.colors.textOnActive,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+        }
     }
 }
 
