@@ -47,6 +47,7 @@ fun CustomRichTextEditor(
     enabled: Boolean = true,
     singleLine: Boolean = false,
     modifier: Modifier = Modifier,
+    minLines: Int = 1,
     keyboardOptions: KeyboardOptions = KeyboardOptions(
         keyboardType = KeyboardType.Text,
         imeAction = ImeAction.Default,
@@ -80,8 +81,9 @@ fun CustomRichTextEditor(
             modifier = modifier,
             state = state,
             enabled = enabled,
-            interactionSource = interactionSource,
+            minLines = minLines,
             singleLine = singleLine,
+            interactionSource = interactionSource,
             textStyle = textStyle.copy(color = textColor),
             cursorBrush = SolidColor(CustomTheme.colors.active),
             keyboardOptions = keyboardOptions,

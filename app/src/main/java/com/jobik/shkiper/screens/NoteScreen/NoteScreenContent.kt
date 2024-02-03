@@ -140,6 +140,7 @@ fun NoteScreenContent(
                         placeholder = stringResource(R.string.Text),
                         textStyle = MaterialTheme.typography.body1,
                         enabled = enabled,
+                        minLines = 2,
                         modifier = Modifier
                             .testTag("note_body_input")
                             .fillMaxWidth()
