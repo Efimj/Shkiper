@@ -15,6 +15,7 @@ import com.jobik.shkiper.database.models.NotePosition
 import com.jobik.shkiper.database.models.Reminder
 import com.jobik.shkiper.database.models.RepeatMode
 import com.jobik.shkiper.helpers.DateHelper
+import com.jobik.shkiper.helpers.DateHelper.Companion.sortReminders
 import com.jobik.shkiper.helpers.IntentHelper
 import com.jobik.shkiper.helpers.LinkHelper
 import com.jobik.shkiper.navigation.Argument_Note_Id
@@ -439,10 +440,9 @@ class NoteViewModel @Inject constructor(
 
     private fun getReminders() {
         viewModelScope.launch {
-            reminderRepository.getRemindersForNote(_screenState.value.noteId).collect() {
-                _screenState.value = _screenState.value.copy(reminders = it)
+            reminderRepository.getRemindersForNote(_screenState.value.noteId).collect {
+                _screenState.value = _screenState.value.copy(reminders = sortReminders(it))
             }
-
         }
     }
 

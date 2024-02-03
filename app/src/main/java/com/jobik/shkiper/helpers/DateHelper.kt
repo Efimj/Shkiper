@@ -1,5 +1,6 @@
 package com.jobik.shkiper.helpers
 
+import com.jobik.shkiper.database.models.Reminder
 import com.jobik.shkiper.database.models.RepeatMode
 import java.time.*
 import java.time.format.DateTimeFormatter
@@ -80,6 +81,20 @@ class DateHelper {
                 }
             } else {
                 updatedReminderDate
+            }
+        }
+
+        fun sortReminders(reminders: List<Reminder>): List<Reminder> {
+            val comparator = compareBy<Reminder>(
+                { DateHelper.nextDateWithRepeating(it.date, it.time, it.repeat) },
+            )
+            val dateTimeNow = LocalDateTime.now()
+            return reminders.sortedWith(comparator).sortedBy {
+                if (DateHelper.nextDateWithRepeating(it.date, it.time, it.repeat).isBefore(dateTimeNow)) {
+                    1
+                } else {
+                    0
+                }
             }
         }
     }

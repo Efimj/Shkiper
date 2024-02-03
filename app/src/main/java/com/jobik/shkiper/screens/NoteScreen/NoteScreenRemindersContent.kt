@@ -5,6 +5,7 @@ import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.NotificationsOff
@@ -35,14 +36,6 @@ fun NoteScreenRemindersContent(noteViewModel: NoteViewModel) {
     val shareSheetState = rememberModalBottomSheetState()
     val currentReminder = rememberSaveable { mutableStateOf<Reminder?>(null) }
     val openCreateReminderDialog = rememberSaveable { mutableStateOf(false) }
-
-    val d = LocalDate.now()
-    val t = LocalTime.now()
-    val d1 = DateHelper.nextDateWithRepeating(d, t, RepeatMode.DAILY)
-    val d2 = LocalDateTime.now()
-    Log.d("Date1", d1.toString())
-    Log.d("Date2", d2.toString())
-    Log.d("Date2 is after Date1", d2.isAfter(d1).toString())
 
     LaunchedEffect(noteViewModel.screenState.value.isReminderMenuNeeded) {
         if (!noteViewModel.screenState.value.isReminderMenuNeeded) {
@@ -108,31 +101,23 @@ fun NoteScreenRemindersContent(noteViewModel: NoteViewModel) {
     )
 }
 
-
-fun sortReminders(reminders: List<Reminder>): List<Reminder> {
-    val currentTime = LocalTime.now()
-    val currentDate = LocalDate.now()
-
-    val comparator = compareBy<Reminder>(
-        { DateHelper.nextDateWithRepeating(it.date, it.time, it.repeat) },
-    )
-
-    return reminders.sortedWith(comparator)
-//    return reminders
-}
-
 @Composable
 private fun RemindersList(
     noteViewModel: NoteViewModel,
     currentReminder: MutableState<Reminder?>,
     openCreateReminderDialog: MutableState<Boolean>
 ) {
+    val lazyListState = rememberLazyListState()
+
     LazyColumn(
         modifier = Modifier,
+        state = lazyListState,
         contentPadding = PaddingValues(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 80.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        items(items = sortReminders(noteViewModel.screenState.value.reminders)) { item ->
+        items(
+            items = noteViewModel.screenState.value.reminders,
+            key = { it._id.toHexString() }) { item ->
             ReminderCard(reminder = item) {
                 currentReminder.value = item
                 openCreateReminderDialog.value = true
