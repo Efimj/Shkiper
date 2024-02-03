@@ -114,7 +114,7 @@ private fun RemindersList(
     val topPaddingValues = if (selectedReminderIds.value.isEmpty()) 20.dp else 10.dp
     val topPadding by animateDpAsState(targetValue = topPaddingValues, label = "topPadding")
 
-    val bottomPaddingValues = if (selectedReminderIds.value.isEmpty()) 80.dp else 10.dp
+    val bottomPaddingValues = if (selectedReminderIds.value.isEmpty()) 80.dp else 20.dp
     val bottomPadding by animateDpAsState(targetValue = bottomPaddingValues, label = "bottomPadding")
 
     LazyColumn(
@@ -210,31 +210,15 @@ private fun Header(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 30.dp)
-                .padding(bottom = 10.dp, top = 20.dp)
+                .padding(bottom = 10.dp, top = 10.dp)
                 .height(50.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(space = 10.dp, alignment = Alignment.CenterHorizontally)
         ) {
             Button(
-                modifier = Modifier.fillMaxHeight(),
-                shape = CustomTheme.shapes.small,
-                colors = ButtonDefaults.buttonColors(
-                    contentColor = CustomTheme.colors.text,
-                    containerColor = CustomTheme.colors.secondaryBackground
-                ),
-                border = null,
-                elevation = null,
-                contentPadding = PaddingValues(horizontal = 15.dp),
-                onClick = clearSelectedReminders
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.KeyboardArrowLeft,
-                    contentDescription = stringResource(R.string.Back),
-                    tint = CustomTheme.colors.text
-                )
-            }
-            Button(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight(),
                 shape = CustomTheme.shapes.small,
                 colors = ButtonDefaults.buttonColors(
                     contentColor = CustomTheme.colors.text,
@@ -255,6 +239,24 @@ private fun Header(
                     color = CustomTheme.colors.textOnActive,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
+                )
+            }
+            Button(
+                modifier = Modifier.fillMaxHeight(),
+                shape = CustomTheme.shapes.small,
+                colors = ButtonDefaults.buttonColors(
+                    contentColor = CustomTheme.colors.text,
+                    containerColor = CustomTheme.colors.secondaryBackground
+                ),
+                border = null,
+                elevation = null,
+                contentPadding = PaddingValues(horizontal = 15.dp),
+                onClick = clearSelectedReminders
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.KeyboardArrowRight,
+                    contentDescription = stringResource(R.string.Back),
+                    tint = CustomTheme.colors.text
                 )
             }
         }
