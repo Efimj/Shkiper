@@ -482,6 +482,12 @@ class NoteViewModel @Inject constructor(
         }
     }
 
+    fun deleteReminder(reminderIds: List<ObjectId>) {
+        viewModelScope.launch {
+            reminderRepository.deleteReminder(reminderIds)
+        }
+    }
+
     fun switchReminderDialogShow() {
         _screenState.value =
             _screenState.value.copy(isReminderMenuOpen = !_screenState.value.isReminderMenuOpen)

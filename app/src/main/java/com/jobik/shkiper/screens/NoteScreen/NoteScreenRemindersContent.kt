@@ -194,6 +194,8 @@ private fun Header(
     noteViewModel: NoteViewModel,
     selectedReminderIds: MutableState<List<ObjectId>>
 ) {
+    val clearSelectedReminders = { selectedReminderIds.value = emptyList() }
+
     AnimatedVisibility(
         visible = selectedReminderIds.value.isNotEmpty(),
         enter = slideInVertically() + expandVertically(
@@ -223,7 +225,7 @@ private fun Header(
                 border = null,
                 elevation = null,
                 contentPadding = PaddingValues(horizontal = 15.dp),
-                onClick = { selectedReminderIds.value = emptyList() }
+                onClick = clearSelectedReminders
             ) {
                 Icon(
                     imageVector = Icons.Outlined.KeyboardArrowLeft,
@@ -241,7 +243,11 @@ private fun Header(
                 border = null,
                 elevation = null,
                 contentPadding = PaddingValues(horizontal = 15.dp),
-                onClick = { }
+                onClick = {
+                    noteViewModel.deleteReminder(reminderIds = selectedReminderIds.value)
+                    clearSelectedReminders()
+
+                }
             ) {
                 Text(
                     text = stringResource(R.string.Delete),
