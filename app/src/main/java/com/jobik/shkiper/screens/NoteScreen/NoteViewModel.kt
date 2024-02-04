@@ -48,11 +48,12 @@ data class NoteScreenState(
     val notePosition: NotePosition = NotePosition.MAIN,
     val noteBody: String = "",
     val isPinned: Boolean = false,
+    val linkPreviewEnabled: Boolean = false,
     val updatedDate: LocalDateTime = LocalDateTime.now(),
     val hashtags: Set<String> = emptySet(),
     val deletionDate: LocalDateTime? = LocalDateTime.now(),
 
-    val linksLoading: Boolean = true,
+    val linksLoading: Boolean = false,
     val linksMetaData: Set<LinkHelper.LinkPreview> = emptySet(),
     val intermediateStates: List<NoteViewModel.IntermediateState> = listOf(
         NoteViewModel.IntermediateState(noteHeader, noteBody)
@@ -101,6 +102,7 @@ class NoteViewModel @Inject constructor(
                 hashtags = note.hashtags,
                 notePosition = note.position,
                 deletionDate = note.deletionDate,
+                linkPreviewEnabled = note.linkPreviewEnabled,
                 intermediateStates = listOf(IntermediateState(note.header, note.body))
             )
     }
@@ -166,7 +168,27 @@ class NoteViewModel @Inject constructor(
             _screenState.value = _screenState.value.copy(linksMetaData = getCorrectLinks())
         }
 
+    fun switchLinkPreviewEnabled(mode: Boolean? = null) {
+        val newState = mode ?: !_screenState.value.linkPreviewEnabled
+        _screenState.value = _screenState.value.copy(linkPreviewEnabled = newState)
+        updateNote {
+            it.linkPreviewEnabled = newState
+        }
+
+        if (newState) {
+            runFetchingLinksMetaData()
+        } else {
+            disableLinkPreviews()
+        }
+    }
+
+    private fun disableLinkPreviews() {
+        linkRefreshTimer?.cancel()
+        allLinksMetaData = emptySet()
+    }
+
     fun runFetchingLinksMetaData() {
+        if (_screenState.value.linkPreviewEnabled.not()) return
         if (linkRefreshTimer == null) {
             fetchLinkMetaData()
             linkRefreshTimer?.cancel()

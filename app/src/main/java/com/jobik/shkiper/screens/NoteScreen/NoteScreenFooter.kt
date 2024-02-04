@@ -160,6 +160,10 @@ fun NoteScreenFooter(navController: NavController, noteViewModel: NoteViewModel,
                                             icon = Icons.Outlined.Widgets
                                         ),
                                         DropDownItem(
+                                            text = stringResource(if (noteViewModel.screenState.value.linkPreviewEnabled) R.string.DisableLinkPreviews else R.string.EnableLinkPreviews),
+                                            icon = if (noteViewModel.screenState.value.linkPreviewEnabled) Icons.Outlined.LinkOff else Icons.Outlined.Link
+                                        ),
+                                        DropDownItem(
                                             text = stringResource(R.string.Delete),
                                             icon = if (noteViewModel.screenState.value.notePosition == NotePosition.DELETE) Icons.Outlined.DeleteForever else Icons.Outlined.Delete
                                         )
@@ -180,7 +184,8 @@ fun NoteScreenFooter(navController: NavController, noteViewModel: NoteViewModel,
                                         when (index) {
                                             0 -> noteViewModel.switchShowShareDialog()
                                             1 -> noteViewModel.createWidget()
-                                            2 -> {
+                                            2 -> noteViewModel.switchLinkPreviewEnabled()
+                                            3 -> {
                                                 if (noteViewModel.screenState.value.notePosition == NotePosition.DELETE)
                                                     noteViewModel.deleteNote()
                                                 else
