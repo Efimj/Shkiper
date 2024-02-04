@@ -14,6 +14,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Warning
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -182,11 +183,31 @@ fun NoteScreenContent(
         }
     }
 
+    SetFocusOnNoteBodyIfNoteNew(noteViewModel, richTextState, bodyFieldFocusRequester)
     NoteScreenShareComponent(noteViewModel, richTextState)
     DeleteonDialog(noteViewModel)
     AndroidBarColorManager(scrollState, noteViewModel)
     CheckAndDeleteNoteOnExit(noteViewModel, richTextState)
     HideKeyboardWhenLeaveScreen()
+}
+
+@Composable
+private fun SetFocusOnNoteBodyIfNoteNew(
+    noteViewModel: NoteViewModel,
+    richTextState: RichTextState,
+    bodyFieldFocusRequester: FocusRequester
+) {
+    val isInitialized = rememberSaveable {
+        mutableStateOf(false)
+    }
+    LaunchedEffect(Unit) {
+        if (isInitialized.value) return@LaunchedEffect
+        if (noteViewModel.screenState.value.noteHeader.isBlank() && richTextState.annotatedString.toString()
+                .isBlank()
+        ) {
+            bodyFieldFocusRequester.requestFocus()
+        }
+    }
 }
 
 @Composable
