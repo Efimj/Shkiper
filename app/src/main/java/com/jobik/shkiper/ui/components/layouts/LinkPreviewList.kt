@@ -55,7 +55,7 @@ fun LazyListScope.LinkPreviewList(
     }
     if (linkPreviewList.isEmpty()) return
     item {
-        Row(verticalAlignment = Alignment.CenterVertically, modifier = contentPadding.padding(bottom = 5.dp)) {
+        Row(verticalAlignment = Alignment.CenterVertically, modifier = contentPadding.padding(bottom = 8.dp)) {
             Text(
                 stringResource(R.string.Links),
                 style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.SemiBold, fontSize = 18.sp),
