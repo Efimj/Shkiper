@@ -58,35 +58,33 @@ fun NoteScreenRemindersContent(noteViewModel: NoteViewModel) {
             dragHandle = null,
         ) {
             Box {
-                Column {
-                    Header(
-                        noteViewModel = noteViewModel,
-                        selectedReminderIds = selectedReminderIds
-                    )
-                    AnimatedContent(
-                        targetState = noteViewModel.screenState.value.reminders.isEmpty(),
-                        transitionSpec = {
-                            if (initialState) {
-                                (slideInVertically { height -> height } + fadeIn()).togetherWith(slideOutVertically { height -> -height } + fadeOut())
-                            } else {
-                                (slideInVertically { height -> -height } + fadeIn()).togetherWith(slideOutVertically { height -> height } + fadeOut())
-                            }.using(
-                                SizeTransform(clip = false)
-                            )
-                        }, label = ""
-                    ) {
-                        if (it) {
-                            EmptyRemindersContent()
+                AnimatedContent(
+                    targetState = noteViewModel.screenState.value.reminders.isEmpty(),
+                    transitionSpec = {
+                        if (initialState) {
+                            (slideInVertically { height -> height } + fadeIn()).togetherWith(slideOutVertically { height -> -height } + fadeOut())
                         } else {
-                            RemindersList(
-                                noteViewModel = noteViewModel,
-                                currentReminder = currentReminder,
-                                selectedReminderIds = selectedReminderIds,
-                                openCreateReminderDialog = openCreateReminderDialog
-                            )
-                        }
+                            (slideInVertically { height -> -height } + fadeIn()).togetherWith(slideOutVertically { height -> height } + fadeOut())
+                        }.using(
+                            SizeTransform(clip = false)
+                        )
+                    }, label = ""
+                ) {
+                    if (it) {
+                        EmptyRemindersContent()
+                    } else {
+                        RemindersList(
+                            noteViewModel = noteViewModel,
+                            currentReminder = currentReminder,
+                            selectedReminderIds = selectedReminderIds,
+                            openCreateReminderDialog = openCreateReminderDialog
+                        )
                     }
                 }
+                Header(
+                    noteViewModel = noteViewModel,
+                    selectedReminderIds = selectedReminderIds
+                )
                 BottomBar(isHidden = selectedReminderIds.value.isNotEmpty()) {
                     currentReminder.value = null
                     openCreateReminderDialog.value = true
@@ -111,7 +109,7 @@ private fun RemindersList(
 ) {
     val lazyListState = rememberLazyListState()
 
-    val topPaddingValues = if (selectedReminderIds.value.isEmpty()) 20.dp else 10.dp
+    val topPaddingValues = if (selectedReminderIds.value.isEmpty()) 20.dp else 80.dp
     val topPadding by animateDpAsState(targetValue = topPaddingValues, label = "topPadding")
 
     val bottomPaddingValues = if (selectedReminderIds.value.isEmpty()) 80.dp else 20.dp
@@ -190,74 +188,78 @@ private fun EmptyRemindersContent() {
 }
 
 @Composable
-private fun Header(
+private fun BoxScope.Header(
     noteViewModel: NoteViewModel,
     selectedReminderIds: MutableState<List<ObjectId>>
 ) {
     val clearSelectedReminders = { selectedReminderIds.value = emptyList() }
 
-    AnimatedVisibility(
-        visible = selectedReminderIds.value.isNotEmpty(),
-        enter = slideInVertically() + expandVertically(
-            clip = false
-        ) + fadeIn(),
-        exit = slideOutVertically() + shrinkVertically(
-            clip = false
-        ) + fadeOut(),
-    )
-    {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 30.dp)
-                .padding(bottom = 10.dp, top = 10.dp)
-                .height(50.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(space = 10.dp, alignment = Alignment.CenterHorizontally)
-        ) {
-            Button(
+    Box(
+        modifier = Modifier.align(Alignment.TopCenter)
+    ) {
+        AnimatedVisibility(
+            visible = selectedReminderIds.value.isNotEmpty(),
+            enter = slideInVertically() + expandVertically(
+                clip = false
+            ) + fadeIn(),
+            exit = slideOutVertically() + shrinkVertically(
+                clip = false
+            ) + fadeOut(),
+        )
+        {
+            Row(
                 modifier = Modifier
-                    .weight(1f)
-                    .fillMaxHeight(),
-                shape = CustomTheme.shapes.small,
-                colors = ButtonDefaults.buttonColors(
-                    contentColor = CustomTheme.colors.text,
-                    containerColor = CustomTheme.colors.secondaryBackground
-                ),
-                border = null,
-                elevation = null,
-                contentPadding = PaddingValues(horizontal = 15.dp),
-                onClick = {
-                    noteViewModel.deleteReminder(reminderIds = selectedReminderIds.value)
-                    clearSelectedReminders()
+                    .fillMaxWidth()
+                    .padding(horizontal = 30.dp)
+                    .padding(top = 10.dp)
+                    .height(50.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(space = 10.dp, alignment = Alignment.CenterHorizontally)
+            ) {
+                Button(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight(),
+                    shape = CustomTheme.shapes.small,
+                    colors = ButtonDefaults.buttonColors(
+                        contentColor = CustomTheme.colors.text,
+                        containerColor = CustomTheme.colors.secondaryBackground
+                    ),
+                    border = null,
+                    elevation = null,
+                    contentPadding = PaddingValues(horizontal = 15.dp),
+                    onClick = {
+                        noteViewModel.deleteReminder(reminderIds = selectedReminderIds.value)
+                        clearSelectedReminders()
+                    }
+                ) {
+                    Text(
+                        text = stringResource(R.string.Delete),
+                        style = MaterialTheme.typography.body1,
+                        fontWeight = FontWeight.SemiBold,
+                        color = CustomTheme.colors.text,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
                 }
-            ) {
-                Text(
-                    text = stringResource(R.string.Delete),
-                    style = MaterialTheme.typography.body1,
-                    fontWeight = FontWeight.SemiBold,
-                    color = CustomTheme.colors.textOnActive,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
-            Button(
-                modifier = Modifier.fillMaxHeight(),
-                shape = CustomTheme.shapes.small,
-                colors = ButtonDefaults.buttonColors(
-                    contentColor = CustomTheme.colors.text,
-                    containerColor = CustomTheme.colors.secondaryBackground
-                ),
-                border = null,
-                elevation = null,
-                contentPadding = PaddingValues(horizontal = 15.dp),
-                onClick = clearSelectedReminders
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.KeyboardArrowRight,
-                    contentDescription = stringResource(R.string.Back),
-                    tint = CustomTheme.colors.text
-                )
+                Button(
+                    modifier = Modifier.fillMaxHeight(),
+                    shape = CustomTheme.shapes.small,
+                    colors = ButtonDefaults.buttonColors(
+                        contentColor = CustomTheme.colors.text,
+                        containerColor = CustomTheme.colors.secondaryBackground
+                    ),
+                    border = null,
+                    elevation = null,
+                    contentPadding = PaddingValues(horizontal = 15.dp),
+                    onClick = clearSelectedReminders
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.KeyboardArrowRight,
+                        contentDescription = stringResource(R.string.Back),
+                        tint = CustomTheme.colors.text
+                    )
+                }
             }
         }
     }
