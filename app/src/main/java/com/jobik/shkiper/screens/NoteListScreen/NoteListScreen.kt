@@ -52,6 +52,7 @@ import com.jobik.shkiper.services.notification_service.NotificationScheduler
 import com.jobik.shkiper.ui.components.buttons.FloatingActionButton
 import com.jobik.shkiper.ui.components.buttons.HashtagButton
 import com.jobik.shkiper.ui.components.cards.NoteCard
+import com.jobik.shkiper.ui.components.fields.SearchBarActionButton
 import com.jobik.shkiper.ui.components.layouts.*
 import com.jobik.shkiper.ui.components.modals.ActionDialog
 import com.jobik.shkiper.ui.components.modals.CreateReminderDialog
@@ -138,11 +139,16 @@ fun NoteListScreen(navController: NavController, notesViewModel: NotesViewModel 
             ScreenContent(lazyGridNotes, notesViewModel, currentRoute, navController)
         Box(modifier = Modifier) {
             com.jobik.shkiper.ui.components.fields.SearchBar(
-                searchBarHeight,
-                searchBarOffsetHeightPx.value,
-                notesViewModel.screenState.value.selectedNotes.isEmpty(),
-                notesViewModel.screenState.value.searchText,
-                notesViewModel::changeSearchText
+                searchBarContainerHeight = searchBarHeight,
+                searchBarOffsetHeightPx = searchBarOffsetHeightPx.value,
+                isVisible = notesViewModel.screenState.value.selectedNotes.isEmpty(),
+                value = notesViewModel.screenState.value.searchText,
+                actionButton = SearchBarActionButton(
+                    icon = Icons.Outlined.Event,
+                    contentDescription = R.string.Reminders,
+                    onClick = {}
+                ),
+                onChange = notesViewModel::changeSearchText,
             )
             ActionBar(actionBarHeight, offsetX, notesViewModel)
         }

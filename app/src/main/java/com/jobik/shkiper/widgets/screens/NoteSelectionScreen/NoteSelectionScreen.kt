@@ -90,11 +90,11 @@ fun NoteSelectionScreen(notesViewModel: NoteSelectionViewModel = hiltViewModel()
             ScreenContent(lazyGridNotes, notesViewModel)
         Box(modifier = Modifier) {
             com.jobik.shkiper.ui.components.fields.SearchBar(
-                searchBarHeight,
-                searchBarOffsetHeightPx.value,
-                true,
-                notesViewModel.screenState.value.searchText,
-                notesViewModel::changeSearchText
+                searchBarContainerHeight = searchBarHeight,
+                searchBarOffsetHeightPx = searchBarOffsetHeightPx.value,
+                isVisible = true,
+                value = notesViewModel.screenState.value.searchText,
+                onChange = notesViewModel::changeSearchText
             )
         }
         Box(modifier = Modifier.align(Alignment.BottomEnd).padding(35.dp)) {

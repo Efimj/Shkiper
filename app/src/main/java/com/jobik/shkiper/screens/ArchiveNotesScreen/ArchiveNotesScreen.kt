@@ -121,11 +121,11 @@ fun ArchiveNotesScreen(navController: NavController, archiveViewModel: NotesView
             ScreenContent(lazyGridNotes, archiveViewModel, currentRoute, navController)
         Box(modifier = Modifier) {
             com.jobik.shkiper.ui.components.fields.SearchBar(
-                searchBarHeight,
-                searchBarOffsetHeightPx.value,
-                archiveViewModel.screenState.value.selectedNotes.isEmpty(),
-                archiveViewModel.screenState.value.searchText,
-                archiveViewModel::changeSearchText
+                searchBarContainerHeight = searchBarHeight,
+                searchBarOffsetHeightPx = searchBarOffsetHeightPx.value,
+                isVisible = archiveViewModel.screenState.value.selectedNotes.isEmpty(),
+                value = archiveViewModel.screenState.value.searchText,
+                onChange = archiveViewModel::changeSearchText
             )
             ActionBar(actionBarHeight, offsetX, archiveViewModel)
         }
