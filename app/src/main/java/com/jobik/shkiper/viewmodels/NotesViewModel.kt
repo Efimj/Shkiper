@@ -284,12 +284,16 @@ class NotesViewModel @Inject constructor(
 
     fun setCurrentHashtag(newHashtag: String?) {
         if (newHashtag == screenState.value.currentHashtag) {
-            _screenState.value = screenState.value.copy(currentHashtag = null)
-            getNotes()
+            unsetSelectedHashtag()
         } else {
             _screenState.value = screenState.value.copy(currentHashtag = newHashtag)
             getNotesByHashtag(screenState.value.currentHashtag ?: "")
         }
+    }
+
+    private fun unsetSelectedHashtag() {
+        _screenState.value = screenState.value.copy(currentHashtag = null)
+        getNotes()
     }
 
     fun getNotesByHashtag(hashtag: String) {
@@ -298,6 +302,7 @@ class NotesViewModel @Inject constructor(
         notesFlowJob = viewModelScope.launch {
             noteRepository.getNotesByHashtag(notePosition, hashtag).collect() {
                 _screenState.value = _screenState.value.copy(notes = it)
+                if (it.isEmpty()) unsetSelectedHashtag()
             }
         }
     }
