@@ -12,7 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.jobik.shkiper.screens.NoteScreen.NoteScreenCalendarContent
 import com.jobik.shkiper.viewmodels.NotesViewModel
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -34,7 +33,7 @@ fun NoteListScreen(navController: NavController, notesViewModel: NotesViewModel 
         if (it == 0) {
             NoteListScreenContent(navController, notesViewModel)
         } else {
-            NoteScreenCalendarContent()
+            NoteListScreenCalendarContent()
         }
     }
 }
