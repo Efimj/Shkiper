@@ -438,7 +438,7 @@ private fun RepeatModePage(
                     items = repeatModeList,
                     expanded = isExpanded,
                     selectedIndex = repeatMode.value.ordinal,
-                    onChangedSelection = { repeatMode.value = RepeatMode.values()[it] }) {
+                    onChangedSelection = { repeatMode.value = RepeatMode.entries.toTypedArray()[it] }) {
                     Button(
                         modifier = Modifier.heightIn(min = 40.dp),
                         shape = CustomTheme.shapes.small,
