@@ -21,8 +21,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.jobik.shkiper.ui.components.layouts.CalendarDayView
 import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.viewmodels.NotesViewModel
 import com.kizitonwose.calendar.compose.CalendarState
 import com.kizitonwose.calendar.compose.HorizontalCalendar
 import com.kizitonwose.calendar.compose.WeekCalendar
@@ -40,7 +42,12 @@ import java.time.format.TextStyle
 import java.util.*
 
 @Composable
-fun NoteListScreenCalendarContent(adjacentMonths: Long = 500) {
+fun NoteListScreenCalendarContent(
+    navController: NavController,
+    viewModel: CalendarViewModel,
+    onSlideBack: () -> Unit,
+) {
+    val adjacentMonths = 500L
     val currentDate = remember { LocalDate.now() }
     val currentMonth = remember(currentDate) { currentDate.yearMonth }
     val startMonth = remember(currentDate) { currentMonth }

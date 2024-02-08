@@ -51,7 +51,8 @@ import com.jobik.shkiper.viewmodels.NotesViewModel
 @Composable
 fun NoteListScreenContent(
     navController: NavController,
-    notesViewModel: NotesViewModel
+    viewModel: NotesViewModel,
+    onSlideNext: () -> Unit,
 ) {
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route ?: ""
 
@@ -77,34 +78,34 @@ fun NoteListScreenContent(
     val actionBarHeightPx = with(LocalDensity.current) { actionBarHeight.roundToPx().toFloat() }
     val offsetX = remember { Animatable(-actionBarHeightPx) }
 
-    BackHandlerIfSelectedNotes(notesViewModel)
-    IfSelectedNotesChanged(notesViewModel, offsetX, actionBarHeightPx)
+    BackHandlerIfSelectedNotes(viewModel)
+    IfSelectedNotesChanged(viewModel, offsetX, actionBarHeightPx)
     IfScrollingImposible(lazyGridNotes, searchBarOffsetHeightPx)
-    WhenUserCreateNewNote(notesViewModel, navController)
+    WhenUserCreateNewNote(viewModel, navController)
 
     Box(
         Modifier
             .fillMaxSize()
             .nestedScroll(nestedScrollConnection)
     ) {
-        if (notesViewModel.screenState.value.isNotesInitialized && notesViewModel.screenState.value.notes.isEmpty())
+        if (viewModel.screenState.value.isNotesInitialized && viewModel.screenState.value.notes.isEmpty())
             ScreenContentIfNoData(title = R.string.EmptyNotesPageHeader, icon = Icons.Outlined.Description)
         else
-            NotesListContent(notesViewModel, lazyGridNotes, navController, currentRoute)
+            NotesListContent(viewModel, lazyGridNotes, navController, currentRoute)
         Box(modifier = Modifier) {
             SearchBar(
                 searchBarContainerHeight = searchBarHeight,
                 searchBarOffsetHeightPx = searchBarOffsetHeightPx.floatValue,
-                isVisible = notesViewModel.screenState.value.selectedNotes.isEmpty(),
-                value = notesViewModel.screenState.value.searchText,
+                isVisible = viewModel.screenState.value.selectedNotes.isEmpty(),
+                value = viewModel.screenState.value.searchText,
                 actionButton = SearchBarActionButton(
                     icon = Icons.Outlined.Event,
                     contentDescription = R.string.Reminders,
-                    onClick = {}
+                    onClick = onSlideNext
                 ),
-                onChange = notesViewModel::changeSearchText,
+                onChange = viewModel::changeSearchText,
             )
-            NoteListScreenActionBar(actionBarHeight, offsetX, notesViewModel)
+            NoteListScreenActionBar(actionBarHeight, offsetX, viewModel)
         }
         Box(
             modifier = Modifier
@@ -112,19 +113,19 @@ fun NoteListScreenContent(
                 .padding(35.dp)
         ) {
             AnimatedVisibility(
-                notesViewModel.screenState.value.selectedNotes.isEmpty(),
+                viewModel.screenState.value.selectedNotes.isEmpty(),
                 enter = fadeIn(tween(200, easing = LinearOutSlowInEasing)),
                 exit = fadeOut(tween(200, easing = FastOutSlowInEasing)),
             ) {
-                FloatingActionButton(isActive = notesViewModel.screenState.value.selectedNotes.isEmpty()) {
-                    notesViewModel.createNewNote()
+                FloatingActionButton(isActive = viewModel.screenState.value.selectedNotes.isEmpty()) {
+                    viewModel.createNewNote()
                 }
             }
         }
     }
 
-    NoteListScreenReminderCheck(notesViewModel)
-    CreateReminderContent(notesViewModel)
+    NoteListScreenReminderCheck(viewModel)
+    CreateReminderContent(viewModel)
 }
 
 
