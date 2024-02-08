@@ -57,7 +57,7 @@ fun NoteScreenContent(
     noteViewModel: NoteViewModel,
     navController: NavController
 ) {
-    RemoveIndicatorWhenKeyboardHiden()
+    RemoveIndicatorWhenKeyboardHidden(noteViewModel)
     val richTextState = rememberRichTextState()
     val bodyFieldFocusRequester = remember { FocusRequester() }
     val scrollState = rememberLazyListState()
@@ -295,11 +295,13 @@ private fun HideKeyboardWhenLeaveScreen() {
 }
 
 @Composable
-private fun RemoveIndicatorWhenKeyboardHiden() {
+private fun RemoveIndicatorWhenKeyboardHidden(noteViewModel: NoteViewModel) {
     val isKeyboardVisible by keyboardAsState()
     val focusManager = LocalFocusManager.current
 
-    LaunchedEffect(isKeyboardVisible) {
+    LaunchedEffect(isKeyboardVisible, noteViewModel.screenState.value.isStyling) {
+        // for cases of inserting a link through a window
+        if(noteViewModel.screenState.value.isStyling) return@LaunchedEffect
         if (isKeyboardVisible == Keyboard.Closed) {
             focusManager.clearFocus()
         }
