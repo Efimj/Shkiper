@@ -1,4 +1,4 @@
-package com.jobik.shkiper.screens.NoteListScreen
+package com.jobik.shkiper.screens.NoteListScreen.NoteListScreenContent
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector1D

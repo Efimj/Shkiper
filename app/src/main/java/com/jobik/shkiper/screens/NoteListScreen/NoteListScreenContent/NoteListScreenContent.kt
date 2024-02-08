@@ -1,4 +1,4 @@
-package com.jobik.shkiper.screens.NoteListScreen
+package com.jobik.shkiper.screens.NoteListScreen.NoteListScreenContent
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility

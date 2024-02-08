@@ -1,4 +1,4 @@
-package com.jobik.shkiper.screens.NoteListScreen
+package com.jobik.shkiper.screens.NoteListScreen.NoteListCalendarContent
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable

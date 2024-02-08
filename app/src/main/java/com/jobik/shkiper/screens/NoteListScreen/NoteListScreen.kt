@@ -12,12 +12,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.jobik.shkiper.screens.NoteListScreen.NoteListCalendarContent.NoteListScreenCalendarContent
+import com.jobik.shkiper.screens.NoteListScreen.NoteListScreenContent.NoteListScreenContent
 import com.jobik.shkiper.viewmodels.NotesViewModel
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun NoteListScreen(navController: NavController, notesViewModel: NotesViewModel = hiltViewModel()) {
-    val pagerState = rememberPagerState() { 2 }
+fun NoteListScreen(navController: NavController) {
+    val pagerState = rememberPagerState { 2 }
 
     HorizontalPager(
         modifier = Modifier.fillMaxSize(),
@@ -31,7 +33,7 @@ fun NoteListScreen(navController: NavController, notesViewModel: NotesViewModel 
         pageSize = PageSize.Fill,
     ) {
         if (it == 0) {
-            NoteListScreenContent(navController, notesViewModel)
+            NoteListScreenContent(navController, hiltViewModel<NotesViewModel>())
         } else {
             NoteListScreenCalendarContent()
         }
