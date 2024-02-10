@@ -200,8 +200,10 @@ private fun NotesListContent(
     navController: NavController,
     currentRoute: String
 ) {
-    val pinnedNotes = notesViewModel.screenState.value.notes.filter { it.isPinned }
-    val unpinnedNotes = notesViewModel.screenState.value.notes.filterNot { it.isPinned }
+    val pinnedNotes =
+        remember(notesViewModel.screenState.value.notes) { notesViewModel.screenState.value.notes.filter { it.isPinned } }
+    val unpinnedNotes =
+        remember(notesViewModel.screenState.value.notes) { notesViewModel.screenState.value.notes.filterNot { it.isPinned } }
 
     LazyGridNotes(
         contentPadding = PaddingValues(10.dp, 70.dp, 10.dp, 80.dp),
