@@ -344,7 +344,8 @@ private fun DialogContent(
     Column(
         Modifier
             .animateContentSize()
-            .heightIn(min = 350.dp)) {
+            .heightIn(min = 350.dp)
+    ) {
         when (it) {
             ReminderDialogPages.DATEPICK.value -> DatePickPage(date)
 
@@ -379,7 +380,9 @@ private fun RepeatModePage(
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .padding(bottom = 15.dp)
-                .fillMaxWidth()
+                .fillMaxWidth(),
+            fontWeight = FontWeight.SemiBold,
+            maxLines = 1,
         )
         Column(horizontalAlignment = Alignment.Start) {
             Row(
@@ -501,13 +504,16 @@ private fun TimePickPage(
             Text(
                 DateHelper.getLocalizedDate(date.value),
                 style = MaterialTheme.typography.h5,
-                color = CustomTheme.colors.textSecondary
+                color = CustomTheme.colors.textSecondary,
+                maxLines = 1,
             )
             Spacer(Modifier.width(8.dp))
             Text(
                 time.value.toString(),
                 style = MaterialTheme.typography.h5,
                 color = CustomTheme.colors.text,
+                fontWeight = FontWeight.SemiBold,
+                maxLines = 1,
             )
         }
         Spacer(Modifier.height(20.dp))
@@ -520,11 +526,15 @@ private fun DatePickPage(date: MutableState<LocalDate>) {
     Column(
         Modifier
             .padding(horizontal = 20.dp)
-            .padding(bottom = 10.dp)) {
+            .padding(bottom = 10.dp)
+    ) {
         Text(
-            DateHelper.getLocalizedDate(date.value),
+            text = DateHelper.getLocalizedDate(date.value),
             style = MaterialTheme.typography.h5,
-            color = CustomTheme.colors.text
+            color = CustomTheme.colors.text,
+            fontWeight = FontWeight.SemiBold,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
         )
         Spacer(Modifier.height(10.dp))
         CustomDatePicker(

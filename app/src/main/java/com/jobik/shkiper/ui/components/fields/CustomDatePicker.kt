@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -90,7 +91,9 @@ fun MonthTitle(month: CalendarMonth) {
 }
 
 @Composable
-fun DaysOfWeekTitle(daysOfWeek: List<DayOfWeek>) {
+fun DaysOfWeekTitle(
+    daysOfWeek: List<DayOfWeek>,
+) {
     Row(modifier = Modifier.fillMaxWidth()) {
         for (dayOfWeek in daysOfWeek) {
             Text(
@@ -100,7 +103,8 @@ fun DaysOfWeekTitle(daysOfWeek: List<DayOfWeek>) {
                 color = CustomTheme.colors.text,
                 style = MaterialTheme.typography.body1,
                 maxLines = 1,
-                overflow = TextOverflow.Clip
+                overflow = TextOverflow.Clip,
+                fontWeight = FontWeight.SemiBold
             )
         }
     }
