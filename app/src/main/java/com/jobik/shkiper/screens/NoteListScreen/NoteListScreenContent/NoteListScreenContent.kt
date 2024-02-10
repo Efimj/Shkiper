@@ -40,6 +40,7 @@ import com.jobik.shkiper.ui.components.buttons.HashtagButton
 import com.jobik.shkiper.ui.components.cards.NoteCard
 import com.jobik.shkiper.ui.components.fields.SearchBar
 import com.jobik.shkiper.ui.components.fields.SearchBarActionButton
+import com.jobik.shkiper.ui.components.fields.SearchBarHeight
 import com.jobik.shkiper.ui.components.layouts.BannerList
 import com.jobik.shkiper.ui.components.layouts.LazyGridNotes
 import com.jobik.shkiper.ui.components.layouts.ScreenContentIfNoData
@@ -56,11 +57,10 @@ fun NoteListScreenContent(
 ) {
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route ?: ""
 
-    val searchBarHeight = 60.dp
     val actionBarHeight = 56.dp
 
     val searchBarOffsetHeightPx = remember { mutableFloatStateOf(0f) }
-    val searchBarHeightPx = with(LocalDensity.current) { searchBarHeight.roundToPx().toFloat() }
+    val searchBarHeightPx = with(LocalDensity.current) { SearchBarHeight.dp.roundToPx().toFloat() }
     val lazyGridNotes = rememberLazyStaggeredGridState()
 
     val nestedScrollConnection = remember {
@@ -94,7 +94,6 @@ fun NoteListScreenContent(
             NotesListContent(viewModel, lazyGridNotes, navController, currentRoute)
         Box(modifier = Modifier) {
             SearchBar(
-                searchBarContainerHeight = searchBarHeight,
                 searchBarOffsetHeightPx = searchBarOffsetHeightPx.floatValue,
                 isVisible = viewModel.screenState.value.selectedNotes.isEmpty(),
                 value = viewModel.screenState.value.searchText,

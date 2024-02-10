@@ -1,5 +1,6 @@
 package com.jobik.shkiper.ui.components.fields
 
+import androidx.annotation.Keep
 import androidx.annotation.StringRes
 import androidx.compose.animation.*
 import androidx.compose.animation.core.animateDpAsState
@@ -50,9 +51,11 @@ data class SearchBarActionButton(
     val onClick: () -> Unit
 )
 
+@Keep
+const val SearchBarHeight = 60
+
 @Composable
 fun SearchBar(
-    searchBarContainerHeight: Dp,
     searchBarOffsetHeightPx: Float,
     isVisible: Boolean,
     value: String,
@@ -60,7 +63,7 @@ fun SearchBar(
     onChange: (newValue: String) -> Unit
 ) {
     val isFocused = remember { mutableStateOf(false) }
-    val searchBarFloatHeight = with(LocalDensity.current) { searchBarContainerHeight.roundToPx().toFloat() }
+    val searchBarFloatHeight = SearchBarHeight.toFloat()
     val horizontalPaddings by animateDpAsState(if (isFocused.value) 0.dp else 20.dp, label = "horizontalPaddings")
     val topPadding by animateDpAsState(if (isFocused.value) 0.dp else 10.dp, label = "topPadding")
 
@@ -75,7 +78,7 @@ fun SearchBar(
     ) {
         Row(
             modifier = Modifier
-                .height(searchBarContainerHeight)
+                .height(SearchBarHeight.dp)
                 .padding(horizontal = horizontalPaddings)
                 .padding(top = topPadding)
                 .offset { IntOffset(x = 0, y = searchBarOffsetHeightPx.roundToInt()) },

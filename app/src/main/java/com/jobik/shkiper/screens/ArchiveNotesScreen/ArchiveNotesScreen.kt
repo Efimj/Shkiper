@@ -45,14 +45,15 @@ import com.jobik.shkiper.ui.components.modals.ReminderDialogProperties
 import com.jobik.shkiper.viewmodels.NotesViewModel
 import kotlin.math.roundToInt
 import com.jobik.shkiper.R
+import com.jobik.shkiper.ui.components.fields.SearchBarHeight
 import com.jobik.shkiper.ui.theme.CustomTheme
 
 @Composable
 fun ArchiveNotesScreen(navController: NavController, archiveViewModel: NotesViewModel = hiltViewModel()) {
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route ?: ""
 
-    val searchBarHeight = 60.dp
-    val searchBarHeightPx = with(LocalDensity.current) { searchBarHeight.roundToPx().toFloat() }
+    val searchBarHeightPx = with(LocalDensity.current) { SearchBarHeight.dp.roundToPx().toFloat() }
+
     val searchBarOffsetHeightPx = remember { mutableStateOf(0f) }
     val lazyGridNotes = rememberLazyStaggeredGridState()
 
@@ -121,7 +122,6 @@ fun ArchiveNotesScreen(navController: NavController, archiveViewModel: NotesView
             ScreenContent(lazyGridNotes, archiveViewModel, currentRoute, navController)
         Box(modifier = Modifier) {
             com.jobik.shkiper.ui.components.fields.SearchBar(
-                searchBarContainerHeight = searchBarHeight,
                 searchBarOffsetHeightPx = searchBarOffsetHeightPx.value,
                 isVisible = archiveViewModel.screenState.value.selectedNotes.isEmpty(),
                 value = archiveViewModel.screenState.value.searchText,

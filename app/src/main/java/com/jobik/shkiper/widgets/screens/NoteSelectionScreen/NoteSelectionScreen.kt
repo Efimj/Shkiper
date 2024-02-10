@@ -43,14 +43,16 @@ import com.jobik.shkiper.database.models.Note
 import com.jobik.shkiper.ui.components.buttons.FloatingActionButton
 import com.jobik.shkiper.ui.components.buttons.HashtagButton
 import com.jobik.shkiper.ui.components.cards.NoteCard
+import com.jobik.shkiper.ui.components.fields.SearchBarHeight
 import com.jobik.shkiper.ui.components.layouts.LazyGridNotes
 import com.jobik.shkiper.ui.components.layouts.ScreenContentIfNoData
 import com.jobik.shkiper.ui.theme.CustomTheme
 
 @Composable
 fun NoteSelectionScreen(notesViewModel: NoteSelectionViewModel = hiltViewModel(), selectNote: (note: Note) -> Unit) {
-    val searchBarHeight = 60.dp
-    val searchBarHeightPx = with(LocalDensity.current) { searchBarHeight.roundToPx().toFloat() }
+
+    val searchBarHeightPx = with(LocalDensity.current) { SearchBarHeight.dp.roundToPx().toFloat() }
+
     val searchBarOffsetHeightPx = remember { mutableStateOf(0f) }
     val lazyGridNotes = rememberLazyStaggeredGridState()
 
@@ -90,7 +92,6 @@ fun NoteSelectionScreen(notesViewModel: NoteSelectionViewModel = hiltViewModel()
             ScreenContent(lazyGridNotes, notesViewModel)
         Box(modifier = Modifier) {
             com.jobik.shkiper.ui.components.fields.SearchBar(
-                searchBarContainerHeight = searchBarHeight,
                 searchBarOffsetHeightPx = searchBarOffsetHeightPx.value,
                 isVisible = true,
                 value = notesViewModel.screenState.value.searchText,
