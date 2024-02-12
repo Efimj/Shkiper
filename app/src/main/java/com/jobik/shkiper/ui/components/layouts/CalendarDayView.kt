@@ -122,23 +122,37 @@ private fun CalendarDayContent(
     day: LocalDate,
     showIndicator: Boolean = false
 ) {
+    val shape = RoundedCornerShape(12.dp)
+    val targetContentColorValue = when {
+        isSelected -> CustomTheme.colors.textOnActive
+        enabled -> CustomTheme.colors.text
+        else -> CustomTheme.colors.textSecondary
+    }
+    val contentColor by animateColorAsState(targetValue = targetContentColorValue, label = "contentColor")
+
     val targetBackgroundColorValue = when {
         isSelected -> CustomTheme.colors.active
-        isToday -> CustomTheme.colors.stroke
         else -> Color.Transparent
     }
-    val borderCornerShape = RoundedCornerShape(12.dp)
     val backgroundColor by animateColorAsState(targetValue = targetBackgroundColorValue, label = "backgroundColor")
+
+    val targetBorderColorValue = when {
+        isToday -> CustomTheme.colors.stroke
+        isSelected -> CustomTheme.colors.active
+        else -> Color.Transparent
+    }
+    val borderColor by animateColorAsState(targetValue = targetBorderColorValue, label = "borderColor")
 
     Column(
         modifier = modifier
-            .clip(borderCornerShape)
-            .background(backgroundColor)
-            .aspectRatio(1f)
+            .clip(shape)
             .clickable(
                 enabled = enabled,
                 onClick = { onClick() }
-            ),
+            )
+            .border(2.dp, borderColor, shape)
+            .aspectRatio(1f)
+            .background(backgroundColor),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -152,7 +166,7 @@ private fun CalendarDayContent(
         Text(
             text = day.dayOfMonth.toString(),
             style = MaterialTheme.typography.body1,
-            color = if (enabled) CustomTheme.colors.text else CustomTheme.colors.textSecondary,
+            color = contentColor,
         )
         Column(
             modifier = Modifier.weight(1f),
