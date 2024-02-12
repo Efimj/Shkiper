@@ -50,7 +50,7 @@ fun NoteListScreenCalendarContent(
             remember(viewModel.screenState.value.notes) { viewModel.screenState.value.notes.filterNot { it.isPinned } }
 
         LazyGridNotes(
-            contentPadding = PaddingValues(10.dp, 10.dp, 10.dp, 80.dp),
+            contentPadding = PaddingValues(10.dp, 15.dp, 10.dp, 80.dp),
             modifier = Modifier.fillMaxSize(),
         ) {
             if (viewModel.screenState.value.hashtags.isNotEmpty())
