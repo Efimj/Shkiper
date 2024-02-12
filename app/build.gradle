@@ -165,4 +165,7 @@ dependencies {
 
     // Compose image capture
     implementation "dev.shreyaspatil:capturable:1.0.3"
+
+    // Compose collapsing toolbar
+    implementation("me.onebone:toolbar-compose:2.3.5")
 }
