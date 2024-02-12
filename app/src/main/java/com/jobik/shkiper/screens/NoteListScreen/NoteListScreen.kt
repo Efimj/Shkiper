@@ -15,9 +15,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.jobik.shkiper.screens.NoteListScreen.NoteListCalendarContent.CalendarViewModel
 import com.jobik.shkiper.screens.NoteListScreen.NoteListCalendarContent.NoteListScreenCalendarContent
 import com.jobik.shkiper.screens.NoteListScreen.NoteListScreenContent.NoteListScreenContent
+import com.jobik.shkiper.ui.theme.CustomTheme
 import com.jobik.shkiper.viewmodels.NotesViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -29,6 +31,7 @@ fun NoteListScreen(navController: NavController) {
     val scope = rememberCoroutineScope()
 
     ReturnUserToMainContent(pagerState, scope)
+    ChangeStatusBarColor(pagerState)
 
     HorizontalPager(
         modifier = Modifier.fillMaxSize(),
@@ -60,6 +63,21 @@ fun NoteListScreen(navController: NavController) {
                     }
                 }
             )
+        }
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+private fun ChangeStatusBarColor(pagerState: PagerState) {
+    val systemUiController = rememberSystemUiController()
+    val statusBarActiveColor = CustomTheme.colors.secondaryBackground
+    val statusBarDisabledColor = CustomTheme.colors.mainBackground
+
+    LaunchedEffect(pagerState.currentPage) {
+        when (pagerState.currentPage) {
+            0 -> systemUiController.setStatusBarColor(statusBarDisabledColor)
+            1 -> systemUiController.setStatusBarColor(statusBarActiveColor)
         }
     }
 }

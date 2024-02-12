@@ -2,7 +2,6 @@ package com.jobik.shkiper.ui.components.fields
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import com.jobik.shkiper.screens.NoteListScreen.NoteListCalendarContent.CalendarHeader
 import com.kizitonwose.calendar.compose.WeekCalendar
 import com.kizitonwose.calendar.compose.weekcalendar.rememberWeekCalendarState
 import com.kizitonwose.calendar.core.atStartOfMonth
@@ -27,7 +26,7 @@ fun CustomWeekDayPicker() {
 
     WeekCalendar(
         state = weekState,
-        weekHeader = { CalendarHeader(daysOfWeek = daysOfWeek) },
+//        weekHeader = { CalendarHeader(daysOfWeek = daysOfWeek) },
         dayContent = { day ->
 //            val isSelectable = day.position == WeekDayPosition.RangeDate
 //            Day(
