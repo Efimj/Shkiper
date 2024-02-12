@@ -336,16 +336,16 @@ private fun CreateReminderDialog(
                 }
             },
             onGoBack = { openDialogState.value = false },
-            onDelete = {
-                currentReminder.value.let {
-                    if (it != null) {
-                        noteViewModel.deleteReminder(it._id)
-                        clearCurrentReminder()
-                    } else {
-                        ReminderDialogProperties()
+            onDelete = if (currentReminder.value != null) {
+                {
+                    currentReminder.value.let {
+                        if (it != null) {
+                            noteViewModel.deleteReminder(it._id)
+                            clearCurrentReminder()
+                        }
                     }
                 }
-            },
+            } else null,
             onSave = { date, time, repeat ->
                 noteViewModel.createOrUpdateReminder(
                     reminder = currentReminder.value,
