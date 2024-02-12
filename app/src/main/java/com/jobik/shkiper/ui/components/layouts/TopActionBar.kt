@@ -16,6 +16,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -53,14 +54,20 @@ fun CustomTopAppBar(
                 Text(
                     text = text,
                     overflow = TextOverflow.Ellipsis,
-                    style = MaterialTheme.typography.body1.copy(fontSize = 18.sp),
+                    style = MaterialTheme.typography.body1,
                     color = CustomTheme.colors.textSecondary,
                     maxLines = 1,
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 18.sp
                 )
             if (text.isNotBlank() && counter != null)
                 Spacer(modifier = Modifier.padding(6.dp, 0.dp, 0.dp, 0.dp))
             if (counter != null)
-                Counter(count = counter, color = CustomTheme.colors.textSecondary)
+                Counter(
+                    count = counter,
+                    color = CustomTheme.colors.textSecondary,
+                    style = MaterialTheme.typography.body1.copy(fontWeight = FontWeight.SemiBold, fontSize = 18.sp)
+                )
         },
         navigationIcon = {
             Spacer(modifier = Modifier.padding(6.dp, 0.dp, 0.dp, 0.dp))
