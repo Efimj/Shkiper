@@ -26,7 +26,9 @@ import com.jobik.shkiper.ui.components.layouts.LazyGridNotes
 import com.jobik.shkiper.ui.theme.CustomTheme
 import me.onebone.toolbar.CollapsingToolbarScaffold
 import me.onebone.toolbar.ScrollStrategy
+import me.onebone.toolbar.SnapConfig
 import me.onebone.toolbar.rememberCollapsingToolbarScaffoldState
+
 
 @Composable
 fun NoteListScreenCalendarContent(
@@ -40,7 +42,9 @@ fun NoteListScreenCalendarContent(
         modifier = Modifier.fillMaxSize(),
         state = collapsingToolbarScaffold,
         scrollStrategy = ScrollStrategy.EnterAlways,
-        toolbar = {
+        enabledWhenBodyUnfilled = false,
+        snapConfig = SnapConfig(), // "collapseThreshold = 0.5" by default
+                toolbar = {
             ScreenCalendarTopBar(viewModel = viewModel, onSlideBack = onSlideBack)
         }
     ) {
@@ -51,7 +55,7 @@ fun NoteListScreenCalendarContent(
 
         LazyGridNotes(
             contentPadding = PaddingValues(10.dp, 15.dp, 10.dp, 80.dp),
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxWidth(),
         ) {
             if (viewModel.screenState.value.hashtags.isNotEmpty())
                 item(span = StaggeredGridItemSpan.FullLine) {
