@@ -66,7 +66,7 @@ fun MainMenuButton(text: String, icon: ImageVector? = null, isActive: Boolean = 
             }
             Text(
                 text = text,
-                style = MaterialTheme.typography.h6,
+                style = MaterialTheme.typography.body1,
                 fontWeight = if (isActive) FontWeight.SemiBold else FontWeight.Normal,
                 color = buttonContentColor,
                 maxLines = 1,
