@@ -98,9 +98,9 @@ fun RichTextBottomToolBar(
             verticalAlignment = Alignment.CenterVertically
         ) {
             RichTextStyleButton(
-                isActive = state.currentSpanStyle.textDecoration == TextDecoration.Underline,
-                onClick = { tryCatchWrapper { state.toggleSpanStyle(SpanStyle(textDecoration = TextDecoration.Underline)) } },
-                icon = R.drawable.format_underlined_fill0_wght400_grad0_opsz24,
+                isActive = state.currentSpanStyle.textDecoration == TextDecoration.LineThrough,
+                onClick = { tryCatchWrapper { state.toggleSpanStyle(SpanStyle(textDecoration = TextDecoration.LineThrough)) } },
+                icon = R.drawable.format_strikethrough_black_24dp,
                 contentDescription = ""
             )
             Divider(
