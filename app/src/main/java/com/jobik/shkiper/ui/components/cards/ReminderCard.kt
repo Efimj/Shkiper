@@ -26,13 +26,15 @@ import com.jobik.shkiper.database.models.RepeatMode
 import com.jobik.shkiper.helpers.DateHelper
 import com.jobik.shkiper.ui.modifiers.bounceClick
 import com.jobik.shkiper.ui.theme.CustomTheme
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ReminderCard(reminder: Reminder, isSelected: Boolean, onClick: () -> Unit, onLongClick: () -> Unit) {
     val context = LocalContext.current
-    val nextReminderDate = DateHelper.nextDateWithRepeating(reminder.date, reminder.time, reminder.repeat)
+    val nextReminderDate =
+        DateHelper.nextDateWithRepeating(LocalDateTime.of(reminder.date, reminder.time), reminder.repeat)
     val isDateFuture = DateHelper.isFutureDateTime(nextReminderDate)
     val isRepeatable = reminder.repeat != RepeatMode.NONE
 

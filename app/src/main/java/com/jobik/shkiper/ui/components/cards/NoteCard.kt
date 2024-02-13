@@ -105,7 +105,7 @@ fun NoteCard(
 
 private fun getNextReminderDate(reminder: Reminder?): LocalDateTime {
     if (reminder == null) return LocalDateTime.now()
-    return DateHelper.nextDateWithRepeating(reminder.date, reminder.time, reminder.repeat)
+    return DateHelper.nextDateWithRepeating(LocalDateTime.of(reminder.date, reminder.time), reminder.repeat)
 }
 
 @OptIn(ExperimentalFoundationApi::class)

@@ -42,32 +42,32 @@ class DateHelper {
         }
 
         fun nextDateWithRepeating(
-            date: LocalDate, time: LocalTime, repeatMode: RepeatMode
+            notificationDate: LocalDateTime,
+            repeatMode: RepeatMode,
+            startingPoint: LocalDateTime = LocalDateTime.now()
         ): LocalDateTime {
-            val oldReminderDate = LocalDateTime.of(date, time)
-
             // get current date with old values
-            val updatedReminderDate = LocalDateTime.now().let {
-                it.withNano(oldReminderDate.nano).withSecond(oldReminderDate.second)
+            val updatedReminderDate = startingPoint.let {
+                it.withNano(notificationDate.nano).withSecond(notificationDate.second)
 
                 when (repeatMode) {
-                    RepeatMode.NONE -> oldReminderDate
-                    RepeatMode.DAILY -> it.withHour(oldReminderDate.hour)
-                        .withMinute(oldReminderDate.minute)
+                    RepeatMode.NONE -> notificationDate
+                    RepeatMode.DAILY -> it.withHour(notificationDate.hour)
+                        .withMinute(notificationDate.minute)
 
-                    RepeatMode.WEEKLY -> it.with(DayOfWeek.from(oldReminderDate.dayOfWeek))
-                        .withHour(oldReminderDate.hour).withMinute(oldReminderDate.minute)
+                    RepeatMode.WEEKLY -> it.with(DayOfWeek.from(notificationDate.dayOfWeek))
+                        .withHour(notificationDate.hour).withMinute(notificationDate.minute)
 
-                    RepeatMode.MONTHLY -> it.withDayOfMonth(oldReminderDate.dayOfMonth)
-                        .withHour(oldReminderDate.hour).withMinute(oldReminderDate.minute)
+                    RepeatMode.MONTHLY -> it.withDayOfMonth(notificationDate.dayOfMonth)
+                        .withHour(notificationDate.hour).withMinute(notificationDate.minute)
 
-                    RepeatMode.YEARLY -> it.withMonth(oldReminderDate.monthValue)
-                        .withDayOfMonth(oldReminderDate.dayOfMonth).withHour(oldReminderDate.hour)
-                        .withMinute(oldReminderDate.minute)
+                    RepeatMode.YEARLY -> it.withMonth(notificationDate.monthValue)
+                        .withDayOfMonth(notificationDate.dayOfMonth).withHour(notificationDate.hour)
+                        .withMinute(notificationDate.minute)
                 }
             }
 
-            val isDateEqualOrBefore = updatedReminderDate.isBefore(LocalDateTime.now()) || LocalDateTime.now()
+            val isDateEqualOrBefore = updatedReminderDate.isBefore(startingPoint) || startingPoint
                 .isEqual(updatedReminderDate)
 
             // update date with adding repeating value
@@ -85,17 +85,25 @@ class DateHelper {
         }
 
         fun sortReminders(reminders: List<Reminder>): List<Reminder> {
-            val comparator = compareBy<Reminder>(
-                { DateHelper.nextDateWithRepeating(it.date, it.time, it.repeat) },
-            )
+            val comparator = compareBy<Reminder> {
+                nextDateWithRepeating(
+                    LocalDateTime.of(it.date, it.time),
+                    it.repeat
+                )
+            }
             val dateTimeNow = LocalDateTime.now()
             return reminders.sortedWith(comparator).sortedBy {
-                if (DateHelper.nextDateWithRepeating(it.date, it.time, it.repeat).isBefore(dateTimeNow)) {
+                if (nextDateWithRepeating(LocalDateTime.of(it.date, it.time), it.repeat).isBefore(dateTimeNow)) {
                     1
                 } else {
                     0
                 }
             }
+        }
+
+        fun isLocalDateInRange(date: LocalDate, range: Pair<LocalDate, LocalDate>): Boolean {
+            val (start, end) = if (range.first.isAfter(range.second)) Pair(range.second, range.first) else range
+            return date in start..end
         }
     }
 }

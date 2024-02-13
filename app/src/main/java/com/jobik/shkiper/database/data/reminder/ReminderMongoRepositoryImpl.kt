@@ -169,7 +169,10 @@ class ReminderMongoRepositoryImpl(val realm: Realm, @ApplicationContext val cont
         if (LocalDateTime.now().isAfter(reminderDateTime)) {
             if (reminder.repeat == RepeatMode.NONE) return
             else
-                reminderDateTime = DateHelper.nextDateWithRepeating(reminder.date, reminder.time, reminder.repeat)
+                reminderDateTime = DateHelper.nextDateWithRepeating(
+                    notificationDate = LocalDateTime.of(reminder.date, reminder.time),
+                    reminder.repeat
+                )
         }
         val notificationData = NotificationData(
             noteId = note._id.toHexString(),
