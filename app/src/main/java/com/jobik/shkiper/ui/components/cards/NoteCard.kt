@@ -1,10 +1,16 @@
 package com.jobik.shkiper.ui.components.cards
 
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.foundation.*
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.basicMarquee
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.Card
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Event
 import androidx.compose.material.icons.filled.Repeat
@@ -24,14 +30,12 @@ import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.Reminder
 import com.jobik.shkiper.database.models.RepeatMode
 import com.jobik.shkiper.helpers.DateHelper
-import com.jobik.shkiper.helpers.TextHelper
 import com.jobik.shkiper.helpers.TextHelper.Companion.removeMarkdownStyles
 import com.jobik.shkiper.ui.helpers.MultipleEventsCutter
 import com.jobik.shkiper.ui.helpers.SetRichTextDefaultStyles
 import com.jobik.shkiper.ui.helpers.get
 import com.jobik.shkiper.ui.modifiers.bounceClick
 import com.jobik.shkiper.ui.theme.CustomTheme
-import com.mohamedrejeb.richeditor.annotation.ExperimentalRichTextApi
 import com.mohamedrejeb.richeditor.model.RichTextState
 import com.mohamedrejeb.richeditor.model.rememberRichTextState
 import java.time.LocalDateTime
@@ -105,7 +109,10 @@ fun NoteCard(
 
 private fun getNextReminderDate(reminder: Reminder?): LocalDateTime {
     if (reminder == null) return LocalDateTime.now()
-    return DateHelper.nextDateWithRepeating(LocalDateTime.of(reminder.date, reminder.time), reminder.repeat)
+    return DateHelper.nextDateWithRepeating(
+        notificationDate = LocalDateTime.of(reminder.date, reminder.time),
+        repeatMode = reminder.repeat
+    )
 }
 
 @OptIn(ExperimentalFoundationApi::class)
