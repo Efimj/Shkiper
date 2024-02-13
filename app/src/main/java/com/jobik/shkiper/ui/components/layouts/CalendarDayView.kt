@@ -137,8 +137,8 @@ private fun CalendarDayContent(
     val backgroundColor by animateColorAsState(targetValue = targetBackgroundColorValue, label = "backgroundColor")
 
     val targetBorderColorValue = when {
-        isToday -> CustomTheme.colors.stroke
         isSelected -> CustomTheme.colors.active
+        isToday -> CustomTheme.colors.stroke
         else -> Color.Transparent
     }
     val borderColor by animateColorAsState(targetValue = targetBorderColorValue, label = "borderColor")
