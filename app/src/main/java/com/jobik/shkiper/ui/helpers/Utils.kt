@@ -22,6 +22,9 @@ fun rememberFirstVisibleWeekAfterScroll(state: WeekCalendarState): Week {
     return visibleWeek.value
 }
 
+/**
+ * To display month name.
+ */
 fun YearMonth.displayText(): String {
     return "${this.month.getDisplayName(TextStyle.FULL, Locale.getDefault())} ${this.year}"
 }
