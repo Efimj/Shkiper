@@ -46,6 +46,7 @@ import com.jobik.shkiper.ui.components.layouts.LazyGridNotes
 import com.jobik.shkiper.ui.components.layouts.ScreenContentIfNoData
 import com.jobik.shkiper.ui.components.modals.CreateReminderDialog
 import com.jobik.shkiper.ui.components.modals.ReminderDialogProperties
+import com.jobik.shkiper.ui.helpers.rememberNextReminder
 import com.jobik.shkiper.ui.theme.CustomTheme
 import com.jobik.shkiper.viewmodels.NotesViewModel
 
@@ -244,9 +245,13 @@ private fun NotesListContent(
                 }
             }
             items(items = pinnedNotes) { item ->
-                NoteCard(item.header,
-                    item.body,
-                    reminder = notesViewModel.screenState.value.reminders.find { it.noteId == item._id },
+                NoteCard(
+                    header = item.header,
+                    text = item.body,
+                    reminder = rememberNextReminder(
+                        reminders = notesViewModel.screenState.value.reminders,
+                        noteId = item._id,
+                    ),
                     markedText = notesViewModel.screenState.value.searchText,
                     selected = item._id in notesViewModel.screenState.value.selectedNotes,
                     onClick = { notesViewModel.clickOnNote(item, currentRoute, navController) },
@@ -263,9 +268,13 @@ private fun NotesListContent(
                 )
             }
             items(items = unpinnedNotes) { item ->
-                NoteCard(item.header,
-                    item.body,
-                    reminder = notesViewModel.screenState.value.reminders.find { it.noteId == item._id },
+                NoteCard(
+                    header = item.header,
+                    text = item.body,
+                    reminder = rememberNextReminder(
+                        reminders = notesViewModel.screenState.value.reminders,
+                        noteId = item._id,
+                    ),
                     markedText = notesViewModel.screenState.value.searchText,
                     selected = item._id in notesViewModel.screenState.value.selectedNotes,
                     onClick = { notesViewModel.clickOnNote(item, currentRoute, navController) },

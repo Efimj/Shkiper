@@ -46,7 +46,10 @@ import com.jobik.shkiper.viewmodels.NotesViewModel
 import kotlin.math.roundToInt
 import com.jobik.shkiper.R
 import com.jobik.shkiper.ui.components.fields.SearchBarHeight
+import com.jobik.shkiper.ui.helpers.rememberNextReminder
 import com.jobik.shkiper.ui.theme.CustomTheme
+import java.time.LocalDateTime
+import java.time.LocalTime
 
 @Composable
 fun ArchiveNotesScreen(navController: NavController, archiveViewModel: NotesViewModel = hiltViewModel()) {
@@ -115,7 +118,11 @@ fun ArchiveNotesScreen(navController: NavController, archiveViewModel: NotesView
         }
     }
 
-    Box(Modifier.fillMaxSize().nestedScroll(nestedScrollConnection)) {
+    Box(
+        Modifier
+            .fillMaxSize()
+            .nestedScroll(nestedScrollConnection)
+    ) {
         if (archiveViewModel.screenState.value.isNotesInitialized && archiveViewModel.screenState.value.notes.isEmpty())
             ScreenContentIfNoData(title = R.string.ArchiveNotesPageHeader, icon = Icons.Outlined.Inbox)
         else
@@ -133,7 +140,6 @@ fun ArchiveNotesScreen(navController: NavController, archiveViewModel: NotesView
 }
 
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun ScreenContent(
     lazyGridNotes: LazyStaggeredGridState,
@@ -148,7 +154,8 @@ private fun ScreenContent(
     ) {
         item(span = StaggeredGridItemSpan.FullLine) {
             LazyRow(
-                modifier = Modifier.wrapContentSize(unbounded = true)
+                modifier = Modifier
+                    .wrapContentSize(unbounded = true)
                     .width(LocalConfiguration.current.screenWidthDp.dp),
                 state = rememberLazyListState(),
                 contentPadding = PaddingValues(10.dp, 0.dp, 10.dp, 0.dp)
@@ -163,9 +170,13 @@ private fun ScreenContent(
             }
         }
         items(items = notesViewModel.screenState.value.notes) { item ->
-            NoteCard(item.header,
-                item.body,
-                reminder = notesViewModel.screenState.value.reminders.find { it.noteId == item._id },
+            NoteCard(
+                header = item.header,
+                text = item.body,
+                reminder = rememberNextReminder(
+                    reminders = notesViewModel.screenState.value.reminders,
+                    noteId = item._id,
+                ),
                 markedText = notesViewModel.screenState.value.searchText,
                 selected = item._id in notesViewModel.screenState.value.selectedNotes,
                 onClick = { notesViewModel.clickOnNote(item, currentRoute, navController) },
@@ -206,7 +217,9 @@ private fun ActionBar(
 
     val topAppBarElevation = if (offsetX.value.roundToInt() < -actionBarHeight.value.roundToInt()) 0.dp else 2.dp
     Box(
-        modifier = Modifier.height(actionBarHeight).offset { IntOffset(x = 0, y = offsetX.value.roundToInt()) },
+        modifier = Modifier
+            .height(actionBarHeight)
+            .offset { IntOffset(x = 0, y = offsetX.value.roundToInt()) },
     ) {
         CustomTopAppBar(
             modifier = Modifier.fillMaxWidth(),

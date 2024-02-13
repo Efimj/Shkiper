@@ -46,6 +46,7 @@ import com.jobik.shkiper.ui.components.cards.NoteCard
 import com.jobik.shkiper.ui.components.fields.SearchBarHeight
 import com.jobik.shkiper.ui.components.layouts.LazyGridNotes
 import com.jobik.shkiper.ui.components.layouts.ScreenContentIfNoData
+import com.jobik.shkiper.ui.helpers.rememberNextReminder
 import com.jobik.shkiper.ui.theme.CustomTheme
 
 @Composable
@@ -85,7 +86,10 @@ fun NoteSelectionScreen(notesViewModel: NoteSelectionViewModel = hiltViewModel()
         }
     }
 
-    Box(Modifier.fillMaxSize().nestedScroll(nestedScrollConnection)) {
+    Box(
+        Modifier
+            .fillMaxSize()
+            .nestedScroll(nestedScrollConnection)) {
         if (notesViewModel.screenState.value.isNotesInitialized && notesViewModel.screenState.value.notes.isEmpty())
             ScreenContentIfNoData(title = R.string.EmptyNotesPageHeader, icon = Icons.Outlined.Description)
         else
@@ -98,13 +102,18 @@ fun NoteSelectionScreen(notesViewModel: NoteSelectionViewModel = hiltViewModel()
                 onChange = notesViewModel::changeSearchText
             )
         }
-        Box(modifier = Modifier.align(Alignment.BottomEnd).padding(35.dp)) {
+        Box(modifier = Modifier
+            .align(Alignment.BottomEnd)
+            .padding(35.dp)) {
             AnimatedVisibility(
                 notesViewModel.screenState.value.selectedNoteId != null,
                 enter = fadeIn(tween(200, easing = LinearOutSlowInEasing)),
                 exit = fadeOut(tween(200, easing = FastOutSlowInEasing)),
             ) {
-                FloatingActionButton(icon = Icons.Outlined.Done,notesViewModel.screenState.value.selectedNoteId != null) {
+                FloatingActionButton(
+                    icon = Icons.Outlined.Done,
+                    notesViewModel.screenState.value.selectedNoteId != null
+                ) {
                     notesViewModel.getSelectedNote()?.let { selectNote(it) }
                 }
             }
@@ -122,13 +131,16 @@ private fun ScreenContent(
 
     LazyGridNotes(
         contentPadding = PaddingValues(10.dp, 70.dp, 10.dp, 80.dp),
-        modifier = Modifier.fillMaxSize().testTag("notes_list"),
+        modifier = Modifier
+            .fillMaxSize()
+            .testTag("notes_list"),
         gridState = lazyGridNotes
     ) {
         if (notesViewModel.screenState.value.hashtags.isNotEmpty())
             item(span = StaggeredGridItemSpan.FullLine) {
                 LazyRow(
-                    modifier = Modifier.wrapContentSize(unbounded = true)
+                    modifier = Modifier
+                        .wrapContentSize(unbounded = true)
                         .width(LocalConfiguration.current.screenWidthDp.dp),
                     state = rememberLazyListState(),
                     contentPadding = PaddingValues(10.dp, 0.dp, 10.dp, 0.dp)
@@ -154,9 +166,13 @@ private fun ScreenContent(
                 }
             }
             items(items = pinnedNotes) { item ->
-                NoteCard(item.header,
-                    item.body,
-                    reminder = notesViewModel.screenState.value.reminders.find { it.noteId == item._id },
+                NoteCard(
+                    header = item.header,
+                    text = item.body,
+                    reminder = rememberNextReminder(
+                        reminders = notesViewModel.screenState.value.reminders,
+                        noteId = item._id,
+                    ),
                     markedText = notesViewModel.screenState.value.searchText,
                     selected = item._id.toHexString() == notesViewModel.screenState.value.selectedNoteId,
                     onClick = { notesViewModel.clickOnNote(item._id) },
@@ -173,9 +189,13 @@ private fun ScreenContent(
                 )
             }
             items(items = unpinnedNotes) { item ->
-                NoteCard(item.header,
-                    item.body,
-                    reminder = notesViewModel.screenState.value.reminders.find { it.noteId == item._id },
+                NoteCard(
+                    header = item.header,
+                    text = item.body,
+                    reminder = rememberNextReminder(
+                        reminders = notesViewModel.screenState.value.reminders,
+                        noteId = item._id,
+                    ),
                     markedText = notesViewModel.screenState.value.searchText,
                     selected = item._id.toHexString() == notesViewModel.screenState.value.selectedNoteId,
                     onClick = { notesViewModel.clickOnNote(item._id) },
