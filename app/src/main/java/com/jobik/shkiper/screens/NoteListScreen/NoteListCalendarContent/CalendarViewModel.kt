@@ -14,6 +14,7 @@ import com.jobik.shkiper.database.models.NotePosition
 import com.jobik.shkiper.database.models.Reminder
 import com.jobik.shkiper.helpers.DateHelper
 import com.jobik.shkiper.helpers.DateHelper.Companion.isLocalDateInRange
+import com.jobik.shkiper.helpers.DateHelper.Companion.sortReminders
 import com.jobik.shkiper.navigation.AppScreens
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -82,11 +83,17 @@ class CalendarViewModel @Inject constructor(
                 val targetReminderDate = DateHelper.nextDateWithRepeating(
                     notificationDate = LocalDateTime.of(it.date, it.time),
                     repeatMode = it.repeat,
-                    startingPoint = LocalDateTime.of(screenState.value.selectedDateRange.first, LocalTime.now())
+                    startingPoint = LocalDateTime.of(screenState.value.selectedDateRange.first, LocalTime.MIN)
                 ).toLocalDate()
                 isLocalDateInRange(date = targetReminderDate, range = _screenState.value.selectedDateRange)
             }
-        _screenState.value = screenState.value.copy(targetReminders = targetEvents)
+
+        val sortedReminders = sortReminders(
+            reminders = targetEvents,
+            pointDate = LocalDateTime.of(screenState.value.selectedDateRange.first, LocalTime.now())
+        )
+
+        _screenState.value = screenState.value.copy(targetReminders = sortedReminders)
     }
 
     private fun getNotes() {
@@ -113,19 +120,22 @@ class CalendarViewModel @Inject constructor(
     }
 
     private fun selectNotesByTags(selectedNotes: List<Note>): List<Note> {
-        var selectedNotes1 = selectedNotes
-        if (screenState.value.currentHashtag != null)
-            selectedNotes1 = selectedNotes1.filter { note ->
+        if (screenState.value.currentHashtag != null) {
+            return selectedNotes.filter { note ->
                 note.hashtags.any { it == screenState.value.currentHashtag }
             }
-        return selectedNotes1
+        }
+        return selectedNotes
     }
 
     private fun selectNotesByEvents(allNotes: List<Note>): List<Note> {
-        val selectedNotes = allNotes.filter { note ->
-            note.position != NotePosition.DELETE &&
-                    screenState.value.targetReminders.any { it.noteId == note._id }
-        }
+        val selectedNotes = screenState.value.targetReminders.associateBy { it.noteId }.keys
+            .mapNotNull { reminderId ->
+                allNotes.find {
+                    it._id == reminderId && it.position != NotePosition.DELETE
+                }
+            }
+
         return selectedNotes
     }
 
