@@ -9,8 +9,6 @@ import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
@@ -18,7 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.jobik.shkiper.R
 import com.jobik.shkiper.ui.components.buttons.HashtagButton
 import com.jobik.shkiper.ui.components.cards.NoteCard
@@ -36,6 +34,7 @@ fun NoteListScreenCalendarContent(
     viewModel: CalendarViewModel,
     onSlideBack: () -> Unit,
 ) {
+    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route ?: ""
     val collapsingToolbarScaffold = rememberCollapsingToolbarScaffoldState()
 
     CollapsingToolbarScaffold(
@@ -44,7 +43,7 @@ fun NoteListScreenCalendarContent(
         scrollStrategy = ScrollStrategy.EnterAlways,
         enabledWhenBodyUnfilled = false,
         snapConfig = SnapConfig(), // "collapseThreshold = 0.5" by default
-                toolbar = {
+        toolbar = {
             ScreenCalendarTopBar(viewModel = viewModel, onSlideBack = onSlideBack)
         }
     ) {
@@ -90,8 +89,8 @@ fun NoteListScreenCalendarContent(
                     NoteCard(
                         header = item.header,
                         text = item.body,
-                        reminder = viewModel.screenState.value.reminders.find { it.noteId == item._id },
-                        onClick = { },
+                        reminder = viewModel.screenState.value.targetReminders.find { it.noteId == item._id },
+                        onClick = { viewModel.clickOnNote(item, currentRoute, navController) },
                     )
                 }
             }
@@ -108,8 +107,8 @@ fun NoteListScreenCalendarContent(
                     NoteCard(
                         item.header,
                         item.body,
-                        reminder = viewModel.screenState.value.reminders.find { it.noteId == item._id },
-                        onClick = { },
+                        reminder = viewModel.screenState.value.targetReminders.find { it.noteId == item._id },
+                        onClick = { viewModel.clickOnNote(item, currentRoute, navController) },
                     )
                 }
             }

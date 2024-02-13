@@ -1,17 +1,20 @@
 package com.jobik.shkiper.screens.NoteListScreen.NoteListCalendarContent
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.CalendarMonth
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.jobik.shkiper.R
+import com.jobik.shkiper.helpers.DateHelper
 import com.jobik.shkiper.ui.components.fields.DaysOfWeekTitle
 import com.jobik.shkiper.ui.components.layouts.CalendarDayView
 import com.jobik.shkiper.ui.components.layouts.CustomTopAppBar
@@ -24,7 +27,11 @@ import com.kizitonwose.calendar.compose.weekcalendar.rememberWeekCalendarState
 import com.kizitonwose.calendar.core.atStartOfMonth
 import com.kizitonwose.calendar.core.daysOfWeek
 import com.kizitonwose.calendar.core.yearMonth
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
 
 @Composable
 fun ScreenCalendarTopBar(
@@ -72,12 +79,25 @@ fun ScreenCalendarTopBar(
             firstVisibleWeekDate = currentDate,
             firstDayOfWeek = daysOfWeek.first(),
         )
+
         WeekCalendar(
             calendarScrollPaged = isCompactWidthScreen,
             state = weekState,
             weekHeader = { DaysOfWeekTitle(daysOfWeek = daysOfWeek) },
             contentPadding = PaddingValues(horizontal = 10.dp),
             dayContent = { day ->
+                val hasEvent = remember { mutableStateOf(false) }
+
+                LaunchedEffect(viewModel.screenState.value.reminders) {
+                    hasEvent.value = viewModel.screenState.value.reminders.any {
+                        DateHelper.nextDateWithRepeating(
+                            notificationDate = LocalDateTime.of(it.date, it.time),
+                            repeatMode = it.repeat,
+                            startingPoint = LocalDateTime.of(day.date, LocalTime.now())
+                        ).toLocalDate() == day.date
+                    }
+                }
+
                 CalendarDayView(
                     modifier =
                     if (isCompactWidthScreen)
@@ -86,9 +106,10 @@ fun ScreenCalendarTopBar(
                         .height(60.dp)
                         .padding(4.dp),
                     day = day,
-                    isSelected = day.date.isEqual(currentDate.plusDays(3)),
-                    showIndicator = day.date.dayOfMonth % 4 == 0,
+                    isSelected = viewModel.screenState.value.selectedDateRange.first == day.date || viewModel.screenState.value.selectedDateRange.second == day.date,
+                    showIndicator = hasEvent.value,
                 ) {
+                    viewModel.selectDate(date = it.date)
                 }
             },
         )

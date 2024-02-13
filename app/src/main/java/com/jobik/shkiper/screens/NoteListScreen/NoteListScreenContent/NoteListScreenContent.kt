@@ -55,8 +55,6 @@ fun NoteListScreenContent(
     viewModel: NotesViewModel,
     onSlideNext: () -> Unit,
 ) {
-    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route ?: ""
-
     val actionBarHeight = 56.dp
 
     val searchBarOffsetHeightPx = remember { mutableFloatStateOf(0f) }
@@ -91,7 +89,7 @@ fun NoteListScreenContent(
         if (viewModel.screenState.value.isNotesInitialized && viewModel.screenState.value.notes.isEmpty())
             ScreenContentIfNoData(title = R.string.EmptyNotesPageHeader, icon = Icons.Outlined.Description)
         else
-            NotesListContent(viewModel, lazyGridNotes, navController, currentRoute)
+            NotesListContent(viewModel, lazyGridNotes, navController)
         Box(modifier = Modifier) {
             SearchBar(
                 searchBarOffsetHeightPx = searchBarOffsetHeightPx.floatValue,
@@ -198,8 +196,9 @@ private fun NotesListContent(
     notesViewModel: NotesViewModel,
     lazyGridNotes: LazyStaggeredGridState,
     navController: NavController,
-    currentRoute: String
 ) {
+    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route ?: ""
+
     val pinnedNotes =
         remember(notesViewModel.screenState.value.notes) { notesViewModel.screenState.value.notes.filter { it.isPinned } }
     val unpinnedNotes =
