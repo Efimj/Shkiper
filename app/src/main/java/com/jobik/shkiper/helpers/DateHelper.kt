@@ -84,16 +84,15 @@ class DateHelper {
             }
         }
 
-        fun sortReminders(reminders: List<Reminder>): List<Reminder> {
+        fun sortReminders(reminders: List<Reminder>, pointDate: LocalDateTime = LocalDateTime.now()): List<Reminder> {
             val comparator = compareBy<Reminder> {
                 nextDateWithRepeating(
                     LocalDateTime.of(it.date, it.time),
                     it.repeat
                 )
             }
-            val dateTimeNow = LocalDateTime.now()
             return reminders.sortedWith(comparator).sortedBy {
-                if (nextDateWithRepeating(LocalDateTime.of(it.date, it.time), it.repeat).isBefore(dateTimeNow)) {
+                if (nextDateWithRepeating(LocalDateTime.of(it.date, it.time), it.repeat).isBefore(pointDate)) {
                     1
                 } else {
                     0
