@@ -33,7 +33,7 @@ import java.time.LocalTime
 
 
 @Composable
-fun NoteListScreenCalendarContent(
+fun ScreenCalendarContent(
     navController: NavController,
     viewModel: CalendarViewModel,
     onSlideBack: () -> Unit,

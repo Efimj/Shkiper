@@ -9,7 +9,6 @@ import androidx.compose.foundation.pager.PageSize
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -17,7 +16,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.jobik.shkiper.screens.NoteListScreen.NoteListCalendarContent.CalendarViewModel
-import com.jobik.shkiper.screens.NoteListScreen.NoteListCalendarContent.NoteListScreenCalendarContent
+import com.jobik.shkiper.screens.NoteListScreen.NoteListCalendarContent.ScreenCalendarContent
 import com.jobik.shkiper.screens.NoteListScreen.NoteListScreenContent.NoteListScreenContent
 import com.jobik.shkiper.ui.theme.CustomTheme
 import com.jobik.shkiper.viewmodels.NotesViewModel
@@ -54,7 +53,7 @@ fun NoteListScreen(navController: NavController) {
                     }
                 })
         } else {
-            NoteListScreenCalendarContent(
+            ScreenCalendarContent(
                 navController = navController,
                 viewModel = hiltViewModel<CalendarViewModel>(),
                 onSlideBack = {
