@@ -8,6 +8,7 @@ import com.kizitonwose.calendar.core.Week
 import kotlinx.coroutines.flow.filter
 import org.mongodb.kbson.ObjectId
 import java.time.LocalDateTime
+import java.time.Month
 import java.time.YearMonth
 import java.time.format.TextStyle
 import java.util.*
@@ -46,4 +47,12 @@ fun rememberNextReminder(
         nextReminder.value = DateHelper.sortReminders(reminders = noteReminders, pointDate = pointDate).firstOrNull()
     }
     return nextReminder.value
+}
+
+/**
+ * To display month name.
+ */
+fun Month.displayText(short: Boolean = true): String {
+    val style = if (short) TextStyle.SHORT else TextStyle.FULL
+    return getDisplayName(style, Locale.getDefault())
 }

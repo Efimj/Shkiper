@@ -72,7 +72,7 @@ fun ScreenCalendarTopBar(
                     isActive = false,
                     icon = Icons.Outlined.CalendarMonth,
                     iconDescription = R.string.AttachNote,
-                    onClick = { }
+                    onClick = viewModel::switchFullScreenCalendarOpen
                 ),
             )
         )
@@ -85,28 +85,6 @@ fun ScreenCalendarTopBar(
             weekHeader = { DaysOfWeekTitle(daysOfWeek = daysOfWeek) },
             contentPadding = PaddingValues(horizontal = 10.dp),
             dayContent = { day ->
-                val indicator = remember { mutableStateOf(false) }
-
-                // to find any reminders in future
-//                LaunchedEffect(viewModel.screenState.value.reminders) {
-//                    hasEvent.value = viewModel.screenState.value.reminders.any {
-//                        DateHelper.nextDateWithRepeating(
-//                            notificationDate = LocalDateTime.of(it.date, it.time),
-//                            repeatMode = it.repeat,
-//                            startingPoint = LocalDateTime.of(day.date, LocalTime.MIN)
-//                        ).toLocalDate() == day.date
-//                    }
-//                }
-
-                // find any reminders without repeat mode and if target day set indicator
-                LaunchedEffect(viewModel.screenState.value.reminders) {
-                    indicator.value = viewModel.screenState.value.reminders
-                        .any {
-                            it.repeat == RepeatMode.NONE &&
-                                    it.date == day.date
-                        }
-                }
-
                 CalendarDayView(
                     modifier =
                     if (isCompactWidthScreen)
@@ -116,7 +94,7 @@ fun ScreenCalendarTopBar(
                         .padding(4.dp),
                     day = day,
                     isSelected = viewModel.screenState.value.selectedDateRange.first == day.date || viewModel.screenState.value.selectedDateRange.second == day.date,
-                    showIndicator = indicator.value,
+                    showIndicator = day.date in viewModel.screenState.value.datesWithIndicator,
                 ) {
                     viewModel.selectDate(date = it.date)
                 }

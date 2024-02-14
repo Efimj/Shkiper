@@ -12,6 +12,7 @@ import com.jobik.shkiper.database.data.reminder.ReminderMongoRepository
 import com.jobik.shkiper.database.models.Note
 import com.jobik.shkiper.database.models.NotePosition
 import com.jobik.shkiper.database.models.Reminder
+import com.jobik.shkiper.database.models.RepeatMode
 import com.jobik.shkiper.helpers.DateHelper
 import com.jobik.shkiper.helpers.DateHelper.Companion.isLocalDateInRange
 import com.jobik.shkiper.helpers.DateHelper.Companion.sortReminders
@@ -31,7 +32,9 @@ data class CalendarScreenState(
     val targetReminders: List<Reminder> = emptyList(),
     val hashtags: Set<String> = emptySet(),
     val currentHashtag: String? = null,
-    val selectedDateRange: Pair<LocalDate, LocalDate> = Pair(LocalDate.now(), LocalDate.now())
+    val selectedDateRange: Pair<LocalDate, LocalDate> = Pair(LocalDate.now(), LocalDate.now()),
+    val fullScreenCalendarOpen: Boolean = false,
+    val datesWithIndicator: Set<LocalDate> = emptySet()
 )
 
 @HiltViewModel
@@ -62,8 +65,14 @@ class CalendarViewModel @Inject constructor(
         viewModelScope.launch {
             reminderRepository.getReminders().collect() {
                 _screenState.value = screenState.value.copy(reminders = it)
+                getDatesWithIndicator(it)
             }
         }
+    }
+
+    private fun getDatesWithIndicator(reminders: List<Reminder>) {
+        val datesWithIndicator = reminders.filter { it.repeat == RepeatMode.NONE }.map { it.date }
+        _screenState.value = screenState.value.copy(datesWithIndicator = datesWithIndicator.toSet())
     }
 
     private fun getTargetReminders() {
@@ -167,5 +176,11 @@ class CalendarViewModel @Inject constructor(
             if (newHashtag == screenState.value.currentHashtag) null else newHashtag
         )
         getNotes()
+    }
+
+    fun switchFullScreenCalendarOpen() {
+        _screenState.value = screenState.value.copy(
+            fullScreenCalendarOpen = screenState.value.fullScreenCalendarOpen.not()
+        )
     }
 }
