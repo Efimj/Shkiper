@@ -46,6 +46,7 @@ import com.jobik.shkiper.ui.components.layouts.LazyGridNotes
 import com.jobik.shkiper.ui.components.layouts.ScreenContentIfNoData
 import com.jobik.shkiper.ui.components.modals.CreateReminderDialog
 import com.jobik.shkiper.ui.components.modals.ReminderDialogProperties
+import com.jobik.shkiper.ui.helpers.UpdateStatusBarColor
 import com.jobik.shkiper.ui.helpers.rememberNextReminder
 import com.jobik.shkiper.ui.theme.CustomTheme
 import com.jobik.shkiper.viewmodels.NotesViewModel

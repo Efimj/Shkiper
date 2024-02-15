@@ -10,11 +10,10 @@ import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -24,16 +23,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.Note
-import com.jobik.shkiper.database.models.RepeatMode
 import com.jobik.shkiper.ui.animation.AnimateVerticalSwitch
 import com.jobik.shkiper.ui.components.buttons.HashtagButton
 import com.jobik.shkiper.ui.components.cards.NoteCard
-import com.jobik.shkiper.ui.components.fields.DaysOfWeekTitle
-import com.jobik.shkiper.ui.components.fields.MonthTitle
 import com.jobik.shkiper.ui.components.layouts.CalendarDayView
 import com.jobik.shkiper.ui.components.layouts.LazyGridNotes
+import com.jobik.shkiper.ui.helpers.UpdateStatusBarColor
 import com.jobik.shkiper.ui.helpers.displayText
 import com.jobik.shkiper.ui.helpers.rememberNextReminder
 import com.jobik.shkiper.ui.theme.CustomTheme
@@ -50,10 +48,8 @@ import me.onebone.toolbar.rememberCollapsingToolbarScaffoldState
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
-import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
 import java.util.*
-
 
 @Composable
 fun ScreenCalendarContent(
@@ -64,11 +60,20 @@ fun ScreenCalendarContent(
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route ?: ""
     val collapsingToolbarScaffold = rememberCollapsingToolbarScaffoldState()
 
+    UpdateStatusBarColor(
+        current = CustomTheme.colors.secondaryBackground,
+        previous = CustomTheme.colors.mainBackground
+    )
 
     AnimateVerticalSwitch(
         modifier = Modifier,
         state = viewModel.screenState.value.fullScreenCalendarOpen.not(),
         topComponent = {
+            UpdateStatusBarColor(
+                current = CustomTheme.colors.mainBackground,
+                previous = CustomTheme.colors.secondaryBackground
+            )
+
             val today = remember { LocalDate.now() }
             val currentMonth = remember(today) { today.yearMonth }
             val startMonth = remember { currentMonth }

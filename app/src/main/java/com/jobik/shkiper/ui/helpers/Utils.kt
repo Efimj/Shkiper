@@ -1,8 +1,13 @@
 package com.jobik.shkiper.ui.helpers
 
 import androidx.compose.runtime.*
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.jobik.shkiper.database.models.Reminder
 import com.jobik.shkiper.helpers.DateHelper
+import com.jobik.shkiper.ui.theme.CustomTheme
 import com.kizitonwose.calendar.compose.weekcalendar.WeekCalendarState
 import com.kizitonwose.calendar.core.Week
 import kotlinx.coroutines.flow.filter
@@ -55,4 +60,23 @@ fun rememberNextReminder(
 fun Month.displayText(short: Boolean = true): String {
     val style = if (short) TextStyle.SHORT else TextStyle.FULL
     return getDisplayName(style, Locale.getDefault())
+}
+
+/**
+ * Sets the current color, and with the dispose sets the previous one.
+ */
+@Composable
+fun UpdateStatusBarColor(current: Color, previous: Color = CustomTheme.colors.mainBackground) {
+    val systemUiController = rememberSystemUiController()
+
+    DisposableEffect(Unit) {
+        systemUiController.setStatusBarColor(
+            color = current
+        )
+        onDispose {
+            systemUiController.setStatusBarColor(
+                color = previous
+            )
+        }
+    }
 }

@@ -30,7 +30,6 @@ fun NoteListScreen(navController: NavController) {
     val scope = rememberCoroutineScope()
 
     ReturnUserToMainContent(pagerState, scope)
-    ChangeStatusBarColor(pagerState)
 
     HorizontalPager(
         modifier = Modifier.fillMaxSize(),
@@ -62,21 +61,6 @@ fun NoteListScreen(navController: NavController) {
                     }
                 }
             )
-        }
-    }
-}
-
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-private fun ChangeStatusBarColor(pagerState: PagerState) {
-    val systemUiController = rememberSystemUiController()
-    val statusBarActiveColor = CustomTheme.colors.secondaryBackground
-    val statusBarDisabledColor = CustomTheme.colors.mainBackground
-
-    LaunchedEffect(pagerState.currentPage) {
-        when (pagerState.currentPage) {
-            0 -> systemUiController.setStatusBarColor(statusBarDisabledColor)
-            1 -> systemUiController.setStatusBarColor(statusBarActiveColor)
         }
     }
 }
