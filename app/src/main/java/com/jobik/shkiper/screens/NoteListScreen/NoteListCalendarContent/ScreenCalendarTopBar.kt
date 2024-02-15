@@ -16,10 +16,7 @@ import com.jobik.shkiper.ui.components.fields.DaysOfWeekTitle
 import com.jobik.shkiper.ui.components.layouts.CalendarDayView
 import com.jobik.shkiper.ui.components.layouts.CustomTopAppBar
 import com.jobik.shkiper.ui.components.layouts.TopAppBarItem
-import com.jobik.shkiper.ui.helpers.WindowWidthSizeClass
-import com.jobik.shkiper.ui.helpers.displayText
-import com.jobik.shkiper.ui.helpers.isWidth
-import com.jobik.shkiper.ui.helpers.rememberFirstVisibleWeekAfterScroll
+import com.jobik.shkiper.ui.helpers.*
 import com.jobik.shkiper.ui.theme.CustomTheme
 import com.kizitonwose.calendar.compose.WeekCalendar
 import com.kizitonwose.calendar.compose.weekcalendar.rememberWeekCalendarState
@@ -46,6 +43,8 @@ fun ScreenCalendarTopBar(
         firstVisibleWeekDate = currentDate,
         firstDayOfWeek = daysOfWeek.first(),
     )
+
+    UpdateStatusBarColor(current = CustomTheme.colors.secondaryBackground)
 
     Column(
         modifier = Modifier

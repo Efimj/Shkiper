@@ -10,6 +10,8 @@ import com.jobik.shkiper.helpers.DateHelper
 import com.jobik.shkiper.ui.theme.CustomTheme
 import com.kizitonwose.calendar.compose.weekcalendar.WeekCalendarState
 import com.kizitonwose.calendar.core.Week
+import kotlinx.coroutines.Delay
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.filter
 import org.mongodb.kbson.ObjectId
 import java.time.LocalDateTime
@@ -66,13 +68,25 @@ fun Month.displayText(short: Boolean = true): String {
  * Sets the current color, and with the dispose sets the previous one.
  */
 @Composable
-fun UpdateStatusBarColor(current: Color, previous: Color = CustomTheme.colors.mainBackground) {
+fun UpdateStatusBarColor(
+    current: Color, previous: Color = CustomTheme.colors.mainBackground, delayMs: Long = 500L
+) {
     val systemUiController = rememberSystemUiController()
 
-    DisposableEffect(Unit) {
+    LaunchedEffect(Unit) {
+        delay(delayMs)
         systemUiController.setStatusBarColor(
             color = current
         )
+    }
+
+    SideEffect {
+        systemUiController.setStatusBarColor(
+            color = current
+        )
+    }
+
+    DisposableEffect(Unit) {
         onDispose {
             systemUiController.setStatusBarColor(
                 color = previous

@@ -60,19 +60,14 @@ fun ScreenCalendarContent(
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route ?: ""
     val collapsingToolbarScaffold = rememberCollapsingToolbarScaffoldState()
 
-    UpdateStatusBarColor(
-        current = CustomTheme.colors.secondaryBackground,
-        previous = CustomTheme.colors.mainBackground
-    )
-
     AnimateVerticalSwitch(
         modifier = Modifier,
         state = viewModel.screenState.value.fullScreenCalendarOpen.not(),
         topComponent = {
-            UpdateStatusBarColor(
-                current = CustomTheme.colors.mainBackground,
-                previous = CustomTheme.colors.secondaryBackground
-            )
+//            UpdateStatusBarColor(
+//                current = CustomTheme.colors.mainBackground,
+//                previous = CustomTheme.colors.secondaryBackground
+//            )
 
             val today = remember { LocalDate.now() }
             val currentMonth = remember(today) { today.yearMonth }
@@ -146,6 +141,11 @@ fun ScreenCalendarContent(
                 )
             }
         }) {
+        UpdateStatusBarColor(
+            current = CustomTheme.colors.secondaryBackground,
+            previous = CustomTheme.colors.mainBackground
+        )
+
         CollapsingToolbarScaffold(
             modifier = Modifier.fillMaxSize(),
             state = collapsingToolbarScaffold,
