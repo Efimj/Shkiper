@@ -1,6 +1,7 @@
 package com.jobik.shkiper.screens.NoteListScreen.NoteListCalendarContent
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -11,6 +12,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,6 +37,7 @@ import com.jobik.shkiper.ui.helpers.UpdateStatusBarColor
 import com.jobik.shkiper.ui.helpers.displayText
 import com.jobik.shkiper.ui.helpers.rememberNextReminder
 import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.util.MainMenuButtonState
 import com.kizitonwose.calendar.compose.ContentHeightMode
 import com.kizitonwose.calendar.compose.VerticalCalendar
 import com.kizitonwose.calendar.compose.rememberCalendarState
@@ -60,92 +63,14 @@ fun ScreenCalendarContent(
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route ?: ""
     val collapsingToolbarScaffold = rememberCollapsingToolbarScaffoldState()
 
+    UpdateStatusBarColor(current = CustomTheme.colors.secondaryBackground)
+
     AnimateVerticalSwitch(
         modifier = Modifier,
         state = viewModel.screenState.value.fullScreenCalendarOpen.not(),
         topComponent = {
-//            UpdateStatusBarColor(
-//                current = CustomTheme.colors.mainBackground,
-//                previous = CustomTheme.colors.secondaryBackground
-//            )
-
-            val today = remember { LocalDate.now() }
-            val currentMonth = remember(today) { today.yearMonth }
-            val startMonth = remember { currentMonth }
-            val endMonth = remember { currentMonth.plusMonths(500) }
-            val daysOfWeek = remember { daysOfWeek() }
-            val state = rememberCalendarState(
-                startMonth = startMonth,
-                endMonth = endMonth,
-                firstVisibleMonth = currentMonth,
-                firstDayOfWeek = daysOfWeek.first(),
-                outDateStyle = OutDateStyle.EndOfGrid
-            )
-
-            BackHandler(viewModel.screenState.value.fullScreenCalendarOpen) {
-                viewModel.switchFullScreenCalendarOpen()
-            }
-            Column(modifier = Modifier.padding(horizontal = 20.dp)) {
-                Row(modifier = Modifier.padding(vertical = 20.dp)) {
-                    for (dayOfWeek in daysOfWeek) {
-                        Text(
-                            modifier = Modifier.weight(1f),
-                            textAlign = TextAlign.Center,
-                            text = dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.getDefault()),
-                            color = CustomTheme.colors.textSecondary,
-                            style = MaterialTheme.typography.body1,
-                            maxLines = 1,
-                            overflow = TextOverflow.Clip,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                    }
-                }
-                VerticalCalendar(
-                    modifier = Modifier.fillMaxSize(),
-                    state = state,
-                    calendarScrollPaged = false,
-                    contentHeightMode = ContentHeightMode.Wrap,
-                    contentPadding = PaddingValues(vertical = 20.dp),
-                    dayContent = { day ->
-                        CalendarDayView(
-                            modifier = Modifier.padding(4.dp),
-                            day = day,
-                            isSelected = viewModel.screenState.value.selectedDateRange.first == day.date || viewModel.screenState.value.selectedDateRange.second == day.date,
-                            showIndicator = day.date in viewModel.screenState.value.datesWithIndicator,
-                        ) {
-                            viewModel.selectDate(date = day.date)
-                        }
-                    },
-                    monthHeader = { month ->
-                        Row(modifier = Modifier.fillMaxWidth()) {
-                            Text(
-                                modifier = Modifier,
-                                textAlign = TextAlign.Center,
-                                text = month.yearMonth.displayText(),
-                                color = CustomTheme.colors.text,
-                                style = MaterialTheme.typography.h6,
-                                fontWeight = FontWeight.SemiBold,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis
-                            )
-                        }
-                    },
-                    monthBody = { _, content ->
-                        Box(
-                            modifier = Modifier
-                                .wrapContentSize()
-                        ) {
-                            content()
-                        }
-                    },
-                )
-            }
+            FullScreenCalendar(viewModel)
         }) {
-        UpdateStatusBarColor(
-            current = CustomTheme.colors.secondaryBackground,
-            previous = CustomTheme.colors.mainBackground
-        )
-
         CollapsingToolbarScaffold(
             modifier = Modifier.fillMaxSize(),
             state = collapsingToolbarScaffold,
