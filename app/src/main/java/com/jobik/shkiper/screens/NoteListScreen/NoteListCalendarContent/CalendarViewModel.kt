@@ -17,6 +17,7 @@ import com.jobik.shkiper.helpers.DateHelper
 import com.jobik.shkiper.helpers.DateHelper.Companion.isLocalDateInRange
 import com.jobik.shkiper.helpers.DateHelper.Companion.sortReminders
 import com.jobik.shkiper.navigation.AppScreens
+import com.jobik.shkiper.util.MainMenuButtonState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -71,7 +72,9 @@ class CalendarViewModel @Inject constructor(
     }
 
     private fun getDatesWithIndicator(reminders: List<Reminder>) {
-        val datesWithIndicator = reminders.filter { it.repeat == RepeatMode.NONE }.map { it.date }
+        val currentDate = LocalDate.now()
+        val datesWithIndicator =
+            reminders.filter { it.repeat == RepeatMode.NONE && !it.date.isBefore(currentDate) }.map { it.date }
         _screenState.value = screenState.value.copy(datesWithIndicator = datesWithIndicator.toSet())
     }
 
@@ -158,6 +161,18 @@ class CalendarViewModel @Inject constructor(
 
     fun selectDate(date: LocalDate) {
         _screenState.value = _screenState.value.copy(selectedDateRange = Pair(date, date))
+        getTargetReminders()
+    }
+
+    fun selectNextDate(date: LocalDate) {
+        val newDateRange = if (date.isAfter(screenState.value.selectedDateRange.first)) Pair(
+            screenState.value.selectedDateRange.first,
+            date
+        ) else Pair(
+            date,
+            screenState.value.selectedDateRange.first
+        )
+        _screenState.value = _screenState.value.copy(selectedDateRange = newDateRange)
         getTargetReminders()
     }
 
