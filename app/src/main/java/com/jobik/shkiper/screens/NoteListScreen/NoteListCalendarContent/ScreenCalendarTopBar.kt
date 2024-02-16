@@ -44,8 +44,6 @@ fun ScreenCalendarTopBar(
         firstDayOfWeek = daysOfWeek.first(),
     )
 
-    UpdateStatusBarColor(current = CustomTheme.colors.secondaryBackground)
-
     Column(
         modifier = Modifier
             .clip(RoundedCornerShape(bottomStart = 10.dp, bottomEnd = 10.dp))
