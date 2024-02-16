@@ -1,10 +1,8 @@
 package com.jobik.shkiper.ui.components.modals
 
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.TweenSpec
 import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -25,17 +23,16 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.NotePosition
 import com.jobik.shkiper.navigation.SetupAppScreenNavGraph
 import com.jobik.shkiper.navigation.AppScreens
-import com.jobik.shkiper.ui.components.buttons.ButtonProperties
 import com.jobik.shkiper.ui.components.buttons.MainMenuButton
 import com.jobik.shkiper.ui.components.buttons.CustomButton
 import com.jobik.shkiper.ui.components.buttons.DefaultButtonProperties
 import com.jobik.shkiper.ui.components.cards.SnackbarCard
 import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.util.MainMenuButtonState
 import com.jobik.shkiper.util.SnackbarHostUtil
 import com.jobik.shkiper.util.SnackbarVisualsCustom
 import kotlinx.coroutines.CoroutineScope
@@ -70,14 +67,17 @@ private fun MainPageLayout(
     coroutineScope: CoroutineScope,
     bottomSheetState: ModalBottomSheetState
 ) {
+    val menuContainerHeight = 40
     val currentRoute =
         (navController.currentBackStackEntryAsState().value?.destination?.route ?: "").substringBefore("/")
-    val isButtonHide = AppScreens.SecondaryRoutes.isSecondaryRoute(currentRoute)
-    val menuContainerHeight = 40
+
+    LaunchedEffect(currentRoute) {
+        MainMenuButtonState.isButtonOpened.value = AppScreens.SecondaryRoutes.isSecondaryRoute(currentRoute)
+    }
 
     val offsetY by animateDpAsState(
-        if (isButtonHide) (menuContainerHeight).dp else 0.dp,
-        animationSpec = TweenSpec(durationMillis = 200)
+        if (MainMenuButtonState.isButtonOpened.value) (menuContainerHeight).dp else 0.dp,
+        animationSpec = TweenSpec(durationMillis = 200), label = "offsetY"
     )
 
     Box(Modifier.fillMaxSize()) {
@@ -92,19 +92,25 @@ private fun MainPageLayout(
             modifier = Modifier.align(Alignment.BottomCenter)
         ) { snackbarData ->
             Box(
-                Modifier.offset(y = (-30).dp).align(Alignment.BottomCenter)
+                Modifier
+                    .offset(y = (-30).dp)
+                    .align(Alignment.BottomCenter)
             ) {
                 val customVisuals = snackbarData.visuals as SnackbarVisualsCustom
                 SnackbarCard(customVisuals)
             }
         }
         Box(
-            modifier = Modifier.offset(y = offsetY).align(Alignment.BottomCenter).fillMaxWidth().background(
-                Brush.verticalGradient(
-                    0F to CustomTheme.colors.mainBackground.copy(alpha = 0.0F),
-                    0.8F to CustomTheme.colors.mainBackground.copy(alpha = 1F)
-                )
-            ),
+            modifier = Modifier
+                .offset(y = offsetY)
+                .align(Alignment.BottomCenter)
+                .fillMaxWidth()
+                .background(
+                    Brush.verticalGradient(
+                        0F to CustomTheme.colors.mainBackground.copy(alpha = 0.0F),
+                        0.8F to CustomTheme.colors.mainBackground.copy(alpha = 1F)
+                    )
+                ),
             contentAlignment = Alignment.BottomCenter
         ) {
             CustomButton(
@@ -130,7 +136,10 @@ private fun MainPageLayout(
                     horizontalPaddings = 20.dp,
                     border = BorderStroke(width = 1.dp, color = CustomTheme.colors.stroke)
                 ),
-                modifier = Modifier.height(menuContainerHeight.dp).width(160.dp).offset(y = 1.dp),
+                modifier = Modifier
+                    .height(menuContainerHeight.dp)
+                    .width(160.dp)
+                    .offset(y = 1.dp),
             )
         }
     }
