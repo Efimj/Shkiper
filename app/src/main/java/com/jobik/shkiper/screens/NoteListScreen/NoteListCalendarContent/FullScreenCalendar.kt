@@ -15,6 +15,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.jobik.shkiper.ui.components.layouts.CalendarDayView
+import com.jobik.shkiper.ui.components.layouts.CalendarDayViewRangeStyle
 import com.jobik.shkiper.ui.helpers.displayText
 import com.jobik.shkiper.ui.theme.CustomTheme
 import com.jobik.shkiper.util.MainMenuButtonState
@@ -70,20 +71,50 @@ private fun DayContent(
     viewModel: CalendarViewModel
 ) {
     val inRange = remember(viewModel.screenState.value.selectedDateRange) {
-        mutableStateOf(day.date in viewModel.screenState.value.selectedDateRange.first..viewModel.screenState.value.selectedDateRange.second)
+        mutableStateOf(
+            inRange(date = day.date, range = viewModel.screenState.value.selectedDateRange)
+        )
     }
 
     CalendarDayView(
+        modifier = Modifier.padding(vertical = 4.dp),
         day = day,
         isSelected = viewModel.screenState.value.selectedDateRange.first == day.date || viewModel.screenState.value.selectedDateRange.second == day.date,
         showIndicator = day.date in viewModel.screenState.value.datesWithIndicator,
-        inRange = inRange.value
+        rangeStyle = inRange.value
     ) {
         if (viewModel.screenState.value.selectedDateRange.first == viewModel.screenState.value.selectedDateRange.second)
             viewModel.selectNextDate(date = day.date)
         else
             viewModel.selectDate(date = day.date)
     }
+}
+
+private fun inRange(date: LocalDate, range: Pair<LocalDate, LocalDate>): CalendarDayViewRangeStyle? {
+    if (date !in range.first..range.second) return null
+    if (range.first == range.second) return null
+
+    val isDateStart = date == range.first
+    val isDateEnd = date == range.second
+    val isWeekStart = date.dayOfWeek == DayOfWeek.SUNDAY
+    val isWeekEnd = date.dayOfWeek == DayOfWeek.SATURDAY
+
+    val isMonthStart = date.withDayOfMonth(1) == date
+    val isMonthEnd = date.withDayOfMonth(date.month.length(date.isLeapYear)) == date
+
+    if(isDateEnd && isMonthStart) return null
+    if(isDateStart && isMonthEnd) return null
+    if(isWeekStart && isDateEnd) return null
+    if(isWeekEnd && isDateStart) return null
+
+    if(isWeekStart && isMonthEnd) return CalendarDayViewRangeStyle.Rounded
+    if(isWeekEnd && isMonthStart) return CalendarDayViewRangeStyle.Rounded
+
+    if (isWeekStart || isMonthStart) return CalendarDayViewRangeStyle.LeftRound
+    if (isWeekEnd || isMonthEnd) return CalendarDayViewRangeStyle.RightRound
+    if (isDateStart) return CalendarDayViewRangeStyle.LeftRound
+    if (isDateEnd) return CalendarDayViewRangeStyle.RightRound
+    return CalendarDayViewRangeStyle.Square
 }
 
 @Composable

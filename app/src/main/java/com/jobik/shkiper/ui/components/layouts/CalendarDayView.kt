@@ -1,5 +1,6 @@
 package com.jobik.shkiper.ui.components.layouts
 
+import androidx.annotation.Keep
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -16,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 import com.jobik.shkiper.ui.theme.CustomTheme
 import com.kizitonwose.calendar.core.CalendarDay
@@ -65,12 +67,18 @@ fun CalendarDayView(day: CalendarDay, currentDate: LocalDate, onClick: (Calendar
         }
 }
 
+@Keep
+enum class CalendarDayViewRangeStyle {
+    Rounded, Square, LeftRound, RightRound,
+}
+
 @Composable
 fun CalendarDayView(
     modifier: Modifier = Modifier,
     day: CalendarDay,
     isSelected: Boolean,
     showIndicator: Boolean = false,
+    rangeStyle: CalendarDayViewRangeStyle? = null,
     onClick: (CalendarDay) -> Unit
 ) {
     val dateNow = LocalDate.now()
@@ -84,6 +92,7 @@ fun CalendarDayView(
             enabled = isDateCurrentOrFuture,
             onClick = { onClick(day) },
             day = day.date,
+            rangeStyle = rangeStyle,
             showIndicator = showIndicator
         )
 }
@@ -120,9 +129,11 @@ private fun CalendarDayContent(
     enabled: Boolean,
     onClick: () -> Unit,
     day: LocalDate,
+    rangeStyle: CalendarDayViewRangeStyle? = null,
     showIndicator: Boolean = false
 ) {
     val shape = RoundedCornerShape(12.dp)
+
     val targetContentColorValue = when {
         isSelected -> CustomTheme.colors.textOnActive
         enabled -> CustomTheme.colors.text
@@ -143,42 +154,61 @@ private fun CalendarDayContent(
     }
     val borderColor by animateColorAsState(targetValue = targetBorderColorValue, label = "borderColor")
 
-    Column(
-        modifier = modifier
-            .clip(shape)
-            .clickable(
-                enabled = enabled,
-                onClick = { onClick() }
-            )
-            .border(2.dp, borderColor, shape)
-            .aspectRatio(1f)
-            .background(backgroundColor),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+    val boxBackground by animateColorAsState(
+        targetValue = if (rangeStyle == null) Color.Transparent else CustomTheme.colors.active.copy(
+            alpha = .15f
+        ), label = "borderColor"
+    )
+
+    val boxShape = when (rangeStyle) {
+        CalendarDayViewRangeStyle.Rounded -> RoundedCornerShape(size = 12.dp)
+        CalendarDayViewRangeStyle.LeftRound -> RoundedCornerShape(topStart = 12.dp, bottomStart = 12.dp)
+        CalendarDayViewRangeStyle.RightRound -> RoundedCornerShape(topEnd = 12.dp, bottomEnd = 12.dp)
+        else -> RectangleShape
+    }
+
+    Box(
+        modifier
+            .clip(boxShape)
+            .background(boxBackground)
     ) {
         Column(
             modifier = Modifier
-                .weight(1f)
-                .background(Color.Green),
-        ) {
-
-        }
-        Text(
-            text = day.dayOfMonth.toString(),
-            style = MaterialTheme.typography.body1,
-            color = contentColor,
-        )
-        Column(
-            modifier = Modifier.weight(1f),
+                .clip(shape)
+                .clickable(
+                    enabled = enabled,
+                    onClick = { onClick() }
+                )
+                .border(2.dp, borderColor, shape)
+                .aspectRatio(1f)
+                .background(backgroundColor),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            if (showIndicator) {
-                Box(
-                    modifier = Modifier
-                        .size(6.dp)
-                        .background(CustomTheme.colors.active, CircleShape)
-                )
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .background(Color.Green),
+            ) {
+
+            }
+            Text(
+                text = day.dayOfMonth.toString(),
+                style = MaterialTheme.typography.body1,
+                color = contentColor,
+            )
+            Column(
+                modifier = Modifier.weight(1f),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                if (showIndicator) {
+                    Box(
+                        modifier = Modifier
+                            .size(6.dp)
+                            .background(CustomTheme.colors.active, CircleShape)
+                    )
+                }
             }
         }
     }
