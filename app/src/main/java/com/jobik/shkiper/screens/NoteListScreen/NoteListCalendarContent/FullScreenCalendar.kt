@@ -36,6 +36,7 @@ import kotlinx.coroutines.launch
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.format.TextStyle
+import java.time.temporal.WeekFields
 import java.util.*
 
 @Composable
@@ -77,7 +78,7 @@ fun FullScreenCalendar(viewModel: CalendarViewModel) {
         Box(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .padding(horizontal = 40.dp, vertical = 20.dp)
+                .padding(horizontal = 20.dp, vertical = 20.dp)
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Button(
@@ -144,10 +145,12 @@ private fun inRange(date: LocalDate, range: Pair<LocalDate, LocalDate>): Calenda
     if (date !in range.first..range.second) return null
     if (range.first == range.second) return null
 
+    val weekFields = WeekFields.of(Locale.getDefault())
+
     val isDateStart = date == range.first
     val isDateEnd = date == range.second
-    val isWeekStart = date.dayOfWeek == DayOfWeek.SUNDAY
-    val isWeekEnd = date.dayOfWeek == DayOfWeek.SATURDAY
+    val isWeekStart = date.dayOfWeek == weekFields.firstDayOfWeek
+    val isWeekEnd = date.dayOfWeek == weekFields.firstDayOfWeek.plus(6)
 
     val isMonthStart = date.withDayOfMonth(1) == date
     val isMonthEnd = date.withDayOfMonth(date.month.length(date.isLeapYear)) == date
