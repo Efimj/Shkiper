@@ -9,12 +9,12 @@ interface ReminderMongoRepository {
     fun getReminders(): Flow<List<Reminder>>
     fun getReminder(id: ObjectId): Reminder?
     fun getAllReminders(): List<Reminder>
-    fun getReminderForNote(noteId: ObjectId): Reminder?
+    fun getRemindersForNote(noteId: ObjectId): Flow<List<Reminder>>
     suspend fun insertReminder(reminder: Reminder)
     suspend fun insertOrUpdateReminders(reminders: List<Reminder>, updateStatistics: Boolean = true)
-    suspend fun updateReminder(id: ObjectId, updateParams: (Reminder) -> Unit)
-    suspend fun updateOrCreateReminderForNotes(notes: List<Note>, updateParams: (Reminder) -> Unit)
+    suspend fun updateReminder(reminderId: ObjectId, note: Note, updateParams: (Reminder) -> Unit)
+    suspend fun createReminderForNotes(notes: List<Note>, updateParams: (Reminder) -> Unit)
     suspend fun deleteReminder(id: ObjectId)
     suspend fun deleteReminder(ids: List<ObjectId>)
-    suspend fun deleteReminderForNote(noteId: ObjectId)
+    suspend fun deleteAllRemindersForNote(noteId: ObjectId)
 }

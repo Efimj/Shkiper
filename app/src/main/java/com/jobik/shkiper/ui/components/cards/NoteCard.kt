@@ -1,12 +1,16 @@
 package com.jobik.shkiper.ui.components.cards
 
-import android.util.Log
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.tween
-import androidx.compose.foundation.*
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.basicMarquee
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.Card
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Event
 import androidx.compose.material.icons.filled.Repeat
@@ -26,14 +30,14 @@ import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.Reminder
 import com.jobik.shkiper.database.models.RepeatMode
 import com.jobik.shkiper.helpers.DateHelper
-import com.jobik.shkiper.helpers.TextHelper
+import com.jobik.shkiper.helpers.TextHelper.Companion.removeMarkdownStyles
 import com.jobik.shkiper.ui.helpers.MultipleEventsCutter
+import com.jobik.shkiper.ui.helpers.SetRichTextDefaultStyles
 import com.jobik.shkiper.ui.helpers.get
 import com.jobik.shkiper.ui.modifiers.bounceClick
 import com.jobik.shkiper.ui.theme.CustomTheme
-import com.mohamedrejeb.richeditor.annotation.ExperimentalRichTextApi
+import com.mohamedrejeb.richeditor.model.RichTextState
 import com.mohamedrejeb.richeditor.model.rememberRichTextState
-import com.mohamedrejeb.richeditor.ui.material3.RichText
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -56,6 +60,16 @@ fun NoteCard(
         targetValue = if (selected) CustomTheme.colors.active else Color.Transparent, label = "borderColor",
     )
 
+    val bodyRichTextState = rememberRichTextState()
+    SetRichTextDefaultStyles(bodyRichTextState)
+
+    LaunchedEffect(text) {
+        if (text !== null && bodyRichTextState.annotatedString.text !== text)
+            bodyRichTextState.setHtml(text)
+        else
+            bodyRichTextState.setText("")
+    }
+
     Card(
         modifier = modifier
             .bounceClick()
@@ -74,11 +88,11 @@ fun NoteCard(
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
-            if (markedText.isNullOrEmpty())
-                NoteContent(header, text, headerStyle, bodyStyle)
+            if (markedText.isNullOrBlank())
+                NoteContent(header, bodyRichTextState, headerStyle, bodyStyle)
             else
-                NoteAnnotatedContent(header, text, markedText, headerStyle, bodyStyle)
-            if (header.isNullOrEmpty() && text.isNullOrEmpty()) {
+                NoteAnnotatedContent(header, bodyRichTextState, markedText, headerStyle, bodyStyle)
+            if (header.isNullOrBlank() && removeMarkdownStyles(bodyRichTextState.toMarkdown()).isBlank()) {
                 Text(
                     text = stringResource(R.string.EmptyNote),
                     maxLines = 10,
@@ -95,7 +109,10 @@ fun NoteCard(
 
 private fun getNextReminderDate(reminder: Reminder?): LocalDateTime {
     if (reminder == null) return LocalDateTime.now()
-    return DateHelper.nextDateWithRepeating(reminder.date, reminder.time, reminder.repeat)
+    return DateHelper.nextDateWithRepeating(
+        notificationDate = LocalDateTime.of(reminder.date, reminder.time),
+        repeatMode = reminder.repeat
+    )
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -140,36 +157,13 @@ private fun ReminderInformation(reminder: Reminder?) {
     }
 }
 
-@OptIn(ExperimentalRichTextApi::class)
 @Composable
-private fun NoteContent(header: String?, text: String?, headerStyle: TextStyle, bodyStyle: TextStyle) {
+private fun NoteContent(header: String?, text: RichTextState, headerStyle: TextStyle, bodyStyle: TextStyle) {
     var headerLineCount by remember { mutableStateOf(1) }
     val maxBodyLines = 8
-    val richTextState = rememberRichTextState()
+    val isBodyEmpty = removeMarkdownStyles(text.toMarkdown()).isBlank()
 
-    val codeColor = CustomTheme.colors.textOnActive
-    val codeBackgroundColor = CustomTheme.colors.active.copy(alpha = .2f)
-    val codeStrokeColor = CustomTheme.colors.active
-    val linkColor = CustomTheme.colors.text
-
-    LaunchedEffect(Unit) {
-        richTextState.setConfig(
-            linkColor = linkColor,
-            linkTextDecoration = TextDecoration.Underline,
-            codeColor = codeColor,
-            codeBackgroundColor = codeBackgroundColor,
-            codeStrokeColor = codeStrokeColor
-        )
-    }
-
-    LaunchedEffect(text) {
-        if (text !== null && richTextState.annotatedString.text !== text)
-            richTextState.setHtml(text)
-        else
-            richTextState.setText("")
-    }
-
-    if (!header.isNullOrEmpty()) {
+    if (!header.isNullOrBlank()) {
         Text(
             text = header,
             style = headerStyle,
@@ -180,11 +174,11 @@ private fun NoteContent(header: String?, text: String?, headerStyle: TextStyle, 
             maxLines = 3
         )
     }
-    if (!text.isNullOrEmpty() && !header.isNullOrEmpty())
+    if (!isBodyEmpty && !header.isNullOrBlank())
         Spacer(modifier = Modifier.height(4.dp))
-    if (richTextState.annotatedString.text.isNotEmpty()) {
+    if (!isBodyEmpty) {
         Text(
-            text = TextHelper.removeMarkdownStyles(richTextState.toMarkdown()),
+            text = removeMarkdownStyles(text.toMarkdown()),
             maxLines = maxBodyLines - headerLineCount,
             overflow = TextOverflow.Ellipsis,
             style = bodyStyle,
@@ -203,23 +197,16 @@ private fun NoteContent(header: String?, text: String?, headerStyle: TextStyle, 
 @Composable
 private fun NoteAnnotatedContent(
     header: String?,
-    text: String?,
+    text: RichTextState,
     markedText: String,
     headerStyle: TextStyle,
     bodyStyle: TextStyle
 ) {
     var headerLineCount by remember { mutableStateOf(1) }
     val maxBodyLines = 8
-    val richTextState = rememberRichTextState()
+    val isBodyEmpty = removeMarkdownStyles(text.toMarkdown()).isBlank()
 
-    LaunchedEffect(text) {
-        if (text !== null && richTextState.annotatedString.text !== text)
-            richTextState.setHtml(text)
-        else
-            richTextState.setText("")
-    }
-
-    if (!header.isNullOrEmpty()) {
+    if (!header.isNullOrBlank()) {
         Text(
             text = buildAnnotatedString(header, markedText, CustomTheme.colors.active, Color.Transparent),
             fontSize = headerStyle.fontSize,
@@ -234,12 +221,12 @@ private fun NoteAnnotatedContent(
             maxLines = 3,
         )
     }
-    if (!text.isNullOrEmpty() && !header.isNullOrEmpty())
+    if (!isBodyEmpty && !header.isNullOrBlank())
         Spacer(modifier = Modifier.height(8.dp))
-    if (richTextState.annotatedString.text.isNotEmpty()) {
+    if (!isBodyEmpty) {
         Text(
             text = buildAnnotatedString(
-                TextHelper.removeMarkdownStyles(richTextState.toMarkdown()),
+                removeMarkdownStyles(text.toMarkdown()),
                 markedText,
                 CustomTheme.colors.active,
                 Color.Transparent

@@ -16,6 +16,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -36,6 +37,7 @@ fun CustomTopAppBar(
     modifier: Modifier,
     elevation: Dp = 0.dp,
     text: String = "",
+    counter: Int? = null,
     backgroundColor: Color = CustomTheme.colors.secondaryBackground,
     contentColor: Color = CustomTheme.colors.textSecondary,
     navigation: TopAppBarItem,
@@ -48,19 +50,33 @@ fun CustomTopAppBar(
         modifier = modifier,
         title = {
             Spacer(modifier = Modifier.padding(6.dp, 0.dp, 0.dp, 0.dp))
-            Text(
-                text,
-                overflow = TextOverflow.Ellipsis,
-                style = MaterialTheme.typography.body1.copy(fontSize = 18.sp),
-                color = CustomTheme.colors.textSecondary,
-                maxLines = 1,
-            )
+            if (text.isNotBlank())
+                Text(
+                    text = text,
+                    overflow = TextOverflow.Ellipsis,
+                    style = MaterialTheme.typography.body1,
+                    color = CustomTheme.colors.textSecondary,
+                    maxLines = 1,
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 18.sp
+                )
+            if (text.isNotBlank() && counter != null)
+                Spacer(modifier = Modifier.padding(6.dp, 0.dp, 0.dp, 0.dp))
+            if (counter != null)
+                Counter(
+                    count = counter,
+                    color = CustomTheme.colors.textSecondary,
+                    style = MaterialTheme.typography.body1.copy(fontWeight = FontWeight.SemiBold, fontSize = 18.sp)
+                )
         },
         navigationIcon = {
             Spacer(modifier = Modifier.padding(6.dp, 0.dp, 0.dp, 0.dp))
             IconButton(
                 onClick = navigation.onClick,
-                modifier = navigation.modifier.size(40.dp).clip(CircleShape).padding(0.dp),
+                modifier = navigation.modifier
+                    .size(40.dp)
+                    .clip(CircleShape)
+                    .padding(0.dp),
             ) {
                 Icon(
                     imageVector = navigation.icon,
@@ -73,7 +89,10 @@ fun CustomTopAppBar(
             for (item in items) {
                 IconButton(
                     onClick = item.onClick,
-                    modifier = item.modifier.size(40.dp).clip(CircleShape).padding(0.dp),
+                    modifier = item.modifier
+                        .size(40.dp)
+                        .clip(CircleShape)
+                        .padding(0.dp),
                 ) {
                     Icon(
                         imageVector = item.icon,

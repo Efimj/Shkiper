@@ -45,15 +45,18 @@ import com.jobik.shkiper.ui.components.modals.ReminderDialogProperties
 import com.jobik.shkiper.viewmodels.NotesViewModel
 import kotlin.math.roundToInt
 import com.jobik.shkiper.R
+import com.jobik.shkiper.ui.components.fields.SearchBarHeight
+import com.jobik.shkiper.ui.helpers.rememberNextReminder
 import com.jobik.shkiper.ui.theme.CustomTheme
+import java.time.LocalDateTime
+import java.time.LocalTime
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ArchiveNotesScreen(navController: NavController, archiveViewModel: NotesViewModel = hiltViewModel()) {
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route ?: ""
 
-    val searchBarHeight = 60.dp
-    val searchBarHeightPx = with(LocalDensity.current) { searchBarHeight.roundToPx().toFloat() }
+    val searchBarHeightPx = with(LocalDensity.current) { SearchBarHeight.dp.roundToPx().toFloat() }
+
     val searchBarOffsetHeightPx = remember { mutableStateOf(0f) }
     val lazyGridNotes = rememberLazyStaggeredGridState()
 
@@ -115,18 +118,21 @@ fun ArchiveNotesScreen(navController: NavController, archiveViewModel: NotesView
         }
     }
 
-    Box(Modifier.fillMaxSize().nestedScroll(nestedScrollConnection)) {
+    Box(
+        Modifier
+            .fillMaxSize()
+            .nestedScroll(nestedScrollConnection)
+    ) {
         if (archiveViewModel.screenState.value.isNotesInitialized && archiveViewModel.screenState.value.notes.isEmpty())
-            ScreenContentIfNoData(R.string.ArchiveNotesPageHeader, Icons.Outlined.Inbox)
+            ScreenContentIfNoData(title = R.string.ArchiveNotesPageHeader, icon = Icons.Outlined.Inbox)
         else
             ScreenContent(lazyGridNotes, archiveViewModel, currentRoute, navController)
         Box(modifier = Modifier) {
             com.jobik.shkiper.ui.components.fields.SearchBar(
-                searchBarHeight,
-                searchBarOffsetHeightPx.value,
-                archiveViewModel.screenState.value.selectedNotes.isEmpty(),
-                archiveViewModel.screenState.value.searchText,
-                archiveViewModel::changeSearchText
+                searchBarOffsetHeightPx = searchBarOffsetHeightPx.value,
+                isVisible = archiveViewModel.screenState.value.selectedNotes.isEmpty(),
+                value = archiveViewModel.screenState.value.searchText,
+                onChange = archiveViewModel::changeSearchText
             )
             ActionBar(actionBarHeight, offsetX, archiveViewModel)
         }
@@ -134,7 +140,6 @@ fun ArchiveNotesScreen(navController: NavController, archiveViewModel: NotesView
 }
 
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun ScreenContent(
     lazyGridNotes: LazyStaggeredGridState,
@@ -149,7 +154,8 @@ private fun ScreenContent(
     ) {
         item(span = StaggeredGridItemSpan.FullLine) {
             LazyRow(
-                modifier = Modifier.wrapContentSize(unbounded = true)
+                modifier = Modifier
+                    .wrapContentSize(unbounded = true)
                     .width(LocalConfiguration.current.screenWidthDp.dp),
                 state = rememberLazyListState(),
                 contentPadding = PaddingValues(10.dp, 0.dp, 10.dp, 0.dp)
@@ -164,9 +170,13 @@ private fun ScreenContent(
             }
         }
         items(items = notesViewModel.screenState.value.notes) { item ->
-            NoteCard(item.header,
-                item.body,
-                reminder = notesViewModel.screenState.value.reminders.find { it.noteId == item._id },
+            NoteCard(
+                header = item.header,
+                text = item.body,
+                reminder = rememberNextReminder(
+                    reminders = notesViewModel.screenState.value.reminders,
+                    noteId = item._id,
+                ),
                 markedText = notesViewModel.screenState.value.searchText,
                 selected = item._id in notesViewModel.screenState.value.selectedNotes,
                 onClick = { notesViewModel.clickOnNote(item, currentRoute, navController) },
@@ -174,22 +184,14 @@ private fun ScreenContent(
         }
     }
     if (notesViewModel.screenState.value.isCreateReminderDialogShow) {
-        val reminder =
-            remember {
-                if (notesViewModel.screenState.value.selectedNotes.size == 1)
-                    notesViewModel.getReminder(notesViewModel.screenState.value.selectedNotes.first()) else null
-            }
-        val reminderDialogProperties = remember {
-            if (reminder != null) ReminderDialogProperties(reminder.date, reminder.time, reminder.repeat)
-            else ReminderDialogProperties()
+        if (notesViewModel.screenState.value.isCreateReminderDialogShow) {
+            CreateReminderDialog(
+                reminderDialogProperties = ReminderDialogProperties(),
+                onGoBack = notesViewModel::switchReminderDialogShow,
+                onDelete = null,
+                onSave = notesViewModel::createReminder,
+            )
         }
-        CreateReminderDialog(
-            reminderDialogProperties = reminderDialogProperties,
-            onGoBack = notesViewModel::switchReminderDialogShow,
-            onDelete = if (reminder != null) notesViewModel::deleteSelectedReminder else null,
-            onSave = notesViewModel::createReminder,
-        )
-
     }
 }
 
@@ -198,23 +200,24 @@ private fun ActionBar(
     actionBarHeight: Dp, offsetX: Animatable<Float, AnimationVector1D>, notesViewModel: NotesViewModel
 ) {
     val systemUiController = rememberSystemUiController()
-    val backgroundColor by animateColorAsState(
-        if (notesViewModel.screenState.value.selectedNotes.isNotEmpty()) CustomTheme.colors.secondaryBackground else CustomTheme.colors.mainBackground,
-        animationSpec = tween(200),
-    )
-    SideEffect {
-        systemUiController.setStatusBarColor(backgroundColor)
+    val backgroundColorValue =
+        if (notesViewModel.screenState.value.selectedNotes.isNotEmpty()) CustomTheme.colors.secondaryBackground else CustomTheme.colors.mainBackground
+
+    LaunchedEffect(notesViewModel.screenState.value.selectedNotes.isNotEmpty()) {
+        systemUiController.setStatusBarColor(backgroundColorValue)
     }
 
     val topAppBarElevation = if (offsetX.value.roundToInt() < -actionBarHeight.value.roundToInt()) 0.dp else 2.dp
     Box(
-        modifier = Modifier.height(actionBarHeight).offset { IntOffset(x = 0, y = offsetX.value.roundToInt()) },
+        modifier = Modifier
+            .height(actionBarHeight)
+            .offset { IntOffset(x = 0, y = offsetX.value.roundToInt()) },
     ) {
         CustomTopAppBar(
             modifier = Modifier.fillMaxWidth(),
             elevation = topAppBarElevation,
             backgroundColor = CustomTheme.colors.secondaryBackground,
-            text = notesViewModel.screenState.value.selectedNotes.count().toString(),
+            counter = notesViewModel.screenState.value.selectedNotes.count(),
             navigation = TopAppBarItem(
                 isActive = false,
                 icon = Icons.Default.Close,

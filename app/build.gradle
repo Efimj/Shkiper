@@ -15,8 +15,8 @@ android {
         applicationId "com.jobik.shkiper"
         minSdk 27
         targetSdk 34
-        versionCode 53
-        versionName "1.6.13"
+        versionCode 54
+        versionName "1.7.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -165,4 +165,9 @@ dependencies {
 
     // Compose image capture
     implementation "dev.shreyaspatil:capturable:1.0.3"
+
+    // Compose collapsing toolbar (Official latest update in 2022)
+    // implementation("me.onebone:toolbar-compose:2.3.5")
+    // Compose collapsing toolbar (nonofficial)
+    implementation 'com.github.GIGAMOLE:ComposeCollapsingToolbar:1.0.8'
 }

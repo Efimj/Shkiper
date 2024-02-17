@@ -32,7 +32,7 @@ class NotificationScheduler(private val context: Context) {
     private val notificationStorage: NotificationStorage = NotificationStorage(context)
 
     fun scheduleNotification(notificationData: NotificationData) {
-        notificationStorage.addOrUpdate(notificationData)
+        notificationStorage.addOrUpdate(listOf(notificationData))
         setNotification(notificationData.requestCode, notificationData.trigger)
     }
 
@@ -46,7 +46,7 @@ class NotificationScheduler(private val context: Context) {
     fun updateNotificationData(noteId: String, title: String, message: String, schedule: Boolean = false) {
         notificationStorage.updateNotificationData(noteId, title, message)
         if (schedule)
-            notificationStorage.getNotification(noteId)?.let { scheduleNotification(it) }
+            notificationStorage.getNotificationsForNote(noteId).forEach { scheduleNotification(it) }
     }
 
     private fun setNotification(requestId: Int, trigger: Long) {
@@ -79,19 +79,19 @@ class NotificationScheduler(private val context: Context) {
         cancelNotification(requestCode)
     }
 
-    fun cancelNotification(noteId: String) {
-        val notificationIntent = Intent(context, NotificationReceiver::class.java)
-
-        val requestCode = notificationStorage.getNotification(noteId)?.requestCode ?: return
-        val pendingIntent = PendingIntent.getBroadcast(
-            context,
-            requestCode,
-            notificationIntent,
-            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
-        )
-
+    fun cancelNotificationsForNote(noteId: String) {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        alarmManager.cancel(pendingIntent)
+        val requestCodes = notificationStorage.getNotificationsForNote(noteId).map { it.requestCode }
+
+        requestCodes.forEach {
+            val pendingIntent = PendingIntent.getBroadcast(
+                context,
+                it,
+                Intent(context, NotificationReceiver::class.java),
+                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+            )
+            alarmManager.cancel(pendingIntent)
+        }
     }
 
     fun cancelNotification(requestCode: Int) {

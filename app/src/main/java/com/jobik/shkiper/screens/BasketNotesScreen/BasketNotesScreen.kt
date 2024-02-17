@@ -1,7 +1,6 @@
 package com.jobik.shkiper.screens.BasketNotesScreen
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.animation.core.tween
@@ -15,9 +14,14 @@ import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridS
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.outlined.*
+import androidx.compose.material.icons.outlined.DeleteForever
+import androidx.compose.material.icons.outlined.DeleteSweep
+import androidx.compose.material.icons.outlined.History
+import androidx.compose.material.icons.outlined.Warning
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
@@ -30,19 +34,19 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.jobik.shkiper.R
 import com.jobik.shkiper.ui.components.cards.NoteCard
 import com.jobik.shkiper.ui.components.layouts.CustomTopAppBar
 import com.jobik.shkiper.ui.components.layouts.LazyGridNotes
 import com.jobik.shkiper.ui.components.layouts.ScreenContentIfNoData
 import com.jobik.shkiper.ui.components.layouts.TopAppBarItem
 import com.jobik.shkiper.ui.components.modals.ActionDialog
+import com.jobik.shkiper.ui.helpers.rememberNextReminder
+import com.jobik.shkiper.ui.theme.CustomTheme
 import com.jobik.shkiper.viewmodels.NotesViewModel
 import kotlin.math.roundToInt
-import com.jobik.shkiper.R
-import com.jobik.shkiper.ui.theme.CustomTheme
 
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun BasketNotesScreen(navController: NavController, basketViewModel: NotesViewModel = hiltViewModel()) {
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route ?: ""
@@ -78,7 +82,7 @@ fun BasketNotesScreen(navController: NavController, basketViewModel: NotesViewMo
 
     Box(Modifier.fillMaxSize()) {
         if (basketViewModel.screenState.value.isNotesInitialized && basketViewModel.screenState.value.notes.isEmpty())
-            ScreenContentIfNoData(R.string.BasketNotesPageHeader, Icons.Outlined.DeleteSweep)
+            ScreenContentIfNoData(title = R.string.BasketNotesPageHeader, icon = Icons.Outlined.DeleteSweep)
         else
             ScreenContent(lazyGridNotes, basketViewModel, currentRoute, navController)
         Box(modifier = Modifier) {
@@ -127,9 +131,12 @@ private fun ScreenContent(
             }
         }
         items(items = notesViewModel.screenState.value.notes) { item ->
-            NoteCard(item.header,
-                item.body,
-                reminder = notesViewModel.screenState.value.reminders.find { it.noteId == item._id },
+            NoteCard(header = item.header,
+                text = item.body,
+                reminder = rememberNextReminder(
+                    reminders = notesViewModel.screenState.value.reminders,
+                    noteId = item._id,
+                ),
                 markedText = notesViewModel.screenState.value.searchText,
                 selected = item._id in notesViewModel.screenState.value.selectedNotes,
                 onClick = { notesViewModel.clickOnNote(item, currentRoute, navController) },
@@ -143,12 +150,11 @@ private fun ActionBar(
     actionBarHeight: Dp, offsetX: Animatable<Float, AnimationVector1D>, notesViewModel: NotesViewModel
 ) {
     val systemUiController = rememberSystemUiController()
-    val backgroundColor by animateColorAsState(
-        if (notesViewModel.screenState.value.selectedNotes.isNotEmpty()) CustomTheme.colors.secondaryBackground else CustomTheme.colors.mainBackground,
-        animationSpec = tween(200),
-    )
-    SideEffect {
-        systemUiController.setStatusBarColor(backgroundColor)
+    val backgroundColorValue =
+        if (notesViewModel.screenState.value.selectedNotes.isNotEmpty()) CustomTheme.colors.secondaryBackground else CustomTheme.colors.mainBackground
+
+    LaunchedEffect(notesViewModel.screenState.value.selectedNotes.isNotEmpty()) {
+        systemUiController.setStatusBarColor(backgroundColorValue)
     }
 
     val topAppBarElevation = if (offsetX.value.roundToInt() < -actionBarHeight.value.roundToInt()) 0.dp else 2.dp
@@ -159,7 +165,7 @@ private fun ActionBar(
             modifier = Modifier.fillMaxWidth(),
             elevation = topAppBarElevation,
             backgroundColor = CustomTheme.colors.secondaryBackground,
-            text = notesViewModel.screenState.value.selectedNotes.count().toString(),
+            counter = notesViewModel.screenState.value.selectedNotes.count(),
             navigation = TopAppBarItem(
                 isActive = false,
                 icon = Icons.Default.Close,

@@ -358,4 +358,11 @@
     <string name="MadeWithLoveDescription">Conte aos seus amigos sobre o aplicativo ou apoie o desenvolvedor com uma moeda gentil.</string>
     <string name="OpenSource">Código aberto</string>
     <string name="OpenSourceDescription">Shkiper é de código aberto e todo o código é publicado no GitHub</string>
+
+    <string name="CreateReminder">Criar lembrete</string>
+    <string name="NoReminders">Sem lembretes</string>
+    <string name="DisableLinkPreviews">Desativar visualizações de links</string>
+    <string name="EnableLinkPreviews">Habilitar visualizações de links</string>
+    <string name="Apply">Aplicar</string>
+
 </resources>

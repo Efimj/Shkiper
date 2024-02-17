@@ -1,7 +1,10 @@
 package com.jobik.shkiper.ui.components.modals
 
 import android.content.Context
+import androidx.annotation.Keep
 import androidx.compose.animation.*
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
@@ -9,7 +12,6 @@ import androidx.compose.foundation.pager.PageSize
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
@@ -17,10 +19,7 @@ import androidx.compose.material.icons.filled.Event
 import androidx.compose.material.icons.filled.Repeat
 import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material.icons.filled.Warning
-import androidx.compose.material.icons.outlined.KeyboardArrowLeft
 import androidx.compose.material.icons.outlined.NotificationsOff
-import androidx.compose.material.icons.rounded.Refresh
-import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -40,9 +39,11 @@ import androidx.compose.ui.window.DialogProperties
 import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.RepeatMode
 import com.jobik.shkiper.helpers.*
-import com.jobik.shkiper.screens.OnboardingScreen.OnBoardingPage
 import com.jobik.shkiper.services.notification_service.NotificationScheduler
-import com.jobik.shkiper.ui.components.buttons.*
+import com.jobik.shkiper.ui.components.buttons.ButtonStyle
+import com.jobik.shkiper.ui.components.buttons.CustomButton
+import com.jobik.shkiper.ui.components.buttons.DropDownButton
+import com.jobik.shkiper.ui.components.buttons.DropDownItem
 import com.jobik.shkiper.ui.components.fields.CustomDatePicker
 import com.jobik.shkiper.ui.components.fields.CustomTimePicker
 import com.jobik.shkiper.ui.theme.CustomTheme
@@ -51,7 +52,7 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalTime
 
-
+@Keep
 private enum class ReminderDialogPages(val value: Int) {
     DATEPICK(0), TIMEPICK(1), REPEATMODE(2),
 }
@@ -93,10 +94,9 @@ fun CreateReminderDialog(
                 .padding(vertical = 20.dp)
         ) {
             HorizontalPager(
-                modifier = Modifier,
                 state = pagerState,
                 pageSpacing = 0.dp,
-                userScrollEnabled = true,
+                userScrollEnabled = false,
                 reverseLayout = false,
                 contentPadding = PaddingValues(0.dp),
                 beyondBoundsPageCount = 0,
@@ -112,6 +112,8 @@ fun CreateReminderDialog(
             }
             DialogFooter(
                 pagerState = pagerState,
+                date = date,
+                time = time,
                 onGoBack = onGoBack,
                 onDelete = onDelete,
                 isNotificationEnabled = isNotificationEnabled
@@ -133,6 +135,8 @@ private fun checkIsNotificationEnabled(context: Context) = areNotificationsEnabl
 @Composable
 private fun DialogFooter(
     pagerState: PagerState,
+    date: MutableState<LocalDate>,
+    time: MutableState<LocalTime>,
     onGoBack: () -> Unit,
     onDelete: (() -> Unit)? = null,
     isNotificationEnabled: MutableState<Boolean>,
@@ -262,6 +266,7 @@ private fun DialogFooter(
                 contentPadding = PaddingValues(horizontal = 15.dp),
                 onClick = {
                     if (isEnd) {
+                        if (!DateHelper.isFutureDateTime(date.value, time.value)) return@Button
                         if (!isNotificationEnabled.value && !checkIsNotificationEnabled(context = context)) {
                             enableNotificationIfDisabled(context = context)
                         } else {
@@ -336,7 +341,11 @@ private fun DialogContent(
     repeatMode: MutableState<RepeatMode>,
     isNotificationEnabled: State<Boolean>
 ) {
-    Column(Modifier.height(340.dp)) {
+    Column(
+        Modifier
+            .animateContentSize()
+            .heightIn(min = 350.dp)
+    ) {
         when (it) {
             ReminderDialogPages.DATEPICK.value -> DatePickPage(date)
 
@@ -360,7 +369,7 @@ private fun RepeatModePage(
 
     Column(
         Modifier
-            .fillMaxSize()
+            .fillMaxWidth()
             .padding(horizontal = 20.dp),
         horizontalAlignment = Alignment.Start,
     ) {
@@ -371,7 +380,9 @@ private fun RepeatModePage(
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .padding(bottom = 15.dp)
-                .fillMaxWidth()
+                .fillMaxWidth(),
+            fontWeight = FontWeight.SemiBold,
+            maxLines = 1,
         )
         Column(horizontalAlignment = Alignment.Start) {
             Row(
@@ -430,12 +441,28 @@ private fun RepeatModePage(
                     items = repeatModeList,
                     expanded = isExpanded,
                     selectedIndex = repeatMode.value.ordinal,
-                    onChangedSelection = { repeatMode.value = RepeatMode.values()[it] }) {
-                    CustomButton(
-                        text = repeatMode.value.getLocalizedValue(LocalContext.current),
+                    onChangedSelection = { repeatMode.value = RepeatMode.entries.toTypedArray()[it] }) {
+                    Button(
+                        modifier = Modifier.heightIn(min = 40.dp),
+                        shape = CustomTheme.shapes.small,
+                        colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                            contentColor = CustomTheme.colors.text,
+                            containerColor = CustomTheme.colors.secondaryBackground
+                        ),
+                        border = null,
+                        elevation = null,
+                        contentPadding = PaddingValues(horizontal = 15.dp),
                         onClick = { it() },
-                        style = ButtonStyle.Text
-                    )
+                    ) {
+                        Text(
+                            text = repeatMode.value.getLocalizedValue(LocalContext.current),
+                            style = MaterialTheme.typography.body1,
+                            fontWeight = FontWeight.SemiBold,
+                            color = CustomTheme.colors.text,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
                 }
             }
             if (!isNotificationEnabled.value)
@@ -477,13 +504,16 @@ private fun TimePickPage(
             Text(
                 DateHelper.getLocalizedDate(date.value),
                 style = MaterialTheme.typography.h5,
-                color = CustomTheme.colors.textSecondary
+                color = CustomTheme.colors.textSecondary,
+                maxLines = 1,
             )
             Spacer(Modifier.width(8.dp))
             Text(
                 time.value.toString(),
                 style = MaterialTheme.typography.h5,
                 color = CustomTheme.colors.text,
+                fontWeight = FontWeight.SemiBold,
+                maxLines = 1,
             )
         }
         Spacer(Modifier.height(20.dp))
@@ -493,11 +523,18 @@ private fun TimePickPage(
 
 @Composable
 private fun DatePickPage(date: MutableState<LocalDate>) {
-    Column(Modifier.padding(horizontal = 20.dp)) {
+    Column(
+        Modifier
+            .padding(horizontal = 20.dp)
+            .padding(bottom = 10.dp)
+    ) {
         Text(
-            DateHelper.getLocalizedDate(date.value),
+            text = DateHelper.getLocalizedDate(date.value),
             style = MaterialTheme.typography.h5,
-            color = CustomTheme.colors.text
+            color = CustomTheme.colors.text,
+            fontWeight = FontWeight.SemiBold,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
         )
         Spacer(Modifier.height(10.dp))
         CustomDatePicker(

@@ -1,21 +1,26 @@
 package com.jobik.shkiper.ui.components.fields
 
+import android.view.RoundedCorner
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.jobik.shkiper.ui.components.layouts.CalendarDayView
 import com.jobik.shkiper.ui.theme.CustomTheme
 import com.kizitonwose.calendar.compose.ContentHeightMode
 import com.kizitonwose.calendar.compose.HorizontalCalendar
@@ -86,7 +91,9 @@ fun MonthTitle(month: CalendarMonth) {
 }
 
 @Composable
-fun DaysOfWeekTitle(daysOfWeek: List<DayOfWeek>) {
+fun DaysOfWeekTitle(
+    daysOfWeek: List<DayOfWeek>,
+) {
     Row(modifier = Modifier.fillMaxWidth()) {
         for (dayOfWeek in daysOfWeek) {
             Text(
@@ -94,50 +101,11 @@ fun DaysOfWeekTitle(daysOfWeek: List<DayOfWeek>) {
                 textAlign = TextAlign.Center,
                 text = dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.getDefault()),
                 color = CustomTheme.colors.text,
-                style = MaterialTheme.typography.body1
+                style = MaterialTheme.typography.body1,
+                maxLines = 1,
+                overflow = TextOverflow.Clip,
+                fontWeight = FontWeight.SemiBold
             )
         }
     }
-}
-
-@Composable
-fun CalendarDayView(day: CalendarDay, currentDate: LocalDate, onClick: (CalendarDay) -> Unit) {
-    val dateNow = LocalDate.now()
-    val isDateCurrentOrFuture = isDateCurrentOrFuture(day.date, dateNow)
-    val borderCornerShape = RoundedCornerShape(12.dp)
-
-    if (day.position == DayPosition.MonthDate)
-        Box(
-            modifier = Modifier
-                .clip(borderCornerShape)
-                .border(
-                    BorderStroke(
-                        2.dp,
-                        if (currentDate == day.date) CustomTheme.colors.active else
-                            if (day.date == dateNow) CustomTheme.colors.stroke else
-                                Color.Transparent
-                    ),
-                    borderCornerShape
-                )
-                .background(Color.Transparent)
-                .aspectRatio(1f)
-                .clickable(
-                    enabled = isDateCurrentOrFuture,
-                    onClick = { onClick(day) }
-                ),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = day.date.dayOfMonth.toString(),
-                style = MaterialTheme.typography.body1,
-                color =
-                if (isDateCurrentOrFuture) CustomTheme.colors.text
-                else CustomTheme.colors.textSecondary
-
-            )
-        }
-}
-
-fun isDateCurrentOrFuture(date: LocalDate, currentDate: LocalDate = LocalDate.now()): Boolean {
-    return !date.isBefore(currentDate)
 }

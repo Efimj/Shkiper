@@ -1,5 +1,6 @@
 package com.jobik.shkiper.helpers
 
+import com.jobik.shkiper.database.models.Reminder
 import com.jobik.shkiper.database.models.RepeatMode
 import java.time.*
 import java.time.format.DateTimeFormatter
@@ -41,72 +42,73 @@ class DateHelper {
         }
 
         fun nextDateWithRepeating(
-            date: LocalDate, time: LocalTime, repeatMode: RepeatMode
+            notificationDate: LocalDateTime,
+            repeatMode: RepeatMode,
+            startingPoint: LocalDateTime = LocalDateTime.now()
         ): LocalDateTime {
-            val oldReminderDate = LocalDateTime.of(date, time)
+            // get current date with old values
+            val updatedReminderDate = startingPoint.let {
+                it.withNano(notificationDate.nano).withSecond(notificationDate.second)
 
-            val newReminderDate = when (repeatMode) {
-                RepeatMode.NONE -> {
-                    if (oldReminderDate.isBefore(LocalDateTime.now())) {
-                        oldReminderDate
-                    } else {
-                        oldReminderDate
-                    }
-                }
+                when (repeatMode) {
+                    RepeatMode.NONE -> notificationDate
+                    RepeatMode.DAILY -> it.withHour(notificationDate.hour)
+                        .withMinute(notificationDate.minute)
 
-                RepeatMode.DAILY -> {
-                    val updatedReminderDate = LocalDateTime.now()
-                        .withHour(oldReminderDate.hour)
-                        .withMinute(oldReminderDate.minute)
+                    RepeatMode.WEEKLY -> it.with(DayOfWeek.from(notificationDate.dayOfWeek))
+                        .withHour(notificationDate.hour).withMinute(notificationDate.minute)
 
-                    if (updatedReminderDate.isBefore(LocalDateTime.now())) {
-                        updatedReminderDate.plusDays(1)
-                    } else {
-                        updatedReminderDate
-                    }
-                }
+                    RepeatMode.MONTHLY -> it.withDayOfMonth(notificationDate.dayOfMonth)
+                        .withHour(notificationDate.hour).withMinute(notificationDate.minute)
 
-                RepeatMode.WEEKLY -> {
-                    val updatedReminderDate = LocalDateTime.now()
-                        .with(DayOfWeek.from(oldReminderDate.dayOfWeek))
-                        .withHour(oldReminderDate.hour)
-                        .withMinute(oldReminderDate.minute)
-
-                    if (updatedReminderDate.isBefore(LocalDateTime.now())) {
-                        updatedReminderDate.plusDays(7)
-                    } else {
-                        updatedReminderDate
-                    }
-                }
-
-                RepeatMode.MONTHLY -> {
-                    val updatedReminderDate = LocalDateTime.now()
-                        .withDayOfMonth(oldReminderDate.dayOfMonth)
-                        .withHour(oldReminderDate.hour)
-                        .withMinute(oldReminderDate.minute)
-
-                    if (updatedReminderDate.isBefore(LocalDateTime.now())) {
-                        updatedReminderDate.plusMonths(1)
-                    } else {
-                        updatedReminderDate
-                    }
-                }
-
-                RepeatMode.YEARLY -> {
-                    val updatedReminderDate = LocalDateTime.now()
-                        .withMonth(oldReminderDate.monthValue)
-                        .withDayOfMonth(oldReminderDate.dayOfMonth)
-                        .withHour(oldReminderDate.hour)
-                        .withMinute(oldReminderDate.minute)
-
-                    if (updatedReminderDate.isBefore(LocalDateTime.now())) {
-                        updatedReminderDate.plusYears(1)
-                    } else {
-                        updatedReminderDate
-                    }
+                    RepeatMode.YEARLY -> it.withMonth(notificationDate.monthValue)
+                        .withDayOfMonth(notificationDate.dayOfMonth).withHour(notificationDate.hour)
+                        .withMinute(notificationDate.minute)
                 }
             }
-            return newReminderDate
+
+            val isDateEqualOrBefore = updatedReminderDate.isBefore(startingPoint) || startingPoint
+                .isEqual(updatedReminderDate)
+
+            // update date with adding repeating value
+            return if (isDateEqualOrBefore) {
+                when (repeatMode) {
+                    RepeatMode.DAILY -> updatedReminderDate.plusDays(1)
+                    RepeatMode.WEEKLY -> updatedReminderDate.plusDays(7)
+                    RepeatMode.MONTHLY -> updatedReminderDate.plusMonths(1)
+                    RepeatMode.YEARLY -> updatedReminderDate.plusYears(1)
+                    else -> updatedReminderDate
+                }
+            } else {
+                updatedReminderDate
+            }
+        }
+
+        fun sortReminders(reminders: List<Reminder>, pointDate: LocalDateTime = LocalDateTime.now()): List<Reminder> {
+            val comparator = compareBy<Reminder> {
+                nextDateWithRepeating(
+                    notificationDate = LocalDateTime.of(it.date, it.time),
+                    repeatMode = it.repeat,
+                    startingPoint = pointDate
+                )
+            }
+            return reminders.sortedWith(comparator).sortedBy {
+                if (nextDateWithRepeating(
+                        notificationDate = LocalDateTime.of(it.date, it.time),
+                        repeatMode = it.repeat,
+                        startingPoint = pointDate
+                    ).isBefore(pointDate)
+                ) {
+                    1
+                } else {
+                    0
+                }
+            }
+        }
+
+        fun isLocalDateInRange(date: LocalDate, range: Pair<LocalDate, LocalDate>): Boolean {
+            val (start, end) = if (range.first.isAfter(range.second)) Pair(range.second, range.first) else range
+            return date in start..end
         }
     }
 }

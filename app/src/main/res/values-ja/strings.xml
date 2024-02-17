@@ -359,4 +359,10 @@
     <string name="OpenSource">オープンソース</string>
     <string name="OpenSourceDescription">Shkiper はオープンソースであり、コード全体が GitHub で公開されています</string>
 
+    <string name="CreateReminder">リマインダーを作成する</string>
+    <string name="NoReminders">リマインダーはありません</string>
+    <string name="DisableLinkPreviews">リンクのプレビューを無効にする</string>
+    <string name="EnableLinkPreviews">リンクのプレビューを有効にする</string>
+    <string name="Apply">適用する</string>
+
 </resources>

@@ -15,6 +15,7 @@ import com.jobik.shkiper.database.models.NotePosition
 import com.jobik.shkiper.database.models.Reminder
 import com.jobik.shkiper.database.models.RepeatMode
 import com.jobik.shkiper.helpers.DateHelper
+import com.jobik.shkiper.helpers.DateHelper.Companion.sortReminders
 import com.jobik.shkiper.helpers.IntentHelper
 import com.jobik.shkiper.helpers.LinkHelper
 import com.jobik.shkiper.navigation.Argument_Note_Id
@@ -47,18 +48,19 @@ data class NoteScreenState(
     val notePosition: NotePosition = NotePosition.MAIN,
     val noteBody: String = "",
     val isPinned: Boolean = false,
+    val linkPreviewEnabled: Boolean = false,
     val updatedDate: LocalDateTime = LocalDateTime.now(),
     val hashtags: Set<String> = emptySet(),
     val deletionDate: LocalDateTime? = LocalDateTime.now(),
 
-    val linksLoading: Boolean = true,
+    val linksLoading: Boolean = false,
     val linksMetaData: Set<LinkHelper.LinkPreview> = emptySet(),
     val intermediateStates: List<NoteViewModel.IntermediateState> = listOf(
         NoteViewModel.IntermediateState(noteHeader, noteBody)
     ),
     val currentIntermediateIndex: Int = intermediateStates.size - 1,
-    val reminder: Reminder? = null,
-    val isCreateReminderDialogShow: Boolean = false,
+    val reminders: List<Reminder> = emptyList(),
+    val isReminderMenuOpen: Boolean = false,
     val isDeleteDialogShow: Boolean = false,
     val allHashtags: Set<String> = emptySet(),
 )
@@ -77,7 +79,7 @@ class NoteViewModel @Inject constructor(
     init {
         initializeNote(ObjectId(savedStateHandle[Argument_Note_Id] ?: ""))
         viewModelScope.launch {
-            getReminder()
+            getReminders()
             getHashtags()
         }
     }
@@ -100,8 +102,16 @@ class NoteViewModel @Inject constructor(
                 hashtags = note.hashtags,
                 notePosition = note.position,
                 deletionDate = note.deletionDate,
+                linkPreviewEnabled = note.linkPreviewEnabled,
                 intermediateStates = listOf(IntermediateState(note.header, note.body))
             )
+    }
+
+    fun goBackScreen() {
+        _screenState.value = _screenState.value.copy(
+            isLoading = false,
+            isGoBack = true
+        )
     }
 
     /*******************
@@ -158,7 +168,27 @@ class NoteViewModel @Inject constructor(
             _screenState.value = _screenState.value.copy(linksMetaData = getCorrectLinks())
         }
 
+    fun switchLinkPreviewEnabled(mode: Boolean? = null) {
+        val newState = mode ?: !_screenState.value.linkPreviewEnabled
+        _screenState.value = _screenState.value.copy(linkPreviewEnabled = newState)
+        updateNote {
+            it.linkPreviewEnabled = newState
+        }
+
+        if (newState) {
+            runFetchingLinksMetaData()
+        } else {
+            disableLinkPreviews()
+        }
+    }
+
+    private fun disableLinkPreviews() {
+        linkRefreshTimer?.cancel()
+        allLinksMetaData = emptySet()
+    }
+
     fun runFetchingLinksMetaData() {
+        if (_screenState.value.linkPreviewEnabled.not()) return
         if (linkRefreshTimer == null) {
             fetchLinkMetaData()
             linkRefreshTimer?.cancel()
@@ -346,9 +376,12 @@ class NoteViewModel @Inject constructor(
 
     fun deleteNoteIfEmpty(body: String) {
         viewModelScope.launch {
-            if (_screenState.value.noteHeader.isEmpty() && body.isEmpty()) noteRepository.deleteNote(
-                _screenState.value.noteId,
-            )
+            if (_screenState.value.noteHeader.isEmpty() && body.isEmpty()) {
+                goBackScreen()
+                noteRepository.deleteNote(
+                    _screenState.value.noteId,
+                )
+            }
         }
     }
 
@@ -437,43 +470,49 @@ class NoteViewModel @Inject constructor(
      * Reminder region
      *******************/
 
-    private fun getReminder() {
+    private fun getReminders() {
         viewModelScope.launch {
-            val reminderValue = reminderRepository.getReminderForNote(_screenState.value.noteId)
-            _screenState.value = _screenState.value.copy(reminder = reminderValue)
-        }
-    }
-
-    fun createReminder(date: LocalDate, time: LocalTime, repeatMode: RepeatMode) {
-        if (DateHelper.isFutureDateTime(date, time)) {
-            viewModelScope.launch {
-                val note = noteRepository.getNote(_screenState.value.noteId) ?: return@launch
-                val noteList = listOf(note)
-                reminderRepository.updateOrCreateReminderForNotes(
-                    noteList
-                ) { updatedReminder ->
-                    updatedReminder.date = date
-                    updatedReminder.time = time
-                    updatedReminder.repeat = repeatMode
-                }
-                getReminder()
+            reminderRepository.getRemindersForNote(_screenState.value.noteId).collect {
+                _screenState.value = _screenState.value.copy(reminders = sortReminders(it))
             }
-            switchReminderDialogShow()
         }
     }
 
-    fun deleteReminder() {
+    fun createOrUpdateReminder(reminder: Reminder?, date: LocalDate, time: LocalTime, repeatMode: RepeatMode) {
+        if (!DateHelper.isFutureDateTime(date, time)) return
+
         viewModelScope.launch {
-            val reminderId = _screenState.value.reminder?._id ?: return@launch
-            reminderRepository.deleteReminder(reminderId)
-            _screenState.value = _screenState.value.copy(reminder = null)
+            val updateFunction: (Reminder) -> Unit = {
+                it.date = date
+                it.time = time
+                it.repeat = repeatMode
+            }
+
+            val note = noteRepository.getNote(_screenState.value.noteId) ?: return@launch
+
+            if (reminder != null) {
+                reminderRepository.updateReminder(reminder._id, note, updateFunction)
+            } else {
+                reminderRepository.createReminderForNotes(listOf(note), updateFunction)
+            }
         }
-        switchReminderDialogShow()
+    }
+
+    fun deleteReminder(reminderId: ObjectId) {
+        viewModelScope.launch {
+            reminderRepository.deleteReminder(reminderId)
+        }
+    }
+
+    fun deleteReminder(reminderIds: List<ObjectId>) {
+        viewModelScope.launch {
+            reminderRepository.deleteReminder(reminderIds)
+        }
     }
 
     fun switchReminderDialogShow() {
         _screenState.value =
-            _screenState.value.copy(isCreateReminderDialogShow = !_screenState.value.isCreateReminderDialogShow)
+            _screenState.value.copy(isReminderMenuOpen = !_screenState.value.isReminderMenuOpen)
     }
 
     fun getHashtags() {

@@ -371,4 +371,9 @@
 
     <string name="OpenSourceDescription">Shkiper ist Open Source und der gesamte Code wird auf GitHub veröffentlicht</string>
 
+    <string name="CreateReminder">Erinnerung erstellen</string>
+    <string name="NoReminders">Keine Erinnerungen</string>
+    <string name="DisableLinkPreviews">Linkvorschau deaktivieren</string>
+    <string name="EnableLinkPreviews">Aktivieren Sie die Linkvorschau</string>
+    <string name="Apply">Anwenden</string>
 </resources>

@@ -55,7 +55,7 @@ fun LazyListScope.LinkPreviewList(
     }
     if (linkPreviewList.isEmpty()) return
     item {
-        Row(verticalAlignment = Alignment.CenterVertically, modifier = contentPadding.padding(bottom = 10.dp)) {
+        Row(verticalAlignment = Alignment.CenterVertically, modifier = contentPadding.padding(bottom = 8.dp)) {
             Text(
                 stringResource(R.string.Links),
                 style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.SemiBold, fontSize = 18.sp),
@@ -64,7 +64,7 @@ fun LazyListScope.LinkPreviewList(
         }
     }
     items(if (linkPreviewList.size > 3 && expanded.value) linkPreviewList.toList() else linkPreviewList.take(3)) { linkPreview ->
-        Box(contentPadding.padding(bottom = 8.dp)) {
+        Box(contentPadding.padding(bottom = 10.dp)) {
             LinkPreviewCard(linkPreview)
         }
     }

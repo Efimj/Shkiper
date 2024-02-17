@@ -284,12 +284,16 @@ class NotesViewModel @Inject constructor(
 
     fun setCurrentHashtag(newHashtag: String?) {
         if (newHashtag == screenState.value.currentHashtag) {
-            _screenState.value = screenState.value.copy(currentHashtag = null)
-            getNotes()
+            unsetSelectedHashtag()
         } else {
             _screenState.value = screenState.value.copy(currentHashtag = newHashtag)
             getNotesByHashtag(screenState.value.currentHashtag ?: "")
         }
+    }
+
+    private fun unsetSelectedHashtag() {
+        _screenState.value = screenState.value.copy(currentHashtag = null)
+        getNotes()
     }
 
     fun getNotesByHashtag(hashtag: String) {
@@ -298,6 +302,7 @@ class NotesViewModel @Inject constructor(
         notesFlowJob = viewModelScope.launch {
             noteRepository.getNotesByHashtag(notePosition, hashtag).collect() {
                 _screenState.value = _screenState.value.copy(notes = it)
+                if (it.isEmpty()) unsetSelectedHashtag()
             }
         }
     }
@@ -319,14 +324,10 @@ class NotesViewModel @Inject constructor(
             _screenState.value.copy(isCreateReminderDialogShow = !_screenState.value.isCreateReminderDialogShow)
     }
 
-    fun getReminder(noteId: ObjectId): Reminder? {
-        return reminderRepository.getReminderForNote(noteId)
-    }
-
     fun createReminder(date: LocalDate, time: LocalTime, repeatMode: RepeatMode) {
         if (DateHelper.isFutureDateTime(date, time)) {
             viewModelScope.launch {
-                reminderRepository.updateOrCreateReminderForNotes(
+                reminderRepository.createReminderForNotes(
                     noteRepository.getNotesFlow(screenState.value.selectedNotes.toList()),
                 ) { updatedReminder ->
                     updatedReminder.date = date
@@ -336,16 +337,6 @@ class NotesViewModel @Inject constructor(
             }
             switchReminderDialogShow()
         }
-    }
-
-    fun deleteSelectedReminder() {
-        if (screenState.value.selectedNotes.isEmpty()) return
-        viewModelScope.launch {
-            val reminder =
-                reminderRepository.getReminderForNote(screenState.value.selectedNotes.toList().first()) ?: return@launch
-            reminderRepository.deleteReminder(reminder._id)
-        }
-        switchReminderDialogShow()
     }
 
     private suspend fun showSnackbar(message: String, icon: ImageVector?) {

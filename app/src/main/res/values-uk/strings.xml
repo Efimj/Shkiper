@@ -202,4 +202,10 @@
     <string name="OpenSource">Відкритий код</string>
     <string name="OpenSourceDescription">Shkiper є відкритим кодом, і весь код опубліковано на GitHub</string>
 
+    <string name="CreateReminder">Створити нагадування</string>
+    <string name="NoReminders">Немає нагадувань</string>
+    <string name="DisableLinkPreviews">Вимкнути попередній перегляд посилань</string>
+    <string name="EnableLinkPreviews">Увімкнути попередній перегляд посилань</string>
+    <string name="Apply">Застосувати</string>
+
 </resources>

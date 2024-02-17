@@ -2,6 +2,9 @@
     <img src="./assets/icon-app.png"  width="25" />
     Shkiper
 </h1>
+<div align="center"> 
+ <img src="./assets/banner.png" />
+</div> 
 
 ## Description
 

@@ -22,9 +22,9 @@ class NotificationStorage(context: Context) {
         return findNotification(notifications, requestId)
     }
 
-    fun getNotification(noteId: String): NotificationData? {
+    fun getNotificationsForNote(noteId: String): List<NotificationData> {
         val notifications = getAll()
-        return findNotification(notifications, noteId)
+        return findNotificationsForNote(notifications, noteId)
     }
 
     fun save(notifications: List<NotificationData>) {
@@ -34,27 +34,33 @@ class NotificationStorage(context: Context) {
         editor.apply()
     }
 
-    fun addOrUpdate(notificationData: NotificationData) {
+    fun addOrUpdate(notificationsData: List<NotificationData>) {
         val notifications = getAll()
-        addOrUpdateElement(notifications, notificationData)
+        addOrUpdateElement(notifications, notificationsData)
         save(notifications)
     }
 
     fun updateNotificationTime(requestId: Int, trigger: Long, repeatMode: RepeatMode) {
         val notifications = getAll()
-        val newNotification = notifications.find { notification -> notification.requestCode == requestId }?.copy(
-            trigger = trigger,
-            repeatMode = repeatMode
-        ) ?: return
+        val currentNotifications = notifications.filter { notification -> notification.requestCode == requestId }
+        val newNotification = currentNotifications.map {
+            it.copy(
+                trigger = trigger,
+                repeatMode = repeatMode
+            )
+        }
         addOrUpdate(newNotification)
     }
 
     fun updateNotificationData(noteId: String, title: String, message: String) {
         val notifications = getAll()
-        val newNotification = notifications.find { notification -> notification.noteId == noteId }?.copy(
-            title = title,
-            message = message
-        ) ?: return
+        val currentNotifications = notifications.filter { notification -> notification.noteId == noteId }
+        val newNotification = currentNotifications.map {
+            it.copy(
+                title = title,
+                message = message
+            )
+        }
         addOrUpdate(newNotification)
     }
 
@@ -89,16 +95,11 @@ class NotificationStorage(context: Context) {
         return notification
     }
 
-    private fun findNotification(
+    private fun findNotificationsForNote(
         notifications: MutableList<NotificationData>,
         noteId: String
-    ): NotificationData? {
-        val index = notifications.indexOfFirst { it.noteId == noteId } // if exists
-        var notification: NotificationData? = null
-        if (index != -1) {
-            notification = notifications[index]
-        }
-        return notification
+    ): List<NotificationData> {
+        return notifications.filter { it.noteId == noteId }
     }
 
     private fun removeElement(list: MutableList<NotificationData>, element: NotificationData) {
@@ -127,13 +128,20 @@ class NotificationStorage(context: Context) {
         return requestId
     }
 
-    private fun addOrUpdateElement(list: MutableList<NotificationData>, element: NotificationData) {
-        val index = list.indexOfFirst { it.requestCode == element.requestCode } // if exists
+    private fun addOrUpdateElement(
+        oldNotificationsList: MutableList<NotificationData>,
+        newNotificationsList: List<NotificationData>
+    ) {
+        val newNotificationsMap = newNotificationsList.associateBy { it.requestCode }
 
-        if (index != -1) {
-            list[index] = element
-        } else {
-            list.add(element)
+        oldNotificationsList.replaceAll { oldNotification ->
+            newNotificationsMap[oldNotification.requestCode] ?: oldNotification
         }
+
+        val missingNotifications = newNotificationsList.filterNot { newNotification ->
+            oldNotificationsList.any { it.requestCode == newNotification.requestCode }
+        }
+
+        oldNotificationsList.addAll(missingNotifications)
     }
 }

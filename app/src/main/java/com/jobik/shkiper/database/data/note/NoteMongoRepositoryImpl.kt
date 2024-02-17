@@ -12,11 +12,9 @@ import com.jobik.shkiper.widgets.handlers.mapNoteToWidget
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.realm.kotlin.Realm
 import io.realm.kotlin.UpdatePolicy
-import io.realm.kotlin.ext.copyFromRealm
 import io.realm.kotlin.ext.query
 import io.realm.kotlin.query.Sort
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import org.mongodb.kbson.ObjectId
 
@@ -156,7 +154,7 @@ class NoteMongoRepositoryImpl(val realm: Realm, @ApplicationContext val context:
                 Log.d("NoteMongoRepositoryImpl", "${e.message}")
             }
         }
-        ReminderMongoRepositoryImpl(realm, context).deleteReminderForNote(id)
+        ReminderMongoRepositoryImpl(realm, context).deleteAllRemindersForNote(id)
     }
 
     override suspend fun deleteNote(ids: List<ObjectId>) {
@@ -175,7 +173,7 @@ class NoteMongoRepositoryImpl(val realm: Realm, @ApplicationContext val context:
         }
         for (id in ids) {
             try {
-                ReminderMongoRepositoryImpl(realm, context).deleteReminderForNote(id)
+                ReminderMongoRepositoryImpl(realm, context).deleteAllRemindersForNote(id)
             } catch (e: Exception) {
                 Log.d("NoteMongoRepositoryImpl - deleteNote", "${e.message}")
             }
@@ -196,11 +194,13 @@ class NoteMongoRepositoryImpl(val realm: Realm, @ApplicationContext val context:
         GlanceAppWidgetManager(context).mapNoteToWidget(context, newNote)
 
         val notificationScheduler = NotificationScheduler(context)
+        val noteIdString = newNote._id.toHexString()
+
         if (newNote.position == NotePosition.DELETE) {
-            notificationScheduler.cancelNotification(newNote._id.toHexString())
+            notificationScheduler.cancelNotificationsForNote(noteIdString)
         } else {
             notificationScheduler.updateNotificationData(
-                newNote._id.toHexString(),
+                noteIdString,
                 newNote.header,
                 newNote.body,
                 true
