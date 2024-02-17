@@ -3,17 +3,26 @@ package com.jobik.shkiper.screens.NoteListScreen.NoteListCalendarContent
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.DateRange
+import androidx.compose.material.icons.outlined.NotificationsOff
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.jobik.shkiper.R
 import com.jobik.shkiper.ui.components.layouts.CalendarDayView
 import com.jobik.shkiper.ui.components.layouts.CalendarDayViewRangeStyle
 import com.jobik.shkiper.ui.helpers.displayText
@@ -23,6 +32,7 @@ import com.kizitonwose.calendar.compose.ContentHeightMode
 import com.kizitonwose.calendar.compose.VerticalCalendar
 import com.kizitonwose.calendar.compose.rememberCalendarState
 import com.kizitonwose.calendar.core.*
+import kotlinx.coroutines.launch
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.format.TextStyle
@@ -50,18 +60,58 @@ fun FullScreenCalendar(viewModel: CalendarViewModel) {
         MainMenuButtonState.isButtonOpened.value = viewModel.screenState.value.fullScreenCalendarOpen
     }
 
-    Column(modifier = Modifier.background(CustomTheme.colors.secondaryBackground)) {
-        Header(daysOfWeek)
-        VerticalCalendar(
-            modifier = Modifier.fillMaxSize(),
-            state = state,
-            calendarScrollPaged = false,
-            contentHeightMode = ContentHeightMode.Wrap,
-            contentPadding = PaddingValues(vertical = 20.dp, horizontal = 20.dp),
-            dayContent = { day -> DayContent(day, viewModel) },
-            monthHeader = { month -> MonthHeader(month) },
-            monthBody = { _, content -> MonthBody(content) },
-        )
+    Box {
+        Column(modifier = Modifier.background(CustomTheme.colors.secondaryBackground)) {
+            Header(daysOfWeek)
+            VerticalCalendar(
+                modifier = Modifier.fillMaxSize(),
+                state = state,
+                calendarScrollPaged = false,
+                contentHeightMode = ContentHeightMode.Wrap,
+                contentPadding = PaddingValues(vertical = 20.dp, horizontal = 20.dp),
+                dayContent = { day -> DayContent(day, viewModel) },
+                monthHeader = { month -> MonthHeader(month) },
+                monthBody = { _, content -> MonthBody(content) },
+            )
+        }
+        Box(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(horizontal = 40.dp, vertical = 20.dp)
+        ) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Button(
+                    modifier = Modifier
+                        .heightIn(min = 50.dp)
+                        .widthIn(max = 350.dp)
+                        .fillMaxWidth(),
+                    shape = CustomTheme.shapes.small,
+                    colors = ButtonDefaults.buttonColors(
+                        contentColor = CustomTheme.colors.textOnActive,
+                        containerColor = CustomTheme.colors.active
+                    ),
+                    border = null,
+                    elevation = null,
+                    contentPadding = PaddingValues(horizontal = 15.dp),
+                    onClick = viewModel::switchFullScreenCalendarOpen
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.DateRange,
+                        contentDescription = stringResource(R.string.Confirm),
+                        tint = CustomTheme.colors.textOnActive
+                    )
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Text(
+                        text = stringResource(R.string.Apply),
+                        style = MaterialTheme.typography.body1,
+                        fontWeight = FontWeight.SemiBold,
+                        color = CustomTheme.colors.textOnActive,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
+            }
+        }
     }
 }
 
@@ -102,13 +152,13 @@ private fun inRange(date: LocalDate, range: Pair<LocalDate, LocalDate>): Calenda
     val isMonthStart = date.withDayOfMonth(1) == date
     val isMonthEnd = date.withDayOfMonth(date.month.length(date.isLeapYear)) == date
 
-    if(isDateEnd && isMonthStart) return null
-    if(isDateStart && isMonthEnd) return null
-    if(isWeekStart && isDateEnd) return null
-    if(isWeekEnd && isDateStart) return null
+    if (isDateEnd && isMonthStart) return null
+    if (isDateStart && isMonthEnd) return null
+    if (isWeekStart && isDateEnd) return null
+    if (isWeekEnd && isDateStart) return null
 
-    if(isWeekStart && isMonthEnd) return CalendarDayViewRangeStyle.Rounded
-    if(isWeekEnd && isMonthStart) return CalendarDayViewRangeStyle.Rounded
+    if (isWeekStart && isMonthEnd) return CalendarDayViewRangeStyle.Rounded
+    if (isWeekEnd && isMonthStart) return CalendarDayViewRangeStyle.Rounded
 
     if (isWeekStart || isMonthStart) return CalendarDayViewRangeStyle.LeftRound
     if (isWeekEnd || isMonthEnd) return CalendarDayViewRangeStyle.RightRound

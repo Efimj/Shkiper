@@ -225,6 +225,6 @@
     <string name="NoReminders">No reminders</string>
     <string name="DisableLinkPreviews">Disable link previews</string>
     <string name="EnableLinkPreviews">Enable link previews</string>
-
+    <string name="Apply">Apply</string>
 
 </resources>
