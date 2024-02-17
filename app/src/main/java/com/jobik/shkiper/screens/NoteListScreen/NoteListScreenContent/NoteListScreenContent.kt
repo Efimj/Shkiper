@@ -287,19 +287,10 @@ private fun NotesListContent(
 @Composable
 private fun CreateReminderContent(notesViewModel: NotesViewModel) {
     if (notesViewModel.screenState.value.isCreateReminderDialogShow) {
-        val reminder =
-            remember {
-                if (notesViewModel.screenState.value.selectedNotes.size == 1)
-                    notesViewModel.getReminder(notesViewModel.screenState.value.selectedNotes.first()) else null
-            }
-        val reminderDialogProperties = remember {
-            if (reminder != null) ReminderDialogProperties(reminder.date, reminder.time, reminder.repeat)
-            else ReminderDialogProperties()
-        }
         CreateReminderDialog(
-            reminderDialogProperties = reminderDialogProperties,
+            reminderDialogProperties = ReminderDialogProperties(),
             onGoBack = notesViewModel::switchReminderDialogShow,
-            onDelete = if (reminder != null) notesViewModel::deleteSelectedReminder else null,
+            onDelete = null,
             onSave = notesViewModel::createReminder,
         )
     }

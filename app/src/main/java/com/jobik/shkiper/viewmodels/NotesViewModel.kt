@@ -324,34 +324,19 @@ class NotesViewModel @Inject constructor(
             _screenState.value.copy(isCreateReminderDialogShow = !_screenState.value.isCreateReminderDialogShow)
     }
 
-    fun getReminder(noteId: ObjectId): Reminder? {
-//        return reminderRepository.getRemindersForNote(noteId)
-        return null
-    }
-
     fun createReminder(date: LocalDate, time: LocalTime, repeatMode: RepeatMode) {
-//        if (DateHelper.isFutureDateTime(date, time)) {
-//            viewModelScope.launch {
-//                reminderRepository.updateOrCreateReminderForNotes(
-//                    noteRepository.getNotesFlow(screenState.value.selectedNotes.toList()),
-//                ) { updatedReminder ->
-//                    updatedReminder.date = date
-//                    updatedReminder.time = time
-//                    updatedReminder.repeat = repeatMode
-//                }
-//            }
-//            switchReminderDialogShow()
-//        }
-    }
-
-    fun deleteSelectedReminder() {
-//        if (screenState.value.selectedNotes.isEmpty()) return
-//        viewModelScope.launch {
-//            val reminder =
-//                reminderRepository.getRemindersForNote(screenState.value.selectedNotes.toList().first()) ?: return@launch
-//            reminderRepository.deleteReminder(reminder._id)
-//        }
-//        switchReminderDialogShow()
+        if (DateHelper.isFutureDateTime(date, time)) {
+            viewModelScope.launch {
+                reminderRepository.createReminderForNotes(
+                    noteRepository.getNotesFlow(screenState.value.selectedNotes.toList()),
+                ) { updatedReminder ->
+                    updatedReminder.date = date
+                    updatedReminder.time = time
+                    updatedReminder.repeat = repeatMode
+                }
+            }
+            switchReminderDialogShow()
+        }
     }
 
     private suspend fun showSnackbar(message: String, icon: ImageVector?) {

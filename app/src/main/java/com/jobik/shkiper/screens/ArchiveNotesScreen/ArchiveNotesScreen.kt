@@ -184,22 +184,14 @@ private fun ScreenContent(
         }
     }
     if (notesViewModel.screenState.value.isCreateReminderDialogShow) {
-        val reminder =
-            remember {
-                if (notesViewModel.screenState.value.selectedNotes.size == 1)
-                    notesViewModel.getReminder(notesViewModel.screenState.value.selectedNotes.first()) else null
-            }
-        val reminderDialogProperties = remember {
-            if (reminder != null) ReminderDialogProperties(reminder.date, reminder.time, reminder.repeat)
-            else ReminderDialogProperties()
+        if (notesViewModel.screenState.value.isCreateReminderDialogShow) {
+            CreateReminderDialog(
+                reminderDialogProperties = ReminderDialogProperties(),
+                onGoBack = notesViewModel::switchReminderDialogShow,
+                onDelete = null,
+                onSave = notesViewModel::createReminder,
+            )
         }
-        CreateReminderDialog(
-            reminderDialogProperties = reminderDialogProperties,
-            onGoBack = notesViewModel::switchReminderDialogShow,
-            onDelete = if (reminder != null) notesViewModel::deleteSelectedReminder else null,
-            onSave = notesViewModel::createReminder,
-        )
-
     }
 }
 
