@@ -103,6 +103,7 @@ fun CalendarDayView(
     day: WeekDay,
     isSelected: Boolean,
     showIndicator: Boolean = false,
+    rangeStyle: CalendarDayViewRangeStyle? = null,
     onClick: (WeekDay) -> Unit
 ) {
     val dateNow = LocalDate.now()
@@ -116,6 +117,7 @@ fun CalendarDayView(
             enabled = isDateCurrentOrFuture,
             onClick = { onClick(day) },
             day = day.date,
+            rangeStyle = rangeStyle,
             showIndicator = showIndicator
         )
 
