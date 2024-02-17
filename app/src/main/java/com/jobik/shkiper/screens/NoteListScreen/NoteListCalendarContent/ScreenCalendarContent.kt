@@ -9,6 +9,9 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Description
+import androidx.compose.material.icons.outlined.NotificationsNone
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -33,6 +36,7 @@ import com.jobik.shkiper.ui.components.buttons.HashtagButton
 import com.jobik.shkiper.ui.components.cards.NoteCard
 import com.jobik.shkiper.ui.components.layouts.CalendarDayView
 import com.jobik.shkiper.ui.components.layouts.LazyGridNotes
+import com.jobik.shkiper.ui.components.layouts.ScreenContentIfNoData
 import com.jobik.shkiper.ui.helpers.UpdateStatusBarColor
 import com.jobik.shkiper.ui.helpers.displayText
 import com.jobik.shkiper.ui.helpers.rememberNextReminder
@@ -44,10 +48,7 @@ import com.kizitonwose.calendar.compose.rememberCalendarState
 import com.kizitonwose.calendar.core.OutDateStyle
 import com.kizitonwose.calendar.core.daysOfWeek
 import com.kizitonwose.calendar.core.yearMonth
-import me.onebone.toolbar.CollapsingToolbarScaffold
-import me.onebone.toolbar.ScrollStrategy
-import me.onebone.toolbar.SnapConfig
-import me.onebone.toolbar.rememberCollapsingToolbarScaffoldState
+import me.onebone.toolbar.*
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -60,7 +61,6 @@ fun ScreenCalendarContent(
     viewModel: CalendarViewModel,
     onSlideBack: () -> Unit,
 ) {
-    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route ?: ""
     val collapsingToolbarScaffold = rememberCollapsingToolbarScaffoldState()
 
     UpdateStatusBarColor(current = CustomTheme.colors.secondaryBackground)
@@ -71,71 +71,100 @@ fun ScreenCalendarContent(
         topComponent = {
             FullScreenCalendar(viewModel)
         }) {
-        CollapsingToolbarScaffold(
-            modifier = Modifier.fillMaxSize(),
-            state = collapsingToolbarScaffold,
-            scrollStrategy = ScrollStrategy.EnterAlways,
-            enabledWhenBodyUnfilled = false,
-            snapConfig = SnapConfig(), // "collapseThreshold = 0.5" by default
-            toolbar = {
-                ScreenCalendarTopBar(viewModel = viewModel, onSlideBack = onSlideBack)
-            }
-        ) {
-            val pinnedNotes =
-                remember(viewModel.screenState.value.notes) { viewModel.screenState.value.notes.filter { it.isPinned } }
-            val unpinnedNotes =
-                remember(viewModel.screenState.value.notes) { viewModel.screenState.value.notes.filterNot { it.isPinned } }
+        ScreenContent(collapsingToolbarScaffold, viewModel, onSlideBack, navController)
+    }
+}
 
-            LazyGridNotes(
-                contentPadding = PaddingValues(10.dp, 15.dp, 10.dp, 80.dp),
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                if (viewModel.screenState.value.hashtags.isNotEmpty())
-                    item(span = StaggeredGridItemSpan.FullLine) {
-                        LazyRow(
-                            modifier = Modifier
-                                .wrapContentSize(unbounded = true)
-                                .width(LocalConfiguration.current.screenWidthDp.dp),
-                            state = rememberLazyListState(),
-                            contentPadding = PaddingValues(10.dp, 0.dp, 10.dp, 0.dp)
-                        ) {
-                            items(items = viewModel.screenState.value.hashtags.toList()) { item ->
-                                HashtagButton(item, item == viewModel.screenState.value.currentHashtag) {
-                                    viewModel.setCurrentHashtag(
-                                        item
-                                    )
-                                }
-                            }
-                        }
-                    }
-                if (pinnedNotes.isNotEmpty()) {
-                    item(span = StaggeredGridItemSpan.FullLine) {
-                        Column {
-                            Text(
-                                text = stringResource(R.string.Pinned),
-                                color = CustomTheme.colors.textSecondary,
-                                style = MaterialTheme.typography.body1.copy(fontSize = 17.sp),
-                                modifier = Modifier.padding(horizontal = 10.dp)
+@Composable
+private fun ScreenContent(
+    collapsingToolbarScaffold: CollapsingToolbarScaffoldState,
+    viewModel: CalendarViewModel,
+    onSlideBack: () -> Unit,
+    navController: NavController
+) {
+    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route ?: ""
+
+    CollapsingToolbarScaffold(
+        modifier = Modifier.fillMaxSize(),
+        state = collapsingToolbarScaffold,
+        scrollStrategy = ScrollStrategy.EnterAlways,
+        enabledWhenBodyUnfilled = false,
+        snapConfig = SnapConfig(), // "collapseThreshold = 0.5" by default
+        toolbar = {
+            ScreenCalendarTopBar(viewModel = viewModel, onSlideBack = onSlideBack)
+        }
+    ) {
+        if (viewModel.screenState.value.notes.isEmpty())
+            ScreenContentIfNoData(
+                modifier = Modifier.heightIn(max = 350.dp),
+                title = R.string.NoReminders,
+                icon = Icons.Outlined.NotificationsNone
+            )
+        else {
+            NoteListContent(viewModel, currentRoute, navController)
+        }
+    }
+}
+
+@Composable
+private fun NoteListContent(
+    viewModel: CalendarViewModel,
+    currentRoute: String,
+    navController: NavController
+) {
+    val pinnedNotes =
+        remember(viewModel.screenState.value.notes) { viewModel.screenState.value.notes.filter { it.isPinned } }
+    val unpinnedNotes =
+        remember(viewModel.screenState.value.notes) { viewModel.screenState.value.notes.filterNot { it.isPinned } }
+
+    LazyGridNotes(
+        contentPadding = PaddingValues(10.dp, 15.dp, 10.dp, 80.dp),
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        if (viewModel.screenState.value.hashtags.isNotEmpty())
+            item(span = StaggeredGridItemSpan.FullLine) {
+                LazyRow(
+                    modifier = Modifier
+                        .wrapContentSize(unbounded = true)
+                        .width(LocalConfiguration.current.screenWidthDp.dp),
+                    state = rememberLazyListState(),
+                    contentPadding = PaddingValues(10.dp, 0.dp, 10.dp, 0.dp)
+                ) {
+                    items(items = viewModel.screenState.value.hashtags.toList()) { item ->
+                        HashtagButton(item, item == viewModel.screenState.value.currentHashtag) {
+                            viewModel.setCurrentHashtag(
+                                item
                             )
                         }
                     }
-                    items(items = pinnedNotes) { item ->
-                        NoteContent(item, viewModel, currentRoute, navController)
-                    }
                 }
-                if (unpinnedNotes.isNotEmpty()) {
-                    item(span = StaggeredGridItemSpan.FullLine) {
-                        Text(
-                            stringResource(R.string.Other),
-                            color = CustomTheme.colors.textSecondary,
-                            style = MaterialTheme.typography.body1.copy(fontSize = 17.sp),
-                            modifier = Modifier.padding(horizontal = 10.dp)
-                        )
-                    }
-                    items(items = unpinnedNotes) { item ->
-                        NoteContent(item, viewModel, currentRoute, navController)
-                    }
+            }
+        if (pinnedNotes.isNotEmpty()) {
+            item(span = StaggeredGridItemSpan.FullLine) {
+                Column {
+                    Text(
+                        text = stringResource(R.string.Pinned),
+                        color = CustomTheme.colors.textSecondary,
+                        style = MaterialTheme.typography.body1.copy(fontSize = 17.sp),
+                        modifier = Modifier.padding(horizontal = 10.dp)
+                    )
                 }
+            }
+            items(items = pinnedNotes) { item ->
+                NoteContent(item, viewModel, currentRoute, navController)
+            }
+        }
+        if (unpinnedNotes.isNotEmpty()) {
+            item(span = StaggeredGridItemSpan.FullLine) {
+                Text(
+                    stringResource(R.string.Other),
+                    color = CustomTheme.colors.textSecondary,
+                    style = MaterialTheme.typography.body1.copy(fontSize = 17.sp),
+                    modifier = Modifier.padding(horizontal = 10.dp)
+                )
+            }
+            items(items = unpinnedNotes) { item ->
+                NoteContent(item, viewModel, currentRoute, navController)
             }
         }
     }
