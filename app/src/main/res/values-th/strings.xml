@@ -359,4 +359,10 @@
     <string name="OpenSource">โอเพ่นซอร์ส</string>
     <string name="OpenSourceDescription">Shkiper เป็นโอเพ่นซอร์ส และโค้ดทั้งหมดได้รับการเผยแพร่บน GitHub</string>
 
+    <string name="CreateReminder">สร้างการช่วยเตือน</string>
+    <string name="NoReminders">ไม่มีการช่วยเตือน</string>
+    <string name="DisableLinkPreviews">ปิดใช้งานการแสดงตัวอย่างลิงก์</string>
+    <string name="EnableLinkPreviews">เปิดใช้งานการแสดงตัวอย่างลิงก์</string>
+    <string name="Apply">นำมาใช้</string>
+
 </resources>

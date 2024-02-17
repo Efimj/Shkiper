@@ -363,4 +363,10 @@
     <string name="OpenSource">开源</string>
     <string name="OpenSourceDescription">Shkiper 是开源的，整个代码发布在 GitHub 上</string>
 
+    <string name="CreateReminder">创建提醒</string>
+    <string name="NoReminders">无提醒</string>
+    <string name="DisableLinkPreviews">禁用链接预览</string>
+    <string name="EnableLinkPreviews">启用链接预览</string>
+    <string name="Apply">申请</string>
+
 </resources>

@@ -358,4 +358,11 @@
     <string name="MadeWithLoveDescription">Beri tahu teman Anda tentang aplikasi tersebut atau dukung pengembang dengan koin sejenis.</string>
     <string name="OpenSource">Sumber Terbuka</string>
     <string name="OpenSourceDescription">Shkiper adalah sumber terbuka, dan seluruh kode dipublikasikan di GitHub</string>
+
+    <string name="CreateReminder">Buat pengingat</string>
+    <string name="NoReminders">Tidak ada pengingat</string>
+    <string name="DisableLinkPreviews">Nonaktifkan pratinjau tautan</string>
+    <string name="EnableLinkPreviews">Aktifkan pratinjau tautan</string>
+    <string name="Apply">Menerapkan</string>
+
 </resources>
