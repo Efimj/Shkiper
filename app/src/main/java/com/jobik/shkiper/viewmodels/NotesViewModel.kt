@@ -36,7 +36,6 @@ import javax.inject.Inject
 data class NotesScreenState(
     val isNotesInitialized: Boolean = false,
     val notes: List<Note> = emptyList(),
-    val lastCreatedNoteId: String = "",
     val searchText: String = "",
     val selectedNotes: Set<ObjectId> = emptySet(),
     val hashtags: Set<String> = emptySet(),
@@ -226,18 +225,6 @@ class NotesViewModel @Inject constructor(
                 icon = Icons.Default.Undo
             )
         }
-    }
-
-    fun createNewNote() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val newNote = Note()
-            noteRepository.insertNote(newNote)
-            _screenState.value = screenState.value.copy(lastCreatedNoteId = newNote._id.toHexString())
-        }
-    }
-
-    fun clearLastCreatedNote() {
-        _screenState.value = screenState.value.copy(lastCreatedNoteId = "")
     }
 
     fun clickOnNote(note: Note, currentRoute: String, navController: NavController) {

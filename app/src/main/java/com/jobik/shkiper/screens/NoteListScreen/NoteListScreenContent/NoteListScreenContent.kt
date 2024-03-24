@@ -1,10 +1,7 @@
 package com.jobik.shkiper.screens.NoteListScreen.NoteListScreenContent
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.*
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -19,7 +16,6 @@ import androidx.compose.material.icons.outlined.Description
 import androidx.compose.material.icons.outlined.Event
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
@@ -34,8 +30,6 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.jobik.shkiper.R
-import com.jobik.shkiper.navigation.AppScreens
-import com.jobik.shkiper.ui.components.buttons.FloatingActionButton
 import com.jobik.shkiper.ui.components.buttons.HashtagButton
 import com.jobik.shkiper.ui.components.cards.NoteCard
 import com.jobik.shkiper.ui.components.fields.SearchBar
@@ -79,8 +73,7 @@ fun NoteListScreenContent(
 
     BackHandlerIfSelectedNotes(viewModel)
     IfSelectedNotesChanged(viewModel, offsetX, actionBarHeightPx)
-    IfScrollingImposible(lazyGridNotes, searchBarOffsetHeightPx)
-    WhenUserCreateNewNote(viewModel, navController)
+    IfScrollingImpossible(lazyGridNotes, searchBarOffsetHeightPx)
 
     Box(
         Modifier
@@ -105,46 +98,29 @@ fun NoteListScreenContent(
             )
             NoteListScreenActionBar(actionBarHeight, offsetX, viewModel)
         }
-        Box(
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(35.dp)
-        ) {
-            AnimatedVisibility(
-                viewModel.screenState.value.selectedNotes.isEmpty(),
-                enter = fadeIn(tween(200, easing = LinearOutSlowInEasing)),
-                exit = fadeOut(tween(200, easing = FastOutSlowInEasing)),
-            ) {
-                FloatingActionButton(isActive = viewModel.screenState.value.selectedNotes.isEmpty()) {
-                    viewModel.createNewNote()
-                }
-            }
-        }
+//        Box(
+//            modifier = Modifier
+//                .align(Alignment.BottomEnd)
+//                .padding(35.dp)
+//        ) {
+//            AnimatedVisibility(
+//                viewModel.screenState.value.selectedNotes.isEmpty(),
+//                enter = fadeIn(tween(200, easing = LinearOutSlowInEasing)),
+//                exit = fadeOut(tween(200, easing = FastOutSlowInEasing)),
+//            ) {
+//                FloatingActionButton(isActive = viewModel.screenState.value.selectedNotes.isEmpty()) {
+//                    viewModel.createNewNote()
+//                }
+//            }
+//        }
     }
 
     NoteListScreenReminderCheck(viewModel)
     CreateReminderContent(viewModel)
 }
 
-
 @Composable
-private fun WhenUserCreateNewNote(
-    notesViewModel: NotesViewModel,
-    navController: NavController
-) {
-    /**
-     * LaunchedEffect when new note created.
-     */
-    LaunchedEffect(notesViewModel.screenState.value.lastCreatedNoteId) {
-        if (notesViewModel.screenState.value.lastCreatedNoteId.isNotEmpty()) {
-            navController.navigate(AppScreens.Note.noteId(notesViewModel.screenState.value.lastCreatedNoteId))
-            notesViewModel.clearLastCreatedNote()
-        }
-    }
-}
-
-@Composable
-private fun IfScrollingImposible(
+private fun IfScrollingImpossible(
     lazyGridNotes: LazyStaggeredGridState,
     searchBarOffsetHeightPx: MutableState<Float>
 ) {

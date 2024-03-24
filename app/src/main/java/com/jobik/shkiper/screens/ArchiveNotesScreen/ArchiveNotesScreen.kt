@@ -108,16 +108,6 @@ fun ArchiveNotesScreen(navController: NavController, archiveViewModel: NotesView
         }
     }
 
-    /**
-     * LaunchedEffect when new note created.
-     */
-    LaunchedEffect(archiveViewModel.screenState.value.lastCreatedNoteId) {
-        if (archiveViewModel.screenState.value.lastCreatedNoteId.isNotEmpty()) {
-            navController.navigate(AppScreens.Note.noteId(archiveViewModel.screenState.value.lastCreatedNoteId))
-            archiveViewModel.clearLastCreatedNote()
-        }
-    }
-
     Box(
         Modifier
             .fillMaxSize()

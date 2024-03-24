@@ -21,7 +21,7 @@ private fun ScreenLayout(
     startDestination: String = AppScreens.NoteList.route,
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
-        NavigationScreenContainer(
+        ScreenWrapper(
             navController = navController,
             startDestination = startDestination
         )

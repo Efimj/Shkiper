@@ -21,7 +21,7 @@ import com.jobik.shkiper.screens.AppLayout.NavigationBar.AppNavigationBarState
 
 @Composable
 @OptIn(ExperimentalAnimationApi::class)
-fun NavigationScreenContainer(navController: NavHostController, startDestination: String) {
+fun ScreenWrapper(navController: NavHostController, startDestination: String) {
 
     val connection = remember {
         object : NestedScrollConnection {

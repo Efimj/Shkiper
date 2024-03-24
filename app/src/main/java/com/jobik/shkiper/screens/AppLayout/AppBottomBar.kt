@@ -1,5 +1,6 @@
 package com.jobik.shkiper.screens.AppLayout
 
+import android.app.Application
 import androidx.compose.animation.*
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
@@ -21,9 +22,16 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.jobik.shkiper.R
+import com.jobik.shkiper.database.data.note.NoteMongoRepository
+import com.jobik.shkiper.database.data.reminder.ReminderMongoRepository
+import com.jobik.shkiper.database.models.Note
 import com.jobik.shkiper.database.models.NotePosition
 import com.jobik.shkiper.navigation.AppScreens
 import com.jobik.shkiper.navigation.NavigationHelpers.Companion.canNavigate
@@ -32,6 +40,12 @@ import com.jobik.shkiper.screens.AppLayout.NavigationBar.CustomBottomNavigation
 import com.jobik.shkiper.screens.AppLayout.NavigationBar.CustomBottomNavigationItem
 import com.jobik.shkiper.screens.AppLayout.NavigationBar.DefaultNavigationValues
 import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.viewmodels.NotesViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import org.mongodb.kbson.ObjectId
+import javax.inject.Inject
 
 @Composable
 fun BoxScope.BottomAppBar(
@@ -81,33 +95,58 @@ fun BoxScope.BottomAppBar(
                 Navigation(
                     navController = navController
                 )
-                AnimatedVisibility(visible = currentRouteName == AppScreens.NoteList.route) {
-                    Row(modifier = Modifier.height(DefaultNavigationValues().containerHeight)) {
-                        Spacer(modifier = Modifier.width(10.dp))
-                        Row(
-                            modifier = Modifier
-                                .aspectRatio(1f)
-                                .clip(shape = MaterialTheme.shapes.small)
-                                .border(
-                                    width = 1.dp,
-                                    color = CustomTheme.colors.mainBackground,
-                                    shape = MaterialTheme.shapes.small
-                                )
-                                .background(CustomTheme.colors.active)
-                                .clickable {
+                CreateNoteFAN(navController = navController)
+            }
+        }
+    }
+}
 
-                                },
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.Center
-                        ) {
-                            Icon(
-                                imageVector = Icons.Outlined.Add,
-                                contentDescription = stringResource(R.string.CreateNote),
-                                tint = CustomTheme.colors.textOnActive,
-                            )
+@HiltViewModel
+class BottomBarViewModel @Inject constructor(
+    private val noteRepository: NoteMongoRepository,
+) : ViewModel() {
+    suspend fun createNewNote(): ObjectId {
+        val newNote = Note()
+        noteRepository.insertNote(newNote)
+        return newNote._id
+    }
+}
+
+@Composable
+private fun RowScope.CreateNoteFAN(
+    navController: NavHostController,
+    viewModel: BottomBarViewModel = hiltViewModel<BottomBarViewModel>()
+) {
+    val currentRouteName = navController.currentBackStackEntryAsState().value?.destination?.route
+    val scope = rememberCoroutineScope()
+
+    AnimatedVisibility(visible = currentRouteName == AppScreens.NoteList.route) {
+        Row(modifier = Modifier.height(DefaultNavigationValues().containerHeight)) {
+            Spacer(modifier = Modifier.width(10.dp))
+            Row(
+                modifier = Modifier
+                    .aspectRatio(1f)
+                    .clip(shape = MaterialTheme.shapes.small)
+                    .border(
+                        width = 1.dp,
+                        color = CustomTheme.colors.mainBackground,
+                        shape = MaterialTheme.shapes.small
+                    )
+                    .background(CustomTheme.colors.active)
+                    .clickable {
+                        scope.launch {
+                            val noteId = viewModel.createNewNote()
+                            navController.navigate(AppScreens.Note.noteId(noteId.toHexString()))
                         }
-                    }
-                }
+                    },
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Add,
+                    contentDescription = stringResource(R.string.CreateNote),
+                    tint = CustomTheme.colors.textOnActive,
+                )
             }
         }
     }
