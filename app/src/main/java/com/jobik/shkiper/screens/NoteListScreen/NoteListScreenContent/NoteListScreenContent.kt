@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.jobik.shkiper.R
+import com.jobik.shkiper.screens.AppLayout.NavigationBar.AppNavigationBarState
 import com.jobik.shkiper.ui.components.buttons.HashtagButton
 import com.jobik.shkiper.ui.components.cards.NoteCard
 import com.jobik.shkiper.ui.components.fields.SearchBar
@@ -40,6 +41,7 @@ import com.jobik.shkiper.ui.components.layouts.LazyGridNotes
 import com.jobik.shkiper.ui.components.layouts.ScreenContentIfNoData
 import com.jobik.shkiper.ui.components.modals.CreateReminderDialog
 import com.jobik.shkiper.ui.components.modals.ReminderDialogProperties
+import com.jobik.shkiper.ui.helpers.Keyboard
 import com.jobik.shkiper.ui.helpers.rememberNextReminder
 import com.jobik.shkiper.ui.theme.CustomTheme
 import com.jobik.shkiper.viewmodels.NotesViewModel
@@ -98,21 +100,6 @@ fun NoteListScreenContent(
             )
             NoteListScreenActionBar(actionBarHeight, offsetX, viewModel)
         }
-//        Box(
-//            modifier = Modifier
-//                .align(Alignment.BottomEnd)
-//                .padding(35.dp)
-//        ) {
-//            AnimatedVisibility(
-//                viewModel.screenState.value.selectedNotes.isEmpty(),
-//                enter = fadeIn(tween(200, easing = LinearOutSlowInEasing)),
-//                exit = fadeOut(tween(200, easing = FastOutSlowInEasing)),
-//            ) {
-//                FloatingActionButton(isActive = viewModel.screenState.value.selectedNotes.isEmpty()) {
-//                    viewModel.createNewNote()
-//                }
-//            }
-//        }
     }
 
     NoteListScreenReminderCheck(viewModel)
