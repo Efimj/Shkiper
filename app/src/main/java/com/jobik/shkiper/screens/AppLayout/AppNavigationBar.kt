@@ -28,11 +28,8 @@ data class CustomBottomNavigationItem(
 )
 
 data class DefaultNavigationValues(
-    val buttonSize: Dp = 50.dp,
-    val iconSize: Dp = 26.dp,
-    val containerPaddings: Dp = 8.dp,
-    val containerHeight: Dp = containerPaddings * 2 + buttonSize
-    )
+    val containerHeight: Dp = 64.dp
+)
 
 @Composable
 fun CustomBottomNavigationItem(properties: CustomBottomNavigationItem) {
@@ -46,7 +43,7 @@ fun CustomBottomNavigationItem(properties: CustomBottomNavigationItem) {
 
     Row(
         modifier = Modifier
-            .height(DefaultNavigationValues().buttonSize)
+            .fillMaxHeight()
             .aspectRatio(1f)
             .clip(shape = MaterialTheme.shapes.small)
             .background(backgroundColor.value)
@@ -60,8 +57,6 @@ fun CustomBottomNavigationItem(properties: CustomBottomNavigationItem) {
             imageVector = properties.icon,
             contentDescription = stringResource(properties.description),
             tint = contentColor.value,
-            modifier = Modifier
-                .size(DefaultNavigationValues().iconSize)
         )
     }
 }
@@ -70,10 +65,11 @@ fun CustomBottomNavigationItem(properties: CustomBottomNavigationItem) {
 fun CustomBottomNavigation(items: List<CustomBottomNavigationItem>) {
     Row(
         modifier = Modifier
+            .height(DefaultNavigationValues().containerHeight)
             .clip(shape = MaterialTheme.shapes.small)
             .border(width = 1.dp, color = CustomTheme.colors.mainBackground, shape = MaterialTheme.shapes.small)
             .background(CustomTheme.colors.secondaryBackground)
-            .padding(DefaultNavigationValues().containerPaddings),
+            .padding(6.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(6.dp)
     ) {
