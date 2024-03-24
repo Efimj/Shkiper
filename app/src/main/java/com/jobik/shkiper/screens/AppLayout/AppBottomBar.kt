@@ -1,6 +1,6 @@
 package com.jobik.shkiper.screens.AppLayout
 
-import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.*
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.spring
@@ -52,60 +52,60 @@ fun BoxScope.BottomAppBar(
         }
     }
 
-    val offsetY by animateDpAsState(
-        if (AppNavigationBarState.isVisible.value) 0.dp else containerHeight,
-        animationSpec = spring(stiffness = Spring.StiffnessMedium), label = "offsetY"
-    )
-
-    Box(
-        modifier = Modifier
-            .onGloballyPositioned { coordinates ->
-                // Set screen height using the LayoutCoordinates
-                containerHeight = with(localDensity) { coordinates.size.height.toDp() }
-            }
-            .offset(y = offsetY)
-            .align(Alignment.BottomCenter)
-            .fillMaxWidth()
-            .background(
-                Brush.verticalGradient(
-                    0F to CustomTheme.colors.mainBackground.copy(alpha = 0.0F),
-                    0.8F to CustomTheme.colors.mainBackground.copy(alpha = 1F)
-                )
-            ),
-        contentAlignment = Alignment.BottomCenter
+    AnimatedVisibility(
+        modifier = Modifier.align(Alignment.BottomCenter),
+        visible = AppNavigationBarState.isVisible.value,
+        enter = slideInVertically { it },
+        exit = slideOutVertically { it }
     ) {
-        Row(
+        Box(
             modifier = Modifier
+                .onGloballyPositioned { coordinates ->
+                    // Set screen height using the LayoutCoordinates
+                    containerHeight = with(localDensity) { coordinates.size.height.toDp() }
+                }
                 .fillMaxWidth()
-                .padding(bottom = 20.dp), horizontalArrangement = Arrangement.Center
+                .background(
+                    Brush.verticalGradient(
+                        0F to CustomTheme.colors.mainBackground.copy(alpha = 0.0F),
+                        0.8F to CustomTheme.colors.mainBackground.copy(alpha = 1F)
+                    )
+                ),
+            contentAlignment = Alignment.BottomCenter
         ) {
-            Navigation(
-                navController = navController
-            )
-            AnimatedVisibility(visible = currentRouteName == AppScreens.NoteList.route) {
-                Row(modifier = Modifier.height(DefaultNavigationValues().containerHeight)) {
-                    Spacer(modifier = Modifier.width(10.dp))
-                    Row(
-                        modifier = Modifier
-                            .aspectRatio(1f)
-                            .clip(shape = MaterialTheme.shapes.small)
-                            .border(
-                                width = 1.dp,
-                                color = CustomTheme.colors.mainBackground,
-                                shape = MaterialTheme.shapes.small
-                            )
-                            .background(CustomTheme.colors.active)
-                            .clickable {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 20.dp), horizontalArrangement = Arrangement.Center
+            ) {
+                Navigation(
+                    navController = navController
+                )
+                AnimatedVisibility(visible = currentRouteName == AppScreens.NoteList.route) {
+                    Row(modifier = Modifier.height(DefaultNavigationValues().containerHeight)) {
+                        Spacer(modifier = Modifier.width(10.dp))
+                        Row(
+                            modifier = Modifier
+                                .aspectRatio(1f)
+                                .clip(shape = MaterialTheme.shapes.small)
+                                .border(
+                                    width = 1.dp,
+                                    color = CustomTheme.colors.mainBackground,
+                                    shape = MaterialTheme.shapes.small
+                                )
+                                .background(CustomTheme.colors.active)
+                                .clickable {
 
-                            },
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        Icon(
-                            imageVector = Icons.Outlined.Add,
-                            contentDescription = stringResource(R.string.CreateNote),
-                            tint = CustomTheme.colors.textOnActive,
-                        )
+                                },
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            Icon(
+                                imageVector = Icons.Outlined.Add,
+                                contentDescription = stringResource(R.string.CreateNote),
+                                tint = CustomTheme.colors.textOnActive,
+                            )
+                        }
                     }
                 }
             }
