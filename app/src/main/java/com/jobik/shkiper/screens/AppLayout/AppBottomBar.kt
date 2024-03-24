@@ -5,6 +5,7 @@ import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
@@ -15,7 +16,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -29,17 +34,30 @@ import com.jobik.shkiper.util.MainMenuButtonState
 
 @Composable
 fun BoxScope.AppBottomBar(
+    screenModifier: Modifier,
     navController: NavHostController,
 ) {
     val currentRouteName = navController.currentBackStackEntryAsState().value?.destination?.route
-
     val currentRouteWithoutSecondaryRoutes =
         (navController.currentBackStackEntryAsState().value?.destination?.route ?: "").substringBefore("/")
+    val isSecondaryScreen = AppScreens.SecondaryRoutes.isSecondaryRoute(currentRouteWithoutSecondaryRoutes)
 
-    LaunchedEffect(currentRouteWithoutSecondaryRoutes) {
-        MainMenuButtonState.isButtonOpened.value =
-            AppScreens.SecondaryRoutes.isSecondaryRoute(currentRouteWithoutSecondaryRoutes)
+    MainMenuButtonState.isButtonOpened.value = isSecondaryScreen
+
+    val connection = remember {
+        object : NestedScrollConnection {
+            override fun onPreScroll(
+                available: Offset,
+                source: NestedScrollSource
+            ): Offset {
+
+
+                return super.onPreScroll(available, source)
+            }
+        }
     }
+
+    screenModifier.nestedScroll(connection)
 
     val offsetY by animateDpAsState(
         if (MainMenuButtonState.isButtonOpened.value) (DefaultNavigationValues().containerHeight) else 0.dp,
@@ -68,13 +86,17 @@ fun BoxScope.AppBottomBar(
                 navController = navController
             )
             AnimatedVisibility(visible = currentRouteName == AppScreens.NoteList.route) {
-                Row {
+                Row(modifier = Modifier.height(DefaultNavigationValues().containerHeight)) {
                     Spacer(modifier = Modifier.width(10.dp))
                     Row(
                         modifier = Modifier
-                            .height(DefaultNavigationValues().containerHeight - 1.dp)
-                            .width(DefaultNavigationValues().containerHeight - 1.dp)
+                            .aspectRatio(1f)
                             .clip(shape = MaterialTheme.shapes.small)
+                            .border(
+                                width = 1.dp,
+                                color = CustomTheme.colors.mainBackground,
+                                shape = MaterialTheme.shapes.small
+                            )
                             .background(CustomTheme.colors.active)
                             .clickable {
 

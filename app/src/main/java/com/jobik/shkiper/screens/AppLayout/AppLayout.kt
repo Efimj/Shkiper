@@ -20,9 +20,15 @@ private fun ScreenLayout(
     navController: NavHostController,
     startDestination: String = AppScreens.NoteList.route,
 ) {
+    val screenContainerModifier = Modifier
+
     Box(modifier = Modifier.fillMaxSize()) {
-        NavigationScreenContainer(navController, startDestination)
-        AppBottomBar(navController)
+        NavigationScreenContainer(
+            modifier = screenContainerModifier,
+            navController = navController,
+            startDestination = startDestination
+        )
+        AppBottomBar(screenModifier = screenContainerModifier, navController = navController)
         SnackbarProvider()
     }
 }

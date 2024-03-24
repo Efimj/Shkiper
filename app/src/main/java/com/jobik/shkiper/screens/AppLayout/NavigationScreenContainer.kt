@@ -15,8 +15,8 @@ import com.jobik.shkiper.navigation.SetupAppScreenNavGraph
 
 @Composable
 @OptIn(ExperimentalAnimationApi::class)
-fun NavigationScreenContainer(navController: NavHostController, startDestination: String) {
-    Box(Modifier.fillMaxSize()) {
+fun NavigationScreenContainer(modifier: Modifier, navController: NavHostController, startDestination: String) {
+    Box(modifier = modifier.fillMaxSize()) {
         SetupAppScreenNavGraph(
             navController = navController,
             startDestination = if (startDestination == AppScreens.Onboarding.route) AppScreens.Onboarding.route else AppScreens.NoteList.route
