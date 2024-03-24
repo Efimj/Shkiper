@@ -1,6 +1,5 @@
-package com.jobik.shkiper.screens.AppLayout
+package com.jobik.shkiper.screens.AppLayout.NavigationBar
 
-import android.util.Log
 import androidx.annotation.StringRes
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
@@ -10,9 +9,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -23,42 +19,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.jobik.shkiper.ui.theme.CustomTheme
 
-object AppNavigationBarState {
-    private var _visible: MutableState<Boolean> = mutableStateOf(false)
-    private var _locked: MutableState<Boolean> = mutableStateOf(false)
-
-    val isVisible: State<Boolean> = _visible
-    val isLocked: State<Boolean> = _locked
-
-    fun show() {
-        if (isLocked.value.not())
-            _visible.value = true
-    }
-
-    fun showWithUnlock() {
-        unlock()
-        show()
-    }
-
-    fun hide() {
-        if (isLocked.value.not())
-            _visible.value = false
-    }
-
-    fun hideWithLock() {
-        hide()
-        lock()
-    }
-
-    fun lock() {
-        _locked.value = true
-    }
-
-    fun unlock() {
-        _locked.value = false
-    }
-}
-
 data class CustomBottomNavigationItem(
     val icon: ImageVector,
     @StringRes
@@ -68,7 +28,7 @@ data class CustomBottomNavigationItem(
 )
 
 data class DefaultNavigationValues(
-    val containerHeight: Dp = 64.dp
+    val containerHeight: Dp = 54.dp
 )
 
 @Composable
@@ -109,7 +69,7 @@ fun CustomBottomNavigation(items: List<CustomBottomNavigationItem>) {
             .clip(shape = MaterialTheme.shapes.small)
             .border(width = 1.dp, color = CustomTheme.colors.mainBackground, shape = MaterialTheme.shapes.small)
             .background(CustomTheme.colors.secondaryBackground)
-            .padding(6.dp),
+            .padding(4.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(6.dp)
     ) {

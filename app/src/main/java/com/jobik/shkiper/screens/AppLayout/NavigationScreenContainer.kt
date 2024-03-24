@@ -1,6 +1,5 @@
 package com.jobik.shkiper.screens.AppLayout
 
-import android.util.Log
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,6 +17,7 @@ import androidx.navigation.NavHostController
 import com.jobik.shkiper.database.models.NotePosition
 import com.jobik.shkiper.navigation.AppScreens
 import com.jobik.shkiper.navigation.SetupAppScreenNavGraph
+import com.jobik.shkiper.screens.AppLayout.NavigationBar.AppNavigationBarState
 
 @Composable
 @OptIn(ExperimentalAnimationApi::class)

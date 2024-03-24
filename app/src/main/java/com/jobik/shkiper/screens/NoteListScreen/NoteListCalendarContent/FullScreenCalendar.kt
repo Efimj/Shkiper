@@ -11,7 +11,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -22,7 +21,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.jobik.shkiper.R
-import com.jobik.shkiper.screens.AppLayout.AppNavigationBarState
 import com.jobik.shkiper.ui.components.layouts.CalendarDayView
 import com.jobik.shkiper.ui.components.layouts.CalendarDayViewRangeStyle
 import com.jobik.shkiper.ui.helpers.displayText

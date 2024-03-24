@@ -27,6 +27,10 @@ import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.NotePosition
 import com.jobik.shkiper.navigation.AppScreens
 import com.jobik.shkiper.navigation.NavigationHelpers.Companion.canNavigate
+import com.jobik.shkiper.screens.AppLayout.NavigationBar.AppNavigationBarState
+import com.jobik.shkiper.screens.AppLayout.NavigationBar.CustomBottomNavigation
+import com.jobik.shkiper.screens.AppLayout.NavigationBar.CustomBottomNavigationItem
+import com.jobik.shkiper.screens.AppLayout.NavigationBar.DefaultNavigationValues
 import com.jobik.shkiper.ui.theme.CustomTheme
 
 @Composable
