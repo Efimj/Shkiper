@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.jobik.shkiper.navigation.AppScreens
+import com.jobik.shkiper.screens.AppLayout.NavigationBar.BottomAppBarProvider
 
 @Composable
 fun AppLayout(startDestination: String = AppScreens.NoteList.route) {
@@ -25,7 +26,7 @@ private fun ScreenLayout(
             navController = navController,
             startDestination = startDestination
         )
-        BottomAppBar(navController = navController)
+        BottomAppBarProvider(navController = navController)
         SnackbarProvider()
     }
 }
