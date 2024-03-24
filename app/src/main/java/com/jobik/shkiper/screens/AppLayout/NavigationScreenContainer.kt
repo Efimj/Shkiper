@@ -6,8 +6,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.navigation.NavHostController
 import com.jobik.shkiper.database.models.NotePosition
 import com.jobik.shkiper.navigation.AppScreens
@@ -15,8 +20,27 @@ import com.jobik.shkiper.navigation.SetupAppScreenNavGraph
 
 @Composable
 @OptIn(ExperimentalAnimationApi::class)
-fun NavigationScreenContainer(modifier: Modifier, navController: NavHostController, startDestination: String) {
-    Box(modifier = modifier.fillMaxSize()) {
+fun NavigationScreenContainer(navController: NavHostController, startDestination: String) {
+
+    val connection = remember {
+        object : NestedScrollConnection {
+            override fun onPreScroll(
+                available: Offset,
+                source: NestedScrollSource
+            ): Offset {
+
+                if(available.y > 30){
+
+                }
+
+                return super.onPreScroll(available, source)
+            }
+        }
+    }
+
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .nestedScroll(connection)) {
         SetupAppScreenNavGraph(
             navController = navController,
             startDestination = if (startDestination == AppScreens.Onboarding.route) AppScreens.Onboarding.route else AppScreens.NoteList.route
