@@ -25,7 +25,7 @@ private fun ScreenLayout(
             navController = navController,
             startDestination = startDestination
         )
-        AppBottomBar(navController = navController)
+        BottomAppBar(navController = navController)
         SnackbarProvider()
     }
 }

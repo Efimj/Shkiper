@@ -12,13 +12,13 @@ import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -30,25 +30,35 @@ import com.jobik.shkiper.navigation.NavigationHelpers.Companion.canNavigate
 import com.jobik.shkiper.ui.theme.CustomTheme
 
 @Composable
-fun BoxScope.AppBottomBar(
+fun BoxScope.BottomAppBar(
     navController: NavHostController,
 ) {
+    val localDensity = LocalDensity.current
+    var containerHeight by remember { mutableStateOf(0.dp) }
     val currentRouteName = navController.currentBackStackEntryAsState().value?.destination?.route
     val currentRouteWithoutSecondaryRoutes =
         (navController.currentBackStackEntryAsState().value?.destination?.route ?: "").substringBefore("/")
     val isSecondaryScreen = AppScreens.SecondaryRoutes.isSecondaryRoute(currentRouteWithoutSecondaryRoutes)
 
-    LaunchedEffect(currentRouteWithoutSecondaryRoutes){
-        AppNavigationBarState.isVisible.value = isSecondaryScreen
+    LaunchedEffect(currentRouteName) {
+        if (isSecondaryScreen) {
+            AppNavigationBarState.hideWithLock()
+        } else {
+            AppNavigationBarState.showWithUnlock()
+        }
     }
 
     val offsetY by animateDpAsState(
-        if (AppNavigationBarState.isVisible.value) (DefaultNavigationValues().containerHeight) else 0.dp,
+        if (AppNavigationBarState.isVisible.value) 0.dp else containerHeight,
         animationSpec = spring(stiffness = Spring.StiffnessMedium), label = "offsetY"
     )
 
     Box(
         modifier = Modifier
+            .onGloballyPositioned { coordinates ->
+                // Set screen height using the LayoutCoordinates
+                containerHeight = with(localDensity) { coordinates.size.height.toDp() }
+            }
             .offset(y = offsetY)
             .align(Alignment.BottomCenter)
             .fillMaxWidth()

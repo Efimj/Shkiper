@@ -1,5 +1,6 @@
 package com.jobik.shkiper.screens.AppLayout
 
+import android.util.Log
 import androidx.annotation.StringRes
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
@@ -10,6 +11,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,11 +25,38 @@ import com.jobik.shkiper.ui.theme.CustomTheme
 
 object AppNavigationBarState {
     private var _visible: MutableState<Boolean> = mutableStateOf(false)
-    var isVisible: MutableState<Boolean>
-        get() = _visible
-        private set(value) {
-            _visible = value
-        }
+    private var _locked: MutableState<Boolean> = mutableStateOf(false)
+
+    val isVisible: State<Boolean> = _visible
+    val isLocked: State<Boolean> = _locked
+
+    fun show() {
+        if (isLocked.value.not())
+            _visible.value = true
+    }
+
+    fun showWithUnlock() {
+        unlock()
+        show()
+    }
+
+    fun hide() {
+        if (isLocked.value.not())
+            _visible.value = false
+    }
+
+    fun hideWithLock() {
+        hide()
+        lock()
+    }
+
+    fun lock() {
+        _locked.value = true
+    }
+
+    fun unlock() {
+        _locked.value = false
+    }
 }
 
 data class CustomBottomNavigationItem(

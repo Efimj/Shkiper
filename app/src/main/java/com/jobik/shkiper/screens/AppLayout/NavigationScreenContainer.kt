@@ -1,5 +1,6 @@
 package com.jobik.shkiper.screens.AppLayout
 
+import android.util.Log
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,23 +25,23 @@ fun NavigationScreenContainer(navController: NavHostController, startDestination
 
     val connection = remember {
         object : NestedScrollConnection {
-            override fun onPreScroll(
-                available: Offset,
-                source: NestedScrollSource
-            ): Offset {
-
-                if(available.y > 30){
-
+            override fun onPostScroll(consumed: Offset, available: Offset, source: NestedScrollSource): Offset {
+                if (consumed.y < -30 ) {
+                    AppNavigationBarState.hide()
                 }
-
-                return super.onPreScroll(available, source)
+                if (consumed.y > 30 ) {
+                    AppNavigationBarState.show()
+                }
+                return super.onPostScroll(consumed, available, source)
             }
         }
     }
 
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .nestedScroll(connection)) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .nestedScroll(connection)
+    ) {
         SetupAppScreenNavGraph(
             navController = navController,
             startDestination = if (startDestination == AppScreens.Onboarding.route) AppScreens.Onboarding.route else AppScreens.NoteList.route

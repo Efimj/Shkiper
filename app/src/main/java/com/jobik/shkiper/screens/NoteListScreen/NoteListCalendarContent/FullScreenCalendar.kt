@@ -22,11 +22,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.jobik.shkiper.R
+import com.jobik.shkiper.screens.AppLayout.AppNavigationBarState
 import com.jobik.shkiper.ui.components.layouts.CalendarDayView
 import com.jobik.shkiper.ui.components.layouts.CalendarDayViewRangeStyle
 import com.jobik.shkiper.ui.helpers.displayText
 import com.jobik.shkiper.ui.theme.CustomTheme
-import com.jobik.shkiper.util.AppNavigationBarState
 import com.kizitonwose.calendar.compose.ContentHeightMode
 import com.kizitonwose.calendar.compose.VerticalCalendar
 import com.kizitonwose.calendar.compose.rememberCalendarState
@@ -56,7 +56,11 @@ fun FullScreenCalendar(viewModel: CalendarViewModel) {
     }
 
     LaunchedEffect(viewModel.screenState.value.fullScreenCalendarOpen) {
-        AppNavigationBarState.isVisible.value = viewModel.screenState.value.fullScreenCalendarOpen
+        if (viewModel.screenState.value.fullScreenCalendarOpen) {
+            AppNavigationBarState.hideWithLock()
+        } else {
+            AppNavigationBarState.showWithUnlock()
+        }
     }
 
     Box {
