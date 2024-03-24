@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.jobik.shkiper.screens.AppLayout.AppNavigationBarState
 import com.jobik.shkiper.screens.NoteListScreen.NoteListCalendarContent.CalendarViewModel
 import com.jobik.shkiper.screens.NoteListScreen.NoteListCalendarContent.ScreenCalendarContent
 import com.jobik.shkiper.screens.NoteListScreen.NoteListScreenContent.NoteListScreenContent
@@ -61,6 +62,14 @@ fun NoteListScreen(navController: NavController) {
                     }
                 }
             )
+        }
+    }
+
+    LaunchedEffect(pagerState.targetPage) {
+        if (pagerState.targetPage > 0) {
+            AppNavigationBarState.hideWithLock()
+        } else {
+            AppNavigationBarState.showWithUnlock()
         }
     }
 }

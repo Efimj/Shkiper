@@ -55,14 +55,6 @@ fun FullScreenCalendar(viewModel: CalendarViewModel) {
         viewModel.switchFullScreenCalendarOpen()
     }
 
-    LaunchedEffect(viewModel.screenState.value.fullScreenCalendarOpen) {
-        if (viewModel.screenState.value.fullScreenCalendarOpen) {
-            AppNavigationBarState.hideWithLock()
-        } else {
-            AppNavigationBarState.showWithUnlock()
-        }
-    }
-
     Box {
         Column(modifier = Modifier.background(CustomTheme.colors.secondaryBackground)) {
             Header(daysOfWeek)
