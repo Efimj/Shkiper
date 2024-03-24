@@ -28,7 +28,6 @@ import com.jobik.shkiper.database.models.NotePosition
 import com.jobik.shkiper.navigation.AppScreens
 import com.jobik.shkiper.navigation.NavigationHelpers.Companion.canNavigate
 import com.jobik.shkiper.ui.theme.CustomTheme
-import com.jobik.shkiper.util.BottomNavigationContentState
 
 @Composable
 fun BoxScope.AppBottomBar(
@@ -40,11 +39,11 @@ fun BoxScope.AppBottomBar(
     val isSecondaryScreen = AppScreens.SecondaryRoutes.isSecondaryRoute(currentRouteWithoutSecondaryRoutes)
 
     LaunchedEffect(currentRouteWithoutSecondaryRoutes){
-        BottomNavigationContentState.isVisible.value = isSecondaryScreen
+        AppNavigationBarState.isVisible.value = isSecondaryScreen
     }
 
     val offsetY by animateDpAsState(
-        if (BottomNavigationContentState.isVisible.value) (DefaultNavigationValues().containerHeight) else 0.dp,
+        if (AppNavigationBarState.isVisible.value) (DefaultNavigationValues().containerHeight) else 0.dp,
         animationSpec = spring(stiffness = Spring.StiffnessMedium), label = "offsetY"
     )
 
