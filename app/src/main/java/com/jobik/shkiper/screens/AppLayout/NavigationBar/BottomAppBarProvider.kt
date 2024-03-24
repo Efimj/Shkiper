@@ -27,6 +27,8 @@ import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.NotePosition
 import com.jobik.shkiper.navigation.AppScreens
 import com.jobik.shkiper.navigation.NavigationHelpers.Companion.canNavigate
+import com.jobik.shkiper.ui.helpers.Keyboard
+import com.jobik.shkiper.ui.helpers.keyboardAsState
 import com.jobik.shkiper.ui.theme.CustomTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -47,6 +49,16 @@ fun BoxScope.BottomAppBarProvider(
             AppNavigationBarState.hideWithLock()
         } else {
             AppNavigationBarState.showWithUnlock()
+        }
+    }
+
+    val isKeyboardVisible by keyboardAsState()
+
+    LaunchedEffect(isKeyboardVisible) {
+        if (isKeyboardVisible.name == Keyboard.Opened.name) {
+            AppNavigationBarState.hide()
+        } else {
+            AppNavigationBarState.show()
         }
     }
 
