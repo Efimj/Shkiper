@@ -12,7 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun LazyGridNotes(
     modifier: Modifier = Modifier.fillMaxSize(),

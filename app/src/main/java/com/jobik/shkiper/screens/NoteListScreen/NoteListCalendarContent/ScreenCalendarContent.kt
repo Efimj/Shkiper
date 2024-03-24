@@ -1,7 +1,5 @@
 package com.jobik.shkiper.screens.NoteListScreen.NoteListCalendarContent
 
-import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -10,50 +8,30 @@ import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Description
 import androidx.compose.material.icons.outlined.NotificationsNone
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.Note
 import com.jobik.shkiper.ui.animation.AnimateVerticalSwitch
 import com.jobik.shkiper.ui.components.buttons.HashtagButton
 import com.jobik.shkiper.ui.components.cards.NoteCard
-import com.jobik.shkiper.ui.components.layouts.CalendarDayView
 import com.jobik.shkiper.ui.components.layouts.LazyGridNotes
 import com.jobik.shkiper.ui.components.layouts.ScreenContentIfNoData
 import com.jobik.shkiper.ui.helpers.UpdateStatusBarColor
-import com.jobik.shkiper.ui.helpers.displayText
 import com.jobik.shkiper.ui.helpers.rememberNextReminder
 import com.jobik.shkiper.ui.theme.CustomTheme
-import com.jobik.shkiper.util.MainMenuButtonState
-import com.kizitonwose.calendar.compose.ContentHeightMode
-import com.kizitonwose.calendar.compose.VerticalCalendar
-import com.kizitonwose.calendar.compose.rememberCalendarState
-import com.kizitonwose.calendar.core.OutDateStyle
-import com.kizitonwose.calendar.core.daysOfWeek
-import com.kizitonwose.calendar.core.yearMonth
 import me.onebone.toolbar.*
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
-import java.time.format.TextStyle
-import java.util.*
 
 @Composable
 fun ScreenCalendarContent(
@@ -118,7 +96,7 @@ private fun NoteListContent(
         remember(viewModel.screenState.value.notes) { viewModel.screenState.value.notes.filterNot { it.isPinned } }
 
     LazyGridNotes(
-        contentPadding = PaddingValues(10.dp, 15.dp, 10.dp, 80.dp),
+        contentPadding = PaddingValues(10.dp, 15.dp, 10.dp, 100.dp),
         modifier = Modifier.fillMaxWidth(),
     ) {
         if (viewModel.screenState.value.hashtags.isNotEmpty())

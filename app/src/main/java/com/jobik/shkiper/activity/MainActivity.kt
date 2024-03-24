@@ -22,7 +22,7 @@ import com.jobik.shkiper.navigation.AppScreens
 import com.jobik.shkiper.services.billing_service.BillingService
 import com.jobik.shkiper.services.in_app_updates_service.InAppUpdatesService
 import com.jobik.shkiper.services.review_service.ReviewService
-import com.jobik.shkiper.ui.components.modals.AppLayout
+import com.jobik.shkiper.screens.AppLayout.AppLayout
 import com.jobik.shkiper.ui.components.modals.OfferWriteReview
 import com.jobik.shkiper.ui.theme.CustomTheme
 import com.jobik.shkiper.ui.theme.CustomThemeStyle
