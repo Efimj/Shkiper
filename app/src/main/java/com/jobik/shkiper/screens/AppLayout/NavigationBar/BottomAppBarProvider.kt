@@ -1,8 +1,6 @@
 package com.jobik.shkiper.screens.AppLayout.NavigationBar
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -20,6 +18,7 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -88,9 +87,11 @@ fun BoxScope.BottomAppBarProvider(
                     .fillMaxWidth()
                     .padding(bottom = 20.dp), horizontalArrangement = Arrangement.Center
             ) {
-                Navigation(
-                    navController = navController
-                )
+                Box(modifier = Modifier.zIndex(2f)) {
+                    Navigation(
+                        navController = navController
+                    )
+                }
                 CreateNoteFAN(navController = navController)
             }
         }
@@ -105,7 +106,11 @@ private fun RowScope.CreateNoteFAN(
     val currentRouteName = navController.currentBackStackEntryAsState().value?.destination?.route
     val scope = rememberCoroutineScope()
 
-    AnimatedVisibility(visible = currentRouteName == AppScreens.NoteList.route) {
+    AnimatedVisibility(
+        visible = currentRouteName == AppScreens.NoteList.route,
+        enter = slideInHorizontally() + expandHorizontally(clip = false) + fadeIn(),
+        exit = slideOutHorizontally() + shrinkHorizontally(clip = false) + fadeOut(),
+    ) {
         Row(modifier = Modifier.height(DefaultNavigationValues().containerHeight)) {
             Spacer(modifier = Modifier.width(10.dp))
             Row(
