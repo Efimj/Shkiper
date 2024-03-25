@@ -56,10 +56,10 @@ class ConfigWidgetActivity : AppCompatActivity() {
         }
     }
 
-    private fun handleSelectNote(note: Note) {
-        setResult(RESULT_OK, result)
-        finish()
-        saveWidgetState(note)
+    private fun handleSelectNote(note: Note?) {
+//        setResult(RESULT_OK, result)
+//        finish()
+//        saveWidgetState(note)
     }
 
     private fun saveWidgetState(note: Note) = lifecycleScope.launch(Dispatchers.IO) {

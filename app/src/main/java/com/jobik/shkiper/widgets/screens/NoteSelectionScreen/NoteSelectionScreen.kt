@@ -18,6 +18,7 @@ import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Description
 import androidx.compose.material.icons.outlined.Done
 import androidx.compose.material3.Text
@@ -50,7 +51,7 @@ import com.jobik.shkiper.ui.helpers.rememberNextReminder
 import com.jobik.shkiper.ui.theme.CustomTheme
 
 @Composable
-fun NoteSelectionScreen(notesViewModel: NoteSelectionViewModel = hiltViewModel(), selectNote: (note: Note) -> Unit) {
+fun NoteSelectionScreen(notesViewModel: NoteSelectionViewModel = hiltViewModel(), selectNote: (note: Note?) -> Unit) {
 
     val searchBarHeightPx = with(LocalDensity.current) { SearchBarHeight.dp.roundToPx().toFloat() }
 
@@ -89,7 +90,8 @@ fun NoteSelectionScreen(notesViewModel: NoteSelectionViewModel = hiltViewModel()
     Box(
         Modifier
             .fillMaxSize()
-            .nestedScroll(nestedScrollConnection)) {
+            .nestedScroll(nestedScrollConnection)
+    ) {
         if (notesViewModel.screenState.value.isNotesInitialized && notesViewModel.screenState.value.notes.isEmpty())
             ScreenContentIfNoData(title = R.string.EmptyNotesPageHeader, icon = Icons.Outlined.Description)
         else
@@ -102,20 +104,15 @@ fun NoteSelectionScreen(notesViewModel: NoteSelectionViewModel = hiltViewModel()
                 onChange = notesViewModel::changeSearchText
             )
         }
-        Box(modifier = Modifier
-            .align(Alignment.BottomEnd)
-            .padding(35.dp)) {
-            AnimatedVisibility(
-                notesViewModel.screenState.value.selectedNoteId != null,
-                enter = fadeIn(tween(200, easing = LinearOutSlowInEasing)),
-                exit = fadeOut(tween(200, easing = FastOutSlowInEasing)),
+        Box(
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(35.dp)
+        ) {
+            FloatingActionButton(
+                icon = if (notesViewModel.screenState.value.selectedNoteId == null) Icons.Outlined.Add else Icons.Outlined.Done,
             ) {
-                FloatingActionButton(
-                    icon = Icons.Outlined.Done,
-                    notesViewModel.screenState.value.selectedNoteId != null
-                ) {
-                    notesViewModel.getSelectedNote()?.let { selectNote(it) }
-                }
+                selectNote(notesViewModel.getSelectedNote())
             }
         }
     }
