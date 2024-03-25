@@ -44,10 +44,12 @@ class ShareReceiverActivity : AppCompatActivity() {
                 style = ThemeUtil.themeStyle.value ?: CustomThemeStyle.PastelPurple
             ) {
                 Box(
-                    Modifier.fillMaxSize().background(CustomTheme.colors.mainBackground)
+                    Modifier
+                        .fillMaxSize()
+                        .background(CustomTheme.colors.mainBackground)
                 ) {
                     NoteSelectionScreen {
-                        handleSelectNote(it)
+                        handleSelectNote(note = it)
                     }
                 }
             }
@@ -67,10 +69,14 @@ class ShareReceiverActivity : AppCompatActivity() {
         }
     }
 
-    private fun handleSelectNote(note: Note) {
+    private fun handleSelectNote(note: Note?) {
         setResult(RESULT_OK, result)
         finish()
-        updateNoteBody(note)
+        if (note == null) {
+            createNoteWithText()
+        } else {
+            updateNoteBody(note)
+        }
     }
 
     private fun updateNoteBody(note: Note) {
@@ -85,8 +91,21 @@ class ShareReceiverActivity : AppCompatActivity() {
         }
     }
 
+    private fun createNoteWithText() {
+        val context = this
+        CoroutineScope(EmptyCoroutineContext).launch {
+            val newNote = Note()
+            receivedText?.let { text ->
+                newNote.body = text
+            }
+            repository.insertNote(newNote)
+
+            IntentHelper().StartActivityAndOpenNote(context, newNote._id.toHexString())
+        }
+    }
+
     @Keep
     private fun newBodyForNote(body: String, addedText: String): String {
-        return "$body \n$addedText"
+        return "$body\n$addedText"
     }
 }

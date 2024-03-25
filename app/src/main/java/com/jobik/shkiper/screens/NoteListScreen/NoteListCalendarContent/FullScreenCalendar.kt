@@ -7,12 +7,10 @@ import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.DateRange
-import androidx.compose.material.icons.outlined.NotificationsOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -27,12 +25,10 @@ import com.jobik.shkiper.ui.components.layouts.CalendarDayView
 import com.jobik.shkiper.ui.components.layouts.CalendarDayViewRangeStyle
 import com.jobik.shkiper.ui.helpers.displayText
 import com.jobik.shkiper.ui.theme.CustomTheme
-import com.jobik.shkiper.util.MainMenuButtonState
 import com.kizitonwose.calendar.compose.ContentHeightMode
 import com.kizitonwose.calendar.compose.VerticalCalendar
 import com.kizitonwose.calendar.compose.rememberCalendarState
 import com.kizitonwose.calendar.core.*
-import kotlinx.coroutines.launch
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.format.TextStyle
@@ -55,10 +51,6 @@ fun FullScreenCalendar(viewModel: CalendarViewModel) {
 
     BackHandler(viewModel.screenState.value.fullScreenCalendarOpen) {
         viewModel.switchFullScreenCalendarOpen()
-    }
-
-    LaunchedEffect(viewModel.screenState.value.fullScreenCalendarOpen) {
-        MainMenuButtonState.isButtonOpened.value = viewModel.screenState.value.fullScreenCalendarOpen
     }
 
     Box {

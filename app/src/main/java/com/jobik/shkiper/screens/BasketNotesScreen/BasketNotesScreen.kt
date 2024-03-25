@@ -35,6 +35,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.jobik.shkiper.R
+import com.jobik.shkiper.screens.AppLayout.NavigationBar.AppNavigationBarState
 import com.jobik.shkiper.ui.components.cards.NoteCard
 import com.jobik.shkiper.ui.components.layouts.CustomTopAppBar
 import com.jobik.shkiper.ui.components.layouts.LazyGridNotes
@@ -100,7 +101,6 @@ fun BasketNotesScreen(navController: NavController, basketViewModel: NotesViewMo
             onGoBack = basketViewModel::switchDeleteDialogShow
         )
 }
-
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable

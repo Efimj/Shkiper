@@ -21,6 +21,7 @@ import com.jobik.shkiper.database.models.RepeatMode
 import com.jobik.shkiper.helpers.DateHelper
 import com.jobik.shkiper.navigation.AppScreens
 import com.jobik.shkiper.navigation.Argument_Note_Position
+import com.jobik.shkiper.screens.AppLayout.NavigationBar.AppNavigationBarState
 import com.jobik.shkiper.util.SnackbarHostUtil
 import com.jobik.shkiper.util.SnackbarVisualsCustom
 import com.mohamedrejeb.richeditor.model.RichTextState
@@ -36,7 +37,6 @@ import javax.inject.Inject
 data class NotesScreenState(
     val isNotesInitialized: Boolean = false,
     val notes: List<Note> = emptyList(),
-    val lastCreatedNoteId: String = "",
     val searchText: String = "",
     val selectedNotes: Set<ObjectId> = emptySet(),
     val hashtags: Set<String> = emptySet(),
@@ -95,6 +95,8 @@ class NotesViewModel @Inject constructor(
             isCreateReminderDialogShow = false,
             isDeleteNotesDialogShow = false
         )
+
+        updateBottomBar()
     }
 
     fun changeSearchText(newString: String) {
@@ -135,6 +137,8 @@ class NotesViewModel @Inject constructor(
             selectedNotes = if (selectedNotes.contains(noteId)) selectedNotes.minus(noteId)
             else selectedNotes.plus(noteId)
         )
+
+        updateBottomBar()
     }
 
     fun deleteSelectedNotes() {
@@ -169,6 +173,7 @@ class NotesViewModel @Inject constructor(
                 updatedNote.position = NotePosition.MAIN
             }
             clearSelectedNote()
+            updateBottomBar()
         }
     }
 
@@ -183,6 +188,7 @@ class NotesViewModel @Inject constructor(
                 message = application.applicationContext.getString(R.string.NotesArchived),
                 icon = Icons.Default.Archive
             )
+            updateBottomBar()
         }
     }
 
@@ -196,6 +202,7 @@ class NotesViewModel @Inject constructor(
                 message = application.applicationContext.getString(R.string.NotesUnarchived),
                 icon = Icons.Default.Unarchive
             )
+            updateBottomBar()
         }
     }
 
@@ -211,6 +218,7 @@ class NotesViewModel @Inject constructor(
                 message = application.applicationContext.getString(R.string.NotesMovedToBasket),
                 icon = Icons.Default.DeleteSweep
             )
+            updateBottomBar()
         }
     }
 
@@ -225,19 +233,8 @@ class NotesViewModel @Inject constructor(
                 message = application.applicationContext.getString(R.string.NotesRestored),
                 icon = Icons.Default.Undo
             )
+            updateBottomBar()
         }
-    }
-
-    fun createNewNote() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val newNote = Note()
-            noteRepository.insertNote(newNote)
-            _screenState.value = screenState.value.copy(lastCreatedNoteId = newNote._id.toHexString())
-        }
-    }
-
-    fun clearLastCreatedNote() {
-        _screenState.value = screenState.value.copy(lastCreatedNoteId = "")
     }
 
     fun clickOnNote(note: Note, currentRoute: String, navController: NavController) {
@@ -250,6 +247,7 @@ class NotesViewModel @Inject constructor(
                 }
             }
         }
+        updateBottomBar()
     }
 
     fun switchDeleteDialogShow() {
@@ -336,6 +334,7 @@ class NotesViewModel @Inject constructor(
                 }
             }
             switchReminderDialogShow()
+            updateBottomBar()
         }
     }
 
@@ -346,5 +345,13 @@ class NotesViewModel @Inject constructor(
                 icon = icon
             )
         )
+    }
+
+    private fun updateBottomBar() {
+        if (screenState.value.selectedNotes.isEmpty()) {
+            AppNavigationBarState.showWithUnlock()
+        } else {
+            AppNavigationBarState.hideWithLock()
+        }
     }
 }
