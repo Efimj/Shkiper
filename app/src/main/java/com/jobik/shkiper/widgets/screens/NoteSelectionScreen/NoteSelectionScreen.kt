@@ -51,7 +51,11 @@ import com.jobik.shkiper.ui.helpers.rememberNextReminder
 import com.jobik.shkiper.ui.theme.CustomTheme
 
 @Composable
-fun NoteSelectionScreen(notesViewModel: NoteSelectionViewModel = hiltViewModel(), selectNote: (note: Note?) -> Unit) {
+fun NoteSelectionScreen(
+    notesViewModel: NoteSelectionViewModel = hiltViewModel(),
+    strictSelection: Boolean = false,
+    selectNote: (note: Note?) -> Unit
+) {
 
     val searchBarHeightPx = with(LocalDensity.current) { SearchBarHeight.dp.roundToPx().toFloat() }
 
@@ -109,10 +113,25 @@ fun NoteSelectionScreen(notesViewModel: NoteSelectionViewModel = hiltViewModel()
                 .align(Alignment.BottomEnd)
                 .padding(35.dp)
         ) {
-            FloatingActionButton(
-                icon = if (notesViewModel.screenState.value.selectedNoteId == null) Icons.Outlined.Add else Icons.Outlined.Done,
-            ) {
-                selectNote(notesViewModel.getSelectedNote())
+            if (strictSelection) {
+                AnimatedVisibility(
+                    notesViewModel.screenState.value.selectedNoteId != null,
+                    enter = fadeIn(),
+                    exit = fadeOut(),
+                ) {
+                    FloatingActionButton(
+                        icon = Icons.Outlined.Done,
+                        notesViewModel.screenState.value.selectedNoteId != null
+                    ) {
+                        notesViewModel.getSelectedNote()?.let { selectNote(it) }
+                    }
+                }
+            } else {
+                FloatingActionButton(
+                    icon = if (notesViewModel.screenState.value.selectedNoteId == null) Icons.Outlined.Add else Icons.Outlined.Done,
+                ) {
+                    selectNote(notesViewModel.getSelectedNote())
+                }
             }
         }
     }

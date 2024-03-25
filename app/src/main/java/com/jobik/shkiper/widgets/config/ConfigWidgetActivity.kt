@@ -48,7 +48,7 @@ class ConfigWidgetActivity : AppCompatActivity() {
                         .fillMaxSize()
                         .background(CustomTheme.colors.mainBackground)
                 ) {
-                    NoteSelectionScreen {
+                    NoteSelectionScreen(strictSelection = true) {
                         handleSelectNote(it)
                     }
                 }
@@ -57,9 +57,10 @@ class ConfigWidgetActivity : AppCompatActivity() {
     }
 
     private fun handleSelectNote(note: Note?) {
-//        setResult(RESULT_OK, result)
-//        finish()
-//        saveWidgetState(note)
+        if (note == null) return
+        setResult(RESULT_OK, result)
+        finish()
+        saveWidgetState(note)
     }
 
     private fun saveWidgetState(note: Note) = lifecycleScope.launch(Dispatchers.IO) {
