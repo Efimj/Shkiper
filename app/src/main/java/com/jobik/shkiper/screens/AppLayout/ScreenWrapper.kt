@@ -1,5 +1,6 @@
 package com.jobik.shkiper.screens.AppLayout
 
+import android.util.Log
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,12 +27,16 @@ fun ScreenWrapper(navController: NavHostController, startDestination: String) {
     val connection = remember {
         object : NestedScrollConnection {
             override fun onPostScroll(consumed: Offset, available: Offset, source: NestedScrollSource): Offset {
-                if (consumed.y < -30 ) {
+                if (consumed.y < -30) {
                     AppNavigationBarState.hide()
                 }
-                if (consumed.y > 30 ) {
+                if (consumed.y > 30) {
                     AppNavigationBarState.show()
                 }
+                if (available.y > 0) {
+                    AppNavigationBarState.show()
+                }
+
                 return super.onPostScroll(consumed, available, source)
             }
         }
