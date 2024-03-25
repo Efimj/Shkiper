@@ -62,7 +62,7 @@ fun FloatingActionButton(
         ) { newIcon ->
             Box(
                 modifier = Modifier
-                    .height(54.dp)
+                    .height(60.dp)
                     .aspectRatio(1f),
                 contentAlignment = Alignment.Center
             ) {

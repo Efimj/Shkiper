@@ -28,7 +28,7 @@ data class CustomBottomNavigationItem(
 )
 
 data class DefaultNavigationValues(
-    val containerHeight: Dp = 54.dp
+    val containerHeight: Dp = 58.dp
 )
 
 @Composable
