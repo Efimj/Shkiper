@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
@@ -25,6 +26,7 @@ import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -50,12 +52,13 @@ fun LinkPreviewCard(openGraphData: LinkHelper.LinkPreview) {
     val linkTextLabel = stringResource(R.string.Link)
     val multipleEventsCutter = remember { MultipleEventsCutter.get() }
     val context = LocalContext.current
+    val cardHeight = 60.dp
 
     Card(
         modifier = Modifier
             .bounceClick(0.95f)
             .fillMaxWidth()
-            .height(60.dp)
+            .height(cardHeight)
             .clip(RoundedCornerShape(10.dp))
             .combinedClickable(
                 onClick = {
@@ -90,33 +93,42 @@ fun LinkPreviewCard(openGraphData: LinkHelper.LinkPreview) {
             AsyncImage(
                 model = openGraphData.img,
                 contentDescription = stringResource(R.string.LinkImage),
-                modifier = Modifier.width(60.dp),
+                modifier = if (isImageError.value) Modifier
+                    .width(cardHeight)
+                    .padding(10.dp) else Modifier
+                    .padding(end = 10.dp)
+                    .width(cardHeight),
                 contentScale = ContentScale.Crop,
+                alignment = Alignment.Center,
                 error = rememberVectorPainter(Icons.Default.Language),
                 onError = { isImageError.value = true },
                 colorFilter = if (isImageError.value) ColorFilter.tint(CustomTheme.colors.textSecondary) else null
             )
             Column(
-                modifier = Modifier.padding(horizontal = 10.dp).fillMaxSize(),
+                modifier = Modifier
+                    .padding(end = 10.dp)
+                    .fillMaxSize(),
                 verticalArrangement = Arrangement.Center
             ) {
-                if (openGraphData.title != null && openGraphData.title!!.isNotEmpty())
+                if (openGraphData.title.isNullOrBlank().not())
                     Text(
                         text = openGraphData.title!!,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-                        style = MaterialTheme.typography.h6.copy(fontSize = 18.sp),
+                        style = MaterialTheme.typography.h6.copy(fontSize = 18.sp, fontWeight = FontWeight.SemiBold),
                         color = CustomTheme.colors.textSecondary,
                     )
-                if (openGraphData.description != null && openGraphData.description!!.isNotEmpty())
+                if (openGraphData.description.isNullOrBlank().not())
                     Text(
                         text = openGraphData.description!!,
-                        maxLines = 1,
+                        maxLines = if (openGraphData.title.isNullOrBlank()) 2 else 1,
                         overflow = TextOverflow.Ellipsis,
                         style = MaterialTheme.typography.body1,
                         color = CustomTheme.colors.textSecondary,
                     )
-                if ((openGraphData.description == null || openGraphData.title == null) && openGraphData.url != null)
+                if ((openGraphData.description.isNullOrBlank() || openGraphData.title.isNullOrBlank()) && openGraphData.url.isNullOrBlank()
+                        .not()
+                )
                     Text(
                         text = openGraphData.url!!,
                         maxLines = 1,
