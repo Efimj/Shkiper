@@ -114,9 +114,9 @@ private fun AnimatedContentTransitionScope<NavBackStackEntry>.mainScreenEnterTra
     val targetRouteNumber = RouteHelper().getRouteNumber(target) ?: return null
 
     if (initiatorRouteNumber > targetRouteNumber) {
-        return slideInHorizontally { -it }
+        return slideInHorizontally { -it } + fadeIn()
     } else if (initiatorRouteNumber < targetRouteNumber) {
-        return slideInHorizontally { it }
+        return slideInHorizontally { it } + fadeIn()
     }
 
     return null
@@ -134,9 +134,9 @@ private fun AnimatedContentTransitionScope<NavBackStackEntry>.mainScreenExitTran
     val targetRouteNumber = RouteHelper().getRouteNumber(target) ?: return null
 
     if (initiatorRouteNumber > targetRouteNumber) {
-        return slideOutHorizontally { it }
+        return slideOutHorizontally { it } + fadeOut()
     } else if (initiatorRouteNumber < targetRouteNumber) {
-        return slideOutHorizontally { -it }
+        return slideOutHorizontally { -it } + fadeOut()
     }
 
     return null
