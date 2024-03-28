@@ -35,7 +35,7 @@ import androidx.navigation.NavController
 import com.jobik.shkiper.R
 import com.jobik.shkiper.SharedPreferencesKeys
 import com.jobik.shkiper.SharedPreferencesKeys.OnboardingFinishedData
-import com.jobik.shkiper.navigation.AppScreens
+import com.jobik.shkiper.navigation.Route
 import com.jobik.shkiper.ui.theme.CustomTheme
 import kotlinx.coroutines.launch
 
@@ -204,8 +204,8 @@ fun onFinished(context: Context, navController: NavController) {
     } catch (e: Exception) {
         Log.i("onboarding - onFinished", e.toString())
     }
-    navController.navigate(AppScreens.NoteList.route) {
-        popUpTo(AppScreens.Onboarding.route) {
+    navController.navigate(Route.NoteList.route) {
+        popUpTo(Route.Onboarding.route) {
             inclusive = true
         }
     }

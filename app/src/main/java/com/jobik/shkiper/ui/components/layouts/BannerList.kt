@@ -13,7 +13,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.jobik.shkiper.navigation.AppScreens
+import com.jobik.shkiper.navigation.Route
 import com.jobik.shkiper.ui.components.cards.DonateBanner
 import com.jobik.shkiper.util.SupportTheDeveloperBannerUtil
 
@@ -32,7 +32,7 @@ fun BannerList(navController: NavController) {
             item {
                 DonateBanner({
                     SupportTheDeveloperBannerUtil.updateLastShowingDate(context)
-                    navController.navigate(AppScreens.Purchases.route)
+                    navController.navigate(Route.Purchases.route)
                     isBannerNeeded.value = false
                 }, {
                     SupportTheDeveloperBannerUtil.updateLastShowingDate(context)

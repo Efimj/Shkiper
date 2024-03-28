@@ -35,7 +35,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.NotePosition
-import com.jobik.shkiper.navigation.AppScreens
+import com.jobik.shkiper.navigation.Route
 import com.jobik.shkiper.ui.components.cards.SnackbarCard
 import com.jobik.shkiper.ui.components.fields.CustomDefaultTextField
 import com.jobik.shkiper.ui.components.fields.CustomRichTextEditor
@@ -65,7 +65,7 @@ fun NoteScreenContent(
     val linkListExpanded = remember { mutableStateOf(false) }
 
     LaunchedEffect(currentRoute) {
-        if (currentRoute.substringBefore("/") != AppScreens.Note.route.substringBefore("/")) {
+        if (currentRoute.substringBefore("/") != Route.Note.route.substringBefore("/")) {
             noteViewModel.setTopAppBarHover(false)
             noteViewModel.setBottomAppBarHover(false)
         }

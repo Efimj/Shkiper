@@ -19,7 +19,7 @@ import com.jobik.shkiper.database.models.NotePosition
 import com.jobik.shkiper.database.models.Reminder
 import com.jobik.shkiper.database.models.RepeatMode
 import com.jobik.shkiper.helpers.DateHelper
-import com.jobik.shkiper.navigation.AppScreens
+import com.jobik.shkiper.navigation.Route
 import com.jobik.shkiper.navigation.Argument_Note_Position
 import com.jobik.shkiper.screens.AppLayout.NavigationBar.AppNavigationBarState
 import com.jobik.shkiper.util.SnackbarHostUtil
@@ -241,8 +241,8 @@ class NotesViewModel @Inject constructor(
         if (_screenState.value.selectedNotes.isNotEmpty())
             toggleSelectedNoteCard(note._id)
         else {
-            if (currentRoute.substringBefore("/") != AppScreens.Note.route.substringBefore("/")) {
-                navController.navigate(AppScreens.Note.noteId(note._id.toHexString())) {
+            if (currentRoute.substringBefore("/") != Route.Note.route.substringBefore("/")) {
+                navController.navigate(Route.Note.noteId(note._id.toHexString())) {
                     launchSingleTop = true
                 }
             }

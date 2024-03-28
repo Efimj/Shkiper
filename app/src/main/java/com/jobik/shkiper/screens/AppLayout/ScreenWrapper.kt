@@ -1,6 +1,5 @@
 package com.jobik.shkiper.screens.AppLayout
 
-import android.util.Log
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,7 +15,7 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.navigation.NavHostController
 import com.jobik.shkiper.database.models.NotePosition
-import com.jobik.shkiper.navigation.AppScreens
+import com.jobik.shkiper.navigation.Route
 import com.jobik.shkiper.navigation.SetupAppScreenNavGraph
 import com.jobik.shkiper.screens.AppLayout.NavigationBar.AppNavigationBarState
 
@@ -49,7 +48,7 @@ fun ScreenWrapper(navController: NavHostController, startDestination: String) {
     ) {
         SetupAppScreenNavGraph(
             navController = navController,
-            startDestination = if (startDestination == AppScreens.Onboarding.route) AppScreens.Onboarding.route else AppScreens.NoteList.route
+            startDestination = if (startDestination == Route.Onboarding.route) Route.Onboarding.route else Route.NoteList.route
         )
     }
 
@@ -57,7 +56,7 @@ fun ScreenWrapper(navController: NavHostController, startDestination: String) {
     LaunchedEffect(Unit) {
         if (isInitialized.value) return@LaunchedEffect
         isInitialized.value = true
-        if (startDestination != AppScreens.NoteList.notePosition(NotePosition.MAIN.name) && startDestination != AppScreens.Onboarding.route)
+        if (startDestination != Route.NoteList.notePosition(NotePosition.MAIN.name) && startDestination != Route.Onboarding.route)
             navController.navigate(startDestination) {
                 launchSingleTop
             }
