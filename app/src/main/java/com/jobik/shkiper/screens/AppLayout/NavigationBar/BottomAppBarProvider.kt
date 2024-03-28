@@ -41,7 +41,7 @@ fun BoxScope.BottomAppBarProvider(
     val currentRouteName = navController.currentBackStackEntryAsState().value?.destination?.route
     val currentRouteWithoutSecondaryRoutes =
         (navController.currentBackStackEntryAsState().value?.destination?.route ?: "").substringBefore("/")
-    val isSecondaryScreen = AppScreens.SecondaryRoutes.isSecondaryRoute(currentRouteWithoutSecondaryRoutes)
+    val isSecondaryScreen = AppScreens.isSecondaryRoute(currentRouteWithoutSecondaryRoutes)
 
     LaunchedEffect(currentRouteName) {
         if (isSecondaryScreen) {

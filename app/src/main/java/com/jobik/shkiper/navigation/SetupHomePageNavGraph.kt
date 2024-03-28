@@ -30,7 +30,7 @@ fun SetupAppScreenNavGraph(
     startDestination: String
 ) {
     fun isSecondaryRoute(targetRoute: String?): Boolean {
-        return AppScreens.SecondaryRoutes.isSecondaryRoute(targetRoute ?: "")
+        return AppScreens.isSecondaryRoute(targetRoute ?: "")
     }
 
     NavHost(
@@ -84,14 +84,16 @@ fun SetupAppScreenNavGraph(
 
         composable(
             route = AppScreens.Settings.route,
-            enterTransition = {
-                when (initialState.destination.route) {
-                    AppScreens.Note.route -> null
-                    else -> if (isSecondaryRoute(initialState.destination.route)) null else slideInVertically(
-                        initialOffsetY = { -40 }) + fadeIn()
-                }
-            },
-            exitTransition = { null }
+//            exitTransition = { null },
+//            enterTransition = { null }
+//            enterTransition = {
+//                when (initialState.destination.route) {
+//                    AppScreens.Note.route -> null
+//                    else -> if (isSecondaryRoute(initialState.destination.route)) null else slideInVertically(
+//                        initialOffsetY = { -40 }) + fadeIn()
+//                }
+//            },
+//            exitTransition = { null }
         ) {
             SettingsScreen(navController)
         }
@@ -105,26 +107,30 @@ fun SetupAppScreenNavGraph(
 
         composable(
             route = AppScreens.Onboarding.route,
-            enterTransition = { fadeIn() + slideInHorizontally() },
-            exitTransition = { fadeOut() + slideOutHorizontally() }
+            enterTransition = { secondaryScreenEnterTransition() },
+            exitTransition = { secondaryScreenExitTransition() }
         ) { OnBoardingScreen(navController) }
 
         composable(
             route = AppScreens.Statistics.route,
-            enterTransition = { fadeIn() + slideInHorizontally() },
-            exitTransition = { fadeOut() + slideOutHorizontally() }
+            enterTransition = { secondaryScreenEnterTransition() },
+            exitTransition = { secondaryScreenExitTransition() }
         ) { StatisticsScreen() }
 
         composable(
             route = AppScreens.Purchases.route,
-            enterTransition = { fadeIn() + slideInHorizontally() },
-            exitTransition = { fadeOut() + slideOutHorizontally() }
+            enterTransition = { secondaryScreenEnterTransition() },
+            exitTransition = { secondaryScreenExitTransition() }
         ) { PurchaseScreen() }
 
         composable(
             route = AppScreens.AboutNotepad.route,
-            enterTransition = { fadeIn() + slideInHorizontally() },
-            exitTransition = { fadeOut() + slideOutHorizontally() }
+            enterTransition = { secondaryScreenEnterTransition() },
+            exitTransition = { secondaryScreenExitTransition() }
         ) { AboutNotepadScreen() }
     }
 }
+
+private fun secondaryScreenEnterTransition() = slideInHorizontally { it } + fadeIn()
+private fun secondaryScreenExitTransition() = slideOutHorizontally { it } + fadeOut()
+
