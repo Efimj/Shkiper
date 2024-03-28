@@ -79,6 +79,7 @@ fun LazyListScope.LinkPreviewList(
                         disabledBackgroundColor = Color.Transparent
                     ),
                     textColor = CustomTheme.colors.textSecondary,
+                    textStyle = MaterialTheme.typography.body1,
                 ),
                 modifier = contentPadding
             )
