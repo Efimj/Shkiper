@@ -10,34 +10,27 @@ const val Argument_Note_Position = "position"
 
 @Keep
 sealed class AppScreens(val route: String) {
+
     data object Onboarding : AppScreens(route = "onboarding")
     data object NoteList : AppScreens(route = "note_list/{$Argument_Note_Position}") {
-        const val number = 1
-
         fun notePosition(position: String): String {
             return this.route.replace(oldValue = "{$Argument_Note_Position}", newValue = position)
         }
     }
 
     data object Archive : AppScreens(route = "archive/{$Argument_Note_Position}") {
-        const val number = 2
-
         fun notePosition(position: String): String {
             return this.route.replace(oldValue = "{$Argument_Note_Position}", newValue = position)
         }
     }
 
     data object Basket : AppScreens(route = "basket/{$Argument_Note_Position}") {
-        const val number = 3
-
         fun notePosition(position: String): String {
             return this.route.replace(oldValue = "{$Argument_Note_Position}", newValue = position)
         }
     }
 
-    data object Settings : AppScreens(route = "settings"){
-        const val number = 4
-    }
+    data object Settings : AppScreens(route = "settings")
 
     data object Note : AppScreens(route = "note/{$Argument_Note_Id}") {
         fun noteId(id: String): String {
@@ -49,13 +42,26 @@ sealed class AppScreens(val route: String) {
     data object AboutNotepad : AppScreens(route = "about_notepad")
     data object Purchases : AppScreens(route = "purchases")
 
-    companion object{
+    companion object {
+        val NumberedRoutes = listOf(NoteList, Archive, Basket, Settings)
+
+        /**
+         * To find the route number to determine the direction of transition
+         */
+        fun getRouteNumber(route: String): Int? {
+            val routeIndex = NumberedRoutes.indexOfFirst { it.route.substringBefore("/") == route }
+            if (routeIndex == -1) return null
+            return routeIndex
+        }
+
         /**
          * This routes not show navigation button
          */
-        val secondaryRoutes = listOf(Onboarding, Note, Statistics, Purchases, AboutNotepad)
+        val SecondaryRoutes = listOf(Onboarding, Note, Statistics, Purchases, AboutNotepad)
         fun isSecondaryRoute(route: String): Boolean {
-            return secondaryRoutes.any { it.route.substringBefore("/") == route }
+            return SecondaryRoutes.any { it.route.substringBefore("/") == route }
         }
+
+
     }
 }
