@@ -159,7 +159,8 @@ private fun ScreenContent(
                         .wrapContentSize(unbounded = true)
                         .width(LocalConfiguration.current.screenWidthDp.dp),
                     state = rememberLazyListState(),
-                    contentPadding = PaddingValues(10.dp, 0.dp, 10.dp, 0.dp)
+                    contentPadding = PaddingValues(10.dp, 0.dp, 10.dp, 0.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     items(items = notesViewModel.screenState.value.hashtags.toList()) { item ->
                         HashtagButton(item, item == notesViewModel.screenState.value.currentHashtag) {
