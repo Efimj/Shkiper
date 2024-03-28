@@ -1,17 +1,14 @@
 package com.jobik.shkiper.screens.NoteListScreen
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.PageSize
-import androidx.compose.foundation.pager.PagerState
-import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableIntState
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.jobik.shkiper.screens.AppLayout.NavigationBar.AppNavigationBarState
@@ -19,52 +16,45 @@ import com.jobik.shkiper.screens.NoteListScreen.NoteListCalendarContent.Calendar
 import com.jobik.shkiper.screens.NoteListScreen.NoteListCalendarContent.ScreenCalendarContent
 import com.jobik.shkiper.screens.NoteListScreen.NoteListScreenContent.NoteListScreenContent
 import com.jobik.shkiper.viewmodels.NotesViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun NoteListScreen(navController: NavController) {
-    val pagerState = rememberPagerState { 2 }
-    val scope = rememberCoroutineScope()
+    val selectedPageNumber = rememberSaveable { mutableIntStateOf(1) }
+    ReturnUserToMainContent(currentPage = selectedPageNumber)
 
-    ReturnUserToMainContent(pagerState, scope)
-
-    HorizontalPager(
+    AnimatedContent(
         modifier = Modifier.fillMaxSize(),
-        verticalAlignment = Alignment.CenterVertically,
-        state = pagerState,
-        pageSpacing = 0.dp,
-        userScrollEnabled = true,
-        reverseLayout = false,
-        contentPadding = PaddingValues(0.dp),
-        beyondBoundsPageCount = 0,
-        pageSize = PageSize.Fill,
-    ) {
-        if (it == 0) {
+        targetState = selectedPageNumber.intValue,
+//        transitionSpec = {
+//            if (initialState == 1) {
+//                ScreenTransition().secondaryScreenEnterTransition()
+//                    .togetherWith(ExitTransition.None)
+//            } else {
+//                EnterTransition.None.togetherWith(ScreenTransition().secondaryScreenExitTransition())
+//            }
+//        },
+        label = "MainPageAnimatedContent"
+    ) { number ->
+        if (number == 1) {
             NoteListScreenContent(
                 navController = navController,
                 viewModel = hiltViewModel<NotesViewModel>(),
                 onSlideNext = {
-                    scope.launch {
-                        pagerState.animateScrollToPage(1)
-                    }
+                    selectedPageNumber.intValue = 2
                 })
         } else {
             ScreenCalendarContent(
                 navController = navController,
                 viewModel = hiltViewModel<CalendarViewModel>(),
                 onSlideBack = {
-                    scope.launch {
-                        pagerState.animateScrollToPage(0)
-                    }
+                    selectedPageNumber.intValue = 1
                 }
             )
         }
     }
 
-    LaunchedEffect(pagerState.targetPage) {
-        if (pagerState.targetPage > 0) {
+    LaunchedEffect(selectedPageNumber.intValue) {
+        if (selectedPageNumber.intValue > 1) {
             AppNavigationBarState.hideWithLock()
         } else {
             AppNavigationBarState.showWithUnlock()
@@ -72,15 +62,11 @@ fun NoteListScreen(navController: NavController) {
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun ReturnUserToMainContent(
-    pagerState: PagerState,
-    scope: CoroutineScope
+    currentPage: MutableIntState
 ) {
-    BackHandler(enabled = pagerState.currentPage == 1) {
-        scope.launch {
-            pagerState.animateScrollToPage(0)
-        }
+    BackHandler(enabled = currentPage.intValue == 2) {
+        currentPage.intValue = 1
     }
 }

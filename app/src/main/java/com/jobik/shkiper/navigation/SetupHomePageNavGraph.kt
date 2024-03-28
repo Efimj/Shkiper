@@ -53,7 +53,7 @@ fun SetupAppScreenNavGraph(
         composable(
             route = Route.Basket.route,
             enterTransition = { mainScreenEnterTransition() },
-            exitTransition = { mainScreenExitTransition() }
+            exitTransition = { mainScreenExitTransition() },
         ) {
             BasketNotesScreen(navController)
         }
@@ -61,7 +61,7 @@ fun SetupAppScreenNavGraph(
         composable(
             route = Route.Settings.route,
             enterTransition = { mainScreenEnterTransition() },
-            exitTransition = { mainScreenExitTransition() }
+            exitTransition = { mainScreenExitTransition() },
         ) {
             SettingsScreen(navController)
         }
@@ -75,32 +75,34 @@ fun SetupAppScreenNavGraph(
 
         composable(
             route = Route.Onboarding.route,
-            enterTransition = { secondaryScreenEnterTransition() },
-            exitTransition = { secondaryScreenExitTransition() }
+            enterTransition = { ScreenTransition().secondaryScreenEnterTransition() },
+            exitTransition = { ScreenTransition().secondaryScreenExitTransition() }
         ) { OnBoardingScreen(navController) }
 
         composable(
             route = Route.Statistics.route,
-            enterTransition = { secondaryScreenEnterTransition() },
-            exitTransition = { secondaryScreenExitTransition() }
+            enterTransition = { ScreenTransition().secondaryScreenEnterTransition() },
+            exitTransition = { ScreenTransition().secondaryScreenExitTransition() }
         ) { StatisticsScreen() }
 
         composable(
             route = Route.Purchases.route,
-            enterTransition = { secondaryScreenEnterTransition() },
-            exitTransition = { secondaryScreenExitTransition() }
+            enterTransition = { ScreenTransition().secondaryScreenEnterTransition() },
+            exitTransition = { ScreenTransition().secondaryScreenExitTransition() }
         ) { PurchaseScreen() }
 
         composable(
             route = Route.AboutNotepad.route,
-            enterTransition = { secondaryScreenEnterTransition() },
-            exitTransition = { secondaryScreenExitTransition() }
+            enterTransition = { ScreenTransition().secondaryScreenEnterTransition() },
+            exitTransition = { ScreenTransition().secondaryScreenExitTransition() }
         ) { AboutNotepadScreen() }
     }
 }
 
-private fun secondaryScreenEnterTransition() = slideInHorizontally { it } + fadeIn()
-private fun secondaryScreenExitTransition() = slideOutHorizontally { it } + fadeOut()
+class ScreenTransition() {
+    fun secondaryScreenEnterTransition() = slideInHorizontally { it } + fadeIn()
+    fun secondaryScreenExitTransition() = slideOutHorizontally { it } + fadeOut()
+}
 
 private fun AnimatedContentTransitionScope<NavBackStackEntry>.mainScreenEnterTransition(): EnterTransition? {
     val initial = initialState.destination.route ?: return null
