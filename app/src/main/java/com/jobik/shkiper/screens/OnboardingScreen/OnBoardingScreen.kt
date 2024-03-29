@@ -49,7 +49,7 @@ fun OnBoardingScreen(navController: NavController) {
     }
     Box {
         HorizontalPager(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize().background(CustomTheme.colors.mainBackground),
             verticalAlignment = Alignment.CenterVertically,
             state = pagerState,
             pageSpacing = 10.dp,
