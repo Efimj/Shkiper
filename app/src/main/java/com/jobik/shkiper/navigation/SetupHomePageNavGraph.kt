@@ -70,8 +70,8 @@ fun SetupAppScreenNavGraph(
         composable(
             route = Route.Note.route,
             arguments = listOf(navArgument(Argument_Note_Id) { type = NavType.StringType }),
-            enterTransition = { fadeIn() + scaleIn(initialScale = 0.9f) },
-            exitTransition = { fadeOut() + scaleOut(targetScale = 0.9f) }
+            enterTransition = { ScreenTransition().secondaryScreenEnterTransition() },
+            exitTransition = { ScreenTransition().secondaryScreenExitTransition() }
         ) { NoteScreen(navController) }
 
         composable(
@@ -109,10 +109,10 @@ private fun AnimatedContentTransitionScope<NavBackStackEntry>.mainScreenEnterTra
     val initial = initialState.destination.route?.substringBefore("/") ?: return null
     val target = targetState.destination.route?.substringBefore("/") ?: return null
 
-    // transition to note
-    if (initial == Route.Note.route.substringBefore("/")) {
-        return null
-    }
+//    // transition to note
+//    if (initial == Route.Note.route.substringBefore("/")) {
+//        return null
+//    }
 
     // transition after secondary screen
     if (RouteHelper().isSecondaryRoute(initial)) {
@@ -136,10 +136,10 @@ private fun AnimatedContentTransitionScope<NavBackStackEntry>.mainScreenExitTran
     val initial = initialState.destination.route?.substringBefore("/") ?: return null
     val target = targetState.destination.route?.substringBefore("/") ?: return null
 
-    // transition to note
-    if (target == Route.Note.route.substringBefore("/")) {
-        return null
-    }
+//    // transition to note
+//    if (target == Route.Note.route.substringBefore("/")) {
+//        return null
+//    }
 
     // transition before secondary screen
     if (RouteHelper().isSecondaryRoute(target)) {
