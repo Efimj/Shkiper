@@ -1,7 +1,10 @@
 package com.jobik.shkiper.screens.NoteListScreen.NoteListScreenContent
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.animation.core.*
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.AnimationVector1D
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -30,7 +33,6 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.jobik.shkiper.R
-import com.jobik.shkiper.screens.AppLayout.NavigationBar.AppNavigationBarState
 import com.jobik.shkiper.ui.components.buttons.HashtagButton
 import com.jobik.shkiper.ui.components.cards.NoteCard
 import com.jobik.shkiper.ui.components.fields.SearchBar
@@ -41,7 +43,6 @@ import com.jobik.shkiper.ui.components.layouts.LazyGridNotes
 import com.jobik.shkiper.ui.components.layouts.ScreenContentIfNoData
 import com.jobik.shkiper.ui.components.modals.CreateReminderDialog
 import com.jobik.shkiper.ui.components.modals.ReminderDialogProperties
-import com.jobik.shkiper.ui.helpers.Keyboard
 import com.jobik.shkiper.ui.helpers.rememberNextReminder
 import com.jobik.shkiper.ui.theme.CustomTheme
 import com.jobik.shkiper.viewmodels.NotesViewModel
@@ -80,6 +81,7 @@ fun NoteListScreenContent(
     Box(
         Modifier
             .fillMaxSize()
+            .background(CustomTheme.colors.mainBackground)
             .nestedScroll(nestedScrollConnection)
     ) {
         if (viewModel.screenState.value.isNotesInitialized && viewModel.screenState.value.notes.isEmpty())

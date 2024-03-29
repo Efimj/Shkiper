@@ -1,7 +1,8 @@
 package com.jobik.shkiper.screens.NoteListScreen
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.*
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -25,14 +26,33 @@ fun NoteListScreen(navController: NavController) {
     AnimatedContent(
         modifier = Modifier.fillMaxSize(),
         targetState = selectedPageNumber.intValue,
-//        transitionSpec = {
-//            if (initialState == 1) {
-//                ScreenTransition().secondaryScreenEnterTransition()
-//                    .togetherWith(ExitTransition.None)
-//            } else {
-//                EnterTransition.None.togetherWith(ScreenTransition().secondaryScreenExitTransition())
-//            }
-//        },
+        transitionSpec = {
+            val duration = 300
+
+            if (targetState > initialState) {
+                slideIntoContainer(
+                    towards = AnimatedContentTransitionScope.SlideDirection.Left,
+                    animationSpec = tween(duration),
+                ) togetherWith slideOutOfContainer(
+                    towards = AnimatedContentTransitionScope.SlideDirection.Right,
+                    animationSpec = tween(durationMillis = duration),
+                    targetOffset = { -150 }
+                )
+            } else {
+                slideIntoContainer(
+                    towards = AnimatedContentTransitionScope.SlideDirection.Left,
+                    animationSpec = tween(duration),
+                    initialOffset = { -150 }
+                ).togetherWith(
+                    slideOutOfContainer(
+                        towards = AnimatedContentTransitionScope.SlideDirection.Right,
+                        animationSpec = tween(duration),
+                    )
+                )
+            }.apply {
+                targetContentZIndex = targetState.toFloat()
+            }
+        },
         label = "MainPageAnimatedContent"
     ) { number ->
         if (number == 1) {

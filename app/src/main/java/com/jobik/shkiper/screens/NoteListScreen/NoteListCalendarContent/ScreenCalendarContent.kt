@@ -1,5 +1,6 @@
 package com.jobik.shkiper.screens.NoteListScreen.NoteListCalendarContent
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -63,7 +64,9 @@ private fun ScreenContent(
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route ?: ""
 
     CollapsingToolbarScaffold(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(CustomTheme.colors.mainBackground),
         state = collapsingToolbarScaffold,
         scrollStrategy = ScrollStrategy.EnterAlways,
         enabledWhenBodyUnfilled = false,
