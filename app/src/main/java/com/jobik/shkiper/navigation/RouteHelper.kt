@@ -1,8 +1,8 @@
 package com.jobik.shkiper.navigation
 
 class RouteHelper {
-    val SecondaryRoutes = listOf(Route.Onboarding, Route.Note, Route.Statistics, Route.Purchases, Route.AboutNotepad)
     val NumberedRoutes = listOf(Route.NoteList, Route.Archive, Route.Basket, Route.Settings)
+    val SecondaryRoutes = listOf(Route.Onboarding, Route.Note, Route.Statistics, Route.Purchases, Route.AboutNotepad)
 
     /**
      * To find the route number to determine the direction of transition

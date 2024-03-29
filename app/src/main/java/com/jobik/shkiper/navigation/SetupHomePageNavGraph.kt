@@ -1,5 +1,6 @@
 package com.jobik.shkiper.navigation
 
+import android.util.Log
 import androidx.compose.animation.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -99,19 +100,26 @@ fun SetupAppScreenNavGraph(
     }
 }
 
-class ScreenTransition() {
-    fun secondaryScreenEnterTransition() = slideInHorizontally { it } + fadeIn()
-    fun secondaryScreenExitTransition() = slideOutHorizontally { it } + fadeOut()
+class ScreenTransition {
+    fun secondaryScreenEnterTransition() = slideInHorizontally { it }
+    fun secondaryScreenExitTransition() = slideOutHorizontally { it }
 }
 
 private fun AnimatedContentTransitionScope<NavBackStackEntry>.mainScreenEnterTransition(): EnterTransition? {
-    val initial = initialState.destination.route ?: return null
-    val target = targetState.destination.route ?: return null
+    val initial = initialState.destination.route?.substringBefore("/") ?: return null
+    val target = targetState.destination.route?.substringBefore("/") ?: return null
 
-    if (initial == Route.Note.route) {
+    // transition to note
+    if (initial == Route.Note.route.substringBefore("/")) {
         return null
     }
 
+    // transition after secondary screen
+    if (RouteHelper().isSecondaryRoute(initial)) {
+        return slideInHorizontally { -150 }
+    }
+
+    // transition between main screens
     val initiatorRouteNumber = RouteHelper().getRouteNumber(initial) ?: return null
     val targetRouteNumber = RouteHelper().getRouteNumber(target) ?: return null
 
@@ -125,13 +133,20 @@ private fun AnimatedContentTransitionScope<NavBackStackEntry>.mainScreenEnterTra
 }
 
 private fun AnimatedContentTransitionScope<NavBackStackEntry>.mainScreenExitTransition(): ExitTransition? {
-    val initial = initialState.destination.route ?: return null
-    val target = targetState.destination.route ?: return null
+    val initial = initialState.destination.route?.substringBefore("/") ?: return null
+    val target = targetState.destination.route?.substringBefore("/") ?: return null
 
-    if (initial == Route.Note.route) {
+    // transition to note
+    if (target == Route.Note.route.substringBefore("/")) {
         return null
     }
 
+    // transition before secondary screen
+    if (RouteHelper().isSecondaryRoute(target)) {
+        return slideOutHorizontally { -150 }
+    }
+
+    // transition between main screens
     val initiatorRouteNumber = RouteHelper().getRouteNumber(initial) ?: return null
     val targetRouteNumber = RouteHelper().getRouteNumber(target) ?: return null
 
