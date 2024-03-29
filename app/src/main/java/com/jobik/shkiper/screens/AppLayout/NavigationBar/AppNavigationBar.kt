@@ -68,7 +68,6 @@ fun CustomBottomNavigation(items: List<CustomBottomNavigationItem>) {
             .clickable(enabled = false) {}
             .height(DefaultNavigationValues().containerHeight)
             .clip(shape = MaterialTheme.shapes.small)
-            .border(width = 1.dp, color = CustomTheme.colors.mainBackground, shape = MaterialTheme.shapes.small)
             .background(CustomTheme.colors.secondaryBackground)
             .padding(4.dp),
         verticalAlignment = Alignment.CenterVertically,

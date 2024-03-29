@@ -124,7 +124,6 @@ private fun RowScope.ActionButton(
                     contentColor = CustomTheme.colors.textSecondary,
                     containerColor = CustomTheme.colors.secondaryBackground
                 ),
-                border = BorderStroke(1.dp, CustomTheme.colors.mainBackground),
                 elevation = null,
                 contentPadding = PaddingValues(horizontal = 10.dp),
                 onClick = it.onClick
@@ -151,10 +150,6 @@ private fun RowScope.SearchField(
     val focusRequester = remember { FocusRequester() }
     val backgroundColorValue =
         if (isFocused.value) CustomTheme.colors.secondaryBackground else CustomTheme.colors.mainBackground
-    val backgroundStatusBarColor by animateColorAsState(
-        backgroundColorValue,
-        label = "backgroundStatusBarColor",
-    )
 
     val systemUiController = rememberSystemUiController()
     LaunchedEffect(isFocused.value) {
@@ -176,7 +171,6 @@ private fun RowScope.SearchField(
                 shape = RoundedCornerShape(cornerRadius)
             )
             .fillMaxHeight()
-            .border(1.dp, backgroundStatusBarColor, RoundedCornerShape(cornerRadius))
             .padding(horizontal = 15.dp),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically

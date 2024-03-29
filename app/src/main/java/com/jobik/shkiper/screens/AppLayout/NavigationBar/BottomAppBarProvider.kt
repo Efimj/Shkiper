@@ -118,11 +118,6 @@ private fun RowScope.CreateNoteFAN(
                 modifier = Modifier
                     .aspectRatio(1f)
                     .clip(shape = MaterialTheme.shapes.small)
-                    .border(
-                        width = 1.dp,
-                        color = CustomTheme.colors.mainBackground,
-                        shape = MaterialTheme.shapes.small
-                    )
                     .background(CustomTheme.colors.active)
                     .clickable { createNewNote(scope = scope, viewModel = viewModel, navController = navController) },
                 verticalAlignment = Alignment.CenterVertically,
