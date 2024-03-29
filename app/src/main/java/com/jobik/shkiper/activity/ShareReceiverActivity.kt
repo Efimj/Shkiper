@@ -3,6 +3,7 @@ package com.jobik.shkiper.activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.annotation.Keep
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.background
@@ -35,7 +36,10 @@ class ShareReceiverActivity : AppCompatActivity() {
     private var receivedText: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
+        actionBar?.hide()
+
         setupActivity()
         ThemeUtil.restoreSavedTheme(this)
         setContent {

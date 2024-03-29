@@ -1,6 +1,7 @@
 package com.jobik.shkiper.ui.theme
 
 import android.app.Activity
+import android.graphics.Color
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -9,6 +10,7 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.jobik.shkiper.util.ThemeUtil
 
@@ -20,18 +22,20 @@ fun ShkiperTheme(
 ) {
     val colors = ThemeUtil.getColors(isDark = darkTheme, style = style)
 
-    val view = LocalView.current
-    if (!view.isInEditMode) {
-        SideEffect {
-            (view.context as Activity).window.statusBarColor = colors.mainBackground.toArgb()
-            ViewCompat.getWindowInsetsController(view)?.isAppearanceLightStatusBars = !darkTheme
-        }
-    }
-
     val systemUiController = rememberSystemUiController()
     systemUiController.setSystemBarsColor(
         color = colors.secondaryBackground
     )
+
+    val view = LocalView.current
+    if (!view.isInEditMode) {
+        SideEffect {
+            val window = (view.context as Activity).window
+            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme.not()
+            WindowCompat.getInsetsController(window, view).isAppearanceLightNavigationBars = darkTheme.not()
+            window.navigationBarColor = Color.TRANSPARENT
+        }
+    }
 
     CompositionLocalProvider(
         LocalCustomThemeColors provides colors,
