@@ -13,12 +13,10 @@ import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.NotificationAdd
 import androidx.compose.material.icons.outlined.PushPin
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.jobik.shkiper.R
 import com.jobik.shkiper.ui.components.layouts.CustomTopAppBar
 import com.jobik.shkiper.ui.components.layouts.TopAppBarItem
@@ -30,14 +28,6 @@ import kotlin.math.roundToInt
 fun NoteListScreenActionBar(
     actionBarHeight: Dp, offsetX: Animatable<Float, AnimationVector1D>, notesViewModel: NotesViewModel
 ) {
-    val systemUiController = rememberSystemUiController()
-    val backgroundColorValue =
-        if (notesViewModel.screenState.value.selectedNotes.isNotEmpty()) CustomTheme.colors.secondaryBackground else CustomTheme.colors.mainBackground
-
-    LaunchedEffect(notesViewModel.screenState.value.selectedNotes.isNotEmpty()) {
-        systemUiController.setStatusBarColor(backgroundColorValue)
-    }
-
     val topAppBarElevation = if (offsetX.value.roundToInt() < -actionBarHeight.value.roundToInt()) 0.dp else 2.dp
     Box(
         modifier = Modifier

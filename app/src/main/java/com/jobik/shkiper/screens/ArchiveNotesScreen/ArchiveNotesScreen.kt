@@ -32,12 +32,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.jobik.shkiper.R
-import com.jobik.shkiper.screens.AppLayout.NavigationBar.AppNavigationBarState
 import com.jobik.shkiper.ui.components.buttons.HashtagButton
 import com.jobik.shkiper.ui.components.cards.NoteCard
-import com.jobik.shkiper.ui.components.fields.SearchBarHeight
+import com.jobik.shkiper.ui.components.fields.getSearchBarHeight
 import com.jobik.shkiper.ui.components.layouts.CustomTopAppBar
 import com.jobik.shkiper.ui.components.layouts.LazyGridNotes
 import com.jobik.shkiper.ui.components.layouts.ScreenContentIfNoData
@@ -53,19 +51,23 @@ import kotlin.math.roundToInt
 fun ArchiveNotesScreen(navController: NavController, archiveViewModel: NotesViewModel = hiltViewModel()) {
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route ?: ""
 
-    val searchBarHeightPx = with(LocalDensity.current) { SearchBarHeight.dp.roundToPx().toFloat() }
-
-    val searchBarOffsetHeightPx = remember { mutableStateOf(0f) }
+    val isSearchBarVisible = remember { mutableStateOf(true) }
     val lazyGridNotes = rememberLazyStaggeredGridState()
 
     val nestedScrollConnection = remember {
         object : NestedScrollConnection {
-            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-                val delta = available.y
-                val newOffset = searchBarOffsetHeightPx.value + delta
-                if (lazyGridNotes.canScrollForward) searchBarOffsetHeightPx.value =
-                    newOffset.coerceIn(-searchBarHeightPx, 0f)
-                return Offset.Zero
+            override fun onPostScroll(consumed: Offset, available: Offset, source: NestedScrollSource): Offset {
+                if (consumed.y < -30) {
+                    isSearchBarVisible.value = false
+                }
+                if (consumed.y > 30) {
+                    isSearchBarVisible.value = true
+                }
+                if (available.y > 0) {
+                    isSearchBarVisible.value = true
+                }
+
+                return super.onPostScroll(consumed, available, source)
             }
         }
     }
@@ -97,15 +99,6 @@ fun ArchiveNotesScreen(navController: NavController, archiveViewModel: NotesView
         }
     }
 
-    /**
-     * LaunchedEffect for cases when it is impossible to scroll the list.
-     */
-    LaunchedEffect(lazyGridNotes.canScrollForward, lazyGridNotes.canScrollBackward) {
-        if (!lazyGridNotes.canScrollForward && !lazyGridNotes.canScrollBackward) {
-            searchBarOffsetHeightPx.value = 0f
-        }
-    }
-
     Box(
         Modifier
             .fillMaxSize()
@@ -117,8 +110,7 @@ fun ArchiveNotesScreen(navController: NavController, archiveViewModel: NotesView
             ScreenContent(lazyGridNotes, archiveViewModel, currentRoute, navController)
         Box(modifier = Modifier) {
             com.jobik.shkiper.ui.components.fields.SearchBar(
-                searchBarOffsetHeightPx = searchBarOffsetHeightPx.value,
-                isVisible = archiveViewModel.screenState.value.selectedNotes.isEmpty(),
+                isVisible = archiveViewModel.screenState.value.selectedNotes.isEmpty() && isSearchBarVisible.value,
                 value = archiveViewModel.screenState.value.searchText,
                 onChange = archiveViewModel::changeSearchText
             )
@@ -135,7 +127,7 @@ private fun ScreenContent(
     navController: NavController
 ) {
     LazyGridNotes(
-        contentPadding = PaddingValues(10.dp, 70.dp, 10.dp, 80.dp),
+        contentPadding = PaddingValues(10.dp, getSearchBarHeight() + 10.dp, 10.dp, 80.dp),
         modifier = Modifier.fillMaxSize(),
         gridState = lazyGridNotes
     ) {
@@ -187,14 +179,6 @@ private fun ScreenContent(
 private fun ActionBar(
     actionBarHeight: Dp, offsetX: Animatable<Float, AnimationVector1D>, notesViewModel: NotesViewModel
 ) {
-    val systemUiController = rememberSystemUiController()
-    val backgroundColorValue =
-        if (notesViewModel.screenState.value.selectedNotes.isNotEmpty()) CustomTheme.colors.secondaryBackground else CustomTheme.colors.mainBackground
-
-    LaunchedEffect(notesViewModel.screenState.value.selectedNotes.isNotEmpty()) {
-        systemUiController.setStatusBarColor(backgroundColorValue)
-    }
-
     val topAppBarElevation = if (offsetX.value.roundToInt() < -actionBarHeight.value.roundToInt()) 0.dp else 2.dp
     Box(
         modifier = Modifier

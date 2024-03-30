@@ -164,8 +164,8 @@ fun NoteScreenContent(
                         modifier = Modifier
                             .padding(bottom = 15.dp)
                             .padding(horizontal = 20.dp),
-                        tags = noteViewModel.screenState.value.hashtags,
-                        forSelectionTags = noteViewModel.screenState.value.allHashtags,
+                        selectedTags = noteViewModel.screenState.value.hashtags,
+                        allTags = noteViewModel.screenState.value.allHashtags,
                         onSave = noteViewModel::changeNoteHashtags
                     )
                 }

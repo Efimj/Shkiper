@@ -4,9 +4,7 @@ import androidx.annotation.Keep
 import androidx.annotation.StringRes
 import androidx.compose.animation.*
 import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
@@ -28,21 +26,17 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.jobik.shkiper.R
 import com.jobik.shkiper.ui.helpers.Keyboard
 import com.jobik.shkiper.ui.helpers.keyboardAsState
+import com.jobik.shkiper.ui.helpers.topWindowInsetsPadding
 import com.jobik.shkiper.ui.theme.CustomTheme
-import kotlin.math.roundToInt
 
 data class SearchBarActionButton(
     val icon: ImageVector,
@@ -52,36 +46,35 @@ data class SearchBarActionButton(
 )
 
 @Keep
-const val SearchBarHeight = 60
+private const val SearchBarHeight = 60
+
+@Composable
+fun getSearchBarHeight() = SearchBarHeight.dp + topWindowInsetsPadding()
 
 @Composable
 fun SearchBar(
-    searchBarOffsetHeightPx: Float,
     isVisible: Boolean,
     value: String,
     actionButton: SearchBarActionButton? = null,
     onChange: (newValue: String) -> Unit
 ) {
     val isFocused = remember { mutableStateOf(false) }
-    val searchBarFloatHeight = SearchBarHeight.toFloat()
     val horizontalPaddings by animateDpAsState(if (isFocused.value) 0.dp else 20.dp, label = "horizontalPaddings")
-    val topPadding by animateDpAsState(if (isFocused.value) 0.dp else 10.dp, label = "topPadding")
+    val topPadding by animateDpAsState(
+        if (isFocused.value) 0.dp else topWindowInsetsPadding() + 10.dp,
+        label = "topPadding"
+    )
 
     AnimatedVisibility(
-        isVisible,
-        enter = slideIn {
-            IntOffset(0, -searchBarFloatHeight.roundToInt())
-        },
-        exit = slideOut {
-            IntOffset(0, -searchBarFloatHeight.roundToInt())
-        },
+        visible = isVisible || isFocused.value,
+        enter = slideInVertically { -it },
+        exit = slideOutVertically { -it },
     ) {
         Row(
             modifier = Modifier
-                .height(SearchBarHeight.dp)
+                .height(getSearchBarHeight())
                 .padding(horizontal = horizontalPaddings)
-                .padding(top = topPadding)
-                .offset { IntOffset(x = 0, y = searchBarOffsetHeightPx.roundToInt()) },
+                .padding(top = topPadding),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
@@ -146,17 +139,12 @@ private fun RowScope.SearchField(
 ) {
     val focusManager = LocalFocusManager.current
     val isKeyboardVisible by keyboardAsState()
+    val topPadding by animateDpAsState(
+        if (isFocused.value) topWindowInsetsPadding() else 0.dp,
+        label = "topPadding"
+    )
     val cornerRadius by animateDpAsState(if (isFocused.value) 0.dp else 15.dp, label = "cornerRadius")
     val focusRequester = remember { FocusRequester() }
-    val backgroundColorValue =
-        if (isFocused.value) CustomTheme.colors.secondaryBackground else CustomTheme.colors.mainBackground
-
-    val systemUiController = rememberSystemUiController()
-    LaunchedEffect(isFocused.value) {
-        systemUiController.setStatusBarColor(
-            backgroundColorValue
-        )
-    }
 
     Row(
         modifier = Modifier
@@ -171,7 +159,8 @@ private fun RowScope.SearchField(
                 shape = RoundedCornerShape(cornerRadius)
             )
             .fillMaxHeight()
-            .padding(horizontal = 15.dp),
+            .padding(horizontal = 15.dp)
+            .padding(top = topPadding),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {

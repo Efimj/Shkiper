@@ -63,34 +63,3 @@ fun Month.displayText(short: Boolean = true): String {
     val style = if (short) TextStyle.SHORT else TextStyle.FULL
     return getDisplayName(style, Locale.getDefault())
 }
-
-/**
- * Sets the current color, and with the dispose sets the previous one.
- */
-@Composable
-fun UpdateStatusBarColor(
-    current: Color, previous: Color = CustomTheme.colors.mainBackground, delayMs: Long = 500L
-) {
-    val systemUiController = rememberSystemUiController()
-
-    LaunchedEffect(Unit) {
-        delay(delayMs)
-        systemUiController.setStatusBarColor(
-            color = current
-        )
-    }
-
-    SideEffect {
-        systemUiController.setStatusBarColor(
-            color = current
-        )
-    }
-
-    DisposableEffect(Unit) {
-        onDispose {
-            systemUiController.setStatusBarColor(
-                color = previous
-            )
-        }
-    }
-}

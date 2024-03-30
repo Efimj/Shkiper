@@ -37,7 +37,7 @@ import com.jobik.shkiper.ui.components.buttons.HashtagButton
 import com.jobik.shkiper.ui.components.cards.NoteCard
 import com.jobik.shkiper.ui.components.fields.SearchBar
 import com.jobik.shkiper.ui.components.fields.SearchBarActionButton
-import com.jobik.shkiper.ui.components.fields.SearchBarHeight
+import com.jobik.shkiper.ui.components.fields.getSearchBarHeight
 import com.jobik.shkiper.ui.components.layouts.BannerList
 import com.jobik.shkiper.ui.components.layouts.LazyGridNotes
 import com.jobik.shkiper.ui.components.layouts.ScreenContentIfNoData
@@ -55,18 +55,23 @@ fun NoteListScreenContent(
 ) {
     val actionBarHeight = 56.dp
 
-    val searchBarOffsetHeightPx = remember { mutableFloatStateOf(0f) }
-    val searchBarHeightPx = with(LocalDensity.current) { SearchBarHeight.dp.roundToPx().toFloat() }
+    val isSearchBarVisible = remember { mutableStateOf(true) }
     val lazyGridNotes = rememberLazyStaggeredGridState()
 
     val nestedScrollConnection = remember {
         object : NestedScrollConnection {
-            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-                val delta = available.y
-                val newOffset = searchBarOffsetHeightPx.floatValue + delta
-                if (lazyGridNotes.canScrollForward) searchBarOffsetHeightPx.floatValue =
-                    newOffset.coerceIn(-searchBarHeightPx, 0f)
-                return Offset.Zero
+            override fun onPostScroll(consumed: Offset, available: Offset, source: NestedScrollSource): Offset {
+                if (consumed.y < -30) {
+                    isSearchBarVisible.value = false
+                }
+                if (consumed.y > 30) {
+                    isSearchBarVisible.value = true
+                }
+                if (available.y > 0) {
+                    isSearchBarVisible.value = true
+                }
+
+                return super.onPostScroll(consumed, available, source)
             }
         }
     }
@@ -76,10 +81,9 @@ fun NoteListScreenContent(
 
     BackHandlerIfSelectedNotes(viewModel)
     IfSelectedNotesChanged(viewModel, offsetX, actionBarHeightPx)
-    IfScrollingImpossible(lazyGridNotes, searchBarOffsetHeightPx)
 
     Box(
-        Modifier
+        modifier = Modifier
             .fillMaxSize()
             .background(CustomTheme.colors.mainBackground)
             .nestedScroll(nestedScrollConnection)
@@ -90,8 +94,7 @@ fun NoteListScreenContent(
             NotesListContent(viewModel, lazyGridNotes, navController)
         Box(modifier = Modifier) {
             SearchBar(
-                searchBarOffsetHeightPx = searchBarOffsetHeightPx.floatValue,
-                isVisible = viewModel.screenState.value.selectedNotes.isEmpty(),
+                isVisible = viewModel.screenState.value.selectedNotes.isEmpty() && isSearchBarVisible.value,
                 value = viewModel.screenState.value.searchText,
                 actionButton = SearchBarActionButton(
                     icon = Icons.Outlined.Event,
@@ -171,7 +174,7 @@ private fun NotesListContent(
         remember(notesViewModel.screenState.value.notes) { notesViewModel.screenState.value.notes.filterNot { it.isPinned } }
 
     LazyGridNotes(
-        contentPadding = PaddingValues(10.dp, 70.dp, 10.dp, 80.dp),
+        contentPadding = PaddingValues(10.dp, getSearchBarHeight() + 10.dp, 10.dp, 80.dp),
         modifier = Modifier
             .fillMaxSize()
             .testTag("notes_list"),

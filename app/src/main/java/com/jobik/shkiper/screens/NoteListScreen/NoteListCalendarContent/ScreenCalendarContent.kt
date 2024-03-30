@@ -27,7 +27,6 @@ import com.jobik.shkiper.ui.components.buttons.HashtagButton
 import com.jobik.shkiper.ui.components.cards.NoteCard
 import com.jobik.shkiper.ui.components.layouts.LazyGridNotes
 import com.jobik.shkiper.ui.components.layouts.ScreenContentIfNoData
-import com.jobik.shkiper.ui.helpers.UpdateStatusBarColor
 import com.jobik.shkiper.ui.helpers.rememberNextReminder
 import com.jobik.shkiper.ui.theme.CustomTheme
 import me.onebone.toolbar.*
@@ -41,8 +40,6 @@ fun ScreenCalendarContent(
     onSlideBack: () -> Unit,
 ) {
     val collapsingToolbarScaffold = rememberCollapsingToolbarScaffoldState()
-
-    UpdateStatusBarColor(current = CustomTheme.colors.secondaryBackground)
 
     AnimateVerticalSwitch(
         modifier = Modifier,

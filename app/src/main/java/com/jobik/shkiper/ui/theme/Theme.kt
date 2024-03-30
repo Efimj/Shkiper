@@ -9,6 +9,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
+import androidx.core.graphics.alpha
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -22,11 +23,6 @@ fun ShkiperTheme(
 ) {
     val colors = ThemeUtil.getColors(isDark = darkTheme, style = style)
 
-    val systemUiController = rememberSystemUiController()
-    systemUiController.setSystemBarsColor(
-        color = colors.secondaryBackground
-    )
-
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
@@ -34,6 +30,7 @@ fun ShkiperTheme(
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme.not()
             WindowCompat.getInsetsController(window, view).isAppearanceLightNavigationBars = darkTheme.not()
             window.navigationBarColor = Color.TRANSPARENT
+            window.statusBarColor = Color.TRANSPARENT
         }
     }
 
