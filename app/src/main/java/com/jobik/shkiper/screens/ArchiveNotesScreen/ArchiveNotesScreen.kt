@@ -31,7 +31,10 @@ import com.jobik.shkiper.ui.components.layouts.ScreenContentIfNoData
 import com.jobik.shkiper.ui.components.layouts.TopAppBarItem
 import com.jobik.shkiper.ui.components.modals.CreateReminderDialog
 import com.jobik.shkiper.ui.components.modals.ReminderDialogProperties
+import com.jobik.shkiper.ui.helpers.bottomWindowInsetsPadding
+import com.jobik.shkiper.ui.helpers.endWindowInsetsPadding
 import com.jobik.shkiper.ui.helpers.rememberNextReminder
+import com.jobik.shkiper.ui.helpers.startWindowInsetsPadding
 import com.jobik.shkiper.ui.modifiers.scrollConnectionToProvideVisibility
 import com.jobik.shkiper.viewmodels.NotesViewModel
 
@@ -81,7 +84,12 @@ private fun ScreenContent(
     navController: NavController
 ) {
     LazyGridNotes(
-        contentPadding = PaddingValues(10.dp, getSearchBarHeight() + 10.dp, 10.dp, 80.dp),
+        contentPadding = PaddingValues(
+            start = 10.dp + startWindowInsetsPadding(),
+            top = getSearchBarHeight() + 10.dp,
+            end = 10.dp + endWindowInsetsPadding(),
+            bottom = 80.dp + bottomWindowInsetsPadding()
+        ),
         modifier = Modifier.fillMaxSize(),
         gridState = lazyGridNotes
     ) {

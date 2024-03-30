@@ -27,12 +27,13 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.jobik.shkiper.R
 import com.jobik.shkiper.ui.components.cards.NoteCard
+import com.jobik.shkiper.ui.components.fields.getSearchBarHeight
 import com.jobik.shkiper.ui.components.layouts.CustomTopAppBar
 import com.jobik.shkiper.ui.components.layouts.LazyGridNotes
 import com.jobik.shkiper.ui.components.layouts.ScreenContentIfNoData
 import com.jobik.shkiper.ui.components.layouts.TopAppBarItem
 import com.jobik.shkiper.ui.components.modals.ActionDialog
-import com.jobik.shkiper.ui.helpers.rememberNextReminder
+import com.jobik.shkiper.ui.helpers.*
 import com.jobik.shkiper.ui.theme.CustomTheme
 import com.jobik.shkiper.viewmodels.NotesViewModel
 
@@ -83,7 +84,12 @@ private fun ScreenContent(
     navController: NavController
 ) {
     LazyGridNotes(
-        contentPadding = PaddingValues(10.dp, 10.dp, 10.dp, 80.dp),
+        contentPadding = PaddingValues(
+            start = 10.dp + startWindowInsetsPadding(),
+            top = 10.dp + topWindowInsetsPadding(),
+            end = 10.dp + endWindowInsetsPadding(),
+            bottom = 80.dp + bottomWindowInsetsPadding()
+        ),
         modifier = Modifier.fillMaxSize(),
         gridState = lazyGridNotes
     ) {
@@ -99,9 +105,7 @@ private fun ScreenContent(
                     text = stringResource(R.string.BasketPageHeader),
                     color = CustomTheme.colors.textSecondary,
                     style = MaterialTheme.typography.body1.copy(fontSize = 17.sp),
-                    modifier = Modifier
-                        .padding(horizontal = 10.dp)
-                        .basicMarquee(),
+                    modifier = Modifier.basicMarquee(),
                     maxLines = 1
                 )
             }

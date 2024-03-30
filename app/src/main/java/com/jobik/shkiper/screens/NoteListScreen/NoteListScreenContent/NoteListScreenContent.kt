@@ -37,7 +37,10 @@ import com.jobik.shkiper.ui.components.layouts.LazyGridNotes
 import com.jobik.shkiper.ui.components.layouts.ScreenContentIfNoData
 import com.jobik.shkiper.ui.components.modals.CreateReminderDialog
 import com.jobik.shkiper.ui.components.modals.ReminderDialogProperties
+import com.jobik.shkiper.ui.helpers.bottomWindowInsetsPadding
+import com.jobik.shkiper.ui.helpers.endWindowInsetsPadding
 import com.jobik.shkiper.ui.helpers.rememberNextReminder
+import com.jobik.shkiper.ui.helpers.startWindowInsetsPadding
 import com.jobik.shkiper.ui.modifiers.scrollConnectionToProvideVisibility
 import com.jobik.shkiper.ui.theme.CustomTheme
 import com.jobik.shkiper.viewmodels.NotesViewModel
@@ -74,7 +77,10 @@ fun NoteListScreenContent(
                 ),
                 onChange = viewModel::changeSearchText,
             )
-            NoteListScreenActionBar(isVisible = viewModel.screenState.value.selectedNotes.isNotEmpty(), notesViewModel = viewModel)
+            NoteListScreenActionBar(
+                isVisible = viewModel.screenState.value.selectedNotes.isNotEmpty(),
+                notesViewModel = viewModel
+            )
         }
     }
 
@@ -108,7 +114,12 @@ private fun NotesListContent(
         remember(notesViewModel.screenState.value.notes) { notesViewModel.screenState.value.notes.filterNot { it.isPinned } }
 
     LazyGridNotes(
-        contentPadding = PaddingValues(10.dp, getSearchBarHeight() + 10.dp, 10.dp, 80.dp),
+        contentPadding = PaddingValues(
+            start = 10.dp + startWindowInsetsPadding(),
+            top = getSearchBarHeight() + 10.dp,
+            end = 10.dp + endWindowInsetsPadding(),
+            bottom = 80.dp + bottomWindowInsetsPadding()
+        ),
         modifier = Modifier
             .fillMaxSize()
             .testTag("notes_list"),

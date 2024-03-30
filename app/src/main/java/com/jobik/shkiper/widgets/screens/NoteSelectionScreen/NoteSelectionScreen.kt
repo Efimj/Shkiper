@@ -37,7 +37,7 @@ import com.jobik.shkiper.ui.components.cards.NoteCard
 import com.jobik.shkiper.ui.components.fields.getSearchBarHeight
 import com.jobik.shkiper.ui.components.layouts.LazyGridNotes
 import com.jobik.shkiper.ui.components.layouts.ScreenContentIfNoData
-import com.jobik.shkiper.ui.helpers.rememberNextReminder
+import com.jobik.shkiper.ui.helpers.*
 import com.jobik.shkiper.ui.modifiers.scrollConnectionToProvideVisibility
 import com.jobik.shkiper.ui.theme.CustomTheme
 
@@ -112,7 +112,12 @@ private fun ScreenContent(
     val unpinnedNotes = notesViewModel.screenState.value.notes.filterNot { it.isPinned }
 
     LazyGridNotes(
-        contentPadding = PaddingValues(10.dp, getSearchBarHeight() + 10.dp, 10.dp, 80.dp),
+        contentPadding = PaddingValues(
+            start = 10.dp + startWindowInsetsPadding(),
+            top = 10.dp + getSearchBarHeight(),
+            end = 10.dp + endWindowInsetsPadding(),
+            bottom = 80.dp + bottomWindowInsetsPadding()
+        ),
         modifier = Modifier
             .fillMaxSize()
             .testTag("notes_list"),
