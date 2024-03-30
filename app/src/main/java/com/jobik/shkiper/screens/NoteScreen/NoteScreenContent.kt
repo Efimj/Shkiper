@@ -10,7 +10,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Warning
 import androidx.compose.runtime.*
@@ -44,6 +43,7 @@ import com.jobik.shkiper.ui.components.layouts.LinkPreviewList
 import com.jobik.shkiper.ui.components.modals.ActionDialog
 import com.jobik.shkiper.ui.helpers.Keyboard
 import com.jobik.shkiper.ui.helpers.SetRichTextDefaultStyles
+import com.jobik.shkiper.ui.helpers.horizontalWindowInsetsPadding
 import com.jobik.shkiper.ui.helpers.keyboardAsState
 import com.jobik.shkiper.ui.theme.CustomTheme
 import com.jobik.shkiper.util.SnackbarVisualsCustom
@@ -81,13 +81,13 @@ fun NoteScreenContent(
     }
     BackHandlerWithStylingState(noteViewModel)
 
-    Scaffold(
-        backgroundColor = CustomTheme.colors.mainBackground,
+    androidx.compose.material3.Scaffold(
+        containerColor = CustomTheme.colors.mainBackground,
         topBar = { NoteScreenHeader(navController, noteViewModel, richTextState) },
         bottomBar = { NoteScreenFooter(navController, noteViewModel, richTextState) },
+        contentWindowInsets = WindowInsets.ime,
         modifier = Modifier
-            .imePadding()
-            .navigationBarsPadding()
+            .horizontalWindowInsetsPadding()
             .fillMaxSize(),
     ) { contentPadding ->
         Box(
@@ -301,7 +301,7 @@ private fun RemoveIndicatorWhenKeyboardHidden(noteViewModel: NoteViewModel) {
 
     LaunchedEffect(isKeyboardVisible, noteViewModel.screenState.value.isStyling) {
         // for cases of inserting a link through a window
-        if(noteViewModel.screenState.value.isStyling) return@LaunchedEffect
+        if (noteViewModel.screenState.value.isStyling) return@LaunchedEffect
         if (isKeyboardVisible == Keyboard.Closed) {
             focusManager.clearFocus()
         }

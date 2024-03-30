@@ -1,9 +1,6 @@
 package com.jobik.shkiper.screens.NoteListScreen.NoteListScreenContent
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.AnimationVector1D
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -19,12 +16,10 @@ import androidx.compose.material.icons.outlined.Description
 import androidx.compose.material.icons.outlined.Event
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -53,17 +48,10 @@ fun NoteListScreenContent(
     viewModel: NotesViewModel,
     onSlideNext: () -> Unit,
 ) {
-    val actionBarHeight = 56.dp
-
     val lazyGridNotes = rememberLazyStaggeredGridState()
-
     val isSearchBarVisible = remember { mutableStateOf(true) }
 
-    val actionBarHeightPx = with(LocalDensity.current) { actionBarHeight.roundToPx().toFloat() }
-    val offsetX = remember { Animatable(-actionBarHeightPx) }
-
     BackHandlerIfSelectedNotes(viewModel)
-    IfSelectedNotesChanged(viewModel, offsetX, actionBarHeightPx)
 
     Box(
         modifier = Modifier
@@ -86,34 +74,12 @@ fun NoteListScreenContent(
                 ),
                 onChange = viewModel::changeSearchText,
             )
-            NoteListScreenActionBar(actionBarHeight, offsetX, viewModel)
+            NoteListScreenActionBar(isVisible = viewModel.screenState.value.selectedNotes.isNotEmpty(), notesViewModel = viewModel)
         }
     }
 
     NoteListScreenReminderCheck(viewModel)
     CreateReminderContent(viewModel)
-}
-
-@Composable
-private fun IfSelectedNotesChanged(
-    notesViewModel: NotesViewModel,
-    offsetX: Animatable<Float, AnimationVector1D>,
-    actionBarHeightPx: Float
-) {
-    /**
-     * LaunchedEffect for cases when the number of selected notes changes.
-     */
-    LaunchedEffect(notesViewModel.screenState.value.selectedNotes) {
-        if (notesViewModel.screenState.value.selectedNotes.isEmpty()) {
-            offsetX.animateTo(
-                targetValue = -actionBarHeightPx, animationSpec = tween(durationMillis = 200)
-            )
-        } else {
-            offsetX.animateTo(
-                targetValue = 0f, animationSpec = tween(durationMillis = 200)
-            )
-        }
-    }
 }
 
 @Composable

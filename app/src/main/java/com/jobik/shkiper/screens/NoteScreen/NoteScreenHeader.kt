@@ -7,27 +7,25 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.outlined.*
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.NotePosition
 import com.jobik.shkiper.ui.animation.AnimateVerticalSwitch
 import com.jobik.shkiper.ui.components.layouts.CustomTopAppBar
 import com.jobik.shkiper.ui.components.layouts.RichTextHeaderToolBar
 import com.jobik.shkiper.ui.components.layouts.TopAppBarItem
+import com.jobik.shkiper.ui.helpers.topWindowInsetsPadding
 import com.jobik.shkiper.ui.theme.CustomTheme
 import com.mohamedrejeb.richeditor.model.RichTextState
 
 @Composable
 fun NoteScreenHeader(navController: NavController, noteViewModel: NoteViewModel, richTextState: RichTextState) {
-    val systemUiController = rememberSystemUiController()
-
     val backgroundColorValue =
         if (noteViewModel.screenState.value.isTopAppBarHover) CustomTheme.colors.secondaryBackground else CustomTheme.colors.mainBackground
 
@@ -35,19 +33,13 @@ fun NoteScreenHeader(navController: NavController, noteViewModel: NoteViewModel,
         backgroundColorValue, animationSpec = tween(200),
     )
 
-    SideEffect {
-        systemUiController.setStatusBarColor(backgroundColor)
-    }
-
     androidx.compose.material3.Surface(
         modifier = Modifier.fillMaxWidth(),
         color = backgroundColor,
         shadowElevation = if (noteViewModel.screenState.value.isTopAppBarHover) 8.dp else 0.dp
     ) {
         AnimateVerticalSwitch(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(56.dp),
+            modifier = Modifier.height(56.dp + topWindowInsetsPadding()),
             directionUp = false,
             state = noteViewModel.screenState.value.isStyling,
             topComponent = {

@@ -1,9 +1,6 @@
 package com.jobik.shkiper.screens.ArchiveNotesScreen
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.AnimationVector1D
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -16,18 +13,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
-import androidx.compose.ui.input.nestedscroll.NestedScrollSource
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -44,9 +33,7 @@ import com.jobik.shkiper.ui.components.modals.CreateReminderDialog
 import com.jobik.shkiper.ui.components.modals.ReminderDialogProperties
 import com.jobik.shkiper.ui.helpers.rememberNextReminder
 import com.jobik.shkiper.ui.modifiers.scrollConnectionToProvideVisibility
-import com.jobik.shkiper.ui.theme.CustomTheme
 import com.jobik.shkiper.viewmodels.NotesViewModel
-import kotlin.math.roundToInt
 
 @Composable
 fun ArchiveNotesScreen(navController: NavController, archiveViewModel: NotesViewModel = hiltViewModel()) {
@@ -55,10 +42,6 @@ fun ArchiveNotesScreen(navController: NavController, archiveViewModel: NotesView
     val isSearchBarVisible = remember { mutableStateOf(true) }
     val lazyGridNotes = rememberLazyStaggeredGridState()
 
-    val actionBarHeight = 56.dp
-    val actionBarHeightPx = with(LocalDensity.current) { actionBarHeight.roundToPx().toFloat() }
-    val offsetX = remember { Animatable(-actionBarHeightPx) }
-
     /**
      * When user select note
      */
@@ -66,21 +49,6 @@ fun ArchiveNotesScreen(navController: NavController, archiveViewModel: NotesView
         enabled = archiveViewModel.screenState.value.selectedNotes.isNotEmpty(), onBack =
         archiveViewModel::clearSelectedNote
     )
-
-    /**
-     * LaunchedEffect for cases when the number of selected notes changes.
-     */
-    LaunchedEffect(archiveViewModel.screenState.value.selectedNotes) {
-        if (archiveViewModel.screenState.value.selectedNotes.isEmpty()) {
-            offsetX.animateTo(
-                targetValue = -actionBarHeightPx, animationSpec = tween(durationMillis = 200)
-            )
-        } else {
-            offsetX.animateTo(
-                targetValue = 0f, animationSpec = tween(durationMillis = 200)
-            )
-        }
-    }
 
     Box(
         modifier = Modifier
@@ -97,7 +65,10 @@ fun ArchiveNotesScreen(navController: NavController, archiveViewModel: NotesView
                 value = archiveViewModel.screenState.value.searchText,
                 onChange = archiveViewModel::changeSearchText
             )
-            ActionBar(actionBarHeight, offsetX, archiveViewModel)
+            ActionBar(
+                isVisible = archiveViewModel.screenState.value.selectedNotes.isNotEmpty(),
+                notesViewModel = archiveViewModel
+            )
         }
     }
 }
@@ -160,52 +131,44 @@ private fun ScreenContent(
 
 @Composable
 private fun ActionBar(
-    actionBarHeight: Dp, offsetX: Animatable<Float, AnimationVector1D>, notesViewModel: NotesViewModel
+    isVisible: Boolean,
+    notesViewModel: NotesViewModel
 ) {
-    val topAppBarElevation = if (offsetX.value.roundToInt() < -actionBarHeight.value.roundToInt()) 0.dp else 2.dp
-    Box(
-        modifier = Modifier
-            .height(actionBarHeight)
-            .offset { IntOffset(x = 0, y = offsetX.value.roundToInt()) },
-    ) {
-        CustomTopAppBar(
-            modifier = Modifier.fillMaxWidth(),
-            elevation = topAppBarElevation,
-            backgroundColor = CustomTheme.colors.secondaryBackground,
-            counter = notesViewModel.screenState.value.selectedNotes.count(),
-            navigation = TopAppBarItem(
+    CustomTopAppBar(
+        isVisible = isVisible,
+        counter = notesViewModel.screenState.value.selectedNotes.count(),
+        navigation = TopAppBarItem(
+            isActive = false,
+            icon = Icons.Default.Close,
+            iconDescription = R.string.GoBack,
+            onClick = notesViewModel::clearSelectedNote
+        ),
+        items = listOf(
+            TopAppBarItem(
                 isActive = false,
-                icon = Icons.Default.Close,
-                iconDescription = R.string.GoBack,
-                onClick = notesViewModel::clearSelectedNote
+                icon = Icons.Outlined.PushPin,
+                iconDescription = R.string.AttachNote,
+                onClick = notesViewModel::pinSelectedNotes
             ),
-            items = listOf(
-                TopAppBarItem(
-                    isActive = false,
-                    icon = Icons.Outlined.PushPin,
-                    iconDescription = R.string.AttachNote,
-                    onClick = notesViewModel::pinSelectedNotes
-                ),
-                TopAppBarItem(
-                    isActive = false,
-                    icon = Icons.Outlined.NotificationAdd,
-                    iconDescription = R.string.AddToNotification,
-                    onClick = notesViewModel::switchReminderDialogShow
-                ),
-                TopAppBarItem(
-                    isActive = false,
-                    icon = Icons.Outlined.Unarchive,
-                    iconDescription = R.string.AddToArchive,
-                    onClick = notesViewModel::unarchiveSelectedNotes
-                ),
-                TopAppBarItem(
-                    isActive = false,
-                    icon = Icons.Outlined.Delete,
-                    iconDescription = R.string.AddToBasket,
-                    onClick = notesViewModel::moveSelectedNotesToBasket
-                ),
-            )
+            TopAppBarItem(
+                isActive = false,
+                icon = Icons.Outlined.NotificationAdd,
+                iconDescription = R.string.AddToNotification,
+                onClick = notesViewModel::switchReminderDialogShow
+            ),
+            TopAppBarItem(
+                isActive = false,
+                icon = Icons.Outlined.Unarchive,
+                iconDescription = R.string.AddToArchive,
+                onClick = notesViewModel::unarchiveSelectedNotes
+            ),
+            TopAppBarItem(
+                isActive = false,
+                icon = Icons.Outlined.Delete,
+                iconDescription = R.string.AddToBasket,
+                onClick = notesViewModel::moveSelectedNotesToBasket
+            ),
         )
-    }
+    )
 }
 

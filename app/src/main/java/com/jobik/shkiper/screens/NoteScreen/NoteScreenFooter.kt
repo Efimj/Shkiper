@@ -7,12 +7,19 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.*
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
@@ -20,7 +27,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.NotePosition
 import com.jobik.shkiper.ui.animation.AnimateVerticalSwitch
@@ -28,6 +34,9 @@ import com.jobik.shkiper.ui.components.buttons.DropDownButton
 import com.jobik.shkiper.ui.components.buttons.DropDownButtonSizeMode
 import com.jobik.shkiper.ui.components.buttons.DropDownItem
 import com.jobik.shkiper.ui.components.layouts.RichTextBottomToolBar
+import com.jobik.shkiper.ui.helpers.Keyboard
+import com.jobik.shkiper.ui.helpers.bottomWindowInsetsPadding
+import com.jobik.shkiper.ui.helpers.keyboardAsState
 import com.jobik.shkiper.ui.theme.CustomTheme
 import com.mohamedrejeb.richeditor.model.RichTextState
 import java.time.Duration
@@ -38,15 +47,10 @@ import java.time.format.DateTimeFormatter
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun NoteScreenFooter(navController: NavController, noteViewModel: NoteViewModel, richTextState: RichTextState) {
-    val systemUiController = rememberSystemUiController()
     val backgroundColor by animateColorAsState(
         if (noteViewModel.screenState.value.isBottomAppBarHover) CustomTheme.colors.secondaryBackground else CustomTheme.colors.mainBackground,
         animationSpec = tween(200),
     )
-
-    SideEffect {
-        systemUiController.setNavigationBarColor(backgroundColor)
-    }
 
     androidx.compose.material3.Surface(
         modifier = Modifier.fillMaxWidth(),
@@ -56,19 +60,17 @@ fun NoteScreenFooter(navController: NavController, noteViewModel: NoteViewModel,
         AnimateVerticalSwitch(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(56.dp),
+                .height(bottomWindowInsetsPadding() + 56.dp),
             directionUp = true,
             state = noteViewModel.screenState.value.isStyling,
             topComponent = {
-                BottomAppBar(
-                    elevation = if (noteViewModel.screenState.value.isBottomAppBarHover) 8.dp else 0.dp,
-                    backgroundColor = backgroundColor,
+                androidx.compose.material3.BottomAppBar(
+                    tonalElevation = if (noteViewModel.screenState.value.isBottomAppBarHover) 8.dp else 0.dp,
+                    containerColor = backgroundColor,
                     contentColor = CustomTheme.colors.textSecondary,
-                    cutoutShape = CircleShape,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(50.dp),
-                    contentPadding = PaddingValues(horizontal = 10.dp)
+                    modifier = Modifier.imePadding(),
+//                        .height(50.dp),
+                    contentPadding = PaddingValues(start = 10.dp, end = 10.dp)
                 ) {
                     Row(
                         horizontalArrangement = Arrangement.SpaceBetween,
@@ -99,6 +101,7 @@ fun NoteScreenFooter(navController: NavController, noteViewModel: NoteViewModel,
                                     .padding(horizontal = 10.dp)
                                     .basicMarquee(),
                                 style = MaterialTheme.typography.body1.copy(fontSize = 14.sp),
+                                color = CustomTheme.colors.textSecondary
                             )
                         } else {
                             Row(
@@ -217,6 +220,14 @@ fun NoteScreenFooter(navController: NavController, noteViewModel: NoteViewModel,
             }
         )
     }
+}
+
+private fun Modifier.bottomInsets() = composed {
+    val keyboard = keyboardAsState()
+    if (keyboard.value == Keyboard.Closed)
+        this.bottomWindowInsetsPadding()
+    else
+        this
 }
 
 private fun getLastUpdatedNoteTime(noteViewModel: NoteViewModel): String {

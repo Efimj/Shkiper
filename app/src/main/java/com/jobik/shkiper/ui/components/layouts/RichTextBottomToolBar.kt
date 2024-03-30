@@ -20,6 +20,8 @@ import androidx.compose.ui.unit.sp
 import com.jobik.shkiper.R
 import com.jobik.shkiper.ui.components.buttons.RichTextStyleButton
 import com.jobik.shkiper.ui.components.modals.InsertLinkDialog
+import com.jobik.shkiper.ui.helpers.bottomWindowInsetsPadding
+import com.jobik.shkiper.ui.helpers.horizontalWindowInsetsPadding
 import com.jobik.shkiper.ui.theme.CustomTheme
 import com.mohamedrejeb.richeditor.model.RichTextState
 
@@ -38,6 +40,8 @@ fun RichTextBottomToolBar(
         modifier = modifier
             .fillMaxWidth()
             .horizontalScroll(rememberScrollState())
+            .bottomWindowInsetsPadding()
+            .horizontalWindowInsetsPadding()
             .padding(horizontal = 12.dp)
             .height(56.dp),
         horizontalArrangement = Arrangement.spacedBy(

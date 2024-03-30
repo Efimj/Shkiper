@@ -6,23 +6,21 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Divider
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.jobik.shkiper.R
 import com.jobik.shkiper.ui.components.buttons.RichTextStyleButton
+import com.jobik.shkiper.ui.helpers.horizontalWindowInsetsPadding
+import com.jobik.shkiper.ui.helpers.topWindowInsetsPadding
 import com.jobik.shkiper.ui.theme.CustomTheme
 import com.mohamedrejeb.richeditor.model.RichTextState
 
@@ -39,8 +37,9 @@ fun RichTextHeaderToolBar(
         modifier = modifier
             .fillMaxWidth()
             .horizontalScroll(rememberScrollState())
-            .padding(horizontal = 12.dp)
-            .height(56.dp),
+            .horizontalWindowInsetsPadding()
+            .topWindowInsetsPadding()
+            .padding(horizontal = 12.dp),
         horizontalArrangement = Arrangement.spacedBy(
             space = 12.dp,
             alignment = Alignment.CenterHorizontally
