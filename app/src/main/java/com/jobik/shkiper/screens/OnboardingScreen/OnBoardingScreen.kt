@@ -36,6 +36,9 @@ import com.jobik.shkiper.R
 import com.jobik.shkiper.SharedPreferencesKeys
 import com.jobik.shkiper.SharedPreferencesKeys.OnboardingFinishedData
 import com.jobik.shkiper.navigation.Route
+import com.jobik.shkiper.ui.helpers.allWindowInsetsPadding
+import com.jobik.shkiper.ui.helpers.bottomWindowInsetsPadding
+import com.jobik.shkiper.ui.helpers.horizontalWindowInsetsPadding
 import com.jobik.shkiper.ui.theme.CustomTheme
 import kotlinx.coroutines.launch
 
@@ -49,7 +52,9 @@ fun OnBoardingScreen(navController: NavController) {
     }
     Box {
         HorizontalPager(
-            modifier = Modifier.fillMaxSize().background(CustomTheme.colors.mainBackground),
+            modifier = Modifier
+                .fillMaxSize()
+                .background(CustomTheme.colors.mainBackground),
             verticalAlignment = Alignment.CenterVertically,
             state = pagerState,
             pageSpacing = 10.dp,
@@ -63,6 +68,7 @@ fun OnBoardingScreen(navController: NavController) {
                 modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(scrollState)
+                    .allWindowInsetsPadding()
                     .padding(bottom = 90.dp),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -71,7 +77,10 @@ fun OnBoardingScreen(navController: NavController) {
             }
         }
         Box(
-            modifier = Modifier.align(Alignment.BottomCenter)
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .bottomWindowInsetsPadding()
+                .horizontalWindowInsetsPadding()
         ) {
             ScreenFooter(navController, pagerState, scrollState)
         }

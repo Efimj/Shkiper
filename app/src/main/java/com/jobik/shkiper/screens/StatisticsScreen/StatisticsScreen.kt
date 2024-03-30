@@ -42,6 +42,9 @@ import com.jobik.shkiper.ui.components.cards.StatisticsCard
 import com.jobik.shkiper.ui.components.layouts.ScreenWrapper
 import com.jobik.shkiper.ui.components.modals.CustomModalBottomSheet
 import com.jobik.shkiper.ui.components.modals.StatisticsInformationDialog
+import com.jobik.shkiper.ui.helpers.allWindowInsetsPadding
+import com.jobik.shkiper.ui.helpers.bottomWindowInsetsPadding
+import com.jobik.shkiper.ui.helpers.endWindowInsetsPadding
 import com.jobik.shkiper.ui.modifiers.bounceClick
 import com.jobik.shkiper.ui.theme.CustomTheme
 import dev.shreyaspatil.capturable.Capturable
@@ -69,6 +72,7 @@ fun StatisticsScreen() {
                 modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState())
+                    .allWindowInsetsPadding()
                     .padding(vertical = 40.dp)
             ) {
                 Capturable(
@@ -138,6 +142,8 @@ fun StatisticsScreen() {
             Box(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
+                    .bottomWindowInsetsPadding()
+                    .endWindowInsetsPadding()
                     .padding(35.dp)
             ) {
                 Row(

@@ -38,6 +38,7 @@ import com.jobik.shkiper.navigation.Route
 import com.jobik.shkiper.ui.components.buttons.*
 import com.jobik.shkiper.ui.components.cards.SettingsItem
 import com.jobik.shkiper.ui.components.cards.ThemePreview
+import com.jobik.shkiper.ui.helpers.allWindowInsetsPadding
 import com.jobik.shkiper.ui.modifiers.circularRotation
 import com.jobik.shkiper.ui.theme.CustomTheme
 import com.jobik.shkiper.ui.theme.CustomThemeStyle
@@ -52,7 +53,8 @@ fun SettingsScreen(navController: NavController, settingsViewModel: SettingsView
         Modifier
             .fillMaxSize()
             .background(CustomTheme.colors.mainBackground)
-            .verticalScroll(rememberScrollState()),
+            .verticalScroll(rememberScrollState())
+            .allWindowInsetsPadding(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

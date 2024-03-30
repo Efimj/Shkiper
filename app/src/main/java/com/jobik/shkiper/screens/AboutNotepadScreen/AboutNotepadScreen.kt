@@ -1,20 +1,11 @@
 package com.jobik.shkiper.screens.AboutNotepadScreen
 
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
-import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Link
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,16 +26,10 @@ import com.jobik.shkiper.ui.components.cards.LinkCard
 import com.jobik.shkiper.ui.components.cards.UserCard
 import com.jobik.shkiper.ui.components.cards.UserCardLink
 import com.jobik.shkiper.ui.components.layouts.ScreenWrapper
-import com.jobik.shkiper.ui.modifiers.bounceClick
+import com.jobik.shkiper.ui.helpers.allWindowInsetsPadding
 import com.jobik.shkiper.ui.theme.CustomTheme
-import com.jobik.shkiper.util.SnackbarHostUtil
-import com.jobik.shkiper.util.SnackbarVisualsCustom
-import com.jobik.shkiper.util.ThemeUtil
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AboutNotepadScreen() {
     val context = LocalContext.current
@@ -60,6 +45,7 @@ fun AboutNotepadScreen() {
     ScreenWrapper(
         modifier = Modifier
             .verticalScroll(rememberScrollState())
+            .allWindowInsetsPadding()
             .padding(top = 85.dp, bottom = 30.dp)
             .padding(horizontal = 20.dp)
     ) {

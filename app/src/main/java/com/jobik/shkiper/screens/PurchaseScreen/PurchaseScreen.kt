@@ -36,6 +36,7 @@ import com.jobik.shkiper.ui.components.layouts.ScreenContentIfNoData
 import com.jobik.shkiper.ui.components.layouts.ScreenWrapper
 import com.jobik.shkiper.ui.components.modals.ImageActionDialog
 import com.jobik.shkiper.ui.components.modals.ImageActionDialogButton
+import com.jobik.shkiper.ui.helpers.allWindowInsetsPadding
 import com.jobik.shkiper.ui.theme.CustomTheme
 import kotlin.random.Random
 
@@ -66,6 +67,7 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
     else
         ScreenWrapper(modifier = Modifier
             .verticalScroll(rememberScrollState())
+            .allWindowInsetsPadding()
             .padding(top = 85.dp, bottom = 30.dp)) {
             Column(
                 modifier = Modifier
