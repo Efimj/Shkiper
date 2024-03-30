@@ -51,12 +51,11 @@ fun ScreenCalendarTopBar(
         modifier = Modifier
             .clip(RoundedCornerShape(bottomStart = 10.dp, bottomEnd = 10.dp))
             .background(CustomTheme.colors.secondaryBackground)
+            .horizontalWindowInsetsPadding()
             .padding(bottom = 10.dp),
         verticalArrangement = Arrangement.spacedBy(5.dp)
     ) {
         CustomTopAppBar(
-            modifier = Modifier.fillMaxWidth(),
-            backgroundColor = CustomTheme.colors.secondaryBackground,
             text = rememberFirstVisibleWeekAfterScroll(weekState).days.first().date.yearMonth.displayText(),
             navigation = TopAppBarItem(
                 isActive = false,

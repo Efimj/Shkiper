@@ -27,7 +27,10 @@ import com.jobik.shkiper.ui.components.buttons.HashtagButton
 import com.jobik.shkiper.ui.components.cards.NoteCard
 import com.jobik.shkiper.ui.components.layouts.LazyGridNotes
 import com.jobik.shkiper.ui.components.layouts.ScreenContentIfNoData
+import com.jobik.shkiper.ui.helpers.bottomWindowInsetsPadding
+import com.jobik.shkiper.ui.helpers.endWindowInsetsPadding
 import com.jobik.shkiper.ui.helpers.rememberNextReminder
+import com.jobik.shkiper.ui.helpers.startWindowInsetsPadding
 import com.jobik.shkiper.ui.theme.CustomTheme
 import me.onebone.toolbar.*
 import java.time.LocalDateTime
@@ -62,6 +65,7 @@ private fun ScreenContent(
 
     CollapsingToolbarScaffold(
         modifier = Modifier
+            .imePadding()
             .fillMaxSize()
             .background(CustomTheme.colors.mainBackground),
         state = collapsingToolbarScaffold,
@@ -96,7 +100,12 @@ private fun NoteListContent(
         remember(viewModel.screenState.value.notes) { viewModel.screenState.value.notes.filterNot { it.isPinned } }
 
     LazyGridNotes(
-        contentPadding = PaddingValues(10.dp, 15.dp, 10.dp, 100.dp),
+        contentPadding = PaddingValues(
+            start = startWindowInsetsPadding() + 10.dp,
+            top = 15.dp,
+            end = endWindowInsetsPadding() + 10.dp,
+            bottom = bottomWindowInsetsPadding() + 100.dp
+        ),
         modifier = Modifier.fillMaxWidth(),
     ) {
         if (viewModel.screenState.value.hashtags.isNotEmpty())

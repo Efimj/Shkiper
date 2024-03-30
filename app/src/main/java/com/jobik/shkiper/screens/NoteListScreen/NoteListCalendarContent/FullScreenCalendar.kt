@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import com.jobik.shkiper.R
 import com.jobik.shkiper.ui.components.layouts.CalendarDayView
 import com.jobik.shkiper.ui.components.layouts.CalendarDayViewRangeStyle
-import com.jobik.shkiper.ui.helpers.displayText
+import com.jobik.shkiper.ui.helpers.*
 import com.jobik.shkiper.ui.theme.CustomTheme
 import com.kizitonwose.calendar.compose.ContentHeightMode
 import com.kizitonwose.calendar.compose.VerticalCalendar
@@ -61,7 +61,12 @@ fun FullScreenCalendar(viewModel: CalendarViewModel) {
                 state = state,
                 calendarScrollPaged = false,
                 contentHeightMode = ContentHeightMode.Wrap,
-                contentPadding = PaddingValues(vertical = 20.dp, horizontal = 20.dp),
+                contentPadding = PaddingValues(
+                    top = 20.dp,
+                    bottom = 20.dp + bottomWindowInsetsPadding(),
+                    start = 20.dp + startWindowInsetsPadding(),
+                    end = 20.dp + endWindowInsetsPadding()
+                ),
                 dayContent = { day -> DayContent(day, viewModel) },
                 monthHeader = { month -> MonthHeader(month) },
                 monthBody = { _, content -> MonthBody(content) },
@@ -70,6 +75,8 @@ fun FullScreenCalendar(viewModel: CalendarViewModel) {
         Box(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
+                .bottomWindowInsetsPadding()
+                .horizontalWindowInsetsPadding()
                 .padding(horizontal = 20.dp, vertical = 20.dp)
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -195,7 +202,9 @@ private fun MonthHeader(month: CalendarMonth) {
 @Composable
 private fun Header(daysOfWeek: List<DayOfWeek>) {
     Row(
-        modifier = Modifier.padding(vertical = 20.dp, horizontal = 20.dp)
+        modifier = Modifier
+            .topWindowInsetsPadding()
+            .padding(vertical = 20.dp, horizontal = 20.dp)
     ) {
         for (dayOfWeek in daysOfWeek) {
             Text(
