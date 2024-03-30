@@ -28,6 +28,7 @@ import com.jobik.shkiper.navigation.Route
 import com.jobik.shkiper.navigation.NavigationHelpers.Companion.canNavigate
 import com.jobik.shkiper.navigation.RouteHelper
 import com.jobik.shkiper.ui.helpers.Keyboard
+import com.jobik.shkiper.ui.helpers.bottomWindowInsetsPadding
 import com.jobik.shkiper.ui.helpers.keyboardAsState
 import com.jobik.shkiper.ui.theme.CustomTheme
 import kotlinx.coroutines.CoroutineScope
@@ -86,6 +87,7 @@ fun BoxScope.BottomAppBarProvider(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .bottomWindowInsetsPadding()
                     .padding(bottom = 20.dp), horizontalArrangement = Arrangement.Center
             ) {
                 Box(modifier = Modifier.zIndex(2f)) {

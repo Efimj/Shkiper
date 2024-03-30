@@ -82,6 +82,35 @@ fun Modifier.allWindowInsetsPadding() = composed {
 }
 
 @Composable
+fun horizontalWindowInsetsPadding(): PaddingValues {
+    val layoutDirection = LocalLayoutDirection.current
+
+    return PaddingValues(
+        start = WindowInsets.safeDrawing
+            .asPaddingValues()
+            .calculateLeftPadding(layoutDirection),
+        end = WindowInsets.safeDrawing
+            .asPaddingValues()
+            .calculateRightPadding(layoutDirection)
+
+    )
+}
+
+@Composable
+fun startWindowInsetsPadding(): Dp {
+    val layoutDirection = LocalLayoutDirection.current
+
+    return WindowInsets.safeDrawing.asPaddingValues().calculateLeftPadding(layoutDirection)
+}
+
+@Composable
+fun endWindowInsetsPadding(): Dp {
+    val layoutDirection = LocalLayoutDirection.current
+
+    return WindowInsets.safeDrawing.asPaddingValues().calculateRightPadding(layoutDirection)
+}
+
+@Composable
 fun topWindowInsetsPadding(): Dp {
     return WindowInsets.safeDrawing.asPaddingValues().calculateTopPadding()
 }

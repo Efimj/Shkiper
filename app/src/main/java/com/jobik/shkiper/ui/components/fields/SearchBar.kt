@@ -33,9 +33,9 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.jobik.shkiper.R
+import com.jobik.shkiper.ui.helpers.*
 import com.jobik.shkiper.ui.helpers.Keyboard
 import com.jobik.shkiper.ui.helpers.keyboardAsState
-import com.jobik.shkiper.ui.helpers.topWindowInsetsPadding
 import com.jobik.shkiper.ui.theme.CustomTheme
 
 data class SearchBarActionButton(
@@ -59,7 +59,14 @@ fun SearchBar(
     onChange: (newValue: String) -> Unit
 ) {
     val isFocused = remember { mutableStateOf(false) }
-    val horizontalPaddings by animateDpAsState(if (isFocused.value) 0.dp else 20.dp, label = "horizontalPaddings")
+    val startPaddings by animateDpAsState(
+        if (isFocused.value) 0.dp else startWindowInsetsPadding() + 20.dp,
+        label = "horizontalPaddings"
+    )
+    val endPaddings by animateDpAsState(
+        if (isFocused.value) 0.dp else endWindowInsetsPadding() + 20.dp,
+        label = "horizontalPaddings"
+    )
     val topPadding by animateDpAsState(
         if (isFocused.value) 0.dp else topWindowInsetsPadding() + 10.dp,
         label = "topPadding"
@@ -73,7 +80,7 @@ fun SearchBar(
         Row(
             modifier = Modifier
                 .height(getSearchBarHeight())
-                .padding(horizontal = horizontalPaddings)
+                .padding(start = startPaddings, end = endPaddings)
                 .padding(top = topPadding),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
