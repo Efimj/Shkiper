@@ -23,10 +23,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
-import androidx.compose.ui.input.nestedscroll.NestedScrollSource
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
@@ -42,6 +38,7 @@ import com.jobik.shkiper.ui.components.fields.getSearchBarHeight
 import com.jobik.shkiper.ui.components.layouts.LazyGridNotes
 import com.jobik.shkiper.ui.components.layouts.ScreenContentIfNoData
 import com.jobik.shkiper.ui.helpers.rememberNextReminder
+import com.jobik.shkiper.ui.modifiers.scrollConnectionToProvideVisibility
 import com.jobik.shkiper.ui.theme.CustomTheme
 
 @Composable
@@ -53,24 +50,6 @@ fun NoteSelectionScreen(
     val isSearchBarVisible = remember { mutableStateOf(true) }
     val lazyGridNotes = rememberLazyStaggeredGridState()
 
-    val nestedScrollConnection = remember {
-        object : NestedScrollConnection {
-            override fun onPostScroll(consumed: Offset, available: Offset, source: NestedScrollSource): Offset {
-                if (consumed.y < -30) {
-                    isSearchBarVisible.value = false
-                }
-                if (consumed.y > 30) {
-                    isSearchBarVisible.value = true
-                }
-                if (available.y > 0) {
-                    isSearchBarVisible.value = true
-                }
-
-                return super.onPostScroll(consumed, available, source)
-            }
-        }
-    }
-
     /**
      * When user select note
      */
@@ -80,9 +59,9 @@ fun NoteSelectionScreen(
     )
 
     Box(
-        Modifier
+        modifier = Modifier
             .fillMaxSize()
-            .nestedScroll(nestedScrollConnection)
+            .scrollConnectionToProvideVisibility(visible = isSearchBarVisible)
     ) {
         if (notesViewModel.screenState.value.isNotesInitialized && notesViewModel.screenState.value.notes.isEmpty())
             ScreenContentIfNoData(title = R.string.EmptyNotesPageHeader, icon = Icons.Outlined.Description)

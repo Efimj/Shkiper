@@ -18,12 +18,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Description
 import androidx.compose.material.icons.outlined.Event
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
-import androidx.compose.ui.input.nestedscroll.NestedScrollSource
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
@@ -44,6 +43,7 @@ import com.jobik.shkiper.ui.components.layouts.ScreenContentIfNoData
 import com.jobik.shkiper.ui.components.modals.CreateReminderDialog
 import com.jobik.shkiper.ui.components.modals.ReminderDialogProperties
 import com.jobik.shkiper.ui.helpers.rememberNextReminder
+import com.jobik.shkiper.ui.modifiers.scrollConnectionToProvideVisibility
 import com.jobik.shkiper.ui.theme.CustomTheme
 import com.jobik.shkiper.viewmodels.NotesViewModel
 
@@ -55,26 +55,9 @@ fun NoteListScreenContent(
 ) {
     val actionBarHeight = 56.dp
 
-    val isSearchBarVisible = remember { mutableStateOf(true) }
     val lazyGridNotes = rememberLazyStaggeredGridState()
 
-    val nestedScrollConnection = remember {
-        object : NestedScrollConnection {
-            override fun onPostScroll(consumed: Offset, available: Offset, source: NestedScrollSource): Offset {
-                if (consumed.y < -30) {
-                    isSearchBarVisible.value = false
-                }
-                if (consumed.y > 30) {
-                    isSearchBarVisible.value = true
-                }
-                if (available.y > 0) {
-                    isSearchBarVisible.value = true
-                }
-
-                return super.onPostScroll(consumed, available, source)
-            }
-        }
-    }
+    val isSearchBarVisible = remember { mutableStateOf(true) }
 
     val actionBarHeightPx = with(LocalDensity.current) { actionBarHeight.roundToPx().toFloat() }
     val offsetX = remember { Animatable(-actionBarHeightPx) }
@@ -86,7 +69,7 @@ fun NoteListScreenContent(
         modifier = Modifier
             .fillMaxSize()
             .background(CustomTheme.colors.mainBackground)
-            .nestedScroll(nestedScrollConnection)
+            .scrollConnectionToProvideVisibility(visible = isSearchBarVisible)
     ) {
         if (viewModel.screenState.value.isNotesInitialized && viewModel.screenState.value.notes.isEmpty())
             ScreenContentIfNoData(title = R.string.EmptyNotesPageHeader, icon = Icons.Outlined.Description)
@@ -109,21 +92,6 @@ fun NoteListScreenContent(
 
     NoteListScreenReminderCheck(viewModel)
     CreateReminderContent(viewModel)
-}
-
-@Composable
-private fun IfScrollingImpossible(
-    lazyGridNotes: LazyStaggeredGridState,
-    searchBarOffsetHeightPx: MutableState<Float>
-) {
-    /**
-     * LaunchedEffect for cases when it is impossible to scroll the list.
-     */
-    LaunchedEffect(lazyGridNotes.canScrollForward, lazyGridNotes.canScrollBackward) {
-        if (!lazyGridNotes.canScrollForward && !lazyGridNotes.canScrollBackward) {
-            searchBarOffsetHeightPx.value = 0f
-        }
-    }
 }
 
 @Composable

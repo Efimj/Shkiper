@@ -43,6 +43,7 @@ import com.jobik.shkiper.ui.components.layouts.TopAppBarItem
 import com.jobik.shkiper.ui.components.modals.CreateReminderDialog
 import com.jobik.shkiper.ui.components.modals.ReminderDialogProperties
 import com.jobik.shkiper.ui.helpers.rememberNextReminder
+import com.jobik.shkiper.ui.modifiers.scrollConnectionToProvideVisibility
 import com.jobik.shkiper.ui.theme.CustomTheme
 import com.jobik.shkiper.viewmodels.NotesViewModel
 import kotlin.math.roundToInt
@@ -53,24 +54,6 @@ fun ArchiveNotesScreen(navController: NavController, archiveViewModel: NotesView
 
     val isSearchBarVisible = remember { mutableStateOf(true) }
     val lazyGridNotes = rememberLazyStaggeredGridState()
-
-    val nestedScrollConnection = remember {
-        object : NestedScrollConnection {
-            override fun onPostScroll(consumed: Offset, available: Offset, source: NestedScrollSource): Offset {
-                if (consumed.y < -30) {
-                    isSearchBarVisible.value = false
-                }
-                if (consumed.y > 30) {
-                    isSearchBarVisible.value = true
-                }
-                if (available.y > 0) {
-                    isSearchBarVisible.value = true
-                }
-
-                return super.onPostScroll(consumed, available, source)
-            }
-        }
-    }
 
     val actionBarHeight = 56.dp
     val actionBarHeightPx = with(LocalDensity.current) { actionBarHeight.roundToPx().toFloat() }
@@ -100,9 +83,9 @@ fun ArchiveNotesScreen(navController: NavController, archiveViewModel: NotesView
     }
 
     Box(
-        Modifier
+        modifier = Modifier
             .fillMaxSize()
-            .nestedScroll(nestedScrollConnection)
+            .scrollConnectionToProvideVisibility(visible = isSearchBarVisible)
     ) {
         if (archiveViewModel.screenState.value.isNotesInitialized && archiveViewModel.screenState.value.notes.isEmpty())
             ScreenContentIfNoData(title = R.string.ArchiveNotesPageHeader, icon = Icons.Outlined.Inbox)
