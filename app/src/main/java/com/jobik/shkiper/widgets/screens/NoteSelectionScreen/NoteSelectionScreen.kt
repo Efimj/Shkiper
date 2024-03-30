@@ -78,6 +78,8 @@ fun NoteSelectionScreen(
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(35.dp)
+                .endWindowInsetsPadding()
+                .bottomWindowInsetsPadding()
         ) {
             if (strictSelection) {
                 AnimatedVisibility(
