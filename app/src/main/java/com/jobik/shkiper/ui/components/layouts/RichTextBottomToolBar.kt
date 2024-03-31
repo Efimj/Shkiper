@@ -40,10 +40,8 @@ fun RichTextBottomToolBar(
         modifier = modifier
             .fillMaxWidth()
             .horizontalScroll(rememberScrollState())
-            .bottomWindowInsetsPadding()
             .horizontalWindowInsetsPadding()
-            .padding(horizontal = 12.dp)
-            .height(56.dp),
+            .padding(horizontal = 12.dp),
         horizontalArrangement = Arrangement.spacedBy(
             space = 12.dp,
             alignment = Alignment.CenterHorizontally

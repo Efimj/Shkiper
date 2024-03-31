@@ -12,6 +12,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Warning
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -81,12 +82,12 @@ fun NoteScreenContent(
     }
     BackHandlerWithStylingState(noteViewModel)
 
-    androidx.compose.material3.Scaffold(
+    Scaffold(
         containerColor = CustomTheme.colors.mainBackground,
         topBar = { NoteScreenHeader(navController, noteViewModel, richTextState) },
         bottomBar = { NoteScreenFooter(navController, noteViewModel, richTextState) },
         contentWindowInsets = WindowInsets.ime,
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().imePadding(),
     ) { contentPadding ->
         Box(
             Modifier
