@@ -2,6 +2,7 @@ package com.jobik.shkiper.screens.NoteScreen
 
 import android.annotation.SuppressLint
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.basicMarquee
@@ -33,6 +34,7 @@ import com.jobik.shkiper.ui.components.buttons.DropDownButton
 import com.jobik.shkiper.ui.components.buttons.DropDownButtonSizeMode
 import com.jobik.shkiper.ui.components.buttons.DropDownItem
 import com.jobik.shkiper.ui.components.layouts.RichTextBottomToolBar
+import com.jobik.shkiper.ui.helpers.horizontalWindowInsetsPadding
 import com.jobik.shkiper.ui.theme.CustomTheme
 import com.mohamedrejeb.richeditor.model.RichTextState
 import java.time.Duration
@@ -48,24 +50,31 @@ fun NoteScreenFooter(navController: NavController, noteViewModel: NoteViewModel,
         animationSpec = tween(200),
     )
 
-    val s = WindowInsets.systemBars
-        .only(WindowInsetsSides.Horizontal + WindowInsetsSides.Top)
-        .asPaddingValues()
+    val shadowElevation = animateDpAsState(
+        targetValue = if (noteViewModel.screenState.value.isBottomAppBarHover) 8.dp else 0.dp,
+        label = "shadowElevation"
+    )
+
+    val barHeight = 54.dp
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
         color = backgroundColor,
-        shadowElevation = if (noteViewModel.screenState.value.isTopAppBarHover) 8.dp else 0.dp
+        shadowElevation = shadowElevation.value
     ) {
         AnimateVerticalSwitch(
             modifier = Modifier,
             directionUp = true,
             state = noteViewModel.screenState.value.isStyling,
             topComponent = {
-                BottomAppBar(
-                    containerColor = backgroundColor,
-                    contentColor = CustomTheme.colors.textSecondary,
-                    contentPadding = PaddingValues(horizontal = 10.dp)
+                Row(
+                    modifier = Modifier
+                        .windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Bottom))
+                        .horizontalWindowInsetsPadding()
+                        .height(barHeight)
+                        .padding(horizontal = 10.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
                 ) {
                     Row {
                         IconButton(
@@ -191,14 +200,14 @@ fun NoteScreenFooter(navController: NavController, noteViewModel: NoteViewModel,
                 }
             },
             bottomComponent = {
-                BottomAppBar(
-                    containerColor = backgroundColor,
-                    contentColor = CustomTheme.colors.textSecondary,
-                    contentPadding = PaddingValues(0.dp)
+                Row(
+                    modifier = Modifier
+                        .windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Bottom))
+                        .height(barHeight),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
                 ) {
-                    Box(modifier = Modifier.height(54.dp), contentAlignment = Alignment.Center) {
-                        RichTextBottomToolBar(state = richTextState, onClose = { noteViewModel.switchStyling(false) })
-                    }
+                    RichTextBottomToolBar(state = richTextState, onClose = { noteViewModel.switchStyling(false) })
                 }
             }
         )

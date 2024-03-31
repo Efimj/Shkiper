@@ -5,22 +5,23 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.jobik.shkiper.ui.helpers.*
+import com.jobik.shkiper.ui.helpers.horizontalWindowInsetsPadding
+import com.jobik.shkiper.ui.helpers.topWindowInsetsPadding
 import com.jobik.shkiper.ui.theme.CustomTheme
 
 data class TopAppBarItem(
@@ -37,7 +38,6 @@ data class TopAppBarItem(
 fun CustomTopAppBar(
     modifier: Modifier = Modifier,
     isVisible: Boolean = true,
-    elevation: Dp = 0.dp,
     text: String = "",
     counter: Int? = null,
     backgroundColor: Color = CustomTheme.colors.secondaryBackground,
@@ -77,7 +77,8 @@ fun CustomTopAppBar(
                 if (counter != null)
                     Counter(
                         count = counter,
-                        style = MaterialTheme.typography.body1.copy(fontWeight = FontWeight.SemiBold)
+                        style = MaterialTheme.typography.body1.copy(fontWeight = FontWeight.SemiBold),
+                        color = contentColor
                     )
             },
             navigationIcon = {

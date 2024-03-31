@@ -1,6 +1,7 @@
 package com.jobik.shkiper.ui.components.buttons
 
 import androidx.annotation.DrawableRes
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.border
@@ -15,6 +16,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -68,22 +70,27 @@ fun RichTextStyleButton(
     @DrawableRes icon: Int,
     contentDescription: String = "",
 ) {
+    val buttonContentColor: Color by animateColorAsState(
+        targetValue = if (isActive) CustomTheme.colors.textOnActive else CustomTheme.colors.textSecondary,
+        label = "buttonContentColor"
+    )
+
+    val buttonBackgroundColor: Color by animateColorAsState(
+        targetValue = if (isActive) CustomTheme.colors.active else Color.Transparent,
+        label = "buttonBackgroundColor"
+    )
 
     Card(
         modifier = Modifier
             .size(30.dp)
             .clip(RoundedCornerShape(5.dp))
-            .clickable(
-                indication = null,
-                interactionSource = remember { MutableInteractionSource() },
-                onClick = onClick
-            )
+            .clickable(onClick = onClick)
             .focusProperties { canFocus = false },
         elevation = 0.dp,
         shape = RoundedCornerShape(5.dp),
         border = BorderStroke(0.dp, Color.Transparent),
-        backgroundColor = if (isActive) CustomTheme.colors.active else Color.Transparent,
-        contentColor = if (isActive) CustomTheme.colors.textOnActive else CustomTheme.colors.textSecondary,
+        backgroundColor = buttonBackgroundColor,
+        contentColor = buttonContentColor,
     ) {
         Icon(
             modifier = Modifier.padding(2.dp),

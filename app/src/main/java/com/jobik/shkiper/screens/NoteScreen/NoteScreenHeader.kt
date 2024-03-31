@@ -1,6 +1,7 @@
 package com.jobik.shkiper.screens.NoteScreen
 
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,6 +14,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
@@ -36,13 +38,18 @@ fun NoteScreenHeader(navController: NavController, noteViewModel: NoteViewModel,
         backgroundColorValue, animationSpec = tween(200),
     )
 
+    val shadowElevation = animateDpAsState(
+        targetValue = if (noteViewModel.screenState.value.isTopAppBarHover) 8.dp else 0.dp,
+        label = "shadowElevation"
+    )
+
     val localDensity = LocalDensity.current
-    var barHeight by remember { mutableStateOf(50.dp) }
+    var barHeight by remember { mutableStateOf(54.dp) }
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
         color = backgroundColor,
-        shadowElevation = if (noteViewModel.screenState.value.isTopAppBarHover) 8.dp else 0.dp
+        shadowElevation = shadowElevation.value
     ) {
         AnimateVerticalSwitch(
             modifier = Modifier,
@@ -54,8 +61,7 @@ fun NoteScreenHeader(navController: NavController, noteViewModel: NoteViewModel,
                         // Set screen height using the LayoutCoordinates
                         barHeight = with(localDensity) { coordinates.size.height.toDp() }
                     },
-                    elevation = 0.dp,
-                    backgroundColor = backgroundColor,
+                    backgroundColor = Color.Transparent,
                     navigation = TopAppBarItem(
                         icon = Icons.Default.ArrowBack,
                         iconDescription = R.string.GoBack,

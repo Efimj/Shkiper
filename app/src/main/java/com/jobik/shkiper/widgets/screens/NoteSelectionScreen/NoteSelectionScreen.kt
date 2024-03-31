@@ -79,7 +79,7 @@ fun NoteSelectionScreen(
                 .align(Alignment.BottomEnd)
                 .padding(35.dp)
                 .endWindowInsetsPadding()
-                .bottomWindowInsetsPadding()
+                .windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Bottom))
         ) {
             if (strictSelection) {
                 AnimatedVisibility(

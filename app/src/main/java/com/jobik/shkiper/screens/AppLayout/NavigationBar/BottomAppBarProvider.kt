@@ -87,7 +87,7 @@ fun BoxScope.BottomAppBarProvider(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .bottomWindowInsetsPadding()
+                    .windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Bottom))
                     .padding(bottom = 20.dp), horizontalArrangement = Arrangement.Center
             ) {
                 Box(modifier = Modifier.zIndex(2f)) {
