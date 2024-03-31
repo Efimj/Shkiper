@@ -135,3 +135,19 @@ fun BottomWindowInsetsSpacer() =
             WindowInsets.safeDrawing
         )
     )
+
+@Composable
+fun StartWindowInsetsSpacer() =
+    Spacer(
+        Modifier.windowInsetsStartWidth(
+            WindowInsets.safeDrawing
+        )
+    )
+
+@Composable
+fun EndWindowInsetsSpacer() =
+    Spacer(
+        Modifier.windowInsetsEndWidth(
+            WindowInsets.safeDrawing
+        )
+    )

@@ -5,15 +5,10 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.TopAppBar
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -25,7 +20,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.jobik.shkiper.ui.helpers.topWindowInsetsPadding
+import com.jobik.shkiper.ui.helpers.*
 import com.jobik.shkiper.ui.theme.CustomTheme
 
 data class TopAppBarItem(
@@ -37,6 +32,7 @@ data class TopAppBarItem(
     val onClick: () -> Unit
 )
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomTopAppBar(
     modifier: Modifier = Modifier,
@@ -57,18 +53,21 @@ fun CustomTopAppBar(
         TopAppBar(
             modifier = modifier
                 .background(backgroundColor)
+                .horizontalWindowInsetsPadding()
                 .topWindowInsetsPadding(),
-            elevation = elevation,
-            contentColor = contentColor,
-            backgroundColor = backgroundColor,
+            windowInsets = WindowInsets.ime,
+            colors = TopAppBarDefaults.topAppBarColors(
+                actionIconContentColor = contentColor,
+                titleContentColor = contentColor,
+                navigationIconContentColor = contentColor,
+                containerColor = backgroundColor,
+            ),
             title = {
-                Spacer(modifier = Modifier.padding(6.dp, 0.dp, 0.dp, 0.dp))
                 if (text.isNotBlank())
                     Text(
                         text = text,
                         overflow = TextOverflow.Ellipsis,
                         style = MaterialTheme.typography.body1,
-                        color = CustomTheme.colors.textSecondary,
                         maxLines = 1,
                         fontWeight = FontWeight.SemiBold,
                         fontSize = 18.sp
@@ -78,18 +77,13 @@ fun CustomTopAppBar(
                 if (counter != null)
                     Counter(
                         count = counter,
-                        color = CustomTheme.colors.textSecondary,
-                        style = MaterialTheme.typography.body1.copy(fontWeight = FontWeight.SemiBold, fontSize = 18.sp)
+                        style = MaterialTheme.typography.body1.copy(fontWeight = FontWeight.SemiBold)
                     )
             },
             navigationIcon = {
-                Spacer(modifier = Modifier.padding(6.dp, 0.dp, 0.dp, 0.dp))
                 IconButton(
                     onClick = navigation.onClick,
                     modifier = navigation.modifier
-                        .size(40.dp)
-                        .clip(CircleShape)
-                        .padding(0.dp),
                 ) {
                     Icon(
                         imageVector = navigation.icon,
@@ -103,9 +97,6 @@ fun CustomTopAppBar(
                     IconButton(
                         onClick = item.onClick,
                         modifier = item.modifier
-                            .size(40.dp)
-                            .clip(CircleShape)
-                            .padding(0.dp),
                     ) {
                         Icon(
                             imageVector = item.icon,
@@ -113,7 +104,6 @@ fun CustomTopAppBar(
                             tint = if (item.isActive) CustomTheme.colors.text else CustomTheme.colors.textSecondary,
                         )
                     }
-                    Spacer(modifier = Modifier.padding(6.dp, 0.dp, 0.dp, 0.dp))
                 }
             })
     }

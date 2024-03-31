@@ -86,13 +86,12 @@ fun NoteScreenContent(
         topBar = { NoteScreenHeader(navController, noteViewModel, richTextState) },
         bottomBar = { NoteScreenFooter(navController, noteViewModel, richTextState) },
         contentWindowInsets = WindowInsets.ime,
-        modifier = Modifier
-            .horizontalWindowInsetsPadding()
-            .fillMaxSize(),
+        modifier = Modifier.fillMaxSize(),
     ) { contentPadding ->
         Box(
             Modifier
                 .fillMaxSize()
+                .horizontalWindowInsetsPadding()
                 .padding(contentPadding)
         ) {
             LazyColumn(

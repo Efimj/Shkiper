@@ -51,7 +51,6 @@ fun ScreenCalendarTopBar(
         modifier = Modifier
             .clip(RoundedCornerShape(bottomStart = 10.dp, bottomEnd = 10.dp))
             .background(CustomTheme.colors.secondaryBackground)
-            .horizontalWindowInsetsPadding()
             .padding(bottom = 10.dp),
         verticalArrangement = Arrangement.spacedBy(5.dp)
     ) {
@@ -76,6 +75,7 @@ fun ScreenCalendarTopBar(
         val isCompactWidthScreen = isWidth(sizeClass = WindowWidthSizeClass.Compact)
 
         WeekCalendar(
+            modifier = Modifier.horizontalWindowInsetsPadding(),
             calendarScrollPaged = isCompactWidthScreen,
             state = weekState,
             weekHeader = { DaysOfWeekTitle(daysOfWeek = daysOfWeek) },
