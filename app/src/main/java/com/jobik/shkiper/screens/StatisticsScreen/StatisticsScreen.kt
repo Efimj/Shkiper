@@ -49,6 +49,7 @@ import com.jobik.shkiper.ui.modifiers.bounceClick
 import com.jobik.shkiper.ui.theme.CustomTheme
 import dev.shreyaspatil.capturable.Capturable
 import dev.shreyaspatil.capturable.controller.rememberCaptureController
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -196,6 +197,7 @@ fun StatisticsScreen() {
     if (openedStatistics.value != null) {
         StatisticsInformationDialog(openedStatistics.value!!) { openedStatistics.value = null }
     }
+    val scope = rememberCoroutineScope()
 
     if (showShareDialog) {
         val statisticsText = StatisticsService(context).appStatistics.getStatisticsText()
@@ -209,16 +211,19 @@ fun StatisticsScreen() {
                 icon = Icons.Outlined.ContentCopy,
                 title = stringResource(R.string.ShareText),
                 onClick = {
-                    showShareDialog = !showShareDialog
-                    IntentHelper().shareTextIntent(context, statisticsText)
-
+                    scope.launch { shareSheetState.hide() }.invokeOnCompletion {
+                        showShareDialog = !showShareDialog
+                        IntentHelper().shareTextIntent(context, statisticsText)
+                    }
                 })
             SettingsItem(
                 icon = Icons.Outlined.Screenshot,
                 title = stringResource(R.string.ShareImage),
                 onClick = {
-                    showShareDialog = !showShareDialog
-                    captureController.capture();
+                    scope.launch { shareSheetState.hide() }.invokeOnCompletion {
+                        showShareDialog = !showShareDialog
+                        captureController.capture()
+                    }
                 })
         }
     }

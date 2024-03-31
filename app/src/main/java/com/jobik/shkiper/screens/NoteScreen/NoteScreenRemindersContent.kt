@@ -8,7 +8,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.KeyboardArrowLeft
 import androidx.compose.material.icons.outlined.KeyboardArrowRight
 import androidx.compose.material.icons.outlined.NotificationsOff
 import androidx.compose.material3.*
@@ -19,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.Reminder
@@ -31,7 +31,7 @@ import org.mongodb.kbson.ObjectId
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NoteScreenRemindersContent(noteViewModel: NoteViewModel) {
-    val shareSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val reminderSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val currentReminder = rememberSaveable { mutableStateOf<Reminder?>(null) }
     val openCreateReminderDialog = rememberSaveable { mutableStateOf(false) }
     val selectedReminderIds = rememberSaveable { mutableStateOf<List<ObjectId>>(emptyList()) }
@@ -41,7 +41,7 @@ fun NoteScreenRemindersContent(noteViewModel: NoteViewModel) {
             currentReminder.value = null
             openCreateReminderDialog.value = false
             selectedReminderIds.value = emptyList()
-            shareSheetState.hide()
+            reminderSheetState.hide()
         } else {
             if (noteViewModel.screenState.value.reminders.isEmpty()) {
                 openCreateReminderDialog.value = true
@@ -49,12 +49,30 @@ fun NoteScreenRemindersContent(noteViewModel: NoteViewModel) {
         }
     }
 
+    val verticalInsets = WindowInsets.systemBars.only(WindowInsetsSides.Vertical)
+    val headerInsets = WindowInsets.systemBars.only(WindowInsetsSides.Top)
+    val bottomInsets = WindowInsets.systemBars.only(WindowInsetsSides.Bottom)
+    val headerInsetsDp = headerInsets.asPaddingValues().calculateTopPadding()
+    val bottomInsetsDp = bottomInsets.asPaddingValues().calculateBottomPadding()
+    val listVerticalPadding = 10.dp
+    val listVerticalWithToolBarPadding = 80.dp
+
+    val topListPaddingValues =
+        if (selectedReminderIds.value.isEmpty()) listVerticalPadding + headerInsetsDp else listVerticalWithToolBarPadding + headerInsetsDp
+    val topPadding by animateDpAsState(targetValue = topListPaddingValues, label = "topPadding")
+
+    val bottomListPaddingValues =
+        if (selectedReminderIds.value.isEmpty()) listVerticalWithToolBarPadding + bottomInsetsDp else listVerticalPadding + bottomInsetsDp
+    val bottomPadding by animateDpAsState(targetValue = bottomListPaddingValues, label = "bottomPadding")
+
     if (noteViewModel.screenState.value.isReminderMenuOpen) {
         CustomModalBottomSheet(
-            state = shareSheetState,
+            makeVerticalScrollable = false,
+            state = reminderSheetState,
             onCancel = {
                 noteViewModel.switchReminderDialogShow()
             },
+            windowInsets = WindowInsets.ime,
             dragHandle = null,
         ) {
             Box {
@@ -71,9 +89,11 @@ fun NoteScreenRemindersContent(noteViewModel: NoteViewModel) {
                     }, label = ""
                 ) {
                     if (it) {
-                        EmptyRemindersContent()
+                        EmptyRemindersContent(modifier = Modifier.windowInsetsPadding(verticalInsets))
                     } else {
                         RemindersList(
+                            topPadding = topPadding,
+                            bottomPadding = bottomPadding,
                             noteViewModel = noteViewModel,
                             currentReminder = currentReminder,
                             selectedReminderIds = selectedReminderIds,
@@ -82,17 +102,20 @@ fun NoteScreenRemindersContent(noteViewModel: NoteViewModel) {
                     }
                 }
                 Header(
+                    modifier = Modifier.windowInsetsPadding(headerInsets),
                     noteViewModel = noteViewModel,
                     selectedReminderIds = selectedReminderIds
                 )
-                BottomBar(isHidden = selectedReminderIds.value.isNotEmpty()) {
+                BottomBar(
+                    modifier = Modifier.windowInsetsPadding(bottomInsets),
+                    isHidden = selectedReminderIds.value.isNotEmpty()
+                ) {
                     currentReminder.value = null
                     openCreateReminderDialog.value = true
                 }
             }
         }
     }
-
     CreateReminderDialog(
         openDialogState = openCreateReminderDialog,
         currentReminder = currentReminder,
@@ -103,20 +126,16 @@ fun NoteScreenRemindersContent(noteViewModel: NoteViewModel) {
 @Composable
 private fun RemindersList(
     noteViewModel: NoteViewModel,
+    topPadding: Dp,
+    bottomPadding: Dp,
     currentReminder: MutableState<Reminder?>,
     selectedReminderIds: MutableState<List<ObjectId>>,
     openCreateReminderDialog: MutableState<Boolean>
 ) {
     val lazyListState = rememberLazyListState()
 
-    val topPaddingValues = if (selectedReminderIds.value.isEmpty()) 20.dp else 80.dp
-    val topPadding by animateDpAsState(targetValue = topPaddingValues, label = "topPadding")
-
-    val bottomPaddingValues = if (selectedReminderIds.value.isEmpty()) 80.dp else 20.dp
-    val bottomPadding by animateDpAsState(targetValue = bottomPaddingValues, label = "bottomPadding")
-
     LazyColumn(
-        modifier = Modifier,
+        modifier = Modifier.windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Vertical)),
         state = lazyListState,
         contentPadding = PaddingValues(start = 20.dp, end = 20.dp, top = topPadding, bottom = bottomPadding),
         verticalArrangement = Arrangement.spacedBy(10.dp)
@@ -161,9 +180,9 @@ private fun onReminderClick(
 }
 
 @Composable
-private fun EmptyRemindersContent() {
+private fun EmptyRemindersContent(modifier: Modifier) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(bottom = 100.dp, top = 30.dp)
             .heightIn(max = 240.dp),
@@ -189,14 +208,13 @@ private fun EmptyRemindersContent() {
 
 @Composable
 private fun BoxScope.Header(
+    modifier: Modifier,
     noteViewModel: NoteViewModel,
     selectedReminderIds: MutableState<List<ObjectId>>
 ) {
     val clearSelectedReminders = { selectedReminderIds.value = emptyList() }
 
-    Box(
-        modifier = Modifier.align(Alignment.TopCenter)
-    ) {
+    Box(modifier = modifier.align(Alignment.TopCenter)) {
         AnimatedVisibility(
             visible = selectedReminderIds.value.isNotEmpty(),
             enter = slideInVertically() + expandVertically(
@@ -266,9 +284,10 @@ private fun BoxScope.Header(
 }
 
 @Composable
-private fun BoxScope.BottomBar(isHidden: Boolean, onCreateReminderClick: () -> Unit) {
+private fun BoxScope.BottomBar(modifier: Modifier, isHidden: Boolean, onCreateReminderClick: () -> Unit) {
     Box(
-        modifier = Modifier.align(Alignment.BottomCenter)
+        modifier = modifier
+            .align(Alignment.BottomCenter)
     ) {
         AnimatedVisibility(
             visible = isHidden.not(),

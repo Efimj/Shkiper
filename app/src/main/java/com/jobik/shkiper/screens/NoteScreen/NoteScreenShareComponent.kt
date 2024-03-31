@@ -8,6 +8,7 @@ import androidx.compose.material.icons.outlined.Screenshot
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.jobik.shkiper.R
@@ -16,6 +17,7 @@ import com.jobik.shkiper.ui.components.cards.SettingsItem
 import com.jobik.shkiper.ui.components.modals.CustomModalBottomSheet
 import com.jobik.shkiper.ui.components.modals.ShareNoteDialog
 import com.mohamedrejeb.richeditor.model.RichTextState
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -25,6 +27,7 @@ fun NoteScreenShareComponent(
 ) {
     val context = LocalContext.current
     val shareSheetState = androidx.compose.material3.rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val scope = rememberCoroutineScope()
 
     LaunchedEffect(noteViewModel.screenState.value.showShareDialog) {
         if (!noteViewModel.screenState.value.showShareDialog) {
@@ -44,38 +47,46 @@ fun NoteScreenShareComponent(
                 icon = Icons.Outlined.ContentCopy,
                 title = stringResource(R.string.ShareText),
                 onClick = {
-                    noteViewModel.shareNoteText(
-                        context,
-                        TextHelper.removeMarkdownStyles(richTextState.toMarkdown())
-                    )
-                    noteViewModel.switchShowShareDialog()
+                    scope.launch { shareSheetState.hide() }.invokeOnCompletion {
+                        noteViewModel.shareNoteText(
+                            context = context,
+                            text = TextHelper.removeMarkdownStyles(richTextState.toMarkdown())
+                        )
+                        noteViewModel.switchShowShareDialog()
+                    }
                 })
             SettingsItem(
                 icon = Icons.Outlined.Html,
                 title = stringResource(R.string.ShareHTMLText),
                 onClick = {
-                    noteViewModel.shareNoteText(
-                        context,
-                        richTextState.toHtml()
-                    )
-                    noteViewModel.switchShowShareDialog()
+                    scope.launch { shareSheetState.hide() }.invokeOnCompletion {
+                        noteViewModel.shareNoteText(
+                            context = context,
+                            text = richTextState.toHtml()
+                        )
+                        noteViewModel.switchShowShareDialog()
+                    }
                 })
             SettingsItem(
                 icon = Icons.Outlined.Code,
                 title = stringResource(R.string.ShareMarkdownText),
                 onClick = {
-                    noteViewModel.shareNoteText(
-                        context,
-                        richTextState.toMarkdown()
-                    )
-                    noteViewModel.switchShowShareDialog()
+                    scope.launch { shareSheetState.hide() }.invokeOnCompletion {
+                        noteViewModel.shareNoteText(
+                            context = context,
+                            text = richTextState.toMarkdown()
+                        )
+                        noteViewModel.switchShowShareDialog()
+                    }
                 })
             SettingsItem(
                 icon = Icons.Outlined.Screenshot,
                 title = stringResource(R.string.ShareImage),
                 onClick = {
-                    noteViewModel.switchShowShareNoteDialog()
-                    noteViewModel.switchShowShareDialog()
+                    scope.launch { shareSheetState.hide() }.invokeOnCompletion {
+                        noteViewModel.switchShowShareNoteDialog()
+                        noteViewModel.switchShowShareDialog()
+                    }
                 })
         }
     }
