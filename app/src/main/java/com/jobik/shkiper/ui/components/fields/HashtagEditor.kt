@@ -1,28 +1,51 @@
 package com.jobik.shkiper.ui.components.fields
 
-import androidx.compose.foundation.*
+import android.util.Log
+import androidx.compose.animation.*
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.KeyboardArrowLeft
+import androidx.compose.material.icons.outlined.NewLabel
 import androidx.compose.material3.*
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jobik.shkiper.R
-import com.jobik.shkiper.ui.components.buttons.*
-import com.jobik.shkiper.ui.helpers.*
+import com.jobik.shkiper.screens.NoteScreen.NoteViewModel
+import com.jobik.shkiper.ui.components.buttons.HashtagButton
+import com.jobik.shkiper.ui.helpers.Keyboard
+import com.jobik.shkiper.ui.helpers.keyboardAsState
 import com.jobik.shkiper.ui.theme.CustomTheme
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
+private fun Set<String>.toTagsString(): String {
+    return this.joinToString(" ")
+}
+
+private fun String.toTagsSet(): Set<String> {
+    return this.split(' ').toSet()
+}
+
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
-fun HashtagEditor(
+fun TagEditor(
     modifier: Modifier,
     enabled: Boolean = true,
     selectedTags: Set<String>,
@@ -30,10 +53,9 @@ fun HashtagEditor(
     onSave: (Set<String>) -> Unit
 ) {
     val editModeEnabled = rememberSaveable { mutableStateOf(false) }
-    val textFieldFocusRequester by remember { mutableStateOf(FocusRequester()) }
-    val textFieldValue = rememberSaveable { mutableStateOf(selectedTags.joinToString(" ")) }
-    var isFocused by remember { mutableStateOf(false) }
-    val selectableTags = allTags - selectedTags
+    val createdTags = rememberSaveable { mutableStateOf(emptySet<String>()) }
+    val inputString = rememberSaveable { mutableStateOf("") }
+    val newSelectedTags = rememberSaveable { mutableStateOf(selectedTags.toTagsString()) }
 
     Column(modifier = modifier.clickable(
         interactionSource = MutableInteractionSource(),
@@ -56,34 +78,15 @@ fun HashtagEditor(
                 color = CustomTheme.colors.textSecondary
             )
         }
-        HashtagsPresentation(hashtags = selectedTags) { if (enabled) editModeEnabled.value = true }
+        TagsPresentation(tags = selectedTags) { if (enabled) editModeEnabled.value = true }
     }
 
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val scope = rememberCoroutineScope()
 
-    val showBottomSheet = remember { mutableStateOf(false) }
+    val verticalInsets = WindowInsets.systemBars.only(WindowInsetsSides.Vertical)
 
-    LaunchedEffect(editModeEnabled.value, showBottomSheet.value) {
-        if (editModeEnabled.value) {
-            showBottomSheet.value = true
-        }
-        if (editModeEnabled.value.not()) {
-            scope.launch {
-                sheetState.hide()
-            }.invokeOnCompletion {
-                if (!sheetState.isVisible) {
-                    showBottomSheet.value = false
-                }
-            }
-        }
-    }
-
-    val topInsetsPaddings = topWindowInsetsPadding()
-    val bottomInsetsPaddings = bottomWindowInsetsPadding()
-    val horizontalInsetsPaddingsModifier = Modifier.horizontalWindowInsetsPadding()
-
-    if (showBottomSheet.value) {
+    if (editModeEnabled.value) {
         ModalBottomSheet(
             sheetState = sheetState,
             dragHandle = null,
@@ -99,30 +102,145 @@ fun HashtagEditor(
                     }
                 }
             }) {
-            Spacer(modifier = Modifier.height(topInsetsPaddings))
-
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .then(horizontalInsetsPaddingsModifier)
                     .verticalScroll(rememberScrollState())
-                    .padding(horizontal = 20.dp)
+                    .windowInsetsPadding(verticalInsets)
             ) {
 
-
-                Text(text = "Select tags", color = CustomTheme.colors.text)
-                FlowRow(
+                val placeholder = stringResource(id = R.string.HashtagExample)
+                Row(
                     modifier = Modifier
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        .padding(horizontal = 20.dp, vertical = 10.dp)
+                        .height(IntrinsicSize.Min)
                 ) {
-                    for (hashtag in allTags) {
-                        HashtagButton(text = hashtag) { }
+                    CustomOutlinedTextField(
+                        rowModifier = Modifier.weight(1f),
+                        placeholder = placeholder,
+                        text = inputString.value,
+                        onChange = { inputString.value = it })
+                    AnimatedVisibility(
+                        visible = inputString.value.isNotBlank(),
+                        enter = slideInHorizontally { it } + expandHorizontally(
+                            expandFrom = Alignment.Start,
+                            clip = false
+                        ) + fadeIn(),
+                        exit = slideOutHorizontally { it } + shrinkHorizontally(
+                            shrinkTowards = Alignment.Start,
+                            clip = false
+                        ) + fadeOut(),
+                    ) {
+                        Row {
+                            Spacer(modifier = Modifier.width(12.dp))
+                            Button(
+                                modifier = Modifier.fillMaxHeight(),
+                                shape = CustomTheme.shapes.small,
+                                colors = ButtonDefaults.buttonColors(
+                                    contentColor = CustomTheme.colors.text,
+                                    containerColor = CustomTheme.colors.secondaryBackground
+                                ),
+                                border = null,
+                                elevation = null,
+                                contentPadding = PaddingValues(horizontal = 15.dp),
+                                onClick = {
+                                    createdTags.value += inputString.value.toTagsSet()
+                                    newSelectedTags.value += ' ' + inputString.value
+                                    inputString.value = ""
+                                }
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Outlined.NewLabel,
+                                    contentDescription = stringResource(R.string.Add),
+                                    tint = CustomTheme.colors.text
+                                )
+                            }
+                        }
                     }
                 }
-            }
+                AnimatedVisibility(visible = createdTags.value.isNotEmpty()) {
+                    TagGroup(
+                        modifier = Modifier.padding(horizontal = 20.dp),
+                        header = "New tags",
+                        tags = createdTags.value,
+                        selected = newSelectedTags.value.toTagsSet()
+                    ) {
+                        newSelectedTags.value = it.toTagsString()
+                    }
+                }
 
-            Spacer(modifier = Modifier.height(bottomInsetsPaddings))
+                AnimatedVisibility(visible = selectedTags.isNotEmpty()) {
+                    Column {
+                        Divider(
+                            modifier = Modifier.padding(top = 6.dp, bottom = 12.dp),
+                            color = CustomTheme.colors.secondaryStroke
+                        )
+                        TagGroup(
+                            modifier = Modifier.padding(horizontal = 20.dp),
+                            header = "Selected",
+                            tags = selectedTags,
+                            selected = newSelectedTags.value.toTagsSet()
+                        ) {
+                            newSelectedTags.value = it.toTagsString()
+                        }
+                    }
+                }
+
+                val otherTags = allTags - selectedTags
+                AnimatedVisibility(visible = otherTags.isNotEmpty()) {
+                    Column {
+                        Divider(
+                            modifier = Modifier.padding(top = 6.dp, bottom = 12.dp),
+                            color = CustomTheme.colors.secondaryStroke
+                        )
+                        TagGroup(
+                            modifier = Modifier.padding(horizontal = 20.dp),
+                            header = "All tags",
+                            tags = otherTags,
+                            selected = newSelectedTags.value.toTagsSet()
+                        ) {
+                            newSelectedTags.value = it.toTagsString()
+                        }
+                    }
+                }
+                Spacer(modifier = Modifier.height(20.dp))
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun TagGroup(
+    modifier: Modifier = Modifier,
+    header: String,
+    tags: Set<String>,
+    selected: Set<String>,
+    onChange: (Set<String>) -> Unit
+) {
+    Column(modifier = modifier.animateContentSize()) {
+        Row(horizontalArrangement = Arrangement.spacedBy(15.dp)) {
+            Text(
+                text = header,
+                style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.SemiBold),
+                color = CustomTheme.colors.text
+            )
+        }
+        Spacer(modifier = Modifier.height(10.dp))
+        FlowRow(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(2.dp)
+        ) {
+            for (tag in tags) {
+                val isSelected = tag in selected
+                HashtagButton(text = tag, selected = isSelected) {
+                    if (isSelected)
+                        onChange(selected - tag)
+                    else
+                        onChange(selected + tag)
+                }
+            }
         }
     }
 }
@@ -142,11 +260,11 @@ private fun handleTagListString(
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun HashtagsPresentation(
-    hashtags: Set<String>,
+private fun TagsPresentation(
+    tags: Set<String>,
     setEditMode: () -> Unit
 ) {
-    if (hashtags.isEmpty()) {
+    if (tags.isEmpty()) {
         Text(
             stringResource(R.string.HashtagExample),
             style = MaterialTheme.typography.bodyMedium,
@@ -160,10 +278,11 @@ private fun HashtagsPresentation(
                     interactionSource = MutableInteractionSource(),
                     indication = null
                 ) { setEditMode() },
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(2.dp)
         ) {
-            for (hashtag in hashtags) {
-                HashtagButton(text = hashtag) { setEditMode() }
+            for (tag in tags) {
+                HashtagButton(text = tag) { setEditMode() }
             }
         }
 }

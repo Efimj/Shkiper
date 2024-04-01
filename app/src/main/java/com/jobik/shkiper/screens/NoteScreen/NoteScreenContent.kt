@@ -39,7 +39,7 @@ import com.jobik.shkiper.navigation.Route
 import com.jobik.shkiper.ui.components.cards.SnackbarCard
 import com.jobik.shkiper.ui.components.fields.CustomDefaultTextField
 import com.jobik.shkiper.ui.components.fields.CustomRichTextEditor
-import com.jobik.shkiper.ui.components.fields.HashtagEditor
+import com.jobik.shkiper.ui.components.fields.TagEditor
 import com.jobik.shkiper.ui.components.layouts.LinkPreviewList
 import com.jobik.shkiper.ui.components.modals.ActionDialog
 import com.jobik.shkiper.ui.helpers.Keyboard
@@ -159,7 +159,7 @@ fun NoteScreenContent(
                     )
                 }
                 item {
-                    HashtagEditor(
+                    TagEditor(
                         enabled = enabled,
                         modifier = Modifier
                             .padding(bottom = 15.dp)
