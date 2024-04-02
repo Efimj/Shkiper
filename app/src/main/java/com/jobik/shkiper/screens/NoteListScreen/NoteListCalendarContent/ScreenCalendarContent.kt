@@ -1,5 +1,6 @@
 package com.jobik.shkiper.screens.NoteListScreen.NoteListCalendarContent
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -12,6 +13,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.NotificationsNone
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
@@ -22,6 +25,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.Note
+import com.jobik.shkiper.screens.AppLayout.NavigationBar.AppNavigationBarState
 import com.jobik.shkiper.ui.animation.AnimateVerticalSwitch
 import com.jobik.shkiper.ui.components.buttons.HashtagButton
 import com.jobik.shkiper.ui.components.cards.NoteCard
@@ -32,6 +36,7 @@ import com.jobik.shkiper.ui.helpers.endWindowInsetsPadding
 import com.jobik.shkiper.ui.helpers.rememberNextReminder
 import com.jobik.shkiper.ui.helpers.startWindowInsetsPadding
 import com.jobik.shkiper.ui.theme.CustomTheme
+import kotlinx.coroutines.delay
 import me.onebone.toolbar.*
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -44,6 +49,8 @@ fun ScreenCalendarContent(
 ) {
     val collapsingToolbarScaffold = rememberCollapsingToolbarScaffoldState()
 
+    HideNavigation()
+
     AnimateVerticalSwitch(
         modifier = Modifier,
         state = viewModel.screenState.value.fullScreenCalendarOpen.not(),
@@ -51,6 +58,14 @@ fun ScreenCalendarContent(
             FullScreenCalendar(viewModel)
         }) {
         ScreenContent(collapsingToolbarScaffold, viewModel, onSlideBack, navController)
+    }
+}
+
+@Composable
+private fun HideNavigation() {
+    LaunchedEffect(Unit) {
+        delay(5)
+        AppNavigationBarState.hideWithLock()
     }
 }
 
