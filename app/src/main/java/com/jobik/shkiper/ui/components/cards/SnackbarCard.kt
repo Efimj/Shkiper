@@ -30,7 +30,6 @@ fun SnackbarCard(snackbarData: SnackbarVisualsCustom) {
                 .clip(RoundedCornerShape(15.dp)),
             elevation = 6.dp,
             shape = RoundedCornerShape(15.dp),
-            border = BorderStroke(1.dp, CustomTheme.colors.mainBackground),
             backgroundColor = CustomTheme.colors.secondaryBackground,
             contentColor = CustomTheme.colors.text,
         ) {
