@@ -376,4 +376,14 @@
     <string name="DisableLinkPreviews">Linkvorschau deaktivieren</string>
     <string name="EnableLinkPreviews">Aktivieren Sie die Linkvorschau</string>
     <string name="Apply">Anwenden</string>
+
+    <string name="SaveChanges">Änderungen speichern</string>
+
+    <string name="New">Neu</string>
+
+    <string name="All">Alle</string>
+
+    <string name="Selected">Ausgewählt</string>
+
+    <string name="EmptyTagsTitle">Tags noch nicht erstellt</string>
 </resources>

@@ -208,4 +208,10 @@
     <string name="EnableLinkPreviews">Увімкнути попередній перегляд посилань</string>
     <string name="Apply">Застосувати</string>
 
+    <string name="SaveChanges">Зберегти зміни</string>
+    <string name="New">Нові</string>
+    <string name="All">Всі</string>
+    <string name="Selected">Вибрані</string>
+    <string name="EmptyTagsTitle">Теги ще не створені</string>
+
 </resources>

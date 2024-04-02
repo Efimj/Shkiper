@@ -365,4 +365,14 @@
     <string name="EnableLinkPreviews">Habilitar vistas previas de enlaces</string>
     <string name="Apply">Aplicar</string>
 
+    <string name="SaveChanges">Guardar cambios</string>
+
+    <string name="New">Nuevo</string>
+
+    <string name="All">Todo</string>
+
+    <string name="Selected">Seleccionado</string>
+
+    <string name="EmptyTagsTitle">Etiquetas aún no creadas</string>
+
 </resources>

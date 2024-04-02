@@ -206,4 +206,10 @@
     <string name="EnableLinkPreviews">Enable link previews</string>
     <string name="Apply">Apply</string>
 
+    <string name="SaveChanges">Save changes</string>
+    <string name="New">New</string>
+    <string name="All">All</string>
+    <string name="Selected">Selected</string>
+    <string name="EmptyTagsTitle">Tags not created yet</string>
+
 </resources>

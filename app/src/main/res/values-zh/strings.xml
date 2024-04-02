@@ -369,4 +369,14 @@
     <string name="EnableLinkPreviews">启用链接预览</string>
     <string name="Apply">申请</string>
 
+    <string name="SaveChanges">保存更改</string>
+
+    <string name="New">新的</string>
+
+    <string name="All">全部</string>
+
+    <string name="Selected">选定</string>
+
+    <string name="EmptyTagsTitle">标签尚未创建</string>
+
 </resources>
