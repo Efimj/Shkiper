@@ -54,7 +54,8 @@ fun NoteScreenShareComponent(
             containerColor = Color.Transparent,
             contentColor = CustomTheme.colors.text,
             windowInsets = WindowInsets.ime,
-            onDismissRequest = { noteViewModel.switchShowShareDialog(mode = false) }) {
+            onDismissRequest = { noteViewModel.switchShowShareDialog(mode = false) }
+        ) {
             Spacer(modifier = Modifier.windowInsetsPadding(topInsets))
             Surface(
                 shape = BottomSheetDefaults.ExpandedShape,
@@ -73,11 +74,11 @@ fun NoteScreenShareComponent(
                         title = stringResource(R.string.ShareText),
                         onClick = {
                             scope.launch { shareSheetState.hide() }.invokeOnCompletion {
+                                noteViewModel.switchShowShareDialog()
                                 noteViewModel.shareNoteText(
                                     context = context,
                                     text = TextHelper.removeMarkdownStyles(richTextState.toMarkdown())
                                 )
-                                noteViewModel.switchShowShareDialog()
                             }
                         })
                     SettingsItem(
@@ -85,11 +86,11 @@ fun NoteScreenShareComponent(
                         title = stringResource(R.string.ShareHTMLText),
                         onClick = {
                             scope.launch { shareSheetState.hide() }.invokeOnCompletion {
+                                noteViewModel.switchShowShareDialog()
                                 noteViewModel.shareNoteText(
                                     context = context,
                                     text = richTextState.toHtml()
                                 )
-                                noteViewModel.switchShowShareDialog()
                             }
                         })
                     SettingsItem(
@@ -97,11 +98,11 @@ fun NoteScreenShareComponent(
                         title = stringResource(R.string.ShareMarkdownText),
                         onClick = {
                             scope.launch { shareSheetState.hide() }.invokeOnCompletion {
+                                noteViewModel.switchShowShareDialog()
                                 noteViewModel.shareNoteText(
                                     context = context,
                                     text = richTextState.toMarkdown()
                                 )
-                                noteViewModel.switchShowShareDialog()
                             }
                         })
                     SettingsItem(
@@ -109,21 +110,20 @@ fun NoteScreenShareComponent(
                         title = stringResource(R.string.ShareImage),
                         onClick = {
                             scope.launch { shareSheetState.hide() }.invokeOnCompletion {
-                                noteViewModel.switchShowShareNoteDialog()
                                 noteViewModel.switchShowShareDialog()
+                                noteViewModel.switchShowShareNoteDialog()
                             }
                         })
                 }
             }
         }
-
-        if (noteViewModel.screenState.value.showShareNoteDialog) {
-            ShareNoteDialog(
-                noteHeader = noteViewModel.screenState.value.noteHeader,
-                noteContent = noteViewModel.screenState.value.noteBody,
-                onConfirm = noteViewModel::switchShowShareNoteDialog,
-                onGoBack = noteViewModel::switchShowShareNoteDialog,
-            )
-        }
+    }
+    if (noteViewModel.screenState.value.showShareNoteDialog) {
+        ShareNoteDialog(
+            noteHeader = noteViewModel.screenState.value.noteHeader,
+            noteContent = noteViewModel.screenState.value.noteBody,
+            onConfirm = noteViewModel::switchShowShareNoteDialog,
+            onGoBack = noteViewModel::switchShowShareNoteDialog,
+        )
     }
 }

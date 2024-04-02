@@ -53,7 +53,7 @@ fun StatisticsScreen() {
     val statistics = remember { StatisticsService(context).appStatistics.getStatisticsPreviews() }
     val openedStatistics = remember { mutableStateOf<StatisticsItem?>(null) }
     var showShareDialog by remember { mutableStateOf(false) }
-    val shareSheetState = androidx.compose.material3.rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val shareSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val captureController = rememberCaptureController()
 
     ScreenWrapper {
@@ -163,13 +163,13 @@ fun StatisticsScreen() {
                         contentColor = CustomTheme.colors.textOnActive,
                     ) {
                         Row(
-                            modifier = Modifier.padding(horizontal = 14.dp, vertical = 7.dp),
+                            modifier = Modifier.height(50.dp).padding(horizontal = 18.dp, vertical = 7.dp),
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.Center
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Share,
-                                contentDescription = stringResource(R.string.CreateNote),
+                                contentDescription = stringResource(R.string.Share),
                                 tint = CustomTheme.colors.textOnActive,
                                 modifier = Modifier
                                     .size(30.dp)

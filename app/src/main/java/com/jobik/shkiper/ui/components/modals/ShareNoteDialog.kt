@@ -6,10 +6,14 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Share
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -17,10 +21,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
@@ -28,16 +30,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.jobik.shkiper.ui.components.buttons.ButtonStyle
-import com.jobik.shkiper.ui.components.buttons.CustomButton
-import com.jobik.shkiper.ui.theme.CustomTheme
 import com.jobik.shkiper.R
 import com.jobik.shkiper.helpers.IntentHelper
+import com.jobik.shkiper.ui.theme.CustomTheme
 import com.mohamedrejeb.richeditor.model.rememberRichTextState
 import com.mohamedrejeb.richeditor.ui.material3.RichText
 import dev.shreyaspatil.capturable.Capturable
 import dev.shreyaspatil.capturable.controller.rememberCaptureController
-
 
 @Composable
 fun ShareNoteDialog(
@@ -136,7 +135,6 @@ fun ShareNoteDialog(
                     }
                 }
             }
-
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -145,17 +143,54 @@ fun ShareNoteDialog(
                 horizontalArrangement = Arrangement.End,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                CustomButton(
-                    text = stringResource(id = R.string.Cancel),
-                    onClick = onGoBack,
-                    style = ButtonStyle.Text,
-                )
+                Button(
+                    modifier = Modifier.height(50.dp),
+                    shape = CustomTheme.shapes.small,
+                    colors = ButtonDefaults.buttonColors(
+                        contentColor = CustomTheme.colors.text,
+                        containerColor = Color.Transparent
+                    ),
+                    border = null,
+                    elevation = null,
+                    contentPadding = PaddingValues(horizontal = 15.dp),
+                    onClick = onGoBack
+                ) {
+                    Text(
+                        text = stringResource(R.string.Cancel),
+                        style = MaterialTheme.typography.body1,
+                        fontWeight = FontWeight.SemiBold,
+                        color = CustomTheme.colors.text,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
                 Spacer(Modifier.width(12.dp))
-                CustomButton(
-                    text = stringResource(id = R.string.Share),
-                    onClick = { captureController.capture(); },
-                    style = ButtonStyle.Filled,
-                )
+                Button(
+                    modifier = Modifier.height(50.dp),
+                    shape = CustomTheme.shapes.small,
+                    colors = ButtonDefaults.buttonColors(
+                        contentColor = CustomTheme.colors.text,
+                        containerColor = CustomTheme.colors.active
+                    ),
+                    border = null,
+                    elevation = null,
+                    contentPadding = PaddingValues(horizontal = 15.dp),
+                    onClick = { captureController.capture() }
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.Share,
+                        contentDescription = stringResource(R.string.Share),
+                        tint = CustomTheme.colors.textOnActive
+                    )
+                    Text(
+                        text = stringResource(R.string.Share),
+                        style = MaterialTheme.typography.body1,
+                        fontWeight = FontWeight.SemiBold,
+                        color = CustomTheme.colors.textOnActive,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
             }
         }
     }
