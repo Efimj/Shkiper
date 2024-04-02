@@ -23,7 +23,6 @@ import androidx.compose.ui.unit.dp
 import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.Reminder
 import com.jobik.shkiper.ui.components.cards.ReminderCard
-import com.jobik.shkiper.ui.components.modals.CustomModalBottomSheet
 import com.jobik.shkiper.ui.components.modals.ReminderDialogProperties
 import com.jobik.shkiper.ui.theme.CustomTheme
 import org.mongodb.kbson.ObjectId
@@ -66,14 +65,13 @@ fun NoteScreenRemindersContent(noteViewModel: NoteViewModel) {
     val bottomPadding by animateDpAsState(targetValue = bottomListPaddingValues, label = "bottomPadding")
 
     if (noteViewModel.screenState.value.isReminderMenuOpen) {
-        CustomModalBottomSheet(
-            makeVerticalScrollable = false,
-            state = reminderSheetState,
-            onCancel = {
-                noteViewModel.switchReminderDialogShow()
-            },
-            windowInsets = WindowInsets.ime,
+        ModalBottomSheet(
+            sheetState = reminderSheetState,
+            onDismissRequest = { noteViewModel.switchReminderDialogShow() },
+            containerColor = CustomTheme.colors.mainBackground,
+            contentColor = CustomTheme.colors.text,
             dragHandle = null,
+            windowInsets = WindowInsets.ime
         ) {
             Box {
                 AnimatedContent(
@@ -232,7 +230,10 @@ private fun BoxScope.Header(
                     .padding(top = 10.dp)
                     .height(50.dp),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(space = 10.dp, alignment = Alignment.CenterHorizontally)
+                horizontalArrangement = Arrangement.spacedBy(
+                    space = 10.dp,
+                    alignment = Alignment.CenterHorizontally
+                )
             ) {
                 Button(
                     modifier = Modifier

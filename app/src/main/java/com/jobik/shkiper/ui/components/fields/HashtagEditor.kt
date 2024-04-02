@@ -16,6 +16,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -81,65 +82,69 @@ fun TagEditor(
         ModalBottomSheet(
             sheetState = sheetState,
             dragHandle = null,
-            containerColor = CustomTheme.colors.mainBackground,
+            containerColor = Color.Transparent,
             contentColor = CustomTheme.colors.text,
             windowInsets = WindowInsets.ime,
             onDismissRequest = {
-                scope.launch {
-                    sheetState.hide()
-                }.invokeOnCompletion {
-                    if (sheetState.isVisible.not()) {
-                        editModeEnabled.value = false
-                    }
+                if (sheetState.isVisible.not()) {
+                    editModeEnabled.value = false
                 }
             }) {
-            Column(modifier = Modifier.windowInsetsPadding(topInsets)) {
-                Header(inputString = inputString, createdTags = createdTags, newSelectedTags = newSelectedTags)
-            }
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .verticalScroll(rememberScrollState())
-                    .windowInsetsPadding(bottomInsets)
+            Spacer(modifier = Modifier.windowInsetsPadding(topInsets))
+            Surface(
+                shape = BottomSheetDefaults.ExpandedShape,
+                contentColor = CustomTheme.colors.text,
+                color = CustomTheme.colors.mainBackground,
+                tonalElevation = BottomSheetDefaults.Elevation,
             ) {
-                AnimatedVisibility(visible = createdTags.value.isNotEmpty()) {
-                    TagGroup(
-                        modifier = Modifier.padding(horizontal = 20.dp),
-                        header = "New tags",
-                        tags = createdTags.value,
-                        selected = newSelectedTags.value.toTagsSet()
+                Column {
+                    Header(inputString = inputString, createdTags = createdTags, newSelectedTags = newSelectedTags)
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .verticalScroll(rememberScrollState())
+                            .windowInsetsPadding(bottomInsets)
                     ) {
-                        newSelectedTags.value = it.toTagsString()
-                    }
-                }
-
-                AnimatedVisibility(visible = selectedTags.isNotEmpty()) {
-                    Column {
-                        TagGroup(
-                            modifier = Modifier.padding(horizontal = 20.dp),
-                            header = "Selected",
-                            tags = selectedTags,
-                            selected = newSelectedTags.value.toTagsSet()
-                        ) {
-                            newSelectedTags.value = it.toTagsString()
+                        AnimatedVisibility(visible = createdTags.value.isNotEmpty()) {
+                            TagGroup(
+                                modifier = Modifier.padding(horizontal = 20.dp),
+                                header = "New tags",
+                                tags = createdTags.value,
+                                selected = newSelectedTags.value.toTagsSet()
+                            ) {
+                                newSelectedTags.value = it.toTagsString()
+                            }
                         }
-                    }
-                }
 
-                val otherTags = allTags - selectedTags
-                AnimatedVisibility(visible = otherTags.isNotEmpty()) {
-                    Column {
-                        TagGroup(
-                            modifier = Modifier.padding(horizontal = 20.dp),
-                            header = "All tags",
-                            tags = otherTags,
-                            selected = newSelectedTags.value.toTagsSet()
-                        ) {
-                            newSelectedTags.value = it.toTagsString()
+                        AnimatedVisibility(visible = selectedTags.isNotEmpty()) {
+                            Column {
+                                TagGroup(
+                                    modifier = Modifier.padding(horizontal = 20.dp),
+                                    header = "Selected",
+                                    tags = selectedTags,
+                                    selected = newSelectedTags.value.toTagsSet()
+                                ) {
+                                    newSelectedTags.value = it.toTagsString()
+                                }
+                            }
                         }
+
+                        val otherTags = allTags - selectedTags
+                        AnimatedVisibility(visible = otherTags.isNotEmpty()) {
+                            Column {
+                                TagGroup(
+                                    modifier = Modifier.padding(horizontal = 20.dp),
+                                    header = "All tags",
+                                    tags = otherTags,
+                                    selected = newSelectedTags.value.toTagsSet()
+                                ) {
+                                    newSelectedTags.value = it.toTagsString()
+                                }
+                            }
+                        }
+                        Spacer(modifier = Modifier.height(30.dp))
                     }
                 }
-                Spacer(modifier = Modifier.height(30.dp))
             }
         }
     }
