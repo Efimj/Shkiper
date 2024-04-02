@@ -35,6 +35,7 @@ import androidx.navigation.NavController
 import com.jobik.shkiper.R
 import com.jobik.shkiper.SharedPreferencesKeys
 import com.jobik.shkiper.SharedPreferencesKeys.OnboardingFinishedData
+import com.jobik.shkiper.navigation.NavigationHelpers.Companion.navigateToMain
 import com.jobik.shkiper.navigation.Route
 import com.jobik.shkiper.ui.helpers.allWindowInsetsPadding
 import com.jobik.shkiper.ui.helpers.bottomWindowInsetsPadding
@@ -213,11 +214,7 @@ fun onFinished(context: Context, navController: NavController) {
     } catch (e: Exception) {
         Log.i("onboarding - onFinished", e.toString())
     }
-    navController.navigate(Route.NoteList.route) {
-        popUpTo(Route.Onboarding.route) {
-            inclusive = true
-        }
-    }
+    navController.navigateToMain(Route.NoteList.route)
 }
 
 @Composable

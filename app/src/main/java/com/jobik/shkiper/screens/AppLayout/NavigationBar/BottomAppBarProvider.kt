@@ -2,7 +2,6 @@ package com.jobik.shkiper.screens.AppLayout.NavigationBar
 
 import androidx.compose.animation.*
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
@@ -24,11 +23,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.NotePosition
+import com.jobik.shkiper.navigation.NavigationHelpers.Companion.navigateToMain
 import com.jobik.shkiper.navigation.Route
-import com.jobik.shkiper.navigation.NavigationHelpers.Companion.canNavigate
 import com.jobik.shkiper.navigation.RouteHelper
 import com.jobik.shkiper.ui.helpers.Keyboard
-import com.jobik.shkiper.ui.helpers.bottomWindowInsetsPadding
 import com.jobik.shkiper.ui.helpers.keyboardAsState
 import com.jobik.shkiper.ui.theme.CustomTheme
 import kotlinx.coroutines.CoroutineScope
@@ -142,7 +140,7 @@ private fun createNewNote(
 ) {
     scope.launch {
         val noteId = viewModel.createNewNote()
-        navController.navigate(Route.Note.noteId(noteId.toHexString()))
+        navController.navigateToMain(Route.Note.noteId(noteId.toHexString()))
     }
 }
 
@@ -158,56 +156,30 @@ private fun Navigation(
             isSelected = currentRoute == Route.NoteList.route,
             description = R.string.Notes,
         ) {
-            goToPage(
-                navController = navController,
-                rout = Route.NoteList.notePosition(NotePosition.MAIN.name)
-            )
+            navController.navigateToMain(destination = Route.NoteList.notePosition(NotePosition.MAIN.name))
         },
         CustomBottomNavigationItem(
             icon = Icons.Outlined.Archive,
             isSelected = currentRoute == Route.Archive.route,
             description = R.string.Archive,
         ) {
-            goToPage(
-                navController = navController,
-                rout = Route.Archive.notePosition(NotePosition.ARCHIVE.name),
-            )
+            navController.navigateToMain(destination = Route.Archive.notePosition(NotePosition.ARCHIVE.name))
         },
         CustomBottomNavigationItem(
             icon = Icons.Outlined.Delete,
             isSelected = currentRoute == Route.Basket.route,
             description = R.string.Basket,
         ) {
-            goToPage(
-                navController = navController,
-                rout = Route.Basket.notePosition(NotePosition.DELETE.name),
-            )
+            navController.navigateToMain(destination = Route.Basket.notePosition(NotePosition.DELETE.name))
         },
         CustomBottomNavigationItem(
             icon = Icons.Outlined.Settings,
             isSelected = currentRoute == Route.Settings.route,
             description = R.string.Settings
         ) {
-            goToPage(
-                navController = navController,
-                rout = Route.Settings.route,
-            )
+            navController.navigateToMain(destination = Route.Settings.route)
         },
     )
 
     CustomBottomNavigation(navigationItems)
-}
-
-private fun goToPage(
-    navController: NavHostController,
-    rout: String,
-) {
-    if (navController.canNavigate()
-            .not() || navController.currentDestination?.route?.substringBefore("/") == rout.substringBefore("/")
-    ) {
-        return
-    }
-    navController.navigate(rout) {
-        launchSingleTop
-    }
 }

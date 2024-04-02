@@ -34,6 +34,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.jobik.shkiper.NotepadApplication
 import com.jobik.shkiper.R
+import com.jobik.shkiper.navigation.NavigationHelpers.Companion.navigateToSecondary
 import com.jobik.shkiper.navigation.Route
 import com.jobik.shkiper.ui.components.buttons.*
 import com.jobik.shkiper.ui.components.cards.SettingsItem
@@ -134,7 +135,7 @@ private fun DevSupportSettings(
             modifier = Modifier.heightIn(min = 50.dp),
             icon = Icons.Rounded.LocalMall,
             title = stringResource(R.string.SupportDevelopment),
-            onClick = { navController.navigate(Route.Purchases.route) }
+            onClick = { navController.navigateToSecondary(Route.Purchases.route) }
         )
     }
 }
@@ -157,19 +158,19 @@ private fun OtherSettings(navController: NavController) {
             modifier = Modifier.heightIn(min = 50.dp),
             icon = Icons.Rounded.Info,
             title = stringResource(R.string.AboutNotepad),
-            onClick = { navController.navigate(Route.AboutNotepad.route) }
+            onClick = { navController.navigateToSecondary(Route.AboutNotepad.route) }
         )
         SettingsItem(
             modifier = Modifier.heightIn(min = 50.dp),
             icon = Icons.Rounded.DataUsage,
             title = stringResource(R.string.StatisticsPage),
-            onClick = { navController.navigate(Route.Statistics.route) }
+            onClick = { navController.navigateToSecondary(Route.Statistics.route) }
         )
         SettingsItem(
             modifier = Modifier.heightIn(min = 50.dp),
             icon = Icons.Rounded.ViewCarousel,
             title = stringResource(R.string.OnboardingPage),
-            onClick = { navController.navigate(Route.Onboarding.route) }
+            onClick = { navController.navigateToSecondary(Route.Onboarding.route) }
         )
     }
 }
