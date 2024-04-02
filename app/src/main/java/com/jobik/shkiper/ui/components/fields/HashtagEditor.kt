@@ -6,6 +6,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.LabelOff
@@ -21,6 +23,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -262,6 +267,21 @@ private fun Header(
             rowModifier = Modifier.weight(1f),
             placeholder = placeholder,
             text = inputString.value,
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Text,
+                capitalization = KeyboardCapitalization.Words,
+                autoCorrect = true,
+                imeAction = ImeAction.Done
+            ),
+            keyboardActions = KeyboardActions(
+                onDone = {
+                    addNewTag(
+                        createdTags = createdTags,
+                        inputString = inputString,
+                        newSelectedTags = newSelectedTags
+                    )
+                }
+            ),
             onChange = { inputString.value = it })
         AnimatedVisibility(
             visible = inputString.value.isNotBlank(),
@@ -287,9 +307,11 @@ private fun Header(
                     elevation = null,
                     contentPadding = PaddingValues(horizontal = 15.dp),
                     onClick = {
-                        createdTags.value += inputString.value.toTagsSet()
-                        newSelectedTags.value += ' ' + inputString.value
-                        inputString.value = ""
+                        addNewTag(
+                            createdTags = createdTags,
+                            inputString = inputString,
+                            newSelectedTags = newSelectedTags
+                        )
                     }
                 ) {
                     Icon(
@@ -301,6 +323,16 @@ private fun Header(
             }
         }
     }
+}
+
+private fun addNewTag(
+    createdTags: MutableState<Set<String>>,
+    inputString: MutableState<String>,
+    newSelectedTags: MutableState<String>
+) {
+    createdTags.value += inputString.value.toTagsSet()
+    newSelectedTags.value += ' ' + inputString.value
+    inputString.value = ""
 }
 
 @Composable
