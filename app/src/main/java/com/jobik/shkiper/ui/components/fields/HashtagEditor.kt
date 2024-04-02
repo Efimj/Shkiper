@@ -1,6 +1,7 @@
 package com.jobik.shkiper.ui.components.fields
 
 import androidx.compose.animation.*
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
@@ -19,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jobik.shkiper.R
@@ -44,9 +46,10 @@ fun TagEditor(
     onSave: (Set<String>) -> Unit
 ) {
     val editModeEnabled = rememberSaveable { mutableStateOf(false) }
-    val createdTags = rememberSaveable { mutableStateOf(emptySet<String>()) }
-    val inputString = rememberSaveable { mutableStateOf("") }
-    val newSelectedTags = rememberSaveable { mutableStateOf(selectedTags.toTagsString()) }
+    val createdTags = rememberSaveable(selectedTags) { mutableStateOf(emptySet<String>()) }
+    val inputString = rememberSaveable(selectedTags) { mutableStateOf("") }
+    val newSelectedTags = rememberSaveable(selectedTags) { mutableStateOf(selectedTags.toTagsString()) }
+    val isChanged = selectedTags != newSelectedTags.value.toTagsSet()
 
     Column(modifier = modifier.clickable(
         interactionSource = MutableInteractionSource(),
@@ -78,6 +81,9 @@ fun TagEditor(
     val topInsets = WindowInsets.systemBars.only(WindowInsetsSides.Top)
     val bottomInsets = WindowInsets.systemBars.only(WindowInsetsSides.Bottom)
 
+    val contentBottomPaddingValue = if (isChanged) 80.dp else 30.dp
+    val contentBottomPadding = animateDpAsState(targetValue = contentBottomPaddingValue, label = "contentBottomPadding")
+
     if (editModeEnabled.value) {
         ModalBottomSheet(
             sheetState = sheetState,
@@ -90,59 +96,78 @@ fun TagEditor(
                     editModeEnabled.value = false
                 }
             }) {
-            Spacer(modifier = Modifier.windowInsetsPadding(topInsets))
-            Surface(
-                shape = BottomSheetDefaults.ExpandedShape,
-                contentColor = CustomTheme.colors.text,
-                color = CustomTheme.colors.mainBackground,
-                tonalElevation = BottomSheetDefaults.Elevation,
-            ) {
+            Box {
                 Column {
-                    Header(inputString = inputString, createdTags = createdTags, newSelectedTags = newSelectedTags)
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .verticalScroll(rememberScrollState())
-                            .windowInsetsPadding(bottomInsets)
+                    Spacer(modifier = Modifier.windowInsetsPadding(topInsets))
+                    Surface(
+                        shape = BottomSheetDefaults.ExpandedShape,
+                        contentColor = CustomTheme.colors.text,
+                        color = CustomTheme.colors.mainBackground,
+                        tonalElevation = BottomSheetDefaults.Elevation,
                     ) {
-                        AnimatedVisibility(visible = createdTags.value.isNotEmpty()) {
-                            TagGroup(
-                                modifier = Modifier.padding(horizontal = 20.dp),
-                                header = "New tags",
-                                tags = createdTags.value,
-                                selected = newSelectedTags.value.toTagsSet()
+                        Column {
+                            Header(
+                                inputString = inputString,
+                                createdTags = createdTags,
+                                newSelectedTags = newSelectedTags
+                            )
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .verticalScroll(rememberScrollState())
+                                    .windowInsetsPadding(bottomInsets)
                             ) {
-                                newSelectedTags.value = it.toTagsString()
-                            }
-                        }
-
-                        AnimatedVisibility(visible = selectedTags.isNotEmpty()) {
-                            Column {
-                                TagGroup(
-                                    modifier = Modifier.padding(horizontal = 20.dp),
-                                    header = "Selected",
-                                    tags = selectedTags,
-                                    selected = newSelectedTags.value.toTagsSet()
-                                ) {
-                                    newSelectedTags.value = it.toTagsString()
+                                AnimatedVisibility(visible = createdTags.value.isNotEmpty()) {
+                                    TagGroup(
+                                        modifier = Modifier.padding(horizontal = 20.dp),
+                                        header = stringResource(R.string.New),
+                                        tags = createdTags.value,
+                                        selected = newSelectedTags.value.toTagsSet()
+                                    ) {
+                                        newSelectedTags.value = it.toTagsString()
+                                    }
                                 }
-                            }
-                        }
 
-                        val otherTags = allTags - selectedTags
-                        AnimatedVisibility(visible = otherTags.isNotEmpty()) {
-                            Column {
-                                TagGroup(
-                                    modifier = Modifier.padding(horizontal = 20.dp),
-                                    header = "All tags",
-                                    tags = otherTags,
-                                    selected = newSelectedTags.value.toTagsSet()
-                                ) {
-                                    newSelectedTags.value = it.toTagsString()
+                                AnimatedVisibility(visible = selectedTags.isNotEmpty()) {
+                                    Column {
+                                        TagGroup(
+                                            modifier = Modifier.padding(horizontal = 20.dp),
+                                            header = stringResource(R.string.Selected),
+                                            tags = selectedTags,
+                                            selected = newSelectedTags.value.toTagsSet()
+                                        ) {
+                                            newSelectedTags.value = it.toTagsString()
+                                        }
+                                    }
                                 }
+
+                                val otherTags = allTags - selectedTags
+                                AnimatedVisibility(visible = otherTags.isNotEmpty()) {
+                                    Column {
+                                        TagGroup(
+                                            modifier = Modifier.padding(horizontal = 20.dp),
+                                            header = stringResource(R.string.All),
+                                            tags = otherTags,
+                                            selected = newSelectedTags.value.toTagsSet()
+                                        ) {
+                                            newSelectedTags.value = it.toTagsString()
+                                        }
+                                    }
+                                }
+                                Spacer(modifier = Modifier.height(contentBottomPadding.value))
                             }
                         }
-                        Spacer(modifier = Modifier.height(30.dp))
+                    }
+                }
+                BottomBar(
+                    modifier = Modifier.windowInsetsPadding(bottomInsets),
+                    isVisible = isChanged
+                ) {
+                    scope.launch {
+                        sheetState.hide()
+                    }.invokeOnCompletion {
+                        editModeEnabled.value = false
+                        onSave(newSelectedTags.value.toTagsSet())
                     }
                 }
             }
@@ -209,6 +234,53 @@ private fun Header(
     }
 }
 
+@Composable
+private fun BoxScope.BottomBar(modifier: Modifier, isVisible: Boolean, onCreateReminderClick: () -> Unit) {
+    Box(
+        modifier = modifier
+            .align(Alignment.BottomCenter)
+    ) {
+        AnimatedVisibility(
+            visible = isVisible,
+            enter = slideInVertically { it / 2 } + expandVertically(
+                expandFrom = Alignment.Top,
+                clip = false
+            ) + fadeIn(),
+            exit = slideOutVertically { -it / 2 } + shrinkVertically(
+                shrinkTowards = Alignment.Top,
+                clip = false
+            ) + fadeOut(),
+        )
+        {
+            Button(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 30.dp)
+                    .padding(bottom = 10.dp)
+                    .height(50.dp),
+                shape = CustomTheme.shapes.small,
+                colors = ButtonDefaults.buttonColors(
+                    contentColor = CustomTheme.colors.textOnActive,
+                    containerColor = CustomTheme.colors.active
+                ),
+                border = null,
+                elevation = null,
+                contentPadding = PaddingValues(horizontal = 15.dp),
+                onClick = onCreateReminderClick
+            ) {
+                Text(
+                    text = stringResource(R.string.SaveChanges),
+                    style = androidx.compose.material.MaterialTheme.typography.body1,
+                    fontWeight = FontWeight.SemiBold,
+                    color = CustomTheme.colors.textOnActive,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+        }
+    }
+}
+
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun TagGroup(
@@ -261,6 +333,7 @@ private fun TagsPresentation(
         FlowRow(
             modifier = Modifier
                 .fillMaxWidth()
+                .animateContentSize()
                 .clickable(
                     interactionSource = MutableInteractionSource(),
                     indication = null
