@@ -81,7 +81,7 @@ fun NoteCard(
             ),
         elevation = 0.dp,
         shape = RoundedCornerShape(15.dp),
-        border = BorderStroke(1.dp, borderColor),
+        border = BorderStroke(2.dp, borderColor),
         backgroundColor = CustomTheme.colors.container,
         contentColor = CustomTheme.colors.text,
     ) {
