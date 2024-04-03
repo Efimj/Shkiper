@@ -11,6 +11,8 @@ data class CustomThemeColors(
     val onPrimary: Color,
     val background: Color,
     val container: Color,
+    val secondaryContainer: Color,
+    val onSecondaryContainer: Color,
     val text: Color,
     val textSecondary: Color,
     val border: Color,

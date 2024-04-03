@@ -10,6 +10,8 @@ val baseLightColorsHeightContrast = CustomThemeColors(
     text = Color(0xFF161616),
     onPrimary = Color(0xFFFFFFFF),
     textSecondary = Color(0xFF7A7A7A),
+    secondaryContainer = Color(0xFFE3E0F9),
+    onSecondaryContainer = Color(0xFF1A1A2C),
 )
 
 val baseDarkColorsHeightContrast = CustomThemeColors(
@@ -20,6 +22,8 @@ val baseDarkColorsHeightContrast = CustomThemeColors(
     text = Color(0xFFFFFFFF),
     onPrimary = Color(0xFFFFFFFF),
     textSecondary = Color(0xFF959595),
+    secondaryContainer = Color(0xFF28282B),
+    onSecondaryContainer = Color(0xFFE3E0F9),
 )
 
 val baseLightColorsLowContrast = CustomThemeColors(
@@ -30,6 +34,8 @@ val baseLightColorsLowContrast = CustomThemeColors(
     text = Color(0xFF161616),
     onPrimary = Color(0xFFFFFFFF),
     textSecondary = Color(0xFF7A7A7A),
+    secondaryContainer = Color(0xFFE3E0F9),
+    onSecondaryContainer = Color(0xFF1A1A2C),
 )
 
 val baseDarkColorsLowContrast = CustomThemeColors(
@@ -40,6 +46,8 @@ val baseDarkColorsLowContrast = CustomThemeColors(
     text = Color(255, 255, 255, (255 * 0.87).toInt()),
     onPrimary = Color(0xFFFFFFFF),
     textSecondary = Color(235, 235, 235, (255 * 0.6).toInt()),
+    secondaryContainer = Color(0xFF1D1D1F),
+    onSecondaryContainer = Color(0xFFE3E0F9),
 )
 
 /**

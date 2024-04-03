@@ -11,13 +11,13 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
+import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -121,17 +121,17 @@ private fun RowScope.ActionButton(
                     .padding(start = 10.dp),
                 shape = RoundedCornerShape(15.dp),
                 colors = ButtonDefaults.buttonColors(
-                    contentColor = CustomTheme.colors.textSecondary,
-                    containerColor = CustomTheme.colors.container
+                    contentColor = CustomTheme.colors.onSecondaryContainer,
+                    containerColor = CustomTheme.colors.secondaryContainer
                 ),
                 elevation = null,
                 contentPadding = PaddingValues(horizontal = 10.dp),
                 onClick = it.onClick
             ) {
-                androidx.compose.material3.Icon(
+                Icon(
                     imageVector = it.icon,
                     contentDescription = stringResource(id = it.contentDescription),
-                    tint = CustomTheme.colors.textSecondary
+                    tint = CustomTheme.colors.onSecondaryContainer
                 )
             }
         }
@@ -162,7 +162,7 @@ private fun RowScope.SearchField(
             ) { focusRequester.requestFocus() }
             .clip(RoundedCornerShape(cornerRadius))
             .background(
-                color = CustomTheme.colors.container,
+                color = CustomTheme.colors.secondaryContainer,
                 shape = RoundedCornerShape(cornerRadius)
             )
             .fillMaxHeight()
@@ -180,7 +180,7 @@ private fun RowScope.SearchField(
             Icon(
                 imageVector = Icons.Default.Search,
                 contentDescription = stringResource(R.string.Search),
-                tint = CustomTheme.colors.textSecondary
+                tint = CustomTheme.colors.onSecondaryContainer
             )
         }
         CustomDefaultTextField(
@@ -193,6 +193,7 @@ private fun RowScope.SearchField(
             onTextChange = onChange,
             singleLine = true,
             placeholder = stringResource(R.string.Search),
+            textStyle = MaterialTheme.typography.bodyMedium.copy(color = CustomTheme.colors.onSecondaryContainer),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Text,
                 imeAction = ImeAction.Done,
@@ -216,7 +217,7 @@ private fun RowScope.SearchField(
                 onClick = { onChange("") },
             ) {
                 Icon(
-                    tint = CustomTheme.colors.textSecondary,
+                    tint = CustomTheme.colors.onSecondaryContainer,
                     imageVector = Icons.Default.Clear,
                     contentDescription = stringResource(R.string.Clear)
                 )
