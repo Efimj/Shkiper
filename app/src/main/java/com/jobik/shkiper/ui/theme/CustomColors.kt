@@ -4,8 +4,8 @@ import androidx.compose.ui.graphics.Color
 
 val baseLightColorsHeightContrast = CustomThemeColors(
     primary = Color(0xFF6D6AFF),
-    background = Color(0xFFE2E2E2),
-    container = Color(0xFFFFFFFF),
+    background = Color(0xFFFFFFFF),
+    container = Color(0xFFF2F2F2),
     border = Color(0xFFD2D2D2),
     text = Color(0xFF161616),
     onPrimary = Color(0xFFFFFFFF),
@@ -14,18 +14,18 @@ val baseLightColorsHeightContrast = CustomThemeColors(
 
 val baseDarkColorsHeightContrast = CustomThemeColors(
     primary = Color(0xFF6D6AFF),
-    background = Color(android.graphics.Color.parseColor("#0F0F0F")),
-    container = Color(android.graphics.Color.parseColor("#191919")),
+    background = Color(0xFF0F0F0F),
+    container = Color(0xFF191919),
     border = Color(0xFF404040),
-    text = Color(android.graphics.Color.parseColor("#FFFFFF")),
+    text = Color(0xFFFFFFFF),
     onPrimary = Color(0xFFFFFFFF),
-    textSecondary = Color(android.graphics.Color.parseColor("#959595")),
+    textSecondary = Color(0xFF959595),
 )
 
 val baseLightColorsLowContrast = CustomThemeColors(
     primary = Color(0xFF6D6AFF),
-    background = Color(0xFFECEEEF),
-    container = Color(0xFFFFFFFF),
+    background = Color(0xFFFFFFFF),
+    container = Color(0xFFF7F7F7),
     border = Color(0xFFD2D2D2),
     text = Color(0xFF161616),
     onPrimary = Color(0xFFFFFFFF),
@@ -34,8 +34,8 @@ val baseLightColorsLowContrast = CustomThemeColors(
 
 val baseDarkColorsLowContrast = CustomThemeColors(
     primary = Color(0xFF6D6AFF),
-    background = Color(android.graphics.Color.parseColor("#1A1A1A")),
-    container = Color(android.graphics.Color.parseColor("#242424")),
+    background = Color(0xFF1A1A1A),
+    container = Color(0xFF242424),
     border = Color(0xFF404040),
     text = Color(255, 255, 255, (255 * 0.87).toInt()),
     onPrimary = Color(0xFFFFFFFF),
