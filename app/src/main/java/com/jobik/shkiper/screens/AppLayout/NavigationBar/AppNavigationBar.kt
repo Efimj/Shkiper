@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
@@ -62,13 +63,17 @@ fun CustomBottomNavigationItem(properties: CustomBottomNavigationItem) {
 
 @Composable
 fun CustomBottomNavigation(items: List<CustomBottomNavigationItem>) {
-    Surface(shape = MaterialTheme.shapes.small, shadowElevation = 1.dp, color = Color.Transparent) {
+    Surface(
+        shape = MaterialTheme.shapes.small,
+        shadowElevation = 1.dp,
+        color = Color.Transparent
+    ) {
         Row(
             modifier = Modifier
                 .clickable(enabled = false) {}
                 .height(DefaultNavigationValues().containerHeight)
                 .clip(shape = MaterialTheme.shapes.small)
-                .background(CustomTheme.colors.container)
+                .background(CustomTheme.colors.background)
                 .padding(4.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(6.dp)
