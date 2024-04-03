@@ -3,7 +3,7 @@ package com.jobik.shkiper.ui.theme
 import androidx.compose.ui.graphics.Color
 
 val baseLightColorsHeightContrast = CustomThemeColors(
-    primary = Color(0xFF4284f5),
+    primary = Color(0xFF6D6AFF),
     background = Color(0xFFE2E2E2),
     container = Color(0xFFFFFFFF),
     border = Color(0xFFD2D2D2),
@@ -13,7 +13,7 @@ val baseLightColorsHeightContrast = CustomThemeColors(
 )
 
 val baseDarkColorsHeightContrast = CustomThemeColors(
-    primary = Color(0xFF4284f5),
+    primary = Color(0xFF6D6AFF),
     background = Color(android.graphics.Color.parseColor("#0F0F0F")),
     container = Color(android.graphics.Color.parseColor("#191919")),
     border = Color(0xFF404040),
@@ -23,7 +23,7 @@ val baseDarkColorsHeightContrast = CustomThemeColors(
 )
 
 val baseLightColorsLowContrast = CustomThemeColors(
-    primary = Color(0xFF4284f5),
+    primary = Color(0xFF6D6AFF),
     background = Color(0xFFECEEEF),
     container = Color(0xFFFFFFFF),
     border = Color(0xFFD2D2D2),
@@ -33,7 +33,7 @@ val baseLightColorsLowContrast = CustomThemeColors(
 )
 
 val baseDarkColorsLowContrast = CustomThemeColors(
-    primary = Color(0xFF4284f5),
+    primary = Color(0xFF6D6AFF),
     background = Color(android.graphics.Color.parseColor("#1A1A1A")),
     container = Color(android.graphics.Color.parseColor("#242424")),
     border = Color(0xFF404040),
@@ -45,19 +45,17 @@ val baseDarkColorsLowContrast = CustomThemeColors(
 /**
  * deep purple
  */
-
 val LightDeepPurple = baseLightColorsHeightContrast.copy(
-    primary = Color(android.graphics.Color.parseColor("#433FFF")),
+    primary = Color(0xFF6D6AFF),
 )
 
 val DarkDeepPurple = baseDarkColorsHeightContrast.copy(
-    primary = Color(android.graphics.Color.parseColor("#433FFF")),
+    primary = Color(0xFF6D6AFF),
 )
 
 /**
  * pastel purple
  */
-
 val LightPastelPurple = baseLightColorsLowContrast.copy(
     primary = Color(0xFFB079FF),
 )
@@ -69,7 +67,6 @@ val DarkPastelPurple = baseDarkColorsLowContrast.copy(
 /**
  * deep green
  */
-
 val LightDeepGreen = baseLightColorsHeightContrast.copy(
     primary = Color(android.graphics.Color.parseColor("#4E9F3D")),
 )
@@ -81,7 +78,6 @@ val DarkDeepGreen = baseDarkColorsHeightContrast.copy(
 /**
  * pastel green
  */
-
 val LightPastelGreen = baseLightColorsLowContrast.copy(
     primary = Color(android.graphics.Color.parseColor("#42B883")),
 )
@@ -93,31 +89,28 @@ val DarkPastelGreen = baseDarkColorsLowContrast.copy(
 /**
  * deep blue
  */
-
 val LightDeepBlue = baseLightColorsHeightContrast.copy(
-    primary = Color(0xFF23ACFF),
+    primary = Color(0xFF5297FF),
 )
 
 val DarkDeepBlue = baseDarkColorsHeightContrast.copy(
-    primary = Color(0xFF23ACFF),
+    primary = Color(0xFF5297FF),
 )
 
 /**
  * pastel blue
  */
-
 val LightPastelBlue = baseLightColorsLowContrast.copy(
-    primary = Color(0xFF8AD3FF),
+    primary = Color(0xFF6DA8FF),
 )
 
 val DarkPastelBlue = baseDarkColorsLowContrast.copy(
-    primary = Color(0xFF8AD3FF),
+    primary = Color(0xFF6DA8FF),
 )
 
 /**
  * deep red
  */
-
 val LightDeepRed = baseLightColorsHeightContrast.copy(
     primary = Color(android.graphics.Color.parseColor("#FF3040")),
 )
@@ -129,7 +122,6 @@ val DarkDeepRed = baseDarkColorsHeightContrast.copy(
 /**
  * pastel red
  */
-
 val LightPastelRed = baseLightColorsLowContrast.copy(
     primary = Color(0xFFFF6B6B),
 )
@@ -141,7 +133,6 @@ val DarkPastelRed = baseDarkColorsLowContrast.copy(
 /**
  * deep orange
  */
-
 val LightDeepOrange = baseLightColorsHeightContrast.copy(
     primary = Color(android.graphics.Color.parseColor("#FD8D14")),
 )
@@ -153,7 +144,6 @@ val DarkDeepOrange = baseDarkColorsHeightContrast.copy(
 /**
  * pastel orange
  */
-
 val LightPastelOrange = baseLightColorsLowContrast.copy(
     primary = Color(0xFFFFB36B),
 )
