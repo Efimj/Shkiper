@@ -41,7 +41,7 @@ fun DonateBanner(
         elevation = 0.dp,
         shape = RoundedCornerShape(15.dp),
         border = null,
-        backgroundColor = CustomTheme.colors.secondaryBackground,
+        backgroundColor = CustomTheme.colors.container,
         contentColor = CustomTheme.colors.text,
     ) {
         Column(

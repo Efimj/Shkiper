@@ -60,7 +60,7 @@ fun NoteScreenShareComponent(
             Surface(
                 shape = BottomSheetDefaults.ExpandedShape,
                 contentColor = CustomTheme.colors.text,
-                color = CustomTheme.colors.mainBackground,
+                color = CustomTheme.colors.background,
                 tonalElevation = BottomSheetDefaults.Elevation,
             ) {
                 Column(

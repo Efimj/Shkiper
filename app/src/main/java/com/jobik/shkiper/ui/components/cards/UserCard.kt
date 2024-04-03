@@ -42,12 +42,12 @@ fun UserCard(
         .clip(RoundedCornerShape(15.dp))
         .clickable(enabled = true) { onClick() }
         .fillMaxWidth()
-        .background(CustomTheme.colors.secondaryBackground, RoundedCornerShape(15.dp))
+        .background(CustomTheme.colors.container, RoundedCornerShape(15.dp))
         .padding(8.dp)
     else
         Modifier
             .fillMaxWidth()
-            .background(CustomTheme.colors.secondaryBackground, RoundedCornerShape(15.dp))
+            .background(CustomTheme.colors.container, RoundedCornerShape(15.dp))
             .clip(RoundedCornerShape(15.dp))
             .padding(8.dp)
 

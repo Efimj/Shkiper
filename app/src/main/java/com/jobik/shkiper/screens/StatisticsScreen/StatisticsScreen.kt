@@ -61,7 +61,7 @@ fun StatisticsScreen() {
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(CustomTheme.shapes.medium)
-                .background(CustomTheme.colors.mainBackground),
+                .background(CustomTheme.colors.background),
         ) {
             Column(
                 modifier = Modifier
@@ -91,7 +91,7 @@ fun StatisticsScreen() {
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(CustomTheme.colors.mainBackground)
+                            .background(CustomTheme.colors.background)
                             .padding(horizontal = 10.dp, vertical = 40.dp)
                     ) {
                         Row(
@@ -159,8 +159,8 @@ fun StatisticsScreen() {
                             },
                         elevation = 0.dp,
                         shape = RoundedCornerShape(10.dp),
-                        backgroundColor = CustomTheme.colors.active,
-                        contentColor = CustomTheme.colors.textOnActive,
+                        backgroundColor = CustomTheme.colors.primary,
+                        contentColor = CustomTheme.colors.onPrimary,
                     ) {
                         Row(
                             modifier = Modifier.height(50.dp).padding(horizontal = 18.dp, vertical = 7.dp),
@@ -170,7 +170,7 @@ fun StatisticsScreen() {
                             Icon(
                                 imageVector = Icons.Default.Share,
                                 contentDescription = stringResource(R.string.Share),
-                                tint = CustomTheme.colors.textOnActive,
+                                tint = CustomTheme.colors.onPrimary,
                                 modifier = Modifier
                                     .size(30.dp)
                                     .padding(4.dp)
@@ -178,7 +178,7 @@ fun StatisticsScreen() {
                             Spacer(modifier = Modifier.width(5.dp))
                             Text(
                                 text = stringResource(R.string.Share),
-                                color = CustomTheme.colors.textOnActive,
+                                color = CustomTheme.colors.onPrimary,
                                 style = MaterialTheme.typography.body1
                             )
                         }
@@ -210,7 +210,7 @@ fun StatisticsScreen() {
             Surface(
                 shape = BottomSheetDefaults.ExpandedShape,
                 contentColor = CustomTheme.colors.text,
-                color = CustomTheme.colors.mainBackground,
+                color = CustomTheme.colors.background,
                 tonalElevation = BottomSheetDefaults.Elevation,
             ) {
                 Column(

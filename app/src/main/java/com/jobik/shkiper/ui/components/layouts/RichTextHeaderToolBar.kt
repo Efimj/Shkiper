@@ -31,7 +31,7 @@ fun RichTextHeaderToolBar(
 ) {
     var isTextColorFillEnabled by rememberSaveable { mutableStateOf(false) }
     var isTextBackgroundFillEnabled by rememberSaveable { mutableStateOf(false) }
-    val activeColor = CustomTheme.colors.active
+    val activeColor = CustomTheme.colors.primary
 
     Row(
         modifier = modifier

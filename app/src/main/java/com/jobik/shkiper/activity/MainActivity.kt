@@ -67,7 +67,7 @@ class MainActivity : ComponentActivity() {
                 Box(
                     Modifier
                         .fillMaxSize()
-                        .background(CustomTheme.colors.mainBackground)
+                        .background(CustomTheme.colors.background)
                 ) {
                     AppLayout(startDestination)
                 }

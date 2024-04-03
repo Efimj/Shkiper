@@ -2,277 +2,163 @@ package com.jobik.shkiper.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val baseLightColors = CustomThemeColors(
-    active = Color(0xFF4284f5),
-    mainBackground = Color(0xFFECEEEF),
-    secondaryBackground = Color(0xFFFFFFFF),
-    stroke = Color(0xFFD2D2D2),
-    secondaryStroke = Color(0xFFD2D2D2),
+val baseLightColorsHeightContrast = CustomThemeColors(
+    primary = Color(0xFF4284f5),
+    background = Color(0xFFE2E2E2),
+    container = Color(0xFFFFFFFF),
+    border = Color(0xFFD2D2D2),
     text = Color(0xFF161616),
-    textOnActive = Color(0xFFFFFFFF),
+    onPrimary = Color(0xFFFFFFFF),
     textSecondary = Color(0xFF7A7A7A),
-    modalBackground = Color(0, 0, 0, (255 * 0.2).toInt()),
 )
 
-val baseDarkColors = CustomThemeColors(
-    active = Color(0xFF4284f5),
-    mainBackground = Color(0xFF0F0F0F),
-    secondaryBackground = Color(0xFF191919),
-    stroke = Color(0xFF404040),
-    secondaryStroke = Color(0xFF404040),
-    text = Color(0xFFFFFFFF),
-    textOnActive = Color(0xFFFFFFFF),
-    textSecondary = Color(0xFF959595),
-    modalBackground = Color(0, 0, 0, (255 * 0.4).toInt()),
+val baseDarkColorsHeightContrast = CustomThemeColors(
+    primary = Color(0xFF4284f5),
+    background = Color(android.graphics.Color.parseColor("#0F0F0F")),
+    container = Color(android.graphics.Color.parseColor("#191919")),
+    border = Color(0xFF404040),
+    text = Color(android.graphics.Color.parseColor("#FFFFFF")),
+    onPrimary = Color(0xFFFFFFFF),
+    textSecondary = Color(android.graphics.Color.parseColor("#959595")),
+)
+
+val baseLightColorsLowContrast = CustomThemeColors(
+    primary = Color(0xFF4284f5),
+    background = Color(0xFFECEEEF),
+    container = Color(0xFFFFFFFF),
+    border = Color(0xFFD2D2D2),
+    text = Color(0xFF161616),
+    onPrimary = Color(0xFFFFFFFF),
+    textSecondary = Color(0xFF7A7A7A),
+)
+
+val baseDarkColorsLowContrast = CustomThemeColors(
+    primary = Color(0xFF4284f5),
+    background = Color(android.graphics.Color.parseColor("#1A1A1A")),
+    container = Color(android.graphics.Color.parseColor("#242424")),
+    border = Color(0xFF404040),
+    text = Color(255, 255, 255, (255 * 0.87).toInt()),
+    onPrimary = Color(0xFFFFFFFF),
+    textSecondary = Color(235, 235, 235, (255 * 0.6).toInt()),
 )
 
 /**
  * deep purple
  */
 
-val LightDeepPurple = baseLightColors.copy(
-    active = Color(android.graphics.Color.parseColor("#433FFF")),
-    mainBackground = Color(0xFFECEEEF),
-    secondaryBackground = Color(0xFFFFFFFF),
-    stroke = Color(0xFFE0E0E0),
-    text = Color(0xFF161616),
-    textOnActive = Color(0xFFFFFFFF),
-    textSecondary = Color(0xFF7A7A7A),
-    modalBackground = Color(0, 0, 0, (255 * 0.2).toInt()),
+val LightDeepPurple = baseLightColorsHeightContrast.copy(
+    primary = Color(android.graphics.Color.parseColor("#433FFF")),
 )
 
-val DarkDeepPurple = baseDarkColors.copy(
-    active = Color(android.graphics.Color.parseColor("#433FFF")),
-    mainBackground = Color(android.graphics.Color.parseColor("#0F0F0F")),
-    secondaryBackground = Color(android.graphics.Color.parseColor("#191919")),
-    stroke = Color(android.graphics.Color.parseColor("#404040")),
-    text = Color(android.graphics.Color.parseColor("#FFFFFF")),
-    textSecondary = Color(android.graphics.Color.parseColor("#959595")),
-    modalBackground = Color(0, 0, 0, (255 * 0.4).toInt()),
+val DarkDeepPurple = baseDarkColorsHeightContrast.copy(
+    primary = Color(android.graphics.Color.parseColor("#433FFF")),
 )
 
 /**
  * pastel purple
  */
 
-val LightPastelPurple = baseLightColors.copy(
-    active = Color(0xFFB079FF),
-    mainBackground = Color(0xFFECEEEF),
-    secondaryBackground = Color(0xFFFFFFFF),
-    stroke = Color(0xFFE0E0E0),
-    text = Color(0xFF161616),
-    textOnActive = Color(0xFFFFFFFF),
-    textSecondary = Color(0xFF7A7A7A),
-    modalBackground = Color(0, 0, 0, (255 * 0.2).toInt()),
+val LightPastelPurple = baseLightColorsLowContrast.copy(
+    primary = Color(0xFFB079FF),
 )
 
-val DarkPastelPurple = baseDarkColors.copy(
-    active = Color(0xFFB079FF),
-    mainBackground = Color(0xFF1B1B1B),
-    secondaryBackground = Color(0xFF272727),
-    stroke = Color(android.graphics.Color.parseColor("#404040")),
-    text = Color(android.graphics.Color.parseColor("#FFFFFF")),
-    textSecondary = Color(android.graphics.Color.parseColor("#959595")),
-    modalBackground = Color(0, 0, 0, (255 * 0.4).toInt()),
+val DarkPastelPurple = baseDarkColorsLowContrast.copy(
+    primary = Color(0xFFB079FF),
 )
 
 /**
  * deep green
  */
 
-val LightDeepGreen = baseLightColors.copy(
-    active = Color(android.graphics.Color.parseColor("#4E9F3D")),
-    mainBackground = Color(0xFFECEEEF),
-    secondaryBackground = Color(0xFFFFFFFF),
-    stroke = Color(0xFFE0E0E0),
-    text = Color(0xFF161616),
-    textOnActive = Color(0xFFFFFFFF),
-    textSecondary = Color(0xFF7A7A7A),
-    modalBackground = Color(0, 0, 0, (255 * 0.2).toInt()),
+val LightDeepGreen = baseLightColorsHeightContrast.copy(
+    primary = Color(android.graphics.Color.parseColor("#4E9F3D")),
 )
 
-val DarkDeepGreen = baseDarkColors.copy(
-    active = Color(android.graphics.Color.parseColor("#4E9F3D")),
-    mainBackground = Color(android.graphics.Color.parseColor("#0F0F0F")),
-    secondaryBackground = Color(android.graphics.Color.parseColor("#191919")),
-    stroke = Color(android.graphics.Color.parseColor("#404040")),
-    text = Color(android.graphics.Color.parseColor("#FFFFFF")),
-    textSecondary = Color(android.graphics.Color.parseColor("#959595")),
-    modalBackground = Color(0, 0, 0, (255 * 0.4).toInt()),
+val DarkDeepGreen = baseDarkColorsHeightContrast.copy(
+    primary = Color(android.graphics.Color.parseColor("#4E9F3D")),
 )
 
 /**
  * pastel green
  */
 
-val LightPastelGreen = baseLightColors.copy(
-    active = Color(android.graphics.Color.parseColor("#42B883")),
-    mainBackground = Color(0xFFECEEEF),
-    secondaryBackground = Color(0xFFFFFFFF),
-    stroke = Color(0xFFE0E0E0),
-    text = Color(0xFF161616),
-    textOnActive = Color(0xFFFFFFFF),
-    textSecondary = Color(0xFF7A7A7A),
-    modalBackground = Color(0, 0, 0, (255 * 0.2).toInt()),
+val LightPastelGreen = baseLightColorsLowContrast.copy(
+    primary = Color(android.graphics.Color.parseColor("#42B883")),
 )
 
-val DarkPastelGreen = baseDarkColors.copy(
-    active = Color(android.graphics.Color.parseColor("#42B883")),
-    mainBackground = Color(android.graphics.Color.parseColor("#1A1A1A")),
-    secondaryBackground = Color(android.graphics.Color.parseColor("#242424")),
-    stroke = Color(android.graphics.Color.parseColor("#404040")),
-    text = Color(255, 255, 255, (255 * 0.87).toInt()),
-    textSecondary = Color(235, 235, 235, (255 * 0.6).toInt()),
-    modalBackground = Color(0, 0, 0, (255 * 0.4).toInt()),
+val DarkPastelGreen = baseDarkColorsLowContrast.copy(
+    primary = Color(android.graphics.Color.parseColor("#42B883")),
 )
 
 /**
  * deep blue
  */
 
-val LightDeepBlue = baseLightColors.copy(
-    active = Color(0xFF23ACFF),
-    mainBackground = Color(0xFFECEEEF),
-    secondaryBackground = Color(0xFFFFFFFF),
-    stroke = Color(0xFFE0E0E0),
-    text = Color(0xFF161616),
-    textOnActive = Color(0xFFFFFFFF),
-    textSecondary = Color(0xFF7A7A7A),
-    modalBackground = Color(0, 0, 0, (255 * 0.2).toInt()),
+val LightDeepBlue = baseLightColorsHeightContrast.copy(
+    primary = Color(0xFF23ACFF),
 )
 
-val DarkDeepBlue = baseDarkColors.copy(
-    active = Color(0xFF23ACFF),
-    mainBackground = Color(android.graphics.Color.parseColor("#0F0F0F")),
-    secondaryBackground = Color(android.graphics.Color.parseColor("#191919")),
-    stroke = Color(android.graphics.Color.parseColor("#404040")),
-    text = Color(android.graphics.Color.parseColor("#FFFFFF")),
-    textSecondary = Color(android.graphics.Color.parseColor("#959595")),
-    modalBackground = Color(0, 0, 0, (255 * 0.4).toInt()),
+val DarkDeepBlue = baseDarkColorsHeightContrast.copy(
+    primary = Color(0xFF23ACFF),
 )
 
 /**
  * pastel blue
  */
 
-val LightPastelBlue = baseLightColors.copy(
-    active = Color(0xFF8AD3FF),
-    mainBackground = Color(0xFFECEEEF),
-    secondaryBackground = Color(0xFFFFFFFF),
-    stroke = Color(0xFFE0E0E0),
-    text = Color(0xFF161616),
-    textOnActive = Color(0xFFFFFFFF),
-    textSecondary = Color(0xFF7A7A7A),
-    modalBackground = Color(0, 0, 0, (255 * 0.2).toInt()),
+val LightPastelBlue = baseLightColorsLowContrast.copy(
+    primary = Color(0xFF8AD3FF),
 )
 
-val DarkPastelBlue = baseDarkColors.copy(
-    active = Color(0xFF8AD3FF),
-    mainBackground = Color(0xFF161616),
-    secondaryBackground = Color(0xFF1E1E1E),
-    stroke = Color(android.graphics.Color.parseColor("#2B2B2B")),
-    text = Color(android.graphics.Color.parseColor("#FFFFFF")),
-    textSecondary = Color(android.graphics.Color.parseColor("#A1A1A1")),
-    modalBackground = Color(0, 0, 0, (255 * 0.4).toInt()),
+val DarkPastelBlue = baseDarkColorsLowContrast.copy(
+    primary = Color(0xFF8AD3FF),
 )
 
 /**
  * deep red
  */
 
-val LightDeepRed = baseLightColors.copy(
-    active = Color(android.graphics.Color.parseColor("#FF3040")),
-    mainBackground = Color(0xFFECEEEF),
-    secondaryBackground = Color(0xFFFFFFFF),
-    stroke = Color(0xFFE0E0E0),
-    text = Color(0xFF161616),
-    textOnActive = Color(0xFFFFFFFF),
-    textSecondary = Color(0xFF7A7A7A),
-    modalBackground = Color(0, 0, 0, (255 * 0.2).toInt()),
+val LightDeepRed = baseLightColorsHeightContrast.copy(
+    primary = Color(android.graphics.Color.parseColor("#FF3040")),
 )
 
-val DarkDeepRed = baseDarkColors.copy(
-    active = Color(android.graphics.Color.parseColor("#FF3040")),
-    mainBackground = Color(android.graphics.Color.parseColor("#0F0F0F")),
-    secondaryBackground = Color(android.graphics.Color.parseColor("#191919")),
-    stroke = Color(android.graphics.Color.parseColor("#404040")),
-    text = Color(android.graphics.Color.parseColor("#FFFFFF")),
-    textSecondary = Color(android.graphics.Color.parseColor("#959595")),
-    modalBackground = Color(0, 0, 0, (255 * 0.4).toInt()),
+val DarkDeepRed = baseDarkColorsHeightContrast.copy(
+    primary = Color(android.graphics.Color.parseColor("#FF3040")),
 )
 
 /**
  * pastel red
  */
 
-val LightPastelRed = baseLightColors.copy(
-    active = Color(0xFFFF6B6B),
-    mainBackground = Color(0xFFECEEEF),
-    secondaryBackground = Color(0xFFFFFFFF),
-    stroke = Color(0xFFE0E0E0),
-    text = Color(0xFF161616),
-    textOnActive = Color(0xFFFFFFFF),
-    textSecondary = Color(0xFF7A7A7A),
-    modalBackground = Color(0, 0, 0, (255 * 0.2).toInt()),
+val LightPastelRed = baseLightColorsLowContrast.copy(
+    primary = Color(0xFFFF6B6B),
 )
 
-val DarkPastelRed = baseDarkColors.copy(
-    active = Color(0xFFFF7676),
-    mainBackground = Color(android.graphics.Color.parseColor("#1A1A1A")),
-    secondaryBackground = Color(android.graphics.Color.parseColor("#242424")),
-    stroke = Color(android.graphics.Color.parseColor("#404040")),
-    text = Color(255, 255, 255, (255 * 0.87).toInt()),
-    textSecondary = Color(235, 235, 235, (255 * 0.6).toInt()),
-    modalBackground = Color(0, 0, 0, (255 * 0.4).toInt()),
+val DarkPastelRed = baseDarkColorsLowContrast.copy(
+    primary = Color(0xFFFF7676),
 )
 
 /**
  * deep orange
  */
 
-val LightDeepOrange = baseLightColors.copy(
-    active = Color(android.graphics.Color.parseColor("#FD8D14")),
-    mainBackground = Color(0xFFECEEEF),
-    secondaryBackground = Color(0xFFFFFFFF),
-    stroke = Color(0xFFE0E0E0),
-    text = Color(0xFF161616),
-    textOnActive = Color(0xFFFFFFFF),
-    textSecondary = Color(0xFF7A7A7A),
-    modalBackground = Color(0, 0, 0, (255 * 0.2).toInt()),
+val LightDeepOrange = baseLightColorsHeightContrast.copy(
+    primary = Color(android.graphics.Color.parseColor("#FD8D14")),
 )
 
-val DarkDeepOrange = baseDarkColors.copy(
-    active = Color(android.graphics.Color.parseColor("#FD8D14")),
-    mainBackground = Color(android.graphics.Color.parseColor("#0F0F0F")),
-    secondaryBackground = Color(android.graphics.Color.parseColor("#191919")),
-    stroke = Color(android.graphics.Color.parseColor("#404040")),
-    text = Color(android.graphics.Color.parseColor("#FFFFFF")),
-    textSecondary = Color(android.graphics.Color.parseColor("#959595")),
-    modalBackground = Color(0, 0, 0, (255 * 0.4).toInt()),
+val DarkDeepOrange = baseDarkColorsHeightContrast.copy(
+    primary = Color(android.graphics.Color.parseColor("#FD8D14")),
 )
 
 /**
  * pastel orange
  */
 
-val LightPastelOrange = baseLightColors.copy(
-    active = Color(0xFFFFB36B),
-    mainBackground = Color(0xFFECEEEF),
-    secondaryBackground = Color(0xFFFFFFFF),
-    stroke = Color(0xFFE0E0E0),
-    text = Color(0xFF161616),
-    textOnActive = Color(0xFFFFFFFF),
-    textSecondary = Color(0xFF7A7A7A),
-    modalBackground = Color(0, 0, 0, (255 * 0.2).toInt()),
+val LightPastelOrange = baseLightColorsLowContrast.copy(
+    primary = Color(0xFFFFB36B),
 )
 
-val DarkPastelOrange = baseDarkColors.copy(
-    active = Color(0xFFFFB36B),
-    mainBackground = Color(android.graphics.Color.parseColor("#1A1A1A")),
-    secondaryBackground = Color(android.graphics.Color.parseColor("#242424")),
-    stroke = Color(android.graphics.Color.parseColor("#404040")),
-    text = Color(255, 255, 255, (255 * 0.87).toInt()),
-    textSecondary = Color(235, 235, 235, (255 * 0.6).toInt()),
-    modalBackground = Color(0, 0, 0, (255 * 0.4).toInt()),
+val DarkPastelOrange = baseDarkColorsLowContrast.copy(
+    primary = Color(0xFFFFB36B),
 )
 

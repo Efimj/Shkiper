@@ -12,9 +12,9 @@ import com.mohamedrejeb.richeditor.model.RichTextState
 fun SetRichTextDefaultStyles(
     richTextState: RichTextState,
 ) {
-    val codeColor = CustomTheme.colors.textOnActive
-    val codeBackgroundColor = CustomTheme.colors.active.copy(alpha = .2f)
-    val codeStrokeColor = CustomTheme.colors.active
+    val codeColor = CustomTheme.colors.onPrimary
+    val codeBackgroundColor = CustomTheme.colors.primary.copy(alpha = .2f)
+    val codeStrokeColor = CustomTheme.colors.primary
     val linkColor = CustomTheme.colors.text
 
     LaunchedEffect(Unit) {

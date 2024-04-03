@@ -22,12 +22,12 @@ fun HashtagButton(text: String, selected: Boolean = false, onClick: (String) -> 
     val multipleEventsCutter = remember { MultipleEventsCutter.get() }
 
     val buttonContentColor: Color by animateColorAsState(
-        targetValue = if (selected) CustomTheme.colors.textOnActive else CustomTheme.colors.text,
+        targetValue = if (selected) CustomTheme.colors.onPrimary else CustomTheme.colors.text,
         label = "buttonContentColor"
     )
 
     val buttonBackgroundColor: Color by animateColorAsState(
-        targetValue = if (selected) CustomTheme.colors.active else CustomTheme.colors.secondaryBackground,
+        targetValue = if (selected) CustomTheme.colors.primary else CustomTheme.colors.container,
         label = "buttonBackgroundColor"
     )
 

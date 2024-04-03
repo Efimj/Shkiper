@@ -62,8 +62,8 @@ fun PurchaseCard(purchaseCardContent: PurchaseCardContent, onClick: () -> Unit) 
             .clickable(onClick = { multipleEventsCutter.processEvent { onClick() } }),
         elevation = 0.dp,
         shape = RoundedCornerShape(15.dp),
-        border = if (purchaseCardContent.isHighlighted) BorderStroke(2.dp, CustomTheme.colors.active) else null,
-        backgroundColor = CustomTheme.colors.secondaryBackground,
+        border = if (purchaseCardContent.isHighlighted) BorderStroke(2.dp, CustomTheme.colors.primary) else null,
+        backgroundColor = CustomTheme.colors.container,
         contentColor = CustomTheme.colors.text,
     ) {
         Column(
@@ -91,9 +91,9 @@ fun PurchaseCard(purchaseCardContent: PurchaseCardContent, onClick: () -> Unit) 
                         modifier = Modifier.align(Alignment.BottomStart).height(40.dp)
                             .fillMaxWidth().background(
                                 Brush.verticalGradient(
-                                    0F to CustomTheme.colors.secondaryBackground.copy(alpha = 0.0F),
-                                    .4F to CustomTheme.colors.secondaryBackground.copy(alpha = 0.70F),
-                                    1F to CustomTheme.colors.secondaryBackground.copy(alpha = 0.9F)
+                                    0F to CustomTheme.colors.container.copy(alpha = 0.0F),
+                                    .4F to CustomTheme.colors.container.copy(alpha = 0.70F),
+                                    1F to CustomTheme.colors.container.copy(alpha = 0.9F)
                                 )
                             )
                     ) {
@@ -116,7 +116,7 @@ fun PurchaseCard(purchaseCardContent: PurchaseCardContent, onClick: () -> Unit) 
                     Icon(
                         imageVector = Icons.Outlined.TaskAlt,
                         contentDescription = null,
-                        tint = CustomTheme.colors.active,
+                        tint = CustomTheme.colors.primary,
                     )
                 }
             }

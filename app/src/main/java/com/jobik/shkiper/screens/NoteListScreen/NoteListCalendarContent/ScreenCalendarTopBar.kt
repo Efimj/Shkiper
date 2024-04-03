@@ -25,7 +25,6 @@ import com.kizitonwose.calendar.compose.weekcalendar.rememberWeekCalendarState
 import com.kizitonwose.calendar.core.atStartOfMonth
 import com.kizitonwose.calendar.core.daysOfWeek
 import com.kizitonwose.calendar.core.yearMonth
-import java.time.DayOfWeek
 import java.time.LocalDate
 
 @Composable
@@ -50,7 +49,7 @@ fun ScreenCalendarTopBar(
     Column(
         modifier = Modifier
             .clip(RoundedCornerShape(bottomStart = 10.dp, bottomEnd = 10.dp))
-            .background(CustomTheme.colors.secondaryBackground)
+            .background(CustomTheme.colors.container)
             .padding(bottom = 10.dp),
         verticalArrangement = Arrangement.spacedBy(5.dp)
     ) {

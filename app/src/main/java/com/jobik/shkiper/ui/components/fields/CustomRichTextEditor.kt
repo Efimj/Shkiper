@@ -1,6 +1,5 @@
 package com.jobik.shkiper.ui.components.fields
 
-import android.util.Log
 import android.view.ActionMode
 import android.view.Menu
 import android.view.MenuItem
@@ -22,8 +21,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.platform.LocalTextToolbar
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.platform.TextToolbar
 import androidx.compose.ui.platform.TextToolbarStatus
 import androidx.compose.ui.text.TextStyle
@@ -32,7 +29,6 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.glance.appwidget.action.ActionCallback
 import com.jobik.shkiper.ui.theme.CustomTheme
 import com.mohamedrejeb.richeditor.model.RichTextState
 import com.mohamedrejeb.richeditor.ui.BasicRichTextEditor
@@ -58,19 +54,19 @@ fun CustomRichTextEditor(
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val textFieldColors = TextFieldDefaults.textFieldColors(
-        backgroundColor = CustomTheme.colors.secondaryBackground,
+        backgroundColor = CustomTheme.colors.container,
         placeholderColor = CustomTheme.colors.textSecondary,
         leadingIconColor = CustomTheme.colors.textSecondary,
         trailingIconColor = CustomTheme.colors.textSecondary,
         textColor = CustomTheme.colors.text,
-        cursorColor = CustomTheme.colors.active,
+        cursorColor = CustomTheme.colors.primary,
         focusedLabelColor = CustomTheme.colors.textSecondary,
         unfocusedLabelColor = CustomTheme.colors.textSecondary,
     )
 
     val customTextSelectionColors = TextSelectionColors(
-        handleColor = CustomTheme.colors.active,
-        backgroundColor = CustomTheme.colors.active.copy(alpha = 0.4f),
+        handleColor = CustomTheme.colors.primary,
+        backgroundColor = CustomTheme.colors.primary.copy(alpha = 0.4f),
     )
 
     CompositionLocalProvider(
@@ -85,7 +81,7 @@ fun CustomRichTextEditor(
             singleLine = singleLine,
             interactionSource = interactionSource,
             textStyle = textStyle.copy(color = textColor),
-            cursorBrush = SolidColor(CustomTheme.colors.active),
+            cursorBrush = SolidColor(CustomTheme.colors.primary),
             keyboardOptions = keyboardOptions,
             keyboardActions = keyboardActions ?: KeyboardActions(
                 onAny = {

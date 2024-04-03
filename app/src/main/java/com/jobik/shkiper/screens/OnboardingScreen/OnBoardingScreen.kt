@@ -55,7 +55,7 @@ fun OnBoardingScreen(navController: NavController) {
         HorizontalPager(
             modifier = Modifier
                 .fillMaxSize()
-                .background(CustomTheme.colors.mainBackground),
+                .background(CustomTheme.colors.background),
             verticalAlignment = Alignment.CenterVertically,
             state = pagerState,
             pageSpacing = 10.dp,
@@ -95,12 +95,12 @@ private fun ScreenFooter(navController: NavController, pagerState: PagerState, s
     val context = LocalContext.current
 
     val buttonNextContentColor: Color by animateColorAsState(
-        targetValue = if (pagerState.currentPage == OnBoardingPage.PageList.Count - 1) CustomTheme.colors.textOnActive else CustomTheme.colors.text,
+        targetValue = if (pagerState.currentPage == OnBoardingPage.PageList.Count - 1) CustomTheme.colors.onPrimary else CustomTheme.colors.text,
         label = "buttonNextContentColor"
     )
 
     val buttonNextBackgroundColor: Color by animateColorAsState(
-        targetValue = if (pagerState.currentPage == OnBoardingPage.PageList.Count - 1) CustomTheme.colors.active else CustomTheme.colors.secondaryBackground,
+        targetValue = if (pagerState.currentPage == OnBoardingPage.PageList.Count - 1) CustomTheme.colors.primary else CustomTheme.colors.container,
         label = "buttonNextBackgroundColor"
     )
 
@@ -125,7 +125,7 @@ private fun ScreenFooter(navController: NavController, pagerState: PagerState, s
                     shape = CustomTheme.shapes.small,
                     colors = ButtonDefaults.buttonColors(
                         contentColor = CustomTheme.colors.text,
-                        containerColor = CustomTheme.colors.secondaryBackground
+                        containerColor = CustomTheme.colors.container
                     ),
                     border = null,
                     elevation = null,

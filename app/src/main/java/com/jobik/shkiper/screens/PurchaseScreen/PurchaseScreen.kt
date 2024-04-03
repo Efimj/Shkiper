@@ -74,7 +74,7 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
                     .fillMaxWidth()
                     .padding(bottom = 15.dp, start = 10.dp, end = 10.dp)
                     .clip(CustomTheme.shapes.large)
-                    .background(CustomTheme.colors.secondaryBackground)
+                    .background(CustomTheme.colors.container)
                     .padding(start = 20.dp, end = 20.dp, top = 10.dp, bottom = 15.dp),
             ) {
                 Text(
@@ -170,7 +170,7 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
                         Icon(
                             imageVector = Icons.Outlined.TaskAlt,
                             contentDescription = null,
-                            tint = CustomTheme.colors.active,
+                            tint = CustomTheme.colors.primary,
                         )
                 }
                 Row(

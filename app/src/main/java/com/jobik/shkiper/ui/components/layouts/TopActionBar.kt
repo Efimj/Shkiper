@@ -40,7 +40,7 @@ fun CustomTopAppBar(
     isVisible: Boolean = true,
     text: String = "",
     counter: Int? = null,
-    backgroundColor: Color = CustomTheme.colors.secondaryBackground,
+    backgroundColor: Color = CustomTheme.colors.container,
     contentColor: Color = CustomTheme.colors.textSecondary,
     navigation: TopAppBarItem,
     items: List<TopAppBarItem>

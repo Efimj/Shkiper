@@ -33,7 +33,7 @@ fun CustomTimePicker(
             enabled = true,
             shape = RoundedCornerShape(12.dp),
             color = Color.Transparent,
-            border = BorderStroke(2.dp, CustomTheme.colors.active)
+            border = BorderStroke(2.dp, CustomTheme.colors.primary)
         )
     ) { snappedDateTime -> onTimeChange(snappedDateTime) }
 }

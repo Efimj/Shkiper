@@ -1,9 +1,7 @@
 package com.jobik.shkiper.ui.components.buttons
 
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -14,18 +12,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.jobik.shkiper.R
-import com.jobik.shkiper.screens.OnboardingScreen.OnBoardingPage
-import com.jobik.shkiper.screens.OnboardingScreen.onFinished
-import com.jobik.shkiper.ui.modifiers.circularRotation
 import com.jobik.shkiper.ui.theme.CustomTheme
-import kotlinx.coroutines.launch
 
 @Composable
 fun MainMenuButton(text: String, icon: ImageVector? = null, isActive: Boolean = false, onClick: () -> Unit = { }) {
@@ -34,12 +24,12 @@ fun MainMenuButton(text: String, icon: ImageVector? = null, isActive: Boolean = 
         .height(45.dp)
 
     val buttonContentColor: Color by animateColorAsState(
-        targetValue = if (isActive) CustomTheme.colors.textOnActive else CustomTheme.colors.text,
+        targetValue = if (isActive) CustomTheme.colors.onPrimary else CustomTheme.colors.text,
         label = "buttonContentColor"
     )
 
     val buttonBackgroundColor: Color by animateColorAsState(
-        targetValue = if (isActive) CustomTheme.colors.active else CustomTheme.colors.secondaryBackground,
+        targetValue = if (isActive) CustomTheme.colors.primary else CustomTheme.colors.container,
         label = "buttonBackgroundColor"
     )
 

@@ -44,10 +44,10 @@ fun OfferWriteReview(
 
     Dialog(goBackFunDelay, DialogProperties(true, dismissOnClickOutside = true)) {
         Column(
-            Modifier.clip(RoundedCornerShape(15.dp)).background(CustomTheme.colors.secondaryBackground)
+            Modifier.clip(RoundedCornerShape(15.dp)).background(CustomTheme.colors.container)
         ) {
             Row(
-                modifier = Modifier.fillMaxWidth().height(210.dp).background(CustomTheme.colors.mainBackground)
+                modifier = Modifier.fillMaxWidth().height(210.dp).background(CustomTheme.colors.background)
                     .padding(vertical = 20.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center

@@ -76,8 +76,8 @@ fun BoxScope.BottomAppBarProvider(
                 .fillMaxWidth()
                 .background(
                     Brush.verticalGradient(
-                        0F to CustomTheme.colors.mainBackground.copy(alpha = 0.0F),
-                        0.8F to CustomTheme.colors.mainBackground.copy(alpha = 1F)
+                        0F to CustomTheme.colors.background.copy(alpha = 0.0F),
+                        0.8F to CustomTheme.colors.background.copy(alpha = 1F)
                     )
                 ),
             contentAlignment = Alignment.BottomCenter
@@ -118,7 +118,7 @@ private fun RowScope.CreateNoteFAN(
                 modifier = Modifier
                     .aspectRatio(1f)
                     .clip(shape = MaterialTheme.shapes.small)
-                    .background(CustomTheme.colors.active)
+                    .background(CustomTheme.colors.primary)
                     .clickable { createNewNote(scope = scope, viewModel = viewModel, navController = navController) },
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
@@ -126,7 +126,7 @@ private fun RowScope.CreateNoteFAN(
                 Icon(
                     imageVector = Icons.Outlined.Add,
                     contentDescription = stringResource(R.string.CreateNote),
-                    tint = CustomTheme.colors.textOnActive,
+                    tint = CustomTheme.colors.onPrimary,
                 )
             }
         }

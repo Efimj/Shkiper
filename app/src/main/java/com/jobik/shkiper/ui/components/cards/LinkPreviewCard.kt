@@ -86,7 +86,7 @@ fun LinkPreviewCard(openGraphData: LinkHelper.LinkPreview) {
             ),
         elevation = 0.dp,
         shape = RoundedCornerShape(10.dp),
-        backgroundColor = CustomTheme.colors.secondaryBackground,
+        backgroundColor = CustomTheme.colors.container,
         contentColor = CustomTheme.colors.text,
     ) {
         Row {

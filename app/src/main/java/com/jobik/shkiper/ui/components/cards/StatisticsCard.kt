@@ -40,7 +40,7 @@ fun StatisticsCard(statistic: StatisticsItem, onClick: () -> Unit) {
         elevation = 0.dp,
         shape = RoundedCornerShape(15.dp),
         //border = BorderStroke(1.dp, CustomTheme.colors.stroke),
-        backgroundColor = CustomTheme.colors.secondaryBackground,
+        backgroundColor = CustomTheme.colors.container,
         contentColor = CustomTheme.colors.text,
     ) {
         Column(

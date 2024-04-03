@@ -55,13 +55,13 @@ fun AboutNotepadScreen() {
                     .fillMaxHeight(1f)
                     .fillMaxWidth(.65f)
                     .clip(CustomTheme.shapes.medium)
-                    .background(CustomTheme.colors.secondaryBackground)
+                    .background(CustomTheme.colors.container)
                     .padding(start = 20.dp, end = 20.dp, top = 10.dp, bottom = 15.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
                     text = stringResource(R.string.app_name),
-                    color = CustomTheme.colors.active,
+                    color = CustomTheme.colors.primary,
                     style = MaterialTheme.typography.h6.copy(fontSize = 28.sp, fontWeight = FontWeight.SemiBold),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
@@ -87,7 +87,7 @@ fun AboutNotepadScreen() {
                         .fillMaxHeight(.65f)
                         .fillMaxWidth()
                         .clip(CustomTheme.shapes.medium)
-                        .background(CustomTheme.colors.secondaryBackground)
+                        .background(CustomTheme.colors.container)
                         .padding(horizontal = 20.dp, vertical = 10.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
@@ -104,14 +104,14 @@ fun AboutNotepadScreen() {
                         .fillMaxHeight(1.35f)
                         .fillMaxWidth()
                         .clip(CustomTheme.shapes.medium)
-                        .background(CustomTheme.colors.secondaryBackground)
+                        .background(CustomTheme.colors.container)
                         .padding(horizontal = 20.dp, vertical = 10.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
                     Text(
                         text = "V ${BuildConfig.VERSION_NAME}",
-                        color = CustomTheme.colors.active,
+                        color = CustomTheme.colors.primary,
                         style = MaterialTheme.typography.body1,
                         fontSize = 18.sp,
                         textAlign = TextAlign.Center,

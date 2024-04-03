@@ -83,7 +83,7 @@ fun NoteScreenContent(
     BackHandlerWithStylingState(noteViewModel)
 
     Scaffold(
-        containerColor = CustomTheme.colors.mainBackground,
+        containerColor = CustomTheme.colors.background,
         topBar = { NoteScreenHeader(navController, noteViewModel, richTextState) },
         bottomBar = { NoteScreenFooter(navController, noteViewModel, richTextState) },
         contentWindowInsets = WindowInsets.ime,

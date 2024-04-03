@@ -7,15 +7,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 
 data class CustomThemeColors(
-    val active: Color,
-    val mainBackground: Color,
-    val secondaryBackground: Color,
+    val primary: Color,
+    val onPrimary: Color,
+    val background: Color,
+    val container: Color,
     val text: Color,
-    val textOnActive: Color,
     val textSecondary: Color,
-    val stroke: Color,
-    val secondaryStroke: Color,
-    val modalBackground: Color,
+    val border: Color,
 )
 
 data class CustomThemeShapes(

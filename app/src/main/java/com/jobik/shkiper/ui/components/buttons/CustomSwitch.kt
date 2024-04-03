@@ -5,7 +5,6 @@ import androidx.compose.material3.SwitchDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import com.jobik.shkiper.ui.theme.CustomTheme
-import com.jobik.shkiper.util.ThemeUtil
 
 @Composable
 fun CustomSwitch(active: Boolean, onClick: (Boolean) -> Unit, thumbContent: @Composable() (() -> Unit)?) {
@@ -15,11 +14,11 @@ fun CustomSwitch(active: Boolean, onClick: (Boolean) -> Unit, thumbContent: @Com
         thumbContent = thumbContent,
         colors = SwitchDefaults.colors(
             checkedThumbColor = Color.White,
-            checkedTrackColor = CustomTheme.colors.active,
+            checkedTrackColor = CustomTheme.colors.primary,
             checkedIconColor = Color.DarkGray,
             uncheckedThumbColor = CustomTheme.colors.textSecondary,
-            uncheckedTrackColor = CustomTheme.colors.mainBackground,
-            uncheckedIconColor = CustomTheme.colors.mainBackground,
+            uncheckedTrackColor = CustomTheme.colors.background,
+            uncheckedIconColor = CustomTheme.colors.background,
             uncheckedBorderColor = CustomTheme.colors.textSecondary
 
         )

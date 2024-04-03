@@ -1,6 +1,5 @@
 package com.jobik.shkiper.screens.NoteListScreen.NoteListCalendarContent
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -13,7 +12,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.NotificationsNone
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -82,7 +80,7 @@ private fun ScreenContent(
         modifier = Modifier
             .imePadding()
             .fillMaxSize()
-            .background(CustomTheme.colors.mainBackground),
+            .background(CustomTheme.colors.background),
         state = collapsingToolbarScaffold,
         scrollStrategy = ScrollStrategy.EnterAlways,
         enabledWhenBodyUnfilled = false,

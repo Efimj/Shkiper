@@ -122,7 +122,7 @@ private fun RowScope.ActionButton(
                 shape = RoundedCornerShape(15.dp),
                 colors = ButtonDefaults.buttonColors(
                     contentColor = CustomTheme.colors.textSecondary,
-                    containerColor = CustomTheme.colors.secondaryBackground
+                    containerColor = CustomTheme.colors.container
                 ),
                 elevation = null,
                 contentPadding = PaddingValues(horizontal = 10.dp),
@@ -162,7 +162,7 @@ private fun RowScope.SearchField(
             ) { focusRequester.requestFocus() }
             .clip(RoundedCornerShape(cornerRadius))
             .background(
-                color = CustomTheme.colors.secondaryBackground,
+                color = CustomTheme.colors.container,
                 shape = RoundedCornerShape(cornerRadius)
             )
             .fillMaxHeight()

@@ -30,7 +30,7 @@ fun StatisticsInformationDialog(
         Column(
             Modifier
                 .clip(RoundedCornerShape(15.dp))
-                .background(CustomTheme.colors.secondaryBackground)
+                .background(CustomTheme.colors.container)
                 .padding(vertical = 20.dp).height(340.dp)
         ) {
             Column(

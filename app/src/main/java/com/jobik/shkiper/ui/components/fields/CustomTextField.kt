@@ -15,7 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
@@ -45,12 +44,12 @@ fun CustomTextField(
     var isFocused by remember { mutableStateOf(false) }
 
     val labelColor: Color by animateColorAsState(
-        targetValue = if (isFocused) CustomTheme.colors.active else CustomTheme.colors.textSecondary,
+        targetValue = if (isFocused) CustomTheme.colors.primary else CustomTheme.colors.textSecondary,
         label = "labelColor"
     )
 
     val bottomDividerColor: Color by animateColorAsState(
-        targetValue = if (isFocused) CustomTheme.colors.active else CustomTheme.colors.secondaryStroke,
+        targetValue = if (isFocused) CustomTheme.colors.primary else CustomTheme.colors.border,
         label = "bottomDividerColor"
     )
 

@@ -33,8 +33,8 @@ fun CalendarDayView(day: CalendarDay, currentDate: LocalDate, onClick: (Calendar
     val borderCornerShape = RoundedCornerShape(12.dp)
 
     val targetBorderColorValue = when {
-        currentDate == day.date -> CustomTheme.colors.active
-        day.date == dateNow -> CustomTheme.colors.stroke
+        currentDate == day.date -> CustomTheme.colors.primary
+        day.date == dateNow -> CustomTheme.colors.border
         else -> Color.Transparent
     }
     val borderColor by animateColorAsState(targetValue = targetBorderColorValue, label = "borderColor")
@@ -137,27 +137,27 @@ private fun CalendarDayContent(
     val shape = RoundedCornerShape(12.dp)
 
     val targetContentColorValue = when {
-        isSelected -> CustomTheme.colors.textOnActive
+        isSelected -> CustomTheme.colors.onPrimary
         enabled -> CustomTheme.colors.text
         else -> CustomTheme.colors.textSecondary
     }
     val contentColor by animateColorAsState(targetValue = targetContentColorValue, label = "contentColor")
 
     val targetBackgroundColorValue = when {
-        isSelected -> CustomTheme.colors.active
+        isSelected -> CustomTheme.colors.primary
         else -> Color.Transparent
     }
     val backgroundColor by animateColorAsState(targetValue = targetBackgroundColorValue, label = "backgroundColor")
 
     val targetBorderColorValue = when {
-        isSelected -> CustomTheme.colors.active
-        isToday -> CustomTheme.colors.stroke
+        isSelected -> CustomTheme.colors.primary
+        isToday -> CustomTheme.colors.border
         else -> Color.Transparent
     }
     val borderColor by animateColorAsState(targetValue = targetBorderColorValue, label = "borderColor")
 
     val boxBackground by animateColorAsState(
-        targetValue = if (rangeStyle == null) Color.Transparent else CustomTheme.colors.active.copy(
+        targetValue = if (rangeStyle == null) Color.Transparent else CustomTheme.colors.primary.copy(
             alpha = .15f
         ), label = "borderColor"
     )
@@ -208,7 +208,7 @@ private fun CalendarDayContent(
                     Box(
                         modifier = Modifier
                             .size(6.dp)
-                            .background(CustomTheme.colors.active, CircleShape)
+                            .background(CustomTheme.colors.primary, CircleShape)
                     )
                 }
             }

@@ -14,7 +14,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
@@ -38,7 +37,7 @@ data class ButtonProperties(
 @Composable
 fun DefaultButtonProperties(
     buttonColors: ButtonColors = ButtonDefaults.buttonColors(
-        backgroundColor = CustomTheme.colors.secondaryBackground,
+        backgroundColor = CustomTheme.colors.container,
         disabledBackgroundColor = Color.Transparent
     ),
     border: BorderStroke? = null,
@@ -71,7 +70,7 @@ fun getButtonProperties(style: ButtonStyle, properties: ButtonProperties? = null
     val style = when (style) {
         ButtonStyle.Filled -> ButtonProperties(
             buttonColors = ButtonDefaults.buttonColors(
-                backgroundColor = CustomTheme.colors.active,
+                backgroundColor = CustomTheme.colors.primary,
                 disabledBackgroundColor = Color.Transparent
             ),
             border = null,
@@ -79,9 +78,9 @@ fun getButtonProperties(style: ButtonStyle, properties: ButtonProperties? = null
             horizontalPaddings = androidx.compose.material3.ButtonDefaults.ContentPadding.calculateLeftPadding(
                 LayoutDirection.Ltr
             ),
-            textColor = CustomTheme.colors.textOnActive,
+            textColor = CustomTheme.colors.onPrimary,
             textStyle = MaterialTheme.typography.body1.copy(fontWeight = FontWeight.SemiBold),
-            iconTint = CustomTheme.colors.textOnActive,
+            iconTint = CustomTheme.colors.onPrimary,
         )
 
         ButtonStyle.Outlined -> ButtonProperties(
@@ -89,7 +88,7 @@ fun getButtonProperties(style: ButtonStyle, properties: ButtonProperties? = null
                 backgroundColor = Color.Transparent,
                 disabledBackgroundColor = Color.Transparent
             ),
-            border = BorderStroke(width = 1.dp, color = CustomTheme.colors.stroke),
+            border = BorderStroke(width = 1.dp, color = CustomTheme.colors.border),
             shape = RoundedCornerShape(10.dp),
             horizontalPaddings = androidx.compose.material3.ButtonDefaults.ContentPadding.calculateLeftPadding(
                 LayoutDirection.Ltr

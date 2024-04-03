@@ -44,12 +44,12 @@ fun CustomOutlinedTextField(
     var isFocused by remember { mutableStateOf(false) }
 
     val labelColor: Color by animateColorAsState(
-        targetValue = if (isFocused) CustomTheme.colors.active else CustomTheme.colors.textSecondary,
+        targetValue = if (isFocused) CustomTheme.colors.primary else CustomTheme.colors.textSecondary,
         label = "labelColor"
     )
 
     val borderColor: Color by animateColorAsState(
-        targetValue = if (isFocused) CustomTheme.colors.active else CustomTheme.colors.secondaryStroke,
+        targetValue = if (isFocused) CustomTheme.colors.primary else CustomTheme.colors.border,
         label = "bottomDividerColor"
     )
 

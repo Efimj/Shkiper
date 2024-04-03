@@ -6,7 +6,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.outlined.*
@@ -32,7 +31,7 @@ import com.mohamedrejeb.richeditor.model.RichTextState
 @Composable
 fun NoteScreenHeader(navController: NavController, noteViewModel: NoteViewModel, richTextState: RichTextState) {
     val backgroundColorValue =
-        if (noteViewModel.screenState.value.isTopAppBarHover) CustomTheme.colors.secondaryBackground else CustomTheme.colors.mainBackground
+        if (noteViewModel.screenState.value.isTopAppBarHover) CustomTheme.colors.container else CustomTheme.colors.background
 
     val backgroundColor by animateColorAsState(
         backgroundColorValue, animationSpec = tween(200),

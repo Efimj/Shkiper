@@ -57,7 +57,7 @@ fun NoteCard(
     val bodyStyle = MaterialTheme.typography.body1
     val multipleEventsCutter = remember { MultipleEventsCutter.get() }
     val borderColor: Color by animateColorAsState(
-        targetValue = if (selected) CustomTheme.colors.active else Color.Transparent, label = "borderColor",
+        targetValue = if (selected) CustomTheme.colors.primary else Color.Transparent, label = "borderColor",
     )
 
     val bodyRichTextState = rememberRichTextState()
@@ -82,7 +82,7 @@ fun NoteCard(
         elevation = 0.dp,
         shape = RoundedCornerShape(15.dp),
         border = BorderStroke(1.dp, borderColor),
-        backgroundColor = CustomTheme.colors.secondaryBackground,
+        backgroundColor = CustomTheme.colors.container,
         contentColor = CustomTheme.colors.text,
     ) {
         Column(
@@ -208,7 +208,7 @@ private fun NoteAnnotatedContent(
 
     if (!header.isNullOrBlank()) {
         Text(
-            text = buildAnnotatedString(header, markedText, CustomTheme.colors.active, Color.Transparent),
+            text = buildAnnotatedString(header, markedText, CustomTheme.colors.primary, Color.Transparent),
             fontSize = headerStyle.fontSize,
             fontStyle = headerStyle.fontStyle,
             fontFamily = headerStyle.fontFamily,
@@ -228,7 +228,7 @@ private fun NoteAnnotatedContent(
             text = buildAnnotatedString(
                 removeMarkdownStyles(text.toMarkdown()),
                 markedText,
-                CustomTheme.colors.active,
+                CustomTheme.colors.primary,
                 Color.Transparent
             ),
             fontSize = bodyStyle.fontSize,

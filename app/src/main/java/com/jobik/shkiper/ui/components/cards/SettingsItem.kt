@@ -30,17 +30,17 @@ fun SettingsItem(
     action: (@Composable () -> Unit)? = null
 ) {
     val backgroundColor: Color by animateColorAsState(
-        targetValue = if (isActive) CustomTheme.colors.active else containerColor ?: Color.Transparent,
+        targetValue = if (isActive) CustomTheme.colors.primary else containerColor ?: Color.Transparent,
         label = "backgroundColor"
     )
 
     val foregroundColor: Color by animateColorAsState(
-        targetValue = if (isActive) CustomTheme.colors.textOnActive else CustomTheme.colors.text,
+        targetValue = if (isActive) CustomTheme.colors.onPrimary else CustomTheme.colors.text,
         label = "foregroundColor"
     )
 
     val foregroundSecondaryColor: Color by animateColorAsState(
-        targetValue = if (isActive) CustomTheme.colors.textOnActive else CustomTheme.colors.textSecondary,
+        targetValue = if (isActive) CustomTheme.colors.onPrimary else CustomTheme.colors.textSecondary,
         label = "foregroundSecondaryColor"
     )
 

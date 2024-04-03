@@ -50,7 +50,7 @@ class ShareReceiverActivity : AppCompatActivity() {
                 Box(
                     Modifier
                         .fillMaxSize()
-                        .background(CustomTheme.colors.mainBackground)
+                        .background(CustomTheme.colors.background)
                 ) {
                     NoteSelectionScreen {
                         handleSelectNote(note = it)

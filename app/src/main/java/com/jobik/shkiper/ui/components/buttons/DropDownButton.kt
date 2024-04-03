@@ -54,9 +54,9 @@ fun DropDownButton(
             modifier = (if (stretchMode == DropDownButtonSizeMode.STRERCHBYBUTTONWIDTH)
                 Modifier.width(maxWidth) else Modifier)
                 .heightIn(max = 280.dp)
-                .background(CustomTheme.colors.secondaryBackground)
+                .background(CustomTheme.colors.container)
                 .clip(RoundedCornerShape(15.dp))
-                .border(1.dp, CustomTheme.colors.stroke, RoundedCornerShape(15.dp))
+                .border(1.dp, CustomTheme.colors.border, RoundedCornerShape(15.dp))
         ) {
             items.forEachIndexed { index, dropDownItem ->
                 if (dropDownItem.icon == null)

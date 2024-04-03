@@ -3,8 +3,6 @@ package com.jobik.shkiper.ui.components.modals
 import android.content.Context
 import androidx.annotation.Keep
 import androidx.compose.animation.*
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
@@ -40,8 +38,6 @@ import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.RepeatMode
 import com.jobik.shkiper.helpers.*
 import com.jobik.shkiper.services.notification_service.NotificationScheduler
-import com.jobik.shkiper.ui.components.buttons.ButtonStyle
-import com.jobik.shkiper.ui.components.buttons.CustomButton
 import com.jobik.shkiper.ui.components.buttons.DropDownButton
 import com.jobik.shkiper.ui.components.buttons.DropDownItem
 import com.jobik.shkiper.ui.components.fields.CustomDatePicker
@@ -90,7 +86,7 @@ fun CreateReminderDialog(
             Modifier
                 .verticalScroll(rememberScrollState())
                 .clip(RoundedCornerShape(15.dp))
-                .background(CustomTheme.colors.mainBackground)
+                .background(CustomTheme.colors.background)
                 .padding(vertical = 20.dp)
         ) {
             HorizontalPager(
@@ -147,12 +143,12 @@ private fun DialogFooter(
     val context = LocalContext.current
 
     val buttonNextContentColor: Color by animateColorAsState(
-        targetValue = if (isEnd) CustomTheme.colors.textOnActive else CustomTheme.colors.text,
+        targetValue = if (isEnd) CustomTheme.colors.onPrimary else CustomTheme.colors.text,
         label = "buttonNextContentColor"
     )
 
     val buttonNextBackgroundColor: Color by animateColorAsState(
-        targetValue = if (isEnd) CustomTheme.colors.active else CustomTheme.colors.secondaryBackground,
+        targetValue = if (isEnd) CustomTheme.colors.primary else CustomTheme.colors.container,
         label = "buttonNextBackgroundColor"
     )
 
@@ -175,7 +171,7 @@ private fun DialogFooter(
                 shape = CustomTheme.shapes.small,
                 colors = androidx.compose.material3.ButtonDefaults.buttonColors(
                     contentColor = CustomTheme.colors.text,
-                    containerColor = CustomTheme.colors.secondaryBackground
+                    containerColor = CustomTheme.colors.container
                 ),
                 border = null,
                 elevation = null,
@@ -205,7 +201,7 @@ private fun DialogFooter(
                 shape = CustomTheme.shapes.small,
                 colors = androidx.compose.material3.ButtonDefaults.buttonColors(
                     contentColor = CustomTheme.colors.text,
-                    containerColor = CustomTheme.colors.secondaryBackground
+                    containerColor = CustomTheme.colors.container
                 ),
                 border = null,
                 elevation = null,
@@ -423,7 +419,7 @@ private fun RepeatModePage(
                 Text(
                     text = stringResource(R.string.ErrorDateMastBeFuture),
                     style = MaterialTheme.typography.body1,
-                    color = CustomTheme.colors.active,
+                    color = CustomTheme.colors.primary,
                     modifier = Modifier.padding(bottom = 10.dp)
                 )
             Row(
@@ -447,7 +443,7 @@ private fun RepeatModePage(
                         shape = CustomTheme.shapes.small,
                         colors = androidx.compose.material3.ButtonDefaults.buttonColors(
                             contentColor = CustomTheme.colors.text,
-                            containerColor = CustomTheme.colors.secondaryBackground
+                            containerColor = CustomTheme.colors.container
                         ),
                         border = null,
                         elevation = null,
@@ -472,7 +468,7 @@ private fun RepeatModePage(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Icon(
-                            tint = CustomTheme.colors.active,
+                            tint = CustomTheme.colors.primary,
                             imageVector = Icons.Default.Warning,
                             contentDescription = stringResource(R.string.TurnOnNotifications)
                         )

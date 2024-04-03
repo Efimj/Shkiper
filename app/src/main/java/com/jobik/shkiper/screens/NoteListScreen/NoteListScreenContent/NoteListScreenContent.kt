@@ -59,7 +59,7 @@ fun NoteListScreenContent(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(CustomTheme.colors.mainBackground)
+            .background(CustomTheme.colors.background)
             .scrollConnectionToProvideVisibility(visible = isSearchBarVisible)
     ) {
         if (viewModel.screenState.value.isNotesInitialized && viewModel.screenState.value.notes.isEmpty())

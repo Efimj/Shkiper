@@ -13,7 +13,6 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
-import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -46,7 +45,7 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun NoteScreenFooter(navController: NavController, noteViewModel: NoteViewModel, richTextState: RichTextState) {
     val backgroundColor by animateColorAsState(
-        if (noteViewModel.screenState.value.isBottomAppBarHover) CustomTheme.colors.secondaryBackground else CustomTheme.colors.mainBackground,
+        if (noteViewModel.screenState.value.isBottomAppBarHover) CustomTheme.colors.container else CustomTheme.colors.background,
         animationSpec = tween(200),
     )
 

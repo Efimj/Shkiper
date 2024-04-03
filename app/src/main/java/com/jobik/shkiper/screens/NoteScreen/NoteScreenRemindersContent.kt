@@ -68,7 +68,7 @@ fun NoteScreenRemindersContent(noteViewModel: NoteViewModel) {
         ModalBottomSheet(
             sheetState = reminderSheetState,
             onDismissRequest = { noteViewModel.switchReminderDialogShow() },
-            containerColor = CustomTheme.colors.mainBackground,
+            containerColor = CustomTheme.colors.background,
             contentColor = CustomTheme.colors.text,
             dragHandle = null,
             windowInsets = WindowInsets.ime
@@ -190,7 +190,7 @@ private fun EmptyRemindersContent(modifier: Modifier) {
         Icon(
             imageVector = Icons.Outlined.NotificationsOff,
             contentDescription = null,
-            tint = CustomTheme.colors.active,
+            tint = CustomTheme.colors.primary,
             modifier = Modifier.size(90.dp)
         )
         Spacer(Modifier.height(10.dp))
@@ -242,7 +242,7 @@ private fun BoxScope.Header(
                     shape = CustomTheme.shapes.small,
                     colors = ButtonDefaults.buttonColors(
                         contentColor = CustomTheme.colors.text,
-                        containerColor = CustomTheme.colors.secondaryBackground
+                        containerColor = CustomTheme.colors.container
                     ),
                     border = null,
                     elevation = null,
@@ -266,7 +266,7 @@ private fun BoxScope.Header(
                     shape = CustomTheme.shapes.small,
                     colors = ButtonDefaults.buttonColors(
                         contentColor = CustomTheme.colors.text,
-                        containerColor = CustomTheme.colors.secondaryBackground
+                        containerColor = CustomTheme.colors.container
                     ),
                     border = null,
                     elevation = null,
@@ -310,8 +310,8 @@ private fun BoxScope.BottomBar(modifier: Modifier, isHidden: Boolean, onCreateRe
                     .height(50.dp),
                 shape = CustomTheme.shapes.small,
                 colors = ButtonDefaults.buttonColors(
-                    contentColor = CustomTheme.colors.textOnActive,
-                    containerColor = CustomTheme.colors.active
+                    contentColor = CustomTheme.colors.onPrimary,
+                    containerColor = CustomTheme.colors.primary
                 ),
                 border = null,
                 elevation = null,
@@ -322,7 +322,7 @@ private fun BoxScope.BottomBar(modifier: Modifier, isHidden: Boolean, onCreateRe
                     text = stringResource(R.string.CreateReminder),
                     style = MaterialTheme.typography.body1,
                     fontWeight = FontWeight.SemiBold,
-                    color = CustomTheme.colors.textOnActive,
+                    color = CustomTheme.colors.onPrimary,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )

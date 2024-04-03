@@ -54,7 +54,7 @@ fun FullScreenCalendar(viewModel: CalendarViewModel) {
     }
 
     Box {
-        Column(modifier = Modifier.background(CustomTheme.colors.secondaryBackground)) {
+        Column(modifier = Modifier.background(CustomTheme.colors.container)) {
             Header(daysOfWeek)
             VerticalCalendar(
                 modifier = Modifier.fillMaxSize(),
@@ -87,8 +87,8 @@ fun FullScreenCalendar(viewModel: CalendarViewModel) {
                         .fillMaxWidth(),
                     shape = CustomTheme.shapes.small,
                     colors = ButtonDefaults.buttonColors(
-                        contentColor = CustomTheme.colors.textOnActive,
-                        containerColor = CustomTheme.colors.active
+                        contentColor = CustomTheme.colors.onPrimary,
+                        containerColor = CustomTheme.colors.primary
                     ),
                     border = null,
                     elevation = null,
@@ -98,14 +98,14 @@ fun FullScreenCalendar(viewModel: CalendarViewModel) {
                     Icon(
                         imageVector = Icons.Outlined.DateRange,
                         contentDescription = stringResource(R.string.Confirm),
-                        tint = CustomTheme.colors.textOnActive
+                        tint = CustomTheme.colors.onPrimary
                     )
                     Spacer(modifier = Modifier.width(10.dp))
                     Text(
                         text = stringResource(R.string.Apply),
                         style = MaterialTheme.typography.body1,
                         fontWeight = FontWeight.SemiBold,
-                        color = CustomTheme.colors.textOnActive,
+                        color = CustomTheme.colors.onPrimary,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )

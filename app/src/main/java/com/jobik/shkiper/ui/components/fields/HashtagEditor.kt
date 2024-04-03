@@ -106,7 +106,7 @@ fun TagEditor(
                     Surface(
                         shape = BottomSheetDefaults.ExpandedShape,
                         contentColor = CustomTheme.colors.text,
-                        color = CustomTheme.colors.mainBackground,
+                        color = CustomTheme.colors.background,
                         tonalElevation = BottomSheetDefaults.Elevation,
                     ) {
                         Column {
@@ -176,7 +176,7 @@ private fun EmptyTagsContent(modifier: Modifier) {
         Icon(
             imageVector = Icons.Outlined.LabelOff,
             contentDescription = null,
-            tint = CustomTheme.colors.active,
+            tint = CustomTheme.colors.primary,
             modifier = Modifier.size(90.dp)
         )
         Spacer(Modifier.height(10.dp))
@@ -301,7 +301,7 @@ private fun Header(
                     shape = CustomTheme.shapes.small,
                     colors = ButtonDefaults.buttonColors(
                         contentColor = CustomTheme.colors.text,
-                        containerColor = CustomTheme.colors.secondaryBackground
+                        containerColor = CustomTheme.colors.container
                     ),
                     border = null,
                     elevation = null,
@@ -361,8 +361,8 @@ private fun BoxScope.BottomBar(modifier: Modifier, isVisible: Boolean, onCreateR
                     .height(50.dp),
                 shape = CustomTheme.shapes.small,
                 colors = ButtonDefaults.buttonColors(
-                    contentColor = CustomTheme.colors.textOnActive,
-                    containerColor = CustomTheme.colors.active
+                    contentColor = CustomTheme.colors.onPrimary,
+                    containerColor = CustomTheme.colors.primary
                 ),
                 border = null,
                 elevation = null,
@@ -373,7 +373,7 @@ private fun BoxScope.BottomBar(modifier: Modifier, isVisible: Boolean, onCreateR
                     text = stringResource(R.string.SaveChanges),
                     style = androidx.compose.material.MaterialTheme.typography.body1,
                     fontWeight = FontWeight.SemiBold,
-                    color = CustomTheme.colors.textOnActive,
+                    color = CustomTheme.colors.onPrimary,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )

@@ -39,14 +39,14 @@ fun ReminderCard(reminder: Reminder, isSelected: Boolean, onClick: () -> Unit, o
     val isRepeatable = reminder.repeat != RepeatMode.NONE
 
     val backgroundColor by animateColorAsState(
-        if (isDateFuture) CustomTheme.colors.secondaryBackground else CustomTheme.colors.mainBackground,
+        if (isDateFuture) CustomTheme.colors.container else CustomTheme.colors.background,
         label = "ReminderCardBackgroundColor",
     )
 
     val strokeColorValue = when {
-        isSelected -> CustomTheme.colors.active
-        isDateFuture -> CustomTheme.colors.secondaryBackground
-        else -> CustomTheme.colors.stroke
+        isSelected -> CustomTheme.colors.primary
+        isDateFuture -> CustomTheme.colors.container
+        else -> CustomTheme.colors.border
     }
     val strokeColor by animateColorAsState(
         strokeColorValue,

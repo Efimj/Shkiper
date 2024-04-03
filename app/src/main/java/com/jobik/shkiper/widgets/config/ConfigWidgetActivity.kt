@@ -50,7 +50,7 @@ class ConfigWidgetActivity : AppCompatActivity() {
                 Box(
                     Modifier
                         .fillMaxSize()
-                        .background(CustomTheme.colors.mainBackground)
+                        .background(CustomTheme.colors.background)
                 ) {
                     NoteSelectionScreen(strictSelection = true) {
                         handleSelectNote(it)

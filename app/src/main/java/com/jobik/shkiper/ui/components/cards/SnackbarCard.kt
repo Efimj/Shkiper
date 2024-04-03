@@ -1,6 +1,5 @@
 package com.jobik.shkiper.ui.components.cards
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.*
@@ -10,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -30,7 +28,7 @@ fun SnackbarCard(snackbarData: SnackbarVisualsCustom) {
                 .clip(RoundedCornerShape(15.dp)),
             elevation = 6.dp,
             shape = RoundedCornerShape(15.dp),
-            backgroundColor = CustomTheme.colors.secondaryBackground,
+            backgroundColor = CustomTheme.colors.container,
             contentColor = CustomTheme.colors.text,
         ) {
             Row(

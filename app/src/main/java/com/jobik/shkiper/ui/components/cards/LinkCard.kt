@@ -50,9 +50,9 @@ fun LinkCard(
     Card(
         shape = CustomTheme.shapes.medium,
         colors = CardDefaults.cardColors(
-            containerColor = CustomTheme.colors.secondaryBackground,
+            containerColor = CustomTheme.colors.container,
             contentColor = CustomTheme.colors.text,
-            disabledContainerColor = CustomTheme.colors.secondaryBackground,
+            disabledContainerColor = CustomTheme.colors.container,
             disabledContentColor = CustomTheme.colors.text
         ),
         elevation = CardDefaults.outlinedCardElevation(),

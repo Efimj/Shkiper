@@ -15,7 +15,7 @@ fun ScreenWrapper(modifier: Modifier = Modifier, content: @Composable () -> Unit
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(CustomTheme.colors.mainBackground),
+            .background(CustomTheme.colors.background),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Column(

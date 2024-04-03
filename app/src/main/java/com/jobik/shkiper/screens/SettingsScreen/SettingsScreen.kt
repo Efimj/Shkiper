@@ -53,7 +53,7 @@ fun SettingsScreen(navController: NavController, settingsViewModel: SettingsView
     Column(
         Modifier
             .fillMaxSize()
-            .background(CustomTheme.colors.mainBackground)
+            .background(CustomTheme.colors.background)
             .verticalScroll(rememberScrollState())
             .allWindowInsetsPadding(),
         verticalArrangement = Arrangement.Center,
@@ -77,7 +77,7 @@ private fun InformationSettings() {
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp),
             fontSize = 16.sp,
-            color = CustomTheme.colors.active,
+            color = CustomTheme.colors.primary,
             text = stringResource(R.string.Information),
             fontWeight = FontWeight.SemiBold,
             style = MaterialTheme.typography.body2,
@@ -119,7 +119,7 @@ private fun DevSupportSettings(
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp),
             fontSize = 16.sp,
-            color = CustomTheme.colors.active,
+            color = CustomTheme.colors.primary,
             text = stringResource(R.string.Support),
             fontWeight = FontWeight.SemiBold,
             style = MaterialTheme.typography.body2,
@@ -148,7 +148,7 @@ private fun OtherSettings(navController: NavController) {
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp),
             fontSize = 16.sp,
-            color = CustomTheme.colors.active,
+            color = CustomTheme.colors.primary,
             text = stringResource(R.string.Other),
             fontWeight = FontWeight.SemiBold,
             style = MaterialTheme.typography.body2,
@@ -192,7 +192,7 @@ private fun BackupSettings(
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp),
             fontSize = 16.sp,
-            color = CustomTheme.colors.active,
+            color = CustomTheme.colors.primary,
             text = stringResource(R.string.Backup),
             fontWeight = FontWeight.SemiBold,
             style = MaterialTheme.typography.body2,
@@ -210,7 +210,7 @@ private fun BackupSettings(
             onClick = { settingsViewModel.saveLocalBackup() }
         ) {
             val iconColor =
-                if (settingsViewModel.settingsScreenState.value.isLocalBackupSaving) CustomTheme.colors.textOnActive else CustomTheme.colors.text
+                if (settingsViewModel.settingsScreenState.value.isLocalBackupSaving) CustomTheme.colors.onPrimary else CustomTheme.colors.text
             val contentColor = remember { Animatable(iconColor) }
 
             LaunchedEffect(settingsViewModel.settingsScreenState.value.isLocalBackupSaving) {
@@ -243,7 +243,7 @@ private fun BackupSettings(
             onClick = { fileSearch.launch(arrayOf("*/*")) }
         ) {
             val iconColor =
-                if (settingsViewModel.settingsScreenState.value.isLocalBackupUploading) CustomTheme.colors.textOnActive else CustomTheme.colors.text
+                if (settingsViewModel.settingsScreenState.value.isLocalBackupUploading) CustomTheme.colors.onPrimary else CustomTheme.colors.text
             val contentColor = remember { Animatable(iconColor) }
 
             LaunchedEffect(settingsViewModel.settingsScreenState.value.isLocalBackupUploading) {
@@ -278,7 +278,7 @@ private fun ProgramSettings(settingsViewModel: SettingsViewModel) {
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp),
             fontSize = 16.sp,
-            color = CustomTheme.colors.active,
+            color = CustomTheme.colors.primary,
             text = stringResource(R.string.Application),
             fontWeight = FontWeight.SemiBold,
             style = MaterialTheme.typography.body2,
@@ -365,11 +365,11 @@ private fun SettingsItemGroup(setAccent: Boolean = false, columnScope: @Composab
             .widthIn(max = 500.dp)
             .padding(horizontal = 10.dp)
             .clip(CustomTheme.shapes.large)
-            .background(CustomTheme.colors.secondaryBackground)
+            .background(CustomTheme.colors.container)
             .border(
                 width = if (setAccent) 2.dp else 0.dp,
                 shape = CustomTheme.shapes.large,
-                color = if (setAccent) CustomTheme.colors.active else Color.Transparent
+                color = if (setAccent) CustomTheme.colors.primary else Color.Transparent
             )
             .padding(top = 13.dp, bottom = 7.dp),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -407,7 +407,7 @@ private fun SettingsItemSelectLanguage(settingsViewModel: SettingsViewModel) {
                 fontSize = 18.sp,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                color = CustomTheme.colors.active
+                color = CustomTheme.colors.primary
             )
         }
     }

@@ -3,7 +3,6 @@ package com.jobik.shkiper.screens.AppLayout.NavigationBar
 import androidx.annotation.StringRes
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
@@ -34,11 +33,11 @@ data class DefaultNavigationValues(
 @Composable
 fun CustomBottomNavigationItem(properties: CustomBottomNavigationItem) {
     val contentColorValue =
-        if (properties.isSelected) CustomTheme.colors.textOnActive else CustomTheme.colors.textSecondary
+        if (properties.isSelected) CustomTheme.colors.onPrimary else CustomTheme.colors.textSecondary
     val contentColor = animateColorAsState(targetValue = contentColorValue, label = "backgroundColor")
 
     val backgroundColorValue =
-        if (properties.isSelected) CustomTheme.colors.active.copy(alpha = .5f) else Color.Transparent
+        if (properties.isSelected) CustomTheme.colors.primary.copy(alpha = .5f) else Color.Transparent
     val backgroundColor = animateColorAsState(targetValue = backgroundColorValue, label = "backgroundColor")
 
     Row(
@@ -68,7 +67,7 @@ fun CustomBottomNavigation(items: List<CustomBottomNavigationItem>) {
             .clickable(enabled = false) {}
             .height(DefaultNavigationValues().containerHeight)
             .clip(shape = MaterialTheme.shapes.small)
-            .background(CustomTheme.colors.secondaryBackground)
+            .background(CustomTheme.colors.container)
             .padding(4.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(6.dp)

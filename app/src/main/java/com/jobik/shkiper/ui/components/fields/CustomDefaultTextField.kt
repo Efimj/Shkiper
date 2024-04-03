@@ -41,19 +41,19 @@ fun CustomDefaultTextField(
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val textFieldColors = TextFieldDefaults.textFieldColors(
-        backgroundColor = CustomTheme.colors.secondaryBackground,
+        backgroundColor = CustomTheme.colors.container,
         placeholderColor = CustomTheme.colors.textSecondary,
         leadingIconColor = CustomTheme.colors.textSecondary,
         trailingIconColor = CustomTheme.colors.textSecondary,
         textColor = CustomTheme.colors.text,
-        cursorColor = CustomTheme.colors.active,
+        cursorColor = CustomTheme.colors.primary,
         focusedLabelColor = CustomTheme.colors.textSecondary,
         unfocusedLabelColor = CustomTheme.colors.textSecondary,
     )
 
     val customTextSelectionColors = TextSelectionColors(
-        handleColor = CustomTheme.colors.active,
-        backgroundColor = CustomTheme.colors.active.copy(alpha = 0.4f),
+        handleColor = CustomTheme.colors.primary,
+        backgroundColor = CustomTheme.colors.primary.copy(alpha = 0.4f),
     )
 
     CompositionLocalProvider(
@@ -66,7 +66,7 @@ fun CustomDefaultTextField(
             enabled = enabled,
             singleLine = singleLine,
             textStyle = textStyle.copy(color = textColor),
-            cursorBrush = SolidColor(CustomTheme.colors.active),
+            cursorBrush = SolidColor(CustomTheme.colors.primary),
             keyboardOptions = keyboardOptions,
             keyboardActions = keyboardActions ?: KeyboardActions(
                 onAny = {

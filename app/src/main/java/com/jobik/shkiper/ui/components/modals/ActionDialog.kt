@@ -2,7 +2,6 @@ package com.jobik.shkiper.ui.components.modals
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material3.Icon
@@ -33,7 +32,7 @@ fun ActionDialog(
         Column(
             Modifier
                 .clip(CustomTheme.shapes.medium)
-                .background(CustomTheme.colors.secondaryBackground)
+                .background(CustomTheme.colors.container)
                 .padding(15.dp)
         ) {
             Row(

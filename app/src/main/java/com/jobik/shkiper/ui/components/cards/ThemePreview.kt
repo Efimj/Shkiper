@@ -16,7 +16,6 @@ import androidx.compose.ui.unit.dp
 import com.jobik.shkiper.ui.helpers.MultipleEventsCutter
 import com.jobik.shkiper.ui.helpers.get
 import com.jobik.shkiper.ui.modifiers.bounceClick
-import com.jobik.shkiper.ui.theme.CustomTheme
 import com.jobik.shkiper.ui.theme.CustomThemeColors
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -36,16 +35,16 @@ fun ThemePreview(
             .combinedClickable(onClick = { multipleEventsCutter.processEvent { onClick() } }),
         elevation = 0.dp,
         shape = RoundedCornerShape(10.dp),
-        border = BorderStroke(if (selected) 2.dp else 0.dp, if (selected) colors.active else Color.Transparent),
-        backgroundColor = colors.mainBackground,
+        border = BorderStroke(if (selected) 2.dp else 0.dp, if (selected) colors.primary else Color.Transparent),
+        backgroundColor = colors.background,
         contentColor = colors.text,
     ) {
         Column(Modifier.fillMaxSize()) {
-            Row(Modifier.fillMaxWidth().weight(1f).background(colors.stroke)) {}
+            Row(Modifier.fillMaxWidth().weight(1f).background(colors.border)) {}
             Row(Modifier.fillMaxWidth().weight(1f).background(colors.textSecondary)) {}
-            Row(Modifier.fillMaxWidth().weight(1f).background(colors.active)) {}
-            Row(Modifier.fillMaxWidth().weight(1f).background(colors.secondaryBackground)) {}
-            Row(Modifier.fillMaxWidth().weight(1f).background(colors.mainBackground)) {}
+            Row(Modifier.fillMaxWidth().weight(1f).background(colors.primary)) {}
+            Row(Modifier.fillMaxWidth().weight(1f).background(colors.container)) {}
+            Row(Modifier.fillMaxWidth().weight(1f).background(colors.background)) {}
         }
     }
 }

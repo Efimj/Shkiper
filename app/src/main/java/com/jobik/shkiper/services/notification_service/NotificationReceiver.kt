@@ -78,7 +78,7 @@ class NotificationReceiver : BroadcastReceiver() {
             NotificationCompat.Builder(context, notification.channel.channelId)
                 .setSmallIcon(R.drawable.ic_notification)
                 .setAutoCancel(true)
-                .setColor(savedColors.active.toArgb())
+                .setColor(savedColors.primary.toArgb())
                 .setColorized(true)
                 .setContentIntent(mainPendingIntent)
         if (notification.title.isNotBlank())

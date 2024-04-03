@@ -24,7 +24,7 @@ fun ScreenContentIfNoData(modifier: Modifier = Modifier, @StringRes title: Int, 
         Icon(
             imageVector = icon,
             contentDescription = null,
-            tint = CustomTheme.colors.active,
+            tint = CustomTheme.colors.primary,
             modifier = Modifier.size(90.dp)
         )
         Spacer(Modifier.height(10.dp))
