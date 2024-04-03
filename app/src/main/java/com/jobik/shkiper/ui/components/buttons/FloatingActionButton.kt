@@ -11,10 +11,13 @@ import androidx.compose.material.Card
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
@@ -33,7 +36,8 @@ fun FloatingActionButton(
 ) {
     val multipleEventsCutter = remember { MultipleEventsCutter.get() }
 
-    Card(
+    Surface(
+        shape = MaterialTheme.shapes.small, shadowElevation = 1.dp, color = CustomTheme.colors.container,
         modifier = Modifier
             .testTag("create_note_button")
             .bounceClick()
@@ -46,10 +50,7 @@ fun FloatingActionButton(
                     multipleEventsCutter.processEvent { onClick() }
                 }
             },
-        elevation = 0.dp,
-        shape = RoundedCornerShape(15.dp),
         border = BorderStroke(if (isActive) 2.dp else 0.dp, CustomTheme.colors.primary),
-        backgroundColor = CustomTheme.colors.container,
         contentColor = CustomTheme.colors.text,
     ) {
         AnimatedContent(

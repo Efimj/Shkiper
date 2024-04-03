@@ -5,7 +5,7 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Icon
+import androidx.compose.material3.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -62,18 +62,20 @@ fun CustomBottomNavigationItem(properties: CustomBottomNavigationItem) {
 
 @Composable
 fun CustomBottomNavigation(items: List<CustomBottomNavigationItem>) {
-    Row(
-        modifier = Modifier
-            .clickable(enabled = false) {}
-            .height(DefaultNavigationValues().containerHeight)
-            .clip(shape = MaterialTheme.shapes.small)
-            .background(CustomTheme.colors.container)
-            .padding(4.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(6.dp)
-    ) {
-        items.forEach {
-            CustomBottomNavigationItem(properties = it)
+    Surface(shape = MaterialTheme.shapes.small, shadowElevation = 1.dp, color = Color.Transparent) {
+        Row(
+            modifier = Modifier
+                .clickable(enabled = false) {}
+                .height(DefaultNavigationValues().containerHeight)
+                .clip(shape = MaterialTheme.shapes.small)
+                .background(CustomTheme.colors.container)
+                .padding(4.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(6.dp)
+        ) {
+            items.forEach {
+                CustomBottomNavigationItem(properties = it)
+            }
         }
     }
 }

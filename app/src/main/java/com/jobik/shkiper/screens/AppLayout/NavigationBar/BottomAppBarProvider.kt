@@ -8,11 +8,13 @@ import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
@@ -112,22 +114,32 @@ private fun RowScope.CreateNoteFAN(
         enter = slideInHorizontally() + expandHorizontally(clip = false) + fadeIn(),
         exit = slideOutHorizontally() + shrinkHorizontally(clip = false) + fadeOut(),
     ) {
-        Row(modifier = Modifier.height(DefaultNavigationValues().containerHeight)) {
+
+        Row {
             Spacer(modifier = Modifier.width(10.dp))
-            Row(
-                modifier = Modifier
-                    .aspectRatio(1f)
-                    .clip(shape = MaterialTheme.shapes.small)
-                    .background(CustomTheme.colors.primary)
-                    .clickable { createNewNote(scope = scope, viewModel = viewModel, navController = navController) },
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.Add,
-                    contentDescription = stringResource(R.string.CreateNote),
-                    tint = CustomTheme.colors.onPrimary,
-                )
+            Surface(shape = MaterialTheme.shapes.small, shadowElevation = 1.dp, color = Color.Transparent) {
+                Row(
+                    modifier = Modifier
+                        .height(DefaultNavigationValues().containerHeight)
+                        .aspectRatio(1f)
+                        .clip(shape = MaterialTheme.shapes.small)
+                        .background(CustomTheme.colors.primary)
+                        .clickable {
+                            createNewNote(
+                                scope = scope,
+                                viewModel = viewModel,
+                                navController = navController
+                            )
+                        },
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.Add,
+                        contentDescription = stringResource(R.string.CreateNote),
+                        tint = CustomTheme.colors.onPrimary,
+                    )
+                }
             }
         }
     }
