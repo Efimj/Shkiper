@@ -3,7 +3,6 @@ package com.jobik.shkiper.screens.NoteScreen
 import android.annotation.SuppressLint
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.*
@@ -45,8 +44,15 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun NoteScreenFooter(navController: NavController, noteViewModel: NoteViewModel, richTextState: RichTextState) {
     val backgroundColor by animateColorAsState(
-        if (noteViewModel.screenState.value.isBottomAppBarHover) CustomTheme.colors.container else CustomTheme.colors.background,
-        animationSpec = tween(200),
+        if (noteViewModel.screenState.value.isBottomAppBarHover || noteViewModel.screenState.value.isStyling) CustomTheme.colors.secondaryContainer else CustomTheme.colors.background,
+        label = "backgroundColor",
+    )
+
+    val contentColorValue =
+        if (noteViewModel.screenState.value.isBottomAppBarHover || noteViewModel.screenState.value.isStyling) CustomTheme.colors.onSecondaryContainer else CustomTheme.colors.textSecondary
+
+    val contentColor by animateColorAsState(
+        contentColorValue, label = "contentColor",
     )
 
     val shadowElevation = animateDpAsState(
@@ -85,7 +91,7 @@ fun NoteScreenFooter(navController: NavController, noteViewModel: NoteViewModel,
                             Icon(
                                 imageVector = Icons.Outlined.TextFormat,
                                 contentDescription = "",
-                                tint = if (noteViewModel.screenState.value.isStyling && noteViewModel.screenState.value.isStylingEnabled) CustomTheme.colors.text else CustomTheme.colors.textSecondary,
+                                tint = if (noteViewModel.screenState.value.isStyling && noteViewModel.screenState.value.isStylingEnabled) CustomTheme.colors.text else contentColor,
                             )
                         }
                     }
@@ -97,7 +103,7 @@ fun NoteScreenFooter(navController: NavController, noteViewModel: NoteViewModel,
                                 .padding(horizontal = 10.dp)
                                 .basicMarquee(),
                             style = MaterialTheme.typography.body1.copy(fontSize = 14.sp),
-                            color = CustomTheme.colors.textSecondary
+                            color = contentColor
                         )
                     } else {
                         Row(
@@ -114,7 +120,7 @@ fun NoteScreenFooter(navController: NavController, noteViewModel: NoteViewModel,
                                 Icon(
                                     painter = painterResource(id = R.drawable.undo_fill0_wght400_grad0_opsz24),
                                     contentDescription = stringResource(R.string.GoBack),
-                                    tint = if (noteViewModel.screenState.value.currentIntermediateIndex > 0) CustomTheme.colors.text else CustomTheme.colors.textSecondary,
+                                    tint = if (noteViewModel.screenState.value.currentIntermediateIndex > 0) CustomTheme.colors.text else contentColor,
                                 )
                             }
                             IconButton(
@@ -127,7 +133,7 @@ fun NoteScreenFooter(navController: NavController, noteViewModel: NoteViewModel,
                                 Icon(
                                     painter = painterResource(id = R.drawable.redo_fill0_wght400_grad0_opsz24),
                                     contentDescription = stringResource(R.string.GoForward),
-                                    tint = if (noteViewModel.screenState.value.currentIntermediateIndex < noteViewModel.screenState.value.intermediateStates.size - 1) CustomTheme.colors.text else CustomTheme.colors.textSecondary,
+                                    tint = if (noteViewModel.screenState.value.currentIntermediateIndex < noteViewModel.screenState.value.intermediateStates.size - 1) CustomTheme.colors.text else contentColor,
                                 )
                             }
                         }
@@ -190,8 +196,8 @@ fun NoteScreenFooter(navController: NavController, noteViewModel: NoteViewModel,
                             ) {
                                 Icon(
                                     imageVector = Icons.Outlined.MoreVert,
-                                    contentDescription = stringResource(R.string.AddToBasket),
-                                    tint = CustomTheme.colors.textSecondary
+                                    contentDescription = stringResource(R.string.Open),
+                                    tint = contentColor
                                 )
                             }
                         }

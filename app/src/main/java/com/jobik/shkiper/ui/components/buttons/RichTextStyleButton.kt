@@ -4,55 +4,20 @@ import androidx.annotation.DrawableRes
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.jobik.shkiper.ui.theme.CustomTheme
-
-@Composable
-fun RichTextStyleButton(
-    isActive: Boolean,
-    onClick: () -> Unit,
-    icon: ImageVector,
-    contentDescription: String = "",
-) {
-    Card(
-        modifier = Modifier
-            .size(30.dp)
-            .clip(RoundedCornerShape(5.dp))
-            .clickable(
-                indication = null,
-                interactionSource = remember { MutableInteractionSource() },
-                onClick = onClick
-            )
-            .focusProperties { canFocus = false },
-        elevation = 0.dp,
-        shape = RoundedCornerShape(5.dp),
-        border = BorderStroke(0.dp, Color.Transparent),
-        backgroundColor = if (isActive) CustomTheme.colors.primary else Color.Transparent,
-        contentColor = if (isActive) CustomTheme.colors.onPrimary else CustomTheme.colors.textSecondary,
-    ) {
-        Icon(
-            modifier = Modifier.padding(2.dp),
-            imageVector = icon,
-            contentDescription = contentDescription,
-            tint = if (isActive) CustomTheme.colors.onPrimary else CustomTheme.colors.textSecondary
-        )
-    }
-}
+import androidx.compose.material3.*
+import androidx.compose.ui.Alignment
 
 @Composable
 fun RichTextStyleButton(
@@ -62,7 +27,7 @@ fun RichTextStyleButton(
     contentDescription: String = "",
 ) {
     val buttonContentColor: Color by animateColorAsState(
-        targetValue = if (isActive) CustomTheme.colors.onPrimary else CustomTheme.colors.textSecondary,
+        targetValue = if (isActive) CustomTheme.colors.onPrimary else CustomTheme.colors.onSecondaryContainer,
         label = "buttonContentColor"
     )
 
@@ -77,17 +42,20 @@ fun RichTextStyleButton(
             .clip(RoundedCornerShape(5.dp))
             .clickable(onClick = onClick)
             .focusProperties { canFocus = false },
-        elevation = 0.dp,
         shape = RoundedCornerShape(5.dp),
-        border = BorderStroke(0.dp, Color.Transparent),
-        backgroundColor = buttonBackgroundColor,
-        contentColor = buttonContentColor,
+        border = null,
+        colors = CardDefaults.cardColors(contentColor = buttonContentColor, containerColor = buttonBackgroundColor),
     ) {
-        Icon(
-            modifier = Modifier.padding(2.dp),
-            painter = painterResource(id = icon),
-            contentDescription = contentDescription,
-            tint = if (isActive) CustomTheme.colors.onPrimary else CustomTheme.colors.textSecondary
-        )
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                modifier = Modifier.padding(2.dp),
+                painter = painterResource(id = icon),
+                contentDescription = contentDescription,
+                tint = buttonContentColor
+            )
+        }
     }
 }

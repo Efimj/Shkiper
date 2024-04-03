@@ -40,8 +40,8 @@ fun CustomTopAppBar(
     isVisible: Boolean = true,
     text: String = "",
     counter: Int? = null,
-    backgroundColor: Color = CustomTheme.colors.container,
-    contentColor: Color = CustomTheme.colors.textSecondary,
+    backgroundColor: Color = CustomTheme.colors.secondaryContainer,
+    contentColor: Color = CustomTheme.colors.onSecondaryContainer,
     navigation: TopAppBarItem,
     items: List<TopAppBarItem>
 ) {
@@ -89,7 +89,7 @@ fun CustomTopAppBar(
                     Icon(
                         imageVector = navigation.icon,
                         contentDescription = stringResource(navigation.iconDescription),
-                        tint = if (navigation.isActive) CustomTheme.colors.text else CustomTheme.colors.textSecondary,
+                        tint = if (navigation.isActive) CustomTheme.colors.text else contentColor,
                     )
                 }
             },
@@ -102,7 +102,7 @@ fun CustomTopAppBar(
                         Icon(
                             imageVector = item.icon,
                             contentDescription = stringResource(item.iconDescription),
-                            tint = if (item.isActive) CustomTheme.colors.text else CustomTheme.colors.textSecondary,
+                            tint = if (navigation.isActive) CustomTheme.colors.text else contentColor,
                         )
                     }
                 }

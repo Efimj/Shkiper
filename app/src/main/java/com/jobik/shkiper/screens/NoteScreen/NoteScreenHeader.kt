@@ -31,10 +31,17 @@ import com.mohamedrejeb.richeditor.model.RichTextState
 @Composable
 fun NoteScreenHeader(navController: NavController, noteViewModel: NoteViewModel, richTextState: RichTextState) {
     val backgroundColorValue =
-        if (noteViewModel.screenState.value.isTopAppBarHover) CustomTheme.colors.container else CustomTheme.colors.background
+        if (noteViewModel.screenState.value.isTopAppBarHover || noteViewModel.screenState.value.isStyling) CustomTheme.colors.secondaryContainer else CustomTheme.colors.background
 
     val backgroundColor by animateColorAsState(
-        backgroundColorValue, animationSpec = tween(200),
+        backgroundColorValue, label = "backgroundColor",
+    )
+
+    val contentColorValue =
+        if (noteViewModel.screenState.value.isTopAppBarHover || noteViewModel.screenState.value.isStyling) CustomTheme.colors.onSecondaryContainer else CustomTheme.colors.textSecondary
+
+    val contentColor by animateColorAsState(
+        contentColorValue, label = "contentColor",
     )
 
     val shadowElevation = animateDpAsState(
@@ -61,6 +68,7 @@ fun NoteScreenHeader(navController: NavController, noteViewModel: NoteViewModel,
                         barHeight = with(localDensity) { coordinates.size.height.toDp() }
                     },
                     backgroundColor = Color.Transparent,
+                    contentColor = contentColor,
                     navigation = TopAppBarItem(
                         icon = Icons.Default.ArrowBack,
                         iconDescription = R.string.GoBack,
