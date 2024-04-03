@@ -74,7 +74,7 @@ fun SettingsItem(
             Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.Center) {
                 Text(
                     text = title,
-                    fontSize = 18.sp,
+                    style = MaterialTheme.typography.titleMedium,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     color = foregroundColor
@@ -84,7 +84,7 @@ fun SettingsItem(
                 if (description !== null)
                     Text(
                         text = description,
-                        fontSize = 14.sp,
+                        style = MaterialTheme.typography.bodySmall,
                         overflow = TextOverflow.Ellipsis,
                         color = foregroundSecondaryColor
                     )

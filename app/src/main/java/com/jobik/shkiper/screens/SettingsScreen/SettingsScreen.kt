@@ -13,7 +13,7 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.outlined.*
@@ -76,11 +76,10 @@ private fun InformationSettings() {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp),
-            fontSize = 16.sp,
             color = CustomTheme.colors.primary,
             text = stringResource(R.string.Information),
             fontWeight = FontWeight.SemiBold,
-            style = MaterialTheme.typography.body2,
+            style = MaterialTheme.typography.titleLarge,
         )
         Row(
             Modifier
@@ -101,7 +100,7 @@ private fun InformationSettings() {
                 color = CustomTheme.colors.textSecondary,
                 fontSize = 16.sp,
                 lineHeight = 24.sp,
-                style = MaterialTheme.typography.body1,
+                style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.fillMaxWidth()
             )
         }
@@ -118,11 +117,10 @@ private fun DevSupportSettings(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp),
-            fontSize = 16.sp,
             color = CustomTheme.colors.primary,
             text = stringResource(R.string.Support),
             fontWeight = FontWeight.SemiBold,
-            style = MaterialTheme.typography.body2,
+            style = MaterialTheme.typography.titleLarge,
         )
         Spacer(Modifier.height(8.dp))
         SettingsItem(
@@ -147,11 +145,10 @@ private fun OtherSettings(navController: NavController) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp),
-            fontSize = 16.sp,
             color = CustomTheme.colors.primary,
             text = stringResource(R.string.Other),
             fontWeight = FontWeight.SemiBold,
-            style = MaterialTheme.typography.body2,
+            style = MaterialTheme.typography.titleLarge,
         )
         Spacer(Modifier.height(8.dp))
         SettingsItem(
@@ -191,11 +188,10 @@ private fun BackupSettings(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp),
-            fontSize = 16.sp,
             color = CustomTheme.colors.primary,
             text = stringResource(R.string.Backup),
             fontWeight = FontWeight.SemiBold,
-            style = MaterialTheme.typography.body2,
+            style = MaterialTheme.typography.titleLarge,
         )
         Spacer(Modifier.height(8.dp))
 
@@ -277,11 +273,10 @@ private fun ProgramSettings(settingsViewModel: SettingsViewModel) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp),
-            fontSize = 16.sp,
             color = CustomTheme.colors.primary,
             text = stringResource(R.string.Application),
             fontWeight = FontWeight.SemiBold,
-            style = MaterialTheme.typography.body2,
+            style = MaterialTheme.typography.titleLarge,
         )
         Spacer(Modifier.height(8.dp))
         SettingsItem(
@@ -294,7 +289,7 @@ private fun ProgramSettings(settingsViewModel: SettingsViewModel) {
                 onClick = { settingsViewModel.toggleAppTheme() },
                 thumbContent = if (ThemeUtil.isDarkMode.value == true) {
                     {
-                        androidx.compose.material3.Icon(
+                        Icon(
                             imageVector = Icons.Outlined.LightMode,
                             contentDescription = null,
                             modifier = Modifier.size(SwitchDefaults.IconSize),
@@ -302,7 +297,7 @@ private fun ProgramSettings(settingsViewModel: SettingsViewModel) {
                     }
                 } else {
                     {
-                        androidx.compose.material3.Icon(
+                        Icon(
                             imageVector = Icons.Default.DarkMode,
                             contentDescription = null,
                             modifier = Modifier.size(SwitchDefaults.IconSize),
@@ -332,8 +327,7 @@ private fun SettingsColorThemePicker(settingsViewModel: SettingsViewModel) {
             modifier = Modifier.padding(start = 65.dp),
             color = CustomTheme.colors.text,
             text = stringResource(R.string.ApplicationColors),
-            fontSize = 18.sp,
-            style = MaterialTheme.typography.body1,
+            style = MaterialTheme.typography.titleMedium,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
@@ -402,7 +396,7 @@ private fun SettingsItemSelectLanguage(settingsViewModel: SettingsViewModel) {
                 settingsViewModel.selectLocalization(it)
                 recreateActivity(context, coroutineScope)
             }) {
-            androidx.compose.material3.Text(
+            Text(
                 text = currentLanguage.getLocalizedValue(context),
                 fontSize = 18.sp,
                 maxLines = 1,
