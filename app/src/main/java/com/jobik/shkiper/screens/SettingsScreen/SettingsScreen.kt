@@ -396,10 +396,10 @@ private fun SettingsItemSelectLanguage(settingsViewModel: SettingsViewModel) {
             }) {
             Text(
                 text = currentLanguage.getLocalizedValue(context),
-                fontSize = 18.sp,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                color = AppTheme.colors.primary
+                color = AppTheme.colors.primary,
+                style = MaterialTheme.typography.titleMedium
             )
         }
     }
