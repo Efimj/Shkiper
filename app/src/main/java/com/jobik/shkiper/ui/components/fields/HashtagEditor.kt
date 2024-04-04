@@ -435,7 +435,7 @@ private fun TagsPresentation(
                 .fillMaxWidth()
                 .animateContentSize()
                 .clickable(
-                    interactionSource = MutableInteractionSource(),
+                    interactionSource =  remember { MutableInteractionSource() }, // This is mandatory,
                     indication = null
                 ) { setEditMode() },
             horizontalArrangement = Arrangement.spacedBy(8.dp),
