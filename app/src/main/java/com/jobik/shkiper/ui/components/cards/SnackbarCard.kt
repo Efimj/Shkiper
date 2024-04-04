@@ -3,12 +3,10 @@ package com.jobik.shkiper.ui.components.cards
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -23,27 +21,30 @@ import com.jobik.shkiper.util.SnackbarVisualsCustom
 fun SnackbarCard(snackbarData: SnackbarVisualsCustom) {
     Box(modifier = Modifier.padding(16.dp)) {
         Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(15.dp)),
-            elevation = 6.dp,
-            shape = RoundedCornerShape(15.dp),
-            backgroundColor = AppTheme.colors.container,
-            contentColor = AppTheme.colors.text,
+            modifier = Modifier.fillMaxWidth(),
+            elevation = CardDefaults.elevatedCardElevation(),
+            colors = CardDefaults.cardColors(
+                contentColor = AppTheme.colors.onSecondaryContainer,
+                containerColor = AppTheme.colors.secondaryContainer
+            )
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.basicMarquee().padding(start = 17.dp).padding(horizontal = 13.dp).weight(1f)
+                    modifier = Modifier
+                        .basicMarquee()
+                        .padding(start = 17.dp)
+                        .padding(horizontal = 13.dp)
+                        .weight(1f)
                 ) {
                     if (snackbarData.icon != null) {
                         Icon(
-                            tint = AppTheme.colors.textSecondary,
+                            tint = AppTheme.colors.onSecondaryContainer,
                             imageVector = snackbarData.icon,
                             contentDescription = stringResource(R.string.Event),
-                            modifier = Modifier.padding(vertical = 13.dp)
+                            modifier = Modifier.padding(vertical = 12.dp)
                         )
                         Spacer(Modifier.width(10.dp))
                     }
@@ -51,9 +52,9 @@ fun SnackbarCard(snackbarData: SnackbarVisualsCustom) {
                         text = snackbarData.message,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-                        style = MaterialTheme.typography.body1,
-                        color = AppTheme.colors.text,
-                        modifier = Modifier.padding(vertical = 13.dp)
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = AppTheme.colors.onSecondaryContainer,
+                        modifier = Modifier.padding(vertical = 12.dp)
                     )
                     Spacer(Modifier.width(13.dp))
                 }
