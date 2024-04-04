@@ -2,7 +2,7 @@ package com.jobik.shkiper.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val baseLightColorsHeightContrast = CustomThemeColors(
+private val baseLightColorsHeightContrast = CustomThemeColors(
     primary = Color(0xFF6D6AFF),
     background = Color(0xFFFFFFFF),
     container = Color(0xFFF2F2F2),
@@ -14,7 +14,7 @@ val baseLightColorsHeightContrast = CustomThemeColors(
     onSecondaryContainer = Color(0xFF2C2C2C),
 )
 
-val baseDarkColorsHeightContrast = CustomThemeColors(
+private val baseDarkColorsHeightContrast = CustomThemeColors(
     primary = Color(0xFF6D6AFF),
     background = Color(0xFF0F0F0F),
     container = Color(0xFF191919),
@@ -26,7 +26,7 @@ val baseDarkColorsHeightContrast = CustomThemeColors(
     onSecondaryContainer = Color(0xFFF1F1F1),
 )
 
-val baseLightColorsLowContrast = CustomThemeColors(
+private val baseLightColorsLowContrast = CustomThemeColors(
     primary = Color(0xFF6D6AFF),
     background = Color(0xFFFFFFFF),
     container = Color(0xFFF7F7F7),
@@ -38,7 +38,7 @@ val baseLightColorsLowContrast = CustomThemeColors(
     onSecondaryContainer = Color(0xFF2C2C2C),
 )
 
-val baseDarkColorsLowContrast = CustomThemeColors(
+private val baseDarkColorsLowContrast = CustomThemeColors(
     primary = Color(0xFF6D6AFF),
     background = Color(0xFF1A1A1A),
     container = Color(0xFF242424),
