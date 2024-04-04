@@ -49,7 +49,7 @@ fun ScreenCalendarTopBar(
     Column(
         modifier = Modifier
             .clip(RoundedCornerShape(bottomStart = 10.dp, bottomEnd = 10.dp))
-            .background(AppTheme.colors.container)
+            .background(AppTheme.colors.secondaryContainer)
             .padding(bottom = 10.dp),
         verticalArrangement = Arrangement.spacedBy(5.dp)
     ) {
