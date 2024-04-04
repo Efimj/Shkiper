@@ -13,10 +13,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.LabelOff
 import androidx.compose.material.icons.outlined.NewLabel
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -58,7 +55,7 @@ fun TagEditor(
     val isChanged = selectedTags != newSelectedTags.value.toTagsSet()
 
     Column(modifier = modifier.clickable(
-        interactionSource = MutableInteractionSource(),
+        interactionSource =  remember { MutableInteractionSource() }, // This is mandatory
         indication = null
     ) { if (enabled) editModeEnabled.value = true })
     {
@@ -210,7 +207,9 @@ private fun TagsList(
     ) {
         AnimatedVisibility(visible = createdTags.value.isNotEmpty()) {
             TagGroup(
-                modifier = Modifier.padding(horizontal = 20.dp),
+                modifier = Modifier
+                    .padding(horizontal = 20.dp)
+                    .padding(top = 10.dp),
                 header = stringResource(R.string.New),
                 tags = createdTags.value,
                 selected = newSelectedTags.value.toTagsSet()
@@ -220,29 +219,29 @@ private fun TagsList(
         }
 
         AnimatedVisibility(visible = selectedTags.isNotEmpty()) {
-            Column {
-                TagGroup(
-                    modifier = Modifier.padding(horizontal = 20.dp),
-                    header = stringResource(R.string.Selected),
-                    tags = selectedTags,
-                    selected = newSelectedTags.value.toTagsSet()
-                ) {
-                    newSelectedTags.value = it.toTagsString()
-                }
+            TagGroup(
+                modifier = Modifier
+                    .padding(horizontal = 20.dp)
+                    .padding(top = 10.dp),
+                header = stringResource(R.string.Selected),
+                tags = selectedTags,
+                selected = newSelectedTags.value.toTagsSet()
+            ) {
+                newSelectedTags.value = it.toTagsString()
             }
         }
 
         val otherTags = allTags - selectedTags
         AnimatedVisibility(visible = otherTags.isNotEmpty()) {
-            Column {
-                TagGroup(
-                    modifier = Modifier.padding(horizontal = 20.dp),
-                    header = stringResource(R.string.All),
-                    tags = otherTags,
-                    selected = newSelectedTags.value.toTagsSet()
-                ) {
-                    newSelectedTags.value = it.toTagsString()
-                }
+            TagGroup(
+                modifier = Modifier
+                    .padding(horizontal = 20.dp)
+                    .padding(top = 10.dp),
+                header = stringResource(R.string.All),
+                tags = otherTags,
+                selected = newSelectedTags.value.toTagsSet()
+            ) {
+                newSelectedTags.value = it.toTagsString()
             }
         }
         Spacer(modifier = Modifier.height(contentBottomPadding.value))
@@ -399,7 +398,7 @@ private fun TagGroup(
                 color = CustomTheme.colors.textSecondary
             )
         }
-        Spacer(modifier = Modifier.height(10.dp))
+        Spacer(modifier = Modifier.height(4.dp))
         FlowRow(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
