@@ -33,11 +33,11 @@ data class DefaultNavigationValues(
 @Composable
 fun CustomBottomNavigationItem(properties: CustomBottomNavigationItem) {
     val contentColorValue =
-        if (properties.isSelected) AppTheme.colors.onPrimary else AppTheme.colors.textSecondary
+        if (properties.isSelected) AppTheme.colors.onSecondaryContainer else AppTheme.colors.textSecondary
     val contentColor = animateColorAsState(targetValue = contentColorValue, label = "backgroundColor")
 
     val backgroundColorValue =
-        if (properties.isSelected) AppTheme.colors.primary.copy(alpha = .5f) else Color.Transparent
+        if (properties.isSelected) AppTheme.colors.secondaryContainer else Color.Transparent
     val backgroundColor = animateColorAsState(targetValue = backgroundColorValue, label = "backgroundColor")
 
     Row(
