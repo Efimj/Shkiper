@@ -332,19 +332,17 @@ private fun SettingsColorThemePicker(settingsViewModel: SettingsViewModel) {
             overflow = TextOverflow.Ellipsis
         )
         Spacer(Modifier.height(6.dp))
-        LazyRow(state = rememberLazyListState(), contentPadding = PaddingValues(start = 20.dp)) {
+        LazyRow(
+            state = rememberLazyListState(),
+            contentPadding = PaddingValues(start = 20.dp),
+            horizontalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
             items(colorValues.size) { theme ->
-                Box(
-                    Modifier
-                        .padding(end = 10.dp)
-                        .height(70.dp)
-                        .width(55.dp)) {
-                    ThemePreview(
-                        colors = colorValues[theme],
-                        selected = colorValuesName[theme].name == selectedThemeName
-                    ) {
-                        settingsViewModel.selectColorTheme(theme = colorValuesName[theme])
-                    }
+                ThemePreview(
+                    colors = colorValues[theme],
+                    selected = colorValuesName[theme].name == selectedThemeName
+                ) {
+                    settingsViewModel.selectColorTheme(theme = colorValuesName[theme])
                 }
             }
         }
