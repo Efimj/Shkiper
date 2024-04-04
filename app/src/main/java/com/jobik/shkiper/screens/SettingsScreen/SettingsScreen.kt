@@ -41,7 +41,7 @@ import com.jobik.shkiper.ui.components.cards.SettingsItem
 import com.jobik.shkiper.ui.components.cards.ThemePreview
 import com.jobik.shkiper.ui.helpers.allWindowInsetsPadding
 import com.jobik.shkiper.ui.modifiers.circularRotation
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 import com.jobik.shkiper.ui.theme.CustomThemeStyle
 import com.jobik.shkiper.util.ThemeUtil
 import kotlinx.coroutines.CoroutineScope
@@ -53,7 +53,7 @@ fun SettingsScreen(navController: NavController, settingsViewModel: SettingsView
     Column(
         Modifier
             .fillMaxSize()
-            .background(CustomTheme.colors.background)
+            .background(AppTheme.colors.background)
             .verticalScroll(rememberScrollState())
             .allWindowInsetsPadding(),
         verticalArrangement = Arrangement.Center,
@@ -76,7 +76,7 @@ private fun InformationSettings() {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp),
-            color = CustomTheme.colors.primary,
+            color = AppTheme.colors.primary,
             text = stringResource(R.string.Information),
             fontWeight = FontWeight.SemiBold,
             style = MaterialTheme.typography.titleLarge,
@@ -92,12 +92,12 @@ private fun InformationSettings() {
             Icon(
                 imageVector = Icons.Outlined.Info,
                 contentDescription = stringResource(R.string.Info),
-                tint = CustomTheme.colors.textSecondary
+                tint = AppTheme.colors.textSecondary
             )
             Spacer(Modifier.width(20.dp))
             Text(
                 text = stringResource(R.string.AppDataPolitics),
-                color = CustomTheme.colors.textSecondary,
+                color = AppTheme.colors.textSecondary,
                 fontSize = 16.sp,
                 lineHeight = 24.sp,
                 style = MaterialTheme.typography.bodyMedium,
@@ -117,7 +117,7 @@ private fun DevSupportSettings(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp),
-            color = CustomTheme.colors.primary,
+            color = AppTheme.colors.primary,
             text = stringResource(R.string.Support),
             fontWeight = FontWeight.SemiBold,
             style = MaterialTheme.typography.titleLarge,
@@ -145,7 +145,7 @@ private fun OtherSettings(navController: NavController) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp),
-            color = CustomTheme.colors.primary,
+            color = AppTheme.colors.primary,
             text = stringResource(R.string.Other),
             fontWeight = FontWeight.SemiBold,
             style = MaterialTheme.typography.titleLarge,
@@ -188,7 +188,7 @@ private fun BackupSettings(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp),
-            color = CustomTheme.colors.primary,
+            color = AppTheme.colors.primary,
             text = stringResource(R.string.Backup),
             fontWeight = FontWeight.SemiBold,
             style = MaterialTheme.typography.titleLarge,
@@ -206,7 +206,7 @@ private fun BackupSettings(
             onClick = { settingsViewModel.saveLocalBackup() }
         ) {
             val iconColor =
-                if (settingsViewModel.settingsScreenState.value.isLocalBackupSaving) CustomTheme.colors.onPrimary else CustomTheme.colors.text
+                if (settingsViewModel.settingsScreenState.value.isLocalBackupSaving) AppTheme.colors.onPrimary else AppTheme.colors.text
             val contentColor = remember { Animatable(iconColor) }
 
             LaunchedEffect(settingsViewModel.settingsScreenState.value.isLocalBackupSaving) {
@@ -239,7 +239,7 @@ private fun BackupSettings(
             onClick = { fileSearch.launch(arrayOf("*/*")) }
         ) {
             val iconColor =
-                if (settingsViewModel.settingsScreenState.value.isLocalBackupUploading) CustomTheme.colors.onPrimary else CustomTheme.colors.text
+                if (settingsViewModel.settingsScreenState.value.isLocalBackupUploading) AppTheme.colors.onPrimary else AppTheme.colors.text
             val contentColor = remember { Animatable(iconColor) }
 
             LaunchedEffect(settingsViewModel.settingsScreenState.value.isLocalBackupUploading) {
@@ -273,7 +273,7 @@ private fun ProgramSettings(settingsViewModel: SettingsViewModel) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp),
-            color = CustomTheme.colors.primary,
+            color = AppTheme.colors.primary,
             text = stringResource(R.string.Application),
             fontWeight = FontWeight.SemiBold,
             style = MaterialTheme.typography.titleLarge,
@@ -325,7 +325,7 @@ private fun SettingsColorThemePicker(settingsViewModel: SettingsViewModel) {
     ) {
         Text(
             modifier = Modifier.padding(start = 65.dp),
-            color = CustomTheme.colors.text,
+            color = AppTheme.colors.text,
             text = stringResource(R.string.ApplicationColors),
             style = MaterialTheme.typography.titleMedium,
             maxLines = 1,
@@ -358,12 +358,12 @@ private fun SettingsItemGroup(setAccent: Boolean = false, columnScope: @Composab
         modifier = Modifier
             .widthIn(max = 500.dp)
             .padding(horizontal = 10.dp)
-            .clip(CustomTheme.shapes.large)
-            .background(CustomTheme.colors.container)
+            .clip(AppTheme.shapes.large)
+            .background(AppTheme.colors.container)
             .border(
                 width = if (setAccent) 2.dp else 0.dp,
-                shape = CustomTheme.shapes.large,
-                color = if (setAccent) CustomTheme.colors.primary else Color.Transparent
+                shape = AppTheme.shapes.large,
+                color = if (setAccent) AppTheme.colors.primary else Color.Transparent
             )
             .padding(top = 13.dp, bottom = 7.dp),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -401,7 +401,7 @@ private fun SettingsItemSelectLanguage(settingsViewModel: SettingsViewModel) {
                 fontSize = 18.sp,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                color = CustomTheme.colors.primary
+                color = AppTheme.colors.primary
             )
         }
     }

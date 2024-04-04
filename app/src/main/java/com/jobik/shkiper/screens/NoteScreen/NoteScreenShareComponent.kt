@@ -24,7 +24,7 @@ import com.jobik.shkiper.R
 import com.jobik.shkiper.helpers.TextHelper
 import com.jobik.shkiper.ui.components.cards.SettingsItem
 import com.jobik.shkiper.ui.components.modals.ShareNoteDialog
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 import com.mohamedrejeb.richeditor.model.RichTextState
 import kotlinx.coroutines.launch
 
@@ -52,15 +52,15 @@ fun NoteScreenShareComponent(
             sheetState = shareSheetState,
             dragHandle = null,
             containerColor = Color.Transparent,
-            contentColor = CustomTheme.colors.text,
+            contentColor = AppTheme.colors.text,
             windowInsets = WindowInsets.ime,
             onDismissRequest = { noteViewModel.switchShowShareDialog(mode = false) }
         ) {
             Spacer(modifier = Modifier.windowInsetsPadding(topInsets))
             Surface(
                 shape = BottomSheetDefaults.ExpandedShape,
-                contentColor = CustomTheme.colors.text,
-                color = CustomTheme.colors.background,
+                contentColor = AppTheme.colors.text,
+                color = AppTheme.colors.background,
                 tonalElevation = BottomSheetDefaults.Elevation,
             ) {
                 Column(

@@ -37,7 +37,7 @@ import com.jobik.shkiper.ui.components.layouts.ScreenWrapper
 import com.jobik.shkiper.ui.components.modals.ImageActionDialog
 import com.jobik.shkiper.ui.components.modals.ImageActionDialogButton
 import com.jobik.shkiper.ui.helpers.allWindowInsetsPadding
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 import kotlin.random.Random
 
 @Composable
@@ -73,13 +73,13 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 15.dp, start = 10.dp, end = 10.dp)
-                    .clip(CustomTheme.shapes.large)
-                    .background(CustomTheme.colors.container)
+                    .clip(AppTheme.shapes.large)
+                    .background(AppTheme.colors.container)
                     .padding(start = 20.dp, end = 20.dp, top = 10.dp, bottom = 15.dp),
             ) {
                 Text(
                     stringResource(R.string.PurchaseScreenTitle),
-                    color = CustomTheme.colors.text,
+                    color = AppTheme.colors.text,
                     style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Bold),
                     textAlign = TextAlign.Center,
                     modifier = Modifier
@@ -88,7 +88,7 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
                 )
                 Text(
                     text = stringResource(R.string.PurchaseScreenDescription),
-                    color = CustomTheme.colors.textSecondary,
+                    color = AppTheme.colors.textSecondary,
                     fontSize = 16.sp,
                     lineHeight = 24.sp,
                     style = MaterialTheme.typography.body1,
@@ -97,7 +97,7 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
             }
             Text(
                 stringResource(R.string.BuyMe),
-                color = CustomTheme.colors.textSecondary,
+                color = AppTheme.colors.textSecondary,
                 style = MaterialTheme.typography.h6,
                 textAlign = TextAlign.Left,
                 modifier = Modifier
@@ -158,7 +158,7 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
                 ) {
                     Text(
                         stringResource(R.string.BuySubscription),
-                        color = CustomTheme.colors.textSecondary,
+                        color = AppTheme.colors.textSecondary,
                         style = MaterialTheme.typography.h6,
                         textAlign = TextAlign.Left,
                         modifier = Modifier
@@ -170,7 +170,7 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
                         Icon(
                             imageVector = Icons.Outlined.TaskAlt,
                             contentDescription = null,
-                            tint = CustomTheme.colors.primary,
+                            tint = AppTheme.colors.primary,
                         )
                 }
                 Row(

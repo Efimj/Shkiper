@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import com.jobik.shkiper.database.data.note.NoteMongoRepository
 import com.jobik.shkiper.database.models.Note
 import com.jobik.shkiper.helpers.IntentHelper
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 import com.jobik.shkiper.ui.theme.CustomThemeStyle
 import com.jobik.shkiper.ui.theme.ShkiperTheme
 import com.jobik.shkiper.util.ThemeUtil
@@ -50,7 +50,7 @@ class ShareReceiverActivity : AppCompatActivity() {
                 Box(
                     Modifier
                         .fillMaxSize()
-                        .background(CustomTheme.colors.background)
+                        .background(AppTheme.colors.background)
                 ) {
                     NoteSelectionScreen {
                         handleSelectNote(note = it)

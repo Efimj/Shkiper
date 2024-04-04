@@ -42,7 +42,7 @@ import com.jobik.shkiper.ui.helpers.endWindowInsetsPadding
 import com.jobik.shkiper.ui.helpers.rememberNextReminder
 import com.jobik.shkiper.ui.helpers.startWindowInsetsPadding
 import com.jobik.shkiper.ui.modifiers.scrollConnectionToProvideVisibility
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 import com.jobik.shkiper.viewmodels.NotesViewModel
 
 @Composable
@@ -59,7 +59,7 @@ fun NoteListScreenContent(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(CustomTheme.colors.background)
+            .background(AppTheme.colors.background)
             .scrollConnectionToProvideVisibility(visible = isSearchBarVisible)
     ) {
         if (viewModel.screenState.value.isNotesInitialized && viewModel.screenState.value.notes.isEmpty())
@@ -152,7 +152,7 @@ private fun NotesListContent(
                 Column {
                     Text(
                         stringResource(R.string.Pinned),
-                        color = CustomTheme.colors.textSecondary,
+                        color = AppTheme.colors.textSecondary,
                         style = MaterialTheme.typography.body1.copy(fontSize = 17.sp),
                         modifier = Modifier.padding(horizontal = 10.dp)
                     )
@@ -176,7 +176,7 @@ private fun NotesListContent(
             item(span = StaggeredGridItemSpan.FullLine) {
                 Text(
                     stringResource(R.string.Other),
-                    color = CustomTheme.colors.textSecondary,
+                    color = AppTheme.colors.textSecondary,
                     style = MaterialTheme.typography.body1.copy(fontSize = 17.sp),
                     modifier = Modifier.padding(horizontal = 10.dp)
                 )

@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import com.jobik.shkiper.R
 import com.jobik.shkiper.ui.components.buttons.ButtonStyle
 import com.jobik.shkiper.ui.components.buttons.CustomButton
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 import com.jobik.shkiper.util.SnackbarVisualsCustom
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -28,8 +28,8 @@ fun SnackbarCard(snackbarData: SnackbarVisualsCustom) {
                 .clip(RoundedCornerShape(15.dp)),
             elevation = 6.dp,
             shape = RoundedCornerShape(15.dp),
-            backgroundColor = CustomTheme.colors.container,
-            contentColor = CustomTheme.colors.text,
+            backgroundColor = AppTheme.colors.container,
+            contentColor = AppTheme.colors.text,
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically
@@ -40,7 +40,7 @@ fun SnackbarCard(snackbarData: SnackbarVisualsCustom) {
                 ) {
                     if (snackbarData.icon != null) {
                         Icon(
-                            tint = CustomTheme.colors.textSecondary,
+                            tint = AppTheme.colors.textSecondary,
                             imageVector = snackbarData.icon,
                             contentDescription = stringResource(R.string.Event),
                             modifier = Modifier.padding(vertical = 13.dp)
@@ -52,7 +52,7 @@ fun SnackbarCard(snackbarData: SnackbarVisualsCustom) {
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         style = MaterialTheme.typography.body1,
-                        color = CustomTheme.colors.text,
+                        color = AppTheme.colors.text,
                         modifier = Modifier.padding(vertical = 13.dp)
                     )
                     Spacer(Modifier.width(13.dp))

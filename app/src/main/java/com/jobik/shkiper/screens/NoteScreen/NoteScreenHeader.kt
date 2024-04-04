@@ -2,7 +2,6 @@ package com.jobik.shkiper.screens.NoteScreen
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -25,20 +24,20 @@ import com.jobik.shkiper.ui.animation.AnimateVerticalSwitch
 import com.jobik.shkiper.ui.components.layouts.CustomTopAppBar
 import com.jobik.shkiper.ui.components.layouts.RichTextHeaderToolBar
 import com.jobik.shkiper.ui.components.layouts.TopAppBarItem
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 import com.mohamedrejeb.richeditor.model.RichTextState
 
 @Composable
 fun NoteScreenHeader(navController: NavController, noteViewModel: NoteViewModel, richTextState: RichTextState) {
     val backgroundColorValue =
-        if (noteViewModel.screenState.value.isTopAppBarHover || noteViewModel.screenState.value.isStyling) CustomTheme.colors.secondaryContainer else CustomTheme.colors.background
+        if (noteViewModel.screenState.value.isTopAppBarHover || noteViewModel.screenState.value.isStyling) AppTheme.colors.secondaryContainer else AppTheme.colors.background
 
     val backgroundColor by animateColorAsState(
         backgroundColorValue, label = "backgroundColor",
     )
 
     val contentColorValue =
-        if (noteViewModel.screenState.value.isTopAppBarHover || noteViewModel.screenState.value.isStyling) CustomTheme.colors.onSecondaryContainer else CustomTheme.colors.textSecondary
+        if (noteViewModel.screenState.value.isTopAppBarHover || noteViewModel.screenState.value.isStyling) AppTheme.colors.onSecondaryContainer else AppTheme.colors.textSecondary
 
     val contentColor by animateColorAsState(
         contentColorValue, label = "contentColor",

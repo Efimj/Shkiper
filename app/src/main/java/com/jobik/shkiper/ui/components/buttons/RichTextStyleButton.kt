@@ -2,7 +2,6 @@ package com.jobik.shkiper.ui.components.buttons
 
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -15,7 +14,7 @@ import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 import androidx.compose.material3.*
 import androidx.compose.ui.Alignment
 
@@ -27,12 +26,12 @@ fun RichTextStyleButton(
     contentDescription: String = "",
 ) {
     val buttonContentColor: Color by animateColorAsState(
-        targetValue = if (isActive) CustomTheme.colors.onPrimary else CustomTheme.colors.onSecondaryContainer,
+        targetValue = if (isActive) AppTheme.colors.onPrimary else AppTheme.colors.onSecondaryContainer,
         label = "buttonContentColor"
     )
 
     val buttonBackgroundColor: Color by animateColorAsState(
-        targetValue = if (isActive) CustomTheme.colors.primary else Color.Transparent,
+        targetValue = if (isActive) AppTheme.colors.primary else Color.Transparent,
         label = "buttonBackgroundColor"
     )
 

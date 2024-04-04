@@ -33,7 +33,7 @@ import com.jobik.shkiper.ui.components.buttons.DropDownButtonSizeMode
 import com.jobik.shkiper.ui.components.buttons.DropDownItem
 import com.jobik.shkiper.ui.components.layouts.RichTextBottomToolBar
 import com.jobik.shkiper.ui.helpers.horizontalWindowInsetsPadding
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 import com.mohamedrejeb.richeditor.model.RichTextState
 import java.time.Duration
 import java.time.LocalDateTime
@@ -44,12 +44,12 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun NoteScreenFooter(navController: NavController, noteViewModel: NoteViewModel, richTextState: RichTextState) {
     val backgroundColor by animateColorAsState(
-        if (noteViewModel.screenState.value.isBottomAppBarHover || noteViewModel.screenState.value.isStyling) CustomTheme.colors.secondaryContainer else CustomTheme.colors.background,
+        if (noteViewModel.screenState.value.isBottomAppBarHover || noteViewModel.screenState.value.isStyling) AppTheme.colors.secondaryContainer else AppTheme.colors.background,
         label = "backgroundColor",
     )
 
     val contentColorValue =
-        if (noteViewModel.screenState.value.isBottomAppBarHover || noteViewModel.screenState.value.isStyling) CustomTheme.colors.onSecondaryContainer else CustomTheme.colors.textSecondary
+        if (noteViewModel.screenState.value.isBottomAppBarHover || noteViewModel.screenState.value.isStyling) AppTheme.colors.onSecondaryContainer else AppTheme.colors.textSecondary
 
     val contentColor by animateColorAsState(
         contentColorValue, label = "contentColor",
@@ -91,7 +91,7 @@ fun NoteScreenFooter(navController: NavController, noteViewModel: NoteViewModel,
                             Icon(
                                 imageVector = Icons.Outlined.TextFormat,
                                 contentDescription = "",
-                                tint = if (noteViewModel.screenState.value.isStyling && noteViewModel.screenState.value.isStylingEnabled) CustomTheme.colors.text else contentColor,
+                                tint = if (noteViewModel.screenState.value.isStyling && noteViewModel.screenState.value.isStylingEnabled) AppTheme.colors.text else contentColor,
                             )
                         }
                     }
@@ -120,7 +120,7 @@ fun NoteScreenFooter(navController: NavController, noteViewModel: NoteViewModel,
                                 Icon(
                                     painter = painterResource(id = R.drawable.undo_fill0_wght400_grad0_opsz24),
                                     contentDescription = stringResource(R.string.GoBack),
-                                    tint = if (noteViewModel.screenState.value.currentIntermediateIndex > 0) CustomTheme.colors.text else contentColor,
+                                    tint = if (noteViewModel.screenState.value.currentIntermediateIndex > 0) AppTheme.colors.text else contentColor,
                                 )
                             }
                             IconButton(
@@ -133,7 +133,7 @@ fun NoteScreenFooter(navController: NavController, noteViewModel: NoteViewModel,
                                 Icon(
                                     painter = painterResource(id = R.drawable.redo_fill0_wght400_grad0_opsz24),
                                     contentDescription = stringResource(R.string.GoForward),
-                                    tint = if (noteViewModel.screenState.value.currentIntermediateIndex < noteViewModel.screenState.value.intermediateStates.size - 1) CustomTheme.colors.text else contentColor,
+                                    tint = if (noteViewModel.screenState.value.currentIntermediateIndex < noteViewModel.screenState.value.intermediateStates.size - 1) AppTheme.colors.text else contentColor,
                                 )
                             }
                         }

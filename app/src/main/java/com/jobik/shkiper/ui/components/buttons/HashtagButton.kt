@@ -14,7 +14,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.jobik.shkiper.ui.helpers.MultipleEventsCutter
 import com.jobik.shkiper.ui.helpers.get
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -22,12 +22,12 @@ fun HashtagButton(text: String, selected: Boolean = false, onClick: (String) -> 
     val multipleEventsCutter = remember { MultipleEventsCutter.get() }
 
     val buttonContentColor: Color by animateColorAsState(
-        targetValue = if (selected) CustomTheme.colors.onPrimary else CustomTheme.colors.text,
+        targetValue = if (selected) AppTheme.colors.onPrimary else AppTheme.colors.text,
         label = "buttonContentColor"
     )
 
     val buttonBackgroundColor: Color by animateColorAsState(
-        targetValue = if (selected) CustomTheme.colors.primary else CustomTheme.colors.container,
+        targetValue = if (selected) AppTheme.colors.primary else AppTheme.colors.container,
         label = "buttonBackgroundColor"
     )
 

@@ -1,17 +1,10 @@
 package com.jobik.shkiper.ui.helpers
 
 import androidx.compose.runtime.*
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.jobik.shkiper.database.models.Reminder
 import com.jobik.shkiper.helpers.DateHelper
-import com.jobik.shkiper.ui.theme.CustomTheme
 import com.kizitonwose.calendar.compose.weekcalendar.WeekCalendarState
 import com.kizitonwose.calendar.core.Week
-import kotlinx.coroutines.Delay
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.filter
 import org.mongodb.kbson.ObjectId
 import java.time.LocalDateTime

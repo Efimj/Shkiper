@@ -22,7 +22,7 @@ import com.jobik.shkiper.services.statistics_service.StatisticsItem
 import com.jobik.shkiper.ui.helpers.MultipleEventsCutter
 import com.jobik.shkiper.ui.helpers.get
 import com.jobik.shkiper.ui.modifiers.bounceClick
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -40,8 +40,8 @@ fun StatisticsCard(statistic: StatisticsItem, onClick: () -> Unit) {
         elevation = 0.dp,
         shape = RoundedCornerShape(15.dp),
         //border = BorderStroke(1.dp, CustomTheme.colors.stroke),
-        backgroundColor = CustomTheme.colors.container,
-        contentColor = CustomTheme.colors.text,
+        backgroundColor = AppTheme.colors.container,
+        contentColor = AppTheme.colors.text,
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -61,7 +61,7 @@ fun StatisticsCard(statistic: StatisticsItem, onClick: () -> Unit) {
             ) {
                 Text(
                     statistic.getStringValue(),
-                    color = CustomTheme.colors.text,
+                    color = AppTheme.colors.text,
                     style = MaterialTheme.typography.h6.copy(fontSize = 18.sp),
                     textAlign = TextAlign.Center,
                     modifier = Modifier.basicMarquee().padding(horizontal = 12.dp),
@@ -69,7 +69,7 @@ fun StatisticsCard(statistic: StatisticsItem, onClick: () -> Unit) {
                 )
                 Text(
                     stringResource(statistic.title),
-                    color = CustomTheme.colors.textSecondary,
+                    color = AppTheme.colors.textSecondary,
                     style = MaterialTheme.typography.body1.copy(fontSize = 14.sp),
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth().basicMarquee().padding(horizontal = 12.dp),

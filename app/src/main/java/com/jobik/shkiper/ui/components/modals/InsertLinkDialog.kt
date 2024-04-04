@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.jobik.shkiper.ui.components.buttons.CustomButton
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 import com.jobik.shkiper.R
 import com.jobik.shkiper.ui.components.buttons.ButtonStyle
 import com.jobik.shkiper.ui.components.fields.CustomTextField
@@ -39,13 +39,13 @@ fun InsertLinkDialog(
     Dialog(onGoBack, DialogProperties(true, dismissOnClickOutside = true)) {
         Column(
             Modifier
-                .clip(CustomTheme.shapes.large)
-                .background(CustomTheme.colors.container)
+                .clip(AppTheme.shapes.large)
+                .background(AppTheme.colors.container)
                 .padding(vertical = 25.dp, horizontal = 25.dp)
         ) {
             Text(
                 text = stringResource(id = R.string.InsertLink),
-                color = CustomTheme.colors.textSecondary,
+                color = AppTheme.colors.textSecondary,
                 style = MaterialTheme.typography.headlineMedium
             )
             Spacer(modifier = Modifier.height(10.dp))

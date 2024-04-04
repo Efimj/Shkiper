@@ -25,7 +25,7 @@ import com.jobik.shkiper.services.in_app_updates_service.InAppUpdatesService
 import com.jobik.shkiper.services.review_service.ReviewService
 import com.jobik.shkiper.screens.AppLayout.AppLayout
 import com.jobik.shkiper.ui.components.modals.OfferWriteReview
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 import com.jobik.shkiper.ui.theme.CustomThemeStyle
 import com.jobik.shkiper.ui.theme.ShkiperTheme
 import com.jobik.shkiper.util.ThemeUtil
@@ -67,7 +67,7 @@ class MainActivity : ComponentActivity() {
                 Box(
                     Modifier
                         .fillMaxSize()
-                        .background(CustomTheme.colors.background)
+                        .background(AppTheme.colors.background)
                 ) {
                     AppLayout(startDestination)
                 }

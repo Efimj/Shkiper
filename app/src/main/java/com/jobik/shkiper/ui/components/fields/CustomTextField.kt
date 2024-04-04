@@ -20,7 +20,7 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 
 @Composable
 fun CustomTextField(
@@ -44,12 +44,12 @@ fun CustomTextField(
     var isFocused by remember { mutableStateOf(false) }
 
     val labelColor: Color by animateColorAsState(
-        targetValue = if (isFocused) CustomTheme.colors.primary else CustomTheme.colors.textSecondary,
+        targetValue = if (isFocused) AppTheme.colors.primary else AppTheme.colors.textSecondary,
         label = "labelColor"
     )
 
     val bottomDividerColor: Color by animateColorAsState(
-        targetValue = if (isFocused) CustomTheme.colors.primary else CustomTheme.colors.border,
+        targetValue = if (isFocused) AppTheme.colors.primary else AppTheme.colors.border,
         label = "bottomDividerColor"
     )
 

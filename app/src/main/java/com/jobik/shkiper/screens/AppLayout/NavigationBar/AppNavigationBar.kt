@@ -11,13 +11,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 
 data class CustomBottomNavigationItem(
     val icon: ImageVector,
@@ -34,11 +33,11 @@ data class DefaultNavigationValues(
 @Composable
 fun CustomBottomNavigationItem(properties: CustomBottomNavigationItem) {
     val contentColorValue =
-        if (properties.isSelected) CustomTheme.colors.onPrimary else CustomTheme.colors.textSecondary
+        if (properties.isSelected) AppTheme.colors.onPrimary else AppTheme.colors.textSecondary
     val contentColor = animateColorAsState(targetValue = contentColorValue, label = "backgroundColor")
 
     val backgroundColorValue =
-        if (properties.isSelected) CustomTheme.colors.primary.copy(alpha = .5f) else Color.Transparent
+        if (properties.isSelected) AppTheme.colors.primary.copy(alpha = .5f) else Color.Transparent
     val backgroundColor = animateColorAsState(targetValue = backgroundColorValue, label = "backgroundColor")
 
     Row(
@@ -73,7 +72,7 @@ fun CustomBottomNavigation(items: List<CustomBottomNavigationItem>) {
                 .clickable(enabled = false) {}
                 .height(DefaultNavigationValues().containerHeight)
                 .clip(shape = MaterialTheme.shapes.small)
-                .background(CustomTheme.colors.background)
+                .background(AppTheme.colors.background)
                 .padding(4.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(6.dp)

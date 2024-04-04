@@ -25,7 +25,7 @@ data class CustomThemeShapes(
     val large: Shape,
 )
 
-object CustomTheme {
+object AppTheme {
     val colors: CustomThemeColors
         @Composable
         get() = LocalCustomThemeColors.current

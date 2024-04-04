@@ -21,7 +21,7 @@ import androidx.compose.ui.window.DialogProperties
 import com.jobik.shkiper.R
 import com.jobik.shkiper.ui.components.buttons.ButtonStyle
 import com.jobik.shkiper.ui.components.buttons.CustomButton
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 
 data class ImageActionDialogButton(
     val text: String? = null,
@@ -42,7 +42,7 @@ fun ImageActionDialog(
 ) {
     Dialog(onGoBack, DialogProperties(true, dismissOnClickOutside = true)) {
         Column(
-            Modifier.clip(RoundedCornerShape(15.dp)).background(CustomTheme.colors.container)
+            Modifier.clip(RoundedCornerShape(15.dp)).background(AppTheme.colors.container)
         ) {
             image?.let { image ->
                 Row(
@@ -67,7 +67,7 @@ fun ImageActionDialog(
                 header?.let { header ->
                     Text(
                         text = header,
-                        color = CustomTheme.colors.text,
+                        color = AppTheme.colors.text,
                         style = MaterialTheme.typography.h6,
                         modifier = Modifier.padding(bottom = 4.dp)
                     )
@@ -75,7 +75,7 @@ fun ImageActionDialog(
                 text?.let { text ->
                     Text(
                         text = text,
-                        color = CustomTheme.colors.textSecondary,
+                        color = AppTheme.colors.textSecondary,
                         style = MaterialTheme.typography.body1,
                     )
                 }

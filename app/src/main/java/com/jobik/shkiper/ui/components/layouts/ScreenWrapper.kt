@@ -8,14 +8,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 
 @Composable
 fun ScreenWrapper(modifier: Modifier = Modifier, content: @Composable () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(CustomTheme.colors.background),
+            .background(AppTheme.colors.background),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Column(

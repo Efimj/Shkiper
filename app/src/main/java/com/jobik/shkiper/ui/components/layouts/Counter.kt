@@ -11,11 +11,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun Counter(count: Int, style: TextStyle = MaterialTheme.typography.body1, color: Color = CustomTheme.colors.text) {
+fun Counter(count: Int, style: TextStyle = MaterialTheme.typography.body1, color: Color = AppTheme.colors.text) {
     Row(
         modifier = Modifier.animateContentSize(),
         horizontalArrangement = Arrangement.Center,

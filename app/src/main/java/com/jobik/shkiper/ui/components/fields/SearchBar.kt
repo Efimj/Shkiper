@@ -36,7 +36,7 @@ import com.jobik.shkiper.R
 import com.jobik.shkiper.ui.helpers.*
 import com.jobik.shkiper.ui.helpers.Keyboard
 import com.jobik.shkiper.ui.helpers.keyboardAsState
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 
 data class SearchBarActionButton(
     val icon: ImageVector,
@@ -121,8 +121,8 @@ private fun RowScope.ActionButton(
                     .padding(start = 10.dp),
                 shape = RoundedCornerShape(15.dp),
                 colors = ButtonDefaults.buttonColors(
-                    contentColor = CustomTheme.colors.onSecondaryContainer,
-                    containerColor = CustomTheme.colors.secondaryContainer
+                    contentColor = AppTheme.colors.onSecondaryContainer,
+                    containerColor = AppTheme.colors.secondaryContainer
                 ),
                 elevation = null,
                 contentPadding = PaddingValues(horizontal = 10.dp),
@@ -131,7 +131,7 @@ private fun RowScope.ActionButton(
                 Icon(
                     imageVector = it.icon,
                     contentDescription = stringResource(id = it.contentDescription),
-                    tint = CustomTheme.colors.onSecondaryContainer
+                    tint = AppTheme.colors.onSecondaryContainer
                 )
             }
         }
@@ -162,7 +162,7 @@ private fun RowScope.SearchField(
             ) { focusRequester.requestFocus() }
             .clip(RoundedCornerShape(cornerRadius))
             .background(
-                color = CustomTheme.colors.secondaryContainer,
+                color = AppTheme.colors.secondaryContainer,
                 shape = RoundedCornerShape(cornerRadius)
             )
             .fillMaxHeight()
@@ -180,7 +180,7 @@ private fun RowScope.SearchField(
             Icon(
                 imageVector = Icons.Default.Search,
                 contentDescription = stringResource(R.string.Search),
-                tint = CustomTheme.colors.onSecondaryContainer
+                tint = AppTheme.colors.onSecondaryContainer
             )
         }
         CustomDefaultTextField(
@@ -193,7 +193,7 @@ private fun RowScope.SearchField(
             onTextChange = onChange,
             singleLine = true,
             placeholder = stringResource(R.string.Search),
-            textStyle = MaterialTheme.typography.bodyMedium.copy(color = CustomTheme.colors.onSecondaryContainer),
+            textStyle = MaterialTheme.typography.bodyMedium.copy(color = AppTheme.colors.onSecondaryContainer),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Text,
                 imeAction = ImeAction.Done,
@@ -217,7 +217,7 @@ private fun RowScope.SearchField(
                 onClick = { onChange("") },
             ) {
                 Icon(
-                    tint = CustomTheme.colors.onSecondaryContainer,
+                    tint = AppTheme.colors.onSecondaryContainer,
                     imageVector = Icons.Default.Clear,
                     contentDescription = stringResource(R.string.Clear)
                 )

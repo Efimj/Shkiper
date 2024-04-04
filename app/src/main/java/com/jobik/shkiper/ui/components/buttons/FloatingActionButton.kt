@@ -7,7 +7,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material3.Icon
@@ -17,7 +16,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
@@ -26,7 +24,7 @@ import com.jobik.shkiper.R
 import com.jobik.shkiper.ui.helpers.MultipleEventsCutter
 import com.jobik.shkiper.ui.helpers.get
 import com.jobik.shkiper.ui.modifiers.bounceClick
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 
 @Composable
 fun FloatingActionButton(
@@ -37,7 +35,7 @@ fun FloatingActionButton(
     val multipleEventsCutter = remember { MultipleEventsCutter.get() }
 
     Surface(
-        shape = MaterialTheme.shapes.small, shadowElevation = 1.dp, color = CustomTheme.colors.container,
+        shape = MaterialTheme.shapes.small, shadowElevation = 1.dp, color = AppTheme.colors.container,
         modifier = Modifier
             .testTag("create_note_button")
             .bounceClick()
@@ -50,8 +48,8 @@ fun FloatingActionButton(
                     multipleEventsCutter.processEvent { onClick() }
                 }
             },
-        border = BorderStroke(if (isActive) 2.dp else 0.dp, CustomTheme.colors.primary),
-        contentColor = CustomTheme.colors.text,
+        border = BorderStroke(if (isActive) 2.dp else 0.dp, AppTheme.colors.primary),
+        contentColor = AppTheme.colors.text,
     ) {
         AnimatedContent(
             targetState = icon,
@@ -70,7 +68,7 @@ fun FloatingActionButton(
                 Icon(
                     imageVector = newIcon,
                     contentDescription = stringResource(R.string.CreateNote),
-                    tint = CustomTheme.colors.textSecondary,
+                    tint = AppTheme.colors.textSecondary,
                     modifier = Modifier.size(30.dp)
                 )
             }

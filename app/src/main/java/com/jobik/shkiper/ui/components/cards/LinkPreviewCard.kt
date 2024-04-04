@@ -40,7 +40,7 @@ import com.jobik.shkiper.util.SnackbarVisualsCustom
 import kotlinx.coroutines.launch
 import com.jobik.shkiper.R
 import com.jobik.shkiper.helpers.IntentHelper
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -86,8 +86,8 @@ fun LinkPreviewCard(openGraphData: LinkHelper.LinkPreview) {
             ),
         elevation = 0.dp,
         shape = RoundedCornerShape(10.dp),
-        backgroundColor = CustomTheme.colors.container,
-        contentColor = CustomTheme.colors.text,
+        backgroundColor = AppTheme.colors.container,
+        contentColor = AppTheme.colors.text,
     ) {
         Row {
             AsyncImage(
@@ -102,7 +102,7 @@ fun LinkPreviewCard(openGraphData: LinkHelper.LinkPreview) {
                 alignment = Alignment.Center,
                 error = rememberVectorPainter(Icons.Default.Language),
                 onError = { isImageError.value = true },
-                colorFilter = if (isImageError.value) ColorFilter.tint(CustomTheme.colors.textSecondary) else null
+                colorFilter = if (isImageError.value) ColorFilter.tint(AppTheme.colors.textSecondary) else null
             )
             Column(
                 modifier = Modifier
@@ -116,7 +116,7 @@ fun LinkPreviewCard(openGraphData: LinkHelper.LinkPreview) {
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         style = MaterialTheme.typography.h6.copy(fontSize = 18.sp, fontWeight = FontWeight.SemiBold),
-                        color = CustomTheme.colors.textSecondary,
+                        color = AppTheme.colors.textSecondary,
                     )
                 if (openGraphData.description.isNullOrBlank().not())
                     Text(
@@ -124,7 +124,7 @@ fun LinkPreviewCard(openGraphData: LinkHelper.LinkPreview) {
                         maxLines = if (openGraphData.title.isNullOrBlank()) 2 else 1,
                         overflow = TextOverflow.Ellipsis,
                         style = MaterialTheme.typography.body1,
-                        color = CustomTheme.colors.textSecondary,
+                        color = AppTheme.colors.textSecondary,
                     )
                 if ((openGraphData.description.isNullOrBlank() || openGraphData.title.isNullOrBlank()) && openGraphData.url.isNullOrBlank()
                         .not()
@@ -134,7 +134,7 @@ fun LinkPreviewCard(openGraphData: LinkHelper.LinkPreview) {
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         style = MaterialTheme.typography.body1,
-                        color = CustomTheme.colors.textSecondary,
+                        color = AppTheme.colors.textSecondary,
                     )
             }
         }

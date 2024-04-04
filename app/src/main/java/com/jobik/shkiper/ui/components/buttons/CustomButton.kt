@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.jobik.shkiper.ui.helpers.MultipleEventsCutter
 import com.jobik.shkiper.ui.helpers.get
 import com.jobik.shkiper.ui.modifiers.circularRotation
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 
 data class ButtonProperties(
     val buttonColors: ButtonColors,
@@ -37,15 +37,15 @@ data class ButtonProperties(
 @Composable
 fun DefaultButtonProperties(
     buttonColors: ButtonColors = ButtonDefaults.buttonColors(
-        backgroundColor = CustomTheme.colors.container,
+        backgroundColor = AppTheme.colors.container,
         disabledBackgroundColor = Color.Transparent
     ),
     border: BorderStroke? = null,
     shape: Shape = RoundedCornerShape(10.dp),
     horizontalPaddings: Dp = 0.dp,
-    textColor: Color = CustomTheme.colors.text,
+    textColor: Color = AppTheme.colors.text,
     textStyle: TextStyle = MaterialTheme.typography.body1.copy(fontWeight = FontWeight.SemiBold),
-    iconTint: Color = CustomTheme.colors.text,
+    iconTint: Color = AppTheme.colors.text,
 ): ButtonProperties {
     return ButtonProperties(
         buttonColors = buttonColors,
@@ -70,7 +70,7 @@ fun getButtonProperties(style: ButtonStyle, properties: ButtonProperties? = null
     val style = when (style) {
         ButtonStyle.Filled -> ButtonProperties(
             buttonColors = ButtonDefaults.buttonColors(
-                backgroundColor = CustomTheme.colors.primary,
+                backgroundColor = AppTheme.colors.primary,
                 disabledBackgroundColor = Color.Transparent
             ),
             border = null,
@@ -78,9 +78,9 @@ fun getButtonProperties(style: ButtonStyle, properties: ButtonProperties? = null
             horizontalPaddings = androidx.compose.material3.ButtonDefaults.ContentPadding.calculateLeftPadding(
                 LayoutDirection.Ltr
             ),
-            textColor = CustomTheme.colors.onPrimary,
+            textColor = AppTheme.colors.onPrimary,
             textStyle = MaterialTheme.typography.body1.copy(fontWeight = FontWeight.SemiBold),
-            iconTint = CustomTheme.colors.onPrimary,
+            iconTint = AppTheme.colors.onPrimary,
         )
 
         ButtonStyle.Outlined -> ButtonProperties(
@@ -88,14 +88,14 @@ fun getButtonProperties(style: ButtonStyle, properties: ButtonProperties? = null
                 backgroundColor = Color.Transparent,
                 disabledBackgroundColor = Color.Transparent
             ),
-            border = BorderStroke(width = 1.dp, color = CustomTheme.colors.border),
+            border = BorderStroke(width = 1.dp, color = AppTheme.colors.border),
             shape = RoundedCornerShape(10.dp),
             horizontalPaddings = androidx.compose.material3.ButtonDefaults.ContentPadding.calculateLeftPadding(
                 LayoutDirection.Ltr
             ),
-            textColor = CustomTheme.colors.text,
+            textColor = AppTheme.colors.text,
             textStyle = MaterialTheme.typography.body1.copy(fontWeight = FontWeight.SemiBold),
-            iconTint = CustomTheme.colors.text,
+            iconTint = AppTheme.colors.text,
         )
 
         ButtonStyle.Text -> ButtonProperties(
@@ -106,16 +106,16 @@ fun getButtonProperties(style: ButtonStyle, properties: ButtonProperties? = null
             border = null,
             shape = RoundedCornerShape(10.dp),
             horizontalPaddings = 0.dp,
-            textColor = CustomTheme.colors.text,
+            textColor = AppTheme.colors.text,
             textStyle = MaterialTheme.typography.body1.copy(fontWeight = FontWeight.SemiBold),
-            iconTint = CustomTheme.colors.text,
+            iconTint = AppTheme.colors.text,
         )
     }
 
     if (!enabled) {
         return style.copy(
-            textColor = CustomTheme.colors.textSecondary,
-            iconTint = CustomTheme.colors.textSecondary,
+            textColor = AppTheme.colors.textSecondary,
+            iconTint = AppTheme.colors.textSecondary,
         )
     }
 

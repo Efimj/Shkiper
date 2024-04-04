@@ -12,8 +12,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -30,17 +29,17 @@ fun SettingsItem(
     action: (@Composable () -> Unit)? = null
 ) {
     val backgroundColor: Color by animateColorAsState(
-        targetValue = if (isActive) CustomTheme.colors.primary else containerColor ?: Color.Transparent,
+        targetValue = if (isActive) AppTheme.colors.primary else containerColor ?: Color.Transparent,
         label = "backgroundColor"
     )
 
     val foregroundColor: Color by animateColorAsState(
-        targetValue = if (isActive) CustomTheme.colors.onPrimary else CustomTheme.colors.text,
+        targetValue = if (isActive) AppTheme.colors.onPrimary else AppTheme.colors.text,
         label = "foregroundColor"
     )
 
     val foregroundSecondaryColor: Color by animateColorAsState(
-        targetValue = if (isActive) CustomTheme.colors.onPrimary else CustomTheme.colors.textSecondary,
+        targetValue = if (isActive) AppTheme.colors.onPrimary else AppTheme.colors.textSecondary,
         label = "foregroundSecondaryColor"
     )
 
@@ -50,7 +49,7 @@ fun SettingsItem(
             contentColor = foregroundColor,
             disabledContainerColor = backgroundColor,
             disabledContentColor = foregroundColor
-        ), shape = CustomTheme.shapes.none, border = null
+        ), shape = AppTheme.shapes.none, border = null
     ) {
         Row(
             modifier = modifier

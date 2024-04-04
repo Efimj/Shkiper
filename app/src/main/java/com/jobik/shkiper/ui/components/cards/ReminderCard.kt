@@ -25,7 +25,7 @@ import com.jobik.shkiper.database.models.Reminder
 import com.jobik.shkiper.database.models.RepeatMode
 import com.jobik.shkiper.helpers.DateHelper
 import com.jobik.shkiper.ui.modifiers.bounceClick
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -39,14 +39,14 @@ fun ReminderCard(reminder: Reminder, isSelected: Boolean, onClick: () -> Unit, o
     val isRepeatable = reminder.repeat != RepeatMode.NONE
 
     val backgroundColor by animateColorAsState(
-        if (isDateFuture) CustomTheme.colors.container else CustomTheme.colors.background,
+        if (isDateFuture) AppTheme.colors.container else AppTheme.colors.background,
         label = "ReminderCardBackgroundColor",
     )
 
     val strokeColorValue = when {
-        isSelected -> CustomTheme.colors.primary
-        isDateFuture -> CustomTheme.colors.container
-        else -> CustomTheme.colors.border
+        isSelected -> AppTheme.colors.primary
+        isDateFuture -> AppTheme.colors.container
+        else -> AppTheme.colors.border
     }
     val strokeColor by animateColorAsState(
         strokeColorValue,
@@ -54,24 +54,24 @@ fun ReminderCard(reminder: Reminder, isSelected: Boolean, onClick: () -> Unit, o
     )
 
     val contentColor by animateColorAsState(
-        if (isDateFuture && isDateFuture) CustomTheme.colors.text else CustomTheme.colors.textSecondary,
+        if (isDateFuture && isDateFuture) AppTheme.colors.text else AppTheme.colors.textSecondary,
         label = "ReminderCardStrokeColor",
     )
 
     Card(
-        shape = CustomTheme.shapes.medium,
+        shape = AppTheme.shapes.medium,
         colors = CardDefaults.cardColors(
             containerColor = backgroundColor,
-            contentColor = CustomTheme.colors.text,
+            contentColor = AppTheme.colors.text,
             disabledContainerColor = backgroundColor,
-            disabledContentColor = CustomTheme.colors.text
+            disabledContentColor = AppTheme.colors.text
         ),
         border = BorderStroke(width = 2.dp, strokeColor),
         elevation = CardDefaults.outlinedCardElevation(),
         modifier = Modifier
             .fillMaxWidth()
             .bounceClick(0.95f)
-            .clip(CustomTheme.shapes.medium)
+            .clip(AppTheme.shapes.medium)
             .combinedClickable(
                 onClick = onClick,
                 onLongClick = onLongClick,
@@ -92,7 +92,7 @@ fun ReminderCard(reminder: Reminder, isSelected: Boolean, onClick: () -> Unit, o
                     imageVector = if (isRepeatable) Icons.Outlined.Repeat else Icons.Outlined.Event,
                     contentDescription = stringResource(id = R.string.Repeat),
                     modifier = Modifier.size(35.dp),
-                    tint = CustomTheme.colors.textSecondary
+                    tint = AppTheme.colors.textSecondary
                 )
             }
             Column(
@@ -131,7 +131,7 @@ fun ReminderCard(reminder: Reminder, isSelected: Boolean, onClick: () -> Unit, o
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         style = MaterialTheme.typography.body2,
-                        color = CustomTheme.colors.textSecondary,
+                        color = AppTheme.colors.textSecondary,
                     )
                 }
             }

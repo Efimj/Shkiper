@@ -30,7 +30,7 @@ import com.jobik.shkiper.navigation.Route
 import com.jobik.shkiper.navigation.RouteHelper
 import com.jobik.shkiper.ui.helpers.Keyboard
 import com.jobik.shkiper.ui.helpers.keyboardAsState
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -78,8 +78,8 @@ fun BoxScope.BottomAppBarProvider(
                 .fillMaxWidth()
                 .background(
                     Brush.verticalGradient(
-                        0F to CustomTheme.colors.background.copy(alpha = 0.0F),
-                        0.8F to CustomTheme.colors.background.copy(alpha = 1F)
+                        0F to AppTheme.colors.background.copy(alpha = 0.0F),
+                        0.8F to AppTheme.colors.background.copy(alpha = 1F)
                     )
                 ),
             contentAlignment = Alignment.BottomCenter
@@ -123,7 +123,7 @@ private fun RowScope.CreateNoteFAN(
                         .height(DefaultNavigationValues().containerHeight)
                         .aspectRatio(1f)
                         .clip(shape = MaterialTheme.shapes.small)
-                        .background(CustomTheme.colors.primary)
+                        .background(AppTheme.colors.primary)
                         .clickable {
                             createNewNote(
                                 scope = scope,
@@ -137,7 +137,7 @@ private fun RowScope.CreateNoteFAN(
                     Icon(
                         imageVector = Icons.Outlined.Add,
                         contentDescription = stringResource(R.string.CreateNote),
-                        tint = CustomTheme.colors.onPrimary,
+                        tint = AppTheme.colors.onPrimary,
                     )
                 }
             }

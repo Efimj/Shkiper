@@ -20,7 +20,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.jobik.shkiper.R
 import com.jobik.shkiper.ui.modifiers.bounceClick
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 
 data class UserCardLink(
     @DrawableRes
@@ -42,12 +42,12 @@ fun UserCard(
         .clip(RoundedCornerShape(15.dp))
         .clickable(enabled = true) { onClick() }
         .fillMaxWidth()
-        .background(CustomTheme.colors.container, RoundedCornerShape(15.dp))
+        .background(AppTheme.colors.container, RoundedCornerShape(15.dp))
         .padding(8.dp)
     else
         Modifier
             .fillMaxWidth()
-            .background(CustomTheme.colors.container, RoundedCornerShape(15.dp))
+            .background(AppTheme.colors.container, RoundedCornerShape(15.dp))
             .clip(RoundedCornerShape(15.dp))
             .padding(8.dp)
 
@@ -79,7 +79,7 @@ fun UserCard(
                     name?.let {
                         Text(
                             text = name,
-                            color = CustomTheme.colors.text,
+                            color = AppTheme.colors.text,
                             style = MaterialTheme.typography.h6,
                             overflow = TextOverflow.Ellipsis,
                             textAlign = TextAlign.Center,
@@ -89,7 +89,7 @@ fun UserCard(
                     description?.let {
                         Text(
                             text = it,
-                            color = CustomTheme.colors.textSecondary,
+                            color = AppTheme.colors.textSecondary,
                             style = MaterialTheme.typography.body1,
                             overflow = TextOverflow.Ellipsis,
                             textAlign = TextAlign.Center,

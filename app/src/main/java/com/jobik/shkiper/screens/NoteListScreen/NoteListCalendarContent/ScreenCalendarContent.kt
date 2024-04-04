@@ -33,7 +33,7 @@ import com.jobik.shkiper.ui.helpers.bottomWindowInsetsPadding
 import com.jobik.shkiper.ui.helpers.endWindowInsetsPadding
 import com.jobik.shkiper.ui.helpers.rememberNextReminder
 import com.jobik.shkiper.ui.helpers.startWindowInsetsPadding
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 import kotlinx.coroutines.delay
 import me.onebone.toolbar.*
 import java.time.LocalDateTime
@@ -80,7 +80,7 @@ private fun ScreenContent(
         modifier = Modifier
             .imePadding()
             .fillMaxSize()
-            .background(CustomTheme.colors.background),
+            .background(AppTheme.colors.background),
         state = collapsingToolbarScaffold,
         scrollStrategy = ScrollStrategy.EnterAlways,
         enabledWhenBodyUnfilled = false,
@@ -145,7 +145,7 @@ private fun NoteListContent(
                 Column {
                     Text(
                         text = stringResource(R.string.Pinned),
-                        color = CustomTheme.colors.textSecondary,
+                        color = AppTheme.colors.textSecondary,
                         style = MaterialTheme.typography.body1.copy(fontSize = 17.sp),
                         modifier = Modifier.padding(horizontal = 10.dp)
                     )
@@ -159,7 +159,7 @@ private fun NoteListContent(
             item(span = StaggeredGridItemSpan.FullLine) {
                 Text(
                     stringResource(R.string.Other),
-                    color = CustomTheme.colors.textSecondary,
+                    color = AppTheme.colors.textSecondary,
                     style = MaterialTheme.typography.body1.copy(fontSize = 17.sp),
                     modifier = Modifier.padding(horizontal = 10.dp)
                 )

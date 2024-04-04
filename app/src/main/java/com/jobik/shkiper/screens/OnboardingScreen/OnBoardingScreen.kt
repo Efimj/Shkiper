@@ -40,7 +40,7 @@ import com.jobik.shkiper.navigation.Route
 import com.jobik.shkiper.ui.helpers.allWindowInsetsPadding
 import com.jobik.shkiper.ui.helpers.bottomWindowInsetsPadding
 import com.jobik.shkiper.ui.helpers.horizontalWindowInsetsPadding
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -55,7 +55,7 @@ fun OnBoardingScreen(navController: NavController) {
         HorizontalPager(
             modifier = Modifier
                 .fillMaxSize()
-                .background(CustomTheme.colors.background),
+                .background(AppTheme.colors.background),
             verticalAlignment = Alignment.CenterVertically,
             state = pagerState,
             pageSpacing = 10.dp,
@@ -95,12 +95,12 @@ private fun ScreenFooter(navController: NavController, pagerState: PagerState, s
     val context = LocalContext.current
 
     val buttonNextContentColor: Color by animateColorAsState(
-        targetValue = if (pagerState.currentPage == OnBoardingPage.PageList.Count - 1) CustomTheme.colors.onPrimary else CustomTheme.colors.text,
+        targetValue = if (pagerState.currentPage == OnBoardingPage.PageList.Count - 1) AppTheme.colors.onPrimary else AppTheme.colors.text,
         label = "buttonNextContentColor"
     )
 
     val buttonNextBackgroundColor: Color by animateColorAsState(
-        targetValue = if (pagerState.currentPage == OnBoardingPage.PageList.Count - 1) CustomTheme.colors.primary else CustomTheme.colors.container,
+        targetValue = if (pagerState.currentPage == OnBoardingPage.PageList.Count - 1) AppTheme.colors.primary else AppTheme.colors.container,
         label = "buttonNextBackgroundColor"
     )
 
@@ -122,10 +122,10 @@ private fun ScreenFooter(navController: NavController, pagerState: PagerState, s
             Row {
                 Button(
                     modifier = Modifier.fillMaxHeight(),
-                    shape = CustomTheme.shapes.small,
+                    shape = AppTheme.shapes.small,
                     colors = ButtonDefaults.buttonColors(
-                        contentColor = CustomTheme.colors.text,
-                        containerColor = CustomTheme.colors.container
+                        contentColor = AppTheme.colors.text,
+                        containerColor = AppTheme.colors.container
                     ),
                     border = null,
                     elevation = null,
@@ -139,7 +139,7 @@ private fun ScreenFooter(navController: NavController, pagerState: PagerState, s
                     Icon(
                         imageVector = Icons.Outlined.KeyboardArrowLeft,
                         contentDescription = stringResource(R.string.Back),
-                        tint = CustomTheme.colors.text
+                        tint = AppTheme.colors.text
                     )
                 }
                 Spacer(modifier = Modifier.padding(end = 10.dp))
@@ -150,7 +150,7 @@ private fun ScreenFooter(navController: NavController, pagerState: PagerState, s
                 .testTag("button_next")
                 .fillMaxHeight()
                 .fillMaxWidth(),
-            shape = CustomTheme.shapes.small,
+            shape = AppTheme.shapes.small,
             colors = ButtonDefaults.buttonColors(
                 contentColor = buttonNextContentColor,
                 containerColor = buttonNextBackgroundColor
@@ -244,7 +244,7 @@ fun PagerScreen(onBoardingPage: OnBoardingPage) {
             style = MaterialTheme.typography.h4,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,
-            color = CustomTheme.colors.text,
+            color = AppTheme.colors.text,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
@@ -256,7 +256,7 @@ fun PagerScreen(onBoardingPage: OnBoardingPage) {
             text = stringResource(onBoardingPage.description),
             style = MaterialTheme.typography.h6,
             textAlign = TextAlign.Center,
-            color = CustomTheme.colors.textSecondary,
+            color = AppTheme.colors.textSecondary,
             minLines = 4,
             maxLines = 4,
             overflow = TextOverflow.Ellipsis

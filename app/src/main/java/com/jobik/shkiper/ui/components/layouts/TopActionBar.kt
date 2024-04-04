@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jobik.shkiper.ui.helpers.horizontalWindowInsetsPadding
 import com.jobik.shkiper.ui.helpers.topWindowInsetsPadding
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 
 data class TopAppBarItem(
     val isActive: Boolean = false,
@@ -40,8 +40,8 @@ fun CustomTopAppBar(
     isVisible: Boolean = true,
     text: String = "",
     counter: Int? = null,
-    backgroundColor: Color = CustomTheme.colors.secondaryContainer,
-    contentColor: Color = CustomTheme.colors.onSecondaryContainer,
+    backgroundColor: Color = AppTheme.colors.secondaryContainer,
+    contentColor: Color = AppTheme.colors.onSecondaryContainer,
     navigation: TopAppBarItem,
     items: List<TopAppBarItem>
 ) {
@@ -89,7 +89,7 @@ fun CustomTopAppBar(
                     Icon(
                         imageVector = navigation.icon,
                         contentDescription = stringResource(navigation.iconDescription),
-                        tint = if (navigation.isActive) CustomTheme.colors.text else contentColor,
+                        tint = if (navigation.isActive) AppTheme.colors.text else contentColor,
                     )
                 }
             },
@@ -102,7 +102,7 @@ fun CustomTopAppBar(
                         Icon(
                             imageVector = item.icon,
                             contentDescription = stringResource(item.iconDescription),
-                            tint = if (item.isActive) CustomTheme.colors.text else contentColor,
+                            tint = if (item.isActive) AppTheme.colors.text else contentColor,
                         )
                     }
                 }

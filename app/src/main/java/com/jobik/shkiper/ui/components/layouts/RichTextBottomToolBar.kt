@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Divider
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.SpanStyle
@@ -20,9 +19,8 @@ import androidx.compose.ui.unit.sp
 import com.jobik.shkiper.R
 import com.jobik.shkiper.ui.components.buttons.RichTextStyleButton
 import com.jobik.shkiper.ui.components.modals.InsertLinkDialog
-import com.jobik.shkiper.ui.helpers.bottomWindowInsetsPadding
 import com.jobik.shkiper.ui.helpers.horizontalWindowInsetsPadding
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 import com.mohamedrejeb.richeditor.model.RichTextState
 
 @Composable
@@ -77,7 +75,7 @@ fun RichTextBottomToolBar(
                 modifier = Modifier
                     .heightIn(30.dp)
                     .width(1.dp),
-                color = CustomTheme.colors.textSecondary.copy(alpha = .2f)
+                color = AppTheme.colors.textSecondary.copy(alpha = .2f)
             )
             RichTextStyleButton(
                 isActive = state.currentSpanStyle.fontWeight == FontWeight.Bold,
@@ -109,7 +107,7 @@ fun RichTextBottomToolBar(
                 modifier = Modifier
                     .heightIn(30.dp)
                     .width(1.dp),
-                color = CustomTheme.colors.textSecondary.copy(alpha = .2f)
+                color = AppTheme.colors.textSecondary.copy(alpha = .2f)
             )
             RichTextStyleButton(
                 isActive = state.isLink,

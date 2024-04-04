@@ -32,7 +32,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.jobik.shkiper.R
 import com.jobik.shkiper.helpers.IntentHelper
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 import com.mohamedrejeb.richeditor.model.rememberRichTextState
 import com.mohamedrejeb.richeditor.ui.material3.RichText
 import dev.shreyaspatil.capturable.Capturable
@@ -50,14 +50,14 @@ fun ShareNoteDialog(
     val context = LocalContext.current
     val noteContentScrollState = rememberScrollState()
     val actionsBackgroundColor: Color by animateColorAsState(
-        targetValue = if (!noteContentScrollState.canScrollForward) CustomTheme.colors.background else CustomTheme.colors.container,
+        targetValue = if (!noteContentScrollState.canScrollForward) AppTheme.colors.background else AppTheme.colors.container,
         label = "actionsBackgroundColor"
     )
 
-    val codeColor = CustomTheme.colors.onPrimary
-    val codeBackgroundColor = CustomTheme.colors.primary.copy(alpha = .2f)
-    val codeStrokeColor = CustomTheme.colors.primary
-    val linkColor = CustomTheme.colors.text
+    val codeColor = AppTheme.colors.onPrimary
+    val codeBackgroundColor = AppTheme.colors.primary.copy(alpha = .2f)
+    val codeStrokeColor = AppTheme.colors.primary
+    val linkColor = AppTheme.colors.text
 
     LaunchedEffect(Unit) {
         richTextState.setConfig(
@@ -79,8 +79,8 @@ fun ShareNoteDialog(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 10.dp)
-                .clip(CustomTheme.shapes.medium)
-                .background(CustomTheme.colors.background)
+                .clip(AppTheme.shapes.medium)
+                .background(AppTheme.colors.background)
         ) {
             Column(
                 modifier = Modifier
@@ -110,7 +110,7 @@ fun ShareNoteDialog(
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(CustomTheme.colors.background)
+                            .background(AppTheme.colors.background)
                             .padding(20.dp)
                     ) {
                         if (noteHeader.isNotEmpty()) {
@@ -120,7 +120,7 @@ fun ShareNoteDialog(
                                     fontWeight = FontWeight.SemiBold,
                                     fontSize = 21.sp
                                 ),
-                                color = CustomTheme.colors.text
+                                color = AppTheme.colors.text
                             )
                         }
                         if (richTextState.annotatedString.text.isNotEmpty() && noteHeader.isNotEmpty())
@@ -129,7 +129,7 @@ fun ShareNoteDialog(
                             RichText(
                                 state = richTextState,
                                 style = MaterialTheme.typography.body1,
-                                color = CustomTheme.colors.text,
+                                color = AppTheme.colors.text,
                             )
                         }
                     }
@@ -145,9 +145,9 @@ fun ShareNoteDialog(
             ) {
                 Button(
                     modifier = Modifier.height(50.dp),
-                    shape = CustomTheme.shapes.small,
+                    shape = AppTheme.shapes.small,
                     colors = ButtonDefaults.buttonColors(
-                        contentColor = CustomTheme.colors.text,
+                        contentColor = AppTheme.colors.text,
                         containerColor = Color.Transparent
                     ),
                     border = null,
@@ -159,7 +159,7 @@ fun ShareNoteDialog(
                         text = stringResource(R.string.Cancel),
                         style = MaterialTheme.typography.body1,
                         fontWeight = FontWeight.SemiBold,
-                        color = CustomTheme.colors.text,
+                        color = AppTheme.colors.text,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
@@ -167,10 +167,10 @@ fun ShareNoteDialog(
                 Spacer(Modifier.width(12.dp))
                 Button(
                     modifier = Modifier.height(50.dp),
-                    shape = CustomTheme.shapes.small,
+                    shape = AppTheme.shapes.small,
                     colors = ButtonDefaults.buttonColors(
-                        contentColor = CustomTheme.colors.text,
-                        containerColor = CustomTheme.colors.primary
+                        contentColor = AppTheme.colors.text,
+                        containerColor = AppTheme.colors.primary
                     ),
                     border = null,
                     elevation = null,
@@ -180,13 +180,13 @@ fun ShareNoteDialog(
                     Icon(
                         imageVector = Icons.Outlined.Share,
                         contentDescription = stringResource(R.string.Share),
-                        tint = CustomTheme.colors.onPrimary
+                        tint = AppTheme.colors.onPrimary
                     )
                     Text(
                         text = stringResource(R.string.Share),
                         style = MaterialTheme.typography.body1,
                         fontWeight = FontWeight.SemiBold,
-                        color = CustomTheme.colors.onPrimary,
+                        color = AppTheme.colors.onPrimary,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )

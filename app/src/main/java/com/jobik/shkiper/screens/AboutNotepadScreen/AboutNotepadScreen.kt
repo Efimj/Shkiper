@@ -27,7 +27,7 @@ import com.jobik.shkiper.ui.components.cards.UserCard
 import com.jobik.shkiper.ui.components.cards.UserCardLink
 import com.jobik.shkiper.ui.components.layouts.ScreenWrapper
 import com.jobik.shkiper.ui.helpers.allWindowInsetsPadding
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 
 
 @Composable
@@ -54,14 +54,14 @@ fun AboutNotepadScreen() {
                 modifier = Modifier
                     .fillMaxHeight(1f)
                     .fillMaxWidth(.65f)
-                    .clip(CustomTheme.shapes.medium)
-                    .background(CustomTheme.colors.container)
+                    .clip(AppTheme.shapes.medium)
+                    .background(AppTheme.colors.container)
                     .padding(start = 20.dp, end = 20.dp, top = 10.dp, bottom = 15.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
                     text = stringResource(R.string.app_name),
-                    color = CustomTheme.colors.primary,
+                    color = AppTheme.colors.primary,
                     style = MaterialTheme.typography.h6.copy(fontSize = 28.sp, fontWeight = FontWeight.SemiBold),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
@@ -69,7 +69,7 @@ fun AboutNotepadScreen() {
                 )
                 Text(
                     text = stringResource(R.string.AboutAppDescription),
-                    color = CustomTheme.colors.textSecondary,
+                    color = AppTheme.colors.textSecondary,
                     style = MaterialTheme.typography.body1,
                     overflow = TextOverflow.Ellipsis,
                     textAlign = TextAlign.Start,
@@ -86,8 +86,8 @@ fun AboutNotepadScreen() {
                     modifier = Modifier
                         .fillMaxHeight(.65f)
                         .fillMaxWidth()
-                        .clip(CustomTheme.shapes.medium)
-                        .background(CustomTheme.colors.container)
+                        .clip(AppTheme.shapes.medium)
+                        .background(AppTheme.colors.container)
                         .padding(horizontal = 20.dp, vertical = 10.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
@@ -103,15 +103,15 @@ fun AboutNotepadScreen() {
                     modifier = Modifier
                         .fillMaxHeight(1.35f)
                         .fillMaxWidth()
-                        .clip(CustomTheme.shapes.medium)
-                        .background(CustomTheme.colors.container)
+                        .clip(AppTheme.shapes.medium)
+                        .background(AppTheme.colors.container)
                         .padding(horizontal = 20.dp, vertical = 10.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
                     Text(
                         text = "V ${BuildConfig.VERSION_NAME}",
-                        color = CustomTheme.colors.primary,
+                        color = AppTheme.colors.primary,
                         style = MaterialTheme.typography.body1,
                         fontSize = 18.sp,
                         textAlign = TextAlign.Center,
@@ -131,7 +131,7 @@ fun AboutNotepadScreen() {
         Column {
             Text(
                 text = stringResource(R.string.Contact),
-                color = CustomTheme.colors.textSecondary,
+                color = AppTheme.colors.textSecondary,
                 style = MaterialTheme.typography.h6,
                 overflow = TextOverflow.Ellipsis,
                 textAlign = TextAlign.Center,
@@ -156,7 +156,7 @@ fun AboutNotepadScreen() {
             Spacer(modifier = Modifier.height(6.dp))
             Text(
                 text = stringResource(R.string.Icons),
-                color = CustomTheme.colors.textSecondary,
+                color = AppTheme.colors.textSecondary,
                 style = MaterialTheme.typography.h6,
                 overflow = TextOverflow.Ellipsis,
                 textAlign = TextAlign.Center,

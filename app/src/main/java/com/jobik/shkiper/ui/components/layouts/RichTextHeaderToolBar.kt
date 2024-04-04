@@ -21,7 +21,7 @@ import com.jobik.shkiper.R
 import com.jobik.shkiper.ui.components.buttons.RichTextStyleButton
 import com.jobik.shkiper.ui.helpers.horizontalWindowInsetsPadding
 import com.jobik.shkiper.ui.helpers.topWindowInsetsPadding
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 import com.mohamedrejeb.richeditor.model.RichTextState
 
 @Composable
@@ -31,7 +31,7 @@ fun RichTextHeaderToolBar(
 ) {
     var isTextColorFillEnabled by rememberSaveable { mutableStateOf(false) }
     var isTextBackgroundFillEnabled by rememberSaveable { mutableStateOf(false) }
-    val activeColor = CustomTheme.colors.primary
+    val activeColor = AppTheme.colors.primary
 
     Row(
         modifier = modifier
@@ -85,7 +85,7 @@ fun RichTextHeaderToolBar(
                 modifier = Modifier
                     .heightIn(30.dp)
                     .width(1.dp),
-                color = CustomTheme.colors.textSecondary.copy(alpha = .2f)
+                color = AppTheme.colors.textSecondary.copy(alpha = .2f)
             )
             RichTextStyleButton(
                 isActive = state.currentParagraphStyle.textAlign == TextAlign.Left,
@@ -117,7 +117,7 @@ fun RichTextHeaderToolBar(
                 modifier = Modifier
                     .heightIn(30.dp)
                     .width(1.dp),
-                color = CustomTheme.colors.textSecondary.copy(alpha = .2f)
+                color = AppTheme.colors.textSecondary.copy(alpha = .2f)
             )
             RichTextStyleButton(
                 isActive = state.isUnorderedList,

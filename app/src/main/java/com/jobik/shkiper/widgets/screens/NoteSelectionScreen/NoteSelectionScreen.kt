@@ -39,7 +39,7 @@ import com.jobik.shkiper.ui.components.layouts.LazyGridNotes
 import com.jobik.shkiper.ui.components.layouts.ScreenContentIfNoData
 import com.jobik.shkiper.ui.helpers.*
 import com.jobik.shkiper.ui.modifiers.scrollConnectionToProvideVisibility
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 
 @Composable
 fun NoteSelectionScreen(
@@ -149,7 +149,7 @@ private fun ScreenContent(
                 Column {
                     Text(
                         stringResource(R.string.Pinned),
-                        color = CustomTheme.colors.textSecondary,
+                        color = AppTheme.colors.textSecondary,
                         style = MaterialTheme.typography.body1.copy(fontSize = 17.sp),
                         modifier = Modifier.padding(horizontal = 10.dp)
                     )
@@ -173,7 +173,7 @@ private fun ScreenContent(
             item(span = StaggeredGridItemSpan.FullLine) {
                 Text(
                     stringResource(R.string.Other),
-                    color = CustomTheme.colors.textSecondary,
+                    color = AppTheme.colors.textSecondary,
                     style = MaterialTheme.typography.body1.copy(fontSize = 17.sp),
                     modifier = Modifier.padding(horizontal = 10.dp)
                 )

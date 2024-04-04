@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.dp
 import com.jobik.shkiper.R
 import com.jobik.shkiper.helpers.IntentHelper
 import com.jobik.shkiper.ui.modifiers.bounceClick
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 import com.jobik.shkiper.util.SnackbarHostUtil
 import com.jobik.shkiper.util.SnackbarVisualsCustom
 import com.jobik.shkiper.util.ThemeUtil
@@ -48,18 +48,18 @@ fun LinkCard(
     val clipboardManager = LocalContext.current.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
 
     Card(
-        shape = CustomTheme.shapes.medium,
+        shape = AppTheme.shapes.medium,
         colors = CardDefaults.cardColors(
-            containerColor = CustomTheme.colors.container,
-            contentColor = CustomTheme.colors.text,
-            disabledContainerColor = CustomTheme.colors.container,
-            disabledContentColor = CustomTheme.colors.text
+            containerColor = AppTheme.colors.container,
+            contentColor = AppTheme.colors.text,
+            disabledContainerColor = AppTheme.colors.container,
+            disabledContentColor = AppTheme.colors.text
         ),
         elevation = CardDefaults.outlinedCardElevation(),
         border = null,
         modifier = Modifier
             .bounceClick(0.95f)
-            .clip(CustomTheme.shapes.medium)
+            .clip(AppTheme.shapes.medium)
             .combinedClickable(
                 onClick = {
                     try {
@@ -106,7 +106,7 @@ fun LinkCard(
                     overflow = TextOverflow.Ellipsis,
                     style = MaterialTheme.typography.h5,
                     fontWeight = FontWeight.SemiBold,
-                    color = CustomTheme.colors.text,
+                    color = AppTheme.colors.text,
                     modifier = Modifier.basicMarquee()
                 )
                 Text(
@@ -115,7 +115,7 @@ fun LinkCard(
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                     style = MaterialTheme.typography.body1,
-                    color = CustomTheme.colors.textSecondary,
+                    color = AppTheme.colors.textSecondary,
                 )
             }
         }

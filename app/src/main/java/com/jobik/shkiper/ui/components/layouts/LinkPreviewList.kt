@@ -24,7 +24,7 @@ import com.jobik.shkiper.ui.components.buttons.CustomButton
 import com.jobik.shkiper.ui.components.buttons.DefaultButtonProperties
 import com.jobik.shkiper.ui.components.cards.LinkPreviewCard
 import com.jobik.shkiper.ui.modifiers.circularRotation
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 
 fun LazyListScope.LinkPreviewList(
     linkPreviewList: Set<LinkHelper.LinkPreview>,
@@ -40,13 +40,13 @@ fun LazyListScope.LinkPreviewList(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.SemiBold, fontSize = 18.sp),
-                    color = CustomTheme.colors.textSecondary,
+                    color = AppTheme.colors.textSecondary,
                 )
                 Spacer(Modifier.width(10.dp))
                 Icon(
                     imageVector = Icons.Outlined.Loop,
                     contentDescription = stringResource(R.string.Loading),
-                    tint = CustomTheme.colors.textSecondary,
+                    tint = AppTheme.colors.textSecondary,
                     modifier = Modifier.circularRotation()
                 )
             }
@@ -59,7 +59,7 @@ fun LazyListScope.LinkPreviewList(
             Text(
                 stringResource(R.string.Links),
                 style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.SemiBold, fontSize = 18.sp),
-                color = CustomTheme.colors.textSecondary,
+                color = AppTheme.colors.textSecondary,
             )
         }
     }
@@ -78,7 +78,7 @@ fun LazyListScope.LinkPreviewList(
                         backgroundColor = Color.Transparent,
                         disabledBackgroundColor = Color.Transparent
                     ),
-                    textColor = CustomTheme.colors.textSecondary,
+                    textColor = AppTheme.colors.textSecondary,
                     textStyle = MaterialTheme.typography.body1,
                 ),
                 modifier = contentPadding

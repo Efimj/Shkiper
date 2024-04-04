@@ -24,7 +24,7 @@ import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.Reminder
 import com.jobik.shkiper.ui.components.cards.ReminderCard
 import com.jobik.shkiper.ui.components.modals.ReminderDialogProperties
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 import org.mongodb.kbson.ObjectId
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -68,8 +68,8 @@ fun NoteScreenRemindersContent(noteViewModel: NoteViewModel) {
         ModalBottomSheet(
             sheetState = reminderSheetState,
             onDismissRequest = { noteViewModel.switchReminderDialogShow() },
-            containerColor = CustomTheme.colors.background,
-            contentColor = CustomTheme.colors.text,
+            containerColor = AppTheme.colors.background,
+            contentColor = AppTheme.colors.text,
             dragHandle = null,
             windowInsets = WindowInsets.ime
         ) {
@@ -190,7 +190,7 @@ private fun EmptyRemindersContent(modifier: Modifier) {
         Icon(
             imageVector = Icons.Outlined.NotificationsOff,
             contentDescription = null,
-            tint = CustomTheme.colors.primary,
+            tint = AppTheme.colors.primary,
             modifier = Modifier.size(90.dp)
         )
         Spacer(Modifier.height(10.dp))
@@ -199,7 +199,7 @@ private fun EmptyRemindersContent(modifier: Modifier) {
             style = MaterialTheme.typography.h6,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            color = CustomTheme.colors.text
+            color = AppTheme.colors.text
         )
     }
 }
@@ -239,10 +239,10 @@ private fun BoxScope.Header(
                     modifier = Modifier
                         .weight(1f)
                         .fillMaxHeight(),
-                    shape = CustomTheme.shapes.small,
+                    shape = AppTheme.shapes.small,
                     colors = ButtonDefaults.buttonColors(
-                        contentColor = CustomTheme.colors.text,
-                        containerColor = CustomTheme.colors.container
+                        contentColor = AppTheme.colors.text,
+                        containerColor = AppTheme.colors.container
                     ),
                     border = null,
                     elevation = null,
@@ -256,17 +256,17 @@ private fun BoxScope.Header(
                         text = stringResource(R.string.Delete),
                         style = MaterialTheme.typography.body1,
                         fontWeight = FontWeight.SemiBold,
-                        color = CustomTheme.colors.text,
+                        color = AppTheme.colors.text,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
                 }
                 Button(
                     modifier = Modifier.fillMaxHeight(),
-                    shape = CustomTheme.shapes.small,
+                    shape = AppTheme.shapes.small,
                     colors = ButtonDefaults.buttonColors(
-                        contentColor = CustomTheme.colors.text,
-                        containerColor = CustomTheme.colors.container
+                        contentColor = AppTheme.colors.text,
+                        containerColor = AppTheme.colors.container
                     ),
                     border = null,
                     elevation = null,
@@ -276,7 +276,7 @@ private fun BoxScope.Header(
                     Icon(
                         imageVector = Icons.Outlined.KeyboardArrowRight,
                         contentDescription = stringResource(R.string.Back),
-                        tint = CustomTheme.colors.text
+                        tint = AppTheme.colors.text
                     )
                 }
             }
@@ -308,10 +308,10 @@ private fun BoxScope.BottomBar(modifier: Modifier, isHidden: Boolean, onCreateRe
                     .padding(horizontal = 30.dp)
                     .padding(bottom = 10.dp)
                     .height(50.dp),
-                shape = CustomTheme.shapes.small,
+                shape = AppTheme.shapes.small,
                 colors = ButtonDefaults.buttonColors(
-                    contentColor = CustomTheme.colors.onPrimary,
-                    containerColor = CustomTheme.colors.primary
+                    contentColor = AppTheme.colors.onPrimary,
+                    containerColor = AppTheme.colors.primary
                 ),
                 border = null,
                 elevation = null,
@@ -322,7 +322,7 @@ private fun BoxScope.BottomBar(modifier: Modifier, isHidden: Boolean, onCreateRe
                     text = stringResource(R.string.CreateReminder),
                     style = MaterialTheme.typography.body1,
                     fontWeight = FontWeight.SemiBold,
-                    color = CustomTheme.colors.onPrimary,
+                    color = AppTheme.colors.onPrimary,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )

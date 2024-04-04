@@ -27,7 +27,7 @@ import com.jobik.shkiper.services.review_service.ReviewService
 import com.jobik.shkiper.ui.components.buttons.ButtonStyle
 import com.jobik.shkiper.ui.components.buttons.CustomButton
 import com.jobik.shkiper.ui.components.buttons.DefaultButtonProperties
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 import kotlinx.coroutines.delay
 
 @Composable
@@ -44,10 +44,10 @@ fun OfferWriteReview(
 
     Dialog(goBackFunDelay, DialogProperties(true, dismissOnClickOutside = true)) {
         Column(
-            Modifier.clip(RoundedCornerShape(15.dp)).background(CustomTheme.colors.container)
+            Modifier.clip(RoundedCornerShape(15.dp)).background(AppTheme.colors.container)
         ) {
             Row(
-                modifier = Modifier.fillMaxWidth().height(210.dp).background(CustomTheme.colors.background)
+                modifier = Modifier.fillMaxWidth().height(210.dp).background(AppTheme.colors.background)
                     .padding(vertical = 20.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
@@ -66,13 +66,13 @@ fun OfferWriteReview(
             ) {
                 Text(
                     text = stringResource(R.string.OfferWriteReviewTitle),
-                    color = CustomTheme.colors.text,
+                    color = AppTheme.colors.text,
                     style = MaterialTheme.typography.h6,
                     modifier = Modifier.padding(bottom = 4.dp)
                 )
                 Text(
                     text = stringResource(R.string.OfferWriteReviewDescription),
-                    color = CustomTheme.colors.textSecondary,
+                    color = AppTheme.colors.textSecondary,
                     style = MaterialTheme.typography.body1,
                 )
                 Spacer(modifier = Modifier.height(10.dp))
@@ -95,7 +95,7 @@ fun OfferWriteReview(
                                     disabledBackgroundColor = Color.Transparent
                                 ),
                                 border = null,
-                                textColor = if (timeHasPassed.value) CustomTheme.colors.text else CustomTheme.colors.textSecondary,
+                                textColor = if (timeHasPassed.value) AppTheme.colors.text else AppTheme.colors.textSecondary,
                             ),
                             enabled = timeHasPassed.value,
                             modifier = Modifier.fillMaxWidth()

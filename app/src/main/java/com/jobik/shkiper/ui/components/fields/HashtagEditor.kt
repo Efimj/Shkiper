@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jobik.shkiper.R
 import com.jobik.shkiper.ui.components.buttons.HashtagButton
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 import kotlinx.coroutines.launch
 
 private fun Set<String>.toTagsString(): String {
@@ -72,7 +72,7 @@ fun TagEditor(
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 18.sp
                 ),
-                color = CustomTheme.colors.textSecondary
+                color = AppTheme.colors.textSecondary
             )
         }
         TagsPresentation(tags = selectedTags) { if (enabled) editModeEnabled.value = true }
@@ -90,7 +90,7 @@ fun TagEditor(
             sheetState = sheetState,
             dragHandle = null,
             containerColor = Color.Transparent,
-            contentColor = CustomTheme.colors.text,
+            contentColor = AppTheme.colors.text,
             windowInsets = WindowInsets.ime,
             onDismissRequest = {
                 if (sheetState.isVisible.not()) {
@@ -102,8 +102,8 @@ fun TagEditor(
                     Spacer(modifier = Modifier.windowInsetsPadding(topInsets))
                     Surface(
                         shape = BottomSheetDefaults.ExpandedShape,
-                        contentColor = CustomTheme.colors.text,
-                        color = CustomTheme.colors.background,
+                        contentColor = AppTheme.colors.text,
+                        color = AppTheme.colors.background,
                         tonalElevation = BottomSheetDefaults.Elevation,
                     ) {
                         Column {
@@ -173,7 +173,7 @@ private fun EmptyTagsContent(modifier: Modifier) {
         Icon(
             imageVector = Icons.Outlined.LabelOff,
             contentDescription = null,
-            tint = CustomTheme.colors.primary,
+            tint = AppTheme.colors.primary,
             modifier = Modifier.size(90.dp)
         )
         Spacer(Modifier.height(10.dp))
@@ -182,7 +182,7 @@ private fun EmptyTagsContent(modifier: Modifier) {
             style = androidx.compose.material.MaterialTheme.typography.h6,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            color = CustomTheme.colors.text
+            color = AppTheme.colors.text
         )
     }
 }
@@ -297,10 +297,10 @@ private fun Header(
                 Spacer(modifier = Modifier.width(12.dp))
                 Button(
                     modifier = Modifier.fillMaxHeight(),
-                    shape = CustomTheme.shapes.small,
+                    shape = AppTheme.shapes.small,
                     colors = ButtonDefaults.buttonColors(
-                        contentColor = CustomTheme.colors.text,
-                        containerColor = CustomTheme.colors.container
+                        contentColor = AppTheme.colors.text,
+                        containerColor = AppTheme.colors.container
                     ),
                     border = null,
                     elevation = null,
@@ -316,7 +316,7 @@ private fun Header(
                     Icon(
                         imageVector = Icons.Outlined.NewLabel,
                         contentDescription = stringResource(R.string.Add),
-                        tint = CustomTheme.colors.text
+                        tint = AppTheme.colors.text
                     )
                 }
             }
@@ -358,10 +358,10 @@ private fun BoxScope.BottomBar(modifier: Modifier, isVisible: Boolean, onCreateR
                     .padding(horizontal = 30.dp)
                     .padding(bottom = 10.dp)
                     .height(50.dp),
-                shape = CustomTheme.shapes.small,
+                shape = AppTheme.shapes.small,
                 colors = ButtonDefaults.buttonColors(
-                    contentColor = CustomTheme.colors.onPrimary,
-                    containerColor = CustomTheme.colors.primary
+                    contentColor = AppTheme.colors.onPrimary,
+                    containerColor = AppTheme.colors.primary
                 ),
                 border = null,
                 elevation = null,
@@ -372,7 +372,7 @@ private fun BoxScope.BottomBar(modifier: Modifier, isVisible: Boolean, onCreateR
                     text = stringResource(R.string.SaveChanges),
                     style = androidx.compose.material.MaterialTheme.typography.body1,
                     fontWeight = FontWeight.SemiBold,
-                    color = CustomTheme.colors.onPrimary,
+                    color = AppTheme.colors.onPrimary,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -395,7 +395,7 @@ private fun TagGroup(
             Text(
                 text = header,
                 style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
-                color = CustomTheme.colors.textSecondary
+                color = AppTheme.colors.textSecondary
             )
         }
         Spacer(modifier = Modifier.height(4.dp))
@@ -427,7 +427,7 @@ private fun TagsPresentation(
         Text(
             stringResource(R.string.HashtagExample),
             style = MaterialTheme.typography.bodyMedium,
-            color = CustomTheme.colors.textSecondary
+            color = AppTheme.colors.textSecondary
         )
     } else
         FlowRow(

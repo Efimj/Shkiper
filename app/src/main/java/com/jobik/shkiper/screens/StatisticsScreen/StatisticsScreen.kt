@@ -40,7 +40,7 @@ import com.jobik.shkiper.ui.helpers.allWindowInsetsPadding
 import com.jobik.shkiper.ui.helpers.bottomWindowInsetsPadding
 import com.jobik.shkiper.ui.helpers.endWindowInsetsPadding
 import com.jobik.shkiper.ui.modifiers.bounceClick
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 import dev.shreyaspatil.capturable.Capturable
 import dev.shreyaspatil.capturable.controller.rememberCaptureController
 import kotlinx.coroutines.launch
@@ -60,8 +60,8 @@ fun StatisticsScreen() {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .clip(CustomTheme.shapes.medium)
-                .background(CustomTheme.colors.background),
+                .clip(AppTheme.shapes.medium)
+                .background(AppTheme.colors.background),
         ) {
             Column(
                 modifier = Modifier
@@ -91,7 +91,7 @@ fun StatisticsScreen() {
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(CustomTheme.colors.background)
+                            .background(AppTheme.colors.background)
                             .padding(horizontal = 10.dp, vertical = 40.dp)
                     ) {
                         Row(
@@ -102,7 +102,7 @@ fun StatisticsScreen() {
                         ) {
                             Text(
                                 stringResource(R.string.Statistics),
-                                color = CustomTheme.colors.text,
+                                color = AppTheme.colors.text,
                                 style = MaterialTheme.typography.h4.copy(fontWeight = FontWeight.Bold),
                                 modifier = Modifier.padding(horizontal = 5.dp)
                             )
@@ -159,8 +159,8 @@ fun StatisticsScreen() {
                             },
                         elevation = 0.dp,
                         shape = RoundedCornerShape(10.dp),
-                        backgroundColor = CustomTheme.colors.primary,
-                        contentColor = CustomTheme.colors.onPrimary,
+                        backgroundColor = AppTheme.colors.primary,
+                        contentColor = AppTheme.colors.onPrimary,
                     ) {
                         Row(
                             modifier = Modifier.height(50.dp).padding(horizontal = 18.dp, vertical = 7.dp),
@@ -170,7 +170,7 @@ fun StatisticsScreen() {
                             Icon(
                                 imageVector = Icons.Default.Share,
                                 contentDescription = stringResource(R.string.Share),
-                                tint = CustomTheme.colors.onPrimary,
+                                tint = AppTheme.colors.onPrimary,
                                 modifier = Modifier
                                     .size(30.dp)
                                     .padding(4.dp)
@@ -178,7 +178,7 @@ fun StatisticsScreen() {
                             Spacer(modifier = Modifier.width(5.dp))
                             Text(
                                 text = stringResource(R.string.Share),
-                                color = CustomTheme.colors.onPrimary,
+                                color = AppTheme.colors.onPrimary,
                                 style = MaterialTheme.typography.body1
                             )
                         }
@@ -203,14 +203,14 @@ fun StatisticsScreen() {
             sheetState = shareSheetState,
             dragHandle = null,
             containerColor = Color.Transparent,
-            contentColor = CustomTheme.colors.text,
+            contentColor = AppTheme.colors.text,
             windowInsets = WindowInsets.ime,
             onDismissRequest = { showShareDialog = !showShareDialog }) {
             Spacer(modifier = Modifier.windowInsetsPadding(topInsets))
             Surface(
                 shape = BottomSheetDefaults.ExpandedShape,
-                contentColor = CustomTheme.colors.text,
-                color = CustomTheme.colors.background,
+                contentColor = AppTheme.colors.text,
+                color = AppTheme.colors.background,
                 tonalElevation = BottomSheetDefaults.Elevation,
             ) {
                 Column(
