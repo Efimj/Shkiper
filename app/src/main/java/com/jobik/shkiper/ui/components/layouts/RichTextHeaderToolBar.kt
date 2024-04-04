@@ -6,6 +6,7 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Divider
+import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -81,9 +82,9 @@ fun RichTextHeaderToolBar(
                 icon = R.drawable.terminal_fill0_wght400_grad0_opsz24,
                 contentDescription = ""
             )
-            Divider(
+            VerticalDivider(
                 modifier = Modifier
-                    .heightIn(30.dp)
+                    .heightIn(max = 30.dp)
                     .width(1.dp),
                 color = AppTheme.colors.textSecondary.copy(alpha = .2f)
             )
@@ -113,9 +114,9 @@ fun RichTextHeaderToolBar(
                 icon = R.drawable.format_align_right_fill0_wght400_grad0_opsz24,
                 contentDescription = ""
             )
-            Divider(
+            VerticalDivider(
                 modifier = Modifier
-                    .heightIn(30.dp)
+                    .heightIn(max = 30.dp)
                     .width(1.dp),
                 color = AppTheme.colors.textSecondary.copy(alpha = .2f)
             )
