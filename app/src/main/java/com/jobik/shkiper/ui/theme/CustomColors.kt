@@ -76,22 +76,22 @@ val DarkPastelPurple = baseDarkColorsLowContrast.copy(
  * deep green
  */
 val LightDeepGreen = baseLightColorsHeightContrast.copy(
-    primary = Color(android.graphics.Color.parseColor("#4E9F3D")),
+    primary = Color(0xFF4E9F3D),
 )
 
 val DarkDeepGreen = baseDarkColorsHeightContrast.copy(
-    primary = Color(android.graphics.Color.parseColor("#4E9F3D")),
+    primary = Color(0xFF4E9F3D),
 )
 
 /**
  * pastel green
  */
 val LightPastelGreen = baseLightColorsLowContrast.copy(
-    primary = Color(android.graphics.Color.parseColor("#42B883")),
+    primary = Color(0xFF42B883),
 )
 
 val DarkPastelGreen = baseDarkColorsLowContrast.copy(
-    primary = Color(android.graphics.Color.parseColor("#42B883")),
+    primary = Color(0xFF42B883),
 )
 
 /**
@@ -120,11 +120,11 @@ val DarkPastelBlue = baseDarkColorsLowContrast.copy(
  * deep red
  */
 val LightDeepRed = baseLightColorsHeightContrast.copy(
-    primary = Color(android.graphics.Color.parseColor("#FF3040")),
+    primary = Color(0xFFFF3040),
 )
 
 val DarkDeepRed = baseDarkColorsHeightContrast.copy(
-    primary = Color(android.graphics.Color.parseColor("#FF3040")),
+    primary = Color(0xFFFF3040),
 )
 
 /**
@@ -142,11 +142,11 @@ val DarkPastelRed = baseDarkColorsLowContrast.copy(
  * deep orange
  */
 val LightDeepOrange = baseLightColorsHeightContrast.copy(
-    primary = Color(android.graphics.Color.parseColor("#FD8D14")),
+    primary = Color(0xFFFD8D14),
 )
 
 val DarkDeepOrange = baseDarkColorsHeightContrast.copy(
-    primary = Color(android.graphics.Color.parseColor("#FD8D14")),
+    primary = Color(0xFFFD8D14),
 )
 
 /**
