@@ -26,12 +26,12 @@ fun BoxScope.SnackbarProvider() {
             .align(Alignment.BottomCenter)
             .windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Bottom))
     ) { snackbarData ->
+        val customVisuals = snackbarData.visuals as SnackbarVisualsCustom
         Box(
             modifier = Modifier
                 .offset(y = -currentOffsetYValue.value)
                 .align(Alignment.BottomCenter)
         ) {
-            val customVisuals = snackbarData.visuals as SnackbarVisualsCustom
             SnackbarCard(customVisuals)
         }
     }
