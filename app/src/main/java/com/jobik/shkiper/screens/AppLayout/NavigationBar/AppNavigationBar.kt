@@ -5,6 +5,7 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -44,7 +45,7 @@ fun CustomBottomNavigationItem(properties: CustomBottomNavigationItem) {
         modifier = Modifier
             .fillMaxHeight()
             .aspectRatio(1f)
-            .clip(shape = MaterialTheme.shapes.small)
+            .clip(shape = CircleShape)
             .background(backgroundColor.value)
             .clickable {
                 properties.onClick()
@@ -63,7 +64,7 @@ fun CustomBottomNavigationItem(properties: CustomBottomNavigationItem) {
 @Composable
 fun CustomBottomNavigation(items: List<CustomBottomNavigationItem>) {
     Surface(
-        shape = MaterialTheme.shapes.small,
+        shape = CircleShape,
         shadowElevation = 1.dp,
         color = Color.Transparent
     ) {
@@ -71,7 +72,7 @@ fun CustomBottomNavigation(items: List<CustomBottomNavigationItem>) {
             modifier = Modifier
                 .clickable(enabled = false) {}
                 .height(DefaultNavigationValues().containerHeight)
-                .clip(shape = MaterialTheme.shapes.small)
+                .clip(shape = CircleShape)
                 .background(AppTheme.colors.background)
                 .padding(4.dp),
             verticalAlignment = Alignment.CenterVertically,
