@@ -2,18 +2,15 @@ package com.jobik.shkiper.ui.theme
 
 import android.app.Activity
 import android.graphics.Color
+import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
-import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
-import androidx.core.graphics.alpha
-import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.jobik.shkiper.util.ThemeUtil
 
 @Composable
 fun ShkiperTheme(
@@ -21,7 +18,13 @@ fun ShkiperTheme(
     style: CustomThemeStyle = CustomThemeStyle.PastelPurple,
     content: @Composable () -> Unit
 ) {
-    val colors = ThemeUtil.getColors(isDark = darkTheme, style = style)
+    val colors = when {
+        style == CustomThemeStyle.MaterialDynamicColors && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ->
+            getDynamicColors(darkTheme = darkTheme, context = LocalContext.current)
+
+        darkTheme -> style.dark
+        else -> style.light
+    }
 
     val view = LocalView.current
     if (!view.isInEditMode) {

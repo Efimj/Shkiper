@@ -48,6 +48,7 @@ enum class CustomThemeStyle(val dark: CustomThemeColors, val light: CustomThemeC
     PastelBlue(dark = DarkPastelBlue, light = LightPastelBlue),
     PastelGreen(dark = DarkPastelGreen, light = LightPastelGreen),
 
+    MaterialDynamicColors(dark = M3YouDarkPalette, light = M3YouLightPalette),
     M3Purple2(dark = M3DarkPurple2Palette, light = M3LightPurple2Palette),
     M3Blue(dark = M3DarkBluePalette, light = M3LightBluePalette),
     M3Green(dark = M3DarkGreenPalette, light = M3LightGreenPalette),

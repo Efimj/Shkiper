@@ -1,6 +1,48 @@
 package com.jobik.shkiper.ui.theme
 
+import android.content.Context
+import androidx.compose.material3.dynamicDarkColorScheme
+import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.ui.graphics.Color
+
+fun getDynamicColors(context: Context, darkTheme: Boolean): CustomThemeColors {
+    val dynamicPalette = if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+    return CustomThemeColors(
+        primary = dynamicPalette.primary,
+        onPrimary = dynamicPalette.onPrimary,
+        secondaryContainer = dynamicPalette.secondaryContainer,
+        onSecondaryContainer = dynamicPalette.onSecondaryContainer,
+        background = dynamicPalette.background,
+        text = dynamicPalette.onSurface,
+        textSecondary = dynamicPalette.onSurface.copy(alpha = .6f),
+        border = dynamicPalette.outline,
+        container = dynamicPalette.surfaceContainerHigh,
+    )
+}
+
+val M3YouLightPalette = CustomThemeColors(
+    primary = Color(0xFF64558F),
+    onPrimary = Color(0xFFFFFFFF),
+    secondaryContainer = Color(0xFFEEDBFF),
+    onSecondaryContainer = Color(0xFF260D43),
+    background = Color(0xFFFDF7FF),
+    text = Color(0xFF1C1B20),
+    textSecondary = Color(0xFF1C1B20).copy(alpha = .6f),
+    border = Color(0xFF79757F),
+    container = Color(0xFFECE6EE),
+)
+
+val M3YouDarkPalette = CustomThemeColors(
+    primary = Color(0xFFCEBDFE),
+    onPrimary = Color(0xFF35275D),
+    secondaryContainer = Color(0xFF543B72),
+    onSecondaryContainer = Color(0xFFEEDBFF),
+    background = Color(0xFF141318),
+    text = Color(0xFFE6E1E9),
+    textSecondary = Color(0xFFE6E1E9).copy(alpha = .6f),
+    border = Color(0xFF938F99),
+    container = Color(0xFF2B292F),
+)
 
 val M3LightPurple2Palette = CustomThemeColors(
     primary = Color(0xFF64558F),
