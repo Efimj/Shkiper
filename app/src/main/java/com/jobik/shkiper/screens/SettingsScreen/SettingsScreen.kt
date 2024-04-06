@@ -90,7 +90,7 @@ private fun InformationSettings() {
                 .fillMaxWidth()
                 .padding(top = 15.dp, bottom = 8.dp)
                 .padding(horizontal = 20.dp),
-            verticalAlignment = Alignment.CenterVertically,
+            verticalAlignment = Alignment.Top,
             horizontalArrangement = Arrangement.Center
         ) {
             Icon(
@@ -102,8 +102,6 @@ private fun InformationSettings() {
             Text(
                 text = stringResource(R.string.AppDataPolitics),
                 color = AppTheme.colors.textSecondary,
-                fontSize = 16.sp,
-                lineHeight = 24.sp,
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.fillMaxWidth()
             )

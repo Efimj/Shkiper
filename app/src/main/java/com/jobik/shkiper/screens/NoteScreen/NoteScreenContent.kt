@@ -9,9 +9,9 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Warning
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -30,7 +30,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.jobik.shkiper.R
@@ -87,7 +86,9 @@ fun NoteScreenContent(
         topBar = { NoteScreenHeader(navController, noteViewModel, richTextState) },
         bottomBar = { NoteScreenFooter(navController, noteViewModel, richTextState) },
         contentWindowInsets = WindowInsets.ime,
-        modifier = Modifier.fillMaxSize().imePadding(),
+        modifier = Modifier
+            .fillMaxSize()
+            .imePadding(),
     ) { contentPadding ->
         Box(
             Modifier
@@ -124,9 +125,8 @@ fun NoteScreenContent(
                             }
                         ),
                         enabled = enabled,
-                        textStyle = MaterialTheme.typography.h6.copy(
+                        textStyle = MaterialTheme.typography.headlineMedium.copy(
                             fontWeight = FontWeight.SemiBold,
-                            fontSize = 21.sp
                         ),
                         modifier = Modifier
                             .testTag("note_header_input")
@@ -139,7 +139,7 @@ fun NoteScreenContent(
                     CustomRichTextEditor(
                         state = richTextState,
                         placeholder = stringResource(R.string.Text),
-                        textStyle = MaterialTheme.typography.body1,
+                        textStyle = MaterialTheme.typography.bodyMedium,
                         enabled = enabled,
                         minLines = 2,
                         modifier = Modifier

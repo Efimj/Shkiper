@@ -10,11 +10,9 @@ import androidx.compose.foundation.pager.PageSize
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.KeyboardArrowLeft
-import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
@@ -183,7 +181,7 @@ private fun ScreenFooter(navController: NavController, pagerState: PagerState, s
                 if (value) {
                     Text(
                         text = stringResource(R.string.Finish),
-                        style = MaterialTheme.typography.body1,
+                        style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.SemiBold,
                         color = buttonNextContentColor,
                         maxLines = 1,
@@ -192,7 +190,7 @@ private fun ScreenFooter(navController: NavController, pagerState: PagerState, s
                 } else {
                     Text(
                         text = stringResource(R.string.Next),
-                        style = MaterialTheme.typography.body1,
+                        style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.SemiBold,
                         color = buttonNextContentColor,
                         maxLines = 1,
@@ -241,7 +239,7 @@ fun PagerScreen(onBoardingPage: OnBoardingPage) {
                 .fillMaxWidth()
                 .padding(top = 20.dp),
             text = stringResource(onBoardingPage.title),
-            style = MaterialTheme.typography.h4,
+            style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,
             color = AppTheme.colors.text,
@@ -254,7 +252,7 @@ fun PagerScreen(onBoardingPage: OnBoardingPage) {
                 .padding(horizontal = 20.dp)
                 .padding(top = 10.dp),
             text = stringResource(onBoardingPage.description),
-            style = MaterialTheme.typography.h6,
+            style = MaterialTheme.typography.bodyLarge,
             textAlign = TextAlign.Center,
             color = AppTheme.colors.textSecondary,
             minLines = 4,

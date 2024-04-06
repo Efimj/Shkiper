@@ -7,8 +7,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Shop
@@ -80,7 +79,7 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
                 Text(
                     stringResource(R.string.PurchaseScreenTitle),
                     color = AppTheme.colors.text,
-                    style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Bold),
+                    style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .padding(bottom = 15.dp, top = 5.dp)
@@ -91,17 +90,16 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
                     color = AppTheme.colors.textSecondary,
                     fontSize = 16.sp,
                     lineHeight = 24.sp,
-                    style = MaterialTheme.typography.body1,
+                    style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier.fillMaxWidth()
                 )
             }
             Text(
                 stringResource(R.string.BuyMe),
                 color = AppTheme.colors.textSecondary,
-                style = MaterialTheme.typography.h6,
-                textAlign = TextAlign.Left,
+                style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier
-                    .padding(horizontal = 20.dp)
+                    .padding(horizontal = 10.dp)
                     .padding(bottom = 5.dp)
                     .fillMaxWidth()
             )
@@ -153,14 +151,13 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
-                        .padding(horizontal = 20.dp)
+                        .padding(horizontal = 10.dp)
                         .fillMaxWidth()
                 ) {
                     Text(
                         stringResource(R.string.BuySubscription),
                         color = AppTheme.colors.textSecondary,
-                        style = MaterialTheme.typography.h6,
-                        textAlign = TextAlign.Left,
+                        style = MaterialTheme.typography.titleMedium,
                         modifier = Modifier
                             .padding(bottom = 5.dp)
                             .padding(top = 15.dp)

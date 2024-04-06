@@ -179,7 +179,7 @@ private fun EmptyTagsContent(modifier: Modifier) {
         Spacer(Modifier.height(10.dp))
         Text(
             text = stringResource(R.string.EmptyTagsTitle),
-            style = androidx.compose.material.MaterialTheme.typography.h6,
+            style = MaterialTheme.typography.titleMedium,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             color = AppTheme.colors.text
@@ -370,7 +370,7 @@ private fun BoxScope.BottomBar(modifier: Modifier, isVisible: Boolean, onCreateR
             ) {
                 Text(
                     text = stringResource(R.string.SaveChanges),
-                    style = androidx.compose.material.MaterialTheme.typography.body1,
+                    style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.colors.onPrimary,
                     maxLines = 1,
