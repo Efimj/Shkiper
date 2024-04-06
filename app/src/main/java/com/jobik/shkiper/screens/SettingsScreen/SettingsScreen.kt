@@ -2,6 +2,7 @@ package com.jobik.shkiper.screens.SettingsScreen
 
 import android.app.Activity
 import android.content.Context
+import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.Animatable
@@ -42,11 +43,14 @@ import com.jobik.shkiper.ui.components.cards.ThemePreview
 import com.jobik.shkiper.ui.helpers.allWindowInsetsPadding
 import com.jobik.shkiper.ui.modifiers.circularRotation
 import com.jobik.shkiper.ui.theme.AppTheme
+import com.jobik.shkiper.ui.theme.CustomThemeColors
 import com.jobik.shkiper.ui.theme.CustomThemeStyle
+import com.jobik.shkiper.ui.theme.getDynamicColors
 import com.jobik.shkiper.util.ThemeUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.enums.EnumEntries
 
 @Composable
 fun SettingsScreen(navController: NavController, settingsViewModel: SettingsViewModel = hiltViewModel()) {
@@ -313,10 +317,12 @@ private fun ProgramSettings(settingsViewModel: SettingsViewModel) {
 
 @Composable
 private fun SettingsColorThemePicker(settingsViewModel: SettingsViewModel) {
+    val isDarkMode = ThemeUtil.isDarkMode.value
     val colorValues =
-        if (ThemeUtil.isDarkMode.value != false) CustomThemeStyle.entries.map { it.dark } else CustomThemeStyle.entries.map { it.light }
+        if (isDarkMode == true) CustomThemeStyle.entries.map { it.dark } else CustomThemeStyle.entries.map { it.light }
     val colorValuesName = CustomThemeStyle.entries
     val selectedThemeName = ThemeUtil.themeStyle.value?.name ?: CustomThemeStyle.PastelPurple.name
+    val context = LocalContext.current
 
     Column(
         Modifier.padding(vertical = 5.dp),
@@ -337,9 +343,12 @@ private fun SettingsColorThemePicker(settingsViewModel: SettingsViewModel) {
             contentPadding = PaddingValues(start = 20.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
+
             items(colorValues.size) { theme ->
+                val colors = remember { getColors(context = context, colorValuesName, theme, isDarkMode, colorValues) }
+
                 ThemePreview(
-                    colors = colorValues[theme],
+                    colors = colors,
                     selected = colorValuesName[theme].name == selectedThemeName
                 ) {
                     settingsViewModel.selectColorTheme(theme = colorValuesName[theme])
@@ -347,6 +356,19 @@ private fun SettingsColorThemePicker(settingsViewModel: SettingsViewModel) {
             }
         }
     }
+}
+
+private fun getColors(
+    context: Context,
+    colorValuesName: EnumEntries<CustomThemeStyle>,
+    theme: Int,
+    isDarkMode: Boolean?,
+    colorValues: List<CustomThemeColors>
+) = when {
+    colorValuesName[theme] == CustomThemeStyle.MaterialDynamicColors && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ->
+        getDynamicColors(darkTheme = isDarkMode == true, context = context)
+
+    else -> colorValues[theme]
 }
 
 @Composable

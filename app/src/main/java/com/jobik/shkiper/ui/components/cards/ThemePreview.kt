@@ -71,45 +71,4 @@ fun ThemePreview(
             }
         }
     }
-
-//    Card(
-//        modifier = Modifier
-//            .bounceClick()
-//            .fillMaxSize()
-//            .clip(RoundedCornerShape(10.dp))
-//            .combinedClickable(onClick = { multipleEventsCutter.processEvent { onClick() } }),
-//        elevation = 0.dp,
-//        shape = RoundedCornerShape(10.dp),
-//        border = BorderStroke(if (selected) 2.dp else 0.dp, if (selected) colors.primary else Color.Transparent),
-//        backgroundColor = colors.background,
-//        contentColor = colors.text,
-//    ) {
-//        Column(Modifier.fillMaxSize()) {
-//            Row(
-//                Modifier
-//                    .fillMaxWidth()
-//                    .weight(1f)
-//                    .background(colors.border)) {}
-//            Row(
-//                Modifier
-//                    .fillMaxWidth()
-//                    .weight(1f)
-//                    .background(colors.textSecondary)) {}
-//            Row(
-//                Modifier
-//                    .fillMaxWidth()
-//                    .weight(1f)
-//                    .background(colors.primary)) {}
-//            Row(
-//                Modifier
-//                    .fillMaxWidth()
-//                    .weight(1f)
-//                    .background(colors.container)) {}
-//            Row(
-//                Modifier
-//                    .fillMaxWidth()
-//                    .weight(1f)
-//                    .background(colors.background)) {}
-//        }
-//    }
 }
