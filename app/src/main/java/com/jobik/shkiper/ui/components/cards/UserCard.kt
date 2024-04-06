@@ -5,8 +5,7 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.*
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -58,13 +57,13 @@ fun UserCard(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(60.dp),
+                .height(50.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Image(
                 painter = painterResource(id = photo),
                 modifier = Modifier
-                    .widthIn(max = 60.dp)
+                    .widthIn(max = 50.dp)
                     .clip(RoundedCornerShape(15.dp)),
                 contentDescription = stringResource(R.string.DevMailHeader),
                 contentScale = ContentScale.Fit
@@ -80,7 +79,7 @@ fun UserCard(
                         Text(
                             text = name,
                             color = AppTheme.colors.text,
-                            style = MaterialTheme.typography.h6,
+                            style = MaterialTheme.typography.bodyMedium,
                             overflow = TextOverflow.Ellipsis,
                             textAlign = TextAlign.Center,
                             maxLines = 1
@@ -90,7 +89,7 @@ fun UserCard(
                         Text(
                             text = it,
                             color = AppTheme.colors.textSecondary,
-                            style = MaterialTheme.typography.body1,
+                            style = MaterialTheme.typography.bodySmall,
                             overflow = TextOverflow.Ellipsis,
                             textAlign = TextAlign.Center,
                             maxLines = 1

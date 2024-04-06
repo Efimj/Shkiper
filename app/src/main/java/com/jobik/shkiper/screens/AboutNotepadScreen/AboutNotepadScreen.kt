@@ -2,8 +2,7 @@ package com.jobik.shkiper.screens.AboutNotepadScreen
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -62,7 +61,7 @@ fun AboutNotepadScreen() {
                 Text(
                     text = stringResource(R.string.app_name),
                     color = AppTheme.colors.primary,
-                    style = MaterialTheme.typography.h6.copy(fontSize = 28.sp, fontWeight = FontWeight.SemiBold),
+                    style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.SemiBold),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier.padding(bottom = 5.dp)
@@ -70,7 +69,7 @@ fun AboutNotepadScreen() {
                 Text(
                     text = stringResource(R.string.AboutAppDescription),
                     color = AppTheme.colors.textSecondary,
-                    style = MaterialTheme.typography.body1,
+                    style = MaterialTheme.typography.bodyMedium,
                     overflow = TextOverflow.Ellipsis,
                     textAlign = TextAlign.Start,
                 )
@@ -112,8 +111,7 @@ fun AboutNotepadScreen() {
                     Text(
                         text = "V ${BuildConfig.VERSION_NAME}",
                         color = AppTheme.colors.primary,
-                        style = MaterialTheme.typography.body1,
-                        fontSize = 18.sp,
+                        style = MaterialTheme.typography.titleMedium,
                         textAlign = TextAlign.Center,
                         fontWeight = FontWeight.SemiBold
                     )
@@ -132,7 +130,7 @@ fun AboutNotepadScreen() {
             Text(
                 text = stringResource(R.string.Contact),
                 color = AppTheme.colors.textSecondary,
-                style = MaterialTheme.typography.h6,
+                style = MaterialTheme.typography.titleMedium,
                 overflow = TextOverflow.Ellipsis,
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.SemiBold,
@@ -157,7 +155,7 @@ fun AboutNotepadScreen() {
             Text(
                 text = stringResource(R.string.Icons),
                 color = AppTheme.colors.textSecondary,
-                style = MaterialTheme.typography.h6,
+                style = MaterialTheme.typography.titleMedium,
                 overflow = TextOverflow.Ellipsis,
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.SemiBold,
