@@ -129,7 +129,7 @@ dependencies {
     implementation 'com.github.commandiron:WheelPickerCompose:1.1.11'
 
     // Customize Calendar
-    implementation 'com.kizitonwose.calendar:compose:2.4.0'
+    implementation 'com.kizitonwose.calendar:compose:2.5.0'
 
     // Json serialization
     implementation 'com.google.code.gson:gson:2.10'
