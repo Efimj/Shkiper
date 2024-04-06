@@ -7,10 +7,7 @@ import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Event
 import androidx.compose.material.icons.filled.Repeat
@@ -53,8 +50,8 @@ fun NoteCard(
     onLongClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
-    val headerStyle = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.SemiBold, fontSize = 18.sp)
-    val bodyStyle = MaterialTheme.typography.body1
+    val headerStyle = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold)
+    val bodyStyle = MaterialTheme.typography.bodyMedium
     val multipleEventsCutter = remember { MultipleEventsCutter.get() }
     val borderColor: Color by animateColorAsState(
         targetValue = if (selected) AppTheme.colors.primary else Color.Transparent, label = "borderColor",
@@ -79,11 +76,12 @@ fun NoteCard(
                 onClick = { multipleEventsCutter.processEvent { onClick() } },
                 onLongClick = onLongClick,
             ),
-        elevation = 0.dp,
         shape = RoundedCornerShape(15.dp),
         border = BorderStroke(2.dp, borderColor),
-        backgroundColor = AppTheme.colors.container,
-        contentColor = AppTheme.colors.text,
+        colors = CardDefaults.cardColors(
+            containerColor = AppTheme.colors.container,
+            contentColor = AppTheme.colors.text
+        ),
     ) {
         Column(
             modifier = Modifier.padding(16.dp)
@@ -93,18 +91,23 @@ fun NoteCard(
             else
                 NoteAnnotatedContent(header, bodyRichTextState, markedText, headerStyle, bodyStyle)
             if (header.isNullOrBlank() && removeMarkdownStyles(bodyRichTextState.toMarkdown()).isBlank()) {
-                Text(
-                    text = stringResource(R.string.EmptyNote),
-                    maxLines = 10,
-                    overflow = TextOverflow.Ellipsis,
-                    style = MaterialTheme.typography.body1,
-                    color = AppTheme.colors.textSecondary,
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
-                )
+                EmptyNoteContent(bodyStyle)
             }
             ReminderInformation(reminder)
         }
     }
+}
+
+@Composable
+private fun ColumnScope.EmptyNoteContent(bodyStyle: TextStyle) {
+    Text(
+        text = stringResource(R.string.EmptyNote),
+        maxLines = 10,
+        overflow = TextOverflow.Ellipsis,
+        style = bodyStyle,
+        color = AppTheme.colors.textSecondary,
+        modifier = Modifier.Companion.align(Alignment.CenterHorizontally)
+    )
 }
 
 private fun getNextReminderDate(reminder: Reminder?): LocalDateTime {
@@ -138,9 +141,9 @@ private fun ReminderInformation(reminder: Reminder?) {
                 modifier = Modifier.height(15.dp)
             )
             Spacer(Modifier.width(4.dp))
-            androidx.compose.material3.Text(
+            Text(
                 DateHelper.getLocalizedDate(nextReminderDate.toLocalDate()),
-                style = MaterialTheme.typography.body1.copy(
+                style = MaterialTheme.typography.bodySmall.copy(
                     fontSize = fontSize,
                     textDecoration = if (isDateFuture) TextDecoration.None else TextDecoration.LineThrough
                 ),
@@ -148,9 +151,9 @@ private fun ReminderInformation(reminder: Reminder?) {
             )
             Spacer(Modifier.width(4.dp))
             if (isDateFuture)
-                androidx.compose.material3.Text(
+                Text(
                     nextReminderDate.toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")),
-                    style = MaterialTheme.typography.body1.copy(fontSize = fontSize),
+                    style = MaterialTheme.typography.bodySmall.copy(fontSize = fontSize),
                     color = AppTheme.colors.textSecondary,
                 )
         }
@@ -254,7 +257,7 @@ fun buildAnnotatedString(text: String, substring: String, color: Color, backgrou
                 start = lastIndex,
                 end = lastIndex + substring.length
             )
-            lastIndex += substring.length // Обновление значения lastIndex
+            lastIndex += substring.length
         }
     }
 }
