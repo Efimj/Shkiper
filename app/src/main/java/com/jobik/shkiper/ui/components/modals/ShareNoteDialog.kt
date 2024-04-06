@@ -182,6 +182,7 @@ fun ShareNoteDialog(
                         contentDescription = stringResource(R.string.Share),
                         tint = AppTheme.colors.onPrimary
                     )
+                    Spacer(Modifier.width(10.dp))
                     Text(
                         text = stringResource(R.string.Share),
                         style = MaterialTheme.typography.body1,
