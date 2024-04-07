@@ -9,9 +9,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.outlined.ContentCopy
@@ -103,7 +101,7 @@ fun StatisticsScreen() {
                             Text(
                                 stringResource(R.string.Statistics),
                                 color = AppTheme.colors.text,
-                                style = MaterialTheme.typography.h4.copy(fontWeight = FontWeight.Bold),
+                                style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.SemiBold),
                                 modifier = Modifier.padding(horizontal = 5.dp)
                             )
                         }
@@ -157,13 +155,14 @@ fun StatisticsScreen() {
                             .clickable() {
                                 showShareDialog = !showShareDialog
                             },
-                        elevation = 0.dp,
+                        colors = CardDefaults.cardColors(
+                            containerColor = AppTheme.colors.primary,
+                            contentColor = AppTheme.colors.onPrimary
+                        ),
                         shape = RoundedCornerShape(10.dp),
-                        backgroundColor = AppTheme.colors.primary,
-                        contentColor = AppTheme.colors.onPrimary,
                     ) {
                         Row(
-                            modifier = Modifier.height(50.dp).padding(horizontal = 18.dp, vertical = 7.dp),
+                            modifier = Modifier.height(50.dp).padding(horizontal = 14.dp, vertical = 7.dp),
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.Center
                         ) {
@@ -175,11 +174,11 @@ fun StatisticsScreen() {
                                     .size(30.dp)
                                     .padding(4.dp)
                             )
-                            Spacer(modifier = Modifier.width(5.dp))
+                            Spacer(modifier = Modifier.width(8.dp))
                             Text(
                                 text = stringResource(R.string.Share),
                                 color = AppTheme.colors.onPrimary,
-                                style = MaterialTheme.typography.body1
+                                style = MaterialTheme.typography.bodyMedium
                             )
                         }
                     }

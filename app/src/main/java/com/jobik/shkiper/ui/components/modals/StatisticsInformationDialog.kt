@@ -4,8 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -51,19 +50,19 @@ fun StatisticsInformationDialog(
                     Text(
                         statistics.getStringValue(),
                         color = AppTheme.colors.text,
-                        style = MaterialTheme.typography.h5,
+                        style = MaterialTheme.typography.headlineMedium,
                         modifier = Modifier.padding(bottom = 4.dp)
                     )
                     Text(
                         stringResource(statistics.title),
                         color = AppTheme.colors.text,
-                        style = MaterialTheme.typography.h6,
+                        style = MaterialTheme.typography.titleMedium,
                         modifier = Modifier.padding(bottom = 4.dp)
                     )
                     Text(
                         stringResource(statistics.description),
                         color = AppTheme.colors.textSecondary,
-                        style = MaterialTheme.typography.body1,
+                        style = MaterialTheme.typography.bodyMedium,
                         textAlign = TextAlign.Center
                     )
                 }
