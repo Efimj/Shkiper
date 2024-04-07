@@ -10,7 +10,7 @@ import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridState
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Description
 import androidx.compose.material.icons.outlined.Event
@@ -153,7 +153,7 @@ private fun NotesListContent(
                     Text(
                         stringResource(R.string.Pinned),
                         color = AppTheme.colors.textSecondary,
-                        style = MaterialTheme.typography.body1.copy(fontSize = 17.sp),
+                        style = MaterialTheme.typography.bodyLarge,
                         modifier = Modifier.padding(horizontal = 10.dp)
                     )
                 }
@@ -177,7 +177,7 @@ private fun NotesListContent(
                 Text(
                     stringResource(R.string.Other),
                     color = AppTheme.colors.textSecondary,
-                    style = MaterialTheme.typography.body1.copy(fontSize = 17.sp),
+                    style = MaterialTheme.typography.bodyLarge,
                     modifier = Modifier.padding(horizontal = 10.dp)
                 )
             }

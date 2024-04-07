@@ -2,7 +2,7 @@ package com.jobik.shkiper.ui.components.layouts
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.*
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,8 +30,8 @@ fun ScreenContentIfNoData(modifier: Modifier = Modifier, @StringRes title: Int, 
         Spacer(Modifier.height(10.dp))
         Text(
             text = stringResource(title),
-            style = MaterialTheme.typography.h6,
-            maxLines = 1,
+            style = MaterialTheme.typography.titleLarge,
+            maxLines = 2,
             overflow = TextOverflow.Ellipsis,
             color = AppTheme.colors.text
         )
