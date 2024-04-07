@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.NotePosition
+import com.jobik.shkiper.navigation.NavigationHelpers.Companion.canNavigate
 import com.jobik.shkiper.ui.animation.AnimateVerticalSwitch
 import com.jobik.shkiper.ui.components.layouts.CustomTopAppBar
 import com.jobik.shkiper.ui.components.layouts.RichTextHeaderToolBar
@@ -72,7 +73,10 @@ fun NoteScreenHeader(navController: NavController, noteViewModel: NoteViewModel,
                         icon = Icons.Default.ArrowBack,
                         iconDescription = R.string.GoBack,
                         modifier = Modifier.testTag("button_navigate_back"),
-                        onClick = navController::popBackStack
+                        onClick = {
+                            if (navController.canNavigate())
+                                navController.popBackStack()
+                        }
                     ),
                     items =
                     if (noteViewModel.screenState.value.notePosition == NotePosition.DELETE)
