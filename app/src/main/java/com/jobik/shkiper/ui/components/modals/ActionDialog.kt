@@ -2,8 +2,7 @@ package com.jobik.shkiper.ui.components.modals
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.*
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -52,7 +51,7 @@ fun ActionDialog(
                 Text(
                     color = AppTheme.colors.text,
                     text = title,
-                    style = MaterialTheme.typography.h6,
+                    style = MaterialTheme.typography.titleMedium,
                     overflow = TextOverflow.Ellipsis
                 )
             }

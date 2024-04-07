@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -37,14 +37,14 @@ data class ButtonProperties(
 @Composable
 fun DefaultButtonProperties(
     buttonColors: ButtonColors = ButtonDefaults.buttonColors(
-        backgroundColor = AppTheme.colors.container,
-        disabledBackgroundColor = Color.Transparent
+        containerColor = AppTheme.colors.container,
+        disabledContainerColor = Color.Transparent
     ),
     border: BorderStroke? = null,
     shape: Shape = RoundedCornerShape(10.dp),
     horizontalPaddings: Dp = 0.dp,
     textColor: Color = AppTheme.colors.text,
-    textStyle: TextStyle = MaterialTheme.typography.body1.copy(fontWeight = FontWeight.SemiBold),
+    textStyle: TextStyle = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
     iconTint: Color = AppTheme.colors.text,
 ): ButtonProperties {
     return ButtonProperties(
@@ -70,44 +70,44 @@ fun getButtonProperties(style: ButtonStyle, properties: ButtonProperties? = null
     val style = when (style) {
         ButtonStyle.Filled -> ButtonProperties(
             buttonColors = ButtonDefaults.buttonColors(
-                backgroundColor = AppTheme.colors.primary,
-                disabledBackgroundColor = Color.Transparent
+                containerColor = AppTheme.colors.primary,
+                disabledContainerColor = Color.Transparent
             ),
             border = null,
             shape = RoundedCornerShape(10.dp),
-            horizontalPaddings = androidx.compose.material3.ButtonDefaults.ContentPadding.calculateLeftPadding(
+            horizontalPaddings = ButtonDefaults.ContentPadding.calculateLeftPadding(
                 LayoutDirection.Ltr
             ),
             textColor = AppTheme.colors.onPrimary,
-            textStyle = MaterialTheme.typography.body1.copy(fontWeight = FontWeight.SemiBold),
+            textStyle = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
             iconTint = AppTheme.colors.onPrimary,
         )
 
         ButtonStyle.Outlined -> ButtonProperties(
             buttonColors = ButtonDefaults.buttonColors(
-                backgroundColor = Color.Transparent,
-                disabledBackgroundColor = Color.Transparent
+                containerColor = Color.Transparent,
+                disabledContainerColor = Color.Transparent
             ),
             border = BorderStroke(width = 1.dp, color = AppTheme.colors.border),
             shape = RoundedCornerShape(10.dp),
-            horizontalPaddings = androidx.compose.material3.ButtonDefaults.ContentPadding.calculateLeftPadding(
+            horizontalPaddings = ButtonDefaults.ContentPadding.calculateLeftPadding(
                 LayoutDirection.Ltr
             ),
             textColor = AppTheme.colors.text,
-            textStyle = MaterialTheme.typography.body1.copy(fontWeight = FontWeight.SemiBold),
+            textStyle = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
             iconTint = AppTheme.colors.text,
         )
 
         ButtonStyle.Text -> ButtonProperties(
             buttonColors = ButtonDefaults.buttonColors(
-                backgroundColor = Color.Transparent,
-                disabledBackgroundColor = Color.Transparent
+                containerColor = Color.Transparent,
+                disabledContainerColor = Color.Transparent
             ),
             border = null,
             shape = RoundedCornerShape(10.dp),
             horizontalPaddings = 0.dp,
             textColor = AppTheme.colors.text,
-            textStyle = MaterialTheme.typography.body1.copy(fontWeight = FontWeight.SemiBold),
+            textStyle = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
             iconTint = AppTheme.colors.text,
         )
     }
@@ -139,8 +139,8 @@ fun CustomButton(
     val paddingValues = PaddingValues(
         start = buttonProperties.horizontalPaddings,
         end = buttonProperties.horizontalPaddings,
-        top = androidx.compose.material3.ButtonDefaults.ContentPadding.calculateTopPadding(),
-        bottom = androidx.compose.material3.ButtonDefaults.ContentPadding.calculateBottomPadding(),
+        top = ButtonDefaults.ContentPadding.calculateTopPadding(),
+        bottom = ButtonDefaults.ContentPadding.calculateBottomPadding(),
     )
 
     Button(
@@ -153,7 +153,6 @@ fun CustomButton(
         enabled = enabled,
         contentPadding = paddingValues,
     ) {
-        //Spacer(Modifier.width(buttonProperties.horizontalPaddings))
         if (content != null) {
             content()
         } else {
@@ -179,6 +178,5 @@ fun CustomButton(
                 )
             }
         }
-        //Spacer(Modifier.width(buttonProperties.horizontalPaddings))
     }
 }

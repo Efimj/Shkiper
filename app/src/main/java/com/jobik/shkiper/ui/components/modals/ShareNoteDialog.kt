@@ -7,8 +7,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material3.Button
@@ -27,7 +26,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.jobik.shkiper.R
@@ -116,9 +114,8 @@ fun ShareNoteDialog(
                         if (noteHeader.isNotEmpty()) {
                             Text(
                                 text = noteHeader,
-                                style = MaterialTheme.typography.h6.copy(
+                                style = MaterialTheme.typography.headlineSmall.copy(
                                     fontWeight = FontWeight.SemiBold,
-                                    fontSize = 21.sp
                                 ),
                                 color = AppTheme.colors.text
                             )
@@ -128,7 +125,7 @@ fun ShareNoteDialog(
                         if (richTextState.annotatedString.text.isNotEmpty()) {
                             RichText(
                                 state = richTextState,
-                                style = MaterialTheme.typography.body1,
+                                style = MaterialTheme.typography.bodyMedium,
                                 color = AppTheme.colors.text,
                             )
                         }
@@ -157,7 +154,7 @@ fun ShareNoteDialog(
                 ) {
                     Text(
                         text = stringResource(R.string.Cancel),
-                        style = MaterialTheme.typography.body1,
+                        style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.colors.text,
                         maxLines = 1,
@@ -185,7 +182,7 @@ fun ShareNoteDialog(
                     Spacer(Modifier.width(10.dp))
                     Text(
                         text = stringResource(R.string.Share),
-                        style = MaterialTheme.typography.body1,
+                        style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.colors.onPrimary,
                         maxLines = 1,

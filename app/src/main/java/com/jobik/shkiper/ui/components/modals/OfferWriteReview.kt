@@ -4,9 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
@@ -67,13 +65,13 @@ fun OfferWriteReview(
                 Text(
                     text = stringResource(R.string.OfferWriteReviewTitle),
                     color = AppTheme.colors.text,
-                    style = MaterialTheme.typography.h6,
+                    style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.padding(bottom = 4.dp)
                 )
                 Text(
                     text = stringResource(R.string.OfferWriteReviewDescription),
                     color = AppTheme.colors.textSecondary,
-                    style = MaterialTheme.typography.body1,
+                    style = MaterialTheme.typography.bodyMedium,
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 Row(
@@ -91,8 +89,8 @@ fun OfferWriteReview(
                             onClick = goBackFunDelay,
                             properties = DefaultButtonProperties(
                                 buttonColors = ButtonDefaults.buttonColors(
-                                    backgroundColor = Color.Transparent,
-                                    disabledBackgroundColor = Color.Transparent
+                                    containerColor = Color.Transparent,
+                                    disabledContainerColor = Color.Transparent
                                 ),
                                 border = null,
                                 textColor = if (timeHasPassed.value) AppTheme.colors.text else AppTheme.colors.textSecondary,

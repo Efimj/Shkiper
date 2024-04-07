@@ -3,10 +3,7 @@ package com.jobik.shkiper.ui.components.layouts
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Loop
 import androidx.compose.runtime.*
@@ -39,7 +36,7 @@ fun LazyListScope.LinkPreviewList(
                     text = stringResource(R.string.Loading),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.SemiBold, fontSize = 18.sp),
+                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold, fontSize = 18.sp),
                     color = AppTheme.colors.textSecondary,
                 )
                 Spacer(Modifier.width(10.dp))
@@ -58,7 +55,7 @@ fun LazyListScope.LinkPreviewList(
         Row(verticalAlignment = Alignment.CenterVertically, modifier = contentPadding.padding(bottom = 8.dp)) {
             Text(
                 stringResource(R.string.Links),
-                style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.SemiBold, fontSize = 18.sp),
+                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold, fontSize = 18.sp),
                 color = AppTheme.colors.textSecondary,
             )
         }
@@ -75,11 +72,11 @@ fun LazyListScope.LinkPreviewList(
                 onClick = { expanded.value = !expanded.value },
                 properties = DefaultButtonProperties(
                     buttonColors = ButtonDefaults.buttonColors(
-                        backgroundColor = Color.Transparent,
-                        disabledBackgroundColor = Color.Transparent
+                        containerColor = Color.Transparent,
+                        disabledContainerColor = Color.Transparent
                     ),
                     textColor = AppTheme.colors.textSecondary,
-                    textStyle = MaterialTheme.typography.body1,
+                    textStyle = MaterialTheme.typography.bodyMedium,
                 ),
                 modifier = contentPadding
             )

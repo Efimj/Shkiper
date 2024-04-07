@@ -125,7 +125,7 @@ fun NoteScreenContent(
                             }
                         ),
                         enabled = enabled,
-                        textStyle = MaterialTheme.typography.headlineMedium.copy(
+                        textStyle = MaterialTheme.typography.headlineSmall.copy(
                             fontWeight = FontWeight.SemiBold,
                         ),
                         modifier = Modifier

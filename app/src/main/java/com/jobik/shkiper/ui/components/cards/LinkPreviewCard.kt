@@ -8,9 +8,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.Link
@@ -84,10 +82,11 @@ fun LinkPreviewCard(openGraphData: LinkHelper.LinkPreview) {
                     }
                 },
             ),
-        elevation = 0.dp,
         shape = RoundedCornerShape(10.dp),
-        backgroundColor = AppTheme.colors.container,
-        contentColor = AppTheme.colors.text,
+        colors = CardDefaults.cardColors(
+            containerColor = AppTheme.colors.container,
+            contentColor = AppTheme.colors.text
+        ),
     ) {
         Row {
             AsyncImage(
@@ -115,7 +114,7 @@ fun LinkPreviewCard(openGraphData: LinkHelper.LinkPreview) {
                         text = openGraphData.title!!,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-                        style = MaterialTheme.typography.h6.copy(fontSize = 18.sp, fontWeight = FontWeight.SemiBold),
+                        style = MaterialTheme.typography.titleMedium.copy(fontSize = 18.sp, fontWeight = FontWeight.SemiBold),
                         color = AppTheme.colors.textSecondary,
                     )
                 if (openGraphData.description.isNullOrBlank().not())
@@ -123,7 +122,7 @@ fun LinkPreviewCard(openGraphData: LinkHelper.LinkPreview) {
                         text = openGraphData.description!!,
                         maxLines = if (openGraphData.title.isNullOrBlank()) 2 else 1,
                         overflow = TextOverflow.Ellipsis,
-                        style = MaterialTheme.typography.body1,
+                        style = MaterialTheme.typography.bodyMedium,
                         color = AppTheme.colors.textSecondary,
                     )
                 if ((openGraphData.description.isNullOrBlank() || openGraphData.title.isNullOrBlank()) && openGraphData.url.isNullOrBlank()
@@ -133,7 +132,7 @@ fun LinkPreviewCard(openGraphData: LinkHelper.LinkPreview) {
                         text = openGraphData.url!!,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-                        style = MaterialTheme.typography.body1,
+                        style = MaterialTheme.typography.bodyMedium,
                         color = AppTheme.colors.textSecondary,
                     )
             }
