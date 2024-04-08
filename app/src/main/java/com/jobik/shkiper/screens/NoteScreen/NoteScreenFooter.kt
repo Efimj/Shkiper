@@ -120,7 +120,7 @@ fun NoteScreenFooter(navController: NavController, noteViewModel: NoteViewModel,
                                 Icon(
                                     painter = painterResource(id = R.drawable.undo_fill0_wght400_grad0_opsz24),
                                     contentDescription = stringResource(R.string.GoBack),
-                                    tint = if (noteViewModel.screenState.value.currentIntermediateIndex > 0) AppTheme.colors.primary else contentColor,
+                                    tint = if (noteViewModel.screenState.value.currentIntermediateIndex > 0) AppTheme.colors.primary else AppTheme.colors.textSecondary,
                                 )
                             }
                             IconButton(
@@ -133,7 +133,7 @@ fun NoteScreenFooter(navController: NavController, noteViewModel: NoteViewModel,
                                 Icon(
                                     painter = painterResource(id = R.drawable.redo_fill0_wght400_grad0_opsz24),
                                     contentDescription = stringResource(R.string.GoForward),
-                                    tint = if (noteViewModel.screenState.value.currentIntermediateIndex < noteViewModel.screenState.value.intermediateStates.size - 1) AppTheme.colors.primary else contentColor,
+                                    tint = if (noteViewModel.screenState.value.currentIntermediateIndex < noteViewModel.screenState.value.intermediateStates.size - 1) AppTheme.colors.primary else AppTheme.colors.textSecondary,
                                 )
                             }
                         }
