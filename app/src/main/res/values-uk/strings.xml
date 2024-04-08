@@ -214,4 +214,7 @@
     <string name="Selected">Вибрані</string>
     <string name="EmptyTagsTitle">Теги ще не створені</string>
 
+    <string name="OtherMyApps">Інші мої застосунки</string>
+
+
 </resources>

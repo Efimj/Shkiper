@@ -219,4 +219,6 @@
     <string name="Selected">Выбранные</string>
     <string name="EmptyTagsTitle">Теги еще не созданы</string>
 
+    <string name="OtherMyApps">Другие мои приложения</string>
+
 </resources>

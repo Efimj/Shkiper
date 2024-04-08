@@ -386,4 +386,8 @@
     <string name="Selected">Ausgewählt</string>
 
     <string name="EmptyTagsTitle">Tags noch nicht erstellt</string>
+
+    <string name="OtherMyApps">Andere meine Apps</string>
+
+
 </resources>
