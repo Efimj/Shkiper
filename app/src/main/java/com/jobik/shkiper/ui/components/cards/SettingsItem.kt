@@ -12,10 +12,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsItem(
     icon: ImageVector? = null,
@@ -30,17 +28,17 @@ fun SettingsItem(
     action: (@Composable () -> Unit)? = null
 ) {
     val backgroundColor: Color by animateColorAsState(
-        targetValue = if (isActive) CustomTheme.colors.active else containerColor ?: Color.Transparent,
+        targetValue = if (isActive) AppTheme.colors.primary else containerColor ?: Color.Transparent,
         label = "backgroundColor"
     )
 
     val foregroundColor: Color by animateColorAsState(
-        targetValue = if (isActive) CustomTheme.colors.textOnActive else CustomTheme.colors.text,
+        targetValue = if (isActive) AppTheme.colors.onPrimary else AppTheme.colors.text,
         label = "foregroundColor"
     )
 
     val foregroundSecondaryColor: Color by animateColorAsState(
-        targetValue = if (isActive) CustomTheme.colors.textOnActive else CustomTheme.colors.textSecondary,
+        targetValue = if (isActive) AppTheme.colors.onPrimary else AppTheme.colors.textSecondary,
         label = "foregroundSecondaryColor"
     )
 
@@ -50,7 +48,7 @@ fun SettingsItem(
             contentColor = foregroundColor,
             disabledContainerColor = backgroundColor,
             disabledContentColor = foregroundColor
-        ), shape = CustomTheme.shapes.none, border = null
+        ), shape = AppTheme.shapes.none, border = null
     ) {
         Row(
             modifier = modifier
@@ -74,7 +72,7 @@ fun SettingsItem(
             Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.Center) {
                 Text(
                     text = title,
-                    fontSize = 18.sp,
+                    style = MaterialTheme.typography.titleMedium,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     color = foregroundColor
@@ -84,7 +82,7 @@ fun SettingsItem(
                 if (description !== null)
                     Text(
                         text = description,
-                        fontSize = 14.sp,
+                        style = MaterialTheme.typography.bodySmall,
                         overflow = TextOverflow.Ellipsis,
                         color = foregroundSecondaryColor
                     )

@@ -365,4 +365,17 @@
     <string name="EnableLinkPreviews">เปิดใช้งานการแสดงตัวอย่างลิงก์</string>
     <string name="Apply">นำมาใช้</string>
 
+    <string name="SaveChanges">บันทึกการเปลี่ยนแปลง</string>
+
+    <string name="New">ใหม่</string>
+
+    <string name="All">ทั้งหมด</string>
+
+    <string name="Selected">เลือกแล้ว</string>
+
+    <string name="EmptyTagsTitle">ยังไม่ได้สร้างแท็ก</string>
+
+    <string name="OtherMyApps">แอพอื่น ๆ ของฉัน</string>
+
+
 </resources>

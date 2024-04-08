@@ -5,8 +5,7 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.*
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,7 +19,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.jobik.shkiper.R
 import com.jobik.shkiper.ui.modifiers.bounceClick
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 
 data class UserCardLink(
     @DrawableRes
@@ -42,12 +41,12 @@ fun UserCard(
         .clip(RoundedCornerShape(15.dp))
         .clickable(enabled = true) { onClick() }
         .fillMaxWidth()
-        .background(CustomTheme.colors.secondaryBackground, RoundedCornerShape(15.dp))
+        .background(AppTheme.colors.container, RoundedCornerShape(15.dp))
         .padding(8.dp)
     else
         Modifier
             .fillMaxWidth()
-            .background(CustomTheme.colors.secondaryBackground, RoundedCornerShape(15.dp))
+            .background(AppTheme.colors.container, RoundedCornerShape(15.dp))
             .clip(RoundedCornerShape(15.dp))
             .padding(8.dp)
 
@@ -58,13 +57,13 @@ fun UserCard(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(60.dp),
+                .height(50.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Image(
                 painter = painterResource(id = photo),
                 modifier = Modifier
-                    .widthIn(max = 60.dp)
+                    .widthIn(max = 50.dp)
                     .clip(RoundedCornerShape(15.dp)),
                 contentDescription = stringResource(R.string.DevMailHeader),
                 contentScale = ContentScale.Fit
@@ -79,8 +78,8 @@ fun UserCard(
                     name?.let {
                         Text(
                             text = name,
-                            color = CustomTheme.colors.text,
-                            style = MaterialTheme.typography.h6,
+                            color = AppTheme.colors.text,
+                            style = MaterialTheme.typography.bodyMedium,
                             overflow = TextOverflow.Ellipsis,
                             textAlign = TextAlign.Center,
                             maxLines = 1
@@ -89,8 +88,8 @@ fun UserCard(
                     description?.let {
                         Text(
                             text = it,
-                            color = CustomTheme.colors.textSecondary,
-                            style = MaterialTheme.typography.body1,
+                            color = AppTheme.colors.textSecondary,
+                            style = MaterialTheme.typography.bodySmall,
                             overflow = TextOverflow.Ellipsis,
                             textAlign = TextAlign.Center,
                             maxLines = 1

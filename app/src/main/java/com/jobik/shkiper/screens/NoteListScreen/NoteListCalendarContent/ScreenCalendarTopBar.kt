@@ -19,13 +19,12 @@ import com.jobik.shkiper.ui.components.layouts.CalendarDayViewRangeStyle
 import com.jobik.shkiper.ui.components.layouts.CustomTopAppBar
 import com.jobik.shkiper.ui.components.layouts.TopAppBarItem
 import com.jobik.shkiper.ui.helpers.*
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 import com.kizitonwose.calendar.compose.WeekCalendar
 import com.kizitonwose.calendar.compose.weekcalendar.rememberWeekCalendarState
 import com.kizitonwose.calendar.core.atStartOfMonth
 import com.kizitonwose.calendar.core.daysOfWeek
 import com.kizitonwose.calendar.core.yearMonth
-import java.time.DayOfWeek
 import java.time.LocalDate
 
 @Composable
@@ -50,13 +49,11 @@ fun ScreenCalendarTopBar(
     Column(
         modifier = Modifier
             .clip(RoundedCornerShape(bottomStart = 10.dp, bottomEnd = 10.dp))
-            .background(CustomTheme.colors.secondaryBackground)
+            .background(AppTheme.colors.secondaryContainer)
             .padding(bottom = 10.dp),
         verticalArrangement = Arrangement.spacedBy(5.dp)
     ) {
         CustomTopAppBar(
-            modifier = Modifier.fillMaxWidth(),
-            backgroundColor = CustomTheme.colors.secondaryBackground,
             text = rememberFirstVisibleWeekAfterScroll(weekState).days.first().date.yearMonth.displayText(),
             navigation = TopAppBarItem(
                 isActive = false,
@@ -77,6 +74,7 @@ fun ScreenCalendarTopBar(
         val isCompactWidthScreen = isWidth(sizeClass = WindowWidthSizeClass.Compact)
 
         WeekCalendar(
+            modifier = Modifier.horizontalWindowInsetsPadding(),
             calendarScrollPaged = isCompactWidthScreen,
             state = weekState,
             weekHeader = { DaysOfWeekTitle(daysOfWeek = daysOfWeek) },

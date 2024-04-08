@@ -4,8 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,7 +18,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.jobik.shkiper.services.statistics_service.StatisticsItem
 import com.jobik.shkiper.R
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 
 @Composable
 fun StatisticsInformationDialog(
@@ -30,7 +29,7 @@ fun StatisticsInformationDialog(
         Column(
             Modifier
                 .clip(RoundedCornerShape(15.dp))
-                .background(CustomTheme.colors.secondaryBackground)
+                .background(AppTheme.colors.container)
                 .padding(vertical = 20.dp).height(340.dp)
         ) {
             Column(
@@ -50,20 +49,20 @@ fun StatisticsInformationDialog(
                 ) {
                     Text(
                         statistics.getStringValue(),
-                        color = CustomTheme.colors.text,
-                        style = MaterialTheme.typography.h5,
+                        color = AppTheme.colors.text,
+                        style = MaterialTheme.typography.headlineMedium,
                         modifier = Modifier.padding(bottom = 4.dp)
                     )
                     Text(
                         stringResource(statistics.title),
-                        color = CustomTheme.colors.text,
-                        style = MaterialTheme.typography.h6,
+                        color = AppTheme.colors.text,
+                        style = MaterialTheme.typography.titleMedium,
                         modifier = Modifier.padding(bottom = 4.dp)
                     )
                     Text(
                         stringResource(statistics.description),
-                        color = CustomTheme.colors.textSecondary,
-                        style = MaterialTheme.typography.body1,
+                        color = AppTheme.colors.textSecondary,
+                        style = MaterialTheme.typography.bodyMedium,
                         textAlign = TextAlign.Center
                     )
                 }

@@ -2,18 +2,19 @@ package com.jobik.shkiper.screens.AppLayout.NavigationBar
 
 import androidx.compose.animation.*
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
@@ -24,11 +25,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.NotePosition
-import com.jobik.shkiper.navigation.AppScreens
-import com.jobik.shkiper.navigation.NavigationHelpers.Companion.canNavigate
+import com.jobik.shkiper.navigation.NavigationHelpers.Companion.navigateToMain
+import com.jobik.shkiper.navigation.Route
+import com.jobik.shkiper.navigation.RouteHelper
 import com.jobik.shkiper.ui.helpers.Keyboard
 import com.jobik.shkiper.ui.helpers.keyboardAsState
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -41,7 +43,7 @@ fun BoxScope.BottomAppBarProvider(
     val currentRouteName = navController.currentBackStackEntryAsState().value?.destination?.route
     val currentRouteWithoutSecondaryRoutes =
         (navController.currentBackStackEntryAsState().value?.destination?.route ?: "").substringBefore("/")
-    val isSecondaryScreen = AppScreens.SecondaryRoutes.isSecondaryRoute(currentRouteWithoutSecondaryRoutes)
+    val isSecondaryScreen = RouteHelper().isSecondaryRoute(currentRouteWithoutSecondaryRoutes)
 
     LaunchedEffect(currentRouteName) {
         if (isSecondaryScreen) {
@@ -76,8 +78,8 @@ fun BoxScope.BottomAppBarProvider(
                 .fillMaxWidth()
                 .background(
                     Brush.verticalGradient(
-                        0F to CustomTheme.colors.mainBackground.copy(alpha = 0.0F),
-                        0.8F to CustomTheme.colors.mainBackground.copy(alpha = 1F)
+                        0F to AppTheme.colors.background.copy(alpha = 0.0F),
+                        0.8F to AppTheme.colors.background.copy(alpha = 1F)
                     )
                 ),
             contentAlignment = Alignment.BottomCenter
@@ -85,6 +87,7 @@ fun BoxScope.BottomAppBarProvider(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Bottom))
                     .padding(bottom = 20.dp), horizontalArrangement = Arrangement.Center
             ) {
                 Box(modifier = Modifier.zIndex(2f)) {
@@ -107,31 +110,36 @@ private fun RowScope.CreateNoteFAN(
     val scope = rememberCoroutineScope()
 
     AnimatedVisibility(
-        visible = currentRouteName == AppScreens.NoteList.route,
+        visible = currentRouteName == Route.NoteList.route,
         enter = slideInHorizontally() + expandHorizontally(clip = false) + fadeIn(),
         exit = slideOutHorizontally() + shrinkHorizontally(clip = false) + fadeOut(),
     ) {
-        Row(modifier = Modifier.height(DefaultNavigationValues().containerHeight)) {
+
+        Row {
             Spacer(modifier = Modifier.width(10.dp))
-            Row(
-                modifier = Modifier
-                    .aspectRatio(1f)
-                    .clip(shape = MaterialTheme.shapes.small)
-                    .border(
-                        width = 1.dp,
-                        color = CustomTheme.colors.mainBackground,
-                        shape = MaterialTheme.shapes.small
+            Surface(shape = MaterialTheme.shapes.small, shadowElevation = 1.dp, color = Color.Transparent) {
+                Row(
+                    modifier = Modifier
+                        .height(DefaultNavigationValues().containerHeight)
+                        .aspectRatio(1f)
+                        .clip(shape = MaterialTheme.shapes.small)
+                        .background(AppTheme.colors.primary)
+                        .clickable {
+                            createNewNote(
+                                scope = scope,
+                                viewModel = viewModel,
+                                navController = navController
+                            )
+                        },
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.Add,
+                        contentDescription = stringResource(R.string.CreateNote),
+                        tint = AppTheme.colors.onPrimary,
                     )
-                    .background(CustomTheme.colors.active)
-                    .clickable { createNewNote(scope = scope, viewModel = viewModel, navController = navController) },
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.Add,
-                    contentDescription = stringResource(R.string.CreateNote),
-                    tint = CustomTheme.colors.textOnActive,
-                )
+                }
             }
         }
     }
@@ -144,7 +152,7 @@ private fun createNewNote(
 ) {
     scope.launch {
         val noteId = viewModel.createNewNote()
-        navController.navigate(AppScreens.Note.noteId(noteId.toHexString()))
+        navController.navigateToMain(Route.Note.noteId(noteId.toHexString()))
     }
 }
 
@@ -157,59 +165,33 @@ private fun Navigation(
     val navigationItems = listOf(
         CustomBottomNavigationItem(
             icon = Icons.Outlined.AutoAwesomeMosaic,
-            isSelected = currentRoute == AppScreens.NoteList.route,
+            isSelected = currentRoute == Route.NoteList.route,
             description = R.string.Notes,
         ) {
-            goToPage(
-                navController = navController,
-                rout = AppScreens.NoteList.notePosition(NotePosition.MAIN.name)
-            )
+            navController.navigateToMain(destination = Route.NoteList.notePosition(NotePosition.MAIN.name))
         },
         CustomBottomNavigationItem(
             icon = Icons.Outlined.Archive,
-            isSelected = currentRoute == AppScreens.Archive.route,
+            isSelected = currentRoute == Route.Archive.route,
             description = R.string.Archive,
         ) {
-            goToPage(
-                navController = navController,
-                rout = AppScreens.Archive.notePosition(NotePosition.ARCHIVE.name),
-            )
+            navController.navigateToMain(destination = Route.Archive.notePosition(NotePosition.ARCHIVE.name))
         },
         CustomBottomNavigationItem(
             icon = Icons.Outlined.Delete,
-            isSelected = currentRoute == AppScreens.Basket.route,
+            isSelected = currentRoute == Route.Basket.route,
             description = R.string.Basket,
         ) {
-            goToPage(
-                navController = navController,
-                rout = AppScreens.Basket.notePosition(NotePosition.DELETE.name),
-            )
+            navController.navigateToMain(destination = Route.Basket.notePosition(NotePosition.DELETE.name))
         },
         CustomBottomNavigationItem(
             icon = Icons.Outlined.Settings,
-            isSelected = currentRoute == AppScreens.Settings.route,
+            isSelected = currentRoute == Route.Settings.route,
             description = R.string.Settings
         ) {
-            goToPage(
-                navController = navController,
-                rout = AppScreens.Settings.route,
-            )
+            navController.navigateToMain(destination = Route.Settings.route)
         },
     )
 
     CustomBottomNavigation(navigationItems)
-}
-
-private fun goToPage(
-    navController: NavHostController,
-    rout: String,
-) {
-    if (navController.canNavigate()
-            .not() || navController.currentDestination?.route?.substringBefore("/") == rout.substringBefore("/")
-    ) {
-        return
-    }
-    navController.navigate(rout) {
-        launchSingleTop
-    }
 }

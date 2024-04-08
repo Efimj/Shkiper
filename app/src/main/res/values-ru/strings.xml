@@ -213,5 +213,12 @@
     <string name="DisableLinkPreviews">Отключить предварительный просмотр ссылок</string>
     <string name="EnableLinkPreviews">Включить предварительный просмотр ссылок</string>
     <string name="Apply">Применить</string>
+    <string name="SaveChanges">Сохранить изменения</string>
+    <string name="New">Новые</string>
+    <string name="All">Все</string>
+    <string name="Selected">Выбранные</string>
+    <string name="EmptyTagsTitle">Теги еще не созданы</string>
+
+    <string name="OtherMyApps">Другие мои приложения</string>
 
 </resources>

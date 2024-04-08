@@ -1,58 +1,49 @@
 package com.jobik.shkiper.ui.components.buttons
 
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.jobik.shkiper.screens.OnboardingScreen.OnBoardingPage
-import com.jobik.shkiper.ui.helpers.MultipleEventsCutter
-import com.jobik.shkiper.ui.helpers.get
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
 @Composable
-fun HashtagButton(chip: String, selected: Boolean, onChipClicked: (String) -> Unit) {
-    val multipleEventsCutter = remember { MultipleEventsCutter.get() }
-
+fun HashtagButton(text: String, selected: Boolean = false, onClick: (String) -> Unit) {
     val buttonContentColor: Color by animateColorAsState(
-        targetValue = if (selected) CustomTheme.colors.textOnActive else CustomTheme.colors.text,
+        targetValue = if (selected) AppTheme.colors.onPrimary else AppTheme.colors.text,
         label = "buttonContentColor"
     )
 
     val buttonBackgroundColor: Color by animateColorAsState(
-        targetValue = if (selected) CustomTheme.colors.active else CustomTheme.colors.secondaryBackground,
+        targetValue = if (selected) AppTheme.colors.primary else AppTheme.colors.container,
         label = "buttonBackgroundColor"
     )
 
-    Chip(
-        modifier = Modifier
-            .padding(end = 8.dp),
-        onClick = { multipleEventsCutter.processEvent { onChipClicked(chip) } },
+    Card(
+        onClick = { onClick(text) },
         shape = RoundedCornerShape(10.dp),
-        colors = ChipDefaults.chipColors(
-            backgroundColor = buttonBackgroundColor,
+        colors = CardDefaults.cardColors(
+            containerColor = buttonBackgroundColor,
             contentColor = buttonContentColor
         ),
     ) {
         Text(
-            chip,
-            modifier = Modifier
-                .basicMarquee()
-                .padding(8.dp),
+            modifier = Modifier.padding(vertical = 8.dp, horizontal = 14.dp),
+            text = text,
             maxLines = 1,
-            style = MaterialTheme.typography.body1,
+            style = MaterialTheme.typography.titleMedium,
             color = buttonContentColor,
-            fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal
+            fontWeight = FontWeight.Normal,
+            overflow = TextOverflow.Ellipsis
         )
     }
 }

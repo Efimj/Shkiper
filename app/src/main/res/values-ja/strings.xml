@@ -365,4 +365,17 @@
     <string name="EnableLinkPreviews">リンクのプレビューを有効にする</string>
     <string name="Apply">適用する</string>
 
+    <string name="SaveChanges">変更内容を保存</string>
+
+    <string name="New">新しい</string>
+
+    <string name="All">全て</string>
+
+    <string name="Selected">選択済み</string>
+
+    <string name="EmptyTagsTitle">タグはまだ作成されていません</string>
+
+    <string name="OtherMyApps">その他の私のアプリ</string>
+
+
 </resources>

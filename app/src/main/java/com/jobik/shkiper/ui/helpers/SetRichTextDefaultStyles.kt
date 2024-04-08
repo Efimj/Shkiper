@@ -3,7 +3,7 @@ package com.jobik.shkiper.ui.helpers
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.text.style.TextDecoration
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 import com.mohamedrejeb.richeditor.annotation.ExperimentalRichTextApi
 import com.mohamedrejeb.richeditor.model.RichTextState
 
@@ -12,10 +12,10 @@ import com.mohamedrejeb.richeditor.model.RichTextState
 fun SetRichTextDefaultStyles(
     richTextState: RichTextState,
 ) {
-    val codeColor = CustomTheme.colors.textOnActive
-    val codeBackgroundColor = CustomTheme.colors.active.copy(alpha = .2f)
-    val codeStrokeColor = CustomTheme.colors.active
-    val linkColor = CustomTheme.colors.text
+    val codeColor = AppTheme.colors.onPrimary
+    val codeBackgroundColor = AppTheme.colors.primary.copy(alpha = .2f)
+    val codeStrokeColor = AppTheme.colors.primary
+    val linkColor = AppTheme.colors.text
 
     LaunchedEffect(Unit) {
         richTextState.setConfig(

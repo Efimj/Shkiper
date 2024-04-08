@@ -365,4 +365,17 @@
     <string name="EnableLinkPreviews">Aktifkan pratinjau tautan</string>
     <string name="Apply">Menerapkan</string>
 
+    <string name="SaveChanges">Simpan perubahan</string>
+
+    <string name="New">Baru</string>
+
+    <string name="All">Semua</string>
+
+    <string name="Selected">Terpilih</string>
+
+    <string name="EmptyTagsTitle">Tag belum dibuat</string>
+
+    <string name="OtherMyApps">Aplikasi saya lainnya</string>
+
+
 </resources>

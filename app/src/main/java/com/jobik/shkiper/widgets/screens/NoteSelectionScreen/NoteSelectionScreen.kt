@@ -2,12 +2,8 @@ package com.jobik.shkiper.widgets.screens.NoteSelectionScreen
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.LinearOutSlowInEasing
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -23,17 +19,11 @@ import androidx.compose.material.icons.outlined.Description
 import androidx.compose.material.icons.outlined.Done
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
-import androidx.compose.ui.input.nestedscroll.NestedScrollSource
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -44,11 +34,12 @@ import com.jobik.shkiper.database.models.Note
 import com.jobik.shkiper.ui.components.buttons.FloatingActionButton
 import com.jobik.shkiper.ui.components.buttons.HashtagButton
 import com.jobik.shkiper.ui.components.cards.NoteCard
-import com.jobik.shkiper.ui.components.fields.SearchBarHeight
+import com.jobik.shkiper.ui.components.fields.getSearchBarHeight
 import com.jobik.shkiper.ui.components.layouts.LazyGridNotes
 import com.jobik.shkiper.ui.components.layouts.ScreenContentIfNoData
-import com.jobik.shkiper.ui.helpers.rememberNextReminder
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.helpers.*
+import com.jobik.shkiper.ui.modifiers.scrollConnectionToProvideVisibility
+import com.jobik.shkiper.ui.theme.AppTheme
 
 @Composable
 fun NoteSelectionScreen(
@@ -56,23 +47,8 @@ fun NoteSelectionScreen(
     strictSelection: Boolean = false,
     selectNote: (note: Note?) -> Unit
 ) {
-
-    val searchBarHeightPx = with(LocalDensity.current) { SearchBarHeight.dp.roundToPx().toFloat() }
-
-    val searchBarOffsetHeightPx = remember { mutableStateOf(0f) }
+    val isSearchBarVisible = remember { mutableStateOf(true) }
     val lazyGridNotes = rememberLazyStaggeredGridState()
-
-    val nestedScrollConnection = remember {
-        object : NestedScrollConnection {
-            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-                val delta = available.y
-                val newOffset = searchBarOffsetHeightPx.value + delta
-                if (lazyGridNotes.canScrollForward) searchBarOffsetHeightPx.value =
-                    newOffset.coerceIn(-searchBarHeightPx, 0f)
-                return Offset.Zero
-            }
-        }
-    }
 
     /**
      * When user select note
@@ -82,19 +58,10 @@ fun NoteSelectionScreen(
         notesViewModel::clearSelectedNote
     )
 
-    /**
-     * LaunchedEffect for cases when it is impossible to scroll the list.
-     */
-    LaunchedEffect(lazyGridNotes.canScrollForward, lazyGridNotes.canScrollBackward) {
-        if (!lazyGridNotes.canScrollForward && !lazyGridNotes.canScrollBackward) {
-            searchBarOffsetHeightPx.value = 0f
-        }
-    }
-
     Box(
-        Modifier
+        modifier = Modifier
             .fillMaxSize()
-            .nestedScroll(nestedScrollConnection)
+            .scrollConnectionToProvideVisibility(visible = isSearchBarVisible)
     ) {
         if (notesViewModel.screenState.value.isNotesInitialized && notesViewModel.screenState.value.notes.isEmpty())
             ScreenContentIfNoData(title = R.string.EmptyNotesPageHeader, icon = Icons.Outlined.Description)
@@ -102,8 +69,7 @@ fun NoteSelectionScreen(
             ScreenContent(lazyGridNotes, notesViewModel)
         Box(modifier = Modifier) {
             com.jobik.shkiper.ui.components.fields.SearchBar(
-                searchBarOffsetHeightPx = searchBarOffsetHeightPx.value,
-                isVisible = true,
+                isVisible = isSearchBarVisible.value,
                 value = notesViewModel.screenState.value.searchText,
                 onChange = notesViewModel::changeSearchText
             )
@@ -112,6 +78,8 @@ fun NoteSelectionScreen(
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(35.dp)
+                .endWindowInsetsPadding()
+                .windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Bottom))
         ) {
             if (strictSelection) {
                 AnimatedVisibility(
@@ -146,7 +114,12 @@ private fun ScreenContent(
     val unpinnedNotes = notesViewModel.screenState.value.notes.filterNot { it.isPinned }
 
     LazyGridNotes(
-        contentPadding = PaddingValues(10.dp, 70.dp, 10.dp, 80.dp),
+        contentPadding = PaddingValues(
+            start = 10.dp + startWindowInsetsPadding(),
+            top = 10.dp + getSearchBarHeight(),
+            end = 10.dp + endWindowInsetsPadding(),
+            bottom = 80.dp + bottomWindowInsetsPadding()
+        ),
         modifier = Modifier
             .fillMaxSize()
             .testTag("notes_list"),
@@ -159,7 +132,8 @@ private fun ScreenContent(
                         .wrapContentSize(unbounded = true)
                         .width(LocalConfiguration.current.screenWidthDp.dp),
                     state = rememberLazyListState(),
-                    contentPadding = PaddingValues(10.dp, 0.dp, 10.dp, 0.dp)
+                    contentPadding = PaddingValues(10.dp, 0.dp, 10.dp, 0.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     items(items = notesViewModel.screenState.value.hashtags.toList()) { item ->
                         HashtagButton(item, item == notesViewModel.screenState.value.currentHashtag) {
@@ -175,7 +149,7 @@ private fun ScreenContent(
                 Column {
                     Text(
                         stringResource(R.string.Pinned),
-                        color = CustomTheme.colors.textSecondary,
+                        color = AppTheme.colors.textSecondary,
                         style = MaterialTheme.typography.body1.copy(fontSize = 17.sp),
                         modifier = Modifier.padding(horizontal = 10.dp)
                     )
@@ -199,7 +173,7 @@ private fun ScreenContent(
             item(span = StaggeredGridItemSpan.FullLine) {
                 Text(
                     stringResource(R.string.Other),
-                    color = CustomTheme.colors.textSecondary,
+                    color = AppTheme.colors.textSecondary,
                     style = MaterialTheme.typography.body1.copy(fontSize = 17.sp),
                     modifier = Modifier.padding(horizontal = 10.dp)
                 )

@@ -4,6 +4,7 @@ import android.appwidget.AppWidgetManager
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -15,7 +16,7 @@ import androidx.glance.appwidget.state.updateAppWidgetState
 import androidx.lifecycle.lifecycleScope
 import com.jobik.shkiper.database.models.Note
 import com.jobik.shkiper.helpers.TextHelper
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 import com.jobik.shkiper.ui.theme.CustomThemeStyle
 import com.jobik.shkiper.ui.theme.ShkiperTheme
 import com.jobik.shkiper.util.ThemeUtil
@@ -35,7 +36,10 @@ class ConfigWidgetActivity : AppCompatActivity() {
     private val result = Intent()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
+        actionBar?.hide()
+
         setupActivity()
         ThemeUtil.restoreSavedTheme(this)
         setContent {
@@ -46,7 +50,7 @@ class ConfigWidgetActivity : AppCompatActivity() {
                 Box(
                     Modifier
                         .fillMaxSize()
-                        .background(CustomTheme.colors.mainBackground)
+                        .background(AppTheme.colors.background)
                 ) {
                     NoteSelectionScreen(strictSelection = true) {
                         handleSelectNote(it)

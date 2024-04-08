@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -14,7 +14,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
@@ -23,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.jobik.shkiper.ui.helpers.MultipleEventsCutter
 import com.jobik.shkiper.ui.helpers.get
 import com.jobik.shkiper.ui.modifiers.circularRotation
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 
 data class ButtonProperties(
     val buttonColors: ButtonColors,
@@ -38,15 +37,15 @@ data class ButtonProperties(
 @Composable
 fun DefaultButtonProperties(
     buttonColors: ButtonColors = ButtonDefaults.buttonColors(
-        backgroundColor = CustomTheme.colors.secondaryBackground,
-        disabledBackgroundColor = Color.Transparent
+        containerColor = AppTheme.colors.container,
+        disabledContainerColor = Color.Transparent
     ),
     border: BorderStroke? = null,
     shape: Shape = RoundedCornerShape(10.dp),
     horizontalPaddings: Dp = 0.dp,
-    textColor: Color = CustomTheme.colors.text,
-    textStyle: TextStyle = MaterialTheme.typography.body1.copy(fontWeight = FontWeight.SemiBold),
-    iconTint: Color = CustomTheme.colors.text,
+    textColor: Color = AppTheme.colors.text,
+    textStyle: TextStyle = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
+    iconTint: Color = AppTheme.colors.text,
 ): ButtonProperties {
     return ButtonProperties(
         buttonColors = buttonColors,
@@ -71,52 +70,52 @@ fun getButtonProperties(style: ButtonStyle, properties: ButtonProperties? = null
     val style = when (style) {
         ButtonStyle.Filled -> ButtonProperties(
             buttonColors = ButtonDefaults.buttonColors(
-                backgroundColor = CustomTheme.colors.active,
-                disabledBackgroundColor = Color.Transparent
+                containerColor = AppTheme.colors.primary,
+                disabledContainerColor = Color.Transparent
             ),
             border = null,
             shape = RoundedCornerShape(10.dp),
-            horizontalPaddings = androidx.compose.material3.ButtonDefaults.ContentPadding.calculateLeftPadding(
+            horizontalPaddings = ButtonDefaults.ContentPadding.calculateLeftPadding(
                 LayoutDirection.Ltr
             ),
-            textColor = CustomTheme.colors.textOnActive,
-            textStyle = MaterialTheme.typography.body1.copy(fontWeight = FontWeight.SemiBold),
-            iconTint = CustomTheme.colors.textOnActive,
+            textColor = AppTheme.colors.onPrimary,
+            textStyle = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
+            iconTint = AppTheme.colors.onPrimary,
         )
 
         ButtonStyle.Outlined -> ButtonProperties(
             buttonColors = ButtonDefaults.buttonColors(
-                backgroundColor = Color.Transparent,
-                disabledBackgroundColor = Color.Transparent
+                containerColor = Color.Transparent,
+                disabledContainerColor = Color.Transparent
             ),
-            border = BorderStroke(width = 1.dp, color = CustomTheme.colors.stroke),
+            border = BorderStroke(width = 1.dp, color = AppTheme.colors.border),
             shape = RoundedCornerShape(10.dp),
-            horizontalPaddings = androidx.compose.material3.ButtonDefaults.ContentPadding.calculateLeftPadding(
+            horizontalPaddings = ButtonDefaults.ContentPadding.calculateLeftPadding(
                 LayoutDirection.Ltr
             ),
-            textColor = CustomTheme.colors.text,
-            textStyle = MaterialTheme.typography.body1.copy(fontWeight = FontWeight.SemiBold),
-            iconTint = CustomTheme.colors.text,
+            textColor = AppTheme.colors.text,
+            textStyle = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
+            iconTint = AppTheme.colors.text,
         )
 
         ButtonStyle.Text -> ButtonProperties(
             buttonColors = ButtonDefaults.buttonColors(
-                backgroundColor = Color.Transparent,
-                disabledBackgroundColor = Color.Transparent
+                containerColor = Color.Transparent,
+                disabledContainerColor = Color.Transparent
             ),
             border = null,
             shape = RoundedCornerShape(10.dp),
             horizontalPaddings = 0.dp,
-            textColor = CustomTheme.colors.text,
-            textStyle = MaterialTheme.typography.body1.copy(fontWeight = FontWeight.SemiBold),
-            iconTint = CustomTheme.colors.text,
+            textColor = AppTheme.colors.text,
+            textStyle = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
+            iconTint = AppTheme.colors.text,
         )
     }
 
     if (!enabled) {
         return style.copy(
-            textColor = CustomTheme.colors.textSecondary,
-            iconTint = CustomTheme.colors.textSecondary,
+            textColor = AppTheme.colors.textSecondary,
+            iconTint = AppTheme.colors.textSecondary,
         )
     }
 
@@ -140,8 +139,8 @@ fun CustomButton(
     val paddingValues = PaddingValues(
         start = buttonProperties.horizontalPaddings,
         end = buttonProperties.horizontalPaddings,
-        top = androidx.compose.material3.ButtonDefaults.ContentPadding.calculateTopPadding(),
-        bottom = androidx.compose.material3.ButtonDefaults.ContentPadding.calculateBottomPadding(),
+        top = ButtonDefaults.ContentPadding.calculateTopPadding(),
+        bottom = ButtonDefaults.ContentPadding.calculateBottomPadding(),
     )
 
     Button(
@@ -154,7 +153,6 @@ fun CustomButton(
         enabled = enabled,
         contentPadding = paddingValues,
     ) {
-        //Spacer(Modifier.width(buttonProperties.horizontalPaddings))
         if (content != null) {
             content()
         } else {
@@ -180,6 +178,5 @@ fun CustomButton(
                 )
             }
         }
-        //Spacer(Modifier.width(buttonProperties.horizontalPaddings))
     }
 }

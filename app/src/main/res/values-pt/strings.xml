@@ -365,4 +365,17 @@
     <string name="EnableLinkPreviews">Habilitar visualizações de links</string>
     <string name="Apply">Aplicar</string>
 
+    <string name="SaveChanges">Salvar alterações</string>
+
+    <string name="New">Novo</string>
+
+    <string name="All">Todos</string>
+
+    <string name="Selected">Selecionado</string>
+
+    <string name="EmptyTagsTitle">Tags ainda não criadas</string>
+
+    <string name="OtherMyApps">Outros meus aplicativos</string>
+
+
 </resources>

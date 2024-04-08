@@ -3,10 +3,10 @@ package com.jobik.shkiper.screens.AppLayout.NavigationBar
 import androidx.annotation.StringRes
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Icon
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -17,7 +17,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 
 data class CustomBottomNavigationItem(
     val icon: ImageVector,
@@ -34,18 +34,18 @@ data class DefaultNavigationValues(
 @Composable
 fun CustomBottomNavigationItem(properties: CustomBottomNavigationItem) {
     val contentColorValue =
-        if (properties.isSelected) CustomTheme.colors.textOnActive else CustomTheme.colors.textSecondary
+        if (properties.isSelected) AppTheme.colors.onSecondaryContainer else AppTheme.colors.textSecondary
     val contentColor = animateColorAsState(targetValue = contentColorValue, label = "backgroundColor")
 
     val backgroundColorValue =
-        if (properties.isSelected) CustomTheme.colors.active.copy(alpha = .5f) else Color.Transparent
+        if (properties.isSelected) AppTheme.colors.secondaryContainer else Color.Transparent
     val backgroundColor = animateColorAsState(targetValue = backgroundColorValue, label = "backgroundColor")
 
     Row(
         modifier = Modifier
             .fillMaxHeight()
             .aspectRatio(1f)
-            .clip(shape = MaterialTheme.shapes.small)
+            .clip(shape = CircleShape)
             .background(backgroundColor.value)
             .clickable {
                 properties.onClick()
@@ -63,19 +63,24 @@ fun CustomBottomNavigationItem(properties: CustomBottomNavigationItem) {
 
 @Composable
 fun CustomBottomNavigation(items: List<CustomBottomNavigationItem>) {
-    Row(
-        modifier = Modifier
-            .clickable(enabled = false) {}
-            .height(DefaultNavigationValues().containerHeight)
-            .clip(shape = MaterialTheme.shapes.small)
-            .border(width = 1.dp, color = CustomTheme.colors.mainBackground, shape = MaterialTheme.shapes.small)
-            .background(CustomTheme.colors.secondaryBackground)
-            .padding(4.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(6.dp)
+    Surface(
+        shape = CircleShape,
+        shadowElevation = 1.dp,
+        color = Color.Transparent
     ) {
-        items.forEach {
-            CustomBottomNavigationItem(properties = it)
+        Row(
+            modifier = Modifier
+                .clickable(enabled = false) {}
+                .height(DefaultNavigationValues().containerHeight)
+                .clip(shape = CircleShape)
+                .background(AppTheme.colors.background)
+                .padding(4.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(6.dp)
+        ) {
+            items.forEach {
+                CustomBottomNavigationItem(properties = it)
+            }
         }
     }
 }

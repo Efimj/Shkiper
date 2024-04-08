@@ -9,10 +9,10 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Warning
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -30,22 +30,22 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.NotePosition
-import com.jobik.shkiper.navigation.AppScreens
+import com.jobik.shkiper.navigation.Route
 import com.jobik.shkiper.ui.components.cards.SnackbarCard
 import com.jobik.shkiper.ui.components.fields.CustomDefaultTextField
 import com.jobik.shkiper.ui.components.fields.CustomRichTextEditor
-import com.jobik.shkiper.ui.components.fields.HashtagEditor
+import com.jobik.shkiper.ui.components.fields.TagEditor
 import com.jobik.shkiper.ui.components.layouts.LinkPreviewList
 import com.jobik.shkiper.ui.components.modals.ActionDialog
 import com.jobik.shkiper.ui.helpers.Keyboard
 import com.jobik.shkiper.ui.helpers.SetRichTextDefaultStyles
+import com.jobik.shkiper.ui.helpers.horizontalWindowInsetsPadding
 import com.jobik.shkiper.ui.helpers.keyboardAsState
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 import com.jobik.shkiper.util.SnackbarVisualsCustom
 import com.mohamedrejeb.richeditor.model.RichTextState
 import com.mohamedrejeb.richeditor.model.rememberRichTextState
@@ -65,7 +65,7 @@ fun NoteScreenContent(
     val linkListExpanded = remember { mutableStateOf(false) }
 
     LaunchedEffect(currentRoute) {
-        if (currentRoute.substringBefore("/") != AppScreens.Note.route.substringBefore("/")) {
+        if (currentRoute.substringBefore("/") != Route.Note.route.substringBefore("/")) {
             noteViewModel.setTopAppBarHover(false)
             noteViewModel.setBottomAppBarHover(false)
         }
@@ -82,17 +82,18 @@ fun NoteScreenContent(
     BackHandlerWithStylingState(noteViewModel)
 
     Scaffold(
-        backgroundColor = CustomTheme.colors.mainBackground,
+        containerColor = AppTheme.colors.background,
         topBar = { NoteScreenHeader(navController, noteViewModel, richTextState) },
         bottomBar = { NoteScreenFooter(navController, noteViewModel, richTextState) },
+        contentWindowInsets = WindowInsets.ime,
         modifier = Modifier
-            .imePadding()
-            .navigationBarsPadding()
-            .fillMaxSize(),
+            .fillMaxSize()
+            .imePadding(),
     ) { contentPadding ->
         Box(
             Modifier
                 .fillMaxSize()
+                .horizontalWindowInsetsPadding()
                 .padding(contentPadding)
         ) {
             LazyColumn(
@@ -124,9 +125,8 @@ fun NoteScreenContent(
                             }
                         ),
                         enabled = enabled,
-                        textStyle = MaterialTheme.typography.h6.copy(
+                        textStyle = MaterialTheme.typography.headlineSmall.copy(
                             fontWeight = FontWeight.SemiBold,
-                            fontSize = 21.sp
                         ),
                         modifier = Modifier
                             .testTag("note_header_input")
@@ -139,7 +139,7 @@ fun NoteScreenContent(
                     CustomRichTextEditor(
                         state = richTextState,
                         placeholder = stringResource(R.string.Text),
-                        textStyle = MaterialTheme.typography.body1,
+                        textStyle = MaterialTheme.typography.bodyMedium,
                         enabled = enabled,
                         minLines = 2,
                         modifier = Modifier
@@ -159,13 +159,13 @@ fun NoteScreenContent(
                     )
                 }
                 item {
-                    HashtagEditor(
+                    TagEditor(
                         enabled = enabled,
                         modifier = Modifier
                             .padding(bottom = 15.dp)
                             .padding(horizontal = 20.dp),
-                        tags = noteViewModel.screenState.value.hashtags,
-                        forSelectionTags = noteViewModel.screenState.value.allHashtags,
+                        selectedTags = noteViewModel.screenState.value.hashtags,
+                        allTags = noteViewModel.screenState.value.allHashtags,
                         onSave = noteViewModel::changeNoteHashtags
                     )
                 }
@@ -301,7 +301,7 @@ private fun RemoveIndicatorWhenKeyboardHidden(noteViewModel: NoteViewModel) {
 
     LaunchedEffect(isKeyboardVisible, noteViewModel.screenState.value.isStyling) {
         // for cases of inserting a link through a window
-        if(noteViewModel.screenState.value.isStyling) return@LaunchedEffect
+        if (noteViewModel.screenState.value.isStyling) return@LaunchedEffect
         if (isKeyboardVisible == Keyboard.Closed) {
             focusManager.clearFocus()
         }

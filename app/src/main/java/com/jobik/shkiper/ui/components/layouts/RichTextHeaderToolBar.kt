@@ -6,24 +6,23 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Divider
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.runtime.*
+import androidx.compose.material3.VerticalDivider
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.jobik.shkiper.R
 import com.jobik.shkiper.ui.components.buttons.RichTextStyleButton
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.helpers.horizontalWindowInsetsPadding
+import com.jobik.shkiper.ui.helpers.topWindowInsetsPadding
+import com.jobik.shkiper.ui.theme.AppTheme
 import com.mohamedrejeb.richeditor.model.RichTextState
 
 @Composable
@@ -33,14 +32,15 @@ fun RichTextHeaderToolBar(
 ) {
     var isTextColorFillEnabled by rememberSaveable { mutableStateOf(false) }
     var isTextBackgroundFillEnabled by rememberSaveable { mutableStateOf(false) }
-    val activeColor = CustomTheme.colors.active
+    val activeColor = AppTheme.colors.primary
 
     Row(
         modifier = modifier
             .fillMaxWidth()
             .horizontalScroll(rememberScrollState())
-            .padding(horizontal = 12.dp)
-            .height(56.dp),
+            .horizontalWindowInsetsPadding()
+            .topWindowInsetsPadding()
+            .padding(horizontal = 12.dp),
         horizontalArrangement = Arrangement.spacedBy(
             space = 12.dp,
             alignment = Alignment.CenterHorizontally
@@ -82,11 +82,11 @@ fun RichTextHeaderToolBar(
                 icon = R.drawable.terminal_fill0_wght400_grad0_opsz24,
                 contentDescription = ""
             )
-            Divider(
+            VerticalDivider(
                 modifier = Modifier
-                    .heightIn(30.dp)
+                    .heightIn(max = 30.dp)
                     .width(1.dp),
-                color = CustomTheme.colors.textSecondary.copy(alpha = .2f)
+                color = AppTheme.colors.textSecondary.copy(alpha = .2f)
             )
             RichTextStyleButton(
                 isActive = state.currentParagraphStyle.textAlign == TextAlign.Left,
@@ -114,11 +114,11 @@ fun RichTextHeaderToolBar(
                 icon = R.drawable.format_align_right_fill0_wght400_grad0_opsz24,
                 contentDescription = ""
             )
-            Divider(
+            VerticalDivider(
                 modifier = Modifier
-                    .heightIn(30.dp)
+                    .heightIn(max = 30.dp)
                     .width(1.dp),
-                color = CustomTheme.colors.textSecondary.copy(alpha = .2f)
+                color = AppTheme.colors.textSecondary.copy(alpha = .2f)
             )
             RichTextStyleButton(
                 isActive = state.isUnorderedList,

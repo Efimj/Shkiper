@@ -1,16 +1,18 @@
 package com.jobik.shkiper.screens.NoteListScreen.NoteListCalendarContent
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.lazy.staggeredgrid.items
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.NotificationsNone
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
@@ -21,14 +23,18 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.Note
+import com.jobik.shkiper.screens.AppLayout.NavigationBar.AppNavigationBarState
 import com.jobik.shkiper.ui.animation.AnimateVerticalSwitch
 import com.jobik.shkiper.ui.components.buttons.HashtagButton
 import com.jobik.shkiper.ui.components.cards.NoteCard
 import com.jobik.shkiper.ui.components.layouts.LazyGridNotes
 import com.jobik.shkiper.ui.components.layouts.ScreenContentIfNoData
-import com.jobik.shkiper.ui.helpers.UpdateStatusBarColor
+import com.jobik.shkiper.ui.helpers.bottomWindowInsetsPadding
+import com.jobik.shkiper.ui.helpers.endWindowInsetsPadding
 import com.jobik.shkiper.ui.helpers.rememberNextReminder
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.helpers.startWindowInsetsPadding
+import com.jobik.shkiper.ui.theme.AppTheme
+import kotlinx.coroutines.delay
 import me.onebone.toolbar.*
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -41,7 +47,7 @@ fun ScreenCalendarContent(
 ) {
     val collapsingToolbarScaffold = rememberCollapsingToolbarScaffoldState()
 
-    UpdateStatusBarColor(current = CustomTheme.colors.secondaryBackground)
+    HideNavigation()
 
     AnimateVerticalSwitch(
         modifier = Modifier,
@@ -50,6 +56,14 @@ fun ScreenCalendarContent(
             FullScreenCalendar(viewModel)
         }) {
         ScreenContent(collapsingToolbarScaffold, viewModel, onSlideBack, navController)
+    }
+}
+
+@Composable
+private fun HideNavigation() {
+    LaunchedEffect(Unit) {
+        delay(5)
+        AppNavigationBarState.hideWithLock()
     }
 }
 
@@ -63,7 +77,10 @@ private fun ScreenContent(
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route ?: ""
 
     CollapsingToolbarScaffold(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .imePadding()
+            .fillMaxSize()
+            .background(AppTheme.colors.background),
         state = collapsingToolbarScaffold,
         scrollStrategy = ScrollStrategy.EnterAlways,
         enabledWhenBodyUnfilled = false,
@@ -96,7 +113,12 @@ private fun NoteListContent(
         remember(viewModel.screenState.value.notes) { viewModel.screenState.value.notes.filterNot { it.isPinned } }
 
     LazyGridNotes(
-        contentPadding = PaddingValues(10.dp, 15.dp, 10.dp, 100.dp),
+        contentPadding = PaddingValues(
+            start = startWindowInsetsPadding() + 10.dp,
+            top = 15.dp,
+            end = endWindowInsetsPadding() + 10.dp,
+            bottom = bottomWindowInsetsPadding() + 100.dp
+        ),
         modifier = Modifier.fillMaxWidth(),
     ) {
         if (viewModel.screenState.value.hashtags.isNotEmpty())
@@ -106,7 +128,8 @@ private fun NoteListContent(
                         .wrapContentSize(unbounded = true)
                         .width(LocalConfiguration.current.screenWidthDp.dp),
                     state = rememberLazyListState(),
-                    contentPadding = PaddingValues(10.dp, 0.dp, 10.dp, 0.dp)
+                    contentPadding = PaddingValues(10.dp, 0.dp, 10.dp, 0.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     items(items = viewModel.screenState.value.hashtags.toList()) { item ->
                         HashtagButton(item, item == viewModel.screenState.value.currentHashtag) {
@@ -122,8 +145,8 @@ private fun NoteListContent(
                 Column {
                     Text(
                         text = stringResource(R.string.Pinned),
-                        color = CustomTheme.colors.textSecondary,
-                        style = MaterialTheme.typography.body1.copy(fontSize = 17.sp),
+                        color = AppTheme.colors.textSecondary,
+                        style = MaterialTheme.typography.bodyLarge,
                         modifier = Modifier.padding(horizontal = 10.dp)
                     )
                 }
@@ -136,8 +159,8 @@ private fun NoteListContent(
             item(span = StaggeredGridItemSpan.FullLine) {
                 Text(
                     stringResource(R.string.Other),
-                    color = CustomTheme.colors.textSecondary,
-                    style = MaterialTheme.typography.body1.copy(fontSize = 17.sp),
+                    color = AppTheme.colors.textSecondary,
+                    style = MaterialTheme.typography.bodyLarge,
                     modifier = Modifier.padding(horizontal = 10.dp)
                 )
             }

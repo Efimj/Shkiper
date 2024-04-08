@@ -365,4 +365,17 @@
     <string name="EnableLinkPreviews">Activer les aperçus des liens</string>
     <string name="Apply">Appliquer</string>
 
+    <string name="SaveChanges">Sauvegarder les modifications</string>
+
+    <string name="New">Nouveau</string>
+
+    <string name="All">Tous</string>
+
+    <string name="Selected">Choisi</string>
+
+    <string name="EmptyTagsTitle">Balises pas encore créées</string>
+
+    <string name="OtherMyApps">Autres mes applications</string>
+
+
 </resources>

@@ -3,8 +3,6 @@ package com.jobik.shkiper.ui.components.modals
 import android.content.Context
 import androidx.annotation.Keep
 import androidx.compose.animation.*
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
@@ -40,13 +38,11 @@ import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.RepeatMode
 import com.jobik.shkiper.helpers.*
 import com.jobik.shkiper.services.notification_service.NotificationScheduler
-import com.jobik.shkiper.ui.components.buttons.ButtonStyle
-import com.jobik.shkiper.ui.components.buttons.CustomButton
 import com.jobik.shkiper.ui.components.buttons.DropDownButton
 import com.jobik.shkiper.ui.components.buttons.DropDownItem
 import com.jobik.shkiper.ui.components.fields.CustomDatePicker
 import com.jobik.shkiper.ui.components.fields.CustomTimePicker
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 import com.kizitonwose.calendar.compose.ContentHeightMode
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -90,7 +86,7 @@ fun CreateReminderDialog(
             Modifier
                 .verticalScroll(rememberScrollState())
                 .clip(RoundedCornerShape(15.dp))
-                .background(CustomTheme.colors.mainBackground)
+                .background(AppTheme.colors.background)
                 .padding(vertical = 20.dp)
         ) {
             HorizontalPager(
@@ -147,12 +143,12 @@ private fun DialogFooter(
     val context = LocalContext.current
 
     val buttonNextContentColor: Color by animateColorAsState(
-        targetValue = if (isEnd) CustomTheme.colors.textOnActive else CustomTheme.colors.text,
+        targetValue = if (isEnd) AppTheme.colors.onPrimary else AppTheme.colors.text,
         label = "buttonNextContentColor"
     )
 
     val buttonNextBackgroundColor: Color by animateColorAsState(
-        targetValue = if (isEnd) CustomTheme.colors.active else CustomTheme.colors.secondaryBackground,
+        targetValue = if (isEnd) AppTheme.colors.primary else AppTheme.colors.container,
         label = "buttonNextBackgroundColor"
     )
 
@@ -172,10 +168,10 @@ private fun DialogFooter(
         {
             Button(
                 modifier = Modifier.fillMaxHeight(),
-                shape = CustomTheme.shapes.small,
+                shape = AppTheme.shapes.small,
                 colors = androidx.compose.material3.ButtonDefaults.buttonColors(
-                    contentColor = CustomTheme.colors.text,
-                    containerColor = CustomTheme.colors.secondaryBackground
+                    contentColor = AppTheme.colors.text,
+                    containerColor = AppTheme.colors.container
                 ),
                 border = null,
                 elevation = null,
@@ -190,7 +186,7 @@ private fun DialogFooter(
                 Icon(
                     imageVector = Icons.Outlined.NotificationsOff,
                     contentDescription = stringResource(R.string.Delete),
-                    tint = CustomTheme.colors.text
+                    tint = AppTheme.colors.text
                 )
             }
         }
@@ -202,10 +198,10 @@ private fun DialogFooter(
                 modifier = Modifier
                     .fillMaxHeight()
                     .weight(.5f),
-                shape = CustomTheme.shapes.small,
+                shape = AppTheme.shapes.small,
                 colors = androidx.compose.material3.ButtonDefaults.buttonColors(
-                    contentColor = CustomTheme.colors.text,
-                    containerColor = CustomTheme.colors.secondaryBackground
+                    contentColor = AppTheme.colors.text,
+                    containerColor = AppTheme.colors.container
                 ),
                 border = null,
                 elevation = null,
@@ -236,7 +232,7 @@ private fun DialogFooter(
                             text = stringResource(R.string.Back),
                             style = MaterialTheme.typography.body1,
                             fontWeight = FontWeight.SemiBold,
-                            color = CustomTheme.colors.text,
+                            color = AppTheme.colors.text,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
                         )
@@ -245,7 +241,7 @@ private fun DialogFooter(
                             text = stringResource(R.string.Cancel),
                             style = MaterialTheme.typography.body1,
                             fontWeight = FontWeight.SemiBold,
-                            color = CustomTheme.colors.text,
+                            color = AppTheme.colors.text,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
                         )
@@ -256,7 +252,7 @@ private fun DialogFooter(
                 modifier = Modifier
                     .fillMaxHeight()
                     .weight(.5f),
-                shape = CustomTheme.shapes.small,
+                shape = AppTheme.shapes.small,
                 colors = androidx.compose.material3.ButtonDefaults.buttonColors(
                     contentColor = buttonNextContentColor,
                     containerColor = buttonNextBackgroundColor
@@ -376,7 +372,7 @@ private fun RepeatModePage(
         Text(
             stringResource(R.string.Reminder),
             style = MaterialTheme.typography.h5,
-            color = CustomTheme.colors.textSecondary,
+            color = AppTheme.colors.textSecondary,
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .padding(bottom = 15.dp)
@@ -391,7 +387,7 @@ private fun RepeatModePage(
                     .height(38.dp)
             ) {
                 Icon(
-                    tint = CustomTheme.colors.textSecondary,
+                    tint = AppTheme.colors.textSecondary,
                     imageVector = Icons.Default.Event,
                     contentDescription = stringResource(R.string.Event)
                 )
@@ -399,7 +395,7 @@ private fun RepeatModePage(
                 Text(
                     DateHelper.getLocalizedDate(date.value),
                     style = MaterialTheme.typography.body1,
-                    color = CustomTheme.colors.text,
+                    color = AppTheme.colors.text,
                 )
             }
             Row(
@@ -408,7 +404,7 @@ private fun RepeatModePage(
                     .height(38.dp)
             ) {
                 Icon(
-                    tint = CustomTheme.colors.textSecondary,
+                    tint = AppTheme.colors.textSecondary,
                     imageVector = Icons.Default.Schedule,
                     contentDescription = stringResource(R.string.Schedule)
                 )
@@ -416,14 +412,14 @@ private fun RepeatModePage(
                 Text(
                     text = time.value.toString(),
                     style = MaterialTheme.typography.body1,
-                    color = CustomTheme.colors.text,
+                    color = AppTheme.colors.text,
                 )
             }
             if (isDatePast)
                 Text(
                     text = stringResource(R.string.ErrorDateMastBeFuture),
                     style = MaterialTheme.typography.body1,
-                    color = CustomTheme.colors.active,
+                    color = AppTheme.colors.primary,
                     modifier = Modifier.padding(bottom = 10.dp)
                 )
             Row(
@@ -432,7 +428,7 @@ private fun RepeatModePage(
                     .height(38.dp), verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
-                    tint = CustomTheme.colors.textSecondary,
+                    tint = AppTheme.colors.textSecondary,
                     imageVector = Icons.Default.Repeat,
                     contentDescription = stringResource(R.string.Repeat)
                 )
@@ -444,10 +440,10 @@ private fun RepeatModePage(
                     onChangedSelection = { repeatMode.value = RepeatMode.entries.toTypedArray()[it] }) {
                     Button(
                         modifier = Modifier.heightIn(min = 40.dp),
-                        shape = CustomTheme.shapes.small,
+                        shape = AppTheme.shapes.small,
                         colors = androidx.compose.material3.ButtonDefaults.buttonColors(
-                            contentColor = CustomTheme.colors.text,
-                            containerColor = CustomTheme.colors.secondaryBackground
+                            contentColor = AppTheme.colors.text,
+                            containerColor = AppTheme.colors.container
                         ),
                         border = null,
                         elevation = null,
@@ -458,7 +454,7 @@ private fun RepeatModePage(
                             text = repeatMode.value.getLocalizedValue(LocalContext.current),
                             style = MaterialTheme.typography.body1,
                             fontWeight = FontWeight.SemiBold,
-                            color = CustomTheme.colors.text,
+                            color = AppTheme.colors.text,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
                         )
@@ -472,7 +468,7 @@ private fun RepeatModePage(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Icon(
-                            tint = CustomTheme.colors.active,
+                            tint = AppTheme.colors.primary,
                             imageVector = Icons.Default.Warning,
                             contentDescription = stringResource(R.string.TurnOnNotifications)
                         )
@@ -480,7 +476,7 @@ private fun RepeatModePage(
                         Text(
                             text = stringResource(R.string.TurnOnNotifications),
                             style = MaterialTheme.typography.body1,
-                            color = CustomTheme.colors.text,
+                            color = AppTheme.colors.text,
                         )
                     }
                 }
@@ -504,14 +500,14 @@ private fun TimePickPage(
             Text(
                 DateHelper.getLocalizedDate(date.value),
                 style = MaterialTheme.typography.h5,
-                color = CustomTheme.colors.textSecondary,
+                color = AppTheme.colors.textSecondary,
                 maxLines = 1,
             )
             Spacer(Modifier.width(8.dp))
             Text(
                 time.value.toString(),
                 style = MaterialTheme.typography.h5,
-                color = CustomTheme.colors.text,
+                color = AppTheme.colors.text,
                 fontWeight = FontWeight.SemiBold,
                 maxLines = 1,
             )
@@ -531,7 +527,7 @@ private fun DatePickPage(date: MutableState<LocalDate>) {
         Text(
             text = DateHelper.getLocalizedDate(date.value),
             style = MaterialTheme.typography.h5,
-            color = CustomTheme.colors.text,
+            color = AppTheme.colors.text,
             fontWeight = FontWeight.SemiBold,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis

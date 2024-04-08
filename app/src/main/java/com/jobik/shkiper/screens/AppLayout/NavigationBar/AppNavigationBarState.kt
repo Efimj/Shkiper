@@ -16,14 +16,14 @@ object AppNavigationBarState {
             _visible.value = true
     }
 
-    fun showWithUnlock() {
-        unlock()
-        show()
-    }
-
     fun hide() {
         if (isLocked.value.not())
             _visible.value = false
+    }
+
+    fun showWithUnlock() {
+        unlock()
+        show()
     }
 
     fun hideWithLock() {

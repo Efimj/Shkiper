@@ -7,8 +7,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Shop
@@ -36,7 +35,8 @@ import com.jobik.shkiper.ui.components.layouts.ScreenContentIfNoData
 import com.jobik.shkiper.ui.components.layouts.ScreenWrapper
 import com.jobik.shkiper.ui.components.modals.ImageActionDialog
 import com.jobik.shkiper.ui.components.modals.ImageActionDialogButton
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.helpers.allWindowInsetsPadding
+import com.jobik.shkiper.ui.theme.AppTheme
 import kotlin.random.Random
 
 @Composable
@@ -66,19 +66,20 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
     else
         ScreenWrapper(modifier = Modifier
             .verticalScroll(rememberScrollState())
+            .allWindowInsetsPadding()
             .padding(top = 85.dp, bottom = 30.dp)) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 15.dp, start = 10.dp, end = 10.dp)
-                    .clip(CustomTheme.shapes.large)
-                    .background(CustomTheme.colors.secondaryBackground)
+                    .clip(AppTheme.shapes.large)
+                    .background(AppTheme.colors.container)
                     .padding(start = 20.dp, end = 20.dp, top = 10.dp, bottom = 15.dp),
             ) {
                 Text(
                     stringResource(R.string.PurchaseScreenTitle),
-                    color = CustomTheme.colors.text,
-                    style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Bold),
+                    color = AppTheme.colors.text,
+                    style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .padding(bottom = 15.dp, top = 5.dp)
@@ -86,20 +87,19 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
                 )
                 Text(
                     text = stringResource(R.string.PurchaseScreenDescription),
-                    color = CustomTheme.colors.textSecondary,
+                    color = AppTheme.colors.textSecondary,
                     fontSize = 16.sp,
                     lineHeight = 24.sp,
-                    style = MaterialTheme.typography.body1,
+                    style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier.fillMaxWidth()
                 )
             }
             Text(
                 stringResource(R.string.BuyMe),
-                color = CustomTheme.colors.textSecondary,
-                style = MaterialTheme.typography.h6,
-                textAlign = TextAlign.Left,
+                color = AppTheme.colors.textSecondary,
+                style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier
-                    .padding(horizontal = 20.dp)
+                    .padding(horizontal = 10.dp)
                     .padding(bottom = 5.dp)
                     .fillMaxWidth()
             )
@@ -151,14 +151,13 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
-                        .padding(horizontal = 20.dp)
+                        .padding(horizontal = 10.dp)
                         .fillMaxWidth()
                 ) {
                     Text(
                         stringResource(R.string.BuySubscription),
-                        color = CustomTheme.colors.textSecondary,
-                        style = MaterialTheme.typography.h6,
-                        textAlign = TextAlign.Left,
+                        color = AppTheme.colors.textSecondary,
+                        style = MaterialTheme.typography.titleMedium,
                         modifier = Modifier
                             .padding(bottom = 5.dp)
                             .padding(top = 15.dp)
@@ -168,7 +167,7 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
                         Icon(
                             imageVector = Icons.Outlined.TaskAlt,
                             contentDescription = null,
-                            tint = CustomTheme.colors.active,
+                            tint = AppTheme.colors.primary,
                         )
                 }
                 Row(

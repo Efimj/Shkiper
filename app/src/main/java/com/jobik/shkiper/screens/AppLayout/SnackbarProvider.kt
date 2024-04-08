@@ -1,9 +1,7 @@
 package com.jobik.shkiper.screens.AppLayout
 
 import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxScope
-import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -24,14 +22,16 @@ fun BoxScope.SnackbarProvider() {
 
     SnackbarHost(
         hostState = SnackbarHostUtil.snackbarHostState,
-        modifier = Modifier.align(Alignment.BottomCenter)
+        modifier = Modifier
+            .align(Alignment.BottomCenter)
+            .windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Bottom))
     ) { snackbarData ->
+        val customVisuals = snackbarData.visuals as SnackbarVisualsCustom
         Box(
             modifier = Modifier
                 .offset(y = -currentOffsetYValue.value)
                 .align(Alignment.BottomCenter)
         ) {
-            val customVisuals = snackbarData.visuals as SnackbarVisualsCustom
             SnackbarCard(customVisuals)
         }
     }

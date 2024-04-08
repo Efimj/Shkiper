@@ -23,8 +23,8 @@ import androidx.compose.ui.unit.dp
 import com.jobik.shkiper.R
 import com.jobik.shkiper.ui.components.layouts.CalendarDayView
 import com.jobik.shkiper.ui.components.layouts.CalendarDayViewRangeStyle
-import com.jobik.shkiper.ui.helpers.displayText
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.helpers.*
+import com.jobik.shkiper.ui.theme.AppTheme
 import com.kizitonwose.calendar.compose.ContentHeightMode
 import com.kizitonwose.calendar.compose.VerticalCalendar
 import com.kizitonwose.calendar.compose.rememberCalendarState
@@ -54,14 +54,19 @@ fun FullScreenCalendar(viewModel: CalendarViewModel) {
     }
 
     Box {
-        Column(modifier = Modifier.background(CustomTheme.colors.secondaryBackground)) {
+        Column(modifier = Modifier.background(AppTheme.colors.container)) {
             Header(daysOfWeek)
             VerticalCalendar(
                 modifier = Modifier.fillMaxSize(),
                 state = state,
                 calendarScrollPaged = false,
                 contentHeightMode = ContentHeightMode.Wrap,
-                contentPadding = PaddingValues(vertical = 20.dp, horizontal = 20.dp),
+                contentPadding = PaddingValues(
+                    top = 20.dp,
+                    bottom = 20.dp + bottomWindowInsetsPadding(),
+                    start = 20.dp + startWindowInsetsPadding(),
+                    end = 20.dp + endWindowInsetsPadding()
+                ),
                 dayContent = { day -> DayContent(day, viewModel) },
                 monthHeader = { month -> MonthHeader(month) },
                 monthBody = { _, content -> MonthBody(content) },
@@ -70,6 +75,8 @@ fun FullScreenCalendar(viewModel: CalendarViewModel) {
         Box(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
+                .bottomWindowInsetsPadding()
+                .horizontalWindowInsetsPadding()
                 .padding(horizontal = 20.dp, vertical = 20.dp)
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -78,10 +85,10 @@ fun FullScreenCalendar(viewModel: CalendarViewModel) {
                         .heightIn(min = 50.dp)
                         .widthIn(max = 350.dp)
                         .fillMaxWidth(),
-                    shape = CustomTheme.shapes.small,
+                    shape = AppTheme.shapes.small,
                     colors = ButtonDefaults.buttonColors(
-                        contentColor = CustomTheme.colors.textOnActive,
-                        containerColor = CustomTheme.colors.active
+                        contentColor = AppTheme.colors.onPrimary,
+                        containerColor = AppTheme.colors.primary
                     ),
                     border = null,
                     elevation = null,
@@ -91,14 +98,14 @@ fun FullScreenCalendar(viewModel: CalendarViewModel) {
                     Icon(
                         imageVector = Icons.Outlined.DateRange,
                         contentDescription = stringResource(R.string.Confirm),
-                        tint = CustomTheme.colors.textOnActive
+                        tint = AppTheme.colors.onPrimary
                     )
                     Spacer(modifier = Modifier.width(10.dp))
                     Text(
                         text = stringResource(R.string.Apply),
                         style = MaterialTheme.typography.body1,
                         fontWeight = FontWeight.SemiBold,
-                        color = CustomTheme.colors.textOnActive,
+                        color = AppTheme.colors.onPrimary,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
@@ -183,7 +190,7 @@ private fun MonthHeader(month: CalendarMonth) {
             modifier = Modifier,
             textAlign = TextAlign.Center,
             text = month.yearMonth.displayText(),
-            color = CustomTheme.colors.text,
+            color = AppTheme.colors.text,
             style = MaterialTheme.typography.h6,
             fontWeight = FontWeight.SemiBold,
             maxLines = 1,
@@ -195,14 +202,16 @@ private fun MonthHeader(month: CalendarMonth) {
 @Composable
 private fun Header(daysOfWeek: List<DayOfWeek>) {
     Row(
-        modifier = Modifier.padding(vertical = 20.dp, horizontal = 20.dp)
+        modifier = Modifier
+            .topWindowInsetsPadding()
+            .padding(vertical = 20.dp, horizontal = 20.dp)
     ) {
         for (dayOfWeek in daysOfWeek) {
             Text(
                 modifier = Modifier.weight(1f),
                 textAlign = TextAlign.Center,
                 text = dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.getDefault()),
-                color = CustomTheme.colors.textSecondary,
+                color = AppTheme.colors.textSecondary,
                 style = MaterialTheme.typography.body1,
                 maxLines = 1,
                 overflow = TextOverflow.Clip,

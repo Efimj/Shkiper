@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.sp
 import com.jobik.shkiper.R
 import com.jobik.shkiper.ui.helpers.MultipleEventsCutter
 import com.jobik.shkiper.ui.helpers.get
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 
 @Composable
 fun DonateBanner(
@@ -41,8 +41,8 @@ fun DonateBanner(
         elevation = 0.dp,
         shape = RoundedCornerShape(15.dp),
         border = null,
-        backgroundColor = CustomTheme.colors.secondaryBackground,
-        contentColor = CustomTheme.colors.text,
+        backgroundColor = AppTheme.colors.container,
+        contentColor = AppTheme.colors.text,
     ) {
         Column(
             modifier = Modifier.padding(8.dp).padding(start = 8.dp, bottom = 4.dp)
@@ -57,7 +57,7 @@ fun DonateBanner(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.SemiBold, fontSize = 18.sp),
-                    color = CustomTheme.colors.text,
+                    color = AppTheme.colors.text,
                 )
                 IconButton(
                     onClick = onClose,
@@ -66,7 +66,7 @@ fun DonateBanner(
                     Icon(
                         imageVector = Icons.Default.Close,
                         contentDescription = stringResource(R.string.Close),
-                        tint = CustomTheme.colors.textSecondary,
+                        tint = AppTheme.colors.textSecondary,
                     )
                 }
             }
@@ -75,7 +75,7 @@ fun DonateBanner(
                 maxLines = 4,
                 overflow = TextOverflow.Ellipsis,
                 style = MaterialTheme.typography.body1.copy(fontSize = 16.sp),
-                color = CustomTheme.colors.textSecondary,
+                color = AppTheme.colors.textSecondary,
             )
         }
     }

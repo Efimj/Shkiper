@@ -1,26 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">Shkiper</string>
-    <string name="jobik_link" translatable="false">jetappdroid@gmail.com</string>
-    <string name="shkiper_github_link" translatable="false">https://github.com/Efimj/Shkiper</string>
-    <string name="FreepikLink" translatable="false">https://www.flaticon.com/authors/freepik</string>
-    <string name="RakibHassanRahimLink" translatable="false">https://www.flaticon.com/authors/rakib-hassan-rahim</string>
-    <string name="StickersLink" translatable="false">https://www.flaticon.com/authors/stickers?type=sticker</string>
-
-    <!--    Languages   -->
-    <string name="en" translatable="false">English</string>
-    <string name="uk" translatable="false">Український</string>
-    <string name="ru" translatable="false">Русский</string>
-    <string name="de" translatable="false">Deutsch</string>
-    <string name="in" translatable="false">Bahasa Indonesia</string>
-    <string name="es" translatable="false">Español</string>
-    <string name="it" translatable="false">Italiano</string>
-    <string name="zh" translatable="false">简体中文 (Chinese Simplified)</string>
-    <string name="pt" translatable="false">Português</string>
-    <string name="th" translatable="false">ไทย (Thai)</string>
-    <string name="fr" translatable="false">Français</string>
-    <string name="ja" translatable="false">日本語 (Japanese)</string>
-
     <!--    Repeating   -->
     <string name="none">Does not repeat</string>
     <string name="daily">Daily</string>
@@ -226,5 +205,12 @@
     <string name="DisableLinkPreviews">Disable link previews</string>
     <string name="EnableLinkPreviews">Enable link previews</string>
     <string name="Apply">Apply</string>
+    <string name="SaveChanges">Save changes</string>
+    <string name="New">New</string>
+    <string name="All">All</string>
+    <string name="Selected">Selected</string>
+    <string name="EmptyTagsTitle">Tags not created yet</string>
+
+    <string name="OtherMyApps">Other my apps</string>
 
 </resources>

@@ -4,22 +4,20 @@ import androidx.annotation.Keep
 import androidx.annotation.StringRes
 import androidx.compose.animation.*
 import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
+import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,21 +26,17 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.jobik.shkiper.R
+import com.jobik.shkiper.ui.helpers.*
 import com.jobik.shkiper.ui.helpers.Keyboard
 import com.jobik.shkiper.ui.helpers.keyboardAsState
-import com.jobik.shkiper.ui.theme.CustomTheme
-import kotlin.math.roundToInt
+import com.jobik.shkiper.ui.theme.AppTheme
 
 data class SearchBarActionButton(
     val icon: ImageVector,
@@ -52,36 +46,42 @@ data class SearchBarActionButton(
 )
 
 @Keep
-const val SearchBarHeight = 60
+private const val SearchBarHeight = 60
+
+@Composable
+fun getSearchBarHeight() = SearchBarHeight.dp + topWindowInsetsPadding()
 
 @Composable
 fun SearchBar(
-    searchBarOffsetHeightPx: Float,
     isVisible: Boolean,
     value: String,
     actionButton: SearchBarActionButton? = null,
     onChange: (newValue: String) -> Unit
 ) {
     val isFocused = remember { mutableStateOf(false) }
-    val searchBarFloatHeight = SearchBarHeight.toFloat()
-    val horizontalPaddings by animateDpAsState(if (isFocused.value) 0.dp else 20.dp, label = "horizontalPaddings")
-    val topPadding by animateDpAsState(if (isFocused.value) 0.dp else 10.dp, label = "topPadding")
+    val startPaddings by animateDpAsState(
+        if (isFocused.value) 0.dp else startWindowInsetsPadding() + 20.dp,
+        label = "horizontalPaddings"
+    )
+    val endPaddings by animateDpAsState(
+        if (isFocused.value) 0.dp else endWindowInsetsPadding() + 20.dp,
+        label = "horizontalPaddings"
+    )
+    val topPadding by animateDpAsState(
+        if (isFocused.value) 0.dp else topWindowInsetsPadding() + 10.dp,
+        label = "topPadding"
+    )
 
     AnimatedVisibility(
-        isVisible,
-        enter = slideIn {
-            IntOffset(0, -searchBarFloatHeight.roundToInt())
-        },
-        exit = slideOut {
-            IntOffset(0, -searchBarFloatHeight.roundToInt())
-        },
+        visible = isVisible || isFocused.value,
+        enter = slideInVertically { -it },
+        exit = slideOutVertically { -it },
     ) {
         Row(
             modifier = Modifier
-                .height(SearchBarHeight.dp)
-                .padding(horizontal = horizontalPaddings)
-                .padding(top = topPadding)
-                .offset { IntOffset(x = 0, y = searchBarOffsetHeightPx.roundToInt()) },
+                .height(getSearchBarHeight())
+                .padding(start = startPaddings, end = endPaddings)
+                .padding(top = topPadding),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
@@ -121,18 +121,17 @@ private fun RowScope.ActionButton(
                     .padding(start = 10.dp),
                 shape = RoundedCornerShape(15.dp),
                 colors = ButtonDefaults.buttonColors(
-                    contentColor = CustomTheme.colors.textSecondary,
-                    containerColor = CustomTheme.colors.secondaryBackground
+                    contentColor = AppTheme.colors.onSecondaryContainer,
+                    containerColor = AppTheme.colors.secondaryContainer
                 ),
-                border = BorderStroke(1.dp, CustomTheme.colors.mainBackground),
                 elevation = null,
                 contentPadding = PaddingValues(horizontal = 10.dp),
                 onClick = it.onClick
             ) {
-                androidx.compose.material3.Icon(
+                Icon(
                     imageVector = it.icon,
                     contentDescription = stringResource(id = it.contentDescription),
-                    tint = CustomTheme.colors.textSecondary
+                    tint = AppTheme.colors.onSecondaryContainer
                 )
             }
         }
@@ -147,21 +146,12 @@ private fun RowScope.SearchField(
 ) {
     val focusManager = LocalFocusManager.current
     val isKeyboardVisible by keyboardAsState()
+    val topPadding by animateDpAsState(
+        if (isFocused.value) topWindowInsetsPadding() else 0.dp,
+        label = "topPadding"
+    )
     val cornerRadius by animateDpAsState(if (isFocused.value) 0.dp else 15.dp, label = "cornerRadius")
     val focusRequester = remember { FocusRequester() }
-    val backgroundColorValue =
-        if (isFocused.value) CustomTheme.colors.secondaryBackground else CustomTheme.colors.mainBackground
-    val backgroundStatusBarColor by animateColorAsState(
-        backgroundColorValue,
-        label = "backgroundStatusBarColor",
-    )
-
-    val systemUiController = rememberSystemUiController()
-    LaunchedEffect(isFocused.value) {
-        systemUiController.setStatusBarColor(
-            backgroundColorValue
-        )
-    }
 
     Row(
         modifier = Modifier
@@ -172,12 +162,12 @@ private fun RowScope.SearchField(
             ) { focusRequester.requestFocus() }
             .clip(RoundedCornerShape(cornerRadius))
             .background(
-                color = CustomTheme.colors.secondaryBackground,
+                color = AppTheme.colors.secondaryContainer,
                 shape = RoundedCornerShape(cornerRadius)
             )
             .fillMaxHeight()
-            .border(1.dp, backgroundStatusBarColor, RoundedCornerShape(cornerRadius))
-            .padding(horizontal = 15.dp),
+            .padding(horizontal = 15.dp)
+            .padding(top = topPadding),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -190,7 +180,7 @@ private fun RowScope.SearchField(
             Icon(
                 imageVector = Icons.Default.Search,
                 contentDescription = stringResource(R.string.Search),
-                tint = CustomTheme.colors.textSecondary
+                tint = AppTheme.colors.onSecondaryContainer
             )
         }
         CustomDefaultTextField(
@@ -203,6 +193,7 @@ private fun RowScope.SearchField(
             onTextChange = onChange,
             singleLine = true,
             placeholder = stringResource(R.string.Search),
+            textStyle = MaterialTheme.typography.bodyLarge.copy(color = AppTheme.colors.onSecondaryContainer),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Text,
                 imeAction = ImeAction.Done,
@@ -226,7 +217,7 @@ private fun RowScope.SearchField(
                 onClick = { onChange("") },
             ) {
                 Icon(
-                    tint = CustomTheme.colors.textSecondary,
+                    tint = AppTheme.colors.onSecondaryContainer,
                     imageVector = Icons.Default.Clear,
                     contentDescription = stringResource(R.string.Clear)
                 )

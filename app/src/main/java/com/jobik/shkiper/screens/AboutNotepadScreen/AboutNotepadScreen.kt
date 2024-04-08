@@ -1,24 +1,21 @@
 package com.jobik.shkiper.screens.AboutNotepadScreen
 
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
-import android.util.Log
+import android.annotation.SuppressLint
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Link
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -26,7 +23,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.jobik.shkiper.BuildConfig
 import com.jobik.shkiper.R
 import com.jobik.shkiper.helpers.IntentHelper
@@ -35,16 +31,11 @@ import com.jobik.shkiper.ui.components.cards.LinkCard
 import com.jobik.shkiper.ui.components.cards.UserCard
 import com.jobik.shkiper.ui.components.cards.UserCardLink
 import com.jobik.shkiper.ui.components.layouts.ScreenWrapper
+import com.jobik.shkiper.ui.helpers.allWindowInsetsPadding
 import com.jobik.shkiper.ui.modifiers.bounceClick
-import com.jobik.shkiper.ui.theme.CustomTheme
-import com.jobik.shkiper.util.SnackbarHostUtil
-import com.jobik.shkiper.util.SnackbarVisualsCustom
-import com.jobik.shkiper.util.ThemeUtil
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
+import com.jobik.shkiper.ui.theme.AppTheme
 
-
-@OptIn(ExperimentalFoundationApi::class)
+@SuppressLint("Range")
 @Composable
 fun AboutNotepadScreen() {
     val context = LocalContext.current
@@ -60,6 +51,7 @@ fun AboutNotepadScreen() {
     ScreenWrapper(
         modifier = Modifier
             .verticalScroll(rememberScrollState())
+            .allWindowInsetsPadding()
             .padding(top = 85.dp, bottom = 30.dp)
             .padding(horizontal = 20.dp)
     ) {
@@ -68,23 +60,23 @@ fun AboutNotepadScreen() {
                 modifier = Modifier
                     .fillMaxHeight(1f)
                     .fillMaxWidth(.65f)
-                    .clip(CustomTheme.shapes.medium)
-                    .background(CustomTheme.colors.secondaryBackground)
+                    .clip(AppTheme.shapes.medium)
+                    .background(AppTheme.colors.container)
                     .padding(start = 20.dp, end = 20.dp, top = 10.dp, bottom = 15.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
                     text = stringResource(R.string.app_name),
-                    color = CustomTheme.colors.active,
-                    style = MaterialTheme.typography.h6.copy(fontSize = 28.sp, fontWeight = FontWeight.SemiBold),
+                    color = AppTheme.colors.primary,
+                    style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.SemiBold),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier.padding(bottom = 5.dp)
                 )
                 Text(
                     text = stringResource(R.string.AboutAppDescription),
-                    color = CustomTheme.colors.textSecondary,
-                    style = MaterialTheme.typography.body1,
+                    color = AppTheme.colors.textSecondary,
+                    style = MaterialTheme.typography.bodyLarge,
                     overflow = TextOverflow.Ellipsis,
                     textAlign = TextAlign.Start,
                 )
@@ -100,8 +92,8 @@ fun AboutNotepadScreen() {
                     modifier = Modifier
                         .fillMaxHeight(.65f)
                         .fillMaxWidth()
-                        .clip(CustomTheme.shapes.medium)
-                        .background(CustomTheme.colors.secondaryBackground)
+                        .clip(AppTheme.shapes.medium)
+                        .background(AppTheme.colors.container)
                         .padding(horizontal = 20.dp, vertical = 10.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
@@ -117,36 +109,69 @@ fun AboutNotepadScreen() {
                     modifier = Modifier
                         .fillMaxHeight(1.35f)
                         .fillMaxWidth()
-                        .clip(CustomTheme.shapes.medium)
-                        .background(CustomTheme.colors.secondaryBackground)
+                        .clip(AppTheme.shapes.medium)
+                        .background(AppTheme.colors.container)
                         .padding(horizontal = 20.dp, vertical = 10.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
                     Text(
                         text = "V ${BuildConfig.VERSION_NAME}",
-                        color = CustomTheme.colors.active,
-                        style = MaterialTheme.typography.body1,
-                        fontSize = 18.sp,
+                        color = AppTheme.colors.primary,
+                        style = MaterialTheme.typography.titleMedium,
                         textAlign = TextAlign.Center,
                         fontWeight = FontWeight.SemiBold
                     )
                 }
             }
         }
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(10.dp))
 
         val shkiperLink = stringResource(id = R.string.shkiper_github_link)
         val onLinkCopiedText = stringResource(R.string.LinkCopied)
         val linkTextLabel = stringResource(R.string.Link)
-        LinkCard(shkiperLink, linkTextLabel, onLinkCopiedText)
+        LinkCard(link = shkiperLink, linkTextLabel = linkTextLabel, onLinkCopiedText = onLinkCopiedText)
 
         Spacer(modifier = Modifier.height(16.dp))
         Column {
             Text(
+                text = stringResource(R.string.OtherMyApps),
+                color = AppTheme.colors.textSecondary,
+                style = MaterialTheme.typography.titleMedium,
+                overflow = TextOverflow.Ellipsis,
+                textAlign = TextAlign.Center,
+                fontWeight = FontWeight.SemiBold,
+                maxLines = 1,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+            LazyRow(
+                modifier = Modifier.wrapContentSize(unbounded = true)
+                    .width(LocalConfiguration.current.screenWidthDp.dp),
+                contentPadding = PaddingValues(start = 20.dp, end = 20.dp),
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                item {
+                    val link = stringResource(R.string.GameOfLifeLink)
+                    Card(
+                        modifier = Modifier.height(200.dp).bounceClick()
+                            .clickable { IntentHelper().openBrowserIntent(context = context, link = link) },
+                        colors = CardDefaults.cardColors(containerColor = Color.Transparent)
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.game_of_life_banner),
+                            contentDescription = null,
+                            contentScale = ContentScale.Fit
+                        )
+                    }
+                }
+            }
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+        Column {
+            Text(
                 text = stringResource(R.string.Contact),
-                color = CustomTheme.colors.textSecondary,
-                style = MaterialTheme.typography.h6,
+                color = AppTheme.colors.textSecondary,
+                style = MaterialTheme.typography.titleMedium,
                 overflow = TextOverflow.Ellipsis,
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.SemiBold,
@@ -170,8 +195,8 @@ fun AboutNotepadScreen() {
             Spacer(modifier = Modifier.height(6.dp))
             Text(
                 text = stringResource(R.string.Icons),
-                color = CustomTheme.colors.textSecondary,
-                style = MaterialTheme.typography.h6,
+                color = AppTheme.colors.textSecondary,
+                style = MaterialTheme.typography.titleMedium,
                 overflow = TextOverflow.Ellipsis,
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.SemiBold,

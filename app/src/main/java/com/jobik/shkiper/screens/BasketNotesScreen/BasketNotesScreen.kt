@@ -1,9 +1,6 @@
 package com.jobik.shkiper.screens.BasketNotesScreen
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.AnimationVector1D
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.*
@@ -20,43 +17,30 @@ import androidx.compose.material.icons.outlined.History
 import androidx.compose.material.icons.outlined.Warning
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.jobik.shkiper.R
-import com.jobik.shkiper.screens.AppLayout.NavigationBar.AppNavigationBarState
 import com.jobik.shkiper.ui.components.cards.NoteCard
 import com.jobik.shkiper.ui.components.layouts.CustomTopAppBar
 import com.jobik.shkiper.ui.components.layouts.LazyGridNotes
 import com.jobik.shkiper.ui.components.layouts.ScreenContentIfNoData
 import com.jobik.shkiper.ui.components.layouts.TopAppBarItem
 import com.jobik.shkiper.ui.components.modals.ActionDialog
-import com.jobik.shkiper.ui.helpers.rememberNextReminder
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.helpers.*
+import com.jobik.shkiper.ui.theme.AppTheme
 import com.jobik.shkiper.viewmodels.NotesViewModel
-import kotlin.math.roundToInt
 
 
 @Composable
 fun BasketNotesScreen(navController: NavController, basketViewModel: NotesViewModel = hiltViewModel()) {
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route ?: ""
-
     val lazyGridNotes = rememberLazyStaggeredGridState()
-
-    val actionBarHeight = 56.dp
-    val actionBarHeightPx = with(LocalDensity.current) { actionBarHeight.roundToPx().toFloat() }
-    val offsetX = remember { Animatable(-actionBarHeightPx) }
 
     /**
      * When user select note
@@ -66,28 +50,16 @@ fun BasketNotesScreen(navController: NavController, basketViewModel: NotesViewMo
         basketViewModel::clearSelectedNote
     )
 
-    /**
-     * LaunchedEffect for cases when the number of selected notes changes.
-     */
-    LaunchedEffect(basketViewModel.screenState.value.selectedNotes) {
-        if (basketViewModel.screenState.value.selectedNotes.isEmpty()) {
-            offsetX.animateTo(
-                targetValue = -actionBarHeightPx, animationSpec = tween(durationMillis = 200)
-            )
-        } else {
-            offsetX.animateTo(
-                targetValue = 0f, animationSpec = tween(durationMillis = 200)
-            )
-        }
-    }
-
     Box(Modifier.fillMaxSize()) {
         if (basketViewModel.screenState.value.isNotesInitialized && basketViewModel.screenState.value.notes.isEmpty())
             ScreenContentIfNoData(title = R.string.BasketNotesPageHeader, icon = Icons.Outlined.DeleteSweep)
         else
             ScreenContent(lazyGridNotes, basketViewModel, currentRoute, navController)
         Box(modifier = Modifier) {
-            ActionBar(actionBarHeight, offsetX, basketViewModel)
+            ActionBar(
+                isVisible = basketViewModel.screenState.value.selectedNotes.isNotEmpty(),
+                notesViewModel = basketViewModel
+            )
         }
     }
 
@@ -111,21 +83,28 @@ private fun ScreenContent(
     navController: NavController
 ) {
     LazyGridNotes(
-        contentPadding = PaddingValues(10.dp, 10.dp, 10.dp, 80.dp),
+        contentPadding = PaddingValues(
+            start = 10.dp + startWindowInsetsPadding(),
+            top = 10.dp + topWindowInsetsPadding(),
+            end = 10.dp + endWindowInsetsPadding(),
+            bottom = 80.dp + bottomWindowInsetsPadding()
+        ),
         modifier = Modifier.fillMaxSize(),
         gridState = lazyGridNotes
     ) {
         item(span = StaggeredGridItemSpan.FullLine) {
             Column(
-                modifier = Modifier.height(56.dp).fillMaxWidth(),
+                modifier = Modifier
+                    .height(56.dp)
+                    .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(
                     text = stringResource(R.string.BasketPageHeader),
-                    color = CustomTheme.colors.textSecondary,
+                    color = AppTheme.colors.textSecondary,
                     style = MaterialTheme.typography.body1.copy(fontSize = 17.sp),
-                    modifier = Modifier.padding(horizontal = 10.dp).basicMarquee(),
+                    modifier = Modifier.basicMarquee(),
                     maxLines = 1
                 )
             }
@@ -147,46 +126,31 @@ private fun ScreenContent(
 
 @Composable
 private fun ActionBar(
-    actionBarHeight: Dp, offsetX: Animatable<Float, AnimationVector1D>, notesViewModel: NotesViewModel
+    isVisible: Boolean, notesViewModel: NotesViewModel
 ) {
-    val systemUiController = rememberSystemUiController()
-    val backgroundColorValue =
-        if (notesViewModel.screenState.value.selectedNotes.isNotEmpty()) CustomTheme.colors.secondaryBackground else CustomTheme.colors.mainBackground
-
-    LaunchedEffect(notesViewModel.screenState.value.selectedNotes.isNotEmpty()) {
-        systemUiController.setStatusBarColor(backgroundColorValue)
-    }
-
-    val topAppBarElevation = if (offsetX.value.roundToInt() < -actionBarHeight.value.roundToInt()) 0.dp else 2.dp
-    Box(
-        modifier = Modifier.height(actionBarHeight).offset { IntOffset(x = 0, y = offsetX.value.roundToInt()) },
-    ) {
-        CustomTopAppBar(
-            modifier = Modifier.fillMaxWidth(),
-            elevation = topAppBarElevation,
-            backgroundColor = CustomTheme.colors.secondaryBackground,
-            counter = notesViewModel.screenState.value.selectedNotes.count(),
-            navigation = TopAppBarItem(
+    CustomTopAppBar(
+        isVisible = isVisible,
+        counter = notesViewModel.screenState.value.selectedNotes.count(),
+        navigation = TopAppBarItem(
+            isActive = false,
+            icon = Icons.Default.Close,
+            iconDescription = R.string.GoBack,
+            onClick = notesViewModel::clearSelectedNote
+        ),
+        items = listOf(
+            TopAppBarItem(
                 isActive = false,
-                icon = Icons.Default.Close,
-                iconDescription = R.string.GoBack,
-                onClick = notesViewModel::clearSelectedNote
+                icon = Icons.Outlined.History,
+                iconDescription = R.string.Restore,
+                onClick = notesViewModel::removeSelectedNotesFromBasket
             ),
-            items = listOf(
-                TopAppBarItem(
-                    isActive = false,
-                    icon = Icons.Outlined.History,
-                    iconDescription = R.string.Restore,
-                    onClick = notesViewModel::removeSelectedNotesFromBasket
-                ),
-                TopAppBarItem(
-                    isActive = false,
-                    icon = Icons.Outlined.DeleteForever,
-                    iconDescription = R.string.Delete,
-                    onClick = notesViewModel::switchDeleteDialogShow
-                ),
-            )
+            TopAppBarItem(
+                isActive = false,
+                icon = Icons.Outlined.DeleteForever,
+                iconDescription = R.string.Delete,
+                onClick = notesViewModel::switchDeleteDialogShow
+            ),
         )
-    }
+    )
 }
 

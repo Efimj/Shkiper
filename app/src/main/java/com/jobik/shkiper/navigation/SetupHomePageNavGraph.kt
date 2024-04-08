@@ -1,11 +1,13 @@
 package com.jobik.shkiper.navigation
 
+import android.util.Log
 import androidx.compose.animation.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -21,7 +23,6 @@ import com.jobik.shkiper.screens.PurchaseScreen.PurchaseScreen
 import com.jobik.shkiper.screens.SettingsScreen.SettingsScreen
 import com.jobik.shkiper.screens.StatisticsScreen.StatisticsScreen
 
-
 @OptIn(ExperimentalComposeUiApi::class)
 @ExperimentalAnimationApi
 @Composable
@@ -29,102 +30,131 @@ fun SetupAppScreenNavGraph(
     navController: NavHostController,
     startDestination: String
 ) {
-    fun isSecondaryRoute(targetRoute: String?): Boolean {
-        return AppScreens.SecondaryRoutes.isSecondaryRoute(targetRoute ?: "")
-    }
-
     NavHost(
         navController = navController,
         startDestination = startDestination,
-        modifier = Modifier.semantics {
-            testTagsAsResourceId = true
-        }
+        modifier = Modifier.semantics { testTagsAsResourceId = true }
     ) {
         composable(
-            route = AppScreens.NoteList.route,
-            enterTransition = {
-                when (initialState.destination.route) {
-                    AppScreens.Note.route -> null
-                    else -> if (isSecondaryRoute(initialState.destination.route)) null else slideInVertically(
-                        initialOffsetY = { -40 }) + fadeIn()
-                }
-            },
-            exitTransition = { null }
+            route = Route.NoteList.route,
+            enterTransition = { mainScreenEnterTransition() },
+            exitTransition = { mainScreenExitTransition() }
         ) {
             NoteListScreen(navController)
         }
 
         composable(
-            route = AppScreens.Archive.route,
-            enterTransition = {
-                when (initialState.destination.route) {
-                    AppScreens.Note.route -> null
-                    else -> if (isSecondaryRoute(initialState.destination.route)) null else slideInVertically(
-                        initialOffsetY = { -40 }) + fadeIn()
-                }
-            },
-            exitTransition = { null }
+            route = Route.Archive.route,
+            enterTransition = { mainScreenEnterTransition() },
+            exitTransition = { mainScreenExitTransition() }
         ) {
             ArchiveNotesScreen(navController)
         }
 
         composable(
-            route = AppScreens.Basket.route,
-            enterTransition = {
-                when (initialState.destination.route) {
-                    AppScreens.Note.route -> null
-                    else -> if (isSecondaryRoute(initialState.destination.route)) null else slideInVertically(
-                        initialOffsetY = { -40 }) + fadeIn()
-                }
-            },
-            exitTransition = { null }
+            route = Route.Basket.route,
+            enterTransition = { mainScreenEnterTransition() },
+            exitTransition = { mainScreenExitTransition() },
         ) {
             BasketNotesScreen(navController)
         }
 
         composable(
-            route = AppScreens.Settings.route,
-            enterTransition = {
-                when (initialState.destination.route) {
-                    AppScreens.Note.route -> null
-                    else -> if (isSecondaryRoute(initialState.destination.route)) null else slideInVertically(
-                        initialOffsetY = { -40 }) + fadeIn()
-                }
-            },
-            exitTransition = { null }
+            route = Route.Settings.route,
+            enterTransition = { mainScreenEnterTransition() },
+            exitTransition = { mainScreenExitTransition() },
         ) {
             SettingsScreen(navController)
         }
 
         composable(
-            route = AppScreens.Note.route,
+            route = Route.Note.route,
             arguments = listOf(navArgument(Argument_Note_Id) { type = NavType.StringType }),
-            enterTransition = { fadeIn() + scaleIn(initialScale = 0.9f) },
-            exitTransition = { fadeOut() + scaleOut(targetScale = 0.9f) }
+            enterTransition = { ScreenTransition().secondaryScreenEnterTransition() },
+            exitTransition = { ScreenTransition().secondaryScreenExitTransition() }
         ) { NoteScreen(navController) }
 
         composable(
-            route = AppScreens.Onboarding.route,
-            enterTransition = { fadeIn() + slideInHorizontally() },
-            exitTransition = { fadeOut() + slideOutHorizontally() }
+            route = Route.Onboarding.route,
+            enterTransition = { ScreenTransition().secondaryScreenEnterTransition() },
+            exitTransition = { ScreenTransition().secondaryScreenExitTransition() }
         ) { OnBoardingScreen(navController) }
 
         composable(
-            route = AppScreens.Statistics.route,
-            enterTransition = { fadeIn() + slideInHorizontally() },
-            exitTransition = { fadeOut() + slideOutHorizontally() }
+            route = Route.Statistics.route,
+            enterTransition = { ScreenTransition().secondaryScreenEnterTransition() },
+            exitTransition = { ScreenTransition().secondaryScreenExitTransition() }
         ) { StatisticsScreen() }
 
         composable(
-            route = AppScreens.Purchases.route,
-            enterTransition = { fadeIn() + slideInHorizontally() },
-            exitTransition = { fadeOut() + slideOutHorizontally() }
+            route = Route.Purchases.route,
+            enterTransition = { ScreenTransition().secondaryScreenEnterTransition() },
+            exitTransition = { ScreenTransition().secondaryScreenExitTransition() }
         ) { PurchaseScreen() }
 
         composable(
-            route = AppScreens.AboutNotepad.route,
-            enterTransition = { fadeIn() + slideInHorizontally() },
-            exitTransition = { fadeOut() + slideOutHorizontally() }
+            route = Route.AboutNotepad.route,
+            enterTransition = { ScreenTransition().secondaryScreenEnterTransition() },
+            exitTransition = { ScreenTransition().secondaryScreenExitTransition() }
         ) { AboutNotepadScreen() }
     }
+}
+
+class ScreenTransition {
+    fun secondaryScreenEnterTransition() = slideInHorizontally { it }
+    fun secondaryScreenExitTransition() = slideOutHorizontally { it }
+}
+
+private fun AnimatedContentTransitionScope<NavBackStackEntry>.mainScreenEnterTransition(): EnterTransition? {
+    val initial = initialState.destination.route?.substringBefore("/") ?: return null
+    val target = targetState.destination.route?.substringBefore("/") ?: return null
+
+//    // transition to note
+//    if (initial == Route.Note.route.substringBefore("/")) {
+//        return null
+//    }
+
+    // transition after secondary screen
+    if (RouteHelper().isSecondaryRoute(initial)) {
+        return slideInHorizontally { -150 }
+    }
+
+    // transition between main screens
+    val initiatorRouteNumber = RouteHelper().getRouteNumber(initial) ?: return null
+    val targetRouteNumber = RouteHelper().getRouteNumber(target) ?: return null
+
+    if (initiatorRouteNumber > targetRouteNumber) {
+        return slideInHorizontally { -it } + fadeIn()
+    } else if (initiatorRouteNumber < targetRouteNumber) {
+        return slideInHorizontally { it } + fadeIn()
+    }
+
+    return null
+}
+
+private fun AnimatedContentTransitionScope<NavBackStackEntry>.mainScreenExitTransition(): ExitTransition? {
+    val initial = initialState.destination.route?.substringBefore("/") ?: return null
+    val target = targetState.destination.route?.substringBefore("/") ?: return null
+
+//    // transition to note
+//    if (target == Route.Note.route.substringBefore("/")) {
+//        return null
+//    }
+
+    // transition before secondary screen
+    if (RouteHelper().isSecondaryRoute(target)) {
+        return slideOutHorizontally { -150 }
+    }
+
+    // transition between main screens
+    val initiatorRouteNumber = RouteHelper().getRouteNumber(initial) ?: return null
+    val targetRouteNumber = RouteHelper().getRouteNumber(target) ?: return null
+
+    if (initiatorRouteNumber > targetRouteNumber) {
+        return slideOutHorizontally { it } + fadeOut()
+    } else if (initiatorRouteNumber < targetRouteNumber) {
+        return slideOutHorizontally { -it } + fadeOut()
+    }
+
+    return null
 }

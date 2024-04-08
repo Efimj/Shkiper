@@ -365,4 +365,17 @@
     <string name="EnableLinkPreviews">Abilita le anteprime dei collegamenti</string>
     <string name="Apply">Fare domanda a</string>
 
+    <string name="SaveChanges">Salvare le modifiche</string>
+
+    <string name="New">Nuovo</string>
+
+    <string name="All">Tutto</string>
+
+    <string name="Selected">Selezionato</string>
+
+    <string name="EmptyTagsTitle">Tag non ancora creati</string>
+
+    <string name="OtherMyApps">Altre mie app</string>
+
+
 </resources>

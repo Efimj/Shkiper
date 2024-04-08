@@ -2,6 +2,7 @@ package com.jobik.shkiper.screens.SettingsScreen
 
 import android.app.Activity
 import android.content.Context
+import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.Animatable
@@ -13,7 +14,7 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.outlined.*
@@ -34,25 +35,31 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.jobik.shkiper.NotepadApplication
 import com.jobik.shkiper.R
-import com.jobik.shkiper.navigation.AppScreens
+import com.jobik.shkiper.navigation.NavigationHelpers.Companion.navigateToSecondary
+import com.jobik.shkiper.navigation.Route
 import com.jobik.shkiper.ui.components.buttons.*
 import com.jobik.shkiper.ui.components.cards.SettingsItem
 import com.jobik.shkiper.ui.components.cards.ThemePreview
+import com.jobik.shkiper.ui.helpers.allWindowInsetsPadding
 import com.jobik.shkiper.ui.modifiers.circularRotation
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
+import com.jobik.shkiper.ui.theme.CustomThemeColors
 import com.jobik.shkiper.ui.theme.CustomThemeStyle
+import com.jobik.shkiper.ui.theme.getDynamicColors
 import com.jobik.shkiper.util.ThemeUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-
+import kotlin.enums.EnumEntries
 
 @Composable
 fun SettingsScreen(navController: NavController, settingsViewModel: SettingsViewModel = hiltViewModel()) {
     Column(
         Modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState()),
+            .background(AppTheme.colors.background)
+            .verticalScroll(rememberScrollState())
+            .allWindowInsetsPadding(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -73,32 +80,29 @@ private fun InformationSettings() {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp),
-            fontSize = 16.sp,
-            color = CustomTheme.colors.active,
+            color = AppTheme.colors.primary,
             text = stringResource(R.string.Information),
             fontWeight = FontWeight.SemiBold,
-            style = MaterialTheme.typography.body2,
+            style = MaterialTheme.typography.titleLarge,
         )
         Row(
             Modifier
                 .fillMaxWidth()
                 .padding(top = 15.dp, bottom = 8.dp)
                 .padding(horizontal = 20.dp),
-            verticalAlignment = Alignment.CenterVertically,
+            verticalAlignment = Alignment.Top,
             horizontalArrangement = Arrangement.Center
         ) {
             Icon(
                 imageVector = Icons.Outlined.Info,
                 contentDescription = stringResource(R.string.Info),
-                tint = CustomTheme.colors.textSecondary
+                tint = AppTheme.colors.textSecondary
             )
             Spacer(Modifier.width(20.dp))
             Text(
                 text = stringResource(R.string.AppDataPolitics),
-                color = CustomTheme.colors.textSecondary,
-                fontSize = 16.sp,
-                lineHeight = 24.sp,
-                style = MaterialTheme.typography.body1,
+                color = AppTheme.colors.textSecondary,
+                style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.fillMaxWidth()
             )
         }
@@ -115,11 +119,10 @@ private fun DevSupportSettings(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp),
-            fontSize = 16.sp,
-            color = CustomTheme.colors.active,
+            color = AppTheme.colors.primary,
             text = stringResource(R.string.Support),
             fontWeight = FontWeight.SemiBold,
-            style = MaterialTheme.typography.body2,
+            style = MaterialTheme.typography.titleLarge,
         )
         Spacer(Modifier.height(8.dp))
         SettingsItem(
@@ -132,7 +135,7 @@ private fun DevSupportSettings(
             modifier = Modifier.heightIn(min = 50.dp),
             icon = Icons.Rounded.LocalMall,
             title = stringResource(R.string.SupportDevelopment),
-            onClick = { navController.navigate(AppScreens.Purchases.route) }
+            onClick = { navController.navigateToSecondary(Route.Purchases.route) }
         )
     }
 }
@@ -144,30 +147,29 @@ private fun OtherSettings(navController: NavController) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp),
-            fontSize = 16.sp,
-            color = CustomTheme.colors.active,
+            color = AppTheme.colors.primary,
             text = stringResource(R.string.Other),
             fontWeight = FontWeight.SemiBold,
-            style = MaterialTheme.typography.body2,
+            style = MaterialTheme.typography.titleLarge,
         )
         Spacer(Modifier.height(8.dp))
         SettingsItem(
             modifier = Modifier.heightIn(min = 50.dp),
             icon = Icons.Rounded.Info,
             title = stringResource(R.string.AboutNotepad),
-            onClick = { navController.navigate(AppScreens.AboutNotepad.route) }
+            onClick = { navController.navigateToSecondary(Route.AboutNotepad.route) }
         )
         SettingsItem(
             modifier = Modifier.heightIn(min = 50.dp),
             icon = Icons.Rounded.DataUsage,
             title = stringResource(R.string.StatisticsPage),
-            onClick = { navController.navigate(AppScreens.Statistics.route) }
+            onClick = { navController.navigateToSecondary(Route.Statistics.route) }
         )
         SettingsItem(
             modifier = Modifier.heightIn(min = 50.dp),
             icon = Icons.Rounded.ViewCarousel,
             title = stringResource(R.string.OnboardingPage),
-            onClick = { navController.navigate(AppScreens.Onboarding.route) }
+            onClick = { navController.navigateToSecondary(Route.Onboarding.route) }
         )
     }
 }
@@ -188,11 +190,10 @@ private fun BackupSettings(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp),
-            fontSize = 16.sp,
-            color = CustomTheme.colors.active,
+            color = AppTheme.colors.primary,
             text = stringResource(R.string.Backup),
             fontWeight = FontWeight.SemiBold,
-            style = MaterialTheme.typography.body2,
+            style = MaterialTheme.typography.titleLarge,
         )
         Spacer(Modifier.height(8.dp))
 
@@ -207,7 +208,7 @@ private fun BackupSettings(
             onClick = { settingsViewModel.saveLocalBackup() }
         ) {
             val iconColor =
-                if (settingsViewModel.settingsScreenState.value.isLocalBackupSaving) CustomTheme.colors.textOnActive else CustomTheme.colors.text
+                if (settingsViewModel.settingsScreenState.value.isLocalBackupSaving) AppTheme.colors.onPrimary else AppTheme.colors.text
             val contentColor = remember { Animatable(iconColor) }
 
             LaunchedEffect(settingsViewModel.settingsScreenState.value.isLocalBackupSaving) {
@@ -240,7 +241,7 @@ private fun BackupSettings(
             onClick = { fileSearch.launch(arrayOf("*/*")) }
         ) {
             val iconColor =
-                if (settingsViewModel.settingsScreenState.value.isLocalBackupUploading) CustomTheme.colors.textOnActive else CustomTheme.colors.text
+                if (settingsViewModel.settingsScreenState.value.isLocalBackupUploading) AppTheme.colors.onPrimary else AppTheme.colors.text
             val contentColor = remember { Animatable(iconColor) }
 
             LaunchedEffect(settingsViewModel.settingsScreenState.value.isLocalBackupUploading) {
@@ -274,11 +275,10 @@ private fun ProgramSettings(settingsViewModel: SettingsViewModel) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp),
-            fontSize = 16.sp,
-            color = CustomTheme.colors.active,
+            color = AppTheme.colors.primary,
             text = stringResource(R.string.Application),
             fontWeight = FontWeight.SemiBold,
-            style = MaterialTheme.typography.body2,
+            style = MaterialTheme.typography.titleLarge,
         )
         Spacer(Modifier.height(8.dp))
         SettingsItem(
@@ -291,7 +291,7 @@ private fun ProgramSettings(settingsViewModel: SettingsViewModel) {
                 onClick = { settingsViewModel.toggleAppTheme() },
                 thumbContent = if (ThemeUtil.isDarkMode.value == true) {
                     {
-                        androidx.compose.material3.Icon(
+                        Icon(
                             imageVector = Icons.Outlined.LightMode,
                             contentDescription = null,
                             modifier = Modifier.size(SwitchDefaults.IconSize),
@@ -299,7 +299,7 @@ private fun ProgramSettings(settingsViewModel: SettingsViewModel) {
                     }
                 } else {
                     {
-                        androidx.compose.material3.Icon(
+                        Icon(
                             imageVector = Icons.Default.DarkMode,
                             contentDescription = null,
                             modifier = Modifier.size(SwitchDefaults.IconSize),
@@ -315,10 +315,12 @@ private fun ProgramSettings(settingsViewModel: SettingsViewModel) {
 
 @Composable
 private fun SettingsColorThemePicker(settingsViewModel: SettingsViewModel) {
+    val isDarkMode = ThemeUtil.isDarkMode.value
     val colorValues =
-        if (ThemeUtil.isDarkMode.value != false) CustomThemeStyle.entries.map { it.dark } else CustomThemeStyle.entries.map { it.light }
+        if (isDarkMode == true) CustomThemeStyle.entries.map { it.dark } else CustomThemeStyle.entries.map { it.light }
     val colorValuesName = CustomThemeStyle.entries
     val selectedThemeName = ThemeUtil.themeStyle.value?.name ?: CustomThemeStyle.PastelPurple.name
+    val context = LocalContext.current
 
     Column(
         Modifier.padding(vertical = 5.dp),
@@ -327,31 +329,44 @@ private fun SettingsColorThemePicker(settingsViewModel: SettingsViewModel) {
     ) {
         Text(
             modifier = Modifier.padding(start = 65.dp),
-            color = CustomTheme.colors.text,
+            color = AppTheme.colors.text,
             text = stringResource(R.string.ApplicationColors),
-            fontSize = 18.sp,
-            style = MaterialTheme.typography.body1,
+            style = MaterialTheme.typography.titleMedium,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
         Spacer(Modifier.height(6.dp))
-        LazyRow(state = rememberLazyListState(), contentPadding = PaddingValues(start = 20.dp)) {
+        LazyRow(
+            state = rememberLazyListState(),
+            contentPadding = PaddingValues(start = 20.dp),
+            horizontalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+
             items(colorValues.size) { theme ->
-                Box(
-                    Modifier
-                        .padding(end = 10.dp)
-                        .height(70.dp)
-                        .width(55.dp)) {
-                    ThemePreview(
-                        colors = colorValues[theme],
-                        selected = colorValuesName[theme].name == selectedThemeName
-                    ) {
-                        settingsViewModel.selectColorTheme(theme = colorValuesName[theme])
-                    }
+                val colors = remember { getColors(context = context, colorValuesName, theme, isDarkMode, colorValues) }
+
+                ThemePreview(
+                    colors = colors,
+                    selected = colorValuesName[theme].name == selectedThemeName
+                ) {
+                    settingsViewModel.selectColorTheme(theme = colorValuesName[theme])
                 }
             }
         }
     }
+}
+
+private fun getColors(
+    context: Context,
+    colorValuesName: EnumEntries<CustomThemeStyle>,
+    theme: Int,
+    isDarkMode: Boolean?,
+    colorValues: List<CustomThemeColors>
+) = when {
+    colorValuesName[theme] == CustomThemeStyle.MaterialDynamicColors && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ->
+        getDynamicColors(darkTheme = isDarkMode == true, context = context)
+
+    else -> colorValues[theme]
 }
 
 @Composable
@@ -361,12 +376,12 @@ private fun SettingsItemGroup(setAccent: Boolean = false, columnScope: @Composab
         modifier = Modifier
             .widthIn(max = 500.dp)
             .padding(horizontal = 10.dp)
-            .clip(CustomTheme.shapes.large)
-            .background(CustomTheme.colors.secondaryBackground)
+            .clip(AppTheme.shapes.large)
+            .background(AppTheme.colors.container)
             .border(
                 width = if (setAccent) 2.dp else 0.dp,
-                shape = CustomTheme.shapes.large,
-                color = if (setAccent) CustomTheme.colors.active else Color.Transparent
+                shape = AppTheme.shapes.large,
+                color = if (setAccent) AppTheme.colors.primary else Color.Transparent
             )
             .padding(top = 13.dp, bottom = 7.dp),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -399,12 +414,12 @@ private fun SettingsItemSelectLanguage(settingsViewModel: SettingsViewModel) {
                 settingsViewModel.selectLocalization(it)
                 recreateActivity(context, coroutineScope)
             }) {
-            androidx.compose.material3.Text(
+            Text(
                 text = currentLanguage.getLocalizedValue(context),
-                fontSize = 18.sp,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                color = CustomTheme.colors.active
+                color = AppTheme.colors.primary,
+                style = MaterialTheme.typography.titleMedium
             )
         }
     }

@@ -9,8 +9,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Link
 import androidx.compose.material3.Card
@@ -30,7 +29,7 @@ import androidx.compose.ui.unit.dp
 import com.jobik.shkiper.R
 import com.jobik.shkiper.helpers.IntentHelper
 import com.jobik.shkiper.ui.modifiers.bounceClick
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 import com.jobik.shkiper.util.SnackbarHostUtil
 import com.jobik.shkiper.util.SnackbarVisualsCustom
 import com.jobik.shkiper.util.ThemeUtil
@@ -48,18 +47,18 @@ fun LinkCard(
     val clipboardManager = LocalContext.current.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
 
     Card(
-        shape = CustomTheme.shapes.medium,
+        shape = AppTheme.shapes.medium,
         colors = CardDefaults.cardColors(
-            containerColor = CustomTheme.colors.secondaryBackground,
-            contentColor = CustomTheme.colors.text,
-            disabledContainerColor = CustomTheme.colors.secondaryBackground,
-            disabledContentColor = CustomTheme.colors.text
+            containerColor = AppTheme.colors.container,
+            contentColor = AppTheme.colors.text,
+            disabledContainerColor = AppTheme.colors.container,
+            disabledContentColor = AppTheme.colors.text
         ),
         elevation = CardDefaults.outlinedCardElevation(),
         border = null,
         modifier = Modifier
             .bounceClick(0.95f)
-            .clip(CustomTheme.shapes.medium)
+            .clip(AppTheme.shapes.medium)
             .combinedClickable(
                 onClick = {
                     try {
@@ -89,24 +88,21 @@ fun LinkCard(
             horizontalArrangement = Arrangement.spacedBy(20.dp)
         ) {
             Image(
+                modifier = Modifier.height(60.dp),
                 painter = painterResource(if (ThemeUtil.isDarkMode.value == true) R.drawable.github_dark else R.drawable.github_light),
-                contentDescription = stringResource(
-                    id = R.string.Image
-                ),
-                contentScale = ContentScale.FillHeight,
-                modifier = Modifier.height(80.dp)
+                contentDescription = stringResource(id = R.string.Image),
+                contentScale = ContentScale.Fit,
             )
             Column(
-                modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.spacedBy(3.dp, alignment = Alignment.CenterVertically)
             ) {
                 Text(
                     text = stringResource(id = R.string.OpenSource),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    style = MaterialTheme.typography.h5,
+                    style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
-                    color = CustomTheme.colors.text,
+                    color = AppTheme.colors.text,
                     modifier = Modifier.basicMarquee()
                 )
                 Text(
@@ -114,8 +110,8 @@ fun LinkCard(
                     minLines = 2,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
-                    style = MaterialTheme.typography.body1,
-                    color = CustomTheme.colors.textSecondary,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = AppTheme.colors.textSecondary,
                 )
             }
         }

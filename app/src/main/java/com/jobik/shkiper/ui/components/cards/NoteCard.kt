@@ -7,10 +7,7 @@ import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Event
 import androidx.compose.material.icons.filled.Repeat
@@ -35,7 +32,7 @@ import com.jobik.shkiper.ui.helpers.MultipleEventsCutter
 import com.jobik.shkiper.ui.helpers.SetRichTextDefaultStyles
 import com.jobik.shkiper.ui.helpers.get
 import com.jobik.shkiper.ui.modifiers.bounceClick
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 import com.mohamedrejeb.richeditor.model.RichTextState
 import com.mohamedrejeb.richeditor.model.rememberRichTextState
 import java.time.LocalDateTime
@@ -53,11 +50,11 @@ fun NoteCard(
     onLongClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
-    val headerStyle = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.SemiBold, fontSize = 18.sp)
-    val bodyStyle = MaterialTheme.typography.body1
+    val headerStyle = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold)
+    val bodyStyle = MaterialTheme.typography.bodyMedium
     val multipleEventsCutter = remember { MultipleEventsCutter.get() }
     val borderColor: Color by animateColorAsState(
-        targetValue = if (selected) CustomTheme.colors.active else Color.Transparent, label = "borderColor",
+        targetValue = if (selected) AppTheme.colors.primary else Color.Transparent, label = "borderColor",
     )
 
     val bodyRichTextState = rememberRichTextState()
@@ -79,11 +76,12 @@ fun NoteCard(
                 onClick = { multipleEventsCutter.processEvent { onClick() } },
                 onLongClick = onLongClick,
             ),
-        elevation = 0.dp,
         shape = RoundedCornerShape(15.dp),
-        border = BorderStroke(1.dp, borderColor),
-        backgroundColor = CustomTheme.colors.secondaryBackground,
-        contentColor = CustomTheme.colors.text,
+        border = BorderStroke(2.dp, borderColor),
+        colors = CardDefaults.cardColors(
+            containerColor = AppTheme.colors.container,
+            contentColor = AppTheme.colors.text
+        ),
     ) {
         Column(
             modifier = Modifier.padding(16.dp)
@@ -93,18 +91,23 @@ fun NoteCard(
             else
                 NoteAnnotatedContent(header, bodyRichTextState, markedText, headerStyle, bodyStyle)
             if (header.isNullOrBlank() && removeMarkdownStyles(bodyRichTextState.toMarkdown()).isBlank()) {
-                Text(
-                    text = stringResource(R.string.EmptyNote),
-                    maxLines = 10,
-                    overflow = TextOverflow.Ellipsis,
-                    style = MaterialTheme.typography.body1,
-                    color = CustomTheme.colors.textSecondary,
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
-                )
+                EmptyNoteContent(bodyStyle)
             }
             ReminderInformation(reminder)
         }
     }
+}
+
+@Composable
+private fun ColumnScope.EmptyNoteContent(bodyStyle: TextStyle) {
+    Text(
+        text = stringResource(R.string.EmptyNote),
+        maxLines = 10,
+        overflow = TextOverflow.Ellipsis,
+        style = bodyStyle,
+        color = AppTheme.colors.textSecondary,
+        modifier = Modifier.Companion.align(Alignment.CenterHorizontally)
+    )
 }
 
 private fun getNextReminderDate(reminder: Reminder?): LocalDateTime {
@@ -132,26 +135,26 @@ private fun ReminderInformation(reminder: Reminder?) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
-                tint = CustomTheme.colors.textSecondary,
+                tint = AppTheme.colors.textSecondary,
                 imageVector = if (reminder.repeat == RepeatMode.NONE) Icons.Default.Event else Icons.Default.Repeat,
                 contentDescription = stringResource(R.string.Event),
                 modifier = Modifier.height(15.dp)
             )
             Spacer(Modifier.width(4.dp))
-            androidx.compose.material3.Text(
+            Text(
                 DateHelper.getLocalizedDate(nextReminderDate.toLocalDate()),
-                style = MaterialTheme.typography.body1.copy(
+                style = MaterialTheme.typography.bodySmall.copy(
                     fontSize = fontSize,
                     textDecoration = if (isDateFuture) TextDecoration.None else TextDecoration.LineThrough
                 ),
-                color = CustomTheme.colors.textSecondary,
+                color = AppTheme.colors.textSecondary,
             )
             Spacer(Modifier.width(4.dp))
             if (isDateFuture)
-                androidx.compose.material3.Text(
+                Text(
                     nextReminderDate.toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")),
-                    style = MaterialTheme.typography.body1.copy(fontSize = fontSize),
-                    color = CustomTheme.colors.textSecondary,
+                    style = MaterialTheme.typography.bodySmall.copy(fontSize = fontSize),
+                    color = AppTheme.colors.textSecondary,
                 )
         }
     }
@@ -182,7 +185,7 @@ private fun NoteContent(header: String?, text: RichTextState, headerStyle: TextS
             maxLines = maxBodyLines - headerLineCount,
             overflow = TextOverflow.Ellipsis,
             style = bodyStyle,
-            color = CustomTheme.colors.textSecondary,
+            color = AppTheme.colors.textSecondary,
         )
 //        RichText(
 //            state = richTextState,
@@ -208,7 +211,7 @@ private fun NoteAnnotatedContent(
 
     if (!header.isNullOrBlank()) {
         Text(
-            text = buildAnnotatedString(header, markedText, CustomTheme.colors.active, Color.Transparent),
+            text = buildAnnotatedString(header, markedText, AppTheme.colors.primary, Color.Transparent),
             fontSize = headerStyle.fontSize,
             fontStyle = headerStyle.fontStyle,
             fontFamily = headerStyle.fontFamily,
@@ -228,7 +231,7 @@ private fun NoteAnnotatedContent(
             text = buildAnnotatedString(
                 removeMarkdownStyles(text.toMarkdown()),
                 markedText,
-                CustomTheme.colors.active,
+                AppTheme.colors.primary,
                 Color.Transparent
             ),
             fontSize = bodyStyle.fontSize,
@@ -236,7 +239,7 @@ private fun NoteAnnotatedContent(
             fontFamily = bodyStyle.fontFamily,
             fontWeight = bodyStyle.fontWeight,
             overflow = TextOverflow.Ellipsis,
-            color = CustomTheme.colors.textSecondary,
+            color = AppTheme.colors.textSecondary,
             maxLines = maxBodyLines - headerLineCount,
         )
     }
@@ -254,7 +257,7 @@ fun buildAnnotatedString(text: String, substring: String, color: Color, backgrou
                 start = lastIndex,
                 end = lastIndex + substring.length
             )
-            lastIndex += substring.length // Обновление значения lastIndex
+            lastIndex += substring.length
         }
     }
 }

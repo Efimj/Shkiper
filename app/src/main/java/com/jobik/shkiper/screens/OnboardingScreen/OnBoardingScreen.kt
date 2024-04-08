@@ -10,11 +10,9 @@ import androidx.compose.foundation.pager.PageSize
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.KeyboardArrowLeft
-import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
@@ -35,8 +33,12 @@ import androidx.navigation.NavController
 import com.jobik.shkiper.R
 import com.jobik.shkiper.SharedPreferencesKeys
 import com.jobik.shkiper.SharedPreferencesKeys.OnboardingFinishedData
-import com.jobik.shkiper.navigation.AppScreens
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.navigation.NavigationHelpers.Companion.navigateToMain
+import com.jobik.shkiper.navigation.Route
+import com.jobik.shkiper.ui.helpers.allWindowInsetsPadding
+import com.jobik.shkiper.ui.helpers.bottomWindowInsetsPadding
+import com.jobik.shkiper.ui.helpers.horizontalWindowInsetsPadding
+import com.jobik.shkiper.ui.theme.AppTheme
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -49,7 +51,9 @@ fun OnBoardingScreen(navController: NavController) {
     }
     Box {
         HorizontalPager(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .background(AppTheme.colors.background),
             verticalAlignment = Alignment.CenterVertically,
             state = pagerState,
             pageSpacing = 10.dp,
@@ -63,6 +67,7 @@ fun OnBoardingScreen(navController: NavController) {
                 modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(scrollState)
+                    .allWindowInsetsPadding()
                     .padding(bottom = 90.dp),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -71,7 +76,10 @@ fun OnBoardingScreen(navController: NavController) {
             }
         }
         Box(
-            modifier = Modifier.align(Alignment.BottomCenter)
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .bottomWindowInsetsPadding()
+                .horizontalWindowInsetsPadding()
         ) {
             ScreenFooter(navController, pagerState, scrollState)
         }
@@ -85,12 +93,12 @@ private fun ScreenFooter(navController: NavController, pagerState: PagerState, s
     val context = LocalContext.current
 
     val buttonNextContentColor: Color by animateColorAsState(
-        targetValue = if (pagerState.currentPage == OnBoardingPage.PageList.Count - 1) CustomTheme.colors.textOnActive else CustomTheme.colors.text,
+        targetValue = if (pagerState.currentPage == OnBoardingPage.PageList.Count - 1) AppTheme.colors.onPrimary else AppTheme.colors.text,
         label = "buttonNextContentColor"
     )
 
     val buttonNextBackgroundColor: Color by animateColorAsState(
-        targetValue = if (pagerState.currentPage == OnBoardingPage.PageList.Count - 1) CustomTheme.colors.active else CustomTheme.colors.secondaryBackground,
+        targetValue = if (pagerState.currentPage == OnBoardingPage.PageList.Count - 1) AppTheme.colors.primary else AppTheme.colors.container,
         label = "buttonNextBackgroundColor"
     )
 
@@ -112,10 +120,10 @@ private fun ScreenFooter(navController: NavController, pagerState: PagerState, s
             Row {
                 Button(
                     modifier = Modifier.fillMaxHeight(),
-                    shape = CustomTheme.shapes.small,
+                    shape = AppTheme.shapes.small,
                     colors = ButtonDefaults.buttonColors(
-                        contentColor = CustomTheme.colors.text,
-                        containerColor = CustomTheme.colors.secondaryBackground
+                        contentColor = AppTheme.colors.text,
+                        containerColor = AppTheme.colors.container
                     ),
                     border = null,
                     elevation = null,
@@ -129,7 +137,7 @@ private fun ScreenFooter(navController: NavController, pagerState: PagerState, s
                     Icon(
                         imageVector = Icons.Outlined.KeyboardArrowLeft,
                         contentDescription = stringResource(R.string.Back),
-                        tint = CustomTheme.colors.text
+                        tint = AppTheme.colors.text
                     )
                 }
                 Spacer(modifier = Modifier.padding(end = 10.dp))
@@ -140,7 +148,7 @@ private fun ScreenFooter(navController: NavController, pagerState: PagerState, s
                 .testTag("button_next")
                 .fillMaxHeight()
                 .fillMaxWidth(),
-            shape = CustomTheme.shapes.small,
+            shape = AppTheme.shapes.small,
             colors = ButtonDefaults.buttonColors(
                 contentColor = buttonNextContentColor,
                 containerColor = buttonNextBackgroundColor
@@ -173,7 +181,7 @@ private fun ScreenFooter(navController: NavController, pagerState: PagerState, s
                 if (value) {
                     Text(
                         text = stringResource(R.string.Finish),
-                        style = MaterialTheme.typography.body1,
+                        style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.SemiBold,
                         color = buttonNextContentColor,
                         maxLines = 1,
@@ -182,7 +190,7 @@ private fun ScreenFooter(navController: NavController, pagerState: PagerState, s
                 } else {
                     Text(
                         text = stringResource(R.string.Next),
-                        style = MaterialTheme.typography.body1,
+                        style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.SemiBold,
                         color = buttonNextContentColor,
                         maxLines = 1,
@@ -204,11 +212,7 @@ fun onFinished(context: Context, navController: NavController) {
     } catch (e: Exception) {
         Log.i("onboarding - onFinished", e.toString())
     }
-    navController.navigate(AppScreens.NoteList.route) {
-        popUpTo(AppScreens.Onboarding.route) {
-            inclusive = true
-        }
-    }
+    navController.navigateToMain(Route.NoteList.route)
 }
 
 @Composable
@@ -235,10 +239,10 @@ fun PagerScreen(onBoardingPage: OnBoardingPage) {
                 .fillMaxWidth()
                 .padding(top = 20.dp),
             text = stringResource(onBoardingPage.title),
-            style = MaterialTheme.typography.h4,
+            style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,
-            color = CustomTheme.colors.text,
+            color = AppTheme.colors.text,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
@@ -248,9 +252,9 @@ fun PagerScreen(onBoardingPage: OnBoardingPage) {
                 .padding(horizontal = 20.dp)
                 .padding(top = 10.dp),
             text = stringResource(onBoardingPage.description),
-            style = MaterialTheme.typography.h6,
+            style = MaterialTheme.typography.bodyLarge,
             textAlign = TextAlign.Center,
-            color = CustomTheme.colors.textSecondary,
+            color = AppTheme.colors.textSecondary,
             minLines = 4,
             maxLines = 4,
             overflow = TextOverflow.Ellipsis

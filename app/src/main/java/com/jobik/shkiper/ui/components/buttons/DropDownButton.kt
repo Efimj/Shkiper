@@ -17,7 +17,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.jobik.shkiper.R
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 
 enum class DropDownButtonSizeMode {
     STRERCHBYBUTTONWIDTH,
@@ -54,9 +54,9 @@ fun DropDownButton(
             modifier = (if (stretchMode == DropDownButtonSizeMode.STRERCHBYBUTTONWIDTH)
                 Modifier.width(maxWidth) else Modifier)
                 .heightIn(max = 280.dp)
-                .background(CustomTheme.colors.secondaryBackground)
+                .background(AppTheme.colors.container)
                 .clip(RoundedCornerShape(15.dp))
-                .border(1.dp, CustomTheme.colors.stroke, RoundedCornerShape(15.dp))
+                .border(1.dp, AppTheme.colors.border, RoundedCornerShape(15.dp))
         ) {
             items.forEachIndexed { index, dropDownItem ->
                 if (dropDownItem.icon == null)
@@ -64,7 +64,7 @@ fun DropDownButton(
                         text = {
                             Text(
                                 text = dropDownItem.text,
-                                color = CustomTheme.colors.text,
+                                color = AppTheme.colors.text,
                                 style = MaterialTheme.typography.body1
                             )
                         },
@@ -77,7 +77,7 @@ fun DropDownButton(
                         text = {
                             Text(
                                 text = dropDownItem.text,
-                                color = CustomTheme.colors.text,
+                                color = AppTheme.colors.text,
                                 style = MaterialTheme.typography.body1
                             )
                         },
@@ -85,7 +85,7 @@ fun DropDownButton(
                             Icon(
                                 imageVector = dropDownItem.icon,
                                 contentDescription = stringResource(R.string.GoForward),
-                                tint = CustomTheme.colors.textSecondary,
+                                tint = AppTheme.colors.textSecondary,
                             )
                         },
                         onClick = {

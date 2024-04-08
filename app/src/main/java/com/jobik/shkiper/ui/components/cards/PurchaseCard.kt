@@ -26,7 +26,7 @@ import com.jobik.shkiper.R
 import com.jobik.shkiper.ui.helpers.MultipleEventsCutter
 import com.jobik.shkiper.ui.helpers.get
 import com.jobik.shkiper.ui.modifiers.bounceClick
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 
 sealed class PurchaseCardContent {
     abstract val imageRes: Int
@@ -62,9 +62,9 @@ fun PurchaseCard(purchaseCardContent: PurchaseCardContent, onClick: () -> Unit) 
             .clickable(onClick = { multipleEventsCutter.processEvent { onClick() } }),
         elevation = 0.dp,
         shape = RoundedCornerShape(15.dp),
-        border = if (purchaseCardContent.isHighlighted) BorderStroke(2.dp, CustomTheme.colors.active) else null,
-        backgroundColor = CustomTheme.colors.secondaryBackground,
-        contentColor = CustomTheme.colors.text,
+        border = if (purchaseCardContent.isHighlighted) BorderStroke(2.dp, AppTheme.colors.primary) else null,
+        backgroundColor = AppTheme.colors.container,
+        contentColor = AppTheme.colors.text,
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -91,15 +91,15 @@ fun PurchaseCard(purchaseCardContent: PurchaseCardContent, onClick: () -> Unit) 
                         modifier = Modifier.align(Alignment.BottomStart).height(40.dp)
                             .fillMaxWidth().background(
                                 Brush.verticalGradient(
-                                    0F to CustomTheme.colors.secondaryBackground.copy(alpha = 0.0F),
-                                    .4F to CustomTheme.colors.secondaryBackground.copy(alpha = 0.70F),
-                                    1F to CustomTheme.colors.secondaryBackground.copy(alpha = 0.9F)
+                                    0F to AppTheme.colors.container.copy(alpha = 0.0F),
+                                    .4F to AppTheme.colors.container.copy(alpha = 0.70F),
+                                    1F to AppTheme.colors.container.copy(alpha = 0.9F)
                                 )
                             )
                     ) {
                         Text(
                             text = title,
-                            color = CustomTheme.colors.text,
+                            color = AppTheme.colors.text,
                             style = MaterialTheme.typography.body1.copy(fontSize = 16.sp),
                             textAlign = TextAlign.Center,
                             maxLines = 1,
@@ -116,7 +116,7 @@ fun PurchaseCard(purchaseCardContent: PurchaseCardContent, onClick: () -> Unit) 
                     Icon(
                         imageVector = Icons.Outlined.TaskAlt,
                         contentDescription = null,
-                        tint = CustomTheme.colors.active,
+                        tint = AppTheme.colors.primary,
                     )
                 }
             }

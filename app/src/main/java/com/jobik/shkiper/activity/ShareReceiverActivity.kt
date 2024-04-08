@@ -3,6 +3,7 @@ package com.jobik.shkiper.activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.annotation.Keep
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.background
@@ -13,7 +14,7 @@ import androidx.compose.ui.Modifier
 import com.jobik.shkiper.database.data.note.NoteMongoRepository
 import com.jobik.shkiper.database.models.Note
 import com.jobik.shkiper.helpers.IntentHelper
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 import com.jobik.shkiper.ui.theme.CustomThemeStyle
 import com.jobik.shkiper.ui.theme.ShkiperTheme
 import com.jobik.shkiper.util.ThemeUtil
@@ -35,7 +36,10 @@ class ShareReceiverActivity : AppCompatActivity() {
     private var receivedText: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
+        actionBar?.hide()
+
         setupActivity()
         ThemeUtil.restoreSavedTheme(this)
         setContent {
@@ -46,7 +50,7 @@ class ShareReceiverActivity : AppCompatActivity() {
                 Box(
                     Modifier
                         .fillMaxSize()
-                        .background(CustomTheme.colors.mainBackground)
+                        .background(AppTheme.colors.background)
                 ) {
                     NoteSelectionScreen {
                         handleSelectNote(note = it)

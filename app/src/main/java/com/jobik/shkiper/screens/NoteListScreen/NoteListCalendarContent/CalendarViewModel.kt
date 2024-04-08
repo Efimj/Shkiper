@@ -16,7 +16,8 @@ import com.jobik.shkiper.database.models.RepeatMode
 import com.jobik.shkiper.helpers.DateHelper
 import com.jobik.shkiper.helpers.DateHelper.Companion.isLocalDateInRange
 import com.jobik.shkiper.helpers.DateHelper.Companion.sortReminders
-import com.jobik.shkiper.navigation.AppScreens
+import com.jobik.shkiper.navigation.NavigationHelpers.Companion.navigateToSecondary
+import com.jobik.shkiper.navigation.Route
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -151,10 +152,8 @@ class CalendarViewModel @Inject constructor(
     }
 
     fun clickOnNote(note: Note, currentRoute: String, navController: NavController) {
-        if (currentRoute.substringBefore("/") != AppScreens.Note.route.substringBefore("/")) {
-            navController.navigate(AppScreens.Note.noteId(note._id.toHexString())) {
-                launchSingleTop = true
-            }
+        if (currentRoute.substringBefore("/") != Route.Note.route.substringBefore("/")) {
+            navController.navigateToSecondary(Route.Note.noteId(note._id.toHexString()))
         }
     }
 

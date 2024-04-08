@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
@@ -18,13 +19,13 @@ import com.jobik.shkiper.SharedPreferencesKeys
 import com.jobik.shkiper.SharedPreferencesKeys.OnboardingFinishedData
 import com.jobik.shkiper.database.models.NotePosition
 import com.jobik.shkiper.services.localization.LocaleHelper
-import com.jobik.shkiper.navigation.AppScreens
+import com.jobik.shkiper.navigation.Route
 import com.jobik.shkiper.services.billing_service.BillingService
 import com.jobik.shkiper.services.in_app_updates_service.InAppUpdatesService
 import com.jobik.shkiper.services.review_service.ReviewService
 import com.jobik.shkiper.screens.AppLayout.AppLayout
 import com.jobik.shkiper.ui.components.modals.OfferWriteReview
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 import com.jobik.shkiper.ui.theme.CustomThemeStyle
 import com.jobik.shkiper.ui.theme.ShkiperTheme
 import com.jobik.shkiper.util.ThemeUtil
@@ -43,7 +44,9 @@ class MainActivity : ComponentActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
+        actionBar?.hide()
 
         // Billing APIs are all handled in the this lifecycle observer.
         billingClientLifecycle = (application as NotepadApplication).billingClientLifecycle
@@ -64,7 +67,7 @@ class MainActivity : ComponentActivity() {
                 Box(
                     Modifier
                         .fillMaxSize()
-                        .background(CustomTheme.colors.mainBackground)
+                        .background(AppTheme.colors.background)
                 ) {
                     AppLayout(startDestination)
                 }
@@ -99,20 +102,20 @@ class MainActivity : ComponentActivity() {
         val route = getNotificationRoute()
         if (route != null)
             return route
-        return getOnboardingRoute(applicationContext) ?: AppScreens.NoteList.notePosition(NotePosition.MAIN.name)
+        return getOnboardingRoute(applicationContext) ?: Route.NoteList.notePosition(NotePosition.MAIN.name)
     }
 
     private fun getOnboardingRoute(context: Context): String? {
         val sharedPreferences =
             context.getSharedPreferences(SharedPreferencesKeys.ApplicationStorageName, Context.MODE_PRIVATE)
         val isOnboardingPageFinished = sharedPreferences.getString(SharedPreferencesKeys.OnboardingPageFinishedData, "")
-        return if (isOnboardingPageFinished == OnboardingFinishedData) null else AppScreens.Onboarding.route
+        return if (isOnboardingPageFinished == OnboardingFinishedData) null else Route.Onboarding.route
     }
 
     private fun getNotificationRoute(): String? {
         // Retrieve the extras from the Intent
         val extras = intent.extras ?: return null
         val noteId = extras.getString(SharedPreferencesKeys.NoteIdExtra, null) ?: return null
-        return AppScreens.Note.noteId(noteId)
+        return Route.Note.noteId(noteId)
     }
 }

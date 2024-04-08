@@ -1,7 +1,7 @@
 package com.jobik.shkiper.screens.NoteListScreen.NoteListScreenContent
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.animation.core.*
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -10,19 +10,16 @@ import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridState
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Description
 import androidx.compose.material.icons.outlined.Event
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
-import androidx.compose.ui.input.nestedscroll.NestedScrollSource
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -30,20 +27,22 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.jobik.shkiper.R
-import com.jobik.shkiper.screens.AppLayout.NavigationBar.AppNavigationBarState
 import com.jobik.shkiper.ui.components.buttons.HashtagButton
 import com.jobik.shkiper.ui.components.cards.NoteCard
 import com.jobik.shkiper.ui.components.fields.SearchBar
 import com.jobik.shkiper.ui.components.fields.SearchBarActionButton
-import com.jobik.shkiper.ui.components.fields.SearchBarHeight
+import com.jobik.shkiper.ui.components.fields.getSearchBarHeight
 import com.jobik.shkiper.ui.components.layouts.BannerList
 import com.jobik.shkiper.ui.components.layouts.LazyGridNotes
 import com.jobik.shkiper.ui.components.layouts.ScreenContentIfNoData
 import com.jobik.shkiper.ui.components.modals.CreateReminderDialog
 import com.jobik.shkiper.ui.components.modals.ReminderDialogProperties
-import com.jobik.shkiper.ui.helpers.Keyboard
+import com.jobik.shkiper.ui.helpers.bottomWindowInsetsPadding
+import com.jobik.shkiper.ui.helpers.endWindowInsetsPadding
 import com.jobik.shkiper.ui.helpers.rememberNextReminder
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.helpers.startWindowInsetsPadding
+import com.jobik.shkiper.ui.modifiers.scrollConnectionToProvideVisibility
+import com.jobik.shkiper.ui.theme.AppTheme
 import com.jobik.shkiper.viewmodels.NotesViewModel
 
 @Composable
@@ -52,35 +51,16 @@ fun NoteListScreenContent(
     viewModel: NotesViewModel,
     onSlideNext: () -> Unit,
 ) {
-    val actionBarHeight = 56.dp
-
-    val searchBarOffsetHeightPx = remember { mutableFloatStateOf(0f) }
-    val searchBarHeightPx = with(LocalDensity.current) { SearchBarHeight.dp.roundToPx().toFloat() }
     val lazyGridNotes = rememberLazyStaggeredGridState()
-
-    val nestedScrollConnection = remember {
-        object : NestedScrollConnection {
-            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-                val delta = available.y
-                val newOffset = searchBarOffsetHeightPx.floatValue + delta
-                if (lazyGridNotes.canScrollForward) searchBarOffsetHeightPx.floatValue =
-                    newOffset.coerceIn(-searchBarHeightPx, 0f)
-                return Offset.Zero
-            }
-        }
-    }
-
-    val actionBarHeightPx = with(LocalDensity.current) { actionBarHeight.roundToPx().toFloat() }
-    val offsetX = remember { Animatable(-actionBarHeightPx) }
+    val isSearchBarVisible = remember { mutableStateOf(true) }
 
     BackHandlerIfSelectedNotes(viewModel)
-    IfSelectedNotesChanged(viewModel, offsetX, actionBarHeightPx)
-    IfScrollingImpossible(lazyGridNotes, searchBarOffsetHeightPx)
 
     Box(
-        Modifier
+        modifier = Modifier
             .fillMaxSize()
-            .nestedScroll(nestedScrollConnection)
+            .background(AppTheme.colors.background)
+            .scrollConnectionToProvideVisibility(visible = isSearchBarVisible)
     ) {
         if (viewModel.screenState.value.isNotesInitialized && viewModel.screenState.value.notes.isEmpty())
             ScreenContentIfNoData(title = R.string.EmptyNotesPageHeader, icon = Icons.Outlined.Description)
@@ -88,8 +68,7 @@ fun NoteListScreenContent(
             NotesListContent(viewModel, lazyGridNotes, navController)
         Box(modifier = Modifier) {
             SearchBar(
-                searchBarOffsetHeightPx = searchBarOffsetHeightPx.floatValue,
-                isVisible = viewModel.screenState.value.selectedNotes.isEmpty(),
+                isVisible = viewModel.screenState.value.selectedNotes.isEmpty() && isSearchBarVisible.value,
                 value = viewModel.screenState.value.searchText,
                 actionButton = SearchBarActionButton(
                     icon = Icons.Outlined.Event,
@@ -98,49 +77,15 @@ fun NoteListScreenContent(
                 ),
                 onChange = viewModel::changeSearchText,
             )
-            NoteListScreenActionBar(actionBarHeight, offsetX, viewModel)
+            NoteListScreenActionBar(
+                isVisible = viewModel.screenState.value.selectedNotes.isNotEmpty(),
+                notesViewModel = viewModel
+            )
         }
     }
 
     NoteListScreenReminderCheck(viewModel)
     CreateReminderContent(viewModel)
-}
-
-@Composable
-private fun IfScrollingImpossible(
-    lazyGridNotes: LazyStaggeredGridState,
-    searchBarOffsetHeightPx: MutableState<Float>
-) {
-    /**
-     * LaunchedEffect for cases when it is impossible to scroll the list.
-     */
-    LaunchedEffect(lazyGridNotes.canScrollForward, lazyGridNotes.canScrollBackward) {
-        if (!lazyGridNotes.canScrollForward && !lazyGridNotes.canScrollBackward) {
-            searchBarOffsetHeightPx.value = 0f
-        }
-    }
-}
-
-@Composable
-private fun IfSelectedNotesChanged(
-    notesViewModel: NotesViewModel,
-    offsetX: Animatable<Float, AnimationVector1D>,
-    actionBarHeightPx: Float
-) {
-    /**
-     * LaunchedEffect for cases when the number of selected notes changes.
-     */
-    LaunchedEffect(notesViewModel.screenState.value.selectedNotes) {
-        if (notesViewModel.screenState.value.selectedNotes.isEmpty()) {
-            offsetX.animateTo(
-                targetValue = -actionBarHeightPx, animationSpec = tween(durationMillis = 200)
-            )
-        } else {
-            offsetX.animateTo(
-                targetValue = 0f, animationSpec = tween(durationMillis = 200)
-            )
-        }
-    }
 }
 
 @Composable
@@ -169,7 +114,12 @@ private fun NotesListContent(
         remember(notesViewModel.screenState.value.notes) { notesViewModel.screenState.value.notes.filterNot { it.isPinned } }
 
     LazyGridNotes(
-        contentPadding = PaddingValues(10.dp, 70.dp, 10.dp, 80.dp),
+        contentPadding = PaddingValues(
+            start = 10.dp + startWindowInsetsPadding(),
+            top = getSearchBarHeight() + 10.dp,
+            end = 10.dp + endWindowInsetsPadding(),
+            bottom = 80.dp + bottomWindowInsetsPadding()
+        ),
         modifier = Modifier
             .fillMaxSize()
             .testTag("notes_list"),
@@ -185,7 +135,8 @@ private fun NotesListContent(
                         .wrapContentSize(unbounded = true)
                         .width(LocalConfiguration.current.screenWidthDp.dp),
                     state = rememberLazyListState(),
-                    contentPadding = PaddingValues(10.dp, 0.dp, 10.dp, 0.dp)
+                    contentPadding = PaddingValues(10.dp, 0.dp, 10.dp, 0.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     items(items = notesViewModel.screenState.value.hashtags.toList()) { item ->
                         HashtagButton(item, item == notesViewModel.screenState.value.currentHashtag) {
@@ -201,8 +152,8 @@ private fun NotesListContent(
                 Column {
                     Text(
                         stringResource(R.string.Pinned),
-                        color = CustomTheme.colors.textSecondary,
-                        style = MaterialTheme.typography.body1.copy(fontSize = 17.sp),
+                        color = AppTheme.colors.textSecondary,
+                        style = MaterialTheme.typography.bodyLarge,
                         modifier = Modifier.padding(horizontal = 10.dp)
                     )
                 }
@@ -225,8 +176,8 @@ private fun NotesListContent(
             item(span = StaggeredGridItemSpan.FullLine) {
                 Text(
                     stringResource(R.string.Other),
-                    color = CustomTheme.colors.textSecondary,
-                    style = MaterialTheme.typography.body1.copy(fontSize = 17.sp),
+                    color = AppTheme.colors.textSecondary,
+                    style = MaterialTheme.typography.bodyLarge,
                     modifier = Modifier.padding(horizontal = 10.dp)
                 )
             }

@@ -175,20 +175,16 @@ class NoteViewModel @Inject constructor(
             it.linkPreviewEnabled = newState
         }
 
-        if (newState) {
-            runFetchingLinksMetaData()
-        } else {
-            disableLinkPreviews()
-        }
+        refreshLinks()
     }
 
-    private fun disableLinkPreviews() {
+    private fun refreshLinks() {
         linkRefreshTimer?.cancel()
         allLinksMetaData = emptySet()
+        runFetchingLinksMetaData()
     }
 
     fun runFetchingLinksMetaData() {
-        if (_screenState.value.linkPreviewEnabled.not()) return
         if (linkRefreshTimer == null) {
             fetchLinkMetaData()
             linkRefreshTimer?.cancel()
@@ -205,31 +201,43 @@ class NoteViewModel @Inject constructor(
     }
 
     private fun fetchLinkMetaData() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val richTextState = RichTextState()
-            richTextState.setHtml(_screenState.value.noteBody)
-            val links = LinkHelper().findLinks(richTextState.toMarkdown())
+        if (_screenState.value.linkPreviewEnabled) {
+            viewModelScope.launch(Dispatchers.IO) {
+                val richTextState = RichTextState()
+                richTextState.setHtml(_screenState.value.noteBody)
+                val links = LinkHelper().findLinks(richTextState.toMarkdown())
 
-            allLinksMetaData = allLinksMetaData.filter { it.link in links }.toSet()
+                allLinksMetaData = allLinksMetaData.filter { it.link in links }.toSet()
 
-            val newLinkData = mutableListOf<LinkHelper.LinkPreview>()
-            val deferredList = mutableListOf<Deferred<LinkHelper.LinkPreview>>()
+                val newLinkData = mutableListOf<LinkHelper.LinkPreview>()
+                val deferredList = mutableListOf<Deferred<LinkHelper.LinkPreview>>()
 
-            for (link in links) {
-                if (allLinksMetaData.any { it.link == link }) continue
-                val deferred = async(Dispatchers.IO) {
-                    LinkHelper().getOpenGraphData(link)
+                for (link in links) {
+                    if (allLinksMetaData.any { it.link == link }) continue
+                    val deferred = async(Dispatchers.IO) {
+                        LinkHelper().getOpenGraphData(link)
+                    }
+                    deferredList.add(deferred)
                 }
-                deferredList.add(deferred)
-            }
 
-            deferredList.awaitAll().forEach { result ->
-                newLinkData.add(result)
-            }
+                deferredList.awaitAll().forEach { result ->
+                    newLinkData.add(result)
+                }
 
-            allLinksMetaData = allLinksMetaData.plus(newLinkData)
-            _screenState.value = _screenState.value.copy(linksLoading = false)
+                allLinksMetaData = allLinksMetaData.plus(newLinkData)
+//                _screenState.value = _screenState.value.copy(linksLoading = false)
+            }
+        } else {
+            viewModelScope.launch(Dispatchers.IO) {
+                val richTextState = RichTextState()
+                richTextState.setHtml(_screenState.value.noteBody)
+                val links = LinkHelper().findLinks(richTextState.toMarkdown())
+
+                allLinksMetaData =
+                    links.map { link -> LinkHelper.LinkPreview(link = link, description = link) }.toSet()
+            }
         }
+        _screenState.value = _screenState.value.copy(linksLoading = false)
     }
 
     fun getCorrectLinks(): Set<LinkHelper.LinkPreview> {

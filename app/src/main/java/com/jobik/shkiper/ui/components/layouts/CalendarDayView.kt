@@ -19,7 +19,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 import com.kizitonwose.calendar.core.CalendarDay
 import com.kizitonwose.calendar.core.DayPosition
 import com.kizitonwose.calendar.core.WeekDay
@@ -33,8 +33,8 @@ fun CalendarDayView(day: CalendarDay, currentDate: LocalDate, onClick: (Calendar
     val borderCornerShape = RoundedCornerShape(12.dp)
 
     val targetBorderColorValue = when {
-        currentDate == day.date -> CustomTheme.colors.active
-        day.date == dateNow -> CustomTheme.colors.stroke
+        currentDate == day.date -> AppTheme.colors.primary
+        day.date == dateNow -> AppTheme.colors.border
         else -> Color.Transparent
     }
     val borderColor by animateColorAsState(targetValue = targetBorderColorValue, label = "borderColor")
@@ -61,8 +61,8 @@ fun CalendarDayView(day: CalendarDay, currentDate: LocalDate, onClick: (Calendar
                 text = day.date.dayOfMonth.toString(),
                 style = MaterialTheme.typography.body1,
                 color =
-                if (isDateCurrentOrFuture) CustomTheme.colors.text
-                else CustomTheme.colors.textSecondary,
+                if (isDateCurrentOrFuture) AppTheme.colors.text
+                else AppTheme.colors.textSecondary,
             )
         }
 }
@@ -137,27 +137,27 @@ private fun CalendarDayContent(
     val shape = RoundedCornerShape(12.dp)
 
     val targetContentColorValue = when {
-        isSelected -> CustomTheme.colors.textOnActive
-        enabled -> CustomTheme.colors.text
-        else -> CustomTheme.colors.textSecondary
+        isSelected -> AppTheme.colors.onPrimary
+        enabled -> AppTheme.colors.text
+        else -> AppTheme.colors.textSecondary
     }
     val contentColor by animateColorAsState(targetValue = targetContentColorValue, label = "contentColor")
 
     val targetBackgroundColorValue = when {
-        isSelected -> CustomTheme.colors.active
+        isSelected -> AppTheme.colors.primary
         else -> Color.Transparent
     }
     val backgroundColor by animateColorAsState(targetValue = targetBackgroundColorValue, label = "backgroundColor")
 
     val targetBorderColorValue = when {
-        isSelected -> CustomTheme.colors.active
-        isToday -> CustomTheme.colors.stroke
+        isSelected -> AppTheme.colors.primary
+        isToday -> AppTheme.colors.border
         else -> Color.Transparent
     }
     val borderColor by animateColorAsState(targetValue = targetBorderColorValue, label = "borderColor")
 
     val boxBackground by animateColorAsState(
-        targetValue = if (rangeStyle == null) Color.Transparent else CustomTheme.colors.active.copy(
+        targetValue = if (rangeStyle == null) Color.Transparent else AppTheme.colors.primary.copy(
             alpha = .15f
         ), label = "borderColor"
     )
@@ -208,7 +208,7 @@ private fun CalendarDayContent(
                     Box(
                         modifier = Modifier
                             .size(6.dp)
-                            .background(CustomTheme.colors.active, CircleShape)
+                            .background(AppTheme.colors.primary, CircleShape)
                     )
                 }
             }

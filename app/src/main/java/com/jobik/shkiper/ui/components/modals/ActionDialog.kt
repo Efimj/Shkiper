@@ -2,9 +2,7 @@ package com.jobik.shkiper.ui.components.modals
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.*
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -17,7 +15,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.jobik.shkiper.ui.components.buttons.ButtonStyle
 import com.jobik.shkiper.ui.components.buttons.CustomButton
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 
 @Composable
 fun ActionDialog(
@@ -32,8 +30,8 @@ fun ActionDialog(
     Dialog(onGoBack, dialogProperties) {
         Column(
             Modifier
-                .clip(CustomTheme.shapes.medium)
-                .background(CustomTheme.colors.secondaryBackground)
+                .clip(AppTheme.shapes.medium)
+                .background(AppTheme.colors.container)
                 .padding(15.dp)
         ) {
             Row(
@@ -45,15 +43,15 @@ fun ActionDialog(
                     Icon(
                         imageVector = icon,
                         contentDescription = "",
-                        tint = CustomTheme.colors.textSecondary,
+                        tint = AppTheme.colors.textSecondary,
                         modifier = Modifier.size(30.dp)
                     )
                     Spacer(Modifier.width(15.dp))
                 }
                 Text(
-                    color = CustomTheme.colors.text,
+                    color = AppTheme.colors.text,
                     text = title,
-                    style = MaterialTheme.typography.h6,
+                    style = MaterialTheme.typography.titleMedium,
                     overflow = TextOverflow.Ellipsis
                 )
             }

@@ -3,9 +3,7 @@ package com.jobik.shkiper.ui.components.cards
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -22,26 +20,21 @@ import com.jobik.shkiper.services.statistics_service.StatisticsItem
 import com.jobik.shkiper.ui.helpers.MultipleEventsCutter
 import com.jobik.shkiper.ui.helpers.get
 import com.jobik.shkiper.ui.modifiers.bounceClick
-import com.jobik.shkiper.ui.theme.CustomTheme
+import com.jobik.shkiper.ui.theme.AppTheme
 
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun StatisticsCard(statistic: StatisticsItem, onClick: () -> Unit) {
-    val multipleEventsCutter = remember { MultipleEventsCutter.get() }
-
     Card(
         modifier = Modifier
             .height(130.dp)
             .bounceClick()
             .fillMaxWidth()
             .clip(RoundedCornerShape(15.dp))
-            .clickable(onClick = { multipleEventsCutter.processEvent { onClick() } }),
-        elevation = 0.dp,
+            .clickable(onClick = onClick),
         shape = RoundedCornerShape(15.dp),
-        //border = BorderStroke(1.dp, CustomTheme.colors.stroke),
-        backgroundColor = CustomTheme.colors.secondaryBackground,
-        contentColor = CustomTheme.colors.text,
+        colors = CardDefaults.cardColors(containerColor = AppTheme.colors.container, contentColor = AppTheme.colors.text)
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -61,16 +54,16 @@ fun StatisticsCard(statistic: StatisticsItem, onClick: () -> Unit) {
             ) {
                 Text(
                     statistic.getStringValue(),
-                    color = CustomTheme.colors.text,
-                    style = MaterialTheme.typography.h6.copy(fontSize = 18.sp),
+                    color = AppTheme.colors.text,
+                    style = MaterialTheme.typography.titleMedium.copy(fontSize = 18.sp),
                     textAlign = TextAlign.Center,
                     modifier = Modifier.basicMarquee().padding(horizontal = 12.dp),
                     maxLines = 1,
                 )
                 Text(
                     stringResource(statistic.title),
-                    color = CustomTheme.colors.textSecondary,
-                    style = MaterialTheme.typography.body1.copy(fontSize = 14.sp),
+                    color = AppTheme.colors.textSecondary,
+                    style = MaterialTheme.typography.bodyMedium.copy(fontSize = 14.sp),
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth().basicMarquee().padding(horizontal = 12.dp),
                     maxLines = 1,
