@@ -88,15 +88,12 @@ fun LinkCard(
             horizontalArrangement = Arrangement.spacedBy(20.dp)
         ) {
             Image(
+                modifier = Modifier.height(60.dp),
                 painter = painterResource(if (ThemeUtil.isDarkMode.value == true) R.drawable.github_dark else R.drawable.github_light),
-                contentDescription = stringResource(
-                    id = R.string.Image
-                ),
-                contentScale = ContentScale.FillHeight,
-                modifier = Modifier.height(80.dp)
+                contentDescription = stringResource(id = R.string.Image),
+                contentScale = ContentScale.Fit,
             )
             Column(
-                modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.spacedBy(3.dp, alignment = Alignment.CenterVertically)
             ) {
                 Text(

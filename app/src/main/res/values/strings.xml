@@ -211,4 +211,6 @@
     <string name="Selected">Selected</string>
     <string name="EmptyTagsTitle">Tags not created yet</string>
 
+    <string name="OtherMyApps">Other my apps</string>
+
 </resources>

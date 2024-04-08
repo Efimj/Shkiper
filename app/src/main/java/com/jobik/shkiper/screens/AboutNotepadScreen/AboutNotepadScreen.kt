@@ -1,14 +1,21 @@
 package com.jobik.shkiper.screens.AboutNotepadScreen
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -16,7 +23,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.jobik.shkiper.BuildConfig
 import com.jobik.shkiper.R
 import com.jobik.shkiper.helpers.IntentHelper
@@ -26,9 +32,10 @@ import com.jobik.shkiper.ui.components.cards.UserCard
 import com.jobik.shkiper.ui.components.cards.UserCardLink
 import com.jobik.shkiper.ui.components.layouts.ScreenWrapper
 import com.jobik.shkiper.ui.helpers.allWindowInsetsPadding
+import com.jobik.shkiper.ui.modifiers.bounceClick
 import com.jobik.shkiper.ui.theme.AppTheme
 
-
+@SuppressLint("Range")
 @Composable
 fun AboutNotepadScreen() {
     val context = LocalContext.current
@@ -69,7 +76,7 @@ fun AboutNotepadScreen() {
                 Text(
                     text = stringResource(R.string.AboutAppDescription),
                     color = AppTheme.colors.textSecondary,
-                    style = MaterialTheme.typography.bodyMedium,
+                    style = MaterialTheme.typography.bodyLarge,
                     overflow = TextOverflow.Ellipsis,
                     textAlign = TextAlign.Start,
                 )
@@ -118,13 +125,47 @@ fun AboutNotepadScreen() {
                 }
             }
         }
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(10.dp))
 
         val shkiperLink = stringResource(id = R.string.shkiper_github_link)
         val onLinkCopiedText = stringResource(R.string.LinkCopied)
         val linkTextLabel = stringResource(R.string.Link)
-        LinkCard(shkiperLink, linkTextLabel, onLinkCopiedText)
+        LinkCard(link = shkiperLink, linkTextLabel = linkTextLabel, onLinkCopiedText = onLinkCopiedText)
 
+        Spacer(modifier = Modifier.height(16.dp))
+        Column {
+            Text(
+                text = stringResource(R.string.OtherMyApps),
+                color = AppTheme.colors.textSecondary,
+                style = MaterialTheme.typography.titleMedium,
+                overflow = TextOverflow.Ellipsis,
+                textAlign = TextAlign.Center,
+                fontWeight = FontWeight.SemiBold,
+                maxLines = 1,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+            LazyRow(
+                modifier = Modifier.wrapContentSize(unbounded = true)
+                    .width(LocalConfiguration.current.screenWidthDp.dp),
+                contentPadding = PaddingValues(start = 20.dp, end = 20.dp),
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                item {
+                    val link = stringResource(R.string.GameOfLifeLink)
+                    Card(
+                        modifier = Modifier.height(200.dp).bounceClick()
+                            .clickable { IntentHelper().openBrowserIntent(context = context, link = link) },
+                        colors = CardDefaults.cardColors(containerColor = Color.Transparent)
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.game_of_life_banner),
+                            contentDescription = null,
+                            contentScale = ContentScale.Fit
+                        )
+                    }
+                }
+            }
+        }
         Spacer(modifier = Modifier.height(16.dp))
         Column {
             Text(

@@ -6,6 +6,7 @@
     <string name="FreepikLink" translatable="false">https://www.flaticon.com/authors/freepik</string>
     <string name="RakibHassanRahimLink" translatable="false">https://www.flaticon.com/authors/rakib-hassan-rahim</string>
     <string name="StickersLink" translatable="false">https://www.flaticon.com/authors/stickers?type=sticker</string>
+    <string name="GameOfLifeLink" translatable="false">https://play.google.com/store/apps/details?id=com.jobik.gameoflife</string>
 
     <!--    Languages   -->
     <string name="en" translatable="false">English</string>
