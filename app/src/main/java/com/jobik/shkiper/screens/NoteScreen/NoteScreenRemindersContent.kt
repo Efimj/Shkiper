@@ -15,6 +15,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -57,7 +58,7 @@ fun NoteScreenRemindersContent(noteViewModel: NoteViewModel) {
     val listVerticalWithToolBarPadding = 80.dp
 
     val topListPaddingValues =
-        if (selectedReminderIds.value.isEmpty()) listVerticalPadding + headerInsetsDp else listVerticalWithToolBarPadding + headerInsetsDp
+        if (selectedReminderIds.value.isEmpty()) listVerticalPadding else listVerticalWithToolBarPadding
     val topPadding by animateDpAsState(targetValue = topListPaddingValues, label = "topPadding")
 
     val bottomListPaddingValues =
@@ -65,51 +66,62 @@ fun NoteScreenRemindersContent(noteViewModel: NoteViewModel) {
     val bottomPadding by animateDpAsState(targetValue = bottomListPaddingValues, label = "bottomPadding")
 
     if (noteViewModel.screenState.value.isReminderMenuOpen) {
+        val topInsets = WindowInsets.systemBars.only(WindowInsetsSides.Top)
+        val bottomInsets = WindowInsets.systemBars.only(WindowInsetsSides.Bottom)
+
         ModalBottomSheet(
             sheetState = reminderSheetState,
-            onDismissRequest = { noteViewModel.switchReminderDialogShow() },
-            containerColor = AppTheme.colors.background,
-            contentColor = AppTheme.colors.text,
             dragHandle = null,
-            windowInsets = WindowInsets.ime
+            containerColor = Color.Transparent,
+            contentColor = AppTheme.colors.text,
+            windowInsets = WindowInsets.ime,
+            onDismissRequest = { noteViewModel.switchReminderDialogShow() },
         ) {
-            Box {
-                AnimatedContent(
-                    targetState = noteViewModel.screenState.value.reminders.isEmpty(),
-                    transitionSpec = {
-                        if (initialState) {
-                            (slideInVertically { height -> height } + fadeIn()).togetherWith(slideOutVertically { height -> -height } + fadeOut())
+            Spacer(modifier = Modifier.windowInsetsPadding(topInsets))
+            Surface(
+                shape = BottomSheetDefaults.ExpandedShape,
+                contentColor = AppTheme.colors.text,
+                color = AppTheme.colors.background,
+                tonalElevation = BottomSheetDefaults.Elevation,
+            ) {
+                Box {
+                    AnimatedContent(
+                        targetState = noteViewModel.screenState.value.reminders.isEmpty(),
+                        transitionSpec = {
+                            if (initialState) {
+                                (slideInVertically { height -> height } + fadeIn()).togetherWith(slideOutVertically { height -> -height } + fadeOut())
+                            } else {
+                                (slideInVertically { height -> -height } + fadeIn()).togetherWith(slideOutVertically { height -> height } + fadeOut())
+                            }.using(
+                                SizeTransform(clip = false)
+                            )
+                        }, label = ""
+                    ) {
+                        if (it) {
+                            EmptyRemindersContent(modifier = Modifier.windowInsetsPadding(verticalInsets))
                         } else {
-                            (slideInVertically { height -> -height } + fadeIn()).togetherWith(slideOutVertically { height -> height } + fadeOut())
-                        }.using(
-                            SizeTransform(clip = false)
-                        )
-                    }, label = ""
-                ) {
-                    if (it) {
-                        EmptyRemindersContent(modifier = Modifier.windowInsetsPadding(verticalInsets))
-                    } else {
-                        RemindersList(
-                            topPadding = topPadding,
-                            bottomPadding = bottomPadding,
-                            noteViewModel = noteViewModel,
-                            currentReminder = currentReminder,
-                            selectedReminderIds = selectedReminderIds,
-                            openCreateReminderDialog = openCreateReminderDialog
-                        )
+                            RemindersList(
+                                topPadding = topPadding,
+                                bottomPadding = bottomPadding,
+                                noteViewModel = noteViewModel,
+                                currentReminder = currentReminder,
+                                selectedReminderIds = selectedReminderIds,
+                                openCreateReminderDialog = openCreateReminderDialog
+                            )
+                        }
                     }
-                }
-                Header(
-                    modifier = Modifier.windowInsetsPadding(headerInsets),
-                    noteViewModel = noteViewModel,
-                    selectedReminderIds = selectedReminderIds
-                )
-                BottomBar(
-                    modifier = Modifier.windowInsetsPadding(bottomInsets),
-                    isHidden = selectedReminderIds.value.isNotEmpty()
-                ) {
-                    currentReminder.value = null
-                    openCreateReminderDialog.value = true
+                    Header(
+                        modifier = Modifier,
+                        noteViewModel = noteViewModel,
+                        selectedReminderIds = selectedReminderIds
+                    )
+                    BottomBar(
+                        modifier = Modifier.windowInsetsPadding(bottomInsets),
+                        isHidden = selectedReminderIds.value.isNotEmpty()
+                    ) {
+                        currentReminder.value = null
+                        openCreateReminderDialog.value = true
+                    }
                 }
             }
         }
