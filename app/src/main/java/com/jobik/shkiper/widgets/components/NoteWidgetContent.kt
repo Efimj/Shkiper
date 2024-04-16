@@ -1,6 +1,7 @@
 package com.jobik.shkiper.widgets.components
 
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -41,26 +42,28 @@ fun NoteWidgetContent(prefs: Preferences) {
     val updatedAt = prefs[noteLastUpdate].orEmpty()
     val updatedDateString = getLocalizedDateTime(updatedAt)
 
+    val contentPadding = 12.dp
+
     Box(
         modifier = GlanceModifier
             .background(ImageProvider(R.drawable.widget_background))
-            .cornerRadius(15.dp)
+            .cornerRadius(12.dp)
             .appWidgetBackground()
     ) {
         LazyColumn(modifier = GlanceModifier.fillMaxWidth(), horizontalAlignment = Alignment.Start) {
             item {
-                Spacer(modifier = GlanceModifier.fillMaxWidth().height(16.dp))
+                Spacer(modifier = GlanceModifier.fillMaxWidth().height(contentPadding))
             }
             if (noteHeader.isNotEmpty()) item {
                 Text(
                     text = noteHeader,
-                    modifier = GlanceModifier.openNote(noteId).fillMaxWidth().padding(horizontal = 16.dp),
+                    modifier = GlanceModifier.openNote(noteId).fillMaxWidth().padding(horizontal = contentPadding),
                     style = TextStyle(
                         color = ColorProvider(day = lightColors.text, night = darkColors.text),
                         fontFamily = FontFamily("Roboto"),
-                        fontSize = 20.sp,
+                        fontSize = MaterialTheme.typography.titleMedium.fontSize,
                         fontWeight = FontWeight.Medium,
-                        textAlign = TextAlign.Left
+                        textAlign = TextAlign.Start
                     )
                 )
             }
@@ -70,33 +73,33 @@ fun NoteWidgetContent(prefs: Preferences) {
             if (noteBody.isNotEmpty()) item {
                 Text(
                     text = noteBody,
-                    modifier = GlanceModifier.openNote(noteId).fillMaxWidth().padding(horizontal = 16.dp),
+                    modifier = GlanceModifier.openNote(noteId).fillMaxWidth().padding(horizontal = contentPadding),
                     style = TextStyle(
                         color = ColorProvider(day = lightColors.text, night = darkColors.text),
                         fontFamily = FontFamily("Roboto"),
-                        fontSize = 16.sp,
+                        fontSize = MaterialTheme.typography.bodyMedium.fontSize,
                         fontWeight = FontWeight.Normal,
-                        textAlign = TextAlign.Left
+                        textAlign = TextAlign.Start
                     )
                 )
             }
             if (noteBody.isNotEmpty() && updatedDateString != null) item {
                 Text(
                     text = updatedDateString.toString(),
-                    modifier = GlanceModifier.openNote(noteId).fillMaxWidth().padding(end = 16.dp)
+                    modifier = GlanceModifier.openNote(noteId).fillMaxWidth().padding(end = contentPadding)
                         .padding(top = 4.dp)
                         .fillMaxWidth(),
                     style = TextStyle(
                         color = ColorProvider(day = lightColors.textSecondary, night = darkColors.textSecondary),
                         fontFamily = FontFamily("Roboto"),
-                        fontSize = 14.sp,
+                        fontSize = MaterialTheme.typography.bodySmall.fontSize,
                         fontWeight = FontWeight.Normal,
-                        textAlign = TextAlign.Right
+                        textAlign = TextAlign.End
                     )
                 )
             }
             item {
-                Spacer(modifier = GlanceModifier.height(16.dp))
+                Spacer(modifier = GlanceModifier.height(contentPadding))
             }
         }
     }
