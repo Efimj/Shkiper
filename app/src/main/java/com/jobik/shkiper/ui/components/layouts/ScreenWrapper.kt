@@ -10,6 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.jobik.shkiper.ui.theme.AppTheme
 
+val ScreenWrapperContentMaxWidth = 500.dp
+
 @Composable
 fun ScreenWrapper(modifier: Modifier = Modifier, content: @Composable () -> Unit) {
     Column(
@@ -19,7 +21,7 @@ fun ScreenWrapper(modifier: Modifier = Modifier, content: @Composable () -> Unit
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Column(
-            modifier = modifier.widthIn(max = 500.dp),
+            modifier = modifier.widthIn(max = ScreenWrapperContentMaxWidth),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             content()

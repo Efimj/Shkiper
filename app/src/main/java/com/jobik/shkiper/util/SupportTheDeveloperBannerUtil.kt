@@ -8,10 +8,10 @@ import java.time.temporal.ChronoUnit
 
 @Keep
 object SupportTheDeveloperBannerUtil {
-    const val MonthsSpan = 3
+    const val DaysSpan = 15
 
     fun isBannerNeeded(context: Context): Boolean {
-        return ChronoUnit.MONTHS.between(getLastShowingDate(context), LocalDateTime.now()) >= MonthsSpan
+        return ChronoUnit.DAYS.between(getLastShowingDate(context), LocalDateTime.now()) >= DaysSpan
     }
 
     fun updateLastShowingDate(context: Context) {

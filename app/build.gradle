@@ -15,8 +15,8 @@ android {
         applicationId "com.jobik.shkiper"
         minSdk 27
         targetSdk 34
-        versionCode 65
-        versionName "1.8.1"
+        versionCode 66
+        versionName "1.8.3"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {

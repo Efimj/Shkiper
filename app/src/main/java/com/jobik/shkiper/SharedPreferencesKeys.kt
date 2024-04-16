@@ -15,6 +15,7 @@ object SharedPreferencesKeys {
     const val OnboardingFinishedData = "1"
     const val OnboardingPageFinishedData = "OnboardingPageFinishedData"
     const val CountOfferReview = "CountOfferReview"
+    const val LastDateReviewOffer = "LastDateReviewOffer"
     const val Localization = "Localization"
     const val Statistics = "Statistics"
     const val LastBannerSupportDeveloperShowingDate = "LastBannerSupportDeveloperShowingDate"

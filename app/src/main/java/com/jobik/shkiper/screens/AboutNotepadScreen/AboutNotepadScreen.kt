@@ -3,7 +3,6 @@ package com.jobik.shkiper.screens.AboutNotepadScreen
 import android.annotation.SuppressLint
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -15,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -133,7 +131,7 @@ fun AboutNotepadScreen() {
         LinkCard(link = shkiperLink, linkTextLabel = linkTextLabel, onLinkCopiedText = onLinkCopiedText)
 
         Spacer(modifier = Modifier.height(16.dp))
-        Column {
+        Column (modifier = Modifier.fillMaxWidth()){
             Text(
                 text = stringResource(R.string.OtherMyApps),
                 color = AppTheme.colors.textSecondary,
@@ -144,25 +142,24 @@ fun AboutNotepadScreen() {
                 maxLines = 1,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
-            LazyRow(
-                modifier = Modifier.wrapContentSize(unbounded = true)
-                    .width(LocalConfiguration.current.screenWidthDp.dp),
-                contentPadding = PaddingValues(start = 20.dp, end = 20.dp),
-                horizontalArrangement = Arrangement.spacedBy(10.dp)
+            Column(
+                modifier = Modifier
+                    .horizontalScroll(rememberScrollState()),
+                horizontalAlignment = Alignment.Start
             ) {
-                item {
-                    val link = stringResource(R.string.GameOfLifeLink)
-                    Card(
-                        modifier = Modifier.height(200.dp).bounceClick()
-                            .clickable { IntentHelper().openBrowserIntent(context = context, link = link) },
-                        colors = CardDefaults.cardColors(containerColor = Color.Transparent)
-                    ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.game_of_life_banner),
-                            contentDescription = null,
-                            contentScale = ContentScale.Fit
-                        )
-                    }
+                val link = stringResource(R.string.GameOfLifeLink)
+                Card(
+                    modifier = Modifier
+                        .height(160.dp)
+                        .bounceClick()
+                        .clickable { IntentHelper().openBrowserIntent(context = context, link = link) },
+                    colors = CardDefaults.cardColors(containerColor = Color.Transparent)
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.game_of_life_banner),
+                        contentDescription = null,
+                        contentScale = ContentScale.Fit
+                    )
                 }
             }
         }

@@ -31,11 +31,11 @@ fun BannerList(navController: NavController) {
             contentPadding = PaddingValues(10.dp, 0.dp, 10.dp, 0.dp)
         ) {
             item {
-                DonateBanner({
+                DonateBanner(onClick = {
                     SupportTheDeveloperBannerUtil.updateLastShowingDate(context)
                     navController.navigateToSecondary(Route.Purchases.route)
                     isBannerNeeded.value = false
-                }, {
+                }, onClose = {
                     SupportTheDeveloperBannerUtil.updateLastShowingDate(context)
                     isBannerNeeded.value = false
                 })
