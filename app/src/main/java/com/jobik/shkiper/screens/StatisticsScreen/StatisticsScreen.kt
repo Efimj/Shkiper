@@ -18,7 +18,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
@@ -29,9 +28,10 @@ import com.jobik.shkiper.R
 import com.jobik.shkiper.helpers.IntentHelper
 import com.jobik.shkiper.services.statistics_service.StatisticsItem
 import com.jobik.shkiper.services.statistics_service.StatisticsService
-import com.jobik.shkiper.ui.components.cards.SettingsItem
 import com.jobik.shkiper.ui.components.cards.StatisticsCard
 import com.jobik.shkiper.ui.components.layouts.ScreenWrapper
+import com.jobik.shkiper.ui.components.modals.BottomSheetAction
+import com.jobik.shkiper.ui.components.modals.BottomSheetActions
 import com.jobik.shkiper.ui.components.modals.StatisticsInformationDialog
 import com.jobik.shkiper.ui.helpers.allWindowInsetsPadding
 import com.jobik.shkiper.ui.helpers.bottomWindowInsetsPadding
@@ -40,9 +40,7 @@ import com.jobik.shkiper.ui.modifiers.bounceClick
 import com.jobik.shkiper.ui.theme.AppTheme
 import dev.shreyaspatil.capturable.Capturable
 import dev.shreyaspatil.capturable.controller.rememberCaptureController
-import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StatisticsScreen() {
     val context = LocalContext.current
@@ -50,7 +48,6 @@ fun StatisticsScreen() {
     val statistics = remember { StatisticsService(context).appStatistics.getStatisticsPreviews() }
     val openedStatistics = remember { mutableStateOf<StatisticsItem?>(null) }
     var showShareDialog by remember { mutableStateOf(false) }
-    val shareSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val captureController = rememberCaptureController()
 
     ScreenWrapper {
@@ -161,7 +158,9 @@ fun StatisticsScreen() {
                         shape = RoundedCornerShape(10.dp),
                     ) {
                         Row(
-                            modifier = Modifier.height(50.dp).padding(horizontal = 14.dp, vertical = 7.dp),
+                            modifier = Modifier
+                                .height(50.dp)
+                                .padding(horizontal = 14.dp, vertical = 7.dp),
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.Center
                         ) {
@@ -177,7 +176,8 @@ fun StatisticsScreen() {
                             Text(
                                 text = stringResource(R.string.Share),
                                 color = AppTheme.colors.onPrimary,
-                                style = MaterialTheme.typography.bodyMedium
+                                style = MaterialTheme.typography.bodyMedium,
+                                fontWeight = FontWeight.SemiBold
                             )
                         }
                     }
@@ -189,54 +189,27 @@ fun StatisticsScreen() {
     if (openedStatistics.value != null) {
         StatisticsInformationDialog(openedStatistics.value!!) { openedStatistics.value = null }
     }
-    val scope = rememberCoroutineScope()
+    val statisticsText = StatisticsService(context).appStatistics.getStatisticsText()
 
-    if (showShareDialog) {
-        val statisticsText = StatisticsService(context).appStatistics.getStatisticsText()
-
-        val topInsets = WindowInsets.systemBars.only(WindowInsetsSides.Top)
-        val bottomInsets = WindowInsets.systemBars.only(WindowInsetsSides.Bottom)
-
-        ModalBottomSheet(
-            sheetState = shareSheetState,
-            dragHandle = null,
-            containerColor = Color.Transparent,
-            contentColor = AppTheme.colors.text,
-            windowInsets = WindowInsets.ime,
-            onDismissRequest = { showShareDialog = !showShareDialog }) {
-            Spacer(modifier = Modifier.windowInsetsPadding(topInsets))
-            Surface(
-                shape = BottomSheetDefaults.ExpandedShape,
-                contentColor = AppTheme.colors.text,
-                color = AppTheme.colors.background,
-                tonalElevation = BottomSheetDefaults.Elevation,
-            ) {
-                Column(
-                    modifier = Modifier
-                        .verticalScroll(rememberScrollState())
-                        .windowInsetsPadding(bottomInsets)
-                        .padding(bottom = 10.dp)
-                ) {
-                    SettingsItem(
-                        icon = Icons.Outlined.ContentCopy,
-                        title = stringResource(R.string.ShareText),
-                        onClick = {
-                            scope.launch { shareSheetState.hide() }.invokeOnCompletion {
-                                showShareDialog = !showShareDialog
-                                IntentHelper().shareTextIntent(context, statisticsText)
-                            }
-                        })
-                    SettingsItem(
-                        icon = Icons.Outlined.Screenshot,
-                        title = stringResource(R.string.ShareImage),
-                        onClick = {
-                            scope.launch { shareSheetState.hide() }.invokeOnCompletion {
-                                showShareDialog = !showShareDialog
-                                captureController.capture()
-                            }
-                        })
-                }
-            }
-        }
+    BottomSheetActions(
+        isOpen = showShareDialog,
+        actions = listOf(
+            BottomSheetAction(
+                icon = Icons.Outlined.ContentCopy,
+                title = stringResource(R.string.ShareText),
+                action = {
+                    IntentHelper().shareTextIntent(context, statisticsText)
+                },
+            ),
+            BottomSheetAction(
+                icon = Icons.Outlined.Screenshot,
+                title = stringResource(R.string.ShareImage),
+                action = {
+                    captureController.capture()
+                },
+            ),
+        )
+    ) {
+        showShareDialog = false
     }
 }
