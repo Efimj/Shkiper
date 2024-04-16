@@ -7,40 +7,51 @@ import android.content.Intent
 import android.net.Uri
 import androidx.annotation.Keep
 import com.jobik.shkiper.SharedPreferencesKeys
-import com.jobik.shkiper.services.statistics_service.StatisticsService
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
-@Keep
+private const val CountDaysToShowReviewOffer = 12
+
 class ReviewService(val context: Context) {
     private val appId: String = context.packageName
-    private val countOfferReviewKey = SharedPreferencesKeys.CountOfferReview
     private val sharedPreferences =
         context.getSharedPreferences(SharedPreferencesKeys.ApplicationStorageName, Context.MODE_PRIVATE)
 
     fun needShowOfferReview(): Boolean {
-        val currentOpenAppDate = StatisticsService(context).appStatistics.statisticsData.firstOpenDate.value
-        val countReviewOffer = sharedPreferences.getInt(countOfferReviewKey, 0)
-
-        if (currentOpenAppDate == null) return false
-
-        val daysSinceFirstOpen = ChronoUnit.DAYS.between(currentOpenAppDate, LocalDate.now())
-
-        val result = when (countReviewOffer) {
-            0 -> daysSinceFirstOpen >= 5
-            1 -> daysSinceFirstOpen >= 55
-            2 -> daysSinceFirstOpen >= 145
-            else -> false
+        val lastOfferDate = getLastOfferDate()
+        val daysSinceFirstOpen = ChronoUnit.DAYS.between(lastOfferDate, LocalDate.now())
+        val needShowDialogue = daysSinceFirstOpen > CountDaysToShowReviewOffer
+        if (needShowDialogue) {
+            incrementCountOfferReview()
+            updateLastOfferReviewDate()
         }
-        if (result) incrementCountOfferReview()
-
-        return result
+        return needShowDialogue
     }
 
-    fun incrementCountOfferReview(count: Int = 1) {
-        val countReviewOffer = sharedPreferences.getInt(countOfferReviewKey, 0)
+    private fun getLastOfferDate(): LocalDate {
+        val lastOfferDate =
+            sharedPreferences.getString(SharedPreferencesKeys.LastDateReviewOffer, "")
+        if(lastOfferDate.isNullOrBlank()){
+            updateLastOfferReviewDate()
+        }
+        return try {
+            LocalDate.parse(lastOfferDate)
+        } catch (e: Exception) {
+            LocalDate.now()
+        }
+
+    }
+
+    private fun incrementCountOfferReview(count: Int = 1) {
+        val countReviewOffer = sharedPreferences.getInt(SharedPreferencesKeys.CountOfferReview, 0)
         val editor = sharedPreferences.edit()
-        editor.putInt(countOfferReviewKey, countReviewOffer + count)
+        editor.putInt(SharedPreferencesKeys.CountOfferReview, countReviewOffer + count)
+        editor.apply()
+    }
+
+    private fun updateLastOfferReviewDate(localDate: LocalDate = LocalDate.now()) {
+        val editor = sharedPreferences.edit()
+        editor.putString(SharedPreferencesKeys.LastDateReviewOffer, localDate.toString())
         editor.apply()
     }
 
@@ -52,6 +63,7 @@ class ReviewService(val context: Context) {
         }
     }
 
+    @Keep
     @SuppressLint("QueryPermissionsNeeded")
     private fun openAppRating() {
         // you can also use BuildConfig.APPLICATION_ID
@@ -97,6 +109,7 @@ class ReviewService(val context: Context) {
             openBrowserForRate()
     }
 
+    @Keep
     private fun openBrowserForRate() {
         val uri = Uri.parse("https://play.google.com/store/apps/details?id=${context.packageName}")
         val intent = Intent(
