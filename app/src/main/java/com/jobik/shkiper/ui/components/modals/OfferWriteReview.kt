@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -45,16 +46,17 @@ fun OfferWriteReview(
             Modifier.clip(RoundedCornerShape(15.dp)).background(AppTheme.colors.container)
         ) {
             Row(
-                modifier = Modifier.fillMaxWidth().height(210.dp).background(AppTheme.colors.background)
-                    .padding(vertical = 20.dp),
+                modifier = Modifier.fillMaxWidth().height(160.dp)
+                    .padding(top = 20.dp).padding(horizontal = 20.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
                 Image(
                     modifier = Modifier.fillMaxSize(),
-                    painter = painterResource(id = R.drawable.two_phones_preview),
+                    painter = painterResource(id = R.drawable.three_stars),
                     contentDescription = stringResource(R.string.Image),
-                    contentScale = ContentScale.Fit
+                    contentScale = ContentScale.Fit,
+                    colorFilter = ColorFilter.tint(AppTheme.colors.primary)
                 )
             }
             Column(
@@ -66,14 +68,14 @@ fun OfferWriteReview(
                     text = stringResource(R.string.OfferWriteReviewTitle),
                     color = AppTheme.colors.text,
                     style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier.padding(bottom = 4.dp)
+                    modifier = Modifier.padding(bottom = 6.dp)
                 )
                 Text(
                     text = stringResource(R.string.OfferWriteReviewDescription),
                     color = AppTheme.colors.textSecondary,
                     style = MaterialTheme.typography.bodyMedium,
                 )
-                Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(15.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center,
