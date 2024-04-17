@@ -52,7 +52,6 @@ fun NoteScreenRemindersContent(noteViewModel: NoteViewModel) {
     val verticalInsets = WindowInsets.systemBars.only(WindowInsetsSides.Vertical)
     val headerInsets = WindowInsets.systemBars.only(WindowInsetsSides.Top)
     val bottomInsets = WindowInsets.systemBars.only(WindowInsetsSides.Bottom)
-    val headerInsetsDp = headerInsets.asPaddingValues().calculateTopPadding()
     val bottomInsetsDp = bottomInsets.asPaddingValues().calculateBottomPadding()
     val listVerticalPadding = 10.dp
     val listVerticalWithToolBarPadding = 80.dp
@@ -145,7 +144,6 @@ private fun RemindersList(
     val lazyListState = rememberLazyListState()
 
     LazyColumn(
-        modifier = Modifier.windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Vertical)),
         state = lazyListState,
         contentPadding = PaddingValues(start = 20.dp, end = 20.dp, top = topPadding, bottom = bottomPadding),
         verticalArrangement = Arrangement.spacedBy(10.dp)
