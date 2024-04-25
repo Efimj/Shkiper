@@ -3,7 +3,7 @@
     Shkiper
 </h1>
 <div align="center"> 
- <img src="./assets/banner.png" />
+ <img src="./assets/banner.png" width="1920"/>
 </div> 
 
 ## Description
@@ -24,6 +24,7 @@ flexible repeat modes (daily, weekly, monthly, yearly) and don't forget importan
 - Back up your data or download it for quick transitions.
 - View application usage statistics, because it can be interesting.
 - Convenient reminders for important occasions.
+- Task calendar with all reminders and date range.
 - Create widgets for quick access and viewing.
 - Styling notes and text formatting.
 - Ability to share a note and statistics as an image.
@@ -42,6 +43,16 @@ flexible repeat modes (daily, weekly, monthly, yearly) and don't forget importan
 <p> 
     ⭐ Shkiper is still under development, if you have any questions or suggestions, please contact me! We value all of your feedback.
 </p>
-<p>    
-    ⭐ If you like the application, support its development by making a donation from within the app.
-</p>
+
+### Design & Screenshots
+
+<div align="center"> 
+   <img src="./assets/screenshots_mobile.png" width="1920" />
+</div>
+
+### Do you like this app? 💜
+
+Support it by joining __[stargazers](https://github.com/Efimj/Shkiper/stargazers)__ for this repository. ⭐ <br>
+
+<a href="https://www.buymeacoffee.com/efim" target="_blank">Also, support me
+with<img align="right"  src="https://cdn.buymeacoffee.com/buttons/v2/default-violet.png" alt="Buy Me A Coffee" height="41" width="174"></a>
