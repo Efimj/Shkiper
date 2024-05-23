@@ -21,10 +21,7 @@ import com.jobik.shkiper.database.models.Note
 import com.jobik.shkiper.screens.AppLayout.NavigationBar.AppNavigationBarState
 import com.jobik.shkiper.ui.animation.AnimateVerticalSwitch
 import com.jobik.shkiper.ui.components.cards.NoteCard
-import com.jobik.shkiper.ui.components.layouts.LazyGridNotes
-import com.jobik.shkiper.ui.components.layouts.noteTagsList
-import com.jobik.shkiper.ui.components.layouts.ScreenContentIfNoData
-import com.jobik.shkiper.ui.components.layouts.notesListHeadline
+import com.jobik.shkiper.ui.components.layouts.*
 import com.jobik.shkiper.ui.helpers.bottomWindowInsetsPadding
 import com.jobik.shkiper.ui.helpers.endWindowInsetsPadding
 import com.jobik.shkiper.ui.helpers.rememberNextReminder
@@ -123,37 +120,31 @@ private fun NoteListContent(
         ) { viewModel.setCurrentHashtag(it) }
         if (pinnedNotes.isNotEmpty()) {
             notesListHeadline(headline = R.string.Pinned)
-            items(items = pinnedNotes) { item ->
-                NoteContent(item, viewModel, currentRoute, navController)
-            }
+            notesList(
+                notes = pinnedNotes,
+                reminders = viewModel.screenState.value.reminders,
+                onClick = { note ->
+                    viewModel.clickOnNote(
+                        note = note,
+                        currentRoute = currentRoute,
+                        navController = navController
+                    )
+                },
+            )
         }
         if (unpinnedNotes.isNotEmpty()) {
             notesListHeadline(headline = R.string.Other)
-            items(items = unpinnedNotes) { item ->
-                NoteContent(item, viewModel, currentRoute, navController)
-            }
+            notesList(
+                notes = unpinnedNotes,
+                reminders = viewModel.screenState.value.reminders,
+                onClick = { note ->
+                    viewModel.clickOnNote(
+                        note = note,
+                        currentRoute = currentRoute,
+                        navController = navController
+                    )
+                },
+            )
         }
     }
-}
-
-@Composable
-private fun NoteContent(
-    item: Note,
-    viewModel: CalendarViewModel,
-    currentRoute: String,
-    navController: NavController
-) {
-    NoteCard(
-        header = item.header,
-        text = item.body,
-        reminder = rememberNextReminder(
-            reminders = viewModel.screenState.value.reminders,
-            noteId = item._id,
-            pointDate = LocalDateTime.of(
-                viewModel.screenState.value.selectedDateRange.first,
-                LocalTime.MIN
-            )
-        ),
-        onClick = { viewModel.clickOnNote(item, currentRoute, navController) },
-    )
 }

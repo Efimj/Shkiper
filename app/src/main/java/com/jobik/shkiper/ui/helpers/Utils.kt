@@ -37,15 +37,14 @@ fun YearMonth.displayText(): String {
 @Composable
 fun rememberNextReminder(
     reminders: List<Reminder>,
-    noteId: ObjectId,
     pointDate: LocalDateTime = LocalDateTime.now()
 ): Reminder? {
     val nextReminder = remember { mutableStateOf<Reminder?>(null) }
 
     LaunchedEffect(reminders) {
-        val noteReminders = reminders.filter { it.noteId == noteId }
-        nextReminder.value = DateHelper.sortReminders(reminders = noteReminders, pointDate = pointDate).firstOrNull()
+        nextReminder.value = DateHelper.sortReminders(reminders = reminders, pointDate = pointDate).firstOrNull()
     }
+
     return nextReminder.value
 }
 

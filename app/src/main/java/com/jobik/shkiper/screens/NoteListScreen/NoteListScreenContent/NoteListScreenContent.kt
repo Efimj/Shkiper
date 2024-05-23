@@ -1,25 +1,23 @@
 package com.jobik.shkiper.screens.NoteListScreen.NoteListScreenContent
 
 import androidx.activity.compose.BackHandler
-import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.staggeredgrid.*
-import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Description
 import androidx.compose.material.icons.outlined.Event
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.jobik.shkiper.R
+import com.jobik.shkiper.database.models.Note
+import com.jobik.shkiper.database.models.Reminder
 import com.jobik.shkiper.ui.components.cards.NoteCard
 import com.jobik.shkiper.ui.components.fields.SearchBar
 import com.jobik.shkiper.ui.components.fields.SearchBarActionButton
@@ -34,6 +32,7 @@ import com.jobik.shkiper.ui.helpers.startWindowInsetsPadding
 import com.jobik.shkiper.ui.modifiers.scrollConnectionToProvideVisibility
 import com.jobik.shkiper.ui.theme.AppTheme
 import com.jobik.shkiper.viewmodels.NotesViewModel
+import org.mongodb.kbson.ObjectId
 
 @Composable
 fun NoteListScreenContent(
@@ -121,35 +120,45 @@ private fun NotesListContent(
         ) { notesViewModel.setCurrentHashtag(it) }
         if (pinnedNotes.isNotEmpty()) {
             notesListHeadline(headline = R.string.Pinned)
-            items(items = pinnedNotes) { item ->
-                NoteCard(
-                    header = item.header,
-                    text = item.body,
-                    reminder = rememberNextReminder(
-                        reminders = notesViewModel.screenState.value.reminders,
-                        noteId = item._id,
-                    ),
-                    markedText = notesViewModel.screenState.value.searchText,
-                    selected = item._id in notesViewModel.screenState.value.selectedNotes,
-                    onClick = { notesViewModel.clickOnNote(item, currentRoute, navController) },
-                    onLongClick = { notesViewModel.toggleSelectedNoteCard(item._id) })
-            }
+            notesList(
+                notes = pinnedNotes,
+                reminders = notesViewModel.screenState.value.reminders,
+                marker = notesViewModel.screenState.value.searchText,
+                selected = notesViewModel.screenState.value.selectedNotes,
+                onClick = { note ->
+                    notesViewModel.clickOnNote(
+                        note = note,
+                        currentRoute = currentRoute,
+                        navController = navController
+                    )
+                },
+                onLongClick = { note ->
+                    notesViewModel.toggleSelectedNoteCard(
+                        noteId = note._id
+                    )
+                }
+            )
         }
         if (unpinnedNotes.isNotEmpty()) {
             notesListHeadline(headline = R.string.Other)
-            items(items = unpinnedNotes) { item ->
-                NoteCard(
-                    header = item.header,
-                    text = item.body,
-                    reminder = rememberNextReminder(
-                        reminders = notesViewModel.screenState.value.reminders,
-                        noteId = item._id,
-                    ),
-                    markedText = notesViewModel.screenState.value.searchText,
-                    selected = item._id in notesViewModel.screenState.value.selectedNotes,
-                    onClick = { notesViewModel.clickOnNote(item, currentRoute, navController) },
-                    onLongClick = { notesViewModel.toggleSelectedNoteCard(item._id) })
-            }
+            notesList(
+                notes = unpinnedNotes,
+                reminders = notesViewModel.screenState.value.reminders,
+                marker = notesViewModel.screenState.value.searchText,
+                selected = notesViewModel.screenState.value.selectedNotes,
+                onClick = { note ->
+                    notesViewModel.clickOnNote(
+                        note = note,
+                        currentRoute = currentRoute,
+                        navController = navController
+                    )
+                },
+                onLongClick = { note ->
+                    notesViewModel.toggleSelectedNoteCard(
+                        noteId = note._id
+                    )
+                }
+            )
         }
     }
 }

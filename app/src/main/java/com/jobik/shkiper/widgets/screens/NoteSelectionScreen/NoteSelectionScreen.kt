@@ -30,10 +30,7 @@ import com.jobik.shkiper.database.models.Note
 import com.jobik.shkiper.ui.components.buttons.FloatingActionButton
 import com.jobik.shkiper.ui.components.cards.NoteCard
 import com.jobik.shkiper.ui.components.fields.getSearchBarHeight
-import com.jobik.shkiper.ui.components.layouts.LazyGridNotes
-import com.jobik.shkiper.ui.components.layouts.noteTagsList
-import com.jobik.shkiper.ui.components.layouts.ScreenContentIfNoData
-import com.jobik.shkiper.ui.components.layouts.notesListHeadline
+import com.jobik.shkiper.ui.components.layouts.*
 import com.jobik.shkiper.ui.helpers.*
 import com.jobik.shkiper.ui.modifiers.scrollConnectionToProvideVisibility
 import com.jobik.shkiper.ui.theme.AppTheme
@@ -128,35 +125,33 @@ private fun ScreenContent(
         ) { notesViewModel.setCurrentHashtag(it) }
         if (pinnedNotes.isNotEmpty()) {
             notesListHeadline(headline = R.string.Pinned)
-            items(items = pinnedNotes) { item ->
-                NoteCard(
-                    header = item.header,
-                    text = item.body,
-                    reminder = rememberNextReminder(
-                        reminders = notesViewModel.screenState.value.reminders,
-                        noteId = item._id,
-                    ),
-                    markedText = notesViewModel.screenState.value.searchText,
-                    selected = item._id.toHexString() == notesViewModel.screenState.value.selectedNoteId,
-                    onClick = { notesViewModel.clickOnNote(item._id) },
-                    onLongClick = { notesViewModel.clickOnNote(item._id) })
-            }
+            notesList(
+                notes = pinnedNotes,
+                reminders = notesViewModel.screenState.value.reminders,
+                marker = notesViewModel.screenState.value.searchText,
+                selected = if (notesViewModel.screenState.value.selectedNoteId != null) setOf(notesViewModel.screenState.value.selectedNoteId!!) else emptySet(),
+                onClick = { note ->
+                    notesViewModel.clickOnNote(note._id)
+                },
+                onLongClick = { note ->
+                    notesViewModel.clickOnNote(note._id)
+                },
+            )
         }
         if (unpinnedNotes.isNotEmpty()) {
             notesListHeadline(headline = R.string.Other)
-            items(items = unpinnedNotes) { item ->
-                NoteCard(
-                    header = item.header,
-                    text = item.body,
-                    reminder = rememberNextReminder(
-                        reminders = notesViewModel.screenState.value.reminders,
-                        noteId = item._id,
-                    ),
-                    markedText = notesViewModel.screenState.value.searchText,
-                    selected = item._id.toHexString() == notesViewModel.screenState.value.selectedNoteId,
-                    onClick = { notesViewModel.clickOnNote(item._id) },
-                    onLongClick = { notesViewModel.clickOnNote(item._id) })
-            }
+            notesList(
+                notes = unpinnedNotes,
+                reminders = notesViewModel.screenState.value.reminders,
+                marker = notesViewModel.screenState.value.searchText,
+                selected = if (notesViewModel.screenState.value.selectedNoteId != null) setOf(notesViewModel.screenState.value.selectedNoteId!!) else emptySet(),
+                onClick = { note ->
+                    notesViewModel.clickOnNote(note._id)
+                },
+                onLongClick = { note ->
+                    notesViewModel.clickOnNote(note._id)
+                },
+            )
         }
     }
 }
