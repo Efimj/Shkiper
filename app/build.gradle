@@ -161,7 +161,7 @@ dependencies {
     implementation "androidx.glance:glance-material3:1.0.0"
 
     // Compose Rich Editor
-    implementation "com.mohamedrejeb.richeditor:richeditor-compose:1.0.0-rc04"
+    implementation "com.mohamedrejeb.richeditor:richeditor-compose:1.0.0-rc05"
 
     // Compose image capture
     implementation "dev.shreyaspatil:capturable:1.0.3"
