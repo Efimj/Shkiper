@@ -1,6 +1,7 @@
 package com.jobik.shkiper.screens.NoteListScreen.NoteListScreenContent
 
 import androidx.activity.compose.BackHandler
+import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.staggeredgrid.*
@@ -23,10 +24,7 @@ import com.jobik.shkiper.ui.components.cards.NoteCard
 import com.jobik.shkiper.ui.components.fields.SearchBar
 import com.jobik.shkiper.ui.components.fields.SearchBarActionButton
 import com.jobik.shkiper.ui.components.fields.getSearchBarHeight
-import com.jobik.shkiper.ui.components.layouts.BannerList
-import com.jobik.shkiper.ui.components.layouts.LazyGridNotes
-import com.jobik.shkiper.ui.components.layouts.noteTagsList
-import com.jobik.shkiper.ui.components.layouts.ScreenContentIfNoData
+import com.jobik.shkiper.ui.components.layouts.*
 import com.jobik.shkiper.ui.components.modals.CreateReminderDialog
 import com.jobik.shkiper.ui.components.modals.ReminderDialogProperties
 import com.jobik.shkiper.ui.helpers.bottomWindowInsetsPadding
@@ -122,16 +120,7 @@ private fun NotesListContent(
             selected = notesViewModel.screenState.value.currentHashtag
         ) { notesViewModel.setCurrentHashtag(it) }
         if (pinnedNotes.isNotEmpty()) {
-            item(span = StaggeredGridItemSpan.FullLine) {
-                Column {
-                    Text(
-                        stringResource(R.string.Pinned),
-                        color = AppTheme.colors.textSecondary,
-                        style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.padding(horizontal = 10.dp)
-                    )
-                }
-            }
+            notesListHeadline(headline = R.string.Pinned)
             items(items = pinnedNotes) { item ->
                 NoteCard(
                     header = item.header,
@@ -147,14 +136,7 @@ private fun NotesListContent(
             }
         }
         if (unpinnedNotes.isNotEmpty()) {
-            item(span = StaggeredGridItemSpan.FullLine) {
-                Text(
-                    stringResource(R.string.Other),
-                    color = AppTheme.colors.textSecondary,
-                    style = MaterialTheme.typography.bodyLarge,
-                    modifier = Modifier.padding(horizontal = 10.dp)
-                )
-            }
+            notesListHeadline(headline = R.string.Other)
             items(items = unpinnedNotes) { item ->
                 NoteCard(
                     header = item.header,

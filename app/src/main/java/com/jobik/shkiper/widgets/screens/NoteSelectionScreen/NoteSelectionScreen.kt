@@ -33,6 +33,7 @@ import com.jobik.shkiper.ui.components.fields.getSearchBarHeight
 import com.jobik.shkiper.ui.components.layouts.LazyGridNotes
 import com.jobik.shkiper.ui.components.layouts.noteTagsList
 import com.jobik.shkiper.ui.components.layouts.ScreenContentIfNoData
+import com.jobik.shkiper.ui.components.layouts.notesListHeadline
 import com.jobik.shkiper.ui.helpers.*
 import com.jobik.shkiper.ui.modifiers.scrollConnectionToProvideVisibility
 import com.jobik.shkiper.ui.theme.AppTheme
@@ -126,16 +127,7 @@ private fun ScreenContent(
             selected = notesViewModel.screenState.value.currentHashtag
         ) { notesViewModel.setCurrentHashtag(it) }
         if (pinnedNotes.isNotEmpty()) {
-            item(span = StaggeredGridItemSpan.FullLine) {
-                Column {
-                    Text(
-                        stringResource(R.string.Pinned),
-                        color = AppTheme.colors.textSecondary,
-                        style = MaterialTheme.typography.body1.copy(fontSize = 17.sp),
-                        modifier = Modifier.padding(horizontal = 10.dp)
-                    )
-                }
-            }
+            notesListHeadline(headline = R.string.Pinned)
             items(items = pinnedNotes) { item ->
                 NoteCard(
                     header = item.header,
@@ -151,14 +143,7 @@ private fun ScreenContent(
             }
         }
         if (unpinnedNotes.isNotEmpty()) {
-            item(span = StaggeredGridItemSpan.FullLine) {
-                Text(
-                    stringResource(R.string.Other),
-                    color = AppTheme.colors.textSecondary,
-                    style = MaterialTheme.typography.body1.copy(fontSize = 17.sp),
-                    modifier = Modifier.padding(horizontal = 10.dp)
-                )
-            }
+            notesListHeadline(headline = R.string.Other)
             items(items = unpinnedNotes) { item ->
                 NoteCard(
                     header = item.header,

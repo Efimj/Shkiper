@@ -24,6 +24,7 @@ import com.jobik.shkiper.ui.components.cards.NoteCard
 import com.jobik.shkiper.ui.components.layouts.LazyGridNotes
 import com.jobik.shkiper.ui.components.layouts.noteTagsList
 import com.jobik.shkiper.ui.components.layouts.ScreenContentIfNoData
+import com.jobik.shkiper.ui.components.layouts.notesListHeadline
 import com.jobik.shkiper.ui.helpers.bottomWindowInsetsPadding
 import com.jobik.shkiper.ui.helpers.endWindowInsetsPadding
 import com.jobik.shkiper.ui.helpers.rememberNextReminder
@@ -121,29 +122,13 @@ private fun NoteListContent(
             selected = viewModel.screenState.value.currentHashtag
         ) { viewModel.setCurrentHashtag(it) }
         if (pinnedNotes.isNotEmpty()) {
-            item(span = StaggeredGridItemSpan.FullLine) {
-                Column {
-                    Text(
-                        text = stringResource(R.string.Pinned),
-                        color = AppTheme.colors.textSecondary,
-                        style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.padding(horizontal = 10.dp)
-                    )
-                }
-            }
+            notesListHeadline(headline = R.string.Pinned)
             items(items = pinnedNotes) { item ->
                 NoteContent(item, viewModel, currentRoute, navController)
             }
         }
         if (unpinnedNotes.isNotEmpty()) {
-            item(span = StaggeredGridItemSpan.FullLine) {
-                Text(
-                    stringResource(R.string.Other),
-                    color = AppTheme.colors.textSecondary,
-                    style = MaterialTheme.typography.bodyLarge,
-                    modifier = Modifier.padding(horizontal = 10.dp)
-                )
-            }
+            notesListHeadline(headline = R.string.Other)
             items(items = unpinnedNotes) { item ->
                 NoteContent(item, viewModel, currentRoute, navController)
             }
