@@ -2,11 +2,7 @@ package com.jobik.shkiper.screens.ArchiveNotesScreen
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridState
-import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.material.icons.Icons
@@ -16,19 +12,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.jobik.shkiper.R
-import com.jobik.shkiper.ui.components.buttons.HashtagButton
 import com.jobik.shkiper.ui.components.cards.NoteCard
 import com.jobik.shkiper.ui.components.fields.getSearchBarHeight
-import com.jobik.shkiper.ui.components.layouts.CustomTopAppBar
-import com.jobik.shkiper.ui.components.layouts.LazyGridNotes
-import com.jobik.shkiper.ui.components.layouts.ScreenContentIfNoData
-import com.jobik.shkiper.ui.components.layouts.TopAppBarItem
+import com.jobik.shkiper.ui.components.layouts.*
 import com.jobik.shkiper.ui.components.modals.CreateReminderDialog
 import com.jobik.shkiper.ui.components.modals.ReminderDialogProperties
 import com.jobik.shkiper.ui.helpers.bottomWindowInsetsPadding
@@ -93,24 +84,10 @@ private fun ScreenContent(
         modifier = Modifier.fillMaxSize(),
         gridState = lazyGridNotes
     ) {
-        item(span = StaggeredGridItemSpan.FullLine) {
-            LazyRow(
-                modifier = Modifier
-                    .wrapContentSize(unbounded = true)
-                    .width(LocalConfiguration.current.screenWidthDp.dp),
-                state = rememberLazyListState(),
-                contentPadding = PaddingValues(10.dp, 0.dp, 10.dp, 0.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                items(items = notesViewModel.screenState.value.hashtags.toList()) { item ->
-                    HashtagButton(item, item == notesViewModel.screenState.value.currentHashtag) {
-                        notesViewModel.setCurrentHashtag(
-                            item
-                        )
-                    }
-                }
-            }
-        }
+        noteTagsList(
+            tags = notesViewModel.screenState.value.hashtags,
+            selected = notesViewModel.screenState.value.currentHashtag
+        ) { notesViewModel.setCurrentHashtag(it) }
         items(items = notesViewModel.screenState.value.notes) { item ->
             NoteCard(
                 header = item.header,
