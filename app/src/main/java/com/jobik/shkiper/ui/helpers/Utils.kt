@@ -6,7 +6,6 @@ import com.jobik.shkiper.helpers.DateHelper
 import com.kizitonwose.calendar.compose.weekcalendar.WeekCalendarState
 import com.kizitonwose.calendar.core.Week
 import kotlinx.coroutines.flow.filter
-import org.mongodb.kbson.ObjectId
 import java.time.LocalDateTime
 import java.time.Month
 import java.time.YearMonth

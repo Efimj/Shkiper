@@ -6,34 +6,28 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridState
-import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
-import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Description
 import androidx.compose.material.icons.outlined.Done
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.Note
 import com.jobik.shkiper.ui.components.buttons.FloatingActionButton
-import com.jobik.shkiper.ui.components.cards.NoteCard
 import com.jobik.shkiper.ui.components.fields.getSearchBarHeight
 import com.jobik.shkiper.ui.components.layouts.*
-import com.jobik.shkiper.ui.helpers.*
+import com.jobik.shkiper.ui.helpers.bottomWindowInsetsPadding
+import com.jobik.shkiper.ui.helpers.endWindowInsetsPadding
+import com.jobik.shkiper.ui.helpers.startWindowInsetsPadding
 import com.jobik.shkiper.ui.modifiers.scrollConnectionToProvideVisibility
-import com.jobik.shkiper.ui.theme.AppTheme
 
 @Composable
 fun NoteSelectionScreen(

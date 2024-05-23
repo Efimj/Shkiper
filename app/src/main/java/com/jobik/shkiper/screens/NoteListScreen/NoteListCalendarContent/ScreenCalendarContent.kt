@@ -2,35 +2,25 @@ package com.jobik.shkiper.screens.NoteListScreen.NoteListCalendarContent
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
-import androidx.compose.foundation.lazy.staggeredgrid.items
-import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.NotificationsNone
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.jobik.shkiper.R
-import com.jobik.shkiper.database.models.Note
 import com.jobik.shkiper.screens.AppLayout.NavigationBar.AppNavigationBarState
 import com.jobik.shkiper.ui.animation.AnimateVerticalSwitch
-import com.jobik.shkiper.ui.components.cards.NoteCard
 import com.jobik.shkiper.ui.components.layouts.*
 import com.jobik.shkiper.ui.helpers.bottomWindowInsetsPadding
 import com.jobik.shkiper.ui.helpers.endWindowInsetsPadding
-import com.jobik.shkiper.ui.helpers.rememberNextReminder
 import com.jobik.shkiper.ui.helpers.startWindowInsetsPadding
 import com.jobik.shkiper.ui.theme.AppTheme
 import kotlinx.coroutines.delay
 import me.onebone.toolbar.*
-import java.time.LocalDateTime
-import java.time.LocalTime
 
 @Composable
 fun ScreenCalendarContent(

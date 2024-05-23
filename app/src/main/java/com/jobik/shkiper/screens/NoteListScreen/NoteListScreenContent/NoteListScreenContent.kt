@@ -2,8 +2,10 @@ package com.jobik.shkiper.screens.NoteListScreen.NoteListScreenContent
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.staggeredgrid.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Description
 import androidx.compose.material.icons.outlined.Event
@@ -16,9 +18,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.jobik.shkiper.R
-import com.jobik.shkiper.database.models.Note
-import com.jobik.shkiper.database.models.Reminder
-import com.jobik.shkiper.ui.components.cards.NoteCard
 import com.jobik.shkiper.ui.components.fields.SearchBar
 import com.jobik.shkiper.ui.components.fields.SearchBarActionButton
 import com.jobik.shkiper.ui.components.fields.getSearchBarHeight
@@ -27,12 +26,10 @@ import com.jobik.shkiper.ui.components.modals.CreateReminderDialog
 import com.jobik.shkiper.ui.components.modals.ReminderDialogProperties
 import com.jobik.shkiper.ui.helpers.bottomWindowInsetsPadding
 import com.jobik.shkiper.ui.helpers.endWindowInsetsPadding
-import com.jobik.shkiper.ui.helpers.rememberNextReminder
 import com.jobik.shkiper.ui.helpers.startWindowInsetsPadding
 import com.jobik.shkiper.ui.modifiers.scrollConnectionToProvideVisibility
 import com.jobik.shkiper.ui.theme.AppTheme
 import com.jobik.shkiper.viewmodels.NotesViewModel
-import org.mongodb.kbson.ObjectId
 
 @Composable
 fun NoteListScreenContent(
