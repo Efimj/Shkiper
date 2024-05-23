@@ -6,7 +6,6 @@ import com.jobik.shkiper.helpers.DateHelper
 import com.kizitonwose.calendar.compose.weekcalendar.WeekCalendarState
 import com.kizitonwose.calendar.core.Week
 import kotlinx.coroutines.flow.filter
-import org.mongodb.kbson.ObjectId
 import java.time.LocalDateTime
 import java.time.Month
 import java.time.YearMonth
@@ -37,15 +36,14 @@ fun YearMonth.displayText(): String {
 @Composable
 fun rememberNextReminder(
     reminders: List<Reminder>,
-    noteId: ObjectId,
     pointDate: LocalDateTime = LocalDateTime.now()
 ): Reminder? {
     val nextReminder = remember { mutableStateOf<Reminder?>(null) }
 
     LaunchedEffect(reminders) {
-        val noteReminders = reminders.filter { it.noteId == noteId }
-        nextReminder.value = DateHelper.sortReminders(reminders = noteReminders, pointDate = pointDate).firstOrNull()
+        nextReminder.value = DateHelper.sortReminders(reminders = reminders, pointDate = pointDate).firstOrNull()
     }
+
     return nextReminder.value
 }
 

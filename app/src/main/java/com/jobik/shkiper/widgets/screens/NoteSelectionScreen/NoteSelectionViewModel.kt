@@ -24,7 +24,7 @@ data class NoteSelectScreenState(
     val hashtags: Set<String> = emptySet(),
     val currentHashtag: String? = null,
     val reminders: List<Reminder> = emptyList(),
-    val selectedNoteId: String? = null,
+    val selectedNoteId: ObjectId? = null,
 )
 
 @HiltViewModel
@@ -100,13 +100,13 @@ class NoteSelectionViewModel @Inject constructor(
             return
         }
         _screenState.value = screenState.value.copy(
-            selectedNoteId = if (screenState.value.selectedNoteId == noteId.toHexString()) null else noteId.toHexString()
+            selectedNoteId = if (screenState.value.selectedNoteId == noteId) null else noteId
         )
     }
 
     fun getSelectedNote(): Note? {
         if (screenState.value.selectedNoteId == null) return null
-        return noteRepository.getNote(ObjectId(screenState.value.selectedNoteId ?: ""))
+        return noteRepository.getNote(screenState.value.selectedNoteId!!)
     }
 
     fun clearSelectedNote() {

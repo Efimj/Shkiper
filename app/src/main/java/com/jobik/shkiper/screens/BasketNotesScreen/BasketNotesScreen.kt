@@ -27,10 +27,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.jobik.shkiper.R
 import com.jobik.shkiper.ui.components.cards.NoteCard
-import com.jobik.shkiper.ui.components.layouts.CustomTopAppBar
-import com.jobik.shkiper.ui.components.layouts.LazyGridNotes
-import com.jobik.shkiper.ui.components.layouts.ScreenContentIfNoData
-import com.jobik.shkiper.ui.components.layouts.TopAppBarItem
+import com.jobik.shkiper.ui.components.layouts.*
 import com.jobik.shkiper.ui.components.modals.ActionDialog
 import com.jobik.shkiper.ui.helpers.*
 import com.jobik.shkiper.ui.theme.AppTheme
@@ -109,18 +106,18 @@ private fun ScreenContent(
                 )
             }
         }
-        items(items = notesViewModel.screenState.value.notes) { item ->
-            NoteCard(header = item.header,
-                text = item.body,
-                reminder = rememberNextReminder(
-                    reminders = notesViewModel.screenState.value.reminders,
-                    noteId = item._id,
-                ),
-                markedText = notesViewModel.screenState.value.searchText,
-                selected = item._id in notesViewModel.screenState.value.selectedNotes,
-                onClick = { notesViewModel.clickOnNote(item, currentRoute, navController) },
-                onLongClick = { notesViewModel.toggleSelectedNoteCard(item._id) })
-        }
+        notesList(
+            notes = notesViewModel.screenState.value.notes,
+            reminders = notesViewModel.screenState.value.reminders,
+            marker = notesViewModel.screenState.value.searchText,
+            selected = notesViewModel.screenState.value.selectedNotes,
+            onClick = { note ->
+                notesViewModel.clickOnNote(note = note, currentRoute = currentRoute, navController = navController)
+            },
+            onLongClick = { note ->
+                notesViewModel.toggleSelectedNoteCard(noteId = note._id)
+            },
+        )
     }
 }
 

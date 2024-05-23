@@ -5,41 +5,29 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridState
-import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
-import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Description
 import androidx.compose.material.icons.outlined.Done
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.Note
 import com.jobik.shkiper.ui.components.buttons.FloatingActionButton
-import com.jobik.shkiper.ui.components.buttons.HashtagButton
-import com.jobik.shkiper.ui.components.cards.NoteCard
 import com.jobik.shkiper.ui.components.fields.getSearchBarHeight
-import com.jobik.shkiper.ui.components.layouts.LazyGridNotes
-import com.jobik.shkiper.ui.components.layouts.ScreenContentIfNoData
-import com.jobik.shkiper.ui.helpers.*
+import com.jobik.shkiper.ui.components.layouts.*
+import com.jobik.shkiper.ui.helpers.bottomWindowInsetsPadding
+import com.jobik.shkiper.ui.helpers.endWindowInsetsPadding
+import com.jobik.shkiper.ui.helpers.startWindowInsetsPadding
 import com.jobik.shkiper.ui.modifiers.scrollConnectionToProvideVisibility
-import com.jobik.shkiper.ui.theme.AppTheme
 
 @Composable
 fun NoteSelectionScreen(
@@ -125,72 +113,39 @@ private fun ScreenContent(
             .testTag("notes_list"),
         gridState = lazyGridNotes
     ) {
-        if (notesViewModel.screenState.value.hashtags.isNotEmpty())
-            item(span = StaggeredGridItemSpan.FullLine) {
-                LazyRow(
-                    modifier = Modifier
-                        .wrapContentSize(unbounded = true)
-                        .width(LocalConfiguration.current.screenWidthDp.dp),
-                    state = rememberLazyListState(),
-                    contentPadding = PaddingValues(10.dp, 0.dp, 10.dp, 0.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    items(items = notesViewModel.screenState.value.hashtags.toList()) { item ->
-                        HashtagButton(item, item == notesViewModel.screenState.value.currentHashtag) {
-                            notesViewModel.setCurrentHashtag(
-                                item
-                            )
-                        }
-                    }
-                }
-            }
+        noteTagsList(
+            tags = notesViewModel.screenState.value.hashtags,
+            selected = notesViewModel.screenState.value.currentHashtag
+        ) { notesViewModel.setCurrentHashtag(it) }
         if (pinnedNotes.isNotEmpty()) {
-            item(span = StaggeredGridItemSpan.FullLine) {
-                Column {
-                    Text(
-                        stringResource(R.string.Pinned),
-                        color = AppTheme.colors.textSecondary,
-                        style = MaterialTheme.typography.body1.copy(fontSize = 17.sp),
-                        modifier = Modifier.padding(horizontal = 10.dp)
-                    )
-                }
-            }
-            items(items = pinnedNotes) { item ->
-                NoteCard(
-                    header = item.header,
-                    text = item.body,
-                    reminder = rememberNextReminder(
-                        reminders = notesViewModel.screenState.value.reminders,
-                        noteId = item._id,
-                    ),
-                    markedText = notesViewModel.screenState.value.searchText,
-                    selected = item._id.toHexString() == notesViewModel.screenState.value.selectedNoteId,
-                    onClick = { notesViewModel.clickOnNote(item._id) },
-                    onLongClick = { notesViewModel.clickOnNote(item._id) })
-            }
+            notesListHeadline(headline = R.string.Pinned)
+            notesList(
+                notes = pinnedNotes,
+                reminders = notesViewModel.screenState.value.reminders,
+                marker = notesViewModel.screenState.value.searchText,
+                selected = if (notesViewModel.screenState.value.selectedNoteId != null) setOf(notesViewModel.screenState.value.selectedNoteId!!) else emptySet(),
+                onClick = { note ->
+                    notesViewModel.clickOnNote(note._id)
+                },
+                onLongClick = { note ->
+                    notesViewModel.clickOnNote(note._id)
+                },
+            )
         }
         if (unpinnedNotes.isNotEmpty()) {
-            item(span = StaggeredGridItemSpan.FullLine) {
-                Text(
-                    stringResource(R.string.Other),
-                    color = AppTheme.colors.textSecondary,
-                    style = MaterialTheme.typography.body1.copy(fontSize = 17.sp),
-                    modifier = Modifier.padding(horizontal = 10.dp)
-                )
-            }
-            items(items = unpinnedNotes) { item ->
-                NoteCard(
-                    header = item.header,
-                    text = item.body,
-                    reminder = rememberNextReminder(
-                        reminders = notesViewModel.screenState.value.reminders,
-                        noteId = item._id,
-                    ),
-                    markedText = notesViewModel.screenState.value.searchText,
-                    selected = item._id.toHexString() == notesViewModel.screenState.value.selectedNoteId,
-                    onClick = { notesViewModel.clickOnNote(item._id) },
-                    onLongClick = { notesViewModel.clickOnNote(item._id) })
-            }
+            notesListHeadline(headline = R.string.Other)
+            notesList(
+                notes = unpinnedNotes,
+                reminders = notesViewModel.screenState.value.reminders,
+                marker = notesViewModel.screenState.value.searchText,
+                selected = if (notesViewModel.screenState.value.selectedNoteId != null) setOf(notesViewModel.screenState.value.selectedNoteId!!) else emptySet(),
+                onClick = { note ->
+                    notesViewModel.clickOnNote(note._id)
+                },
+                onLongClick = { note ->
+                    notesViewModel.clickOnNote(note._id)
+                },
+            )
         }
     }
 }
