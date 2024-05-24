@@ -171,7 +171,7 @@ private fun NoteContent(header: String?, text: RichTextState, headerStyle: TextS
             text = header,
             style = headerStyle,
             overflow = TextOverflow.Ellipsis,
-            color = AppTheme.colors.text,
+            color = AppTheme.colors.onSecondaryContainer,
             onTextLayout = { textLayoutResult: TextLayoutResult ->
                 headerLineCount = textLayoutResult.lineCount
             },
