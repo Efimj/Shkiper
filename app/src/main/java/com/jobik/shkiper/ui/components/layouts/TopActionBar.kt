@@ -5,10 +5,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.ime
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -52,6 +49,7 @@ fun CustomTopAppBar(
     ) {
         TopAppBar(
             modifier = modifier
+                .imePadding()
                 .background(backgroundColor)
                 .horizontalWindowInsetsPadding()
                 .topWindowInsetsPadding(),
