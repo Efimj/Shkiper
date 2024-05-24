@@ -1,17 +1,21 @@
 package com.jobik.shkiper.screens.NoteListScreen.NoteListCalendarContent
 
+import androidx.compose.animation.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.NotificationsNone
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.jobik.shkiper.R
+import com.jobik.shkiper.database.models.Note
+import com.jobik.shkiper.database.models.Reminder
 import com.jobik.shkiper.screens.AppLayout.NavigationBar.AppNavigationBarState
 import com.jobik.shkiper.ui.animation.AnimateVerticalSwitch
 import com.jobik.shkiper.ui.components.layouts.*
@@ -38,7 +42,12 @@ fun ScreenCalendarContent(
         topComponent = {
             FullScreenCalendar(viewModel)
         }) {
-        ScreenContent(collapsingToolbarScaffold, viewModel, onSlideBack, navController)
+        ScreenContent(
+            collapsingToolbarScaffold = collapsingToolbarScaffold,
+            viewModel = viewModel,
+            onSlideBack = onSlideBack,
+            navController = navController
+        )
     }
 }
 
@@ -72,28 +81,47 @@ private fun ScreenContent(
             ScreenCalendarTopBar(viewModel = viewModel, onSlideBack = onSlideBack)
         }
     ) {
-        if (viewModel.screenState.value.notes.isEmpty())
-            ScreenContentIfNoData(
-                modifier = Modifier.heightIn(max = 350.dp),
-                title = R.string.NoReminders,
-                icon = Icons.Outlined.NotificationsNone
-            )
-        else {
-            NoteListContent(viewModel, currentRoute, navController)
+        Crossfade(
+            targetState = viewModel.screenState.value.notes.isEmpty(),
+            label = "animation layouts screen"
+        ) { value ->
+            if (value)
+                ScreenContentIfNoData(
+                    modifier = Modifier.heightIn(max = 350.dp),
+                    title = R.string.NoReminders,
+                    icon = Icons.Outlined.NotificationsNone
+                )
+            else {
+                NoteListContent(
+                    notes = viewModel.screenState.value.notes,
+                    clickOnNote = { note ->
+                        viewModel.clickOnNote(
+                            note = note,
+                            currentRoute = currentRoute,
+                            navController = navController
+                        )
+                    },
+                    tags = viewModel.screenState.value.hashtags,
+                    selectedTag = viewModel.screenState.value.currentHashtag,
+                    selectTag = viewModel::setCurrentHashtag,
+                    reminders = viewModel.screenState.value.reminders,
+                )
+            }
         }
     }
 }
 
 @Composable
 private fun NoteListContent(
-    viewModel: CalendarViewModel,
-    currentRoute: String,
-    navController: NavController
+    notes: List<Note>,
+    clickOnNote: (Note) -> Unit,
+    tags: Set<String>,
+    selectedTag: String?,
+    selectTag: (String) -> Unit,
+    reminders: List<Reminder>
 ) {
-    val pinnedNotes =
-        remember(viewModel.screenState.value.notes) { viewModel.screenState.value.notes.filter { it.isPinned } }
-    val unpinnedNotes =
-        remember(viewModel.screenState.value.notes) { viewModel.screenState.value.notes.filterNot { it.isPinned } }
+    val pinnedNotes = remember(notes) { notes.filter { it.isPinned } }
+    val unpinnedNotes = remember(notes) { notes.filterNot { it.isPinned } }
 
     LazyGridNotes(
         contentPadding = PaddingValues(
@@ -105,35 +133,24 @@ private fun NoteListContent(
         modifier = Modifier.fillMaxWidth(),
     ) {
         noteTagsList(
-            tags = viewModel.screenState.value.hashtags,
-            selected = viewModel.screenState.value.currentHashtag
-        ) { viewModel.setCurrentHashtag(it) }
+            tags = tags,
+            selected = selectedTag,
+            onSelect = selectTag
+        )
         if (pinnedNotes.isNotEmpty()) {
             notesListHeadline(headline = R.string.Pinned)
             notesList(
                 notes = pinnedNotes,
-                reminders = viewModel.screenState.value.reminders,
-                onClick = { note ->
-                    viewModel.clickOnNote(
-                        note = note,
-                        currentRoute = currentRoute,
-                        navController = navController
-                    )
-                },
+                reminders = reminders,
+                onClick = clickOnNote,
             )
         }
         if (unpinnedNotes.isNotEmpty()) {
             notesListHeadline(headline = R.string.Other)
             notesList(
                 notes = unpinnedNotes,
-                reminders = viewModel.screenState.value.reminders,
-                onClick = { note ->
-                    viewModel.clickOnNote(
-                        note = note,
-                        currentRoute = currentRoute,
-                        navController = navController
-                    )
-                },
+                reminders = reminders,
+                onClick = clickOnNote,
             )
         }
     }

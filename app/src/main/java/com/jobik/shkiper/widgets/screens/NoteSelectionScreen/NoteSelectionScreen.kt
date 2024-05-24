@@ -2,6 +2,7 @@ package com.jobik.shkiper.widgets.screens.NoteSelectionScreen
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.Crossfade
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.*
@@ -51,10 +52,16 @@ fun NoteSelectionScreen(
             .fillMaxSize()
             .scrollConnectionToProvideVisibility(visible = isSearchBarVisible)
     ) {
-        if (notesViewModel.screenState.value.isNotesInitialized && notesViewModel.screenState.value.notes.isEmpty())
-            ScreenContentIfNoData(title = R.string.EmptyNotesPageHeader, icon = Icons.Outlined.Description)
-        else
-            ScreenContent(lazyGridNotes, notesViewModel)
+        Crossfade(
+            targetState = notesViewModel.screenState.value.isNotesInitialized && notesViewModel.screenState.value.notes.isEmpty(),
+            label = "animation layouts screen"
+        ) { value ->
+            if (value) {
+                ScreenContentIfNoData(title = R.string.EmptyNotesPageHeader, icon = Icons.Outlined.Description)
+            } else {
+                ScreenContent(lazyGridNotes = lazyGridNotes, notesViewModel = notesViewModel)
+            }
+        }
         Box(modifier = Modifier) {
             com.jobik.shkiper.ui.components.fields.SearchBar(
                 isVisible = isSearchBarVisible.value,

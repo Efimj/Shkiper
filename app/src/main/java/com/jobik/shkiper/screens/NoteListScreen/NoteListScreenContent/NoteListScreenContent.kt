@@ -1,6 +1,7 @@
 package com.jobik.shkiper.screens.NoteListScreen.NoteListScreenContent
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -47,10 +48,16 @@ fun NoteListScreenContent(
             .background(AppTheme.colors.background)
             .scrollConnectionToProvideVisibility(visible = isSearchBarVisible)
     ) {
-        if (viewModel.screenState.value.isNotesInitialized && viewModel.screenState.value.notes.isEmpty())
-            ScreenContentIfNoData(title = R.string.EmptyNotesPageHeader, icon = Icons.Outlined.Description)
-        else
-            NotesListContent(viewModel, navController)
+        Crossfade(
+            targetState = viewModel.screenState.value.isNotesInitialized && viewModel.screenState.value.notes.isEmpty(),
+            label = "animation layouts screen"
+        ) { value ->
+            if (value) {
+                ScreenContentIfNoData(title = R.string.EmptyNotesPageHeader, icon = Icons.Outlined.Description)
+            } else {
+                NotesListContent(notesViewModel = viewModel, navController = navController)
+            }
+        }
         Box(modifier = Modifier) {
             SearchBar(
                 isVisible = viewModel.screenState.value.selectedNotes.isEmpty() && isSearchBarVisible.value,
