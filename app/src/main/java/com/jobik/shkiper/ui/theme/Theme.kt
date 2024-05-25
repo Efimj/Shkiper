@@ -18,13 +18,7 @@ fun ShkiperTheme(
     style: CustomThemeStyle = CustomThemeStyle.PastelPurple,
     content: @Composable () -> Unit
 ) {
-    val colors = when {
-        style == CustomThemeStyle.MaterialDynamicColors && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ->
-            getDynamicColors(darkTheme = darkTheme, context = LocalContext.current)
-
-        darkTheme -> style.dark
-        else -> style.light
-    }
+    val colors = getThemeColors(style = style, darkTheme = darkTheme)
 
     val view = LocalView.current
     if (!view.isInEditMode) {
@@ -47,4 +41,19 @@ fun ShkiperTheme(
             content = content
         )
     }
+}
+
+@Composable
+private fun getThemeColors(
+    style: CustomThemeStyle,
+    darkTheme: Boolean
+): CustomThemeColors {
+    val colors = when {
+        style == CustomThemeStyle.MaterialDynamicColors && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ->
+            getDynamicColors(darkTheme = darkTheme, context = LocalContext.current)
+
+        darkTheme -> style.dark
+        else -> style.light
+    }
+    return colors
 }

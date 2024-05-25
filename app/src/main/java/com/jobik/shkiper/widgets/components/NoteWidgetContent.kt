@@ -1,5 +1,7 @@
 package com.jobik.shkiper.widgets.components
 
+import android.content.Context
+import android.os.Build
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -21,7 +23,9 @@ import androidx.glance.text.*
 import com.jobik.shkiper.SharedPreferencesKeys
 import com.jobik.shkiper.activity.MainActivity
 import com.jobik.shkiper.helpers.DateHelper
+import com.jobik.shkiper.ui.theme.CustomThemeColors
 import com.jobik.shkiper.ui.theme.CustomThemeStyle
+import com.jobik.shkiper.ui.theme.getDynamicColors
 import com.jobik.shkiper.util.ThemeUtil
 import com.jobik.shkiper.widgets.WidgetKeys.Prefs.noteBody
 import com.jobik.shkiper.widgets.WidgetKeys.Prefs.noteHeader
@@ -29,13 +33,30 @@ import com.jobik.shkiper.widgets.WidgetKeys.Prefs.noteId
 import com.jobik.shkiper.widgets.WidgetKeys.Prefs.noteLastUpdate
 import java.time.LocalDateTime
 
+
+@Composable
+private fun getThemeColors(
+    style: CustomThemeStyle,
+    darkTheme: Boolean,
+    context: Context
+): CustomThemeColors {
+    val colors = when {
+        style == CustomThemeStyle.MaterialDynamicColors && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ->
+            getDynamicColors(darkTheme = darkTheme, context = context)
+
+        darkTheme -> style.dark
+        else -> style.light
+    }
+    return colors
+}
+
 @Composable
 fun NoteWidgetContent(prefs: Preferences) {
     ThemeUtil.restoreSavedTheme(LocalContext.current)
 
     val userStyles = ThemeUtil.themeStyle.value ?: CustomThemeStyle.PastelPurple
-    val darkColors = userStyles.dark
-    val lightColors = userStyles.light
+    val darkColors = getThemeColors(style = userStyles, darkTheme = true, LocalContext.current)
+    val lightColors = getThemeColors(style = userStyles, darkTheme = false, LocalContext.current)
 
     val noteId = prefs[noteId].orEmpty()
     val noteHeader = prefs[noteHeader].orEmpty()
@@ -63,10 +84,10 @@ fun NoteWidgetContent(prefs: Preferences) {
                     text = noteHeader,
                     modifier = GlanceModifier.openNote(noteId).fillMaxWidth().padding(horizontal = contentPadding),
                     style = TextStyle(
-                        color = ColorProvider(day = lightColors.primary, night = darkColors.primary),
+                        color = ColorProvider(day = lightColors.onSecondaryContainer, night = darkColors.onSecondaryContainer),
                         fontFamily = FontFamily("Roboto"),
                         fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                        fontWeight = FontWeight.Medium,
+                        fontWeight = FontWeight.Bold,
                         textAlign = TextAlign.Start
                     )
                 )
