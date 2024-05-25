@@ -54,6 +54,10 @@ fun TagEditor(
     val newSelectedTags = rememberSaveable(selectedTags) { mutableStateOf(selectedTags.toTagsString()) }
     val isChanged = selectedTags != newSelectedTags.value.toTagsSet()
 
+    LaunchedEffect(newSelectedTags.value){
+        onSave(newSelectedTags.value.toTagsSet())
+    }
+
     Column(modifier = modifier.clickable(
         interactionSource =  remember { MutableInteractionSource() }, // This is mandatory
         indication = null
@@ -79,7 +83,6 @@ fun TagEditor(
     }
 
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    val scope = rememberCoroutineScope()
 
     val topInsets = WindowInsets.systemBars.only(WindowInsetsSides.Top)
     val bottomInsets = WindowInsets.systemBars.only(WindowInsetsSides.Bottom)
@@ -144,17 +147,6 @@ fun TagEditor(
                         }
                     }
                 }
-                BottomBar(
-                    modifier = Modifier.windowInsetsPadding(bottomInsets),
-                    isVisible = isChanged
-                ) {
-                    scope.launch {
-                        sheetState.hide()
-                    }.invokeOnCompletion {
-                        editModeEnabled.value = false
-                        onSave(newSelectedTags.value.toTagsSet())
-                    }
-                }
             }
         }
     }
@@ -196,9 +188,6 @@ private fun TagsList(
     selectedTags: Set<String>,
     allTags: Set<String>,
 ) {
-    val contentBottomPaddingValue = if (isChanged) 80.dp else 30.dp
-    val contentBottomPadding = animateDpAsState(targetValue = contentBottomPaddingValue, label = "contentBottomPadding")
-
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -244,7 +233,7 @@ private fun TagsList(
                 newSelectedTags.value = it.toTagsString()
             }
         }
-        Spacer(modifier = Modifier.height(contentBottomPadding.value))
+        Spacer(modifier = Modifier.height(30.dp))
     }
 }
 
@@ -334,53 +323,6 @@ private fun addNewTag(
     inputString.value = ""
 }
 
-@Composable
-private fun BoxScope.BottomBar(modifier: Modifier, isVisible: Boolean, onCreateReminderClick: () -> Unit) {
-    Box(
-        modifier = modifier
-            .align(Alignment.BottomCenter)
-    ) {
-        AnimatedVisibility(
-            visible = isVisible,
-            enter = slideInVertically { it / 2 } + expandVertically(
-                expandFrom = Alignment.Top,
-                clip = false
-            ) + fadeIn(),
-            exit = slideOutVertically { -it / 2 } + shrinkVertically(
-                shrinkTowards = Alignment.Top,
-                clip = false
-            ) + fadeOut(),
-        )
-        {
-            Button(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 30.dp)
-                    .padding(bottom = 10.dp)
-                    .height(50.dp),
-                shape = AppTheme.shapes.small,
-                colors = ButtonDefaults.buttonColors(
-                    contentColor = AppTheme.colors.onPrimary,
-                    containerColor = AppTheme.colors.primary
-                ),
-                border = null,
-                elevation = null,
-                contentPadding = PaddingValues(horizontal = 15.dp),
-                onClick = onCreateReminderClick
-            ) {
-                Text(
-                    text = stringResource(R.string.SaveChanges),
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.SemiBold,
-                    color = AppTheme.colors.onPrimary,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
-        }
-    }
-}
-
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun TagGroup(
@@ -435,7 +377,7 @@ private fun TagsPresentation(
                 .fillMaxWidth()
                 .animateContentSize()
                 .clickable(
-                    interactionSource =  remember { MutableInteractionSource() }, // This is mandatory,
+                    interactionSource = remember { MutableInteractionSource() }, // This is mandatory,
                     indication = null
                 ) { setEditMode() },
             horizontalArrangement = Arrangement.spacedBy(8.dp),

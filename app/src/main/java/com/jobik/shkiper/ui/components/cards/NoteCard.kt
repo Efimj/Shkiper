@@ -171,6 +171,7 @@ private fun NoteContent(header: String?, text: RichTextState, headerStyle: TextS
             text = header,
             style = headerStyle,
             overflow = TextOverflow.Ellipsis,
+            color = AppTheme.colors.onSecondaryContainer,
             onTextLayout = { textLayoutResult: TextLayoutResult ->
                 headerLineCount = textLayoutResult.lineCount
             },
@@ -211,13 +212,15 @@ private fun NoteAnnotatedContent(
 
     if (!header.isNullOrBlank()) {
         Text(
-            text = buildAnnotatedString(header, markedText, AppTheme.colors.primary, Color.Transparent),
-            fontSize = headerStyle.fontSize,
-            fontStyle = headerStyle.fontStyle,
-            fontFamily = headerStyle.fontFamily,
-            fontWeight = headerStyle.fontWeight,
+            text = buildAnnotatedString(
+                text = header,
+                substring = markedText,
+                color = AppTheme.colors.primary,
+                background = Color.Transparent
+            ),
+            style = headerStyle,
             overflow = TextOverflow.Ellipsis,
-            color = headerStyle.color,
+            color = AppTheme.colors.text,
             onTextLayout = { textLayoutResult: TextLayoutResult ->
                 headerLineCount = textLayoutResult.lineCount
             },
@@ -225,19 +228,16 @@ private fun NoteAnnotatedContent(
         )
     }
     if (!isBodyEmpty && !header.isNullOrBlank())
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(4.dp))
     if (!isBodyEmpty) {
         Text(
             text = buildAnnotatedString(
-                removeMarkdownStyles(text.toMarkdown()),
-                markedText,
-                AppTheme.colors.primary,
-                Color.Transparent
+                text = removeMarkdownStyles(text.toMarkdown()),
+                substring = markedText,
+                color = AppTheme.colors.primary,
+                background = Color.Transparent
             ),
-            fontSize = bodyStyle.fontSize,
-            fontStyle = bodyStyle.fontStyle,
-            fontFamily = bodyStyle.fontFamily,
-            fontWeight = bodyStyle.fontWeight,
+            style = bodyStyle,
             overflow = TextOverflow.Ellipsis,
             color = AppTheme.colors.textSecondary,
             maxLines = maxBodyLines - headerLineCount,

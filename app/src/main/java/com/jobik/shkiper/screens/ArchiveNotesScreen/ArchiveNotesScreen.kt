@@ -1,6 +1,7 @@
 package com.jobik.shkiper.screens.ArchiveNotesScreen
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -48,10 +49,22 @@ fun ArchiveNotesScreen(navController: NavController, archiveViewModel: NotesView
             .fillMaxSize()
             .scrollConnectionToProvideVisibility(visible = isSearchBarVisible)
     ) {
-        if (archiveViewModel.screenState.value.isNotesInitialized && archiveViewModel.screenState.value.notes.isEmpty())
-            ScreenContentIfNoData(title = R.string.ArchiveNotesPageHeader, icon = Icons.Outlined.Inbox)
-        else
-            ScreenContent(lazyGridNotes, archiveViewModel, currentRoute, navController)
+
+        Crossfade(
+            targetState = archiveViewModel.screenState.value.isNotesInitialized && archiveViewModel.screenState.value.notes.isEmpty(),
+            label = "animation layouts screen"
+        ) { value ->
+            if (value) {
+                ScreenContentIfNoData(title = R.string.ArchiveNotesPageHeader, icon = Icons.Outlined.Inbox)
+            } else {
+                ScreenContent(
+                    lazyGridNotes = lazyGridNotes,
+                    notesViewModel = archiveViewModel,
+                    currentRoute = currentRoute,
+                    navController = navController
+                )
+            }
+        }
         Box(modifier = Modifier) {
             com.jobik.shkiper.ui.components.fields.SearchBar(
                 isVisible = archiveViewModel.screenState.value.selectedNotes.isEmpty() && isSearchBarVisible.value,

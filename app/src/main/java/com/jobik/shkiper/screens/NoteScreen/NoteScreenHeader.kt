@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.Surface
@@ -70,7 +71,7 @@ fun NoteScreenHeader(navController: NavController, noteViewModel: NoteViewModel,
                     backgroundColor = Color.Transparent,
                     contentColor = contentColor,
                     navigation = TopAppBarItem(
-                        icon = Icons.Default.ArrowBack,
+                        icon = Icons.AutoMirrored.Filled.ArrowBack,
                         iconDescription = R.string.GoBack,
                         modifier = Modifier.testTag("button_navigate_back"),
                         onClick = {
