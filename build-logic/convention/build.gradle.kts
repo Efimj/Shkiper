@@ -4,7 +4,7 @@ plugins {
     `kotlin-dsl`
 }
 
-group = "com.bqliang.gradleconventionplugins.buildlogic"
+group = "com.efim.shkiper.buildlogic"
 
 // Configure the build-logic plugins to target JDK 17
 // This matches the JDK used to build the project, and is not related to what is running on device.
@@ -19,16 +19,18 @@ tasks.withType<KotlinCompile>().configureEach {
 }
 
 dependencies {
-    compileOnly(libs.android.gradlePlugin)
-    compileOnly(libs.kotlin.gradlePlugin)
+    compileOnly(libs.agp.gradle)
+    compileOnly(libs.kotlin.gradle)
+    compileOnly(libs.detekt.gradle)
 }
+
 
 gradlePlugin {
     // register the convention plugin
     plugins {
-        register("androidLibrary") {
-            id = "bqliang.android.library"
-            implementationClass = "AndroidLibraryConventionPlugin"
+        register("shkiperLibraryPlugin") {
+            id = "efim.shkiper.library"
+            implementationClass = "ShkiperLibraryPlugin"
         }
     }
 }

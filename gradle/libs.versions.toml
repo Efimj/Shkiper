@@ -1,13 +1,28 @@
 [versions]
+androidMinSdk = "27"
+androidTargetSdk = "34"
+androidCompileSdk = "34"
 
-androidGradlePlugin = "8.1.4"
+jvmTarget = "17"
+compose-compiler = "1.5.3"
+
+composeVersion = "1.7.0-beta01"
+material3 = "1.2.1"
+detekt = "1.23.6"
+detektCompose = "0.4.1"
+
+agp = "8.1.4"
 kotlin = "1.9.10"
 
-
 [libraries]
-
 # Dependencies of the included build-logic
-android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
+kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+agp-gradle = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+androidx-material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
+detekt-gradle = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
+detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
+detekt-compose = { module = "io.nlopez.compose.rules:detekt", version.ref = "detektCompose" }
 
 [plugins]
+shkiper-library = { id = "efim.shkiper.library", version = "unspecified" }
