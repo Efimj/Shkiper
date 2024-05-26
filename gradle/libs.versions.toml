@@ -1,0 +1,13 @@
+[versions]
+
+androidGradlePlugin = "8.1.4"
+kotlin = "1.9.10"
+
+
+[libraries]
+
+# Dependencies of the included build-logic
+android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
+kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+
+[plugins]
