@@ -4,15 +4,15 @@ androidTargetSdk = "34"
 androidCompileSdk = "34"
 
 jvmTarget = "17"
-compose-compiler = "1.5.3"
+compose-compiler = "1.5.14"
 
 composeVersion = "1.7.0-beta01"
 material3 = "1.2.1"
 detekt = "1.23.6"
 detektCompose = "0.4.1"
 
-agp = "8.1.4"
-kotlin = "1.9.10"
+agp = "8.4.1"
+kotlin = "1.9.24"
 
 [libraries]
 # Dependencies of the included build-logic

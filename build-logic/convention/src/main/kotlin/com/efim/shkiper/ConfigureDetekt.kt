@@ -1,5 +1,6 @@
 package convention.src.main.kotlin.com.efim.shkiper
 
+import convention.src.main.kotlin.src.efim.shkiper.libs
 import io.gitlab.arturbosch.detekt.Detekt
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension
 import org.gradle.api.Project

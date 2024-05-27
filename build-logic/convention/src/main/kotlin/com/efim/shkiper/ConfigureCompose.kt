@@ -1,6 +1,7 @@
 package com.efim.shkiper
 
 import com.android.build.api.dsl.CommonExtension
+import convention.src.main.kotlin.com.efim.shkiper.kotlinOptions
 import convention.src.main.kotlin.src.efim.shkiper.libs
 import org.gradle.api.Project
 
@@ -15,6 +16,7 @@ internal fun Project.configureCompose(
         composeOptions {
             kotlinCompilerExtensionVersion = libs.findVersion("compose.compiler").get().toString()
         }
+
         kotlinOptions {
             freeCompilerArgs += listOf(
                 "-P",
