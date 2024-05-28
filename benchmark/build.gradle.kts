@@ -9,13 +9,15 @@ android {
     namespace = "com.notepad.macrobenchmark"
     compileSdk = 33
 
+    val javaVersion = JavaVersion.toVersion(libs.versions.jvmTarget.get())
+
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = javaVersion
+        targetCompatibility = javaVersion
     }
 
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = javaVersion.toString()
     }
 
     defaultConfig {

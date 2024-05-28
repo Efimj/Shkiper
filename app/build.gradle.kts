@@ -1,22 +1,25 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("dagger.hilt.android.plugin")
+    id("com.google.devtools.ksp")
     id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
     id("io.realm.kotlin")
     id("kotlin-parcelize")
 }
 
+val javaVersion = JavaVersion.toVersion(libs.versions.jvmTarget.get())
+
 android {
     namespace = "com.jobik.shkiper"
-    compileSdk = 34
+    compileSdk = libs.versions.androidCompileSdk.get().toIntOrNull()
 
     defaultConfig {
         applicationId = "com.jobik.shkiper"
-        minSdk = 27
-        targetSdk = 34
-        versionCode = 67
-        versionName = "1.8.4"
+        minSdk = libs.versions.androidMinSdk.get().toIntOrNull()
+        targetSdk = libs.versions.androidTargetSdk.get().toIntOrNull()
+        versionCode = libs.versions.versionCode.get().toIntOrNull()
+        versionName = libs.versions.versionName.get()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -29,7 +32,10 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = true
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
             ndk {
                 debugSymbolLevel = "FULL"
             }
@@ -52,12 +58,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = javaVersion
+        targetCompatibility = javaVersion
     }
 
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = javaVersion.toString()
     }
 
     buildFeatures {
@@ -69,25 +75,26 @@ android {
         kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
 
-    splits {
-        // Application Binary Interface
-        abi {
-            isEnable = true
-            reset()
-            include("armeabi-v7a", "arm64-v8a", "x86_64")
-            isUniversalApk = true
-        }
-    }
+//    splits {
+//        // Application Binary Interface
+//        abi {
+//            isEnable = true
+//            reset()
+//            include("armeabi-v7a", "arm64-v8a", "x86_64")
+//            isUniversalApk = true
+//        }
+//    }
 
-    packaging  {
+    packaging {
         resources {
             excludes.add("/META-INF/{AL2.0,LGPL2.1}")
         }
     }
 }
+
 val composeVersion by extra("1.5.4")
 val accompanistVersion by extra("0.32.0")
-val hiltVersion by extra("2.46")
+
 dependencies {
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
@@ -118,10 +125,11 @@ dependencies {
     // implementation("androidx.datastore:datastore-preferences:1.0.0")
 
     // Dagger - Hilt
-    implementation("com.google.dagger:hilt-android:${project.extra["hiltVersion"]}")
-    kapt("com.google.dagger:hilt-android-compiler:${project.extra["hiltVersion"]}")
-    kapt("androidx.hilt:hilt-compiler:1.0.0")
-    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+//    kapt("com.google.dagger:hilt-android-compiler:${project.extra["hiltVersion"]}")
+//    kapt("androidx.hilt:hilt-compiler:1.0.0")
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
+    implementation(libs.hilt)
+    kapt(libs.dagger.hilt.compiler)
 
     // Icons
     implementation("androidx.compose.material:material-icons-extended:${project.extra["composeVersion"]}")
@@ -133,8 +141,8 @@ dependencies {
     // implementation("androidx.compose.runtime:runtime-livedata:$compose_version")
 
     // Mongo Realm
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
-    implementation("io.realm.kotlin:library-base:1.8.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
+    implementation("io.realm.kotlin:library-base:1.16.0")
     // implementation("io.realm:realm-android-library:10.9.0")
 
     // Wheel DateTime picker

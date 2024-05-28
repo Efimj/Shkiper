@@ -20,17 +20,6 @@ internal fun Project.configureKotlinAndroid(
             minSdk = libs.findVersion("androidMinSdk").get().toString().toIntOrNull()
         }
 
-        flavorDimensions += "app"
-
-        productFlavors {
-            create("foss") {
-                dimension = "app"
-            }
-            create("market") {
-                dimension = "app"
-            }
-        }
-
         compileOptions {
             sourceCompatibility = javaVersion
             targetCompatibility = javaVersion
