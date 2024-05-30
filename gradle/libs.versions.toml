@@ -1,0 +1,101 @@
+[versions]
+accompanistSystemuicontroller = "0.32.0"
+activityCompose = "1.9.0"
+androidMinSdk = "27"
+androidTargetSdk = "34"
+androidCompileSdk = "34"
+
+appcompat = "1.6.1"
+appUpdateKtx = "2.1.0"
+billingKtx = "7.0.0"
+capturable = "1.0.3"
+coilCompose = "2.4.0"
+desugaring = "2.0.4"
+compose = "2.5.0"
+composecollapsingtoolbar = "1.0.8"
+coreKtx = "1.13.1"
+coreSplashscreen = "1.0.1"
+espressoCore = "3.5.1"
+glanceMaterial3 = "1.0.0"
+gson = "2.10.1"
+hiltNavigationCompose = "1.2.0"
+jsoup = "1.14.3"
+junit = "4.13.2"
+junitVersion = "1.1.5"
+kotlinxCoroutinesCore = "1.8.1"
+libraryBase = "1.16.0"
+lifecycleRuntimeKtx = "2.8.0"
+materialIconsExtended = "1.6.7"
+navigationRuntimeKtx = "2.7.7"
+realmGradlePlugin = "10.18.0"
+richeditorCompose = "1.0.0-rc05-k2"
+tedpermissionCoroutine = "3.3.0"
+uiTestManifest = "1.6.7"
+versionName = "1.8.4"
+versionCode = "67"
+
+jvmTarget = "17"
+compose-compiler = "1.5.14"
+
+composeVersion = "1.7.0-beta01"
+material3 = "1.2.1"
+detekt = "1.23.6"
+detektCompose = "0.4.1"
+
+agp = "8.4.1"
+kotlin = "1.9.24"
+hilt = "2.51.1"
+wheelpickercompose = "1.1.11"
+
+[libraries]
+# Dependencies of the included build-logic
+accompanist-pager-indicators = { module = "com.google.accompanist:accompanist-pager-indicators", version.ref = "accompanistSystemuicontroller" }
+accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanistSystemuicontroller" }
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
+androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
+androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
+androidx-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espressoCore" }
+androidx-glance-appwidget = { module = "androidx.glance:glance-appwidget", version.ref = "glanceMaterial3" }
+androidx-glance-material3 = { module = "androidx.glance:glance-material3", version.ref = "glanceMaterial3" }
+androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
+androidx-junit = { module = "androidx.test.ext:junit", version.ref = "junitVersion" }
+androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
+androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
+androidx-navigation-runtime-ktx = { module = "androidx.navigation:navigation-runtime-ktx", version.ref = "navigationRuntimeKtx" }
+androidx-ui = { module = "androidx.compose.ui:ui", version.ref = "uiTestManifest" }
+androidx-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "uiTestManifest" }
+androidx-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "uiTestManifest" }
+androidx-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "uiTestManifest" }
+androidx-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "uiTestManifest" }
+app-update = { module = "com.google.android.play:app-update", version.ref = "appUpdateKtx" }
+app-update-ktx = { module = "com.google.android.play:app-update-ktx", version.ref = "appUpdateKtx" }
+billing-ktx = { module = "com.android.billingclient:billing-ktx", version.ref = "billingKtx" }
+capturable = { module = "dev.shreyaspatil:capturable", version.ref = "capturable" }
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
+compose = { module = "com.kizitonwose.calendar:compose", version.ref = "compose" }
+composecollapsingtoolbar = { module = "com.github.GIGAMOLE:ComposeCollapsingToolbar", version.ref = "composecollapsingtoolbar" }
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
+junit = { module = "junit:junit", version.ref = "junit" }
+kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+agp-gradle = { module = "com.android.tools.build:gradle", version.ref = "agp" }
+androidx-material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
+detekt-gradle = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
+detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
+detekt-compose = { module = "io.nlopez.compose.rules:detekt", version.ref = "detektCompose" }
+hilt = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
+dagger-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt" }
+hilt-gradle = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hilt" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesCore" }
+library-base = { module = "io.realm.kotlin:library-base", version.ref = "libraryBase" }
+realm-gradle-plugin = { module = "io.realm:realm-gradle-plugin", version.ref = "realmGradlePlugin" }
+richeditor-compose = { module = "com.mohamedrejeb.richeditor:richeditor-compose", version.ref = "richeditorCompose" }
+tedpermission-coroutine = { module = "io.github.ParkSangGwon:tedpermission-coroutine", version.ref = "tedpermissionCoroutine" }
+wheelpickercompose = { module = "com.github.commandiron:WheelPickerCompose", version.ref = "wheelpickercompose" }
+desugaring = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugaring" }
+
+[plugins]
+shkiper-library = { id = "efim.shkiper.library", version = "unspecified" }
+shkiper-hilt = { id = "efim.shkiper.hilt", version = "unspecified" }
+shkiper-compose = { id = "efim.shkiper.compose", version = "unspecified" }
