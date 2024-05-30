@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--    Repeating   -->
+    <string name="none">Не повторювати</string>
+    <string name="daily">Кожен день</string>
+    <string name="weekly">Кожен тиждень</string>
+    <string name="monthly">Кожен місяць</string>
+    <string name="yearly">Кожен рік</string>
+
+
+    <!--    Expressions     -->
+    <!--    settings page   -->
+    <string name="ChoseLocalization">Локалізація</string>
+    <string name="AppDataPolitics">Ваші дані зберігаються виключно на вашому пристрої. Видалення даних програми може призвести до остаточної втрати даних. Щоб запобігти цьому, не забудьте зберегти файл даних перед виконанням скидання.</string>
+    <string name="Info">Інформація</string>
+    <string name="Information">Інформація</string>
+    <string name="Open">Відкрити</string>
+    <string name="OnboardingPage">Вступ</string>
+    <string name="Other">Інше</string>
+    <string name="Connect">Підключитися</string>
+    <string name="CloudStorage">Хмарне сховище</string>
+    <string name="Upload">Завантажити</string>
+    <string name="UploadNotes">Завантажити з телефону</string>
+    <string name="SaveAllNotesLocally">Зберегти локально</string>
+    <string name="Save">Зберегти</string>
+    <string name="Backup">Резервне копіювання</string>
+    <string name="ApplicationTheme">Тема</string>
+    <string name="LightTheme">Світла</string>
+    <string name="DarkTheme">Темна</string>
+    <string name="Application">Програма</string>
+    <string name="ApplicationColors">Кольори</string>
+    <string name="StatisticsPage">Статистика</string>
+
+
+    <!--    Onboarding page   -->
+    <string name="Back">Назад</string>
+    <string name="Finish">Завершити</string>
+    <string name="Next">Вперед</string>
+    <string name="PagerImage">Іконка</string>
+    <string name="Tags">Теги</string>
+    <string name="TagsDescription">Теги необхідні для швидкої фільтрації ваших нотаток, до кожної нотатки можна додати
+        кілька тегів.
+    </string>
+    <string name="AppDescription">Швидкий, простий та зручний блокнот.</string>
+    <string name="Reminders">Нагадування</string>
+    <string name="RemindersDescription">Нагадування дозволяють запланувати повідомлення про важливу подію у вказаний
+        день та час з вибраним інтервалом.
+    </string>
+    <string name="Themes">Теми</string>
+    <string name="ThemesDescription">Виберіть кольорову тему, яка особисто вам подобається найбільше.</string>
+
+    <!--    Nate page   -->
+    <string name="Header">Заголовок</string>
+    <string name="Text">Текст</string>
+    <string name="GoBack">Повернутись</string>
+    <string name="AttachNote">Прикріпити нотатку</string>
+    <string name="AddToNotification">Додати повідомлення</string>
+    <string name="AddToArchive">Перенести до архіву</string>
+    <string name="ChangedAt">Змінено в</string>
+    <string name="GoForward">Вперед</string>
+    <string name="AddToBasket">Перенести до видалених</string>
+    <string name="ShareNote">Поділитися нотаткою</string>
+
+    <!--    NateList page   -->
+    <string name="Pinned">Закріплені</string>
+
+    <!-- Other components -->
+    <string name="CreateNote">Створити нотатку</string>
+    <string name="Hashtags">Мітки</string>
+    <string name="Cancel">Скасувати</string>
+    <string name="HashtagExample">Напишіть мітки, наприклад. Дім Плани</string>
+    <string name="Delete">Видалити</string>
+    <string name="Reminder">Нагадування</string>
+    <string name="Event">Подія</string>
+    <string name="Schedule">Розклад</string>
+    <string name="Repeat">Повторити</string>
+    <string name="ErrorDateMastBeFuture">Дата має бути в майбутньому</string>
+    <string name="Menu">Меню</string>
+    <string name="Notes">Нотатки</string>
+    <string name="Archive">Архів</string>
+    <string name="Basket">Кошик</string>
+    <string name="Settings">Налаштування</string>
+    <string name="Clear">Очистити</string>
+    <string name="Search">Пошук</string>
+    <string name="Links">Посилання</string>
+    <string name="Hide">Приховати</string>
+    <string name="ShowAll">Показати все</string>
+    <string name="Link">Посилання</string>
+    <string name="LinkCopied">Посилання скопійоване</string>
+    <string name="LinkImage">Зображення посилання</string>
+    <string name="EmptyNote">Порожня примітка</string>
+    <string name="Loading">Завантаження</string>
+    <string name="Statistics">Статистика</string>
+    <string name="StatisticsImage">Зображення статистики</string>
+    <string name="Complete">Виконано</string>
+    <string name="Uncompleted">Невиконано</string>
+    <string name="DoneEmoji">✔️</string>
+    <string name="NotDoneEmoji">➖</string>
+    <string name="Saving">Збереження</string>
+    <string name="BackupCreated">Резервна копія створена</string>
+    <string name="BackupUploaded">Резервна копія завантажена</string>
+    <string name="UnspecifiedErrorOccurred">Виникла невизначена помилка</string>
+    <string name="CannotPerformedWithoutPermission">Не можна виконати операцію без дозволу</string>
+    <string name="EmptyNotesPageHeader">Тут будуть ваші нотатки.</string>
+    <string name="ArchiveNotesPageHeader">Заархівовані нотатки будуть тут.</string>
+    <string name="UnarchiveNotes">Розархівувати нотатки</string>
+    <string name="BasketNotesPageHeader">Кошик видалених нотаток.</string>
+    <string name="Restore">Відновити</string>
+    <string name="BasketPageHeader">Нотатки видаляються із кошика через 7 днів.</string>
+    <string name="DeleteSelectedNotesDialogText">Видалити виділені нотатки?</string>
+    <string name="DeleteNoteDialogText">Видалити нотатку?</string>
+    <string name="Confirm">Підтвердити</string>
+    <string name="NotesAreBeenDeleted">Нотатки видалено</string>
+    <string name="NoteAreBeenDeleted">Нотатку видалено</string>
+    <string name="NotesArchived">Нотатки переміщено до архіву</string>
+    <string name="NotesUnarchived">Нотатки розархівовано</string>
+    <string name="NoteArchived">Нотатку переміщено до архіву</string>
+    <string name="NoteUnarchived">Нотатку розархівовано</string>
+    <string name="NotesMovedToBasket">Нотатки переміщено до кошика</string>
+    <string name="NotesRestored">Нотатки відновлено</string>
+    <string name="DaysBeforeDeletingNote">Днів до видалення нотатки: </string>
+    <string name="DeleteForever">Видалити назавжди?</string>
+    <string name="RateTheApp">Оцініть Shkiper</string>
+    <string name="Image">Зображення</string>
+    <string name="OfferWriteReviewTitle">Подобається Shkiper?</string>
+    <string name="OfferWriteReviewDescription">Якщо у вас залишилося кілька хвилин, будь ласка, залиште свій відгук у Google Play Маркеті.</string>
+    <string name="Restart">Перезавантажити</string>
+    <string name="UpdateDownloaded">Оновлення завантажено</string>
+    <string name="Add">Додати</string>
+    <string name="SupportDevelopment">Підтримка розробки</string>
+    <string name="Donate">Спонсорувати</string>
+    <string name="Show">Показати</string>
+    <string name="PurchaseScreenTitle">Кожен внесок важливий!</string>
+    <string name="PurchaseScreenDescription">Ваша підтримка допомагає вдосконалити нашу програму. Приєднуйтесь до нас – зробіть пожертву та станьте частиною історії Shkiper!</string>
+    <string name="BuyMe">Купити мені</string>
+    <string name="BuySubscription">Купити підписку</string>
+    <string name="ItemAlreadyOwned">Цей товар вже придбано</string>
+    <string name="CheckInternetConnection">Перевірте підключення до Інтернету</string>
+    <string name="CheckUpdatesGooglePlay">Перевірити оновлення Google Play</string>
+    <string name="Close">Закрити</string>
+    <string name="DonateBannerHeader">Подобається Shkiper?</string>
+    <string name="DonateBannerBody">Підтримайте розробника монетою!</string>
+    <string name="AboutNotepad">Про Shkiper</string>
+    <string name="Support">Підтримати</string>
+    <string name="AboutAppDescription">Створюйте, упорядковуйте, запам’ятовуйте. Ваш ідеальний компаньйон для завдань, нотаток і нагадувань – простий, красивий і завжди під рукою.</string>
+    <string name="Contact">Зв\'язатися</string>
+    <string name="ChooseEmailClient">Виберіть поштовий клієнт:</string>
+    <string name="DevMailHeader">Привіт Юхим</string>
+
+    <!-- Statistics components -->
+    <string name="Thinker">Мислитель</string>
+    <string name="ThinkerDescription">Кількість відкриттів Shkiper</string>
+    <string name="Creator">Творець</string>
+    <string name="CreatorDescription">Кількість створених нотаток</string>
+    <string name="Eternal">Пунктуальність</string>
+    <string name="EternalDescription">Не хочеш забути? Створи нагадування. Кількість створених нагадувань</string>
+    <string name="Remembered">Завжди в курсі</string>
+    <string name="RememberedDescription">\"Дорогий, ти нічого не забув?\" - \"Ні.\" Кількість отриманих сповіщень</string>
+    <string name="FirstAppOpenDate">Перше відкриття</string>
+    <string name="FirstAppOpenDateDescription">Дата першого відкриття Shkiper</string>
+    <string name="Pioneer">Першопрохідець</string>
+    <string name="PioneerDescription">Встановити додаток до 01–01–2024</string>
+    <string name="TruthSeeker">Шукач істини</string>
+    <string name="TruthSeekerDescription">Відкрити сторінку про додаток</string>
+    <string name="NoteDestroyer">Знищувач нотаток</string>
+    <string name="NoteDestroyerDescription">Я тебе породив, я тебе й знищу! «Тарас Бульба». Кількість видалених нотаток</string>
+
+    <string name="ThankForPurchase1">Дякуємо, що вибрали нашу програму! Ваша підтримка дуже важлива для нас.</string>
+    <string name="ThankForPurchase2">Ми цінуємо вашу підтримку та довіру до нашого додатка. Дякуємо за покупку!</string>
+    <string name="ThankForPurchase3">Ваша підтримка — найкраща винагорода для нас. Дякуємо за покупку в нашому додатку!</string>
+
+    <string name="Efim">Юхим</string>
+    <string name="EfimDescription">Android/Web й більше..</string>
+    <string name="Annually">Щорічно</string>
+    <string name="Monthly">Щомісяця</string>
+    <string name="Localizers">Локалізатори</string>
+    <string name="Icons">Іконки</string>
+
+    <string name="Deleted">Видалено</string>
+    <string name="CreateWidget">Створити віджет</string>
+    <string name="Share">Поділитися</string>
+    <string name="MyStatsInShkiper">Моя статистика в Shkiper</string>
+
+    <string name="TurnOnNotifications">Увімкніть сповіщення в налаштуваннях вашого телефону</string>
+
+    <string name="InsertLink">Додати посилання</string>
+    <string name="ShareText">Поширити текстом</string>
+    <string name="ShareImage">Поширити як зображення</string>
+    <string name="ShareHTMLText">Поширити як HTML текст</string>
+    <string name="ShareMarkdownText">Поширити як markdown текст</string>
+
+    <string name="NeededPermissionForNotifications">Потрібно для надання дозволу на отримання сповіщень</string>
+    <string name="ImportantForRemindersWork">Це важливо, щоб нагадування працювали</string>
+    <string name="Enable">Увімкнути</string>
+    <string name="TextFormatting">Форматування тексту</string>
+    <string name="TextFormattingDescription">Висловіть своє творче бачення, надавши тексту стиль відповідно до свого смаку.</string>
+    <string name="StatisticsPageDescription">Статистика не має бути нудною; це теж може бути цікаво!</string>
+    <string name="Widgets">Віджети</string>
+    <string name="WidgetsDescription">Закріпіть нотатку на головному екрані, щоб вона завжди була видимою.</string>
+    <string name="MadeWithLove">Сподобалося?</string>
+    <string name="MadeWithLoveDescription">Розкажіть друзям про програму або підтримайте розробника доброю монетою.</string>
+    <string name="OpenSource">Відкритий код</string>
+    <string name="OpenSourceDescription">Shkiper є відкритим кодом, і весь код опубліковано на GitHub</string>
+
+    <string name="CreateReminder">Створити нагадування</string>
+    <string name="NoReminders">Немає нагадувань</string>
+    <string name="DisableLinkPreviews">Вимкнути попередній перегляд посилань</string>
+    <string name="EnableLinkPreviews">Увімкнути попередній перегляд посилань</string>
+    <string name="Apply">Застосувати</string>
+
+    <string name="SaveChanges">Зберегти зміни</string>
+    <string name="New">Нові</string>
+    <string name="All">Всі</string>
+    <string name="Selected">Вибрані</string>
+    <string name="EmptyTagsTitle">Теги ще не створені</string>
+
+    <string name="OtherMyApps">Інші мої застосунки</string>
+
+
+</resources>

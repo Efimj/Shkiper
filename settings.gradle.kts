@@ -1,5 +1,14 @@
 @file:Suppress("UnstableApiUsage")
 
+include(":core:resources")
+
+
+include(":core:ui")
+
+
+include(":ui")
+
+
 pluginManagement {
     repositories {
         includeBuild("build-logic")
@@ -18,7 +27,11 @@ dependencyResolutionManagement {
     }
 }
 
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 rootProject.name = "NotePadApp"
+
 include(":app")
+
 include(":benchmark")
 include(":feature:android-widgets")

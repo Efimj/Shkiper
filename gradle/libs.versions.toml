@@ -46,6 +46,10 @@ agp = "8.4.1"
 kotlin = "1.9.24"
 hilt = "2.51.1"
 wheelpickercompose = "1.1.11"
+agpVersion = "8.4.1"
+kotlinVersion = "1.9.0"
+material = "1.10.0"
+
 
 [libraries]
 # Dependencies of the included build-logic
@@ -94,6 +98,7 @@ richeditor-compose = { module = "com.mohamedrejeb.richeditor:richeditor-compose"
 tedpermission-coroutine = { module = "io.github.ParkSangGwon:tedpermission-coroutine", version.ref = "tedpermissionCoroutine" }
 wheelpickercompose = { module = "com.github.commandiron:WheelPickerCompose", version.ref = "wheelpickercompose" }
 desugaring = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugaring" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 [plugins]
 shkiper-library = { id = "efim.shkiper.library", version = "unspecified" }

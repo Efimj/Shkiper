@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Repeating -->
+
+
+    <string name="none">ไม่ทำซ้ำ</string>
+
+    <string name="daily">รายวัน</string>
+
+    <string name="weekly">รายสัปดาห์</string>
+
+    <string name="monthly">รายเดือน</string>
+
+    <string name="yearly">เป็นประจำทุกปี</string>
+
+    <!-- Expressions -->
+
+
+    <!-- settings page -->
+
+
+    <string name="ChoseLocalization">รองรับหลายภาษา</string>
+
+    <string name="AppDataPolitics">ข้อมูลของคุณจะถูกเก็บไว้เฉพาะในอุปกรณ์ของคุณ การลบข้อมูลแอปของคุณอาจทำให้ข้อมูลสูญหายอย่างถาวร เพื่อป้องกันสิ่งนี้ อย่าลืมบันทึกไฟล์ข้อมูลของคุณก่อนที่จะทำการรีเซ็ต</string>
+
+    <string name="Info">ข้อมูล</string>
+
+    <string name="Information">ข้อมูล</string>
+
+    <string name="Open">เปิด</string>
+
+    <string name="OnboardingPage">การเริ่มต้นใช้งาน</string>
+
+    <string name="Other">อื่น</string>
+
+    <string name="Connect">เชื่อมต่อ</string>
+
+    <string name="CloudStorage">การจัดเก็บเมฆ</string>
+
+    <string name="Upload">ที่อัพโหลด</string>
+
+    <string name="UploadNotes">อัปโหลดบันทึก</string>
+
+    <string name="SaveAllNotesLocally">บันทึกบันทึกทั้งหมดไว้ในเครื่อง</string>
+
+    <string name="Save">บันทึก</string>
+
+    <string name="Backup">สำรองข้อมูล</string>
+
+    <string name="ApplicationTheme">ธีม</string>
+
+    <string name="LightTheme">แสงสว่าง</string>
+
+    <string name="DarkTheme">มืด</string>
+
+    <string name="Application">แอปพลิเคชัน</string>
+
+    <string name="ApplicationColors">สี</string>
+
+    <string name="StatisticsPage">สถิติ</string>
+
+    <!-- Onboarding page -->
+
+
+    <string name="Back">กลับ</string>
+
+    <string name="Finish">เสร็จ</string>
+
+    <string name="Next">ต่อไป</string>
+
+    <string name="PagerImage">รูปภาพเพจเจอร์</string>
+
+    <string name="Tags">แท็ก</string>
+
+    <string name="TagsDescription">แท็กจำเป็นสำหรับการกรองบันทึกย่อของคุณอย่างรวดเร็ว คุณสามารถเพิ่มแท็กได้หลายแท็กในแต่ละบันทึก</string>
+
+    <string name="AppDescription">แผ่นจดบันทึกที่รวดเร็ว เรียบง่าย และสะดวกสบาย</string>
+
+    <string name="Reminders">การแจ้งเตือน</string>
+
+    <string name="RemindersDescription">การแจ้งเตือนช่วยให้คุณสามารถกำหนดเวลาการแจ้งเตือนสำหรับเหตุการณ์สำคัญตามวันและเวลาที่ระบุพร้อมช่วงเวลาที่เลือก</string>
+
+    <string name="Themes">ธีมส์</string>
+
+    <string name="ThemesDescription">เลือกธีมสีที่คุณชอบเป็นการส่วนตัวมากที่สุด</string>
+
+    <!-- Nate page -->
+
+
+    <string name="Header">หัวข้อ</string>
+
+    <string name="Text">ข้อความ</string>
+
+    <string name="GoBack">กลับไป</string>
+
+    <string name="AttachNote">แนบบันทึกย่อ</string>
+
+    <string name="AddToNotification">เพิ่มในการแจ้งเตือน</string>
+
+    <string name="AddToArchive">เพิ่มไปยังที่เก็บถาวร</string>
+
+    <string name="ChangedAt">เปลี่ยนที่</string>
+
+    <string name="GoForward">ไปข้างหน้า</string>
+
+    <string name="AddToBasket">เพิ่มในตะกร้า</string>
+
+    <string name="ShareNote">แบ่งปันบันทึก</string>
+
+    <!-- NateList page -->
+
+
+    <string name="Pinned">ปักหมุดแล้ว</string>
+
+    <!-- Other components -->
+
+
+    <string name="CreateNote">สร้างบันทึก</string>
+
+    <string name="Hashtags">แท็ก</string>
+
+    <string name="Cancel">ยกเลิก</string>
+
+    <string name="HashtagExample">เขียนแท็ก เช่น การบ้าน</string>
+
+    <string name="Delete">ลบ</string>
+
+    <string name="Reminder">คำเตือน</string>
+
+    <string name="Event">เหตุการณ์</string>
+
+    <string name="Schedule">กำหนดการ</string>
+
+    <string name="Repeat">ทำซ้ำ</string>
+
+    <string name="ErrorDateMastBeFuture">วันที่จะต้องอยู่ในอนาคต</string>
+
+    <string name="Menu">เมนู</string>
+
+    <string name="Notes">หมายเหตุ</string>
+
+    <string name="Archive">คลังเก็บเอกสารสำคัญ</string>
+
+    <string name="Basket">ตะกร้า</string>
+
+    <string name="Settings">การตั้งค่า</string>
+
+    <string name="Clear">ชัดเจน</string>
+
+    <string name="Search">ค้นหา</string>
+
+    <string name="Links">ลิงค์</string>
+
+    <string name="Hide">ซ่อน</string>
+
+    <string name="ShowAll">แสดงทั้งหมด</string>
+
+    <string name="Link">ลิงค์</string>
+
+    <string name="LinkCopied">คัดลอกลิงก์แล้ว</string>
+
+    <string name="LinkImage">ลิงค์รูปภาพ</string>
+
+    <string name="EmptyNote">บันทึกว่างเปล่า</string>
+
+    <string name="Loading">กำลังโหลด</string>
+
+    <string name="Statistics">สถิติ</string>
+
+    <string name="StatisticsImage">ภาพสถิติ</string>
+
+    <string name="Complete">สมบูรณ์</string>
+
+    <string name="Uncompleted">ยังไม่เสร็จ</string>
+
+    <string name="DoneEmoji">✔️</string>
+
+    <string name="NotDoneEmoji">➖</string>
+
+    <string name="Saving">ประหยัด</string>
+
+    <string name="BackupCreated">สร้างข้อมูลสำรองแล้ว</string>
+
+    <string name="BackupUploaded">อัปโหลดข้อมูลสำรองแล้ว</string>
+
+    <string name="UnspecifiedErrorOccurred">เกิดข้อผิดพลาดที่ไม่ได้ระบุ</string>
+
+    <string name="CannotPerformedWithoutPermission">ไม่สามารถทำได้โดยไม่ได้รับอนุญาต</string>
+
+    <string name="EmptyNotesPageHeader">บันทึกย่อที่คุณเพิ่มจะปรากฏที่นี่</string>
+
+    <string name="ArchiveNotesPageHeader">บันทึกย่อที่เก็บถาวรจะอยู่ที่นี่</string>
+
+    <string name="UnarchiveNotes">ยกเลิกการเก็บบันทึกย่อ</string>
+
+    <string name="BasketNotesPageHeader">ตะกร้าบันทึกย่อที่ถูกลบ</string>
+
+    <string name="Restore">คืนค่า</string>
+
+    <string name="BasketPageHeader">บันทึกจะถูกลบออกจากตะกร้าหลังจากผ่านไป 7 วัน</string>
+
+    <string name="DeleteSelectedNotesDialogText">ลบบันทึกที่เลือกใช่ไหม</string>
+
+    <string name="DeleteNoteDialogText">ลบบันทึกใช่ไหม</string>
+
+    <string name="Confirm">ยืนยัน</string>
+
+    <string name="NotesAreBeenDeleted">ลบบันทึกแล้ว</string>
+
+    <string name="NoteAreBeenDeleted">ลบบันทึกแล้ว</string>
+
+    <string name="NotesArchived">บันทึกย่อถูกย้ายไปยังที่เก็บถาวร</string>
+
+    <string name="NoteArchived">บันทึกถูกย้ายไปยังที่เก็บถาวรแล้ว</string>
+
+    <string name="NoteUnarchived">หมายเหตุไม่ได้เก็บถาวร</string>
+
+    <string name="NotesUnarchived">ยกเลิกการเก็บบันทึกย่อแล้ว</string>
+
+    <string name="NotesMovedToBasket">หมายเหตุย้ายลงตะกร้าแล้ว</string>
+
+    <string name="NotesRestored">กู้คืนบันทึกย่อแล้ว</string>
+
+    <string name="DaysBeforeDeletingNote">วันก่อนการลบบันทึก: </string>
+
+    <string name="DeleteForever">ลบถาวรใช่ไหม</string>
+
+    <string name="RateTheApp">ให้คะแนนชคิเปอร์</string>
+
+    <string name="Image">ภาพ</string>
+
+    <string name="OfferWriteReviewTitle">คุณชอบ Shkiper ไหม?</string>
+
+    <string name="OfferWriteReviewDescription">หากคุณเหลือเวลาไม่กี่นาที โปรดเขียนรีวิวของคุณใน Google Play Store</string>
+
+    <string name="Restart">เริ่มต้นใหม่</string>
+
+    <string name="UpdateDownloaded">ดาวน์โหลดอัปเดตแล้ว</string>
+
+    <string name="Add">เพิ่ม</string>
+
+    <string name="SupportDevelopment">รองรับการพัฒนา</string>
+
+    <string name="Donate">บริจาค</string>
+
+    <string name="Show">แสดง</string>
+
+    <string name="PurchaseScreenTitle">ทุกการมีส่วนร่วมมีความสำคัญ!</string>
+
+    <string name="PurchaseScreenDescription">การสนับสนุนของคุณช่วยปรับปรุงแอปพลิเคชันของเรา เข้าร่วมกับเรา – บริจาคเงินและเป็นส่วนหนึ่งของเรื่องราวของ Shkiper!</string>
+
+    <string name="BuyMe">ซื้อฉัน</string>
+
+    <string name="BuySubscription">ซื้อการสมัครสมาชิก</string>
+
+    <string name="ItemAlreadyOwned">ผลิตภัณฑ์นี้ได้ถูกซื้อไปแล้ว</string>
+
+    <string name="CheckInternetConnection">ตรวจสอบการเชื่อมต่ออินเทอร์เน็ต</string>
+
+    <string name="CheckUpdatesGooglePlay">ตรวจสอบการอัปเดต Google Play</string>
+
+    <string name="Close">ปิด</string>
+
+    <string name="DonateBannerHeader">คุณชอบ Shkiper ไหม?</string>
+
+    <string name="DonateBannerBody">สนับสนุนนักพัฒนาด้วยเหรียญ!</string>
+
+    <string name="AboutNotepad">เกี่ยวกับ ชคิเปอร์</string>
+
+    <string name="Support">สนับสนุน</string>
+
+    <string name="AboutAppDescription">สร้าง จัดระเบียบ จดจำ เพื่อนที่สมบูรณ์แบบของคุณสำหรับงาน บันทึกย่อ และการเตือนความจำ เรียบง่าย สวยงาม และพร้อมเสมอ</string>
+
+    <string name="Contact">ติดต่อ</string>
+
+    <string name="ChooseEmailClient">เลือกไคลเอนต์อีเมล:</string>
+
+    <string name="DevMailHeader">เฮย์ อีฟิม</string>
+
+    <!-- Statistics components -->
+
+
+    <string name="Thinker">นักคิด</string>
+
+    <string name="ThinkerDescription">จำนวนช่องเปิดของ Shkiper</string>
+
+    <string name="Creator">ผู้สร้าง</string>
+
+    <string name="CreatorDescription">จำนวนบันทึกที่สร้างขึ้น</string>
+
+    <string name="Eternal">ความตรงต่อเวลา</string>
+
+    <string name="EternalDescription">อย่าลืม? สร้างการช่วยเตือน จำนวนการแจ้งเตือนที่สร้างขึ้น</string>
+
+    <string name="Remembered">ทันสมัยอยู่เสมอ</string>
+
+    <string name="RememberedDescription">\"ที่รัก คุณลืมอะไรไปรึเปล่า?\" - \"ไม่\" จำนวนการแจ้งเตือนที่ได้รับ</string>
+
+    <string name="FirstAppOpenDate">เปิดครั้งแรก</string>
+
+    <string name="FirstAppOpenDateDescription">วันที่ Shkiper ถูกเปิดครั้งแรก</string>
+
+    <string name="Pioneer">ผู้บุกเบิก</string>
+
+    <string name="PioneerDescription">ติดตั้งแอปพลิเคชันก่อนวันที่ 01–01–2024</string>
+
+    <string name="TruthSeeker">ผู้แสวงหาความจริง</string>
+
+    <string name="TruthSeekerDescription">เปิดหน้าแอป</string>
+
+    <string name="NoteDestroyer">หมายเหตุ เรือพิฆาต</string>
+
+    <string name="NoteDestroyerDescription">ฉันให้กำเนิดคุณและฉันจะทำลายคุณ! “ทาราส บุลบา” จำนวนบันทึกย่อที่ถูกลบ</string>
+
+    <string name="ThankForPurchase1">ขอบคุณที่เลือกแอพของเรา! การสนับสนุนของคุณมีความหมายมากสำหรับเรา</string>
+
+    <string name="ThankForPurchase2">ขอขอบคุณสำหรับการสนับสนุนและความไว้วางใจในแอปของเรา ขอบคุณสำหรับการซื้อของคุณ!</string>
+
+    <string name="ThankForPurchase3">การสนับสนุนของคุณคือรางวัลที่ดีที่สุดสำหรับเรา ขอบคุณสำหรับการซื้อในแอพของเรา!</string>
+
+    <string name="Efim">อีฟิม</string>
+
+    <string name="EfimDescription">Android/เว็บและอื่นๆ..</string>
+
+    <string name="Annually">เป็นประจำทุกปี</string>
+
+    <string name="Monthly">รายเดือน</string>
+
+    <string name="Localizers">โลคัลไลเซอร์</string>
+
+    <string name="Icons">ไอคอน</string>
+
+    <string name="Deleted">ลบแล้ว</string>
+
+    <string name="CreateWidget">สร้างวิดเจ็ต</string>
+
+    <string name="Share">แบ่งปัน</string>
+
+    <string name="MyStatsInShkiper">สถิติของฉันใน Shkiper</string>
+
+    <string name="TurnOnNotifications">เปิดการแจ้งเตือนในการตั้งค่าโทรศัพท์ของคุณ</string>
+
+    <string name="InsertLink">ใส่ลิงค์</string>
+    <string name="ShareText">แบ่งปันข้อความ</string>
+    <string name="ShareImage">แบ่งปันภาพ</string>
+    <string name="ShareHTMLText">แบ่งปันเป็นข้อความ HTML</string>
+    <string name="ShareMarkdownText">แบ่งปันเป็นข้อความมาร์กดาวน์</string>
+
+    <string name="NeededPermissionForNotifications">จำเป็นต้องเปิดใช้งานการอนุญาตเพื่อรับการแจ้งเตือน</string>
+    <string name="ImportantForRemindersWork">นี่เป็นสิ่งสำคัญสำหรับการแจ้งเตือนให้ทำงาน</string>
+    <string name="Enable">เปิดใช้งาน</string>
+    <string name="TextFormatting">การจัดรูปแบบข้อความ</string>
+    <string name="TextFormattingDescription">แสดงวิสัยทัศน์ที่สร้างสรรค์ของคุณโดยกำหนดสไตล์ข้อความตามรสนิยมของคุณ</string>
+    <string name="StatisticsPageDescription">สถิติไม่จำเป็นต้องน่าเบื่อ มันก็น่าสนใจเหมือนกัน!</string>
+    <string name="Widgets">วิดเจ็ต</string>
+    <string name="WidgetsDescription">ปักหมุดบันทึกย่อไว้ที่หน้าจอหลักเพื่อให้มองเห็นได้เสมอ</string>
+    <string name="MadeWithLove">ชอบไหม?</string>
+    <string name="MadeWithLoveDescription">บอกเพื่อนของคุณเกี่ยวกับแอปหรือสนับสนุนนักพัฒนาด้วยเหรียญชนิดดี</string>
+    <string name="OpenSource">โอเพ่นซอร์ส</string>
+    <string name="OpenSourceDescription">Shkiper เป็นโอเพ่นซอร์ส และโค้ดทั้งหมดได้รับการเผยแพร่บน GitHub</string>
+
+    <string name="CreateReminder">สร้างการช่วยเตือน</string>
+    <string name="NoReminders">ไม่มีการช่วยเตือน</string>
+    <string name="DisableLinkPreviews">ปิดใช้งานการแสดงตัวอย่างลิงก์</string>
+    <string name="EnableLinkPreviews">เปิดใช้งานการแสดงตัวอย่างลิงก์</string>
+    <string name="Apply">นำมาใช้</string>
+
+    <string name="SaveChanges">บันทึกการเปลี่ยนแปลง</string>
+
+    <string name="New">ใหม่</string>
+
+    <string name="All">ทั้งหมด</string>
+
+    <string name="Selected">เลือกแล้ว</string>
+
+    <string name="EmptyTagsTitle">ยังไม่ได้สร้างแท็ก</string>
+
+    <string name="OtherMyApps">แอพอื่น ๆ ของฉัน</string>
+
+
+</resources>
