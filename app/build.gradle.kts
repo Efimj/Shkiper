@@ -60,6 +60,7 @@ android {
     compileOptions {
         sourceCompatibility = javaVersion
         targetCompatibility = javaVersion
+        isCoreLibraryDesugaringEnabled = true
     }
 
     kotlinOptions {
@@ -93,6 +94,8 @@ android {
 }
 
 dependencies {
+    coreLibraryDesugaring(libs.desugaring)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

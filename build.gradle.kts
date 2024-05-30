@@ -4,8 +4,11 @@ buildscript {
     val hiltVersion by extra("2.46")
 
     dependencies {
-        classpath("com.google.dagger:hilt-android-gradle-plugin:$hiltVersion")
+        classpath(libs.hilt.gradle)
         classpath(libs.realm.gradle.plugin)
+        classpath(libs.detekt.gradle)
+        classpath(libs.agp.gradle)
+        classpath(libs.kotlin.gradle)
     }
 }
 
