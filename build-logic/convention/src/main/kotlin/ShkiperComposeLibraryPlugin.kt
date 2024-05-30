@@ -1,5 +1,3 @@
-package convention.src.main.kotlin
-
 import com.android.build.api.dsl.LibraryExtension
 import com.efim.shkiper.configureCompose
 import convention.src.main.kotlin.src.efim.shkiper.libs
@@ -16,7 +14,6 @@ class ShkiperComposeLibraryPlugin : Plugin<Project> {
         with(target) {
             dependencies {
                 "implementation"(libs.findLibrary("androidx.material3").get())
-                "implementation"(libs.findLibrary("androidx.material").get())
                 "implementation"(libs.findLibrary("androidx.material.icons.extended").get())
             }
 

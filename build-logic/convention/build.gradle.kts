@@ -6,8 +6,7 @@ plugins {
 
 group = "com.efim.shkiper.buildlogic"
 
-// Configure the build-logic plugins to target JDK 17
-// This matches the JDK used to build the project, and is not related to what is running on device.
+// Configure the build-logic plugins to target JDK
 val javaVersion = JavaVersion.toVersion(libs.versions.jvmTarget.get())
 
 java {
@@ -27,7 +26,6 @@ dependencies {
     compileOnly(libs.detekt.gradle)
 }
 
-
 gradlePlugin {
     // register the convention plugin
     plugins {
@@ -36,8 +34,12 @@ gradlePlugin {
             implementationClass = "ShkiperLibraryPlugin"
         }
         register("shkiperLibraryHilt") {
-            id = "shkiper.hilt"
+            id = "efim.shkiper.hilt"
             implementationClass = "ShkiperLibraryHiltPlugin"
+        }
+        register("shkiperLibraryCompose") {
+            id = "efim.shkiper.compose"
+            implementationClass = "ShkiperComposeLibraryPlugin"
         }
     }
 }

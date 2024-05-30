@@ -23,7 +23,6 @@ internal fun Project.configureKotlinAndroid(
         compileOptions {
             sourceCompatibility = javaVersion
             targetCompatibility = javaVersion
-            isCoreLibraryDesugaringEnabled = true
         }
 
         buildFeatures {
@@ -58,16 +57,16 @@ internal fun Project.configureKotlinAndroid(
             )
             jvmTarget = javaVersion.toString()
         }
+
+        dependencies {
+            add("coreLibraryDesugaring", libs.findLibrary("desugaring").get())
+        }
     }
 
     tasks.withType<KotlinCompile>().configureEach {
         kotlinOptions {
             jvmTarget = javaVersion.toString()
         }
-    }
-
-    dependencies {
-        add("coreLibraryDesugaring", libs.findLibrary("desugaring").get())
     }
 }
 

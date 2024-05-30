@@ -10,6 +10,7 @@ appUpdateKtx = "2.1.0"
 billingKtx = "7.0.0"
 capturable = "1.0.3"
 coilCompose = "2.4.0"
+desugaring = "2.0.4"
 compose = "2.5.0"
 composecollapsingtoolbar = "1.0.8"
 coreKtx = "1.13.1"
@@ -91,7 +92,9 @@ realm-gradle-plugin = { module = "io.realm:realm-gradle-plugin", version.ref = "
 richeditor-compose = { module = "com.mohamedrejeb.richeditor:richeditor-compose", version.ref = "richeditorCompose" }
 tedpermission-coroutine = { module = "io.github.ParkSangGwon:tedpermission-coroutine", version.ref = "tedpermissionCoroutine" }
 wheelpickercompose = { module = "com.github.commandiron:WheelPickerCompose", version.ref = "wheelpickercompose" }
+desugaring = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugaring" }
 
 [plugins]
 shkiper-library = { id = "efim.shkiper.library", version = "unspecified" }
-shkiper-hilt = { id = "shkiper.hilt", version = "unspecified" }
+shkiper-hilt = { id = "efim.shkiper.hilt", version = "unspecified" }
+shkiper-compose = { id = "efim.shkiper.compose", version = "unspecified" }

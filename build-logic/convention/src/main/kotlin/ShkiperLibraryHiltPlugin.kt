@@ -1,5 +1,3 @@
-package convention.src.main.kotlin
-
 import convention.src.main.kotlin.src.efim.shkiper.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
