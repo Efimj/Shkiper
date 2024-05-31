@@ -1,5 +1,17 @@
 @file:Suppress("UnstableApiUsage")
 
+include(":core:helper")
+
+
+include(":core:domain")
+
+
+include(":feature:notifications")
+
+
+include(":core:database")
+
+
 include(":core:resources")
 
 

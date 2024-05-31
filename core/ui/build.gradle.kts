@@ -14,4 +14,7 @@ dependencies {
 
     // Customize Calendar
     implementation(libs.compose)
+
+    // JSON serialization
+    implementation(libs.gson)
 }

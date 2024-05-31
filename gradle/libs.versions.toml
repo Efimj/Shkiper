@@ -50,7 +50,6 @@ agpVersion = "8.4.1"
 kotlinVersion = "1.9.0"
 material = "1.10.0"
 
-
 [libraries]
 # Dependencies of the included build-logic
 accompanist-pager-indicators = { module = "com.google.accompanist:accompanist-pager-indicators", version.ref = "accompanistSystemuicontroller" }
