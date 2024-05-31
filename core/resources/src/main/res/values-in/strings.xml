@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Repeating -->
+
+
+    <string name="none">Tidak mengulangi</string>
+
+    <string name="daily">Sehari-hari</string>
+
+    <string name="weekly">Mingguan</string>
+
+    <string name="monthly">Bulanan</string>
+
+    <string name="yearly">Tahunan</string>
+
+    <!-- Expressions -->
+
+
+    <!-- settings page -->
+
+
+    <string name="ChoseLocalization">Lokalisasi</string>
+
+    <string name="AppDataPolitics">Data Anda disimpan secara eksklusif di perangkat Anda. Menghapus data aplikasi Anda dapat menyebabkan hilangnya data secara permanen. Untuk mencegah hal ini, ingatlah untuk menyimpan file data Anda sebelum melakukan reset.</string>
+
+    <string name="Info">Informasi</string>
+
+    <string name="Information">Informasi</string>
+
+    <string name="Open">Membuka</string>
+
+    <string name="OnboardingPage">Orientasi</string>
+
+    <string name="Other">Lainnya</string>
+
+    <string name="Connect">Menghubung</string>
+
+    <string name="CloudStorage">Penyimpanan awan</string>
+
+    <string name="Upload">Mengunggah</string>
+
+    <string name="UploadNotes">Unggah catatan</string>
+
+    <string name="SaveAllNotesLocally">Simpan semua catatan secara lokal</string>
+
+    <string name="Save">Menyimpan</string>
+
+    <string name="Backup">Cadangan</string>
+
+    <string name="ApplicationTheme">Tema</string>
+
+    <string name="LightTheme">Lampu</string>
+
+    <string name="DarkTheme">Gelap</string>
+
+    <string name="Application">Aplikasi</string>
+
+    <string name="ApplicationColors">Warna</string>
+
+    <string name="StatisticsPage">Statistik</string>
+
+    <!-- Onboarding page -->
+
+
+    <string name="Back">Kembali</string>
+
+    <string name="Finish">Menyelesaikan</string>
+
+    <string name="Next">Berikutnya</string>
+
+    <string name="PagerImage">Gambar Pager</string>
+
+    <string name="Tags">Tag</string>
+
+    <string name="TagsDescription">Tag diperlukan untuk memfilter catatan Anda dengan cepat, beberapa tag dapat ditambahkan ke setiap catatan.</string>
+
+    <string name="AppDescription">Notepad yang cepat, sederhana, dan nyaman.</string>
+
+    <string name="Reminders">Pengingat</string>
+
+    <string name="RemindersDescription">Pengingat memungkinkan Anda menjadwalkan pemberitahuan acara penting pada hari dan waktu tertentu, dengan interval yang dipilih.</string>
+
+    <string name="Themes">Tema</string>
+
+    <string name="ThemesDescription">Pilih tema warna yang paling Anda sukai secara pribadi.</string>
+
+    <!-- Nate page -->
+
+
+    <string name="Header">Tajuk</string>
+
+    <string name="Text">Teks</string>
+
+    <string name="GoBack">Kembali</string>
+
+    <string name="AttachNote">Lampirkan catatan</string>
+
+    <string name="AddToNotification">Tambahkan ke notifikasi</string>
+
+    <string name="AddToArchive">Tambahkan ke Arsip</string>
+
+    <string name="ChangedAt">Berubah pada</string>
+
+    <string name="GoForward">Maju</string>
+
+    <string name="AddToBasket">Tambahkan ke Keranjang</string>
+
+    <string name="ShareNote">Bagikan catatan</string>
+
+    <!-- NateList page -->
+
+
+    <string name="Pinned">Disematkan</string>
+
+    <!-- Other components -->
+
+
+    <string name="CreateNote">Buat catatan</string>
+
+    <string name="Hashtags">Tag</string>
+
+    <string name="Cancel">Membatalkan</string>
+
+    <string name="HashtagExample">Tulis tag, mis. Pekerjaan rumah</string>
+
+    <string name="Delete">Menghapus</string>
+
+    <string name="Reminder">Pengingat</string>
+
+    <string name="Event">Peristiwa</string>
+
+    <string name="Schedule">Jadwal</string>
+
+    <string name="Repeat">Mengulang</string>
+
+    <string name="ErrorDateMastBeFuture">Tanggalnya harus di masa depan</string>
+
+    <string name="Menu">Menu</string>
+
+    <string name="Notes">Catatan</string>
+
+    <string name="Archive">Arsip</string>
+
+    <string name="Basket">Keranjang</string>
+
+    <string name="Settings">Pengaturan</string>
+
+    <string name="Clear">Jernih</string>
+
+    <string name="Search">Mencari</string>
+
+    <string name="Links">Tautan</string>
+
+    <string name="Hide">Bersembunyi</string>
+
+    <string name="ShowAll">Tunjukkan semua</string>
+
+    <string name="Link">Tautan</string>
+
+    <string name="LinkCopied">Tautan disalin</string>
+
+    <string name="LinkImage">Tautan gambar</string>
+
+    <string name="EmptyNote">Catatan kosong</string>
+
+    <string name="Loading">Memuat</string>
+
+    <string name="Statistics">Statistik</string>
+
+    <string name="StatisticsImage">Gambar statistik</string>
+
+    <string name="Complete">Lengkap</string>
+
+    <string name="Uncompleted">Belum selesai</string>
+
+    <string name="DoneEmoji">✔️</string>
+
+    <string name="NotDoneEmoji">➖</string>
+
+    <string name="Saving">Penghematan</string>
+
+    <string name="BackupCreated">Cadangan dibuat</string>
+
+    <string name="BackupUploaded">Cadangan diunggah</string>
+
+    <string name="UnspecifiedErrorOccurred">Terjadi kesalahan yang tidak ditentukan</string>
+
+    <string name="CannotPerformedWithoutPermission">Tidak dapat dilakukan tanpa izin</string>
+
+    <string name="EmptyNotesPageHeader">Catatan yang Anda tambahkan muncul di sini.</string>
+
+    <string name="ArchiveNotesPageHeader">Catatan yang diarsipkan akan ada di sini.</string>
+
+    <string name="UnarchiveNotes">Batalkan pengarsipan catatan</string>
+
+    <string name="BasketNotesPageHeader">Keranjang catatan yang dihapus.</string>
+
+    <string name="Restore">Memulihkan</string>
+
+    <string name="BasketPageHeader">Catatan dikeluarkan dari keranjang setelah 7 hari.</string>
+
+    <string name="DeleteSelectedNotesDialogText">Hapus catatan yang dipilih?</string>
+
+    <string name="DeleteNoteDialogText">Hapus catatan?</string>
+
+    <string name="Confirm">Mengonfirmasi</string>
+
+    <string name="NotesAreBeenDeleted">Catatan telah dihapus</string>
+
+    <string name="NoteAreBeenDeleted">Catatan telah dihapus</string>
+
+    <string name="NotesArchived">Catatan dipindahkan ke arsip</string>
+
+    <string name="NoteArchived">Catatan dipindahkan ke arsip</string>
+
+    <string name="NoteUnarchived">Catatan tidak diarsipkan</string>
+
+    <string name="NotesUnarchived">Catatan tidak diarsipkan</string>
+
+    <string name="NotesMovedToBasket">Catatan dipindahkan ke keranjang</string>
+
+    <string name="NotesRestored">Catatan dipulihkan</string>
+
+    <string name="DaysBeforeDeletingNote">Hari sebelum menghapus catatan: </string>
+
+    <string name="DeleteForever">Hapus selamanya?</string>
+
+    <string name="RateTheApp">Nilai Shkiper</string>
+
+    <string name="Image">Gambar</string>
+
+    <string name="OfferWriteReviewTitle">Apakah kamu suka Shkiper?</string>
+
+    <string name="OfferWriteReviewDescription">Jika Anda punya waktu beberapa menit lagi, silakan tinggalkan ulasan Anda di Google Play Store.</string>
+
+    <string name="Restart">Mengulang kembali</string>
+
+    <string name="UpdateDownloaded">Pembaruan diunduh</string>
+
+    <string name="Add">Menambahkan</string>
+
+    <string name="SupportDevelopment">Mendukung pengembangan</string>
+
+    <string name="Donate">Menyumbangkan</string>
+
+    <string name="Show">Menunjukkan</string>
+
+    <string name="PurchaseScreenTitle">Setiap kontribusi penting!</string>
+
+    <string name="PurchaseScreenDescription">Dukungan Anda membantu meningkatkan aplikasi kami. Bergabunglah dengan kami – berikan donasi dan jadilah bagian dari kisah Shkiper!</string>
+
+    <string name="BuyMe">Belikan aku</string>
+
+    <string name="BuySubscription">Beli langganan</string>
+
+    <string name="ItemAlreadyOwned">Produk ini telah dibeli</string>
+
+    <string name="CheckInternetConnection">Periksa koneksi internet</string>
+
+    <string name="CheckUpdatesGooglePlay">Periksa pembaruan Google Play</string>
+
+    <string name="Close">Menutup</string>
+
+    <string name="DonateBannerHeader">Apakah Anda menyukai Shkipernya?</string>
+
+    <string name="DonateBannerBody">Dukung pengembang dengan koin!</string>
+
+    <string name="AboutNotepad">Tentang Shkiper</string>
+
+    <string name="Support">Mendukung</string>
+
+    <string name="AboutAppDescription">Buat, atur, ingat. Teman sempurna Anda untuk tugas, catatan, dan pengingat – sederhana, cantik, dan selalu siap sedia.</string>
+
+    <string name="Contact">Kontak</string>
+
+    <string name="ChooseEmailClient">Pilih klien Email:</string>
+
+    <string name="DevMailHeader">Hay Efim</string>
+
+    <!-- Statistics components -->
+
+
+    <string name="Thinker">Pemikir</string>
+
+    <string name="ThinkerDescription">Jumlah bukaan Shkiper</string>
+
+    <string name="Creator">Pencipta</string>
+
+    <string name="CreatorDescription">Jumlah catatan yang dibuat</string>
+
+    <string name="Eternal">Ketepatan waktu</string>
+
+    <string name="EternalDescription">Jangan lupa? Buat pengingat. Jumlah pengingat yang dibuat</string>
+
+    <string name="Remembered">Selalu terkini</string>
+
+    <string name="RememberedDescription">\"Sayang, apakah kamu lupa sesuatu?\" - \"Tidak.\" Jumlah notifikasi yang diterima</string>
+
+    <string name="FirstAppOpenDate">Pembukaan pertama</string>
+
+    <string name="FirstAppOpenDateDescription">Tanggal Shkiper pertama kali dibuka</string>
+
+    <string name="Pioneer">Pelopor</string>
+
+    <string name="PioneerDescription">Instal aplikasi sebelum 01–01–2024</string>
+
+    <string name="TruthSeeker">Pencari kebenaran</string>
+
+    <string name="TruthSeekerDescription">Buka halaman aplikasi</string>
+
+    <string name="NoteDestroyer">Catatan perusak</string>
+
+    <string name="NoteDestroyerDescription">Aku melahirkanmu dan aku akan menghancurkanmu! \"Taras Bulba\". Jumlah catatan yang dihapus</string>
+
+    <string name="ThankForPurchase1">Terima kasih telah memilih aplikasi kami! Dukungan Anda sangat berarti bagi kami.</string>
+
+    <string name="ThankForPurchase2">Kami menghargai dukungan dan kepercayaan Anda pada aplikasi kami. Terima kasih atas pembelian Anda!</string>
+
+    <string name="ThankForPurchase3">Dukungan Anda adalah hadiah terbaik bagi kami. Terima kasih telah membeli di aplikasi kami!</string>
+
+    <string name="Efim">Efim</string>
+
+    <string name="EfimDescription">Android/Web dan banyak lagi..</string>
+
+    <string name="Annually">Setiap tahun</string>
+
+    <string name="Monthly">Bulanan</string>
+
+    <string name="Localizers">Pelokalan</string>
+
+    <string name="Icons">Ikon</string>
+
+    <string name="Deleted">Dihapus</string>
+
+    <string name="CreateWidget">Buat widget</string>
+
+    <string name="Share">Membagikan</string>
+
+    <string name="MyStatsInShkiper">Statistik saya di Shkiper</string>
+
+    <string name="TurnOnNotifications">Aktifkan pemberitahuan di pengaturan telepon Anda</string>
+
+    <string name="InsertLink">Sisipkan tautan</string>
+    <string name="ShareText">Bagikan teks</string>
+    <string name="ShareImage">Bagikan gambar</string>
+    <string name="ShareHTMLText">Bagikan sebagai teks HTML</string>
+    <string name="ShareMarkdownText">Bagikan sebagai teks penurunan harga</string>
+
+    <string name="NeededPermissionForNotifications">Diperlukan untuk mengaktifkan izin untuk menerima notifikasi</string>
+    <string name="ImportantForRemindersWork">Ini penting agar pengingat berfungsi</string>
+    <string name="Enable">Memungkinkan</string>
+    <string name="TextFormatting">Pemformatan teks</string>
+    <string name="TextFormattingDescription">Ekspresikan visi kreatif Anda dengan memberi gaya pada teks sesuai selera Anda.</string>
+    <string name="StatisticsPageDescription">Statistik tidak harus membosankan; itu bisa menarik juga!</string>
+    <string name="Widgets">Widget</string>
+    <string name="WidgetsDescription">Sematkan catatan ke layar utama agar selalu terlihat.</string>
+    <string name="MadeWithLove">Menyukai?</string>
+    <string name="MadeWithLoveDescription">Beri tahu teman Anda tentang aplikasi tersebut atau dukung pengembang dengan koin sejenis.</string>
+    <string name="OpenSource">Sumber Terbuka</string>
+    <string name="OpenSourceDescription">Shkiper adalah sumber terbuka, dan seluruh kode dipublikasikan di GitHub</string>
+
+    <string name="CreateReminder">Buat pengingat</string>
+    <string name="NoReminders">Tidak ada pengingat</string>
+    <string name="DisableLinkPreviews">Nonaktifkan pratinjau tautan</string>
+    <string name="EnableLinkPreviews">Aktifkan pratinjau tautan</string>
+    <string name="Apply">Menerapkan</string>
+
+    <string name="SaveChanges">Simpan perubahan</string>
+
+    <string name="New">Baru</string>
+
+    <string name="All">Semua</string>
+
+    <string name="Selected">Terpilih</string>
+
+    <string name="EmptyTagsTitle">Tag belum dibuat</string>
+
+    <string name="OtherMyApps">Aplikasi saya lainnya</string>
+
+
+</resources>

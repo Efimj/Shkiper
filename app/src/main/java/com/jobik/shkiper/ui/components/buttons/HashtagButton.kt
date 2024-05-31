@@ -17,7 +17,12 @@ import androidx.compose.ui.unit.dp
 import com.jobik.shkiper.ui.theme.AppTheme
 
 @Composable
-fun HashtagButton(text: String, selected: Boolean = false, onClick: (String) -> Unit) {
+fun HashtagButton(
+    modifier: Modifier = Modifier,
+    text: String,
+    selected: Boolean = false,
+    onClick: (String) -> Unit
+) {
     val buttonContentColor: Color by animateColorAsState(
         targetValue = if (selected) AppTheme.colors.onPrimary else AppTheme.colors.text,
         label = "buttonContentColor"
@@ -29,6 +34,7 @@ fun HashtagButton(text: String, selected: Boolean = false, onClick: (String) -> 
     )
 
     Card(
+        modifier = modifier,
         onClick = { onClick(text) },
         shape = RoundedCornerShape(10.dp),
         colors = CardDefaults.cardColors(

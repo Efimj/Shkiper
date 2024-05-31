@@ -18,7 +18,18 @@ dependencyResolutionManagement {
     }
 }
 
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 rootProject.name = "NotePadApp"
+
 include(":app")
+
 include(":benchmark")
 include(":feature:android-widgets")
+include(":core:helper")
+include(":core:domain")
+include(":feature:notifications")
+include(":core:database")
+include(":core:resources")
+include(":core:ui")
+include(":ui")

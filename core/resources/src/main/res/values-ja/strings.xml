@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Repeating -->
+
+
+    <string name="none">繰り返さない</string>
+
+    <string name="daily">毎日</string>
+
+    <string name="weekly">毎週</string>
+
+    <string name="monthly">毎月</string>
+
+    <string name="yearly">毎年</string>
+
+    <!-- Expressions -->
+
+
+    <!-- settings page -->
+
+
+    <string name="ChoseLocalization">ローカリゼーション</string>
+
+    <string name="AppDataPolitics">データはデバイスにのみ保存されます。アプリのデータを削除すると、データが永久に失われる可能性があります。これを防ぐには、リセットを実行する前に必ずデータ ファイルを保存してください。</string>
+
+    <string name="Info">情報</string>
+
+    <string name="Information">情報</string>
+
+    <string name="Open">開ける</string>
+
+    <string name="OnboardingPage">オンボーディング</string>
+
+    <string name="Other">他の</string>
+
+    <string name="Connect">接続する</string>
+
+    <string name="CloudStorage">クラウドストレージ</string>
+
+    <string name="Upload">アップロード</string>
+
+    <string name="UploadNotes">メモをアップロードする</string>
+
+    <string name="SaveAllNotesLocally">すべてのメモをローカルに保存する</string>
+
+    <string name="Save">保存</string>
+
+    <string name="Backup">バックアップ</string>
+
+    <string name="ApplicationTheme">テーマ</string>
+
+    <string name="LightTheme">ライト</string>
+
+    <string name="DarkTheme">暗い</string>
+
+    <string name="Application">応用</string>
+
+    <string name="ApplicationColors">色</string>
+
+    <string name="StatisticsPage">統計</string>
+
+    <!-- Onboarding page -->
+
+
+    <string name="Back">戻る</string>
+
+    <string name="Finish">仕上げる</string>
+
+    <string name="Next">次</string>
+
+    <string name="PagerImage">ポケベル画像</string>
+
+    <string name="Tags">タグ</string>
+
+    <string name="TagsDescription">タグはメモをすばやくフィルタリングするために必要です。各メモに複数のタグを追加できます。</string>
+
+    <string name="AppDescription">速くて、シンプルで、便利なメモ帳。</string>
+
+    <string name="Reminders">リマインダー</string>
+
+    <string name="RemindersDescription">リマインダーを使用すると、選択した間隔で、指定した日時に重要なイベントの通知をスケジュールできます。</string>
+
+    <string name="Themes">テーマ</string>
+
+    <string name="ThemesDescription">個人的に最も好きなカラーテーマを選択してください。</string>
+
+    <!-- Nate page -->
+
+
+    <string name="Header">ヘッダ</string>
+
+    <string name="Text">文章</string>
+
+    <string name="GoBack">戻る</string>
+
+    <string name="AttachNote">メモを添付する</string>
+
+    <string name="AddToNotification">通知に追加</string>
+
+    <string name="AddToArchive">アーカイブに加える</string>
+
+    <string name="ChangedAt">に変更されました</string>
+
+    <string name="GoForward">前進する</string>
+
+    <string name="AddToBasket">バスケットに追加</string>
+
+    <string name="ShareNote">メモを共有する</string>
+
+    <!-- NateList page -->
+
+
+    <string name="Pinned">固定された</string>
+
+    <!-- Other components -->
+
+
+    <string name="CreateNote">メモを作成する</string>
+
+    <string name="Hashtags">タグ</string>
+
+    <string name="Cancel">キャンセル</string>
+
+    <string name="HashtagExample">タグを書きます。宿題</string>
+
+    <string name="Delete">消去</string>
+
+    <string name="Reminder">リマインダー</string>
+
+    <string name="Event">イベント</string>
+
+    <string name="Schedule">スケジュール</string>
+
+    <string name="Repeat">繰り返す</string>
+
+    <string name="ErrorDateMastBeFuture">日付は将来のものである必要があります</string>
+
+    <string name="Menu">メニュー</string>
+
+    <string name="Notes">ノート</string>
+
+    <string name="Archive">アーカイブ</string>
+
+    <string name="Basket">バスケット</string>
+
+    <string name="Settings">設定</string>
+
+    <string name="Clear">クリア</string>
+
+    <string name="Search">検索</string>
+
+    <string name="Links">リンク</string>
+
+    <string name="Hide">隠れる</string>
+
+    <string name="ShowAll">すべて表示する</string>
+
+    <string name="Link">リンク</string>
+
+    <string name="LinkCopied">リンクがコピーされました</string>
+
+    <string name="LinkImage">リンク画像</string>
+
+    <string name="EmptyNote">空のメモ</string>
+
+    <string name="Loading">読み込み中</string>
+
+    <string name="Statistics">統計</string>
+
+    <string name="StatisticsImage">統計画像</string>
+
+    <string name="Complete">完了しました</string>
+
+    <string name="Uncompleted">未完成</string>
+
+    <string name="DoneEmoji">✔️</string>
+
+    <string name="NotDoneEmoji">➖</string>
+
+    <string name="Saving">保存</string>
+
+    <string name="BackupCreated">バックアップが作成されました</string>
+
+    <string name="BackupUploaded">バックアップがアップロードされました</string>
+
+    <string name="UnspecifiedErrorOccurred">不特定のエラーが発生しました</string>
+
+    <string name="CannotPerformedWithoutPermission">許可なく実行することはできません</string>
+
+    <string name="EmptyNotesPageHeader">追加したメモがここに表示されます。</string>
+
+    <string name="ArchiveNotesPageHeader">アーカイブされたメモはここにあります。</string>
+
+    <string name="UnarchiveNotes">メモのアーカイブを解除する</string>
+
+    <string name="BasketNotesPageHeader">削除されたメモのバスケット。</string>
+
+    <string name="Restore">復元する</string>
+
+    <string name="BasketPageHeader">メモは 7 日後にバスケットから削除されます。</string>
+
+    <string name="DeleteSelectedNotesDialogText">選択したメモを削除しますか?</string>
+
+    <string name="DeleteNoteDialogText">メモを削除しますか?</string>
+
+    <string name="Confirm">確認する</string>
+
+    <string name="NotesAreBeenDeleted">メモは削除されました</string>
+
+    <string name="NoteAreBeenDeleted">メモは削除されました</string>
+
+    <string name="NotesArchived">メモはアーカイブに移動されました</string>
+
+    <string name="NoteArchived">メモはアーカイブに移動されました</string>
+
+    <string name="NoteUnarchived">メモはアーカイブされていません</string>
+
+    <string name="NotesUnarchived">アーカイブが解除されたメモ</string>
+
+    <string name="NotesMovedToBasket">メモがバスケットに移動されました</string>
+
+    <string name="NotesRestored">メモが復元されました</string>
+
+    <string name="DaysBeforeDeletingNote">メモを削除する数日前: </string>
+
+    <string name="DeleteForever">永久に削除しますか？</string>
+
+    <string name="RateTheApp">シュキパーを評価する</string>
+
+    <string name="Image">画像</string>
+
+    <string name="OfferWriteReviewTitle">シュキパーは好きですか？</string>
+
+    <string name="OfferWriteReviewDescription">残り数分があれば、Google Play ストアにレビューを残してください。</string>
+
+    <string name="Restart">再起動</string>
+
+    <string name="UpdateDownloaded">ダウンロードされたアップデート</string>
+
+    <string name="Add">追加</string>
+
+    <string name="SupportDevelopment">サポート開発</string>
+
+    <string name="Donate">寄付する</string>
+
+    <string name="Show">見せる</string>
+
+    <string name="PurchaseScreenTitle">すべての貢献は重要です!</string>
+
+    <string name="PurchaseScreenDescription">あなたのサポートはアプリケーションの改善に役立ちます。ぜひご参加ください – 寄付をしてシュキパーの物語に参加しましょう!</string>
+
+    <string name="BuyMe">買ってよ</string>
+
+    <string name="BuySubscription">定期購入を購入する</string>
+
+    <string name="ItemAlreadyOwned">この商品はすでに購入されています</string>
+
+    <string name="CheckInternetConnection">インターネット接続を確認する</string>
+
+    <string name="CheckUpdatesGooglePlay">Google Play のアップデートを確認する</string>
+
+    <string name="Close">近い</string>
+
+    <string name="DonateBannerHeader">シュキパーは気に入りましたか？</string>
+
+    <string name="DonateBannerBody">コインで開発者をサポートしましょう！</string>
+
+    <string name="AboutNotepad">シュキパーについて</string>
+
+    <string name="Support">サポート</string>
+
+    <string name="AboutAppDescription">作成、整理、記憶。タスク、メモ、リマインダーの完璧なパートナー – シンプルで美しく、いつでも手元にあります。</string>
+
+    <string name="Contact">接触</string>
+
+    <string name="ChooseEmailClient">電子メール クライアントを選択します。</string>
+
+    <string name="DevMailHeader">ヘイ・エフィム</string>
+
+    <!-- Statistics components -->
+
+
+    <string name="Thinker">考える人</string>
+
+    <string name="ThinkerDescription">シュキパーの開口部の数</string>
+
+    <string name="Creator">クリエイター</string>
+
+    <string name="CreatorDescription">作成されたノートの数</string>
+
+    <string name="Eternal">時間厳守</string>
+
+    <string name="EternalDescription">忘れないでください?リマインダーを作成します。作成されたリマインダーの数</string>
+
+    <string name="Remembered">常に最新の状態</string>
+
+    <string name="RememberedDescription">「ダーリン、何か忘れたことはありませんか？」- 「いいえ」受信した通知の数</string>
+
+    <string name="FirstAppOpenDate">最初のオープニング</string>
+
+    <string name="FirstAppOpenDateDescription">シュキパー号が最初にオープンした日</string>
+
+    <string name="Pioneer">パイオニア</string>
+
+    <string name="PioneerDescription">2024 年 1 月 1 日より前にアプリケーションをインストールしてください</string>
+
+    <string name="TruthSeeker">真実の探求者</string>
+
+    <string name="TruthSeekerDescription">アプリページを開く</string>
+
+    <string name="NoteDestroyer">ノートデストロイヤー</string>
+
+    <string name="NoteDestroyerDescription">私があなたを産んだのに、あなたを滅ぼしてやる！「タラス・ブルバ」。削除されたメモの数</string>
+
+    <string name="ThankForPurchase1">私たちのアプリをお選びいただきありがとうございます!あなたのサポートは私たちにとって大きな意味があります。</string>
+
+    <string name="ThankForPurchase2">私たちのアプリに対するサポートと信頼に感謝いたします。ご購入いただきありがとうございます！</string>
+
+    <string name="ThankForPurchase3">あなたのサポートは私たちにとって最高の報酬です。私たちのアプリでご購入いただきありがとうございます!</string>
+
+    <string name="Efim">エフィム</string>
+
+    <string name="EfimDescription">Android/ウェブなど..</string>
+
+    <string name="Annually">毎年</string>
+
+    <string name="Monthly">毎月</string>
+
+    <string name="Localizers">ローカライザー</string>
+
+    <string name="Icons">アイコン</string>
+
+    <string name="Deleted">削除されました</string>
+
+    <string name="CreateWidget">ウィジェットを作成する</string>
+
+    <string name="Share">共有</string>
+
+    <string name="MyStatsInShkiper">シュキパーでの私の統計</string>
+
+    <string name="TurnOnNotifications">スマートフォンの設定で通知を有効にしてください</string>
+
+    <string name="InsertLink">リンクを挿入</string>
+    <string name="ShareText">テキストを共有する</string>
+    <string name="ShareImage">画像を共有する</string>
+    <string name="ShareHTMLText">HTML テキストとして共有</string>
+    <string name="ShareMarkdownText">マークダウンテキストとして共有</string>
+
+    <string name="NeededPermissionForNotifications">通知を受信する権限を有効にするために必要です</string>
+    <string name="ImportantForRemindersWork">これはリマインダーが機能するために重要です</string>
+    <string name="Enable">有効にする</string>
+    <string name="TextFormatting">テキストの書式設定</string>
+    <string name="TextFormattingDescription">テキストに好みに応じたスタイルを与えて、クリエイティブなビジョンを表現します。</string>
+    <string name="StatisticsPageDescription">統計は退屈である必要はありません。それも面白いかもしれません！</string>
+    <string name="Widgets">ウィジェット</string>
+    <string name="WidgetsDescription">メモをメイン画面に固定して、常に表示されるようにします。</string>
+    <string name="MadeWithLove">気に入りましたか?</string>
+    <string name="MadeWithLoveDescription">友達にアプリについて教えたり、親切なコインで開発者をサポートしたりできます。</string>
+    <string name="OpenSource">オープンソース</string>
+    <string name="OpenSourceDescription">Shkiper はオープンソースであり、コード全体が GitHub で公開されています</string>
+
+    <string name="CreateReminder">リマインダーを作成する</string>
+    <string name="NoReminders">リマインダーはありません</string>
+    <string name="DisableLinkPreviews">リンクのプレビューを無効にする</string>
+    <string name="EnableLinkPreviews">リンクのプレビューを有効にする</string>
+    <string name="Apply">適用する</string>
+
+    <string name="SaveChanges">変更内容を保存</string>
+
+    <string name="New">新しい</string>
+
+    <string name="All">全て</string>
+
+    <string name="Selected">選択済み</string>
+
+    <string name="EmptyTagsTitle">タグはまだ作成されていません</string>
+
+    <string name="OtherMyApps">その他の私のアプリ</string>
+
+
+</resources>

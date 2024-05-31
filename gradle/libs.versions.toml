@@ -5,17 +5,18 @@ androidMinSdk = "27"
 androidTargetSdk = "34"
 androidCompileSdk = "34"
 
-appcompat = "1.6.1"
+appcompat = "1.7.0"
 appUpdateKtx = "2.1.0"
 billingKtx = "7.0.0"
 capturable = "1.0.3"
 coilCompose = "2.4.0"
 desugaring = "2.0.4"
-compose = "2.5.0"
+composeCalendar = "2.6.0-beta01"
 composecollapsingtoolbar = "1.0.8"
 coreKtx = "1.13.1"
 coreSplashscreen = "1.0.1"
 espressoCore = "3.5.1"
+foundation = "1.7.0-beta02"
 glanceMaterial3 = "1.0.0"
 gson = "2.10.1"
 hiltNavigationCompose = "1.2.0"
@@ -37,7 +38,7 @@ versionCode = "67"
 jvmTarget = "17"
 compose-compiler = "1.5.14"
 
-composeVersion = "1.7.0-beta01"
+composeVersion = "1.7.0-beta02"
 material3 = "1.2.1"
 detekt = "1.23.6"
 detektCompose = "0.4.1"
@@ -46,6 +47,9 @@ agp = "8.4.1"
 kotlin = "1.9.24"
 hilt = "2.51.1"
 wheelpickercompose = "1.1.11"
+agpVersion = "8.4.1"
+kotlinVersion = "1.9.0"
+material = "1.10.0"
 
 [libraries]
 # Dependencies of the included build-logic
@@ -56,6 +60,7 @@ androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "a
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
 androidx-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espressoCore" }
+androidx-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "foundation" }
 androidx-glance-appwidget = { module = "androidx.glance:glance-appwidget", version.ref = "glanceMaterial3" }
 androidx-glance-material3 = { module = "androidx.glance:glance-material3", version.ref = "glanceMaterial3" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
@@ -73,7 +78,7 @@ app-update-ktx = { module = "com.google.android.play:app-update-ktx", version.re
 billing-ktx = { module = "com.android.billingclient:billing-ktx", version.ref = "billingKtx" }
 capturable = { module = "dev.shreyaspatil:capturable", version.ref = "capturable" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
-compose = { module = "com.kizitonwose.calendar:compose", version.ref = "compose" }
+compose = { module = "com.kizitonwose.calendar:compose", version.ref = "composeCalendar" }
 composecollapsingtoolbar = { module = "com.github.GIGAMOLE:ComposeCollapsingToolbar", version.ref = "composecollapsingtoolbar" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
@@ -94,6 +99,7 @@ richeditor-compose = { module = "com.mohamedrejeb.richeditor:richeditor-compose"
 tedpermission-coroutine = { module = "io.github.ParkSangGwon:tedpermission-coroutine", version.ref = "tedpermissionCoroutine" }
 wheelpickercompose = { module = "com.github.commandiron:WheelPickerCompose", version.ref = "wheelpickercompose" }
 desugaring = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugaring" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 [plugins]
 shkiper-library = { id = "efim.shkiper.library", version = "unspecified" }

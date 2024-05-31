@@ -2,6 +2,7 @@ package com.jobik.shkiper.ui.components.layouts
 
 import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridScope
 import androidx.compose.foundation.lazy.staggeredgrid.items
+import androidx.compose.ui.Modifier
 import com.jobik.shkiper.database.models.Note
 import com.jobik.shkiper.database.models.Reminder
 import com.jobik.shkiper.ui.components.cards.NoteCard
@@ -18,6 +19,7 @@ fun LazyStaggeredGridScope.notesList(
 ) {
     items(items = notes, key = { it._id.toHexString() }) { note ->
         NoteCard(
+            modifier = Modifier.animateItem(),
             header = note.header,
             text = note.body,
             reminder = rememberNextReminder(reminders = reminders.filter { it.noteId == note._id }),

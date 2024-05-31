@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--    Repeating   -->
+    <string name="none">Does not repeat</string>
+    <string name="daily">Daily</string>
+    <string name="weekly">Weekly</string>
+    <string name="monthly">Monthly</string>
+    <string name="yearly">Yearly</string>
+
+
+    <!--    Expressions   -->
+    <!--    settings page   -->
+    <string name="ChoseLocalization">Localization</string>
+    <string name="AppDataPolitics">Your data is stored exclusively on your device. Deleting your app\'s data could lead to permanent data loss. To prevent this, remember to save your data file before performing a reset.</string>
+    <string name="Info">Info</string>
+    <string name="Information">Information</string>
+    <string name="Open">Open</string>
+    <string name="OnboardingPage">Onboarding</string>
+    <string name="Other">Other</string>
+    <string name="Connect">Connect</string>
+    <string name="CloudStorage">Cloud storage</string>
+    <string name="Upload">Upload</string>
+    <string name="UploadNotes">Upload notes</string>
+    <string name="SaveAllNotesLocally">Save all notes locally</string>
+    <string name="Save">Save</string>
+    <string name="Backup">Backup</string>
+    <string name="ApplicationTheme">Theme</string>
+    <string name="LightTheme">Light</string>
+    <string name="DarkTheme">Dark</string>
+    <string name="Application">Application</string>
+    <string name="ApplicationColors">Colors</string>
+    <string name="StatisticsPage">Statistics</string>
+
+    <!--    Onboarding page   -->
+    <string name="Back">Back</string>
+    <string name="Finish">Finish</string>
+    <string name="Next">Next</string>
+    <string name="PagerImage">Pager Image</string>
+    <string name="Tags">Tags</string>
+    <string name="TagsDescription">Tags are necessary for quickly filtering your notes, multiple tags can be added to
+        each note.
+    </string>
+    <string name="AppDescription">Fast, simple, and convenient notepad.</string>
+    <string name="Reminders">Reminders</string>
+    <string name="RemindersDescription">Reminders allow you to schedule a notification for an important event on a
+        specified day and time, with a chosen interval.
+    </string>
+    <string name="Themes">Themes</string>
+    <string name="ThemesDescription">Choose the color theme that you personally like the most.</string>
+
+    <!--    Nate page   -->
+    <string name="Header">Header</string>
+    <string name="Text">Text</string>
+    <string name="GoBack">Go back</string>
+    <string name="AttachNote">Attach a note</string>
+    <string name="AddToNotification">Add to notification</string>
+    <string name="AddToArchive">Add to archive</string>
+    <string name="ChangedAt">Changed at</string>
+    <string name="GoForward">Go forward</string>
+    <string name="AddToBasket">Add to basket</string>
+    <string name="ShareNote">Share a note</string>
+
+    <!--    NateList page   -->
+    <string name="Pinned">Pinned</string>
+
+    <!--    Other components   -->
+    <string name="CreateNote">Create note</string>
+    <string name="Hashtags">Tags</string>
+    <string name="Cancel">Cancel</string>
+    <string name="HashtagExample">Write tags, e.g. Home Work</string>
+    <string name="Delete">Delete</string>
+    <string name="Reminder">Reminder</string>
+    <string name="Event">Event</string>
+    <string name="Schedule">Schedule</string>
+    <string name="Repeat">Repeat</string>
+    <string name="ErrorDateMastBeFuture">The date must be in the future</string>
+    <string name="Menu">Menu</string>
+    <string name="Notes">Notes</string>
+    <string name="Archive">Archive</string>
+    <string name="Basket">Basket</string>
+    <string name="Settings">Settings</string>
+    <string name="Clear">Clear</string>
+    <string name="Search">Search</string>
+    <string name="Links">Links</string>
+    <string name="Hide">Hide</string>
+    <string name="ShowAll">Show all</string>
+    <string name="Link">Link</string>
+    <string name="LinkCopied">Link copied</string>
+    <string name="LinkImage">Link image</string>
+    <string name="EmptyNote">Empty note</string>
+    <string name="Loading">Loading</string>
+    <string name="Statistics">Statistics</string>
+    <string name="StatisticsImage">Statistics image</string>
+    <string name="Complete">Completed</string>
+    <string name="Uncompleted">Uncompleted</string>
+    <string name="DoneEmoji">✔️</string>
+    <string name="NotDoneEmoji">➖</string>
+    <string name="Saving">Saving</string>
+    <string name="BackupCreated">Backup created</string>
+    <string name="BackupUploaded">Backup uploaded</string>
+    <string name="UnspecifiedErrorOccurred">An unspecified error occurred</string>
+    <string name="CannotPerformedWithoutPermission">Cannot be performed without permission</string>
+    <string name="EmptyNotesPageHeader">Notes you add appear here.</string>
+    <string name="ArchiveNotesPageHeader">Archived notes will be here.</string>
+    <string name="UnarchiveNotes">Unarchive notes</string>
+    <string name="BasketNotesPageHeader">Basket of deleted notes.</string>
+    <string name="Restore">Restore</string>
+    <string name="BasketPageHeader">Notes are removed from the basket after 7 days.</string>
+    <string name="DeleteSelectedNotesDialogText">Delete selected notes?</string>
+    <string name="DeleteNoteDialogText">Delete note?</string>
+    <string name="Confirm">Confirm</string>
+    <string name="NotesAreBeenDeleted">Notes have been deleted</string>
+    <string name="NoteAreBeenDeleted">Note have been deleted</string>
+    <string name="NotesArchived">Notes moved to archive</string>
+    <string name="NoteArchived">Note moved to archive</string>
+    <string name="NoteUnarchived">Note unarchived</string>
+    <string name="NotesUnarchived">Notes unarchived</string>
+    <string name="NotesMovedToBasket">Notes moved to basket</string>
+    <string name="NotesRestored">Notes restored</string>
+    <string name="DaysBeforeDeletingNote">Days before deleting a note: </string>
+    <string name="DeleteForever">Delete forever?</string>
+    <string name="RateTheApp">Rate Shkiper</string>
+    <string name="Image">Image</string>
+    <string name="OfferWriteReviewTitle">Do you like Shkiper?</string>
+    <string name="OfferWriteReviewDescription">If you have a few minutes left, please leave your review in the Google Play Store.</string>
+    <string name="Restart">Restart</string>
+    <string name="UpdateDownloaded">Update downloaded</string>
+    <string name="Add">Add</string>
+    <string name="SupportDevelopment">Support development</string>
+    <string name="Donate">Donate</string>
+    <string name="Show">Show</string>
+    <string name="PurchaseScreenTitle">Every contribution matters!</string>
+    <string name="PurchaseScreenDescription">Your support helps improve our application. Join us – make a donation and become a part of the Shkiper story!</string>
+    <string name="BuyMe">Buy me</string>
+    <string name="BuySubscription">Buy a subscription</string>
+    <string name="ItemAlreadyOwned">This product has already been purchased</string>
+    <string name="CheckInternetConnection">Check internet connection</string>
+    <string name="CheckUpdatesGooglePlay">Check updates Google Play</string>
+    <string name="Close">Close</string>
+    <string name="DonateBannerHeader">Did you like the Shkiper?</string>
+    <string name="DonateBannerBody">Support the developer with a coin!</string>
+    <string name="AboutNotepad">About Shkiper</string>
+    <string name="Support">Support</string>
+    <string name="AboutAppDescription">Create, organize, remember. Your perfect companion for tasks, notes, and reminders – simple, beautiful, and always at hand.</string>
+    <string name="Contact">Contact</string>
+    <string name="ChooseEmailClient">Choose an Email client:</string>
+    <string name="DevMailHeader">Hay Efim</string>
+
+    <!--    Statistics components   -->
+    <string name="Thinker">Thinker</string>
+    <string name="ThinkerDescription">Number of Shkiper openings</string>
+    <string name="Creator">Creator</string>
+    <string name="CreatorDescription">Number of notes created</string>
+    <string name="Eternal">Punctuality</string>
+    <string name="EternalDescription">Don\'t forget? Create a reminder. Number of reminders created</string>
+    <string name="Remembered">Always up to date</string>
+    <string name="RememberedDescription">\"Darling, did you forget anything?\" - \"No.\" Number of notifications received</string>
+    <string name="FirstAppOpenDate">First opening</string>
+    <string name="FirstAppOpenDateDescription">The date the Shkiper was first opened</string>
+    <string name="Pioneer">Pioneer</string>
+    <string name="PioneerDescription">Install the application before 01–01–2024</string>
+    <string name="TruthSeeker">Truth seeker</string>
+    <string name="TruthSeekerDescription">Open app page</string>
+    <string name="NoteDestroyer">Note destroyer</string>
+    <string name="NoteDestroyerDescription">I gave birth to you and I will destroy you! «Taras Bulba». Number of deleted notes</string>
+
+    <string name="ThankForPurchase1">Thank you for choosing our app! Your support means a lot to us.</string>
+    <string name="ThankForPurchase2">We appreciate your support and trust in our app. Thanks for your purchase!</string>
+    <string name="ThankForPurchase3">Your support is the best reward for us. Thank you for purchasing in our app!</string>
+
+    <string name="Efim">Efim</string>
+    <string name="EfimDescription">Android/Web and more..</string>
+    <string name="Annually">Annually</string>
+    <string name="Monthly">Monthly</string>
+    <string name="Localizers">Localizers</string>
+    <string name="Icons">Icons</string>
+
+    <string name="Deleted">Deleted</string>
+    <string name="CreateWidget">Create a widget</string>
+    <string name="Share">Share</string>
+    <string name="MyStatsInShkiper">My stats in Shkiper</string>
+    <string name="TurnOnNotifications">Turn on notifications in your phone settings</string>
+
+    <string name="InsertLink">Insert link</string>
+    <string name="ShareText">Share text</string>
+    <string name="ShareImage">Share image</string>
+    <string name="ShareHTMLText">Share as HTML text</string>
+    <string name="ShareMarkdownText">Share as markdown text</string>
+
+    <string name="NeededPermissionForNotifications">Needed to enable permissions to receive notifications</string>
+    <string name="ImportantForRemindersWork">This is important for reminders to work</string>
+    <string name="Enable">Enable</string>
+    <string name="TextFormatting">Text formatting</string>
+    <string name="TextFormattingDescription">Express your creative vision by giving the text a style according to your taste.</string>
+    <string name="StatisticsPageDescription">Statistics doesn\'t have to be boring; it can be interesting too!</string>
+    <string name="Widgets">Widgets</string>
+    <string name="WidgetsDescription">Pin the note to the main screen to always keep it visible.</string>
+    <string name="MadeWithLove">Liked?</string>
+    <string name="MadeWithLoveDescription">Tell your friends about the app or support the developer with a kind coin.</string>
+    <string name="OpenSource">Open Source</string>
+    <string name="OpenSourceDescription">Shkiper is open-source, and the entire code is published on GitHub</string>
+
+    <string name="CreateReminder">Create reminder</string>
+    <string name="NoReminders">No reminders</string>
+    <string name="DisableLinkPreviews">Disable link previews</string>
+    <string name="EnableLinkPreviews">Enable link previews</string>
+    <string name="Apply">Apply</string>
+
+    <string name="SaveChanges">Save changes</string>
+    <string name="New">New</string>
+    <string name="All">All</string>
+    <string name="Selected">Selected</string>
+    <string name="EmptyTagsTitle">Tags not created yet</string>
+
+    <string name="OtherMyApps">Other my apps</string>
+
+
+</resources>

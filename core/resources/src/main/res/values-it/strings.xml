@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Repeating -->
+
+
+    <string name="none">Non si ripete</string>
+
+    <string name="daily">Quotidiano</string>
+
+    <string name="weekly">settimanalmente</string>
+
+    <string name="monthly">Mensile</string>
+
+    <string name="yearly">Annuale</string>
+
+    <!-- Expressions -->
+
+
+    <!-- settings page -->
+
+
+    <string name="ChoseLocalization">Localizzazione</string>
+
+    <string name="AppDataPolitics">I tuoi dati vengono memorizzati esclusivamente sul tuo dispositivo. L\'eliminazione dei dati della tua app potrebbe comportare la perdita permanente dei dati. Per evitare ciò, ricordati di salvare il file di dati prima di eseguire un ripristino.</string>
+
+    <string name="Info">Informazioni</string>
+
+    <string name="Information">Informazione</string>
+
+    <string name="Open">Aprire</string>
+
+    <string name="OnboardingPage">Onboarding</string>
+
+    <string name="Other">Altro</string>
+
+    <string name="Connect">Collegare</string>
+
+    <string name="CloudStorage">Archiviazione nel cloud</string>
+
+    <string name="Upload">Caricamento</string>
+
+    <string name="UploadNotes">Carica note</string>
+
+    <string name="SaveAllNotesLocally">Salva tutte le note localmente</string>
+
+    <string name="Save">Salva</string>
+
+    <string name="Backup">Backup</string>
+
+    <string name="ApplicationTheme">Tema</string>
+
+    <string name="LightTheme">Leggero</string>
+
+    <string name="DarkTheme">Buio</string>
+
+    <string name="Application">Applicazione</string>
+
+    <string name="ApplicationColors">Colori</string>
+
+    <string name="StatisticsPage">Statistiche</string>
+
+    <!-- Onboarding page -->
+
+
+    <string name="Back">Indietro</string>
+
+    <string name="Finish">Fine</string>
+
+    <string name="Next">Prossimo</string>
+
+    <string name="PagerImage">Immagine cercapersone</string>
+
+    <string name="Tags">Tag</string>
+
+    <string name="TagsDescription">I tag sono necessari per filtrare rapidamente le tue note, è possibile aggiungere più tag a ciascuna nota.</string>
+
+    <string name="AppDescription">Blocco note veloce, semplice e conveniente.</string>
+
+    <string name="Reminders">Promemoria</string>
+
+    <string name="RemindersDescription">I promemoria consentono di pianificare una notifica per un evento importante in un giorno e un\'ora specificati, con un intervallo prescelto.</string>
+
+    <string name="Themes">Temi</string>
+
+    <string name="ThemesDescription">Scegli il tema colore che personalmente ti piace di più.</string>
+
+    <!-- Nate page -->
+
+
+    <string name="Header">Intestazione</string>
+
+    <string name="Text">Testo</string>
+
+    <string name="GoBack">Torna indietro</string>
+
+    <string name="AttachNote">Allega una nota</string>
+
+    <string name="AddToNotification">Aggiungi alla notifica</string>
+
+    <string name="AddToArchive">Aggiungi all\'archivio</string>
+
+    <string name="ChangedAt">Modificato a</string>
+
+    <string name="GoForward">Vai avanti</string>
+
+    <string name="AddToBasket">Aggiungi al carrello</string>
+
+    <string name="ShareNote">Condividi una nota</string>
+
+    <!-- NateList page -->
+
+
+    <string name="Pinned">Appuntato</string>
+
+    <!-- Other components -->
+
+
+    <string name="CreateNote">Crea nota</string>
+
+    <string name="Hashtags">Tag</string>
+
+    <string name="Cancel">Annulla</string>
+
+    <string name="HashtagExample">Scrivi tag, ad es. Compiti a casa</string>
+
+    <string name="Delete">Eliminare</string>
+
+    <string name="Reminder">Promemoria</string>
+
+    <string name="Event">Evento</string>
+
+    <string name="Schedule">Programma</string>
+
+    <string name="Repeat">Ripetere</string>
+
+    <string name="ErrorDateMastBeFuture">La data deve essere nel futuro</string>
+
+    <string name="Menu">Menù</string>
+
+    <string name="Notes">Appunti</string>
+
+    <string name="Archive">Archivio</string>
+
+    <string name="Basket">Cestino</string>
+
+    <string name="Settings">Impostazioni</string>
+
+    <string name="Clear">Chiaro</string>
+
+    <string name="Search">Ricerca</string>
+
+    <string name="Links">Collegamenti</string>
+
+    <string name="Hide">Nascondere</string>
+
+    <string name="ShowAll">Mostra tutto</string>
+
+    <string name="Link">Collegamento</string>
+
+    <string name="LinkCopied">Collegamento copiato</string>
+
+    <string name="LinkImage">Collega l\'immagine</string>
+
+    <string name="EmptyNote">Nota vuota</string>
+
+    <string name="Loading">Caricamento</string>
+
+    <string name="Statistics">Statistiche</string>
+
+    <string name="StatisticsImage">Immagine statistica</string>
+
+    <string name="Complete">Completato</string>
+
+    <string name="Uncompleted">Incompleto</string>
+
+    <string name="DoneEmoji">✔️</string>
+
+    <string name="NotDoneEmoji">➖</string>
+
+    <string name="Saving">Salvataggio</string>
+
+    <string name="BackupCreated">Backup creato</string>
+
+    <string name="BackupUploaded">Backup caricato</string>
+
+    <string name="UnspecifiedErrorOccurred">Si è verificato un errore non specificato</string>
+
+    <string name="CannotPerformedWithoutPermission">Non può essere eseguito senza autorizzazione</string>
+
+    <string name="EmptyNotesPageHeader">Le note aggiunte vengono visualizzate qui.</string>
+
+    <string name="ArchiveNotesPageHeader">Le note archiviate saranno qui.</string>
+
+    <string name="UnarchiveNotes">Annulla l\'archiviazione delle note</string>
+
+    <string name="BasketNotesPageHeader">Cesto di note cancellate.</string>
+
+    <string name="Restore">Ristabilire</string>
+
+    <string name="BasketPageHeader">Le banconote vengono rimosse dal carrello dopo 7 giorni.</string>
+
+    <string name="DeleteSelectedNotesDialogText">Eliminare le note selezionate?</string>
+
+    <string name="DeleteNoteDialogText">Eliminare la nota?</string>
+
+    <string name="Confirm">Confermare</string>
+
+    <string name="NotesAreBeenDeleted">Le note sono state cancellate</string>
+
+    <string name="NoteAreBeenDeleted">Le note sono state cancellate</string>
+
+    <string name="NotesArchived">Note spostate nell\'archivio</string>
+
+    <string name="NoteArchived">Nota spostata nell\'archivio</string>
+
+    <string name="NoteUnarchived">Nota non archiviata</string>
+
+    <string name="NotesUnarchived">Note non archiviate</string>
+
+    <string name="NotesMovedToBasket">Note spostate nel carrello</string>
+
+    <string name="NotesRestored">Note ripristinate</string>
+
+    <string name="DaysBeforeDeletingNote">Giorni prima dell\'eliminazione di una nota: </string>
+
+    <string name="DeleteForever">Elimina per sempre?</string>
+
+    <string name="RateTheApp">Valuta Shkiper</string>
+
+    <string name="Image">Immagine</string>
+
+    <string name="OfferWriteReviewTitle">Ti piace Shkiper?</string>
+
+    <string name="OfferWriteReviewDescription">Se hai ancora qualche minuto, lascia la tua recensione nel Google Play Store.</string>
+
+    <string name="Restart">Ricomincia</string>
+
+    <string name="UpdateDownloaded">Aggiornamento scaricato</string>
+
+    <string name="Add">Aggiungere</string>
+
+    <string name="SupportDevelopment">Sostenere lo sviluppo</string>
+
+    <string name="Donate">Donare</string>
+
+    <string name="Show">Spettacolo</string>
+
+    <string name="PurchaseScreenTitle">Ogni contributo è importante!</string>
+
+    <string name="PurchaseScreenDescription">Il tuo supporto aiuta a migliorare la nostra applicazione. Unisciti a noi: fai una donazione e diventa parte della storia di Shkiper!</string>
+
+    <string name="BuyMe">Comprami</string>
+
+    <string name="BuySubscription">Acquista un abbonamento</string>
+
+    <string name="ItemAlreadyOwned">Questo prodotto è già stato acquistato</string>
+
+    <string name="CheckInternetConnection">Controlla la connessione Internet</string>
+
+    <string name="CheckUpdatesGooglePlay">Controlla gli aggiornamenti Google Play</string>
+
+    <string name="Close">Vicino</string>
+
+    <string name="DonateBannerHeader">Ti è piaciuto lo Shkiper?</string>
+
+    <string name="DonateBannerBody">Sostieni lo sviluppatore con una moneta!</string>
+
+    <string name="AboutNotepad">A proposito di Shkiper</string>
+
+    <string name="Support">Supporto</string>
+
+    <string name="AboutAppDescription">Crea, organizza, ricorda. Il tuo compagno perfetto per attività, appunti e promemoria: semplice, bello e sempre a portata di mano.</string>
+
+    <string name="Contact">Contatto</string>
+
+    <string name="ChooseEmailClient">Scegli un client di posta elettronica:</string>
+
+    <string name="DevMailHeader">Hay Efim</string>
+
+    <!-- Statistics components -->
+
+
+    <string name="Thinker">Pensatore</string>
+
+    <string name="ThinkerDescription">Numero di aperture di Scutari</string>
+
+    <string name="Creator">Creatore</string>
+
+    <string name="CreatorDescription">Numero di note create</string>
+
+    <string name="Eternal">Puntualità</string>
+
+    <string name="EternalDescription">Non dimenticare? Crea un promemoria. Numero di promemoria creati</string>
+
+    <string name="Remembered">Sempre aggiornato</string>
+
+    <string name="RememberedDescription">\"Caro, hai dimenticato qualcosa?\" - \"No.\" Numero di notifiche ricevute</string>
+
+    <string name="FirstAppOpenDate">Prima apertura</string>
+
+    <string name="FirstAppOpenDateDescription">La data in cui lo Shkiper è stato aperto per la prima volta</string>
+
+    <string name="Pioneer">Pioniere</string>
+
+    <string name="PioneerDescription">Installa l\'applicazione prima del 01–01–2024</string>
+
+    <string name="TruthSeeker">Cercatore della verità</string>
+
+    <string name="TruthSeekerDescription">Apri la pagina dell\'app</string>
+
+    <string name="NoteDestroyer">Nota distruttore</string>
+
+    <string name="NoteDestroyerDescription">Ti ho partorito e ti distruggerò! «Taras Bulba». Numero di note eliminate</string>
+
+    <string name="ThankForPurchase1">Grazie per aver scelto la nostra app! Il tuo supporto significa molto per noi.</string>
+
+    <string name="ThankForPurchase2">Apprezziamo il tuo supporto e la fiducia nella nostra app. Grazie per il tuo acquisto!</string>
+
+    <string name="ThankForPurchase3">Il vostro supporto è la migliore ricompensa per noi. Grazie per aver acquistato nella nostra app!</string>
+
+    <string name="Efim">Efim</string>
+
+    <string name="EfimDescription">Android/Web e altro ancora..</string>
+
+    <string name="Annually">Annualmente</string>
+
+    <string name="Monthly">Mensile</string>
+
+    <string name="Localizers">Localizzatori</string>
+
+    <string name="Icons">Icone</string>
+
+    <string name="Deleted">Eliminato</string>
+
+    <string name="CreateWidget">Crea un widget</string>
+
+    <string name="Share">Condividere</string>
+
+    <string name="MyStatsInShkiper">Le mie statistiche a Scutari</string>
+
+    <string name="TurnOnNotifications">Attiva le notifiche nelle impostazioni del tuo telefono</string>
+
+    <string name="InsertLink">Inserisci collegamento</string>
+    <string name="ShareText">Condividi testo</string>
+    <string name="ShareImage">Condividi l\'immagine</string>
+    <string name="ShareHTMLText">Condividi come testo HTML</string>
+    <string name="ShareMarkdownText">Condividi come testo di ribasso</string>
+
+    <string name="NeededPermissionForNotifications">Necessario per abilitare le autorizzazioni per ricevere notifiche</string>
+    <string name="ImportantForRemindersWork">Questo è importante affinché i promemoria funzionino</string>
+    <string name="Enable">Abilitare</string>
+    <string name="TextFormatting">Formattazione del testo</string>
+    <string name="TextFormattingDescription">Esprimi la tua visione creativa dando al testo uno stile secondo i tuoi gusti.</string>
+    <string name="StatisticsPageDescription">Le statistiche non devono essere noiose; può essere anche interessante!</string>
+    <string name="Widgets">Widget</string>
+    <string name="WidgetsDescription">Appunta la nota sulla schermata principale per mantenerla sempre visibile.</string>
+    <string name="MadeWithLove">È piaciuto?</string>
+    <string name="MadeWithLoveDescription">Racconta ai tuoi amici dell\'app o sostieni lo sviluppatore con una moneta gentile.</string>
+    <string name="OpenSource">Open Source</string>
+    <string name="OpenSourceDescription">Shkiper è open source e l\'intero codice è pubblicato su GitHub</string>
+
+    <string name="CreateReminder">Crea promemoria</string>
+    <string name="NoReminders">Nessun promemoria</string>
+    <string name="DisableLinkPreviews">Disattiva le anteprime dei collegamenti</string>
+    <string name="EnableLinkPreviews">Abilita le anteprime dei collegamenti</string>
+    <string name="Apply">Fare domanda a</string>
+
+    <string name="SaveChanges">Salvare le modifiche</string>
+
+    <string name="New">Nuovo</string>
+
+    <string name="All">Tutto</string>
+
+    <string name="Selected">Selezionato</string>
+
+    <string name="EmptyTagsTitle">Tag non ancora creati</string>
+
+    <string name="OtherMyApps">Altre mie app</string>
+
+
+</resources>

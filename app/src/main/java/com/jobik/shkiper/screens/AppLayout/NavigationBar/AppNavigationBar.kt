@@ -2,6 +2,7 @@ package com.jobik.shkiper.screens.AppLayout.NavigationBar
 
 import androidx.annotation.StringRes
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -35,23 +36,29 @@ data class DefaultNavigationValues(
 fun CustomBottomNavigationItem(properties: CustomBottomNavigationItem) {
     val contentColorValue =
         if (properties.isSelected) AppTheme.colors.onSecondaryContainer else AppTheme.colors.textSecondary
-    val contentColor = animateColorAsState(targetValue = contentColorValue, label = "backgroundColor")
+    val contentColor =
+        animateColorAsState(targetValue = contentColorValue, label = "contentColor")
 
     val backgroundColorValue =
-        if (properties.isSelected) AppTheme.colors.secondaryContainer else Color.Transparent
-    val backgroundColor = animateColorAsState(targetValue = backgroundColorValue, label = "backgroundColor")
+        if (properties.isSelected) AppTheme.colors.secondaryContainer else AppTheme.colors.background
+    val backgroundColor =
+        animateColorAsState(
+            targetValue = backgroundColorValue,
+            label = "backgroundColor",
+            animationSpec = tween(200)
+        )
 
-    Row(
+    IconButton(
         modifier = Modifier
             .fillMaxHeight()
-            .aspectRatio(1f)
-            .clip(shape = CircleShape)
-            .background(backgroundColor.value)
-            .clickable {
-                properties.onClick()
-            },
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
+            .aspectRatio(1f),
+        colors = IconButtonDefaults.iconButtonColors(
+            contentColor = contentColor.value,
+            containerColor = backgroundColor.value
+        ),
+        onClick = {
+            properties.onClick()
+        }
     ) {
         Icon(
             imageVector = properties.icon,
