@@ -1,26 +1,5 @@
 @file:Suppress("UnstableApiUsage")
 
-include(":core:helper")
-
-
-include(":core:domain")
-
-
-include(":feature:notifications")
-
-
-include(":core:database")
-
-
-include(":core:resources")
-
-
-include(":core:ui")
-
-
-include(":ui")
-
-
 pluginManagement {
     repositories {
         includeBuild("build-logic")
@@ -47,3 +26,10 @@ include(":app")
 
 include(":benchmark")
 include(":feature:android-widgets")
+include(":core:helper")
+include(":core:domain")
+include(":feature:notifications")
+include(":core:database")
+include(":core:resources")
+include(":core:ui")
+include(":ui")
