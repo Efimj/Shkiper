@@ -1,4 +1,7 @@
 [versions]
+versionName = "v1.8.5-alpha01"
+versionCode = "68"
+
 accompanistSystemuicontroller = "0.32.0"
 activityCompose = "1.9.0"
 androidMinSdk = "27"
@@ -32,8 +35,6 @@ realmGradlePlugin = "10.18.0"
 richeditorCompose = "1.0.0-rc05-k2"
 tedpermissionCoroutine = "3.3.0"
 uiTestManifest = "1.6.7"
-versionName = "1.8.4"
-versionCode = "67"
 
 jvmTarget = "17"
 compose-compiler = "1.5.14"

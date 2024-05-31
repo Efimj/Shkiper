@@ -109,16 +109,18 @@ fun AboutNotepadScreen() {
                         .fillMaxWidth()
                         .clip(AppTheme.shapes.medium)
                         .background(AppTheme.colors.container)
-                        .padding(horizontal = 20.dp, vertical = 10.dp),
+                        .padding(vertical = 10.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
                     Text(
-                        text = "V ${BuildConfig.VERSION_NAME}",
+                        modifier = Modifier.basicMarquee().padding(horizontal = 20.dp),
+                        text = BuildConfig.VERSION_NAME,
                         color = AppTheme.colors.primary,
                         style = MaterialTheme.typography.titleMedium,
                         textAlign = TextAlign.Center,
-                        fontWeight = FontWeight.SemiBold
+                        fontWeight = FontWeight.SemiBold,
+                        maxLines = 1
                     )
                 }
             }
