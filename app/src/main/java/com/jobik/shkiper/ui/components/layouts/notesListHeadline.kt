@@ -17,7 +17,7 @@ fun LazyStaggeredGridScope.notesListHeadline(@StringRes headline: Int) {
             text = stringResource(id = headline),
             color = AppTheme.colors.textSecondary,
             style = MaterialTheme.typography.bodyLarge,
-            modifier = Modifier.padding(horizontal = 10.dp)
+            modifier = Modifier.animateItem().padding(horizontal = 10.dp)
         )
     }
 }

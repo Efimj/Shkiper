@@ -14,11 +14,16 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import com.jobik.shkiper.ui.components.buttons.HashtagButton
 
-fun LazyStaggeredGridScope.noteTagsList(tags: Set<String>, selected: String?, onSelect: (String) -> Unit) {
+fun LazyStaggeredGridScope.noteTagsList(
+    tags: Set<String>,
+    selected: String?,
+    onSelect: (String) -> Unit
+) {
     if (tags.isNotEmpty()) {
         item(span = StaggeredGridItemSpan.FullLine) {
             LazyRow(
                 modifier = Modifier
+                    .animateItem()
                     .wrapContentSize(unbounded = true)
                     .width(LocalConfiguration.current.screenWidthDp.dp),
                 state = rememberLazyListState(),
@@ -26,7 +31,12 @@ fun LazyStaggeredGridScope.noteTagsList(tags: Set<String>, selected: String?, on
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 items(items = tags.toList(), key = { it }) { tag ->
-                    HashtagButton(text = tag, selected = tag == selected, onClick = onSelect)
+                    HashtagButton(
+                        modifier = Modifier.animateItem(),
+                        text = tag,
+                        selected = tag == selected,
+                        onClick = onSelect
+                    )
                 }
             }
         }
