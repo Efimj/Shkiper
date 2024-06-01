@@ -150,7 +150,10 @@ private fun RowScope.SearchField(
         if (isFocused.value) topWindowInsetsPadding() else 0.dp,
         label = "topPadding"
     )
-    val cornerRadius by animateDpAsState(if (isFocused.value) 0.dp else 15.dp, label = "cornerRadius")
+    val cornerRadius by animateDpAsState(
+        if (isFocused.value) 0.dp else 15.dp,
+        label = "cornerRadius"
+    )
     val focusRequester = remember { FocusRequester() }
 
     Row(
@@ -207,11 +210,10 @@ private fun RowScope.SearchField(
             ),
         )
         AnimatedVisibility(
-            visible = value.isNotEmpty() && isFocused.value,
+            visible = value.isNotBlank(),
             enter = fadeIn(),
             exit = fadeOut(),
-        )
-        {
+        ) {
             IconButton(
                 modifier = Modifier.size(30.dp),
                 onClick = { onChange("") },
