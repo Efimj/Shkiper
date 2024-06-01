@@ -59,7 +59,6 @@ data class ReminderDialogProperties(
     var repeatMode: RepeatMode = RepeatMode.NONE
 )
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CreateReminderDialog(
     reminderDialogProperties: ReminderDialogProperties = ReminderDialogProperties(),
@@ -119,12 +118,13 @@ fun CreateReminderDialog(
     }
 }
 
-private fun checkIsNotificationEnabled(context: Context) = areNotificationsEnabled(context = context) &&
-        areEXACTNotificationsEnabled(context = context) &&
-        areChanelNotificationsEnabled(
-            context = context,
-            channelId = NotificationScheduler.Companion.NotificationChannels.NOTECHANNEL.channelId
-        )
+private fun checkIsNotificationEnabled(context: Context) =
+    areNotificationsEnabled(context = context) &&
+            areEXACTNotificationsEnabled(context = context) &&
+            areChanelNotificationsEnabled(
+                context = context,
+                channelId = NotificationScheduler.Companion.NotificationChannels.NOTECHANNEL.channelId
+            )
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -156,7 +156,10 @@ private fun DialogFooter(
             .fillMaxWidth()
             .padding(horizontal = 20.dp)
             .height(50.dp),
-        horizontalArrangement = Arrangement.spacedBy(20.dp, alignment = Alignment.CenterHorizontally),
+        horizontalArrangement = Arrangement.spacedBy(
+            20.dp,
+            alignment = Alignment.CenterHorizontally
+        ),
         verticalAlignment = Alignment.CenterVertically
     ) {
         AnimatedVisibility(
@@ -191,7 +194,10 @@ private fun DialogFooter(
         }
         Row(
             modifier = Modifier.fillMaxSize(),
-            horizontalArrangement = Arrangement.spacedBy(10.dp, alignment = Alignment.CenterHorizontally)
+            horizontalArrangement = Arrangement.spacedBy(
+                10.dp,
+                alignment = Alignment.CenterHorizontally
+            )
         ) {
             Button(
                 modifier = Modifier
@@ -218,9 +224,11 @@ private fun DialogFooter(
                     targetState = pagerState.currentPage > 0,
                     transitionSpec = {
                         if (targetState > initialState) {
-                            (slideInHorizontally { height -> height } + fadeIn()).togetherWith(slideOutHorizontally { height -> -height } + fadeOut())
+                            (slideInHorizontally { height -> height } + fadeIn()).togetherWith(
+                                slideOutHorizontally { height -> -height } + fadeOut())
                         } else {
-                            (slideInHorizontally { height -> -height } + fadeIn()).togetherWith(slideOutHorizontally { height -> height } + fadeOut())
+                            (slideInHorizontally { height -> -height } + fadeIn()).togetherWith(
+                                slideOutHorizontally { height -> height } + fadeOut())
                         }.using(
                             SizeTransform(clip = false)
                         )
@@ -279,9 +287,11 @@ private fun DialogFooter(
                     targetState = isEnd,
                     transitionSpec = {
                         if (targetState > initialState) {
-                            (slideInHorizontally { height -> height } + fadeIn()).togetherWith(slideOutHorizontally { height -> -height } + fadeOut())
+                            (slideInHorizontally { height -> height } + fadeIn()).togetherWith(
+                                slideOutHorizontally { height -> -height } + fadeOut())
                         } else {
-                            (slideInHorizontally { height -> -height } + fadeIn()).togetherWith(slideOutHorizontally { height -> height } + fadeOut())
+                            (slideInHorizontally { height -> -height } + fadeIn()).togetherWith(
+                                slideOutHorizontally { height -> height } + fadeOut())
                         }.using(
                             SizeTransform(clip = false)
                         )
@@ -346,7 +356,12 @@ private fun DialogContent(
 
             ReminderDialogPages.TIMEPICK.value -> TimePickPage(date, time)
 
-            ReminderDialogPages.REPEATMODE.value -> RepeatModePage(date, time, repeatMode, isNotificationEnabled)
+            ReminderDialogPages.REPEATMODE.value -> RepeatModePage(
+                date,
+                time,
+                repeatMode,
+                isNotificationEnabled
+            )
         }
     }
 }
@@ -358,7 +373,8 @@ private fun RepeatModePage(
     repeatMode: MutableState<RepeatMode>,
     isNotificationEnabled: State<Boolean>
 ) {
-    val repeatModeList = RepeatMode.entries.map { DropDownItem(text = it.getLocalizedValue(LocalContext.current)) }
+    val repeatModeList =
+        RepeatMode.entries.map { DropDownItem(text = it.getLocalizedValue(LocalContext.current)) }
     val isExpanded = remember { mutableStateOf(false) }
     val isDatePast = !DateHelper.isFutureDateTime(date.value, time.value)
 
@@ -436,7 +452,9 @@ private fun RepeatModePage(
                     items = repeatModeList,
                     expanded = isExpanded,
                     selectedIndex = repeatMode.value.ordinal,
-                    onChangedSelection = { repeatMode.value = RepeatMode.entries.toTypedArray()[it] }) {
+                    onChangedSelection = {
+                        repeatMode.value = RepeatMode.entries.toTypedArray()[it]
+                    }) {
                     Button(
                         modifier = Modifier.heightIn(min = 40.dp),
                         shape = AppTheme.shapes.small,
@@ -461,7 +479,10 @@ private fun RepeatModePage(
                 }
             }
             if (!isNotificationEnabled.value)
-                Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Bottom) {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Bottom
+                ) {
                     Row(
                         modifier = Modifier.padding(bottom = 10.dp),
                         verticalAlignment = Alignment.CenterVertically
@@ -497,14 +518,14 @@ private fun TimePickPage(
                 .padding(horizontal = 20.dp)
         ) {
             Text(
-                DateHelper.getLocalizedDate(date.value),
+                text = DateHelper.getLocalizedDate(date.value),
                 style = MaterialTheme.typography.h5,
                 color = AppTheme.colors.textSecondary,
                 maxLines = 1,
             )
             Spacer(Modifier.width(8.dp))
             Text(
-                time.value.toString(),
+                text = time.value.toString(),
                 style = MaterialTheme.typography.h5,
                 color = AppTheme.colors.text,
                 fontWeight = FontWeight.SemiBold,
@@ -512,28 +533,30 @@ private fun TimePickPage(
             )
         }
         Spacer(Modifier.height(20.dp))
-        CustomTimePicker(time.value) { newTime -> time.value = newTime }
+        CustomTimePicker(startTime = time.value) { newTime -> time.value = newTime }
     }
 }
 
 @Composable
 private fun DatePickPage(date: MutableState<LocalDate>) {
     Column(
-        Modifier
+        modifier = Modifier
             .padding(horizontal = 20.dp)
             .padding(bottom = 10.dp)
     ) {
         Text(
+            modifier = Modifier.fillMaxWidth(),
             text = DateHelper.getLocalizedDate(date.value),
             style = MaterialTheme.typography.h5,
             color = AppTheme.colors.text,
             fontWeight = FontWeight.SemiBold,
             maxLines = 1,
-            overflow = TextOverflow.Ellipsis
+            overflow = TextOverflow.Ellipsis,
+            textAlign = TextAlign.Center,
         )
         Spacer(Modifier.height(10.dp))
         CustomDatePicker(
-            date.value, ContentHeightMode.Wrap
+            currentDate = date.value, contentHeightMode = ContentHeightMode.Wrap
         ) { day -> date.value = day.date }
     }
 }
