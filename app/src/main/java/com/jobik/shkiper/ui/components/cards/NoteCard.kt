@@ -1,42 +1,109 @@
 package com.jobik.shkiper.ui.components.cards
 
+import android.os.Parcelable
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.combinedClickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Event
 import androidx.compose.material.icons.filled.Repeat
-import androidx.compose.runtime.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.*
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextLayoutResult
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.Reminder
 import com.jobik.shkiper.database.models.RepeatMode
 import com.jobik.shkiper.helpers.DateHelper
 import com.jobik.shkiper.helpers.TextHelper.Companion.removeMarkdownStyles
-import com.jobik.shkiper.ui.helpers.MultipleEventsCutter
-import com.jobik.shkiper.ui.helpers.SetRichTextDefaultStyles
-import com.jobik.shkiper.ui.helpers.get
 import com.jobik.shkiper.ui.modifiers.bounceClick
 import com.jobik.shkiper.ui.theme.AppTheme
 import com.mohamedrejeb.richeditor.model.RichTextState
-import com.mohamedrejeb.richeditor.model.rememberRichTextState
+import kotlinx.parcelize.Parcelize
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+
+@Parcelize
+private data class NoteCardState(
+    val header: String? = null,
+    val htmlBody: String? = null,
+    val body: String? = null,
+    val reminderDate: LocalDateTime? = null,
+    val repeatMode: RepeatMode? = null,
+) : Parcelable
+
+private fun updateNoteCardState(
+    currentState: NoteCardState?,
+    header: String?,
+    htmlText: String?,
+    reminder: Reminder?
+): NoteCardState {
+    var newHeader: String? = null
+    newHeader = if (currentState == null || currentState.header != header) {
+        header
+    } else {
+        currentState.header
+    }
+
+    var newBodyHtml: String? = null
+    var newBody: String? = null
+    if (currentState == null || currentState.htmlBody != htmlText) {
+        if (htmlText != null) {
+            val richText = RichTextState()
+            richText.setHtml(htmlText)
+            newBody = removeMarkdownStyles(richText.toMarkdown())
+            newBodyHtml = htmlText
+        }
+    } else {
+        newBody = currentState.body
+        newBodyHtml = currentState.htmlBody
+    }
+
+    val newReminderDate = getNextReminderDate(reminder)
+    val newRepeatMode = reminder?.repeat
+
+
+    return NoteCardState(
+        header = newHeader,
+        body = newBody,
+        htmlBody = newBodyHtml,
+        reminderDate = newReminderDate,
+        repeatMode = newRepeatMode
+    )
+}
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -52,19 +119,21 @@ fun NoteCard(
 ) {
     val headerStyle = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold)
     val bodyStyle = MaterialTheme.typography.bodyMedium
-    val multipleEventsCutter = remember { MultipleEventsCutter.get() }
-    val borderColor: Color by animateColorAsState(
-        targetValue = if (selected) AppTheme.colors.primary else Color.Transparent, label = "borderColor",
+    val borderColor by animateColorAsState(
+        targetValue = if (selected) AppTheme.colors.primary else Color.Transparent,
+        label = "borderColor",
     )
 
-    val bodyRichTextState = rememberRichTextState()
-    SetRichTextDefaultStyles(bodyRichTextState)
+    val cardState = rememberSaveable { mutableStateOf<NoteCardState?>(null) }
 
-    LaunchedEffect(text) {
-        if (text !== null && bodyRichTextState.annotatedString.text !== text)
-            bodyRichTextState.setHtml(text)
-        else
-            bodyRichTextState.setText("")
+    LaunchedEffect(header, text, reminder) {
+        val newCardState = updateNoteCardState(
+            currentState = cardState.value,
+            header = header,
+            htmlText = text,
+            reminder = reminder
+        )
+        cardState.value = newCardState
     }
 
     Card(
@@ -73,7 +142,7 @@ fun NoteCard(
             .fillMaxWidth()
             .clip(RoundedCornerShape(15.dp))
             .combinedClickable(
-                onClick = { multipleEventsCutter.processEvent { onClick() } },
+                onClick = onClick,
                 onLongClick = onLongClick,
             ),
         shape = RoundedCornerShape(15.dp),
@@ -86,14 +155,26 @@ fun NoteCard(
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
-            if (markedText.isNullOrBlank())
-                NoteContent(header, bodyRichTextState, headerStyle, bodyStyle)
-            else
-                NoteAnnotatedContent(header, bodyRichTextState, markedText, headerStyle, bodyStyle)
-            if (header.isNullOrBlank() && removeMarkdownStyles(bodyRichTextState.toMarkdown()).isBlank()) {
-                EmptyNoteContent(bodyStyle)
+            if (cardState.value != null) {
+                if (markedText.isNullOrBlank()) {
+                    NoteContent(
+                        cardState = cardState.value!!,
+                        headerStyle = headerStyle,
+                        bodyStyle = bodyStyle
+                    )
+                } else {
+                    NoteAnnotatedContent(
+                        cardState = cardState.value!!,
+                        markedText = markedText,
+                        headerStyle = headerStyle,
+                        bodyStyle = bodyStyle
+                    )
+                }
+                if (cardState.value!!.header.isNullOrBlank() && cardState.value!!.body.isNullOrBlank()) {
+                    EmptyNoteContent(bodyStyle = bodyStyle)
+                }
+                ReminderInformation(cardState = cardState.value!!)
             }
-            ReminderInformation(reminder)
         }
     }
 }
@@ -118,33 +199,30 @@ private fun getNextReminderDate(reminder: Reminder?): LocalDateTime {
     )
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun ReminderInformation(reminder: Reminder?) {
-    val nextReminderDate = getNextReminderDate(reminder)
-    val isDateFuture = DateHelper.isFutureDateTime(nextReminderDate)
-    val fontSize = 13.sp
+private fun ReminderInformation(
+    cardState: NoteCardState,
+) {
+    if (cardState.reminderDate != null) {
+        val isDateFuture = DateHelper.isFutureDateTime(cardState.reminderDate)
 
-    if (reminder != null) {
         Spacer(modifier = Modifier.height(4.dp))
-        val shape = RoundedCornerShape(5.dp)
         Row(
             modifier = Modifier
-                .clip(shape)
+                .clip(RoundedCornerShape(5.dp))
                 .basicMarquee(),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
                 tint = AppTheme.colors.textSecondary,
-                imageVector = if (reminder.repeat == RepeatMode.NONE) Icons.Default.Event else Icons.Default.Repeat,
+                imageVector = if (cardState.repeatMode == RepeatMode.NONE) Icons.Default.Event else Icons.Default.Repeat,
                 contentDescription = stringResource(R.string.Event),
                 modifier = Modifier.height(15.dp)
             )
             Spacer(Modifier.width(4.dp))
             Text(
-                DateHelper.getLocalizedDate(nextReminderDate.toLocalDate()),
+                DateHelper.getLocalizedDate(cardState.reminderDate.toLocalDate()),
                 style = MaterialTheme.typography.bodySmall.copy(
-                    fontSize = fontSize,
                     textDecoration = if (isDateFuture) TextDecoration.None else TextDecoration.LineThrough
                 ),
                 color = AppTheme.colors.textSecondary,
@@ -152,8 +230,9 @@ private fun ReminderInformation(reminder: Reminder?) {
             Spacer(Modifier.width(4.dp))
             if (isDateFuture)
                 Text(
-                    nextReminderDate.toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")),
-                    style = MaterialTheme.typography.bodySmall.copy(fontSize = fontSize),
+                    text = cardState.reminderDate.toLocalTime()
+                        .format(DateTimeFormatter.ofPattern("HH:mm")),
+                    style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.colors.textSecondary,
                 )
         }
@@ -161,14 +240,17 @@ private fun ReminderInformation(reminder: Reminder?) {
 }
 
 @Composable
-private fun NoteContent(header: String?, text: RichTextState, headerStyle: TextStyle, bodyStyle: TextStyle) {
-    var headerLineCount by remember { mutableStateOf(1) }
+private fun NoteContent(
+    cardState: NoteCardState,
+    headerStyle: TextStyle,
+    bodyStyle: TextStyle
+) {
+    var headerLineCount by rememberSaveable { mutableIntStateOf(1) }
     val maxBodyLines = 8
-    val isBodyEmpty = removeMarkdownStyles(text.toMarkdown()).isBlank()
 
-    if (!header.isNullOrBlank()) {
+    if (!cardState.header.isNullOrBlank()) {
         Text(
-            text = header,
+            text = cardState.header,
             style = headerStyle,
             overflow = TextOverflow.Ellipsis,
             color = AppTheme.colors.onSecondaryContainer,
@@ -178,42 +260,33 @@ private fun NoteContent(header: String?, text: RichTextState, headerStyle: TextS
             maxLines = 3
         )
     }
-    if (!isBodyEmpty && !header.isNullOrBlank())
+    if (!cardState.header.isNullOrBlank() && !cardState.body.isNullOrBlank())
         Spacer(modifier = Modifier.height(4.dp))
-    if (!isBodyEmpty) {
+    if (!cardState.body.isNullOrBlank()) {
         Text(
-            text = removeMarkdownStyles(text.toMarkdown()),
+            text = cardState.body,
             maxLines = maxBodyLines - headerLineCount,
             overflow = TextOverflow.Ellipsis,
             style = bodyStyle,
             color = AppTheme.colors.textSecondary,
         )
-//        RichText(
-//            state = richTextState,
-//            maxLines = maxBodyLines - headerLineCount,
-//            overflow = TextOverflow.Ellipsis,
-//            style = bodyStyle,
-//            color = CustomTheme.colors.textSecondary,
-//        )
     }
 }
 
 @Composable
 private fun NoteAnnotatedContent(
-    header: String?,
-    text: RichTextState,
+    cardState: NoteCardState,
     markedText: String,
     headerStyle: TextStyle,
     bodyStyle: TextStyle
 ) {
-    var headerLineCount by remember { mutableStateOf(1) }
+    var headerLineCount by rememberSaveable { mutableIntStateOf(1) }
     val maxBodyLines = 8
-    val isBodyEmpty = removeMarkdownStyles(text.toMarkdown()).isBlank()
 
-    if (!header.isNullOrBlank()) {
+    if (!cardState.header.isNullOrBlank()) {
         Text(
             text = buildAnnotatedString(
-                text = header,
+                text = cardState.header,
                 substring = markedText,
                 color = AppTheme.colors.primary,
                 background = Color.Transparent
@@ -227,12 +300,12 @@ private fun NoteAnnotatedContent(
             maxLines = 3,
         )
     }
-    if (!isBodyEmpty && !header.isNullOrBlank())
+    if (!cardState.header.isNullOrBlank() && !cardState.body.isNullOrBlank())
         Spacer(modifier = Modifier.height(4.dp))
-    if (!isBodyEmpty) {
+    if (!cardState.body.isNullOrBlank()) {
         Text(
             text = buildAnnotatedString(
-                text = removeMarkdownStyles(text.toMarkdown()),
+                text = cardState.body,
                 substring = markedText,
                 color = AppTheme.colors.primary,
                 background = Color.Transparent
@@ -245,7 +318,12 @@ private fun NoteAnnotatedContent(
     }
 }
 
-fun buildAnnotatedString(text: String, substring: String, color: Color, background: Color): AnnotatedString {
+fun buildAnnotatedString(
+    text: String,
+    substring: String,
+    color: Color,
+    background: Color
+): AnnotatedString {
     return buildAnnotatedString {
         append(text)
         var lastIndex = 0
