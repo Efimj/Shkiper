@@ -126,7 +126,6 @@ private fun checkIsNotificationEnabled(context: Context) =
                 channelId = NotificationScheduler.Companion.NotificationChannels.NOTECHANNEL.channelId
             )
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun DialogFooter(
     pagerState: PagerState,
@@ -504,7 +503,6 @@ private fun RepeatModePage(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun TimePickPage(
     date: MutableState<LocalDate>,
