@@ -1,6 +1,7 @@
 package com.jobik.shkiper.ui.components.modals
 
 import android.content.Context
+import android.os.Parcelable
 import androidx.annotation.Keep
 import androidx.compose.animation.*
 import androidx.compose.foundation.*
@@ -10,8 +11,8 @@ import androidx.compose.foundation.pager.PageSize
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Event
 import androidx.compose.material.icons.filled.Repeat
@@ -19,6 +20,7 @@ import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.icons.outlined.NotificationsOff
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -45,6 +47,7 @@ import com.jobik.shkiper.ui.components.fields.CustomTimePicker
 import com.jobik.shkiper.ui.theme.AppTheme
 import com.kizitonwose.calendar.compose.ContentHeightMode
 import kotlinx.coroutines.launch
+import kotlinx.parcelize.Parcelize
 import java.time.LocalDate
 import java.time.LocalTime
 
@@ -53,13 +56,22 @@ private enum class ReminderDialogPages(val value: Int) {
     DATEPICK(0), TIMEPICK(1), REPEATMODE(2),
 }
 
+@Parcelize
 data class ReminderDialogProperties(
-    var date: LocalDate = LocalDate.now(),
-    var time: LocalTime = LocalTime.now(),
-    var repeatMode: RepeatMode = RepeatMode.NONE
-)
+    val date: LocalDate = LocalDate.now(),
+    val time: LocalTime = LocalTime.now(),
+    val repeatMode: RepeatMode = RepeatMode.NONE
+) : Parcelable
 
-@OptIn(ExperimentalFoundationApi::class)
+@Parcelize
+private data class ReminderDialogState(
+    val date: LocalDate = LocalDate.now(),
+    val time: LocalTime = LocalTime.now(),
+    val repeatMode: RepeatMode = RepeatMode.NONE,
+    val isNotificationEnabled: Boolean = false,
+    val canSave: Boolean = false,
+) : Parcelable
+
 @Composable
 fun CreateReminderDialog(
     reminderDialogProperties: ReminderDialogProperties = ReminderDialogProperties(),
@@ -68,20 +80,29 @@ fun CreateReminderDialog(
     onSave: (date: LocalDate, time: LocalTime, repeatMode: RepeatMode) -> Unit,
 ) {
     val context = LocalContext.current
-    val date = rememberSaveable { mutableStateOf(reminderDialogProperties.date) }
-    val time = rememberSaveable { mutableStateOf(reminderDialogProperties.time) }
-    val repeatMode = rememberSaveable { mutableStateOf(reminderDialogProperties.repeatMode) }
     val pagerState = rememberPagerState(
         initialPage = 0,
         initialPageOffsetFraction = 0f
     ) {
         ReminderDialogPages.entries.size
     }
-    val isNotificationEnabled = remember {
-        mutableStateOf(checkIsNotificationEnabled(context))
-    }
 
-    Dialog(onGoBack, DialogProperties(true, dismissOnClickOutside = true)) {
+    val reminderDialogState =
+        rememberSaveable {
+            mutableStateOf(
+                ReminderDialogState(
+                    date = reminderDialogProperties.date,
+                    time = reminderDialogProperties.time,
+                    repeatMode = reminderDialogProperties.repeatMode,
+                    isNotificationEnabled = checkIsNotificationEnabled(context)
+                )
+            )
+        }
+
+    Dialog(
+        onDismissRequest = onGoBack,
+        properties = DialogProperties(dismissOnBackPress = true, dismissOnClickOutside = true)
+    ) {
         Column(
             Modifier
                 .verticalScroll(rememberScrollState())
@@ -99,55 +120,62 @@ fun CreateReminderDialog(
             ) {
                 DialogContent(
                     it = it,
-                    date = date,
-                    time = time,
-                    repeatMode = repeatMode,
-                    isNotificationEnabled = isNotificationEnabled
+                    reminderDialogState = reminderDialogState
                 )
             }
             DialogFooter(
                 pagerState = pagerState,
-                date = date,
-                time = time,
+                reminderDialogState = reminderDialogState,
                 onGoBack = onGoBack,
                 onDelete = onDelete,
-                isNotificationEnabled = isNotificationEnabled
             ) {
-                onSave(date.value, time.value, repeatMode.value)
+                onSave(
+                    reminderDialogState.value.date,
+                    reminderDialogState.value.time,
+                    reminderDialogState.value.repeatMode
+                )
             }
         }
     }
 }
 
-private fun checkIsNotificationEnabled(context: Context) = areNotificationsEnabled(context = context) &&
-        areEXACTNotificationsEnabled(context = context) &&
-        areChanelNotificationsEnabled(
-            context = context,
-            channelId = NotificationScheduler.Companion.NotificationChannels.NOTECHANNEL.channelId
-        )
+private fun checkIsNotificationEnabled(context: Context) =
+    areNotificationsEnabled(context = context) &&
+            areEXACTNotificationsEnabled(context = context) &&
+            areChanelNotificationsEnabled(
+                context = context,
+                channelId = NotificationScheduler.Companion.NotificationChannels.NOTECHANNEL.channelId
+            )
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun DialogFooter(
     pagerState: PagerState,
-    date: MutableState<LocalDate>,
-    time: MutableState<LocalTime>,
+    reminderDialogState: MutableState<ReminderDialogState>,
     onGoBack: () -> Unit,
     onDelete: (() -> Unit)? = null,
-    isNotificationEnabled: MutableState<Boolean>,
     onSave: () -> Unit,
 ) {
     val isEnd = pagerState.currentPage == ReminderDialogPages.entries.size - 1
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
 
+    val isFutureDate =
+        remember(reminderDialogState.value.date, reminderDialogState.value.time) {
+            mutableStateOf(
+                DateHelper.isFutureDateTime(
+                    date = reminderDialogState.value.date,
+                    time = reminderDialogState.value.time
+                )
+            )
+        }
+
     val buttonNextContentColor: Color by animateColorAsState(
-        targetValue = if (isEnd) AppTheme.colors.onPrimary else AppTheme.colors.text,
+        targetValue = if (isEnd && reminderDialogState.value.isNotificationEnabled && isFutureDate.value) AppTheme.colors.onPrimary else AppTheme.colors.text,
         label = "buttonNextContentColor"
     )
 
     val buttonNextBackgroundColor: Color by animateColorAsState(
-        targetValue = if (isEnd) AppTheme.colors.primary else AppTheme.colors.container,
+        targetValue = if (isEnd && reminderDialogState.value.isNotificationEnabled && isFutureDate.value) AppTheme.colors.primary else AppTheme.colors.container,
         label = "buttonNextBackgroundColor"
     )
 
@@ -156,19 +184,21 @@ private fun DialogFooter(
             .fillMaxWidth()
             .padding(horizontal = 20.dp)
             .height(50.dp),
-        horizontalArrangement = Arrangement.spacedBy(20.dp, alignment = Alignment.CenterHorizontally),
+        horizontalArrangement = Arrangement.spacedBy(
+            20.dp,
+            alignment = Alignment.CenterHorizontally
+        ),
         verticalAlignment = Alignment.CenterVertically
     ) {
         AnimatedVisibility(
             visible = onDelete != null,
             enter = slideInHorizontally() + expandHorizontally(clip = false) + fadeIn(),
             exit = slideOutHorizontally() + shrinkHorizontally(clip = false) + fadeOut(),
-        )
-        {
+        ) {
             Button(
                 modifier = Modifier.fillMaxHeight(),
                 shape = AppTheme.shapes.small,
-                colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                colors = ButtonDefaults.buttonColors(
                     contentColor = AppTheme.colors.text,
                     containerColor = AppTheme.colors.container
                 ),
@@ -191,14 +221,17 @@ private fun DialogFooter(
         }
         Row(
             modifier = Modifier.fillMaxSize(),
-            horizontalArrangement = Arrangement.spacedBy(10.dp, alignment = Alignment.CenterHorizontally)
+            horizontalArrangement = Arrangement.spacedBy(
+                10.dp,
+                alignment = Alignment.CenterHorizontally
+            )
         ) {
             Button(
                 modifier = Modifier
                     .fillMaxHeight()
                     .weight(.5f),
                 shape = AppTheme.shapes.small,
-                colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                colors = ButtonDefaults.buttonColors(
                     contentColor = AppTheme.colors.text,
                     containerColor = AppTheme.colors.container
                 ),
@@ -218,9 +251,11 @@ private fun DialogFooter(
                     targetState = pagerState.currentPage > 0,
                     transitionSpec = {
                         if (targetState > initialState) {
-                            (slideInHorizontally { height -> height } + fadeIn()).togetherWith(slideOutHorizontally { height -> -height } + fadeOut())
+                            (slideInHorizontally { height -> height } + fadeIn()).togetherWith(
+                                slideOutHorizontally { height -> -height } + fadeOut())
                         } else {
-                            (slideInHorizontally { height -> -height } + fadeIn()).togetherWith(slideOutHorizontally { height -> height } + fadeOut())
+                            (slideInHorizontally { height -> -height } + fadeIn()).togetherWith(
+                                slideOutHorizontally { height -> height } + fadeOut())
                         }.using(
                             SizeTransform(clip = false)
                         )
@@ -229,7 +264,7 @@ private fun DialogFooter(
                     if (value) {
                         Text(
                             text = stringResource(R.string.Back),
-                            style = MaterialTheme.typography.body1,
+                            style = MaterialTheme.typography.bodyMedium,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.colors.text,
                             maxLines = 1,
@@ -238,7 +273,7 @@ private fun DialogFooter(
                     } else {
                         Text(
                             text = stringResource(R.string.Cancel),
-                            style = MaterialTheme.typography.body1,
+                            style = MaterialTheme.typography.bodyMedium,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.colors.text,
                             maxLines = 1,
@@ -252,7 +287,7 @@ private fun DialogFooter(
                     .fillMaxHeight()
                     .weight(.5f),
                 shape = AppTheme.shapes.small,
-                colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                colors = ButtonDefaults.buttonColors(
                     contentColor = buttonNextContentColor,
                     containerColor = buttonNextBackgroundColor
                 ),
@@ -260,12 +295,12 @@ private fun DialogFooter(
                 elevation = null,
                 contentPadding = PaddingValues(horizontal = 15.dp),
                 onClick = {
-                    if (isEnd) {
-                        if (!DateHelper.isFutureDateTime(date.value, time.value)) return@Button
-                        if (!isNotificationEnabled.value && !checkIsNotificationEnabled(context = context)) {
+                    if (isEnd && isFutureDate.value) {
+                        if (!checkIsNotificationEnabled(context = context) && !reminderDialogState.value.isNotificationEnabled) {
                             enableNotificationIfDisabled(context = context)
                         } else {
-                            isNotificationEnabled.value = true
+                            reminderDialogState.value =
+                                reminderDialogState.value.copy(isNotificationEnabled = true)
                             onSave()
                         }
                     } else {
@@ -279,9 +314,11 @@ private fun DialogFooter(
                     targetState = isEnd,
                     transitionSpec = {
                         if (targetState > initialState) {
-                            (slideInHorizontally { height -> height } + fadeIn()).togetherWith(slideOutHorizontally { height -> -height } + fadeOut())
+                            (slideInHorizontally { height -> height } + fadeIn()).togetherWith(
+                                slideOutHorizontally { height -> -height } + fadeOut())
                         } else {
-                            (slideInHorizontally { height -> -height } + fadeIn()).togetherWith(slideOutHorizontally { height -> height } + fadeOut())
+                            (slideInHorizontally { height -> -height } + fadeIn()).togetherWith(
+                                slideOutHorizontally { height -> height } + fadeOut())
                         }.using(
                             SizeTransform(clip = false)
                         )
@@ -290,7 +327,7 @@ private fun DialogFooter(
                     if (value) {
                         Text(
                             text = stringResource(R.string.Save),
-                            style = MaterialTheme.typography.body1,
+                            style = MaterialTheme.typography.bodyMedium,
                             fontWeight = FontWeight.SemiBold,
                             color = buttonNextContentColor,
                             maxLines = 1,
@@ -299,7 +336,7 @@ private fun DialogFooter(
                     } else {
                         Text(
                             text = stringResource(R.string.Next),
-                            style = MaterialTheme.typography.body1,
+                            style = MaterialTheme.typography.bodyMedium,
                             fontWeight = FontWeight.SemiBold,
                             color = buttonNextContentColor,
                             maxLines = 1,
@@ -331,10 +368,7 @@ fun enableNotificationIfDisabled(context: Context) {
 @Composable
 private fun DialogContent(
     it: Int,
-    date: MutableState<LocalDate>,
-    time: MutableState<LocalTime>,
-    repeatMode: MutableState<RepeatMode>,
-    isNotificationEnabled: State<Boolean>
+    reminderDialogState: MutableState<ReminderDialogState>,
 ) {
     Column(
         Modifier
@@ -342,25 +376,24 @@ private fun DialogContent(
             .heightIn(min = 350.dp)
     ) {
         when (it) {
-            ReminderDialogPages.DATEPICK.value -> DatePickPage(date)
-
-            ReminderDialogPages.TIMEPICK.value -> TimePickPage(date, time)
-
-            ReminderDialogPages.REPEATMODE.value -> RepeatModePage(date, time, repeatMode, isNotificationEnabled)
+            ReminderDialogPages.DATEPICK.value -> DatePickPage(reminderDialogState = reminderDialogState)
+            ReminderDialogPages.TIMEPICK.value -> TimePickPage(reminderDialogState = reminderDialogState)
+            ReminderDialogPages.REPEATMODE.value -> RepeatModePage(reminderDialogState = reminderDialogState)
         }
     }
 }
 
 @Composable
 private fun RepeatModePage(
-    date: MutableState<LocalDate>,
-    time: MutableState<LocalTime>,
-    repeatMode: MutableState<RepeatMode>,
-    isNotificationEnabled: State<Boolean>
+    reminderDialogState: MutableState<ReminderDialogState>
 ) {
-    val repeatModeList = RepeatMode.entries.map { DropDownItem(text = it.getLocalizedValue(LocalContext.current)) }
+    val repeatModeList =
+        RepeatMode.entries.map { DropDownItem(text = it.getLocalizedValue(LocalContext.current)) }
     val isExpanded = remember { mutableStateOf(false) }
-    val isDatePast = !DateHelper.isFutureDateTime(date.value, time.value)
+    val isDatePast = DateHelper.isFutureDateTime(
+        date = reminderDialogState.value.date,
+        time = reminderDialogState.value.time
+    ).not()
 
     Column(
         Modifier
@@ -370,7 +403,7 @@ private fun RepeatModePage(
     ) {
         Text(
             stringResource(R.string.Reminder),
-            style = MaterialTheme.typography.h5,
+            style = MaterialTheme.typography.headlineMedium,
             color = AppTheme.colors.textSecondary,
             textAlign = TextAlign.Center,
             modifier = Modifier
@@ -392,8 +425,8 @@ private fun RepeatModePage(
                 )
                 Spacer(Modifier.width(8.dp))
                 Text(
-                    DateHelper.getLocalizedDate(date.value),
-                    style = MaterialTheme.typography.body1,
+                    text = DateHelper.getLocalizedDate(reminderDialogState.value.date),
+                    style = MaterialTheme.typography.bodyMedium,
                     color = AppTheme.colors.text,
                 )
             }
@@ -409,15 +442,15 @@ private fun RepeatModePage(
                 )
                 Spacer(Modifier.width(8.dp))
                 Text(
-                    text = time.value.toString(),
-                    style = MaterialTheme.typography.body1,
+                    text = reminderDialogState.value.time.toString(),
+                    style = MaterialTheme.typography.bodyMedium,
                     color = AppTheme.colors.text,
                 )
             }
             if (isDatePast)
                 Text(
                     text = stringResource(R.string.ErrorDateMastBeFuture),
-                    style = MaterialTheme.typography.body1,
+                    style = MaterialTheme.typography.bodyMedium,
                     color = AppTheme.colors.primary,
                     modifier = Modifier.padding(bottom = 10.dp)
                 )
@@ -435,12 +468,15 @@ private fun RepeatModePage(
                 DropDownButton(
                     items = repeatModeList,
                     expanded = isExpanded,
-                    selectedIndex = repeatMode.value.ordinal,
-                    onChangedSelection = { repeatMode.value = RepeatMode.entries.toTypedArray()[it] }) {
+                    selectedIndex = reminderDialogState.value.repeatMode.ordinal,
+                    onChangedSelection = {
+                        reminderDialogState.value =
+                            reminderDialogState.value.copy(repeatMode = RepeatMode.entries.toTypedArray()[it])
+                    }) {
                     Button(
                         modifier = Modifier.heightIn(min = 40.dp),
                         shape = AppTheme.shapes.small,
-                        colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                        colors = ButtonDefaults.buttonColors(
                             contentColor = AppTheme.colors.text,
                             containerColor = AppTheme.colors.container
                         ),
@@ -450,8 +486,10 @@ private fun RepeatModePage(
                         onClick = { it() },
                     ) {
                         Text(
-                            text = repeatMode.value.getLocalizedValue(LocalContext.current),
-                            style = MaterialTheme.typography.body1,
+                            text = reminderDialogState.value.repeatMode.getLocalizedValue(
+                                LocalContext.current
+                            ),
+                            style = MaterialTheme.typography.bodyMedium,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.colors.text,
                             maxLines = 1,
@@ -460,8 +498,11 @@ private fun RepeatModePage(
                     }
                 }
             }
-            if (!isNotificationEnabled.value)
-                Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Bottom) {
+            if (!reminderDialogState.value.isNotificationEnabled)
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Bottom
+                ) {
                     Row(
                         modifier = Modifier.padding(bottom = 10.dp),
                         verticalAlignment = Alignment.CenterVertically
@@ -474,7 +515,7 @@ private fun RepeatModePage(
                         Spacer(Modifier.width(8.dp))
                         Text(
                             text = stringResource(R.string.TurnOnNotifications),
-                            style = MaterialTheme.typography.body1,
+                            style = MaterialTheme.typography.bodyMedium,
                             color = AppTheme.colors.text,
                         )
                     }
@@ -483,11 +524,9 @@ private fun RepeatModePage(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun TimePickPage(
-    date: MutableState<LocalDate>,
-    time: MutableState<LocalTime>,
+    reminderDialogState: MutableState<ReminderDialogState>
 ) {
     Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
         Row(
@@ -497,43 +536,49 @@ private fun TimePickPage(
                 .padding(horizontal = 20.dp)
         ) {
             Text(
-                DateHelper.getLocalizedDate(date.value),
-                style = MaterialTheme.typography.h5,
+                text = DateHelper.getLocalizedDate(reminderDialogState.value.date),
+                style = MaterialTheme.typography.headlineMedium,
                 color = AppTheme.colors.textSecondary,
                 maxLines = 1,
             )
             Spacer(Modifier.width(8.dp))
             Text(
-                time.value.toString(),
-                style = MaterialTheme.typography.h5,
+                text = reminderDialogState.value.time.toString(),
+                style = MaterialTheme.typography.headlineMedium,
                 color = AppTheme.colors.text,
                 fontWeight = FontWeight.SemiBold,
                 maxLines = 1,
             )
         }
         Spacer(Modifier.height(20.dp))
-        CustomTimePicker(time.value) { newTime -> time.value = newTime }
+        CustomTimePicker(startTime = reminderDialogState.value.time) { newTime ->
+            reminderDialogState.value = reminderDialogState.value.copy(time = newTime)
+        }
     }
 }
 
 @Composable
-private fun DatePickPage(date: MutableState<LocalDate>) {
+private fun DatePickPage(reminderDialogState: MutableState<ReminderDialogState>) {
     Column(
-        Modifier
+        modifier = Modifier
             .padding(horizontal = 20.dp)
             .padding(bottom = 10.dp)
     ) {
         Text(
-            text = DateHelper.getLocalizedDate(date.value),
-            style = MaterialTheme.typography.h5,
+            modifier = Modifier.fillMaxWidth(),
+            text = DateHelper.getLocalizedDate(reminderDialogState.value.date),
+            style = MaterialTheme.typography.headlineMedium,
             color = AppTheme.colors.text,
             fontWeight = FontWeight.SemiBold,
             maxLines = 1,
-            overflow = TextOverflow.Ellipsis
+            overflow = TextOverflow.Ellipsis,
+            textAlign = TextAlign.Center,
         )
         Spacer(Modifier.height(10.dp))
         CustomDatePicker(
-            date.value, ContentHeightMode.Wrap
-        ) { day -> date.value = day.date }
+            currentDate = reminderDialogState.value.date, contentHeightMode = ContentHeightMode.Wrap
+        ) { day ->
+            reminderDialogState.value = reminderDialogState.value.copy(date = day.date)
+        }
     }
 }

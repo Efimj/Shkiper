@@ -31,10 +31,17 @@ fun NoteListScreenReminderCheck(notesViewModel: NotesViewModel) {
 
     if (reminderNeededDialog)
         ActionDialog(
-            dialogProperties = DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false),
+            dialogProperties = DialogProperties(
+                dismissOnBackPress = false,
+                dismissOnClickOutside = false
+            ),
             icon = if (clickedOnEnabled) Icons.Outlined.CheckCircleOutline else Icons.Outlined.NotificationImportant,
-            title = if (clickedOnEnabled) stringResource(id = R.string.ImportantForRemindersWork) else stringResource(id = R.string.NeededPermissionForNotifications),
-            confirmText = if (clickedOnEnabled) stringResource(id = R.string.Confirm) else stringResource(id = R.string.Enable),
+            title = if (clickedOnEnabled) stringResource(id = R.string.ImportantForRemindersWork) else stringResource(
+                id = R.string.NeededPermissionForNotifications
+            ),
+            confirmText = if (clickedOnEnabled) stringResource(id = R.string.Confirm) else stringResource(
+                id = R.string.Enable
+            ),
             onConfirm = {
                 clickedOnEnabled = true
                 if (!areNotificationsEnabled(context = context) || !areChanelNotificationsEnabled(
@@ -60,15 +67,20 @@ fun NoteListScreenReminderCheck(notesViewModel: NotesViewModel) {
             }
         )
 
-    LaunchedEffect(notesViewModel.screenState.value.reminders.size, reminderNeededDialog) {
-        if (notesViewModel.screenState.value.reminders.isNotEmpty() && !checkIsNotificationEnabled(context = context))
+    LaunchedEffect(notesViewModel.screenState.value.reminders.size) {
+        if (notesViewModel.screenState.value.reminders.isNotEmpty() && !checkIsNotificationEnabled(
+                context = context
+            )
+        ) {
             reminderNeededDialog = true
+        }
     }
 }
 
-private fun checkIsNotificationEnabled(context: Context) = areNotificationsEnabled(context = context) &&
-        areEXACTNotificationsEnabled(context = context) &&
-        areChanelNotificationsEnabled(
-            context = context,
-            channelId = NotificationScheduler.Companion.NotificationChannels.NOTECHANNEL.channelId
-        )
+private fun checkIsNotificationEnabled(context: Context) =
+    areNotificationsEnabled(context = context) &&
+            areEXACTNotificationsEnabled(context = context) &&
+            areChanelNotificationsEnabled(
+                context = context,
+                channelId = NotificationScheduler.Companion.NotificationChannels.NOTECHANNEL.channelId
+            )
