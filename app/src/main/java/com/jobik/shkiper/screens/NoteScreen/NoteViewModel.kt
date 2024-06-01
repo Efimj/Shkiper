@@ -127,7 +127,8 @@ class NoteViewModel @Inject constructor(
     }
 
     fun switchDeleteDialogShow() {
-        _screenState.value = _screenState.value.copy(isDeleteDialogShow = !_screenState.value.isDeleteDialogShow)
+        _screenState.value =
+            _screenState.value.copy(isDeleteDialogShow = !_screenState.value.isDeleteDialogShow)
     }
 
     fun switchStyling(mode: Boolean? = null) {
@@ -139,19 +140,22 @@ class NoteViewModel @Inject constructor(
     fun switchStylingEnabled(mode: Boolean? = null) {
         if (mode !== null) _screenState.value = _screenState.value.copy(isStylingEnabled = mode)
         else
-            _screenState.value = _screenState.value.copy(isStylingEnabled = !_screenState.value.isStylingEnabled)
+            _screenState.value =
+                _screenState.value.copy(isStylingEnabled = !_screenState.value.isStylingEnabled)
     }
 
     fun switchShowShareDialog(mode: Boolean? = null) {
         if (mode !== null) _screenState.value = _screenState.value.copy(showShareDialog = mode)
         else
-            _screenState.value = _screenState.value.copy(showShareDialog = !_screenState.value.showShareDialog)
+            _screenState.value =
+                _screenState.value.copy(showShareDialog = !_screenState.value.showShareDialog)
     }
 
     fun switchShowShareNoteDialog(mode: Boolean? = null) {
         if (mode !== null) _screenState.value = _screenState.value.copy(showShareNoteDialog = mode)
         else
-            _screenState.value = _screenState.value.copy(showShareNoteDialog = !_screenState.value.showShareNoteDialog)
+            _screenState.value =
+                _screenState.value.copy(showShareNoteDialog = !_screenState.value.showShareNoteDialog)
     }
 
     /*******************
@@ -178,13 +182,15 @@ class NoteViewModel @Inject constructor(
         refreshLinks()
     }
 
-    private fun refreshLinks() {
+    fun refreshLinks() {
         linkRefreshTimer?.cancel()
         allLinksMetaData = emptySet()
         runFetchingLinksMetaData()
     }
 
-    fun runFetchingLinksMetaData() {
+    private fun runFetchingLinksMetaData() {
+        _screenState.value = _screenState.value.copy(linksLoading = true)
+
         if (linkRefreshTimer == null) {
             fetchLinkMetaData()
             linkRefreshTimer?.cancel()
@@ -197,7 +203,7 @@ class NoteViewModel @Inject constructor(
             override fun run() {
                 fetchLinkMetaData()
             }
-        }, 1000L)
+        }, 300L)
     }
 
     private fun fetchLinkMetaData() {
@@ -225,7 +231,6 @@ class NoteViewModel @Inject constructor(
                 }
 
                 allLinksMetaData = allLinksMetaData.plus(newLinkData)
-//                _screenState.value = _screenState.value.copy(linksLoading = false)
             }
         } else {
             viewModelScope.launch(Dispatchers.IO) {
@@ -234,7 +239,8 @@ class NoteViewModel @Inject constructor(
                 val links = LinkHelper().findLinks(richTextState.toMarkdown())
 
                 allLinksMetaData =
-                    links.map { link -> LinkHelper.LinkPreview(link = link, description = link) }.toSet()
+                    links.map { link -> LinkHelper.LinkPreview(link = link, description = link) }
+                        .toSet()
             }
         }
         _screenState.value = _screenState.value.copy(linksLoading = false)
@@ -271,7 +277,9 @@ class NoteViewModel @Inject constructor(
                     _screenState.value.intermediateStates[_screenState.value.intermediateStates.size - 1].body != intermediateState.body
                 ) {
                     _screenState.value = _screenState.value.copy(
-                        intermediateStates = _screenState.value.intermediateStates.plus(intermediateState)
+                        intermediateStates = _screenState.value.intermediateStates.plus(
+                            intermediateState
+                        )
                     )
                 }
                 _screenState.value =
@@ -308,17 +316,26 @@ class NoteViewModel @Inject constructor(
 
     fun createWidget() {
         viewModelScope.launch {
-            handleNoteWidgetPin(application.applicationContext, screenState.value.noteId.toHexString())
+            handleNoteWidgetPin(
+                application.applicationContext,
+                screenState.value.noteId.toHexString()
+            )
         }
     }
 
     fun updateNoteHeader(text: String) {
         changeNoteHeader(text)
-        updateIntermediateStates(IntermediateState(_screenState.value.noteHeader, _screenState.value.noteBody))
+        updateIntermediateStates(
+            IntermediateState(
+                _screenState.value.noteHeader,
+                _screenState.value.noteBody
+            )
+        )
     }
 
     private fun changeNoteHeader(text: String) {
-        _screenState.value = _screenState.value.copy(noteHeader = text, updatedDate = LocalDateTime.now())
+        _screenState.value =
+            _screenState.value.copy(noteHeader = text, updatedDate = LocalDateTime.now())
         updateNote {
             it.header = this@NoteViewModel._screenState.value.noteHeader
             it.updateDate = this@NoteViewModel._screenState.value.updatedDate
@@ -327,11 +344,17 @@ class NoteViewModel @Inject constructor(
 
     fun updateNoteBody(text: String) {
         changeNoteBody(text)
-        updateIntermediateStates(IntermediateState(_screenState.value.noteHeader, _screenState.value.noteBody))
+        updateIntermediateStates(
+            IntermediateState(
+                _screenState.value.noteHeader,
+                _screenState.value.noteBody
+            )
+        )
     }
 
     private fun changeNoteBody(text: String) {
-        _screenState.value = _screenState.value.copy(noteBody = text, updatedDate = LocalDateTime.now())
+        _screenState.value =
+            _screenState.value.copy(noteBody = text, updatedDate = LocalDateTime.now())
         updateNote {
             it.body = this@NoteViewModel._screenState.value.noteBody
             it.updateDate = this@NoteViewModel._screenState.value.updatedDate
@@ -341,7 +364,11 @@ class NoteViewModel @Inject constructor(
 
     private fun changeNoteContent(header: String, body: String) {
         _screenState.value =
-            _screenState.value.copy(noteHeader = header, noteBody = body, updatedDate = LocalDateTime.now())
+            _screenState.value.copy(
+                noteHeader = header,
+                noteBody = body,
+                updatedDate = LocalDateTime.now()
+            )
         updateNote {
             it.header = this@NoteViewModel._screenState.value.noteHeader
             it.body = this@NoteViewModel._screenState.value.noteBody
@@ -486,7 +513,12 @@ class NoteViewModel @Inject constructor(
         }
     }
 
-    fun createOrUpdateReminder(reminder: Reminder?, date: LocalDate, time: LocalTime, repeatMode: RepeatMode) {
+    fun createOrUpdateReminder(
+        reminder: Reminder?,
+        date: LocalDate,
+        time: LocalTime,
+        repeatMode: RepeatMode
+    ) {
         if (!DateHelper.isFutureDateTime(date, time)) return
 
         viewModelScope.launch {

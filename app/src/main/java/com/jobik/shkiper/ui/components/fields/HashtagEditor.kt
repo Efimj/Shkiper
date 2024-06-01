@@ -71,11 +71,9 @@ fun TagEditor(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                stringResource(R.string.Hashtags),
-                style = MaterialTheme.typography.headlineMedium.copy(
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 18.sp
-                ),
+                text = stringResource(R.string.Hashtags),
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold,
                 color = AppTheme.colors.textSecondary
             )
         }

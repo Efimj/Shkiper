@@ -162,19 +162,21 @@ fun NoteScreenContent(
                     TagEditor(
                         enabled = enabled,
                         modifier = Modifier
-                            .padding(bottom = 15.dp)
+                            .padding(bottom = 8.dp)
                             .padding(horizontal = 20.dp),
                         selectedTags = noteViewModel.screenState.value.hashtags,
                         allTags = noteViewModel.screenState.value.allHashtags,
                         onSave = noteViewModel::changeNoteHashtags
                     )
                 }
-                LinkPreviewList(
-                    noteViewModel.screenState.value.linksMetaData,
-                    linkListExpanded,
-                    noteViewModel.screenState.value.linksLoading,
-                    Modifier.padding(horizontal = 20.dp)
-                )
+                item {
+                    LinkPreviewList(
+                        linkPreviewList = noteViewModel.screenState.value.linksMetaData,
+                        expanded = linkListExpanded,
+                        isLoading = noteViewModel.screenState.value.linksLoading,
+                        contentPadding = PaddingValues(horizontal = 20.dp)
+                    )
+                }
                 item {
                     Spacer(Modifier.height(45.dp))
                 }
