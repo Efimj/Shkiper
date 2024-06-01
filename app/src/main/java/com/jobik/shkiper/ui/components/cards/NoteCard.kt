@@ -92,9 +92,8 @@ private fun updateNoteCardState(
         newBodyHtml = currentState.htmlBody
     }
 
-    val newReminderDate = getNextReminderDate(reminder)
+    val newReminderDate = if (reminder != null) getNextReminderDate(reminder) else null
     val newRepeatMode = reminder?.repeat
-
 
     return NoteCardState(
         header = newHeader,
@@ -221,7 +220,7 @@ private fun ReminderInformation(
             )
             Spacer(Modifier.width(4.dp))
             Text(
-                DateHelper.getLocalizedDate(cardState.reminderDate.toLocalDate()),
+                text = DateHelper.getLocalizedDate(cardState.reminderDate.toLocalDate()),
                 style = MaterialTheme.typography.bodySmall.copy(
                     textDecoration = if (isDateFuture) TextDecoration.None else TextDecoration.LineThrough
                 ),
