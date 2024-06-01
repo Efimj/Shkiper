@@ -1,12 +1,28 @@
 package com.jobik.shkiper.ui.components.layouts
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.*
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Loop
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.outlined.KeyboardArrowDown
+import androidx.compose.material.icons.outlined.KeyboardArrowUp
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -14,72 +30,111 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.jobik.shkiper.R
 import com.jobik.shkiper.helpers.LinkHelper
-import com.jobik.shkiper.ui.components.buttons.CustomButton
-import com.jobik.shkiper.ui.components.buttons.DefaultButtonProperties
 import com.jobik.shkiper.ui.components.cards.LinkPreviewCard
-import com.jobik.shkiper.ui.modifiers.circularRotation
 import com.jobik.shkiper.ui.theme.AppTheme
 
-fun LazyListScope.LinkPreviewList(
+@Composable
+fun LinkPreviewList(
     linkPreviewList: Set<LinkHelper.LinkPreview>,
     expanded: MutableState<Boolean>,
     isLoading: Boolean,
-    contentPadding: Modifier
+    contentPadding: PaddingValues
 ) {
-    if (isLoading) {
-        item {
-            Row(verticalAlignment = Alignment.CenterVertically, modifier = contentPadding) {
-                Text(
-                    text = stringResource(R.string.Loading),
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold, fontSize = 18.sp),
-                    color = AppTheme.colors.textSecondary,
-                )
-                Spacer(Modifier.width(10.dp))
-                Icon(
-                    imageVector = Icons.Outlined.Loop,
-                    contentDescription = stringResource(R.string.Loading),
-                    tint = AppTheme.colors.textSecondary,
-                    modifier = Modifier.circularRotation()
-                )
+    val links = remember(expanded.value, linkPreviewList) {
+        if (linkPreviewList.size > 3 && expanded.value) linkPreviewList.toList() else linkPreviewList.take(
+            3
+        )
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(contentPadding)
+            .animateContentSize()
+    ) {
+//        AnimatedVisibility(visible = isLoading) {
+//            Row(
+//                verticalAlignment = Alignment.CenterVertically,
+//                modifier = Modifier.padding(bottom = 8.dp)
+//            ) {
+//                CircularProgressIndicator()
+//                Spacer(Modifier.width(10.dp))
+//                Text(
+//                    text = stringResource(R.string.Loading),
+//                    maxLines = 1,
+//                    overflow = TextOverflow.Ellipsis,
+//                    style = MaterialTheme.typography.bodyMedium,
+//                    color = AppTheme.colors.textSecondary,
+//                )
+//            }
+//        }
+        AnimatedVisibility(
+            modifier = Modifier.fillMaxWidth(),
+            visible = isLoading.not() && linkPreviewList.isNotEmpty()
+        ) {
+            Column {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(
+                        text = stringResource(R.string.Links),
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.SemiBold,
+                        color = AppTheme.colors.textSecondary,
+                    )
+                }
+                Spacer(modifier = Modifier.padding(4.dp))
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    links.forEach { link ->
+                        LinkPreviewCard(link)
+                    }
+                }
+                AnimatedVisibility(
+                    modifier = Modifier.fillMaxWidth(),
+                    visible = linkPreviewList.size > 3
+                ) {
+                    Button(
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = AppTheme.shapes.small,
+                        colors = ButtonDefaults.buttonColors(
+                            contentColor = AppTheme.colors.textSecondary,
+                            containerColor = Color.Transparent
+                        ),
+                        border = null,
+                        elevation = null,
+                        contentPadding = PaddingValues(horizontal = 15.dp),
+                        onClick = { expanded.value = !expanded.value }
+                    ) {
+                        val buttonIcon =
+                            if (expanded.value) Icons.Outlined.KeyboardArrowUp else Icons.Outlined.KeyboardArrowDown
+
+                        val buttonText =
+                            if (expanded.value) stringResource(R.string.Hide) else stringResource(
+                                R.string.ShowAll
+                            )
+
+                        AnimatedContent(targetState = buttonIcon, label = "animate icon") { icon ->
+                            Icon(
+                                imageVector = icon,
+                                contentDescription = buttonText,
+                                tint = AppTheme.colors.textSecondary
+                            )
+                        }
+                        Spacer(modifier = Modifier.padding(end = 10.dp))
+                        AnimatedContent(targetState = buttonText, label = "animate text") { text ->
+                            Text(
+                                text = text,
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = AppTheme.colors.textSecondary,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                        }
+                    }
+                }
             }
-        }
-        return
-    }
-    if (linkPreviewList.isEmpty()) return
-    item {
-        Row(verticalAlignment = Alignment.CenterVertically, modifier = contentPadding.padding(bottom = 8.dp)) {
-            Text(
-                stringResource(R.string.Links),
-                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold, fontSize = 18.sp),
-                color = AppTheme.colors.textSecondary,
-            )
-        }
-    }
-    items(if (linkPreviewList.size > 3 && expanded.value) linkPreviewList.toList() else linkPreviewList.take(3)) { linkPreview ->
-        Box(contentPadding.padding(bottom = 10.dp)) {
-            LinkPreviewCard(linkPreview)
-        }
-    }
-    if (linkPreviewList.size > 3) {
-        item {
-            CustomButton(
-                text = if (expanded.value) stringResource(R.string.Hide) else stringResource(R.string.ShowAll),
-                onClick = { expanded.value = !expanded.value },
-                properties = DefaultButtonProperties(
-                    buttonColors = ButtonDefaults.buttonColors(
-                        containerColor = Color.Transparent,
-                        disabledContainerColor = Color.Transparent
-                    ),
-                    textColor = AppTheme.colors.textSecondary,
-                    textStyle = MaterialTheme.typography.bodyMedium,
-                ),
-                modifier = contentPadding
-            )
         }
     }
 }

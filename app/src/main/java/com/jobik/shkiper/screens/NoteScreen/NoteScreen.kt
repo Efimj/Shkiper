@@ -18,7 +18,7 @@ private fun LeaveScreenIfNeeded(
     navController: NavController
 ) {
     LaunchedEffect(noteViewModel.screenState.value.isGoBack) {
-        noteViewModel.runFetchingLinksMetaData()
+        noteViewModel.refreshLinks()
         if (noteViewModel.screenState.value.isGoBack) navController.popBackStack()
     }
 }
