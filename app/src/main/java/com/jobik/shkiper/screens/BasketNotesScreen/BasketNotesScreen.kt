@@ -49,7 +49,7 @@ fun BasketNotesScreen(navController: NavController, basketViewModel: NotesViewMo
             label = "animation layouts screen"
         ) { value ->
             if (value) {
-                ScreenContentIfNoData(title = R.string.BasketNotesPageHeader, icon = Icons.Outlined.DeleteSweep)
+                ScreenStub(title = R.string.BasketNotesPageHeader, icon = Icons.Outlined.DeleteSweep)
             } else {
                 ScreenContent(
                     lazyGridNotes = lazyGridNotes,

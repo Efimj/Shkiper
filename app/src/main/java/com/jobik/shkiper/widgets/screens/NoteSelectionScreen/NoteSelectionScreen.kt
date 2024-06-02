@@ -57,7 +57,7 @@ fun NoteSelectionScreen(
             label = "animation layouts screen"
         ) { value ->
             if (value) {
-                ScreenContentIfNoData(title = R.string.EmptyNotesPageHeader, icon = Icons.Outlined.Description)
+                ScreenStub(title = R.string.EmptyNotesPageHeader, icon = Icons.Outlined.Description)
             } else {
                 ScreenContent(lazyGridNotes = lazyGridNotes, notesViewModel = notesViewModel)
             }

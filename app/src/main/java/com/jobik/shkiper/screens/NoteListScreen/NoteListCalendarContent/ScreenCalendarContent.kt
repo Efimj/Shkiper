@@ -7,7 +7,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.NotificationsNone
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -86,7 +85,7 @@ private fun ScreenContent(
             label = "animation layouts screen"
         ) { value ->
             if (value)
-                ScreenContentIfNoData(
+                ScreenStub(
                     modifier = Modifier.heightIn(max = 350.dp),
                     title = R.string.NoReminders,
                     icon = Icons.Outlined.NotificationsNone

@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import com.jobik.shkiper.ui.theme.AppTheme
 
 @Composable
-fun ScreenContentIfNoData(modifier: Modifier = Modifier, @StringRes title: Int, icon: ImageVector) {
+fun ScreenStub(modifier: Modifier = Modifier, @StringRes title: Int, icon: ImageVector) {
     Column(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
