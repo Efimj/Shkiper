@@ -28,7 +28,8 @@ fun SettingsItem(
     action: (@Composable () -> Unit)? = null
 ) {
     val backgroundColor: Color by animateColorAsState(
-        targetValue = if (isActive) AppTheme.colors.primary else containerColor ?: Color.Transparent,
+        targetValue = if (isActive) AppTheme.colors.primary else containerColor
+            ?: Color.Transparent,
         label = "backgroundColor"
     )
 
@@ -53,13 +54,22 @@ fun SettingsItem(
         Row(
             modifier = modifier
                 .fillMaxWidth()
-                .padding(top = contentPadding.calculateTopPadding(), bottom = contentPadding.calculateBottomPadding()),
+                .padding(
+                    top = contentPadding.calculateTopPadding(),
+                    bottom = contentPadding.calculateBottomPadding()
+                ),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             if (icon == null)
                 Spacer(Modifier.padding(start = contentPadding.calculateLeftPadding(LayoutDirection.Ltr)))
             if (icon !== null)
-                Row(modifier = Modifier.padding(horizontal = contentPadding.calculateLeftPadding(LayoutDirection.Ltr))) {
+                Row(
+                    modifier = Modifier.padding(
+                        horizontal = contentPadding.calculateLeftPadding(
+                            LayoutDirection.Ltr
+                        )
+                    )
+                ) {
                     Icon(
                         imageVector = icon,
                         contentDescription = null,
@@ -87,14 +97,18 @@ fun SettingsItem(
                         color = foregroundSecondaryColor
                     )
             }
-            Row(
-                modifier = Modifier.padding(horizontal = contentPadding.calculateRightPadding(LayoutDirection.Ltr)),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
-            ) {
-                if (action !== null)
+            if (action !== null)
+                Row(
+                    modifier = Modifier.padding(
+                        horizontal = contentPadding.calculateRightPadding(
+                            LayoutDirection.Ltr
+                        )
+                    ),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
                     action()
-            }
+                }
         }
     }
 }
