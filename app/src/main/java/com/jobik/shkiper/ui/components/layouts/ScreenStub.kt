@@ -10,12 +10,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.jobik.shkiper.ui.theme.AppTheme
 
 @Composable
-fun ScreenContentIfNoData(modifier: Modifier = Modifier, @StringRes title: Int, icon: ImageVector) {
+fun ScreenStub(modifier: Modifier = Modifier, @StringRes title: Int, icon: ImageVector) {
     Column(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -33,7 +34,8 @@ fun ScreenContentIfNoData(modifier: Modifier = Modifier, @StringRes title: Int, 
             style = MaterialTheme.typography.titleLarge,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,
-            color = AppTheme.colors.text
+            color = AppTheme.colors.textSecondary,
+            fontWeight = FontWeight.SemiBold
         )
     }
 }

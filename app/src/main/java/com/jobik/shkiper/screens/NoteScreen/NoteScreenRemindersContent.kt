@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.KeyboardArrowRight
 import androidx.compose.material.icons.outlined.NotificationsOff
@@ -206,10 +206,11 @@ private fun EmptyRemindersContent(modifier: Modifier) {
         Spacer(Modifier.height(10.dp))
         Text(
             text = stringResource(R.string.NoReminders),
-            style = MaterialTheme.typography.h6,
+            style = MaterialTheme.typography.headlineMedium,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            color = AppTheme.colors.text
+            color = AppTheme.colors.text,
+            fontWeight = FontWeight.SemiBold
         )
     }
 }
@@ -264,7 +265,7 @@ private fun BoxScope.Header(
                 ) {
                     Text(
                         text = stringResource(R.string.Delete),
-                        style = MaterialTheme.typography.body1,
+                        style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.colors.text,
                         maxLines = 1,
@@ -330,7 +331,7 @@ private fun BoxScope.BottomBar(modifier: Modifier, isHidden: Boolean, onCreateRe
             ) {
                 Text(
                     text = stringResource(R.string.CreateReminder),
-                    style = MaterialTheme.typography.body1,
+                    style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.colors.onPrimary,
                     maxLines = 1,

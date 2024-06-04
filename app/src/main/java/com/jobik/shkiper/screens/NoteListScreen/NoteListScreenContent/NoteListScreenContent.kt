@@ -53,7 +53,7 @@ fun NoteListScreenContent(
             label = "animation layouts screen"
         ) { value ->
             if (value) {
-                ScreenContentIfNoData(title = R.string.EmptyNotesPageHeader, icon = Icons.Outlined.Description)
+                ScreenStub(title = R.string.EmptyNotesPageHeader, icon = Icons.Outlined.Description)
             } else {
                 NotesListContent(notesViewModel = viewModel, navController = navController)
             }

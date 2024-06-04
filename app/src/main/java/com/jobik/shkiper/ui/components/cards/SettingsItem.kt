@@ -1,6 +1,12 @@
 package com.jobik.shkiper.ui.components.cards
 
+import android.annotation.SuppressLint
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -14,31 +20,41 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.jobik.shkiper.ui.theme.AppTheme
 
+data class SettingsItemColors(
+    val contentColor: Color? = null,
+    val leadingIconColor: Color? = null,
+    val containerColor: Color? = null,
+)
+
 @Composable
 fun SettingsItem(
+    @SuppressLint("ModifierParameter")
+    modifier: Modifier = Modifier.heightIn(min = 50.dp),
     icon: ImageVector? = null,
     title: String,
     isEnabled: Boolean = true,
     isActive: Boolean = false,
-    modifier: Modifier = Modifier.heightIn(min = 50.dp),
     description: String? = null,
     onClick: (() -> Unit) = {},
-    containerColor: Color? = null,
+    colors: SettingsItemColors = SettingsItemColors(),
     contentPadding: PaddingValues = PaddingValues(horizontal = 20.dp, vertical = 5.dp),
     action: (@Composable () -> Unit)? = null
 ) {
     val backgroundColor: Color by animateColorAsState(
-        targetValue = if (isActive) AppTheme.colors.primary else containerColor ?: Color.Transparent,
-        label = "backgroundColor"
+        targetValue = colors.containerColor
+            ?: if (isActive) AppTheme.colors.primary else Color.Transparent,
+        label = "backgroundColor",
     )
 
     val foregroundColor: Color by animateColorAsState(
-        targetValue = if (isActive) AppTheme.colors.onPrimary else AppTheme.colors.text,
+        targetValue = colors.contentColor
+            ?: if (isActive) AppTheme.colors.onPrimary else AppTheme.colors.text,
         label = "foregroundColor"
     )
 
     val foregroundSecondaryColor: Color by animateColorAsState(
-        targetValue = if (isActive) AppTheme.colors.onPrimary else AppTheme.colors.textSecondary,
+        targetValue = colors.leadingIconColor
+            ?: if (isActive) AppTheme.colors.onPrimary else AppTheme.colors.textSecondary,
         label = "foregroundSecondaryColor"
     )
 
@@ -53,47 +69,81 @@ fun SettingsItem(
         Row(
             modifier = modifier
                 .fillMaxWidth()
-                .padding(top = contentPadding.calculateTopPadding(), bottom = contentPadding.calculateBottomPadding()),
+                .padding(
+                    top = contentPadding.calculateTopPadding(),
+                    bottom = contentPadding.calculateBottomPadding()
+                ),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            if (icon == null)
+            AnimatedVisibility(visible = icon == null, enter = scaleIn(), exit = scaleOut()) {
                 Spacer(Modifier.padding(start = contentPadding.calculateLeftPadding(LayoutDirection.Ltr)))
-            if (icon !== null)
-                Row(modifier = Modifier.padding(horizontal = contentPadding.calculateLeftPadding(LayoutDirection.Ltr))) {
-                    Icon(
-                        imageVector = icon,
-                        contentDescription = null,
-                        modifier = Modifier
-                            .size(24.dp)
-                            .fillMaxSize(),
-                        tint = foregroundSecondaryColor
+            }
+            AnimatedContent(targetState = icon, label = "AnimatedContent - icon") {
+                if (it != null) {
+                    Row(
+                        modifier = Modifier.padding(
+                            horizontal = contentPadding.calculateLeftPadding(
+                                LayoutDirection.Ltr
+                            )
+                        )
+                    ) {
+                        Icon(
+                            imageVector = it,
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(24.dp)
+                                .fillMaxSize(),
+                            tint = foregroundSecondaryColor
+                        )
+                    }
+                }
+            }
+            Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.Center) {
+                AnimatedContent(targetState = title, label = "AnimatedContent - title") {
+                    Text(
+                        text = it,
+                        style = MaterialTheme.typography.titleMedium,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        color = foregroundColor
                     )
                 }
-            Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.Center) {
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.titleMedium,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    color = foregroundColor
-                )
-                if (description !== null)
+                AnimatedVisibility(
+                    visible = description != null,
+                    enter = scaleIn(),
+                    exit = scaleOut()
+                ) {
                     Spacer(modifier = Modifier.height(3.dp))
-                if (description !== null)
-                    Text(
-                        text = description,
-                        style = MaterialTheme.typography.bodySmall,
-                        overflow = TextOverflow.Ellipsis,
-                        color = foregroundSecondaryColor
-                    )
+                }
+                AnimatedContent(
+                    targetState = description,
+                    label = "AnimatedContent - description"
+                ) {
+                    if (it != null)
+                        Text(
+                            text = it,
+                            style = MaterialTheme.typography.bodySmall,
+                            overflow = TextOverflow.Ellipsis,
+                            color = foregroundSecondaryColor
+                        )
+                }
             }
-            Row(
-                modifier = Modifier.padding(horizontal = contentPadding.calculateRightPadding(LayoutDirection.Ltr)),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
+            AnimatedContent(
+                targetState = action,
+                label = "AnimatedContent - action"
             ) {
-                if (action !== null)
-                    action()
+                if (it != null)
+                    Row(
+                        modifier = Modifier.padding(
+                            horizontal = contentPadding.calculateRightPadding(
+                                LayoutDirection.Ltr
+                            )
+                        ),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        it()
+                    }
             }
         }
     }

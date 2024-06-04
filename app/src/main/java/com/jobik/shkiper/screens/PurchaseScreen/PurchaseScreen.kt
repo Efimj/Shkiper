@@ -31,7 +31,7 @@ import com.jobik.shkiper.services.billing_service.AppProducts
 import com.jobik.shkiper.ui.components.cards.ProductPurchaseCardContent
 import com.jobik.shkiper.ui.components.cards.PurchaseCard
 import com.jobik.shkiper.ui.components.cards.TitlePurchaseCardContent
-import com.jobik.shkiper.ui.components.layouts.ScreenContentIfNoData
+import com.jobik.shkiper.ui.components.layouts.ScreenStub
 import com.jobik.shkiper.ui.components.layouts.ScreenWrapper
 import com.jobik.shkiper.ui.components.modals.ImageActionDialog
 import com.jobik.shkiper.ui.components.modals.ImageActionDialogButton
@@ -60,9 +60,9 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
     }
 
     if (!isNetworkActive)
-        ScreenContentIfNoData(title = R.string.CheckInternetConnection, icon = Icons.Outlined.SignalWifiOff)
+        ScreenStub(title = R.string.CheckInternetConnection, icon = Icons.Outlined.SignalWifiOff)
     else if (purchaseViewModel.screenState.value.purchases.isEmpty() && purchaseViewModel.screenState.value.subscription != null)
-        ScreenContentIfNoData(title = R.string.CheckUpdatesGooglePlay, icon = Icons.Default.Shop)
+        ScreenStub(title = R.string.CheckUpdatesGooglePlay, icon = Icons.Default.Shop)
     else
         ScreenWrapper(modifier = Modifier
             .verticalScroll(rememberScrollState())

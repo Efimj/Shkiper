@@ -55,7 +55,7 @@ fun ArchiveNotesScreen(navController: NavController, archiveViewModel: NotesView
             label = "animation layouts screen"
         ) { value ->
             if (value) {
-                ScreenContentIfNoData(title = R.string.ArchiveNotesPageHeader, icon = Icons.Outlined.Inbox)
+                ScreenStub(title = R.string.ArchiveNotesPageHeader, icon = Icons.Outlined.Inbox)
             } else {
                 ScreenContent(
                     lazyGridNotes = lazyGridNotes,
