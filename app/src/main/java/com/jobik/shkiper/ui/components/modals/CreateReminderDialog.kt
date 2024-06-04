@@ -7,6 +7,7 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.animation.expandHorizontally
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
@@ -21,6 +22,7 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -29,7 +31,6 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
@@ -40,14 +41,11 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Repeat
-import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.icons.outlined.CalendarMonth
 import androidx.compose.material.icons.outlined.Event
 import androidx.compose.material.icons.outlined.NotificationsOff
 import androidx.compose.material.icons.outlined.Repeat
 import androidx.compose.material.icons.outlined.Schedule
-import androidx.compose.material.icons.outlined.Warning
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -93,10 +91,11 @@ import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
 import java.time.LocalDate
 import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 
 @Keep
 private enum class ReminderDialogPages(val value: Int) {
-    DATEPICK(0), TIMEPICK(1), REPEATMODE(2),
+    DATEPICK(0), TIMEPICK(1), FINISH(2),
 }
 
 @Parcelize
@@ -154,12 +153,17 @@ fun CreateReminderDialog(
         properties = DialogProperties(dismissOnBackPress = true, dismissOnClickOutside = true)
     ) {
         Column(
-            Modifier
+            modifier = Modifier
+                .fillMaxWidth()
                 .verticalScroll(rememberScrollState())
                 .clip(RoundedCornerShape(15.dp))
                 .background(AppTheme.colors.background)
-                .padding(vertical = 20.dp)
+                .padding(vertical = 10.dp)
         ) {
+            DialogHeader(
+                page = pagerState.currentPage,
+                reminderDialogState = reminderDialogState
+            )
             HorizontalPager(
                 state = pagerState,
                 pageSpacing = 0.dp,
@@ -190,27 +194,71 @@ fun CreateReminderDialog(
     }
 }
 
-private fun checkIsNotificationEnabled(context: Context) =
-    areNotificationsEnabled(context = context) &&
-            areEXACTNotificationsEnabled(context = context) &&
-            areChanelNotificationsEnabled(
-                context = context,
-                channelId = NotificationScheduler.Companion.NotificationChannels.NOTECHANNEL.channelId
-            )
-
-fun enableNotificationIfDisabled(context: Context) {
-    if (!areNotificationsEnabled(context = context) || !areChanelNotificationsEnabled(
-            context = context,
-            channelId = NotificationScheduler.Companion.NotificationChannels.NOTECHANNEL.channelId
-        )
+@Composable
+private fun DialogHeader(
+    page: Int,
+    reminderDialogState: MutableState<ReminderDialogState>,
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 6.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        IntentHelper().startIntentAppNotificationSettings(
-            context = context,
-            channelId = NotificationScheduler.Companion.NotificationChannels.NOTECHANNEL.channelId
-        )
-    }
-    if (!areEXACTNotificationsEnabled(context = context)) {
-        IntentHelper().startIntentAppEXACTNotificationSettings(context)
+        AnimatedContent(targetState = page == 2, label = "AnimatedContent - DialogHeader") {
+            if (it) {
+                Text(
+                    text = stringResource(R.string.Reminder),
+                    style = MaterialTheme.typography.headlineMedium,
+                    color = AppTheme.colors.textSecondary,
+                    textAlign = TextAlign.Center,
+                    fontWeight = FontWeight.SemiBold,
+                    maxLines = 1,
+                )
+            } else {
+                val dateTextColor =
+                    animateColorAsState(
+                        targetValue = if (page == 0) AppTheme.colors.onSecondaryContainer else AppTheme.colors.textSecondary,
+                        label = "dateTextColor"
+                    )
+                val timeTextColor =
+                    animateColorAsState(
+                        targetValue = if (page == 1) AppTheme.colors.onSecondaryContainer else AppTheme.colors.textSecondary,
+                        label = "timeTextColor"
+                    )
+
+                val dateFontWeight =
+                    animateIntAsState(
+                        targetValue = if (page == 0) FontWeight.SemiBold.weight else FontWeight.Normal.weight,
+                        label = "dateTextColor"
+                    )
+
+                val timeFontWeight =
+                    animateIntAsState(
+                        targetValue = if (page == 1) FontWeight.SemiBold.weight else FontWeight.Normal.weight,
+                        label = "timeFontWeight"
+                    )
+
+                Row(modifier = Modifier.basicMarquee()) {
+                    Text(
+                        text = DateHelper.getLocalizedDate(reminderDialogState.value.date),
+                        style = MaterialTheme.typography.headlineMedium,
+                        color = dateTextColor.value,
+                        fontWeight = FontWeight(dateFontWeight.value),
+                        maxLines = 1,
+                    )
+                    Spacer(Modifier.width(8.dp))
+                    Text(
+                        text = reminderDialogState.value.time.format(DateTimeFormatter.ofPattern("HH:mm")),
+                        style = MaterialTheme.typography.headlineMedium,
+                        color = timeTextColor.value,
+                        fontWeight = FontWeight(timeFontWeight.value),
+                        maxLines = 1,
+                    )
+                }
+            }
+        }
     }
 }
 
@@ -220,22 +268,19 @@ private fun DialogContent(
     goToPage: (Int) -> Unit,
     reminderDialogState: MutableState<ReminderDialogState>,
 ) {
-    Column(
-        modifier = Modifier.height(380.dp)
-    ) {
+    Column(modifier = Modifier.height(340.dp)) {
         when (page) {
             ReminderDialogPages.DATEPICK.value -> DatePickPage(reminderDialogState = reminderDialogState)
             ReminderDialogPages.TIMEPICK.value -> TimePickPage(reminderDialogState = reminderDialogState)
-            ReminderDialogPages.REPEATMODE.value -> RepeatModePage(
-                reminderDialogState = reminderDialogState,
-                goToPage = goToPage
+            ReminderDialogPages.FINISH.value -> FinishPage(
+                reminderDialogState = reminderDialogState, goToPage = goToPage
             )
         }
     }
 }
 
 @Composable
-private fun RepeatModePage(
+private fun FinishPage(
     goToPage: (Int) -> Unit,
     reminderDialogState: MutableState<ReminderDialogState>
 ) {
@@ -249,89 +294,76 @@ private fun RepeatModePage(
     ).not()
 
     Column {
-        Text(
-            text = stringResource(R.string.Reminder),
-            style = MaterialTheme.typography.headlineMedium,
-            color = AppTheme.colors.textSecondary,
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 5.dp),
-            fontWeight = FontWeight.SemiBold,
-            maxLines = 1,
+        SettingsItem(
+            title = DateHelper.getLocalizedDate(reminderDialogState.value.date),
+            icon = Icons.Outlined.Event,
+            onClick = { goToPage(0) }
         )
-        Column {
+        SettingsItem(
+            title = reminderDialogState.value.time.toString(),
+            icon = Icons.Outlined.Schedule,
+            onClick = { goToPage(1) }
+        )
+        DropDownButton(
+            items = repeatModeList,
+            expanded = isExpanded,
+            stretchMode = DropDownButtonSizeMode.STRERCHBYBUTTONWIDTH,
+            selectedIndex = reminderDialogState.value.repeatMode.ordinal,
+            onChangedSelection = {
+                reminderDialogState.value =
+                    reminderDialogState.value.copy(repeatMode = RepeatMode.entries.toTypedArray()[it])
+            }) {
             SettingsItem(
-                title = DateHelper.getLocalizedDate(reminderDialogState.value.date),
-                icon = Icons.Outlined.Event,
-                onClick = { goToPage(0) }
+                title = reminderDialogState.value.repeatMode.getLocalizedValue(context = context),
+                description = stringResource(R.string.Repeat),
+                icon = Icons.Outlined.Repeat,
+                onClick = { it() }
             )
-            SettingsItem(
-                title = reminderDialogState.value.time.toString(),
-                icon = Icons.Outlined.Schedule,
-                onClick = { goToPage(1) }
-            )
-            DropDownButton(
-                items = repeatModeList,
-                expanded = isExpanded,
-                stretchMode = DropDownButtonSizeMode.STRERCHBYBUTTONWIDTH,
-                selectedIndex = reminderDialogState.value.repeatMode.ordinal,
-                onChangedSelection = {
-                    reminderDialogState.value =
-                        reminderDialogState.value.copy(repeatMode = RepeatMode.entries.toTypedArray()[it])
-                }) {
+        }
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(vertical = 20.dp),
+            verticalArrangement = Arrangement.Bottom
+        ) {
+            AnimatedVisibility(
+                visible = isDatePast,
+                enter = slideInVertically { it / 2 } + expandVertically(expandFrom = Alignment.Top) + fadeIn(),
+                exit = slideOutVertically { it / 2 } + shrinkVertically(shrinkTowards = Alignment.Top) + fadeOut()
+            ) {
                 SettingsItem(
-                    title = reminderDialogState.value.repeatMode.getLocalizedValue(context = context),
-                    description = stringResource(R.string.Repeat),
-                    icon = Icons.Outlined.Repeat,
-                    onClick = { it() }
+                    title = stringResource(R.string.ErrorDateMastBeFuture),
+                    icon = Icons.Outlined.CalendarMonth,
+                    onClick = { goToPage(0) },
+                    colors = SettingsItemColors(
+                        contentColor = AppTheme.colors.onSecondaryContainer,
+                        containerColor = AppTheme.colors.secondaryContainer,
+                        leadingIconColor = AppTheme.colors.onSecondaryContainer
+                    )
                 )
             }
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(vertical = 20.dp),
-                verticalArrangement = Arrangement.Bottom
+            AnimatedVisibility(
+                visible = reminderDialogState.value.isNotificationEnabled.not(),
+                enter = slideInVertically { it / 2 } + expandVertically(expandFrom = Alignment.Top) + fadeIn(),
+                exit = slideOutVertically { it / 2 } + shrinkVertically(shrinkTowards = Alignment.Top) + fadeOut()
             ) {
-                AnimatedVisibility(
-                    visible = isDatePast,
-                    enter = slideInVertically { it / 2 } + expandVertically(expandFrom = Alignment.Top) + fadeIn(),
-                    exit = slideOutVertically { it / 2 } + shrinkVertically(shrinkTowards = Alignment.Top) + fadeOut()
-                ) {
-                    SettingsItem(
-                        title = stringResource(R.string.ErrorDateMastBeFuture),
-                        icon = Icons.Outlined.CalendarMonth,
-                        onClick = { goToPage(0) },
-                        colors = SettingsItemColors(
-                            contentColor = AppTheme.colors.onSecondaryContainer,
-                            containerColor = AppTheme.colors.secondaryContainer,
-                            leadingIconColor = AppTheme.colors.onSecondaryContainer
-                        )
+                SettingsItem(
+                    title = stringResource(R.string.TurnOnNotifications),
+                    icon = Icons.Outlined.NotificationsOff,
+                    onClick = {
+                        if (!checkIsNotificationEnabled(context = context)) {
+                            enableNotificationIfDisabled(context = context)
+                        } else {
+                            reminderDialogState.value =
+                                reminderDialogState.value.copy(isNotificationEnabled = true)
+                        }
+                    },
+                    colors = SettingsItemColors(
+                        contentColor = AppTheme.colors.onSecondaryContainer,
+                        containerColor = AppTheme.colors.secondaryContainer,
+                        leadingIconColor = AppTheme.colors.onSecondaryContainer
                     )
-                }
-                AnimatedVisibility(
-                    visible = reminderDialogState.value.isNotificationEnabled.not(),
-                    enter = slideInVertically { it / 2 } + expandVertically(expandFrom = Alignment.Top) + fadeIn(),
-                    exit = slideOutVertically { it / 2 } + shrinkVertically(shrinkTowards = Alignment.Top) + fadeOut()
-                ) {
-                    SettingsItem(
-                        title = stringResource(R.string.TurnOnNotifications),
-                        icon = Icons.Outlined.NotificationsOff,
-                        onClick = {
-                            if (!checkIsNotificationEnabled(context = context)) {
-                                enableNotificationIfDisabled(context = context)
-                            } else {
-                                reminderDialogState.value =
-                                    reminderDialogState.value.copy(isNotificationEnabled = true)
-                            }
-                        },
-                        colors = SettingsItemColors(
-                            contentColor = AppTheme.colors.onSecondaryContainer,
-                            containerColor = AppTheme.colors.secondaryContainer,
-                            leadingIconColor = AppTheme.colors.onSecondaryContainer
-                        )
-                    )
-                }
+                )
             }
         }
     }
@@ -341,29 +373,13 @@ private fun RepeatModePage(
 private fun TimePickPage(
     reminderDialogState: MutableState<ReminderDialogState>
 ) {
-    Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-        Row(
-            Modifier
-                .basicMarquee()
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp)
-        ) {
-            Text(
-                text = DateHelper.getLocalizedDate(reminderDialogState.value.date),
-                style = MaterialTheme.typography.headlineMedium,
-                color = AppTheme.colors.textSecondary,
-                maxLines = 1,
-            )
-            Spacer(Modifier.width(8.dp))
-            Text(
-                text = reminderDialogState.value.time.toString(),
-                style = MaterialTheme.typography.headlineMedium,
-                color = AppTheme.colors.text,
-                fontWeight = FontWeight.SemiBold,
-                maxLines = 1,
-            )
-        }
-        Spacer(Modifier.height(20.dp))
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
         CustomTimePicker(startTime = reminderDialogState.value.time) { newTime ->
             reminderDialogState.value = reminderDialogState.value.copy(time = newTime)
         }
@@ -374,27 +390,16 @@ private fun TimePickPage(
 private fun DatePickPage(reminderDialogState: MutableState<ReminderDialogState>) {
     Column(
         modifier = Modifier
-            .padding(horizontal = 20.dp)
-            .padding(bottom = 10.dp)
+            .verticalScroll(rememberScrollState())
+            .padding(horizontal = 20.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
-        Text(
-            modifier = Modifier.fillMaxWidth(),
-            text = DateHelper.getLocalizedDate(reminderDialogState.value.date),
-            style = MaterialTheme.typography.headlineMedium,
-            color = AppTheme.colors.text,
-            fontWeight = FontWeight.SemiBold,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            textAlign = TextAlign.Center,
-        )
-        Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
-            Spacer(modifier = Modifier.height(10.dp))
-            CustomDatePicker(
-                currentDate = reminderDialogState.value.date,
-                contentHeightMode = ContentHeightMode.Wrap
-            ) { day ->
-                reminderDialogState.value = reminderDialogState.value.copy(date = day.date)
-            }
+        CustomDatePicker(
+            currentDate = reminderDialogState.value.date,
+            contentHeightMode = ContentHeightMode.Wrap
+        ) { day ->
+            reminderDialogState.value = reminderDialogState.value.copy(date = day.date)
         }
     }
 }
@@ -598,5 +603,29 @@ private fun DialogFooter(
                 }
             }
         }
+    }
+}
+
+private fun checkIsNotificationEnabled(context: Context) =
+    areNotificationsEnabled(context = context) &&
+            areEXACTNotificationsEnabled(context = context) &&
+            areChanelNotificationsEnabled(
+                context = context,
+                channelId = NotificationScheduler.Companion.NotificationChannels.NOTECHANNEL.channelId
+            )
+
+fun enableNotificationIfDisabled(context: Context) {
+    if (!areNotificationsEnabled(context = context) || !areChanelNotificationsEnabled(
+            context = context,
+            channelId = NotificationScheduler.Companion.NotificationChannels.NOTECHANNEL.channelId
+        )
+    ) {
+        IntentHelper().startIntentAppNotificationSettings(
+            context = context,
+            channelId = NotificationScheduler.Companion.NotificationChannels.NOTECHANNEL.channelId
+        )
+    }
+    if (!areEXACTNotificationsEnabled(context = context)) {
+        IntentHelper().startIntentAppEXACTNotificationSettings(context)
     }
 }
