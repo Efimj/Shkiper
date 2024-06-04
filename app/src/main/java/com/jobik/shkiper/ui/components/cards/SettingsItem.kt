@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.layout.*
@@ -42,7 +43,7 @@ fun SettingsItem(
     val backgroundColor: Color by animateColorAsState(
         targetValue = colors.containerColor
             ?: if (isActive) AppTheme.colors.primary else Color.Transparent,
-        label = "backgroundColor"
+        label = "backgroundColor",
     )
 
     val foregroundColor: Color by animateColorAsState(

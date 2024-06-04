@@ -6,6 +6,7 @@ import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.Animatable
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -21,6 +22,7 @@ import androidx.compose.material.icons.outlined.*
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -53,7 +55,10 @@ import kotlinx.coroutines.launch
 import kotlin.enums.EnumEntries
 
 @Composable
-fun SettingsScreen(navController: NavController, settingsViewModel: SettingsViewModel = hiltViewModel()) {
+fun SettingsScreen(
+    navController: NavController,
+    settingsViewModel: SettingsViewModel = hiltViewModel()
+) {
     Column(
         Modifier
             .fillMaxSize()
@@ -197,73 +202,103 @@ private fun BackupSettings(
         )
         Spacer(Modifier.height(8.dp))
 
+        val isLocalBackupSaving = settingsViewModel.settingsScreenState.value.isLocalBackupSaving
+
         SettingsItem(
             modifier = Modifier.heightIn(min = 50.dp),
             icon = Icons.Rounded.Download,
             isEnabled = !settingsViewModel.isBackupHandling(),
-            isActive = settingsViewModel.settingsScreenState.value.isLocalBackupSaving,
-            title = if (settingsViewModel.settingsScreenState.value.isLocalBackupSaving)
-                stringResource(R.string.Saving) else
-                stringResource(R.string.Save),
+            isActive = isLocalBackupSaving,
+            title = if (isLocalBackupSaving) stringResource(R.string.Saving) else stringResource(R.string.Save),
             onClick = { settingsViewModel.saveLocalBackup() }
         ) {
-            val iconColor =
-                if (settingsViewModel.settingsScreenState.value.isLocalBackupSaving) AppTheme.colors.onPrimary else AppTheme.colors.text
-            val contentColor = remember { Animatable(iconColor) }
+            val isSaving = rememberSaveable { mutableStateOf(false) }
+            DelayedStateChange(incoming = isLocalBackupSaving, outgoing = isSaving)
 
-            LaunchedEffect(settingsViewModel.settingsScreenState.value.isLocalBackupSaving) {
-                contentColor.animateTo(iconColor, animationSpec = tween(200))
-            }
-
-            AnimatedVisibility(
-                visible = settingsViewModel.settingsScreenState.value.isLocalBackupSaving,
-                enter = fadeIn(animationSpec = tween(200)),
-                exit = fadeOut(animationSpec = tween(200))
-            ) {
-                Icon(
-                    imageVector = if (settingsViewModel.settingsScreenState.value.isLocalBackupSaving) Icons.Outlined.Loop else Icons.Outlined.Done,
-                    contentDescription = null,
-                    tint = contentColor.value,
-                    modifier = if (settingsViewModel.settingsScreenState.value.isLocalBackupSaving) Modifier
-                        .size(24.dp)
-                        .circularRotation() else Modifier.size(24.dp)
-                )
+            AnimatedContent(
+                targetState = isLocalBackupSaving || isSaving.value,
+                label = ""
+            ) { processing ->
+                if (processing) {
+                    AnimatedContent(
+                        targetState = isLocalBackupSaving && isSaving.value, label = ""
+                    ) { loading ->
+                        if (loading) {
+                            Icon(
+                                imageVector = Icons.Outlined.Loop,
+                                contentDescription = null,
+                                tint = AppTheme.colors.onPrimary,
+                                modifier = Modifier.circularRotation()
+                            )
+                        } else {
+                            Icon(
+                                imageVector = Icons.Outlined.Done,
+                                contentDescription = null,
+                                tint = AppTheme.colors.onSecondaryContainer,
+                            )
+                        }
+                    }
+                }
             }
         }
+
+        val isLocalBackupUploading =
+            settingsViewModel.settingsScreenState.value.isLocalBackupUploading
+
         SettingsItem(
             modifier = Modifier.heightIn(min = 50.dp),
             icon = Icons.Rounded.Upload,
             isEnabled = !settingsViewModel.isBackupHandling(),
-            isActive = settingsViewModel.settingsScreenState.value.isLocalBackupUploading,
-            title = if (settingsViewModel.settingsScreenState.value.isLocalBackupUploading)
-                stringResource(R.string.Loading) else
-                stringResource(R.string.Upload),
+            isActive = isLocalBackupUploading,
+            title = if (isLocalBackupUploading) stringResource(R.string.Loading) else stringResource(
+                R.string.Upload
+            ),
             onClick = { fileSearch.launch(arrayOf("*/*")) }
         ) {
-            val iconColor =
-                if (settingsViewModel.settingsScreenState.value.isLocalBackupUploading) AppTheme.colors.onPrimary else AppTheme.colors.text
-            val contentColor = remember { Animatable(iconColor) }
+            val isUploading = rememberSaveable { mutableStateOf(false) }
+            DelayedStateChange(incoming = isLocalBackupUploading, outgoing = isUploading)
 
-            LaunchedEffect(settingsViewModel.settingsScreenState.value.isLocalBackupUploading) {
-                contentColor.animateTo(iconColor, animationSpec = tween(200))
+            AnimatedContent(
+                targetState = isLocalBackupUploading || isUploading.value,
+                label = ""
+            ) { processing ->
+                if (processing) {
+                    AnimatedContent(
+                        targetState = isLocalBackupUploading && isUploading.value, label = ""
+                    ) { loading ->
+                        if (loading) {
+                            Icon(
+                                imageVector = Icons.Outlined.Loop,
+                                contentDescription = null,
+                                tint = AppTheme.colors.onPrimary,
+                                modifier = Modifier.circularRotation()
+                            )
+                        } else {
+                            Icon(
+                                imageVector = Icons.Outlined.Done,
+                                contentDescription = null,
+                                tint = AppTheme.colors.onSecondaryContainer,
+                            )
+                        }
+                    }
+                }
             }
+        }
+    }
+}
 
-            AnimatedVisibility(
-                visible = settingsViewModel.settingsScreenState.value.isLocalBackupUploading,
-                enter = fadeIn(animationSpec = tween(200)),
-                exit = fadeOut(animationSpec = tween(200))
-            ) {
-                Icon(
-                    imageVector = if (settingsViewModel.settingsScreenState.value.isLocalBackupUploading) Icons.Outlined.Loop else Icons.Outlined.Done,
-                    contentDescription = null,
-                    tint = contentColor.value,
-                    modifier = if (settingsViewModel.settingsScreenState.value.isLocalBackupUploading) Modifier
-                        .size(
-                            24.dp
-                        )
-                        .circularRotation() else Modifier.size(24.dp)
-                )
-            }
+@Composable
+private fun DelayedStateChange(
+    incoming: Boolean,
+    outgoing: MutableState<Boolean>,
+    delay: Long = 5000L
+) {
+    LaunchedEffect(incoming) {
+        if (incoming) {
+            outgoing.value = true
+        } else {
+            delay(delay)
+            outgoing.value = false
         }
     }
 }
@@ -343,7 +378,15 @@ private fun SettingsColorThemePicker(settingsViewModel: SettingsViewModel) {
         ) {
 
             items(colorValues.size) { theme ->
-                val colors = remember { getColors(context = context, colorValuesName, theme, isDarkMode, colorValues) }
+                val colors = remember {
+                    getColors(
+                        context = context,
+                        colorValuesName,
+                        theme,
+                        isDarkMode,
+                        colorValues
+                    )
+                }
 
                 ThemePreview(
                     colors = colors,
@@ -370,7 +413,10 @@ private fun getColors(
 }
 
 @Composable
-private fun SettingsItemGroup(setAccent: Boolean = false, columnScope: @Composable ColumnScope.() -> Unit) {
+private fun SettingsItemGroup(
+    setAccent: Boolean = false,
+    columnScope: @Composable ColumnScope.() -> Unit
+) {
     Spacer(Modifier.height(7.dp))
     Column(
         modifier = Modifier
@@ -396,7 +442,8 @@ private fun SettingsItemSelectLanguage(settingsViewModel: SettingsViewModel) {
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
     val currentLanguage = NotepadApplication.currentLanguage
-    val dropDownItems = remember { settingsViewModel.getLocalizationList(context).map { DropDownItem(text = it) } }
+    val dropDownItems =
+        remember { settingsViewModel.getLocalizationList(context).map { DropDownItem(text = it) } }
     val isExpanded = remember { mutableStateOf(false) }
 
     SettingsItem(
