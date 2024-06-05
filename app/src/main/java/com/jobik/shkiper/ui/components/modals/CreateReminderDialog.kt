@@ -70,6 +70,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LifecycleEventEffect
+import androidx.lifecycle.compose.LifecycleResumeEffect
 import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.RepeatMode
 import com.jobik.shkiper.helpers.DateHelper
@@ -145,6 +148,15 @@ fun CreateReminderDialog(
     val goToPage: (Int) -> Unit = {
         scope.launch {
             pagerState.animateScrollToPage(it)
+        }
+    }
+
+    LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
+        if (checkIsNotificationEnabled(context = context)) {
+            reminderDialogState.value = reminderDialogState.value.copy(isNotificationEnabled = true)
+        } else {
+            reminderDialogState.value =
+                reminderDialogState.value.copy(isNotificationEnabled = false)
         }
     }
 
