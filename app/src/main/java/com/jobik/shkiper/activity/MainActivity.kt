@@ -20,10 +20,10 @@ import com.jobik.shkiper.SharedPreferencesKeys.OnboardingFinishedData
 import com.jobik.shkiper.database.models.NotePosition
 import com.jobik.shkiper.services.localization.LocaleHelper
 import com.jobik.shkiper.navigation.Route
-import com.jobik.shkiper.services.billing_service.BillingService
-import com.jobik.shkiper.services.in_app_updates_service.InAppUpdatesService
-import com.jobik.shkiper.services.review_service.ReviewService
-import com.jobik.shkiper.screens.AppLayout.AppLayout
+import com.jobik.shkiper.services.billing.BillingService
+import com.jobik.shkiper.services.inAppUpdates.InAppUpdatesService
+import com.jobik.shkiper.services.review.ReviewService
+import com.jobik.shkiper.screens.layout.AppLayout
 import com.jobik.shkiper.ui.components.modals.OfferWriteReview
 import com.jobik.shkiper.ui.theme.AppTheme
 import com.jobik.shkiper.ui.theme.CustomThemeStyle

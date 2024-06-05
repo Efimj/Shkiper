@@ -3,12 +3,10 @@ package com.jobik.shkiper.helpers
 import android.app.AlarmManager
 import android.app.NotificationManager
 import android.content.Context
-import android.content.Intent
 import android.os.Build
-import android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
-import com.jobik.shkiper.services.notification_service.NotificationScheduler
+import com.jobik.shkiper.services.notification.NotificationScheduler
 
 fun areChanelNotificationsEnabled(context: Context, channelId: String): Boolean {
     runCatching {

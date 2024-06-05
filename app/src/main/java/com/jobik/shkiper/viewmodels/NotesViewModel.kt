@@ -22,7 +22,7 @@ import com.jobik.shkiper.helpers.DateHelper
 import com.jobik.shkiper.navigation.Route
 import com.jobik.shkiper.navigation.Argument_Note_Position
 import com.jobik.shkiper.navigation.NavigationHelpers.Companion.navigateToSecondary
-import com.jobik.shkiper.screens.AppLayout.NavigationBar.AppNavigationBarState
+import com.jobik.shkiper.screens.layout.NavigationBar.AppNavigationBarState
 import com.jobik.shkiper.util.SnackbarHostUtil
 import com.jobik.shkiper.util.SnackbarVisualsCustom
 import com.mohamedrejeb.richeditor.model.RichTextState

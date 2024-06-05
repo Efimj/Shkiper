@@ -62,7 +62,7 @@
 
         <!--    notification receiver    -->
         <receiver
-                android:name=".services.notification_service.NotificationReceiver"
+                android:name=".services.notification.NotificationReceiver"
                 android:enabled="true"
                 android:exported="true">
             <intent-filter>

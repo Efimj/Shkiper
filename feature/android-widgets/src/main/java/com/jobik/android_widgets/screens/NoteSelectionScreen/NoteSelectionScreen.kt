@@ -1,4 +1,4 @@
-package com.jobik.shkiper.widgets.screens.NoteSelectionScreen
+package com.jobik.shkiper.widgets.screens.noteSelection
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
@@ -20,7 +20,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.Note
 import com.jobik.shkiper.ui.components.buttons.FloatingActionButton
 import com.jobik.shkiper.ui.components.fields.getSearchBarHeight

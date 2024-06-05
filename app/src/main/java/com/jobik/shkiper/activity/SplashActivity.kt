@@ -12,7 +12,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.jobik.shkiper.NotepadApplication
 import com.jobik.shkiper.services.localization.LocaleHelper
-import com.jobik.shkiper.services.statistics_service.StatisticsService
+import com.jobik.shkiper.services.statistics.StatisticsService
 import com.jobik.shkiper.viewmodels.NotesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.DelicateCoroutinesApi
