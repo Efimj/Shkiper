@@ -9,6 +9,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.window.DialogProperties
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LifecycleEventEffect
 import com.jobik.shkiper.R
 import com.jobik.shkiper.helpers.IntentHelper
 import com.jobik.shkiper.helpers.areChanelNotificationsEnabled
@@ -27,6 +29,14 @@ fun NoteListScreenReminderCheck(notesViewModel: NotesViewModel) {
     }
     var clickedOnEnabled by rememberSaveable {
         mutableStateOf(false)
+    }
+
+    LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
+        if (checkIsNotificationEnabled(context = context)) {
+            reminderNeededDialog = false
+        } else {
+            reminderNeededDialog = true
+        }
     }
 
     if (reminderNeededDialog)
