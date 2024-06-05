@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.jobik.shkiper.R
+import com.jobik.shkiper.ui.components.cards.DonateBannerProvider
 import com.jobik.shkiper.ui.components.fields.SearchBar
 import com.jobik.shkiper.ui.components.fields.SearchBarActionButton
 import com.jobik.shkiper.ui.components.fields.getSearchBarHeight
@@ -116,7 +117,7 @@ private fun NotesListContent(
             .testTag("notes_list"),
     ) {
         item(span = StaggeredGridItemSpan.FullLine) {
-            BannerList(navController)
+            DonateBannerProvider(navController = navController)
         }
         noteTagsList(
             tags = notesViewModel.screenState.value.hashtags,
