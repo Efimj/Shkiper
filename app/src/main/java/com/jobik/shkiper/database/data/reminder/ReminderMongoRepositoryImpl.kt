@@ -7,9 +7,9 @@ import com.jobik.shkiper.database.models.Note
 import com.jobik.shkiper.database.models.Reminder
 import com.jobik.shkiper.database.models.RepeatMode
 import com.jobik.shkiper.helpers.DateHelper
-import com.jobik.shkiper.services.notification_service.NotificationData
-import com.jobik.shkiper.services.notification_service.NotificationScheduler
-import com.jobik.shkiper.services.statistics_service.StatisticsService
+import com.jobik.shkiper.services.notification.NotificationData
+import com.jobik.shkiper.services.notification.NotificationScheduler
+import com.jobik.shkiper.services.statistics.StatisticsService
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.realm.kotlin.Realm
 import io.realm.kotlin.UpdatePolicy

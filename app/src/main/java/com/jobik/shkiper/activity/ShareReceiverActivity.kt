@@ -18,7 +18,7 @@ import com.jobik.shkiper.ui.theme.AppTheme
 import com.jobik.shkiper.ui.theme.CustomThemeStyle
 import com.jobik.shkiper.ui.theme.ShkiperTheme
 import com.jobik.shkiper.util.ThemeUtil
-import com.jobik.shkiper.widgets.screens.NoteSelectionScreen.NoteSelectionScreen
+import com.jobik.shkiper.widgets.screens.noteSelection.NoteSelectionScreen
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch

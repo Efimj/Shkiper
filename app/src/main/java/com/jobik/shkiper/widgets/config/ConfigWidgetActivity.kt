@@ -21,7 +21,7 @@ import com.jobik.shkiper.ui.theme.CustomThemeStyle
 import com.jobik.shkiper.ui.theme.ShkiperTheme
 import com.jobik.shkiper.util.ThemeUtil
 import com.jobik.shkiper.widgets.WidgetKeys
-import com.jobik.shkiper.widgets.screens.NoteSelectionScreen.NoteSelectionScreen
+import com.jobik.shkiper.widgets.screens.noteSelection.NoteSelectionScreen
 import com.jobik.shkiper.widgets.widgets.NoteWidget
 import com.mohamedrejeb.richeditor.model.RichTextState
 import dagger.hilt.android.AndroidEntryPoint

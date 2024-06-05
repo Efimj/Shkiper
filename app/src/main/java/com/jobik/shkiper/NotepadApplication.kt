@@ -2,7 +2,7 @@ package com.jobik.shkiper
 
 import android.app.Application
 import android.content.Context
-import com.jobik.shkiper.services.billing_service.BillingService
+import com.jobik.shkiper.services.billing.BillingService
 import com.jobik.shkiper.services.localization.LocaleHelper
 import com.jobik.shkiper.services.localization.Localization
 

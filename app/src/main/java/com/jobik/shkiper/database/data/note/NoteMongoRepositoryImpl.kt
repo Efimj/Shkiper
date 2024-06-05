@@ -6,8 +6,8 @@ import androidx.glance.appwidget.GlanceAppWidgetManager
 import com.jobik.shkiper.database.data.reminder.ReminderMongoRepositoryImpl
 import com.jobik.shkiper.database.models.Note
 import com.jobik.shkiper.database.models.NotePosition
-import com.jobik.shkiper.services.notification_service.NotificationScheduler
-import com.jobik.shkiper.services.statistics_service.StatisticsService
+import com.jobik.shkiper.services.notification.NotificationScheduler
+import com.jobik.shkiper.services.statistics.StatisticsService
 import com.jobik.shkiper.widgets.handlers.mapNoteToWidget
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.realm.kotlin.Realm

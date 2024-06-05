@@ -1,6 +1,5 @@
 package com.jobik.shkiper.navigation
 
-import android.util.Log
 import androidx.compose.animation.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -13,15 +12,15 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.jobik.shkiper.screens.AboutNotepadScreen.AboutNotepadScreen
-import com.jobik.shkiper.screens.ArchiveNotesScreen.ArchiveNotesScreen
-import com.jobik.shkiper.screens.BasketNotesScreen.BasketNotesScreen
-import com.jobik.shkiper.screens.NoteListScreen.NoteListScreen
-import com.jobik.shkiper.screens.NoteScreen.NoteScreen
-import com.jobik.shkiper.screens.OnboardingScreen.OnBoardingScreen
-import com.jobik.shkiper.screens.PurchaseScreen.PurchaseScreen
-import com.jobik.shkiper.screens.SettingsScreen.SettingsScreen
-import com.jobik.shkiper.screens.StatisticsScreen.StatisticsScreen
+import com.jobik.shkiper.screens.about.AboutNotepadScreen
+import com.jobik.shkiper.screens.archive.ArchiveNotesScreen
+import com.jobik.shkiper.screens.basket.BasketNotesScreen
+import com.jobik.shkiper.screens.noteListScreen.NoteListScreen
+import com.jobik.shkiper.screens.note.NoteScreen
+import com.jobik.shkiper.screens.onboarding.OnBoardingScreen
+import com.jobik.shkiper.screens.purchase.PurchaseScreen
+import com.jobik.shkiper.screens.settings.SettingsScreen
+import com.jobik.shkiper.screens.statistics.StatisticsScreen
 
 @OptIn(ExperimentalComposeUiApi::class)
 @ExperimentalAnimationApi

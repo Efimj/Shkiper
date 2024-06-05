@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -16,9 +15,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jobik.shkiper.R
-import com.jobik.shkiper.services.statistics_service.StatisticsItem
-import com.jobik.shkiper.ui.helpers.MultipleEventsCutter
-import com.jobik.shkiper.ui.helpers.get
+import com.jobik.shkiper.services.statistics.StatisticsItem
 import com.jobik.shkiper.ui.modifiers.bounceClick
 import com.jobik.shkiper.ui.theme.AppTheme
 

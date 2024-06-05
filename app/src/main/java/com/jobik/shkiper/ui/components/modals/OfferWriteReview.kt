@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.jobik.shkiper.R
-import com.jobik.shkiper.services.review_service.ReviewService
+import com.jobik.shkiper.services.review.ReviewService
 import com.jobik.shkiper.ui.components.buttons.ButtonStyle
 import com.jobik.shkiper.ui.components.buttons.CustomButton
 import com.jobik.shkiper.ui.components.buttons.DefaultButtonProperties
