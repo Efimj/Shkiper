@@ -550,9 +550,14 @@ class NoteViewModel @Inject constructor(
         }
     }
 
-    fun switchReminderDialogShow() {
-        _screenState.value =
-            _screenState.value.copy(isReminderMenuOpen = !_screenState.value.isReminderMenuOpen)
+    fun switchReminderDialogShow(value: Boolean? = null) {
+        if (value == null) {
+            _screenState.value =
+                _screenState.value.copy(isReminderMenuOpen = _screenState.value.isReminderMenuOpen.not())
+        } else {
+            _screenState.value =
+                _screenState.value.copy(isReminderMenuOpen = value)
+        }
     }
 
     fun getHashtags() {
