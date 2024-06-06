@@ -19,8 +19,6 @@ import com.jobik.shkiper.services.statistics.StatisticsItem
 import com.jobik.shkiper.ui.modifiers.bounceClick
 import com.jobik.shkiper.ui.theme.AppTheme
 
-
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun StatisticsCard(statistic: StatisticsItem, onClick: () -> Unit) {
     Card(
@@ -50,7 +48,7 @@ fun StatisticsCard(statistic: StatisticsItem, onClick: () -> Unit) {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    statistic.getStringValue(),
+                    text = statistic.getStringValue(),
                     color = AppTheme.colors.text,
                     style = MaterialTheme.typography.titleMedium.copy(fontSize = 18.sp),
                     textAlign = TextAlign.Center,
@@ -58,7 +56,7 @@ fun StatisticsCard(statistic: StatisticsItem, onClick: () -> Unit) {
                     maxLines = 1,
                 )
                 Text(
-                    stringResource(statistic.title),
+                    text = stringResource(statistic.title),
                     color = AppTheme.colors.textSecondary,
                     style = MaterialTheme.typography.bodyMedium.copy(fontSize = 14.sp),
                     textAlign = TextAlign.Center,

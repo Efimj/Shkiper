@@ -44,6 +44,7 @@ data class BooleanStatistics(
         _value = true
     }
 }
+
 @Keep
 data class DateStatistics(
     private var _value: String?
@@ -75,7 +76,7 @@ data class StatisticsItem(
     @Composable
     fun getStringValue(): String {
         return when (statistics) {
-            is LongStatistics -> NumberHelper().formatNumber((statistics as LongStatistics).value)
+            is LongStatistics -> (statistics as LongStatistics).value.toString()
             is BooleanStatistics -> stringResource(if ((statistics as BooleanStatistics).value) R.string.DoneEmoji else R.string.NotDoneEmoji)
             is DateStatistics -> (statistics as DateStatistics).value.toString()
             else -> throw UnsupportedOperationException("Unsupported type")
