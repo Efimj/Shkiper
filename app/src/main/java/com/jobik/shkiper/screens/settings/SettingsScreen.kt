@@ -33,6 +33,7 @@ import com.jobik.shkiper.NotepadApplication
 import com.jobik.shkiper.R
 import com.jobik.shkiper.navigation.NavigationHelpers.Companion.navigateToSecondary
 import com.jobik.shkiper.navigation.Route
+import com.jobik.shkiper.services.backup.BackupService
 import com.jobik.shkiper.ui.components.buttons.*
 import com.jobik.shkiper.ui.components.cards.SettingsItem
 import com.jobik.shkiper.ui.components.cards.ThemePreview
@@ -177,10 +178,17 @@ private fun OtherSettings(navController: NavController) {
 private fun BackupSettings(
     settingsViewModel: SettingsViewModel,
 ) {
-    val fileSearch =
+    val selectBackup =
         rememberLauncherForActivityResult(contract = ActivityResultContracts.OpenDocument()) { uri ->
             if (uri != null) {
                 settingsViewModel.uploadLocalBackup(uri)
+            }
+        }
+
+    val createBackup =
+        rememberLauncherForActivityResult(contract = ActivityResultContracts.CreateDocument(BackupService.BackupType)) { uri ->
+            if (uri != null) {
+                settingsViewModel.saveLocalBackup(uri)
             }
         }
 
@@ -204,7 +212,7 @@ private fun BackupSettings(
             isEnabled = !settingsViewModel.isBackupHandling(),
             isActive = isLocalBackupSaving,
             title = if (isLocalBackupSaving) stringResource(R.string.Saving) else stringResource(R.string.Save),
-            onClick = { settingsViewModel.saveLocalBackup() }
+            onClick = { createBackup.launch(BackupService.getFileName()) }
         ) {
             val isSaving = rememberSaveable { mutableStateOf(false) }
             DelayedStateChange(incoming = isLocalBackupSaving, outgoing = isSaving)
@@ -247,7 +255,7 @@ private fun BackupSettings(
             title = if (isLocalBackupUploading) stringResource(R.string.Loading) else stringResource(
                 R.string.Upload
             ),
-            onClick = { fileSearch.launch(arrayOf("*/*")) }
+            onClick = { selectBackup.launch(arrayOf(BackupService.BackupType)) }
         ) {
             val isUploading = rememberSaveable { mutableStateOf(false) }
             DelayedStateChange(incoming = isLocalBackupUploading, outgoing = isUploading)

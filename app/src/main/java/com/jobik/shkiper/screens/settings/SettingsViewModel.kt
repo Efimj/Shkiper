@@ -82,7 +82,8 @@ class SettingsViewModel @Inject constructor(
     fun selectLocalization(selectedIndex: Int) {
         try {
             val newLocalization: Localization =
-                Localization.values().filter { it.name != NotepadApplication.currentLanguage.name }[selectedIndex]
+                Localization.values()
+                    .filter { it.name != NotepadApplication.currentLanguage.name }[selectedIndex]
             LocaleHelper.setLocale(application.applicationContext, newLocalization)
         } catch (e: Exception) {
             Log.d("ChangeLocalizationError", e.message.toString())
@@ -93,17 +94,23 @@ class SettingsViewModel @Inject constructor(
      * App backups
      *******************/
 
-    fun saveLocalBackup() {
+    fun saveLocalBackup(uri: Uri) {
         if (isBackupHandling()) return
         _settingsScreenState.value = _settingsScreenState.value.copy(isLocalBackupSaving = true)
         viewModelScope.launch() {
             val backupData = BackupData()
             backupData.realmNoteList = noteRepository.getAllNotes()
             backupData.realmReminderList = reminderRepository.getAllReminders()
-            backupData.userStatistics = StatisticsService(application.applicationContext).appStatistics.statisticsData
-            val result = BackupService().createBackup(backupData, application.applicationContext)
+            backupData.userStatistics =
+                StatisticsService(application.applicationContext).appStatistics.statisticsData
+            val result = BackupService().createBackup(
+                uri = uri,
+                backupData = backupData,
+                context = application.applicationContext
+            )
             delay(1000)
-            _settingsScreenState.value = _settingsScreenState.value.copy(isLocalBackupSaving = false)
+            _settingsScreenState.value =
+                _settingsScreenState.value.copy(isLocalBackupSaving = false)
             when (result) {
                 BackupServiceResult.UnexpectedError -> showSnackbar(
                     application.applicationContext.getString(R.string.UnspecifiedErrorOccurred),
@@ -130,11 +137,15 @@ class SettingsViewModel @Inject constructor(
             val result = BackupService().uploadBackup(uri, application.applicationContext)
             if (result.backupData != null) {
                 noteRepository.insertOrUpdateNotes(result.backupData.realmNoteList, false)
-                reminderRepository.insertOrUpdateReminders(result.backupData.realmReminderList, false)
+                reminderRepository.insertOrUpdateReminders(
+                    result.backupData.realmReminderList,
+                    false
+                )
                 StatisticsService(application.applicationContext).updateStatistics(result.backupData.userStatistics)
             }
             delay(1000)
-            _settingsScreenState.value = _settingsScreenState.value.copy(isLocalBackupUploading = false)
+            _settingsScreenState.value =
+                _settingsScreenState.value.copy(isLocalBackupUploading = false)
             when (result.backupServiceResult) {
                 BackupServiceResult.UnexpectedError -> showSnackbar(
                     application.applicationContext.getString(R.string.UnspecifiedErrorOccurred),

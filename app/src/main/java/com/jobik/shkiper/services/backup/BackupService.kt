@@ -1,18 +1,18 @@
 package com.jobik.shkiper.services.backup
 
 import android.Manifest
-import android.content.ContentValues
 import android.content.Context
 import android.net.Uri
 import android.os.Build
-import android.os.Environment
-import android.provider.MediaStore
+import android.util.Log
 import androidx.annotation.Keep
-import androidx.annotation.RequiresApi
 import com.google.gson.Gson
 import com.gun0912.tedpermission.coroutine.TedPermission
-import java.io.*
-import java.time.LocalDate
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import java.io.OutputStream
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 @Keep
 enum class BackupServiceResult {
@@ -30,26 +30,37 @@ data class UploadResult(
 
 @Keep
 class BackupService {
+    val LogCatTag = "BackupService"
+
     companion object {
         fun getFileName(): String {
-            return "Shkiper backup ${LocalDate.now()}.json"
+            return "shkiper ${LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))}.json"
         }
+
+        const val BackupType = "application/json"
     }
 
     private val gson = Gson()
 
-    suspend fun createBackup(backupData: BackupData, context: Context): BackupServiceResult {
+    suspend fun createBackup(
+        uri: Uri,
+        backupData: BackupData,
+        context: Context
+    ): BackupServiceResult {
         runCatching {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 // version >= 29 (Android 10, 11, ...)
-                if (writeFileNewApi(context, backupData)) return BackupServiceResult.Complete
-                return BackupServiceResult.UnexpectedError
             } else {
                 // version < 29 (Android ..., 7,8,9)
-                if (!checkWritePermission()) return BackupServiceResult.WritePermissionDenied
+                if (!checkWritePermission()) {
+                    return BackupServiceResult.WritePermissionDenied
+                }
+            }
 
-                if (writeFileOldApi(backupData)) return BackupServiceResult.Complete
-                return BackupServiceResult.UnexpectedError
+            val result = writeFile(uri = uri, context = context, backupData = backupData)
+
+            if (result) {
+                return BackupServiceResult.Complete
             }
         }
         return BackupServiceResult.UnexpectedError
@@ -69,60 +80,37 @@ class BackupService {
             val inputStream = context.contentResolver.openInputStream(uri)
             val bufferedReader = BufferedReader(InputStreamReader(inputStream))
             val jsonText = bufferedReader.use { it.readText() }
-            if (jsonText.isEmpty()) UploadResult(BackupServiceResult.UnexpectedError, null) else return UploadResult(
+            if (jsonText.isEmpty()) UploadResult(
+                BackupServiceResult.UnexpectedError,
+                null
+            ) else return UploadResult(
                 BackupServiceResult.Complete,
                 gson.fromJson(jsonText, BackupData::class.java)
             )
         } catch (e: Exception) {
             e.printStackTrace()
+            Log.w(LogCatTag, e)
             return UploadResult(BackupServiceResult.UnexpectedError, null)
         }
     }
 
-    private fun writeFileOldApi(backupData: BackupData): Boolean {
-        val downloadsDir =
-            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-
-        val file = File(downloadsDir, getFileName())
-
-        var fileOutputStream: FileOutputStream? = null
-        try {
-            fileOutputStream = FileOutputStream(file)
-            fileOutputStream.write(gson.toJson(backupData).toByteArray())
-            return true
-        } catch (e: Exception) {
-            e.printStackTrace()
-        } finally {
-            fileOutputStream?.close()
-        }
-        return false
-    }
-
-    @RequiresApi(Build.VERSION_CODES.Q)
-    private fun writeFileNewApi(
+    private fun writeFile(
+        uri: Uri,
         context: Context,
         backupData: BackupData
     ): Boolean {
-        val contentResolver = context.contentResolver
-        val contentValues = ContentValues().apply {
-            put(MediaStore.MediaColumns.DISPLAY_NAME, getFileName())
-            put(MediaStore.MediaColumns.MIME_TYPE, "application/json")
-            put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS)
-        }
-
-        var outputStream: OutputStream? = null
         try {
-            val contentUri = MediaStore.Downloads.EXTERNAL_CONTENT_URI
-            val uri = contentResolver.insert(contentUri, contentValues)
-            outputStream = uri?.let { contentResolver.openOutputStream(it) }
-            outputStream?.write(gson.toJson(backupData).toByteArray())
-            return true
+            val outputStream: OutputStream? = context.contentResolver.openOutputStream(uri)
+            outputStream?.use {
+                it.write(gson.toJson(backupData).toByteArray())
+            }
+            outputStream?.close()
         } catch (e: Exception) {
             e.printStackTrace()
-        } finally {
-            outputStream?.close()
+            Log.w(LogCatTag, e)
+            return false
         }
-        return false
+        return true
     }
 
     private suspend fun checkWritePermission(): Boolean {
