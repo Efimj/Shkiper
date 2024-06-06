@@ -26,11 +26,13 @@ import com.jobik.shkiper.database.models.Reminder
 import com.jobik.shkiper.ui.components.cards.ReminderCard
 import com.jobik.shkiper.ui.components.modals.ReminderDialogProperties
 import com.jobik.shkiper.ui.theme.AppTheme
+import kotlinx.coroutines.launch
 import org.mongodb.kbson.ObjectId
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NoteScreenRemindersContent(noteViewModel: NoteViewModel) {
+    val coroutineScope = rememberCoroutineScope()
     val reminderSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val currentReminder = rememberSaveable { mutableStateOf<Reminder?>(null) }
     val openCreateReminderDialog = rememberSaveable { mutableStateOf(false) }
@@ -38,10 +40,11 @@ fun NoteScreenRemindersContent(noteViewModel: NoteViewModel) {
 
     LaunchedEffect(noteViewModel.screenState.value.isReminderMenuOpen) {
         if (!noteViewModel.screenState.value.isReminderMenuOpen) {
-            currentReminder.value = null
-            openCreateReminderDialog.value = false
-            selectedReminderIds.value = emptyList()
-            reminderSheetState.hide()
+            coroutineScope.launch { reminderSheetState.hide() }.invokeOnCompletion {
+                currentReminder.value = null
+                openCreateReminderDialog.value = false
+                selectedReminderIds.value = emptyList()
+            }
         } else {
             if (noteViewModel.screenState.value.reminders.isEmpty()) {
                 openCreateReminderDialog.value = true
@@ -62,7 +65,10 @@ fun NoteScreenRemindersContent(noteViewModel: NoteViewModel) {
 
     val bottomListPaddingValues =
         if (selectedReminderIds.value.isEmpty()) listVerticalWithToolBarPadding + bottomInsetsDp else listVerticalPadding + bottomInsetsDp
-    val bottomPadding by animateDpAsState(targetValue = bottomListPaddingValues, label = "bottomPadding")
+    val bottomPadding by animateDpAsState(
+        targetValue = bottomListPaddingValues,
+        label = "bottomPadding"
+    )
 
     if (noteViewModel.screenState.value.isReminderMenuOpen) {
         val topInsets = WindowInsets.systemBars.only(WindowInsetsSides.Top)
@@ -74,7 +80,9 @@ fun NoteScreenRemindersContent(noteViewModel: NoteViewModel) {
             containerColor = Color.Transparent,
             contentColor = AppTheme.colors.text,
             windowInsets = WindowInsets.ime,
-            onDismissRequest = { noteViewModel.switchReminderDialogShow() },
+            onDismissRequest = {
+                noteViewModel.switchReminderDialogShow(false)
+            },
         ) {
             Spacer(modifier = Modifier.windowInsetsPadding(topInsets))
             Surface(
@@ -88,16 +96,22 @@ fun NoteScreenRemindersContent(noteViewModel: NoteViewModel) {
                         targetState = noteViewModel.screenState.value.reminders.isEmpty(),
                         transitionSpec = {
                             if (initialState) {
-                                (slideInVertically { height -> height } + fadeIn()).togetherWith(slideOutVertically { height -> -height } + fadeOut())
+                                (slideInVertically { height -> height } + fadeIn()).togetherWith(
+                                    slideOutVertically { height -> -height } + fadeOut())
                             } else {
-                                (slideInVertically { height -> -height } + fadeIn()).togetherWith(slideOutVertically { height -> height } + fadeOut())
+                                (slideInVertically { height -> -height } + fadeIn()).togetherWith(
+                                    slideOutVertically { height -> height } + fadeOut())
                             }.using(
                                 SizeTransform(clip = false)
                             )
                         }, label = ""
                     ) {
                         if (it) {
-                            EmptyRemindersContent(modifier = Modifier.windowInsetsPadding(verticalInsets))
+                            EmptyRemindersContent(
+                                modifier = Modifier.windowInsetsPadding(
+                                    verticalInsets
+                                )
+                            )
                         } else {
                             RemindersList(
                                 topPadding = topPadding,
@@ -145,7 +159,12 @@ private fun RemindersList(
 
     LazyColumn(
         state = lazyListState,
-        contentPadding = PaddingValues(start = 20.dp, end = 20.dp, top = topPadding, bottom = bottomPadding),
+        contentPadding = PaddingValues(
+            start = 20.dp,
+            end = 20.dp,
+            top = topPadding,
+            bottom = bottomPadding
+        ),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         items(
@@ -155,7 +174,12 @@ private fun RemindersList(
                 reminder = reminder,
                 isSelected = selectedReminderIds.value.contains(reminder._id),
                 onClick = {
-                    onReminderClick(selectedReminderIds, reminder, currentReminder, openCreateReminderDialog)
+                    onReminderClick(
+                        selectedReminderIds,
+                        reminder,
+                        currentReminder,
+                        openCreateReminderDialog
+                    )
                 },
                 onLongClick = {
                     onReminderLongClick(selectedReminderIds, reminder)
@@ -296,7 +320,11 @@ private fun BoxScope.Header(
 }
 
 @Composable
-private fun BoxScope.BottomBar(modifier: Modifier, isHidden: Boolean, onCreateReminderClick: () -> Unit) {
+private fun BoxScope.BottomBar(
+    modifier: Modifier,
+    isHidden: Boolean,
+    onCreateReminderClick: () -> Unit
+) {
     Box(
         modifier = modifier
             .align(Alignment.BottomCenter)
