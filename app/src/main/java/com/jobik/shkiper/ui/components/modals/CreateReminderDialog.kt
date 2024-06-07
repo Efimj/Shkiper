@@ -165,7 +165,6 @@ fun CreateReminderDialog(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .verticalScroll(rememberScrollState())
                 .clip(RoundedCornerShape(15.dp))
                 .background(AppTheme.colors.background)
                 .padding(vertical = 10.dp)
@@ -278,7 +277,11 @@ private fun DialogContent(
     goToPage: (Int) -> Unit,
     reminderDialogState: MutableState<ReminderDialogState>,
 ) {
-    Column(modifier = Modifier.height(340.dp)) {
+    Column(
+        modifier = Modifier
+            .verticalScroll(rememberScrollState())
+            .height(340.dp)
+    ) {
         when (page) {
             ReminderDialogPages.DATEPICK.value -> DatePickPage(reminderDialogState = reminderDialogState)
             ReminderDialogPages.TIMEPICK.value -> TimePickPage(reminderDialogState = reminderDialogState)
