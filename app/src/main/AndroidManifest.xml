@@ -110,12 +110,12 @@
 
 <!--        activity's for any icons-->
         <activity-alias
-            android:name=".MinimalismActivity"
+            android:name=".MaterialActivity"
             android:enabled="false"
             android:exported="true"
-            android:icon="@mipmap/ic_launcher_minimalism"
+            android:icon="@mipmap/ic_launcher_material"
             android:noHistory="true"
-            android:roundIcon="@mipmap/ic_launcher_minimalism_round"
+            android:roundIcon="@mipmap/ic_launcher_material_round"
             android:targetActivity=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

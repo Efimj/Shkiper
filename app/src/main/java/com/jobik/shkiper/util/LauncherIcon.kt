@@ -11,7 +11,7 @@ class LauncherIcon {
     @Keep
     enum class LauncherActivity(val activity: String, @DrawableRes val drawable: Int) {
         Default(activity = "activity.MainActivity", drawable = R.drawable.ic_app),
-        Minimalism(activity = "MinimalismActivity", drawable = R.drawable.ic_minimalism);
+        Minimalism(activity = "MaterialActivity", drawable = R.drawable.ic_notification);
 
         fun toActivityAliasName(context: Context): String {
             println(context.packageName)
