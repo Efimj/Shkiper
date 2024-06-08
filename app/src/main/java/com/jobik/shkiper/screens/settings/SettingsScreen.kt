@@ -64,10 +64,10 @@ fun SettingsScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(Modifier.height(75.dp))
-        ProgramSettings(settingsViewModel)
-        BackupSettings(settingsViewModel)
-        OtherSettings(navController)
-        DevSupportSettings(settingsViewModel, navController)
+        ProgramSettings(navController = navController, settingsViewModel = settingsViewModel)
+        BackupSettings(settingsViewModel = settingsViewModel)
+        OtherSettings(navController = navController)
+        DevSupportSettings(settingsViewModel = settingsViewModel, navController = navController)
         InformationSettings()
         Spacer(Modifier.height(55.dp))
     }
@@ -127,13 +127,13 @@ private fun DevSupportSettings(
         Spacer(Modifier.height(8.dp))
         SettingsItem(
             modifier = Modifier.heightIn(min = 50.dp),
-            icon = Icons.Rounded.Stars,
+            icon = Icons.Outlined.Stars,
             title = stringResource(R.string.RateTheApp),
             onClick = { settingsViewModel.rateTheApp() }
         )
         SettingsItem(
             modifier = Modifier.heightIn(min = 50.dp),
-            icon = Icons.Rounded.LocalMall,
+            icon = Icons.Rounded.RocketLaunch,
             title = stringResource(R.string.SupportDevelopment),
             onClick = { navController.navigateToSecondary(Route.Purchases.route) }
         )
@@ -154,20 +154,17 @@ private fun OtherSettings(navController: NavController) {
         )
         Spacer(Modifier.height(8.dp))
         SettingsItem(
-            modifier = Modifier.heightIn(min = 50.dp),
-            icon = Icons.Rounded.Info,
+            icon = Icons.Outlined.Info,
             title = stringResource(R.string.AboutNotepad),
             onClick = { navController.navigateToSecondary(Route.AboutNotepad.route) }
         )
         SettingsItem(
-            modifier = Modifier.heightIn(min = 50.dp),
             icon = Icons.Rounded.DataUsage,
             title = stringResource(R.string.StatisticsPage),
             onClick = { navController.navigateToSecondary(Route.Statistics.route) }
         )
         SettingsItem(
-            modifier = Modifier.heightIn(min = 50.dp),
-            icon = Icons.Rounded.ViewCarousel,
+            icon = Icons.Outlined.ViewCarousel,
             title = stringResource(R.string.OnboardingPage),
             onClick = { navController.navigateToSecondary(Route.Onboarding.route) }
         )
@@ -186,7 +183,11 @@ private fun BackupSettings(
         }
 
     val createBackup =
-        rememberLauncherForActivityResult(contract = ActivityResultContracts.CreateDocument(BackupService.BackupType)) { uri ->
+        rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.CreateDocument(
+                BackupService.BackupType
+            )
+        ) { uri ->
             if (uri != null) {
                 settingsViewModel.saveLocalBackup(uri)
             }
@@ -306,7 +307,7 @@ private fun DelayedStateChange(
 }
 
 @Composable
-private fun ProgramSettings(settingsViewModel: SettingsViewModel) {
+private fun ProgramSettings(navController: NavController, settingsViewModel: SettingsViewModel) {
     SettingsItemGroup {
         Text(
             modifier = Modifier
@@ -347,6 +348,11 @@ private fun ProgramSettings(settingsViewModel: SettingsViewModel) {
         SettingsColorThemePicker(settingsViewModel)
         Spacer(Modifier.height(4.dp))
         SettingsItemSelectLanguage(settingsViewModel = settingsViewModel)
+        SettingsItem(
+            icon = Icons.Rounded.Tune,
+            title = stringResource(R.string.advanced),
+            onClick = { navController.navigateToSecondary(Route.AdvancedSettings.route) }
+        )
     }
 }
 
@@ -449,7 +455,6 @@ private fun SettingsItemSelectLanguage(settingsViewModel: SettingsViewModel) {
     val isExpanded = remember { mutableStateOf(false) }
 
     SettingsItem(
-        modifier = Modifier.heightIn(min = 50.dp),
         icon = Icons.Outlined.Language,
         title = stringResource(R.string.ChoseLocalization),
         onClick = { isExpanded.value = true }

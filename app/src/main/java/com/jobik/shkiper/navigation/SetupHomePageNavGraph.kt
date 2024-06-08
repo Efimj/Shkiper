@@ -13,6 +13,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.jobik.shkiper.screens.about.AboutNotepadScreen
+import com.jobik.shkiper.screens.advancedSettings.AdvancedSettings
 import com.jobik.shkiper.screens.archive.ArchiveNotesScreen
 import com.jobik.shkiper.screens.basket.BasketNotesScreen
 import com.jobik.shkiper.screens.noteListScreen.NoteListScreen
@@ -78,6 +79,12 @@ fun SetupAppScreenNavGraph(
             enterTransition = { ScreenTransition().secondaryScreenEnterTransition() },
             exitTransition = { ScreenTransition().secondaryScreenExitTransition() }
         ) { OnBoardingScreen(navController) }
+
+        composable(
+            route = Route.AdvancedSettings.route,
+            enterTransition = { ScreenTransition().secondaryScreenEnterTransition() },
+            exitTransition = { ScreenTransition().secondaryScreenExitTransition() }
+        ) { AdvancedSettings() }
 
         composable(
             route = Route.Statistics.route,
