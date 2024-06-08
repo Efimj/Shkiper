@@ -24,7 +24,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.NotePadApp"
+        android:theme="@style/Theme.Application"
         tools:targetApi="tiramisu">
         <profileable
             android:shell="true"
@@ -89,47 +89,39 @@
         <activity
             android:name=".widgets.config.ConfigWidgetActivity"
             android:imeOptions="actionSend|flagNoEnterAction"
-            android:theme="@style/Theme.NotePadApp"
+            android:theme="@style/Theme.Application"
             android:windowSoftInputMode="adjustResize" />
-
-        <!--    splash activity    -->
-        <activity
-            android:name=".activity.SplashActivity"
-            android:exported="true"
-            android:noHistory="true"
-            android:theme="@style/SplashTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
-        <!--    activity's for any icons    -->
-        <activity-alias
-            android:name=".MinimalismActivity"
-            android:enabled="false"
-            android:exported="true"
-            android:noHistory="true"
-            android:icon="@mipmap/ic_launcher_minimalism"
-            android:roundIcon="@mipmap/ic_launcher_minimalism_round"
-            android:targetActivity=".activity.SplashActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity-alias>
 
         <!--    moin activity    -->
         <activity
             android:name=".activity.MainActivity"
             android:exported="true"
             android:imeOptions="actionSend|flagNoEnterAction"
-            android:theme="@style/Theme.NotePadApp"
+            android:theme="@style/Theme.Launcher"
             android:windowSoftInputMode="adjustResize">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
-    </application>
 
+<!--        activity's for any icons-->
+        <activity-alias
+            android:name=".MinimalismActivity"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_minimalism"
+            android:noHistory="true"
+            android:roundIcon="@mipmap/ic_launcher_minimalism_round"
+            android:targetActivity=".activity.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+    </application>
 </manifest>

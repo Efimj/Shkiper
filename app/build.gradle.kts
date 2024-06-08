@@ -113,6 +113,8 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.androidx.foundation)
 
+    implementation(libs.material)
+
     // Splash screen API (not work when android less than 12)
     implementation(libs.androidx.core.splashscreen)
 
