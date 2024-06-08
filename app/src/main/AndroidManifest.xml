@@ -1,81 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
-    <uses-permission android:name="android.permission.VIBRATE"/>
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
-    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission
-            android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-            tools:ignore="ScopedStorage"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="com.android.vending.BILLING" />
 
     <application
-            android:name=".NotepadApplication"
-            android:allowBackup="true"
-            android:dataExtractionRules="@xml/data_extraction_rules"
-            android:enableOnBackInvokedCallback="true"
-            android:fullBackupContent="@xml/backup_rules"
-            android:icon="@mipmap/ic_launcher"
-            android:label="@string/app_name"
-            android:roundIcon="@mipmap/ic_launcher_round"
-            android:supportsRtl="true"
-            android:theme="@style/Theme.NotePadApp"
-            tools:targetApi="tiramisu">
+        android:name=".NotepadApplication"
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:enableOnBackInvokedCallback="true"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.NotePadApp"
+        tools:targetApi="tiramisu">
         <profileable
-                android:shell="true"
-                tools:targetApi="34"/>
+            android:shell="true"
+            tools:targetApi="34" />
 
         <!--    provider for share image    -->
         <provider
-                android:name="androidx.core.content.FileProvider"
-                android:authorities="${applicationId}.file_provider"
-                android:exported="false"
-                android:grantUriPermissions="true">
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.file_provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
             <meta-data
-                    android:name="android.support.FILE_PROVIDER_PATHS"
-                    android:resource="@xml/provider_path" />
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_path" />
         </provider>
 
         <!--    pin widget receiver    -->
         <receiver
-                android:name=".widgets.services.PinWidgetReceiver"
-                android:enabled="true"
-                android:exported="true" />
+            android:name=".widgets.services.PinWidgetReceiver"
+            android:enabled="true"
+            android:exported="true" />
 
         <!--    widget receiver    -->
         <receiver
-                android:name=".widgets.services.NoteWidgetReceiver"
-                android:enabled="true"
-                android:exported="false">
+            android:name=".widgets.services.NoteWidgetReceiver"
+            android:enabled="true"
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
             <meta-data
-                    android:name="android.appwidget.provider"
-                    android:resource="@xml/note_widget_info" />
+                android:name="android.appwidget.provider"
+                android:resource="@xml/note_widget_info" />
         </receiver>
 
         <!--    notification receiver    -->
         <receiver
-                android:name=".services.notification.NotificationReceiver"
-                android:enabled="true"
-                android:exported="true">
+            android:name=".services.notification.NotificationReceiver"
+            android:enabled="true"
+            android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-                <action android:name="android.intent.action.DATE_CHANGED"/>
-                <action android:name="android.intent.action.TIMEZONE_CHANGED"/>
-                <action android:name="android.intent.action.TIME_SET"/>
-                <action android:name="android.app.action.SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.DATE_CHANGED" />
+                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+                <action android:name="android.intent.action.TIME_SET" />
+                <action android:name="android.app.action.SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED" />
             </intent-filter>
         </receiver>
 
         <!--    share receiver activity    -->
-        <activity android:name=".activity.ShareReceiverActivity" android:exported="true">
+        <activity
+            android:name=".activity.ShareReceiverActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -84,34 +86,49 @@
         </activity>
 
         <!--    widget config activity    -->
-        <activity android:name=".widgets.config.ConfigWidgetActivity"
-                  android:imeOptions="actionSend|flagNoEnterAction"
-                  android:theme="@style/Theme.NotePadApp"
-                  android:windowSoftInputMode="adjustResize"/>
+        <activity
+            android:name=".widgets.config.ConfigWidgetActivity"
+            android:imeOptions="actionSend|flagNoEnterAction"
+            android:theme="@style/Theme.NotePadApp"
+            android:windowSoftInputMode="adjustResize" />
 
         <!--    splash activity    -->
         <activity
-                android:name=".activity.SplashActivity"
-                android:exported="true"
-                android:noHistory="true"
-                android:theme="@style/SplashTheme">
+            android:name=".activity.SplashActivity"
+            android:exported="true"
+            android:noHistory="true"
+            android:theme="@style/SplashTheme">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
+        <!--    activity's for any icons    -->
+        <activity-alias
+            android:name=".MinimalismActivity"
+            android:enabled="false"
+            android:exported="true"
+            android:noHistory="true"
+            android:icon="@mipmap/ic_launcher_minimalism"
+            android:roundIcon="@mipmap/ic_launcher_minimalism_round"
+            android:targetActivity=".activity.SplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
         <!--    moin activity    -->
         <activity
-                android:name=".activity.MainActivity"
-                android:exported="true"
-                android:imeOptions="actionSend|flagNoEnterAction"
-                android:theme="@style/Theme.NotePadApp"
-                android:windowSoftInputMode="adjustResize">
+            android:name=".activity.MainActivity"
+            android:exported="true"
+            android:imeOptions="actionSend|flagNoEnterAction"
+            android:theme="@style/Theme.NotePadApp"
+            android:windowSoftInputMode="adjustResize">
             <meta-data
-                    android:name="android.app.lib_name"
-                    android:value=""/>
+                android:name="android.app.lib_name"
+                android:value="" />
         </activity>
     </application>
 
