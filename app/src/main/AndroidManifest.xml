@@ -108,7 +108,7 @@
             </intent-filter>
         </activity>
 
-<!--        activity's for any icons-->
+        <!--        activity's for any icons-->
         <activity-alias
             android:name=".MaterialActivity"
             android:enabled="false"
