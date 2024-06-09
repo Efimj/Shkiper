@@ -20,9 +20,9 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:enableOnBackInvokedCallback="true"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_classic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_classic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Application"
         tools:targetApi="tiramisu">
@@ -110,12 +110,96 @@
 
         <!--        activity's for any icons-->
         <activity-alias
-            android:name=".MaterialActivity"
+            android:name=".ClassicWhiteLauncher"
             android:enabled="false"
             android:exported="true"
-            android:icon="@mipmap/ic_launcher_material"
+            android:icon="@mipmap/ic_classic_white_launcher"
             android:noHistory="true"
-            android:roundIcon="@mipmap/ic_launcher_material_round"
+            android:roundIcon="@mipmap/ic_classic_white_launcher_round"
+            android:targetActivity=".activity.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".BlueberryLauncher"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_blueberry_launcher"
+            android:noHistory="true"
+            android:roundIcon="@mipmap/ic_blueberry_launcher_round"
+            android:targetActivity=".activity.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".AvocadoLauncher"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_avocado_launcher"
+            android:noHistory="true"
+            android:roundIcon="@mipmap/ic_avocado_launcher_round"
+            android:targetActivity=".activity.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".MangoLauncher"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_mango_launcher"
+            android:noHistory="true"
+            android:roundIcon="@mipmap/ic_mango_launcher_round"
+            android:targetActivity=".activity.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".PlumLauncher"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_plum_launcher"
+            android:noHistory="true"
+            android:roundIcon="@mipmap/ic_plum_launcher_round"
+            android:targetActivity=".activity.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".StrawberryLauncher"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_strawberry_launcher"
+            android:noHistory="true"
+            android:roundIcon="@mipmap/ic_strawberry_launcher_round"
+            android:targetActivity=".activity.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".MaterialLauncher"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_material_launcher"
+            android:noHistory="true"
+            android:roundIcon="@mipmap/ic_material_launcher_round"
             android:targetActivity=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
