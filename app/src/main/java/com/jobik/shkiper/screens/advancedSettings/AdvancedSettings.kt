@@ -37,7 +37,7 @@ fun AdvancedSettings() {
                     }
                 ) {
                     Image(
-                        modifier = Modifier.size(100.dp),
+                        modifier = Modifier.size(60.dp),
                         painter = painterResource(id = launcher.drawable),
                         contentDescription = null
                     )

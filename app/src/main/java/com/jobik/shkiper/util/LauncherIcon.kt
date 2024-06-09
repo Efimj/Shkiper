@@ -10,35 +10,18 @@ import com.jobik.shkiper.R
 class LauncherIcon {
     @Keep
     enum class LauncherActivity(val activity: String, @DrawableRes val drawable: Int) {
-        Classic(
-            activity = "activity.MainActivity",
-            drawable = R.drawable.ic_classic_launcher
-        ),
+        Classic(activity = "activity.MainActivity", drawable = R.drawable.ic_classic_launcher),
         ClassicWhite(
             activity = "ClassicWhiteLauncher",
             drawable = R.drawable.ic_classic_white_launcher
         ),
+        Material(activity = "MaterialLauncher", drawable = R.drawable.ic_material_launcher),
+        Strawberry(activity = "StrawberryLauncher", drawable = R.drawable.ic_strawberry_launcher),
+        Mango(activity = "MangoLauncher", drawable = R.drawable.ic_mango_launcher),
         Avocado(activity = "AvocadoLauncher", drawable = R.drawable.ic_avocado_launcher),
-        Blueberry(
-            activity = "BlueberryLauncher",
-            drawable = R.drawable.ic_blueberry_launcher
-        ),
-        Mango(
-            activity = "MangoLauncher",
-            drawable = R.drawable.ic_mango_launcher
-        ),
-        Plum(
-            activity = "PlumLauncher",
-            drawable = R.drawable.ic_plum_launcher
-        ),
-        Strawberry(
-            activity = "StrawberryLauncher",
-            drawable = R.drawable.ic_strawberry_launcher
-        ),
-        Material(
-            activity = "MaterialLauncher",
-            drawable = R.drawable.ic_material_launcher
-        );
+        Blueberry(activity = "BlueberryLauncher", drawable = R.drawable.ic_blueberry_launcher),
+        Plum(activity = "PlumLauncher", drawable = R.drawable.ic_plum_launcher),
+        ;
 
         fun toActivityAliasName(context: Context): String {
             return this.activity.let { context.packageName + ".$it" }
