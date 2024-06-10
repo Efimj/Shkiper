@@ -325,7 +325,7 @@ private fun SettingsColorThemePicker(settingsViewModel: SettingsViewModel) {
         )
         LazyRow(
             state = rememberLazyListState(),
-            contentPadding = PaddingValues(start = 20.dp),
+            contentPadding = PaddingValues(horizontal = 20.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
 
