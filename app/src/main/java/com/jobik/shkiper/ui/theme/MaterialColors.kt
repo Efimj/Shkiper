@@ -1,10 +1,13 @@
 package com.jobik.shkiper.ui.theme
 
 import android.content.Context
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.ui.graphics.Color
 
+@RequiresApi(Build.VERSION_CODES.S)
 fun getDynamicColors(context: Context, darkTheme: Boolean): CustomThemeColors {
     val dynamicPalette = if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
     return CustomThemeColors(
