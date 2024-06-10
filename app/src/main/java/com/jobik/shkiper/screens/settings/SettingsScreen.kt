@@ -57,6 +57,7 @@ fun SettingsScreen(
             .fillMaxSize()
             .background(AppTheme.colors.background)
             .verticalScroll(rememberScrollState())
+            .padding(horizontal = 10.dp)
             .allWindowInsetsPadding(),
         verticalArrangement = Arrangement.spacedBy(10.dp),
         horizontalAlignment = Alignment.CenterHorizontally

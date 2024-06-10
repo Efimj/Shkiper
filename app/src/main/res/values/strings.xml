@@ -27,6 +27,7 @@
     <string name="LightTheme">Light</string>
     <string name="DarkTheme">Dark</string>
     <string name="Application">Application</string>
+    <string name="application_icon">Application icon</string>
     <string name="ApplicationColors">Colors</string>
     <string name="StatisticsPage">Statistics</string>
 

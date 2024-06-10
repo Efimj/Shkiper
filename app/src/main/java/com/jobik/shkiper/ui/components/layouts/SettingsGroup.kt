@@ -39,7 +39,6 @@ fun SettingsGroup(
 
     Column(
         modifier = Modifier
-            .padding(horizontal = 10.dp)
             .clip(AppTheme.shapes.large)
             .background(AppTheme.colors.container)
             .border(
