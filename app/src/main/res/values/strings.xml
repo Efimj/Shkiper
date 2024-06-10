@@ -216,4 +216,21 @@
     <string name="OtherMyApps">Other my apps</string>
 
     <string name="advanced">Advanced</string>
+    <string name="icon_already_selected">The icon is already selected!</string>
+
+    <string name="classic">Classic</string>
+    <string name="classic_white">White</string>
+    <string name="material">Material</string>
+    <string name="love">Love</string>
+    <string name="rocket">Rocket</string>
+    <string name="bank">Bank</string>
+    <string name="star">Star</string>
+    <string name="night">Night</string>
+    <string name="strawberry">Strawberry</string>
+    <string name="mango">Mango</string>
+    <string name="avocado">Avocado</string>
+    <string name="blueberry">Blueberry</string>
+    <string name="plum">Plum</string>
+
+
 </resources>

@@ -5,66 +5,81 @@ import androidx.annotation.RequiresApi
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.jobik.shkiper.R
 import com.jobik.shkiper.ui.theme.AppTheme
 import com.jobik.shkiper.util.LauncherIcon.LauncherActivity
 
-@RequiresApi(Build.VERSION_CODES.S)
 @Composable
 fun AppIcon(
-    activeIcon: MutableState<LauncherActivity?>,
+    activeIcon: LauncherActivity?,
     launcher: LauncherActivity,
     changeLauncher: (LauncherActivity) -> Unit
 ) {
     val isMaterial = launcher.name == LauncherActivity.Material.name
+    val headerColor =
+        animateColorAsState(
+            targetValue = if (activeIcon != null && activeIcon.name == launcher.name) AppTheme.colors.primary else AppTheme.colors.text,
+            label = "headerColor"
+        )
     val borderColor =
         animateColorAsState(
-            targetValue = if (activeIcon.value != null && activeIcon.value!!.name == launcher.name) AppTheme.colors.primary else Color.Transparent,
+            targetValue = if (activeIcon != null && activeIcon.name == launcher.name) AppTheme.colors.primary else Color.Transparent,
             label = "borderColor"
         )
 
     val primary = colorResource(id = R.color.primary)
     val onPrimary = colorResource(id = R.color.onPrimary)
 
-    val colorFilter = if(isMaterial) ColorFilter.tint(onPrimary) else null
-    val backgroundColor = if(isMaterial) primary else Color.Transparent
+    val colorFilter = if (isMaterial) ColorFilter.tint(onPrimary) else null
+    val backgroundColor = if (isMaterial) primary else Color.Transparent
 
-    Box(
-        modifier = Modifier
-            .border(width = 2.dp, color = borderColor.value, shape = CircleShape)
-            .size(60.dp)
-            .clip(CircleShape)
-            .background(backgroundColor)
-            .clickable { changeLauncher(launcher) },
-        contentAlignment = Alignment.Center
+    Column(
+        verticalArrangement = Arrangement.spacedBy(5.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Image(
-            modifier = Modifier.fillMaxSize(),
-            painter = painterResource(id = launcher.drawable),
-            contentDescription = null,
-            colorFilter = colorFilter
+        Box(
+            modifier = Modifier
+                .border(width = 2.dp, color = borderColor.value, shape = CircleShape)
+                .size(60.dp)
+                .clip(CircleShape)
+                .background(backgroundColor)
+                .clickable { changeLauncher(launcher) },
+            contentAlignment = Alignment.Center
+        ) {
+            Image(
+                modifier = Modifier.fillMaxSize(),
+                painter = painterResource(id = launcher.drawable),
+                contentDescription = null,
+                colorFilter = colorFilter
+            )
+        }
+        Text(
+            modifier = Modifier.basicMarquee(),
+            color = headerColor.value,
+            text = stringResource(id = launcher.header),
+            style = MaterialTheme.typography.bodySmall,
+            maxLines = 1
         )
     }
 }
