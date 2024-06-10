@@ -318,15 +318,10 @@ private fun SettingsColorThemePicker(settingsViewModel: SettingsViewModel) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.Start
     ) {
-        Text(
-            modifier = Modifier.padding(start = 65.dp),
-            color = AppTheme.colors.text,
-            text = stringResource(R.string.ApplicationColors),
-            style = MaterialTheme.typography.titleMedium,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
+        SettingsItem(
+            title = stringResource(R.string.ApplicationColors),
+            icon = Icons.Outlined.Palette
         )
-        Spacer(Modifier.height(6.dp))
         LazyRow(
             state = rememberLazyListState(),
             contentPadding = PaddingValues(start = 20.dp),
