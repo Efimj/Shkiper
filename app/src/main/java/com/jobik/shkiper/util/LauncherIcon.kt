@@ -32,10 +32,6 @@ class LauncherIcon {
         fun toActivityAliasName(context: Context): String {
             return this.activity.let { context.packageName + ".$it" }
         }
-
-        fun toJavaClass(context: Context): Class<*> {
-            return Class.forName(toActivityAliasName(context = context))
-        }
     }
 
     fun switchLauncherIcon(context: Context, activity: LauncherActivity) {
