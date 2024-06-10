@@ -66,16 +66,16 @@ private fun AppIconSelector(context: Context) {
 
     val changeLauncher: (LauncherActivity) -> Unit = { launcher ->
         activeIcon.value = launcher
+        LauncherIcon().switchLauncherIcon(
+            context = context,
+            activity = launcher
+        )
         scope.launch {
             SnackbarHostUtil.snackbarHostState.showSnackbar(
                 SnackbarVisualsCustom(
                     message = message,
                     icon = Icons.Outlined.TouchApp
                 )
-            )
-            LauncherIcon().switchLauncherIcon(
-                context = context,
-                activity = launcher
             )
         }
     }
