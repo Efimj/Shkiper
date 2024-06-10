@@ -18,7 +18,7 @@ import androidx.core.content.FileProvider
 import com.jobik.shkiper.BuildConfig
 import com.jobik.shkiper.R
 import com.jobik.shkiper.SharedPreferencesKeys
-import com.jobik.shkiper.activity.MainActivity
+import com.jobik.shkiper.activity.StartupActivity
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -66,10 +66,9 @@ class IntentHelper {
         context.startActivity(getStartActivityAndOpenNoteIntent(context, noteId))
     }
 
-    @OptIn(ExperimentalAnimationApi::class)
     fun getStartActivityAndOpenNoteIntent(context: Context, noteId: String): Intent {
         // Create an Intent for the activity you want to start
-        val mainIntent = Intent(context, MainActivity::class.java)
+        val mainIntent = Intent(context, StartupActivity::class.java)
             .putExtra(SharedPreferencesKeys.NoteIdExtra, noteId)
         mainIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         return mainIntent

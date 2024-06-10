@@ -37,9 +37,12 @@ import com.jobik.shkiper.util.ThemeUtil
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDate
 
+@OptIn(ExperimentalAnimationApi::class)
+class StartupActivity: MainActivity()
+
 @ExperimentalAnimationApi
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+open class MainActivity : ComponentActivity() {
     private lateinit var billingClientLifecycle: BillingService
     private lateinit var inAppUpdatesService: InAppUpdatesService
 

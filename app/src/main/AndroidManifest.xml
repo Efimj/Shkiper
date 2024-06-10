@@ -92,9 +92,23 @@
             android:theme="@style/Theme.Application"
             android:windowSoftInputMode="adjustResize" />
 
+        <!--    startup activity    -->
+        <activity
+            android:name=".activity.StartupActivity"
+            android:enabled="true"
+            android:exported="true"
+            android:imeOptions="actionSend|flagNoEnterAction"
+            android:theme="@style/Theme.Launcher"
+            android:windowSoftInputMode="adjustResize">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+
         <!--    moin activity    -->
         <activity
             android:name=".activity.MainActivity"
+            android:enabled="true"
             android:exported="true"
             android:imeOptions="actionSend|flagNoEnterAction"
             android:theme="@style/Theme.Launcher"
@@ -116,6 +130,76 @@
             android:icon="@mipmap/ic_classic_white_launcher"
             android:noHistory="true"
             android:roundIcon="@mipmap/ic_classic_white_launcher_round"
+            android:targetActivity=".activity.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".LoveLauncher"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_love_launcher"
+            android:noHistory="true"
+            android:roundIcon="@mipmap/ic_love_launcher_round"
+            android:targetActivity=".activity.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".RocketLauncher"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_rocket_launcher"
+            android:noHistory="true"
+            android:roundIcon="@mipmap/ic_rocket_launcher_round"
+            android:targetActivity=".activity.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".MoneyLauncher"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_money_launcher"
+            android:noHistory="true"
+            android:roundIcon="@mipmap/ic_money_launcher_round"
+            android:targetActivity=".activity.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".StarLauncher"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_star_launcher"
+            android:noHistory="true"
+            android:roundIcon="@mipmap/ic_star_launcher_round"
+            android:targetActivity=".activity.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".NightLauncher"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_night_launcher"
+            android:noHistory="true"
+            android:roundIcon="@mipmap/ic_night_launcher_round"
             android:targetActivity=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
