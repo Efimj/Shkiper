@@ -12,8 +12,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -52,23 +54,24 @@ fun AppIcon(
     val onPrimary = colorResource(id = R.color.onPrimary)
 
     val colorFilter = if (isMaterial) ColorFilter.tint(onPrimary) else null
-    val backgroundColor = if (isMaterial) primary else Color.Transparent
+    val backgroundColor = if (isMaterial) primary else Color.White
 
     Column(
         verticalArrangement = Arrangement.spacedBy(5.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        val shape = CircleShape
         Box(
             modifier = Modifier
-                .border(width = 2.dp, color = borderColor.value, shape = CircleShape)
+                .border(width = 2.dp, color = borderColor.value, shape = shape)
                 .size(60.dp)
-                .clip(CircleShape)
+                .clip(shape)
                 .background(backgroundColor)
                 .clickable { changeLauncher(launcher) },
             contentAlignment = Alignment.Center
         ) {
             Image(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.padding(2.dp),
                 painter = painterResource(id = launcher.drawable),
                 contentDescription = null,
                 colorFilter = colorFilter
