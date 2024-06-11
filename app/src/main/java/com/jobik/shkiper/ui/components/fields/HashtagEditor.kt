@@ -92,7 +92,9 @@ fun TagEditor(
             dragHandle = null,
             containerColor = Color.Transparent,
             contentColor = AppTheme.colors.text,
-            windowInsets = WindowInsets.ime,
+            contentWindowInsets = {WindowInsets.ime},
+
+//            windowInsets = WindowInsets.ime,
             onDismissRequest = {
                 if (sheetState.isVisible.not()) {
                     editModeEnabled.value = false

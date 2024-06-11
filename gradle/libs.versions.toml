@@ -40,11 +40,11 @@ jvmTarget = "17"
 compose-compiler = "1.5.14"
 
 composeVersion = "1.7.0-beta02"
-material3 = "1.2.1"
+material3 = "1.3.0-beta02"
 detekt = "1.23.6"
 detektCompose = "0.4.1"
 
-agp = "8.4.1"
+agp = "8.4.2"
 kotlin = "1.9.24"
 hilt = "2.51.1"
 wheelpickercompose = "1.1.11"

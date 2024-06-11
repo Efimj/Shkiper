@@ -79,7 +79,9 @@ fun NoteScreenRemindersContent(noteViewModel: NoteViewModel) {
             dragHandle = null,
             containerColor = Color.Transparent,
             contentColor = AppTheme.colors.text,
-            windowInsets = WindowInsets.ime,
+            contentWindowInsets = {WindowInsets.ime},
+
+//            windowInsets = WindowInsets.ime,
             onDismissRequest = {
                 noteViewModel.switchReminderDialogShow(false)
             },

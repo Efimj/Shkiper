@@ -28,12 +28,12 @@ fun BottomSheetActions(
     actions: List<BottomSheetAction>,
     onDismiss: () -> Unit,
 ) {
-    val shareSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val scope = rememberCoroutineScope()
 
     LaunchedEffect(isOpen) {
         if (!isOpen) {
-            shareSheetState.hide()
+            sheetState.hide()
         }
     }
 
@@ -42,11 +42,12 @@ fun BottomSheetActions(
         val bottomInsets = WindowInsets.systemBars.only(WindowInsetsSides.Bottom)
 
         ModalBottomSheet(
-            sheetState = shareSheetState,
+            sheetState = sheetState,
             dragHandle = null,
             containerColor = Color.Transparent,
             contentColor = AppTheme.colors.text,
-            windowInsets = WindowInsets.ime,
+            contentWindowInsets = { WindowInsets.ime },
+//            windowInsets = WindowInsets.ime,
             onDismissRequest = onDismiss
         ) {
             Spacer(modifier = Modifier.windowInsetsPadding(topInsets))
@@ -67,7 +68,7 @@ fun BottomSheetActions(
                             icon = props.icon,
                             title = props.title,
                             onClick = {
-                                scope.launch { shareSheetState.hide() }.invokeOnCompletion {
+                                scope.launch { sheetState.hide() }.invokeOnCompletion {
                                     onDismiss()
                                     props.action()
                                 }
