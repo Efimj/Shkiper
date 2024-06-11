@@ -20,11 +20,8 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -37,6 +34,7 @@ import com.jobik.shkiper.services.backup.BackupService
 import com.jobik.shkiper.ui.components.buttons.*
 import com.jobik.shkiper.ui.components.cards.SettingsItem
 import com.jobik.shkiper.ui.components.cards.ThemePreview
+import com.jobik.shkiper.ui.components.layouts.SettingsGroup
 import com.jobik.shkiper.ui.helpers.allWindowInsetsPadding
 import com.jobik.shkiper.ui.modifiers.circularRotation
 import com.jobik.shkiper.ui.theme.AppTheme
@@ -59,15 +57,16 @@ fun SettingsScreen(
             .fillMaxSize()
             .background(AppTheme.colors.background)
             .verticalScroll(rememberScrollState())
+            .padding(horizontal = 10.dp)
             .allWindowInsetsPadding(),
-        verticalArrangement = Arrangement.Center,
+        verticalArrangement = Arrangement.spacedBy(10.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(Modifier.height(75.dp))
-        ProgramSettings(settingsViewModel)
-        BackupSettings(settingsViewModel)
-        OtherSettings(navController)
-        DevSupportSettings(settingsViewModel, navController)
+        ProgramSettings(navController = navController, settingsViewModel = settingsViewModel)
+        BackupSettings(settingsViewModel = settingsViewModel)
+        OtherSettings(navController = navController)
+        DevSupportSettings(settingsViewModel = settingsViewModel, navController = navController)
         InformationSettings()
         Spacer(Modifier.height(55.dp))
     }
@@ -75,16 +74,7 @@ fun SettingsScreen(
 
 @Composable
 private fun InformationSettings() {
-    SettingsItemGroup {
-        Text(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp),
-            color = AppTheme.colors.primary,
-            text = stringResource(R.string.Information),
-            fontWeight = FontWeight.SemiBold,
-            style = MaterialTheme.typography.titleLarge,
-        )
+    SettingsGroup(header = stringResource(R.string.Information)) {
         Row(
             Modifier
                 .fillMaxWidth()
@@ -114,26 +104,16 @@ private fun DevSupportSettings(
     settingsViewModel: SettingsViewModel,
     navController: NavController
 ) {
-    SettingsItemGroup(setAccent = true) {
-        Text(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp),
-            color = AppTheme.colors.primary,
-            text = stringResource(R.string.Support),
-            fontWeight = FontWeight.SemiBold,
-            style = MaterialTheme.typography.titleLarge,
-        )
-        Spacer(Modifier.height(8.dp))
+    SettingsGroup(header = stringResource(R.string.Support), accent = true) {
         SettingsItem(
             modifier = Modifier.heightIn(min = 50.dp),
-            icon = Icons.Rounded.Stars,
+            icon = Icons.Outlined.Stars,
             title = stringResource(R.string.RateTheApp),
             onClick = { settingsViewModel.rateTheApp() }
         )
         SettingsItem(
             modifier = Modifier.heightIn(min = 50.dp),
-            icon = Icons.Rounded.LocalMall,
+            icon = Icons.Rounded.RocketLaunch,
             title = stringResource(R.string.SupportDevelopment),
             onClick = { navController.navigateToSecondary(Route.Purchases.route) }
         )
@@ -142,32 +122,19 @@ private fun DevSupportSettings(
 
 @Composable
 private fun OtherSettings(navController: NavController) {
-    SettingsItemGroup {
-        Text(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp),
-            color = AppTheme.colors.primary,
-            text = stringResource(R.string.Other),
-            fontWeight = FontWeight.SemiBold,
-            style = MaterialTheme.typography.titleLarge,
-        )
-        Spacer(Modifier.height(8.dp))
+    SettingsGroup(header = stringResource(R.string.Other)) {
         SettingsItem(
-            modifier = Modifier.heightIn(min = 50.dp),
-            icon = Icons.Rounded.Info,
+            icon = Icons.Outlined.Info,
             title = stringResource(R.string.AboutNotepad),
             onClick = { navController.navigateToSecondary(Route.AboutNotepad.route) }
         )
         SettingsItem(
-            modifier = Modifier.heightIn(min = 50.dp),
             icon = Icons.Rounded.DataUsage,
             title = stringResource(R.string.StatisticsPage),
             onClick = { navController.navigateToSecondary(Route.Statistics.route) }
         )
         SettingsItem(
-            modifier = Modifier.heightIn(min = 50.dp),
-            icon = Icons.Rounded.ViewCarousel,
+            icon = Icons.Outlined.ViewCarousel,
             title = stringResource(R.string.OnboardingPage),
             onClick = { navController.navigateToSecondary(Route.Onboarding.route) }
         )
@@ -186,24 +153,17 @@ private fun BackupSettings(
         }
 
     val createBackup =
-        rememberLauncherForActivityResult(contract = ActivityResultContracts.CreateDocument(BackupService.BackupType)) { uri ->
+        rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.CreateDocument(
+                BackupService.BackupType
+            )
+        ) { uri ->
             if (uri != null) {
                 settingsViewModel.saveLocalBackup(uri)
             }
         }
 
-    SettingsItemGroup {
-        Text(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp),
-            color = AppTheme.colors.primary,
-            text = stringResource(R.string.Backup),
-            fontWeight = FontWeight.SemiBold,
-            style = MaterialTheme.typography.titleLarge,
-        )
-        Spacer(Modifier.height(8.dp))
-
+    SettingsGroup(header = stringResource(R.string.Backup)) {
         val isLocalBackupSaving = settingsViewModel.settingsScreenState.value.isLocalBackupSaving
 
         SettingsItem(
@@ -306,18 +266,8 @@ private fun DelayedStateChange(
 }
 
 @Composable
-private fun ProgramSettings(settingsViewModel: SettingsViewModel) {
-    SettingsItemGroup {
-        Text(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp),
-            color = AppTheme.colors.primary,
-            text = stringResource(R.string.Application),
-            fontWeight = FontWeight.SemiBold,
-            style = MaterialTheme.typography.titleLarge,
-        )
-        Spacer(Modifier.height(8.dp))
+private fun ProgramSettings(navController: NavController, settingsViewModel: SettingsViewModel) {
+    SettingsGroup(header = stringResource(R.string.Application)) {
         SettingsItem(
             icon = Icons.Rounded.Contrast,
             title = stringResource(R.string.ApplicationTheme),
@@ -347,6 +297,11 @@ private fun ProgramSettings(settingsViewModel: SettingsViewModel) {
         SettingsColorThemePicker(settingsViewModel)
         Spacer(Modifier.height(4.dp))
         SettingsItemSelectLanguage(settingsViewModel = settingsViewModel)
+        SettingsItem(
+            icon = Icons.Rounded.Tune,
+            title = stringResource(R.string.advanced),
+            onClick = { navController.navigateToSecondary(Route.AdvancedSettings.route) }
+        )
     }
 }
 
@@ -364,18 +319,13 @@ private fun SettingsColorThemePicker(settingsViewModel: SettingsViewModel) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.Start
     ) {
-        Text(
-            modifier = Modifier.padding(start = 65.dp),
-            color = AppTheme.colors.text,
-            text = stringResource(R.string.ApplicationColors),
-            style = MaterialTheme.typography.titleMedium,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
+        SettingsItem(
+            title = stringResource(R.string.ApplicationColors),
+            icon = Icons.Outlined.Palette
         )
-        Spacer(Modifier.height(6.dp))
         LazyRow(
             state = rememberLazyListState(),
-            contentPadding = PaddingValues(start = 20.dp),
+            contentPadding = PaddingValues(horizontal = 20.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
 
@@ -414,30 +364,6 @@ private fun getColors(
     else -> colorValues[theme]
 }
 
-@Composable
-private fun SettingsItemGroup(
-    setAccent: Boolean = false,
-    columnScope: @Composable ColumnScope.() -> Unit
-) {
-    Spacer(Modifier.height(7.dp))
-    Column(
-        modifier = Modifier
-            .widthIn(max = 500.dp)
-            .padding(horizontal = 10.dp)
-            .clip(AppTheme.shapes.large)
-            .background(AppTheme.colors.container)
-            .border(
-                width = if (setAccent) 2.dp else 0.dp,
-                shape = AppTheme.shapes.large,
-                color = if (setAccent) AppTheme.colors.primary else Color.Transparent
-            )
-            .padding(top = 13.dp, bottom = 7.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        columnScope()
-    }
-    Spacer(Modifier.height(7.dp))
-}
 
 @Composable
 private fun SettingsItemSelectLanguage(settingsViewModel: SettingsViewModel) {
@@ -449,7 +375,6 @@ private fun SettingsItemSelectLanguage(settingsViewModel: SettingsViewModel) {
     val isExpanded = remember { mutableStateOf(false) }
 
     SettingsItem(
-        modifier = Modifier.heightIn(min = 50.dp),
         icon = Icons.Outlined.Language,
         title = stringResource(R.string.ChoseLocalization),
         onClick = { isExpanded.value = true }

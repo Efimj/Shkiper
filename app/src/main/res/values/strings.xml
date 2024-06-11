@@ -27,6 +27,8 @@
     <string name="LightTheme">Light</string>
     <string name="DarkTheme">Dark</string>
     <string name="Application">Application</string>
+    <string name="application_icon">Application icon</string>
+    <string name="application_icon_changed">Application icon changed</string>
     <string name="ApplicationColors">Colors</string>
     <string name="StatisticsPage">Statistics</string>
 
@@ -212,5 +214,23 @@
     <string name="EmptyTagsTitle">Tags not created yet</string>
 
     <string name="OtherMyApps">Other my apps</string>
+
+    <string name="advanced">Advanced</string>
+    <string name="icon_already_selected">The icon is already selected!</string>
+
+    <string name="classic">Classic</string>
+    <string name="classic_white">White</string>
+    <string name="material">Material</string>
+    <string name="love">Love</string>
+    <string name="rocket">Rocket</string>
+    <string name="bank">Bank</string>
+    <string name="star">Star</string>
+    <string name="night">Night</string>
+    <string name="strawberry">Strawberry</string>
+    <string name="mango">Mango</string>
+    <string name="avocado">Avocado</string>
+    <string name="blueberry">Blueberry</string>
+    <string name="plum">Plum</string>
+
 
 </resources>

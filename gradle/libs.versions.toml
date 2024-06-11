@@ -50,7 +50,7 @@ hilt = "2.51.1"
 wheelpickercompose = "1.1.11"
 agpVersion = "8.4.1"
 kotlinVersion = "1.9.0"
-material = "1.10.0"
+material = "1.13.0-alpha03"
 
 [libraries]
 # Dependencies of the included build-logic

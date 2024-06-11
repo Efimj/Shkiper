@@ -38,6 +38,7 @@ sealed class Route(val route: String) {
         }
     }
 
+    data object AdvancedSettings : Route(route = "advanced_settings")
     data object Statistics : Route(route = "statistics")
     data object AboutNotepad : Route(route = "about_notepad")
     data object Purchases : Route(route = "purchases")
