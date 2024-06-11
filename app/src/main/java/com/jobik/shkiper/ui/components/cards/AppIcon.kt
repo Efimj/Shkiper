@@ -53,7 +53,7 @@ fun AppIcon(
     val backgroundColor = if (isMaterial) primary else Color.White
 
     Column(
-        verticalArrangement = Arrangement.spacedBy(5.dp),
+        verticalArrangement = Arrangement.spacedBy(6.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         val shape = CircleShape
