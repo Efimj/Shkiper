@@ -46,8 +46,8 @@ fun BottomSheetActions(
             dragHandle = null,
             containerColor = Color.Transparent,
             contentColor = AppTheme.colors.text,
-            contentWindowInsets = { WindowInsets.ime },
-//            windowInsets = WindowInsets.ime,
+//            contentWindowInsets = { WindowInsets.ime },
+            windowInsets = WindowInsets.ime,
             onDismissRequest = onDismiss
         ) {
             Spacer(modifier = Modifier.windowInsetsPadding(topInsets))
