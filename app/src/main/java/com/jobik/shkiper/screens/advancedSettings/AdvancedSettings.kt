@@ -63,7 +63,7 @@ fun AdvancedSettings() {
                     icon = Icons.Outlined.TextFields,
                     title = stringResource(R.string.font_scale)
                 )
-                CustomSlider(value = 0.4f, onValueChange = { })
+                CustomSlider(value = 0.4f, onValueChange = { }, steps = 8)
             }
         }
     }

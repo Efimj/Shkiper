@@ -430,7 +430,7 @@ fun CustomRangeSlider(
     val startInteractionSource: MutableInteractionSource = remember { MutableInteractionSource() }
     val endInteractionSource: MutableInteractionSource = remember { MutableInteractionSource() }
 
-    RangeSlider(
+    CustomRangeSlider(
         value = value,
         onValueChange = onValueChange,
         modifier = modifier,
