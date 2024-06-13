@@ -46,7 +46,7 @@ fun SettingsGroup(
                 shape = AppTheme.shapes.large,
                 color = accentColor.value
             )
-            .padding(vertical = 7.dp),
+            .padding(vertical = 8.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         if (!header.isNullOrBlank()) {
