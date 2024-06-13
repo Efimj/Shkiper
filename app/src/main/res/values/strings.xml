@@ -28,6 +28,7 @@
     <string name="DarkTheme">Dark</string>
     <string name="Application">Application</string>
     <string name="application_icon">Application icon</string>
+    <string name="font_scale">Font scale</string>
     <string name="application_icon_changed">Application icon changed</string>
     <string name="ApplicationColors">Colors</string>
     <string name="StatisticsPage">Statistics</string>

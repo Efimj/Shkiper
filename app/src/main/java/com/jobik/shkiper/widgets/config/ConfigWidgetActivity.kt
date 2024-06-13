@@ -19,7 +19,9 @@ import com.jobik.shkiper.helpers.TextHelper
 import com.jobik.shkiper.ui.theme.AppTheme
 import com.jobik.shkiper.ui.theme.CustomThemeStyle
 import com.jobik.shkiper.ui.theme.ShkiperTheme
+import com.jobik.shkiper.util.ContextUtils.adjustFontSize
 import com.jobik.shkiper.util.ThemeUtil
+import com.jobik.shkiper.util.settings.SettingsManager
 import com.jobik.shkiper.widgets.WidgetKeys
 import com.jobik.shkiper.widgets.screens.noteSelection.NoteSelectionScreen
 import com.jobik.shkiper.widgets.widgets.NoteWidget
@@ -30,7 +32,6 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ConfigWidgetActivity : AppCompatActivity() {
-
     private var widgetId = AppWidgetManager.INVALID_APPWIDGET_ID
 
     private val result = Intent()
@@ -39,6 +40,9 @@ class ConfigWidgetActivity : AppCompatActivity() {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         actionBar?.hide()
+
+        SettingsManager.init(this)
+        adjustFontSize(SettingsManager.settings.value?.fontScale)
 
         setupActivity()
         ThemeUtil.restoreSavedTheme(this)

@@ -17,7 +17,9 @@ import com.jobik.shkiper.helpers.IntentHelper
 import com.jobik.shkiper.ui.theme.AppTheme
 import com.jobik.shkiper.ui.theme.CustomThemeStyle
 import com.jobik.shkiper.ui.theme.ShkiperTheme
+import com.jobik.shkiper.util.ContextUtils.adjustFontSize
 import com.jobik.shkiper.util.ThemeUtil
+import com.jobik.shkiper.util.settings.SettingsManager
 import com.jobik.shkiper.widgets.screens.noteSelection.NoteSelectionScreen
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -39,6 +41,9 @@ class ShareReceiverActivity : AppCompatActivity() {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         actionBar?.hide()
+
+        SettingsManager.init(this)
+        adjustFontSize(SettingsManager.settings.value?.fontScale)
 
         setupActivity()
         ThemeUtil.restoreSavedTheme(this)

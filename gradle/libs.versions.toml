@@ -44,7 +44,7 @@ material3 = "1.2.1"
 detekt = "1.23.6"
 detektCompose = "0.4.1"
 
-agp = "8.4.1"
+agp = "8.4.2"
 kotlin = "1.9.24"
 hilt = "2.51.1"
 wheelpickercompose = "1.1.11"

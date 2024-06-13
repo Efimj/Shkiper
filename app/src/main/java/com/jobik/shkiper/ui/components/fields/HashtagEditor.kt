@@ -92,6 +92,7 @@ fun TagEditor(
             dragHandle = null,
             containerColor = Color.Transparent,
             contentColor = AppTheme.colors.text,
+//            contentWindowInsets = {WindowInsets.ime},
             windowInsets = WindowInsets.ime,
             onDismissRequest = {
                 if (sheetState.isVisible.not()) {

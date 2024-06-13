@@ -2,6 +2,7 @@ package com.jobik.shkiper.activity
 
 import android.app.Activity
 import android.content.Context
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -18,6 +19,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.jobik.shkiper.NotepadApplication
 import com.jobik.shkiper.SharedPreferencesKeys
 import com.jobik.shkiper.SharedPreferencesKeys.OnboardingFinishedData
@@ -33,12 +35,14 @@ import com.jobik.shkiper.ui.components.modals.OfferWriteReview
 import com.jobik.shkiper.ui.theme.AppTheme
 import com.jobik.shkiper.ui.theme.CustomThemeStyle
 import com.jobik.shkiper.ui.theme.ShkiperTheme
+import com.jobik.shkiper.util.ContextUtils.adjustFontSize
 import com.jobik.shkiper.util.ThemeUtil
+import com.jobik.shkiper.util.settings.SettingsManager
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDate
 
 @OptIn(ExperimentalAnimationApi::class)
-class StartupActivity: MainActivity()
+class StartupActivity : MainActivity()
 
 @ExperimentalAnimationApi
 @AndroidEntryPoint
@@ -54,7 +58,9 @@ open class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
+        installSplashScreen()
         super.onCreate(savedInstanceState)
+        adjustFontSize(SettingsManager.settings.value?.fontScale)
         actionBar?.hide()
 
         // Billing APIs are all handled in the this lifecycle observer.
