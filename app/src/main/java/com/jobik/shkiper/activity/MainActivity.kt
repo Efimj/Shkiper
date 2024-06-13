@@ -34,6 +34,7 @@ import com.jobik.shkiper.ui.theme.AppTheme
 import com.jobik.shkiper.ui.theme.CustomThemeStyle
 import com.jobik.shkiper.ui.theme.ShkiperTheme
 import com.jobik.shkiper.util.ThemeUtil
+import com.jobik.shkiper.util.settings.SettingsManager
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDate
 
@@ -61,6 +62,8 @@ open class MainActivity : ComponentActivity() {
         billingClientLifecycle = (application as NotepadApplication).billingClientLifecycle
         lifecycle.addObserver(billingClientLifecycle)
         inAppUpdatesService = InAppUpdatesService(this)
+
+        SettingsManager.init(this)
 
         ThemeUtil.restoreSavedTheme(this)
         val startDestination = getStartDestination()
