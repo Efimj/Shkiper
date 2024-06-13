@@ -30,6 +30,10 @@
     <string name="application_icon">Application icon</string>
     <string name="font_scale">Font scale</string>
     <string name="application_icon_changed">Application icon changed</string>
+    <string name="updates">Updates</string>
+    <string name="check_update">Check update</string>
+    <string name="automatic_check">Automatic check</string>
+    <string name="suggests_updates">Suggests updates if available</string>
     <string name="ApplicationColors">Colors</string>
     <string name="StatisticsPage">Statistics</string>
 
