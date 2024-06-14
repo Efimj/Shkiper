@@ -125,6 +125,9 @@ open class MainActivity : ComponentActivity() {
         }
 
     private fun checkForUpdates() {
+        val settings = SettingsManager.settings.value
+        if (settings == null || settings.checkUpdates.not()) return
+
         if (InAppUpdatesService.isUpdatedChecked) return
         // Initialize the updateActivityResultLauncher.
         inAppUpdatesService.checkForUpdate(updateActivityResultLauncher)

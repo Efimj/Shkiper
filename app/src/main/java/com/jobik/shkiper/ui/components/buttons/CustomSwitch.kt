@@ -7,7 +7,7 @@ import androidx.compose.ui.graphics.Color
 import com.jobik.shkiper.ui.theme.AppTheme
 
 @Composable
-fun CustomSwitch(active: Boolean, onClick: (Boolean) -> Unit, thumbContent: @Composable() (() -> Unit)?) {
+fun CustomSwitch(active: Boolean, onClick: (Boolean) -> Unit, thumbContent: @Composable() (() -> Unit)? = null) {
     Switch(
         checked = active,
         onCheckedChange = onClick,

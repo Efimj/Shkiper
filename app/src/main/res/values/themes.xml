@@ -2,6 +2,6 @@
 <resources>
     <style name="Theme.Application" parent="Theme.Material3.DayNight.NoActionBar" >
         <item name="android:windowLightStatusBar">true</item>
-        <item name="android:statusBarColor">@color/splash_background</item>
+        <item name="android:statusBarColor">@color/primary</item>
     </style>
 </resources>

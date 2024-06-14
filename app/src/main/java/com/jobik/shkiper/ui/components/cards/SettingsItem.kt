@@ -112,7 +112,7 @@ fun SettingsItem(
                     enter = scaleIn(),
                     exit = scaleOut()
                 ) {
-                    Spacer(modifier = Modifier.height(3.dp))
+                    Spacer(modifier = Modifier.height(2.dp))
                 }
                 AnimatedContent(
                     targetState = description,
