@@ -21,7 +21,7 @@ import androidx.glance.color.ColorProvider
 import androidx.glance.layout.*
 import androidx.glance.text.*
 import com.jobik.shkiper.SharedPreferencesKeys
-import com.jobik.shkiper.activity.MainActivity
+import com.jobik.shkiper.activity.StartupActivity
 import com.jobik.shkiper.helpers.DateHelper
 import com.jobik.shkiper.ui.theme.CustomThemeColors
 import com.jobik.shkiper.ui.theme.CustomThemeStyle
@@ -32,7 +32,6 @@ import com.jobik.shkiper.widgets.WidgetKeys.Prefs.noteHeader
 import com.jobik.shkiper.widgets.WidgetKeys.Prefs.noteId
 import com.jobik.shkiper.widgets.WidgetKeys.Prefs.noteLastUpdate
 import java.time.LocalDateTime
-
 
 @Composable
 private fun getThemeColors(
@@ -134,7 +133,7 @@ fun NoteWidgetContent(prefs: Preferences) {
 private fun GlanceModifier.openNote(noteId: String) =
     if (noteId.isNotEmpty())
         this.clickable(
-            actionStartActivity<MainActivity>(
+            actionStartActivity<StartupActivity>(
                 parameters = actionParametersOf(
                     ActionParameters.Key<String>(SharedPreferencesKeys.NoteIdExtra) to noteId
                 )

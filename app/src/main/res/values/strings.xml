@@ -35,6 +35,10 @@
     <string name="automatic_check">Automatic check</string>
     <string name="suggests_updates">Suggests updates if available</string>
     <string name="latest_version_installed">Latest version installed</string>
+    <string name="secure">Secure</string>
+    <string name="secure_mode">Secure mode</string>
+    <string name="secure_mode_description">Hides content, prohibits screen recording</string>
+
     <string name="ApplicationColors">Colors</string>
     <string name="StatisticsPage">Statistics</string>
 

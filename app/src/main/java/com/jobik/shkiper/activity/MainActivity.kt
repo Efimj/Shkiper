@@ -32,6 +32,7 @@ import com.jobik.shkiper.services.localization.LocaleHelper
 import com.jobik.shkiper.services.review.ReviewService
 import com.jobik.shkiper.services.statistics.StatisticsService
 import com.jobik.shkiper.ui.components.modals.OfferWriteReview
+import com.jobik.shkiper.ui.helpers.SecureModeManager
 import com.jobik.shkiper.ui.theme.AppTheme
 import com.jobik.shkiper.ui.theme.CustomThemeStyle
 import com.jobik.shkiper.ui.theme.ShkiperTheme
@@ -76,7 +77,9 @@ open class MainActivity : ComponentActivity() {
         checkForUpdates()
 
         setContent {
+            SecureModeManager()
             UpdateStatistics()
+
             ShkiperTheme(
                 darkTheme = ThemeUtil.isDarkMode.value ?: isSystemInDarkTheme(),
                 style = ThemeUtil.themeStyle.value ?: CustomThemeStyle.PastelPurple

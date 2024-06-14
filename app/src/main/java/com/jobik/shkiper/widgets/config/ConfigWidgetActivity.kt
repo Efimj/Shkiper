@@ -16,6 +16,7 @@ import androidx.glance.appwidget.state.updateAppWidgetState
 import androidx.lifecycle.lifecycleScope
 import com.jobik.shkiper.database.models.Note
 import com.jobik.shkiper.helpers.TextHelper
+import com.jobik.shkiper.ui.helpers.SecureModeManager
 import com.jobik.shkiper.ui.theme.AppTheme
 import com.jobik.shkiper.ui.theme.CustomThemeStyle
 import com.jobik.shkiper.ui.theme.ShkiperTheme
@@ -47,6 +48,8 @@ class ConfigWidgetActivity : AppCompatActivity() {
         setupActivity()
         ThemeUtil.restoreSavedTheme(this)
         setContent {
+            SecureModeManager()
+
             ShkiperTheme(
                 darkTheme = ThemeUtil.isDarkMode.value ?: isSystemInDarkTheme(),
                 style = ThemeUtil.themeStyle.value ?: CustomThemeStyle.PastelPurple
