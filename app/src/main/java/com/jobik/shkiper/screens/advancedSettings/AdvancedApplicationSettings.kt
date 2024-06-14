@@ -84,7 +84,6 @@ private fun AppIconSelector() {
                             context = context,
                             messageIconChanged = messageIconChanged
                         )
-
                     }
                 )
             }
