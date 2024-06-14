@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="Theme.Launcher" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenBackground">@color/splash_background</item>
+        <item name="windowSplashScreenBackground">@color/primary</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher</item>
         <item name="postSplashScreenTheme">@style/Theme.Application</item>
     </style>

@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primary">#BDBAFF</color>
-    <color name="onPrimary">#332E57</color>
-    <color name="splash_background">#FFFFFF</color>
+    <color name="primary">#FFFFFF</color>
+    <color name="onPrimary">#212121</color>
     <color name="widget_background">#FFFFFF</color>
     <color name="text">#0F0F0F</color>
     <color name="text_secondary">#313131</color>

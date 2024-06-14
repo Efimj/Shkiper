@@ -34,6 +34,7 @@
     <string name="check_update">Check update</string>
     <string name="automatic_check">Automatic check</string>
     <string name="suggests_updates">Suggests updates if available</string>
+    <string name="latest_version_installed">Latest version installed</string>
     <string name="ApplicationColors">Colors</string>
     <string name="StatisticsPage">Statistics</string>
 
