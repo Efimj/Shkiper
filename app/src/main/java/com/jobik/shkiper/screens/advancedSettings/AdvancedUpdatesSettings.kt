@@ -2,6 +2,8 @@ package com.jobik.shkiper.screens.advancedSettings
 
 import android.app.Activity
 import android.content.Context
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.BrowserUpdated
 import androidx.compose.material.icons.outlined.CheckCircle
@@ -11,8 +13,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.appupdate.AppUpdateOptions
 import com.google.android.play.core.install.model.AppUpdateType
@@ -33,7 +37,10 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun AdvancedUpdatesSettings() {
-    SettingsGroup(header = stringResource(R.string.updates)) {
+    SettingsGroup(
+        header = stringResource(R.string.updates),
+        paddingValues = PaddingValues(top = 8.dp)
+    ) {
         AutomaticCheckUpdates()
         CheckUpdates()
     }
@@ -71,7 +78,7 @@ private fun CheckUpdates() {
                         }
                     }
                 }
-            }else{
+            } else {
                 scope.launch {
                     SnackbarHostUtil.snackbarHostState.showSnackbar(
                         SnackbarVisualsCustom(
@@ -85,6 +92,7 @@ private fun CheckUpdates() {
     }
 
     SettingsItem(
+        modifier = Modifier.heightIn(64.dp),
         icon = Icons.Outlined.BrowserUpdated,
         title = stringResource(R.string.check_update),
         colors = SettingsItemColors(

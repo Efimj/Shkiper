@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -23,6 +24,7 @@ import com.jobik.shkiper.ui.theme.AppTheme
 fun SettingsGroup(
     header: String? = null,
     accent: Boolean = false,
+    paddingValues: PaddingValues = PaddingValues(vertical = 8.dp),
     columnScope: @Composable ColumnScope.() -> Unit
 ) {
     val accentColor =
@@ -46,7 +48,7 @@ fun SettingsGroup(
                 shape = AppTheme.shapes.large,
                 color = accentColor.value
             )
-            .padding(vertical = 8.dp),
+            .padding(paddingValues),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         if (!header.isNullOrBlank()) {
