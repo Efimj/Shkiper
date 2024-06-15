@@ -21,6 +21,7 @@ import com.jobik.shkiper.helpers.LinkHelper
 import com.jobik.shkiper.navigation.Argument_Note_Id
 import com.jobik.shkiper.util.SnackbarHostUtil
 import com.jobik.shkiper.util.SnackbarVisualsCustom
+import com.jobik.shkiper.util.Startup
 import com.jobik.shkiper.widgets.handlers.handleNoteWidgetPin
 import com.mohamedrejeb.richeditor.model.RichTextState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -77,7 +78,12 @@ class NoteViewModel @Inject constructor(
     val screenState: State<NoteScreenState> = _screenState
 
     init {
-        initializeNote(ObjectId(savedStateHandle[Argument_Note_Id] ?: ""))
+        val savedState = savedStateHandle[Argument_Note_Id] ?: ""
+        val noteId = savedState.ifBlank {
+            Startup.paramNoteId
+        }
+
+        initializeNote(ObjectId(noteId))
         viewModelScope.launch {
             getReminders()
             getHashtags()
