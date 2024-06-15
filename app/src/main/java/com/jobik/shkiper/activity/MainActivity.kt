@@ -37,6 +37,7 @@ import com.jobik.shkiper.ui.theme.AppTheme
 import com.jobik.shkiper.ui.theme.CustomThemeStyle
 import com.jobik.shkiper.ui.theme.ShkiperTheme
 import com.jobik.shkiper.util.ContextUtils.adjustFontSize
+import com.jobik.shkiper.util.Startup
 import com.jobik.shkiper.util.ThemeUtil
 import com.jobik.shkiper.util.settings.SettingsManager
 import dagger.hilt.android.AndroidEntryPoint
@@ -159,6 +160,7 @@ open class MainActivity : ComponentActivity() {
         // Retrieve the extras from the Intent
         val extras = intent.extras ?: return null
         val noteId = extras.getString(SharedPreferencesKeys.NoteIdExtra, null) ?: return null
+        Startup.paramNoteId = noteId
         return Route.Note.noteId(noteId)
     }
 }
