@@ -1,5 +1,6 @@
 package com.jobik.shkiper.navigation
 
+import android.util.Log
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -22,8 +23,12 @@ class NavigationHelpers {
                 // Pop up to the start destination of the graph to
                 // avoid building up a large stack of destinations
                 // on the back stack as users select items
-                popUpTo(graph.findStartDestination().id) {
-                    saveState = true
+                try {
+                    popUpTo(graph.findStartDestination().id) {
+                        saveState = true
+                    }
+                } catch (e: Exception) {
+                    Log.e("navigateToMain", "findStartDestination", e)
                 }
                 // Avoid multiple copies of the same destination when
                 // reselecting the same item

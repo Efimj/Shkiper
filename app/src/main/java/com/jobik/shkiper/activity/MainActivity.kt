@@ -147,7 +147,7 @@ open class MainActivity : ComponentActivity() {
         if (route != null)
             return route
         return getOnboardingRoute(applicationContext)
-            ?: Route.NoteList.notePosition(NotePosition.MAIN.name)
+            ?: Route.NoteList.route
     }
 
     private fun getOnboardingRoute(context: Context): String? {
