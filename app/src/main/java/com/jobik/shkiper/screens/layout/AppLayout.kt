@@ -30,7 +30,7 @@ private fun ScreenLayout(
     ) {
         ScreenWrapper(
             navController = navController,
-            startDestination = startDestination
+            destination = startDestination
         )
         BottomAppBarProvider(navController = navController)
         SnackbarProvider()
