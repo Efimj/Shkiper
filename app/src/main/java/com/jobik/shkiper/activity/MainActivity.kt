@@ -84,13 +84,7 @@ open class MainActivity : ComponentActivity() {
                 darkTheme = ThemeUtil.isDarkMode.value ?: isSystemInDarkTheme(),
                 style = ThemeUtil.themeStyle.value ?: CustomThemeStyle.PastelPurple
             ) {
-                Box(
-                    Modifier
-                        .background(AppTheme.colors.background)
-                        .fillMaxSize()
-                ) {
-                    AppLayout(startDestination)
-                }
+                AppLayout(startDestination)
                 if (canShowOfferReview.value)
                     OfferWriteReview { canShowOfferReview.value = false }
             }
