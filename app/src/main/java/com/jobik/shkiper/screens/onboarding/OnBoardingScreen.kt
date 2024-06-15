@@ -41,7 +41,6 @@ import com.jobik.shkiper.ui.helpers.horizontalWindowInsetsPadding
 import com.jobik.shkiper.ui.theme.AppTheme
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OnBoardingScreen(navController: NavController) {
     val scrollState = rememberScrollState()
@@ -211,7 +210,7 @@ fun onFinished(context: Context, navController: NavController) {
     } catch (e: Exception) {
         Log.i("onboarding - onFinished", e.toString())
     }
-    navController.navigateToMain(Route.NoteList.route)
+    navController.popBackStack()
 }
 
 @Composable

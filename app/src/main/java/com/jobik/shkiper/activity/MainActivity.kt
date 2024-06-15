@@ -84,13 +84,7 @@ open class MainActivity : ComponentActivity() {
                 darkTheme = ThemeUtil.isDarkMode.value ?: isSystemInDarkTheme(),
                 style = ThemeUtil.themeStyle.value ?: CustomThemeStyle.PastelPurple
             ) {
-                Box(
-                    Modifier
-                        .fillMaxSize()
-                        .background(AppTheme.colors.background)
-                ) {
-                    AppLayout(startDestination)
-                }
+                AppLayout(startDestination)
                 if (canShowOfferReview.value)
                     OfferWriteReview { canShowOfferReview.value = false }
             }
@@ -147,7 +141,7 @@ open class MainActivity : ComponentActivity() {
         if (route != null)
             return route
         return getOnboardingRoute(applicationContext)
-            ?: Route.NoteList.notePosition(NotePosition.MAIN.name)
+            ?: Route.NoteList.route
     }
 
     private fun getOnboardingRoute(context: Context): String? {
