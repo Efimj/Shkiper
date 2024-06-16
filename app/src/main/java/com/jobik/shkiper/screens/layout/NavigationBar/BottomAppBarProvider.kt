@@ -114,7 +114,6 @@ private fun RowScope.CreateNoteFAN(
         enter = slideInHorizontally() + expandHorizontally(clip = false) + fadeIn(),
         exit = slideOutHorizontally() + shrinkHorizontally(clip = false) + fadeOut(),
     ) {
-
         Row {
             Spacer(modifier = Modifier.width(10.dp))
             Surface(shape = MaterialTheme.shapes.small, shadowElevation = 1.dp, color = Color.Transparent) {
@@ -135,7 +134,7 @@ private fun RowScope.CreateNoteFAN(
                     horizontalArrangement = Arrangement.Center
                 ) {
                     Icon(
-                        imageVector = Icons.Outlined.Add,
+                        imageVector = Icons.Outlined.Edit,
                         contentDescription = stringResource(R.string.CreateNote),
                         tint = AppTheme.colors.onPrimary,
                     )
