@@ -125,7 +125,7 @@ private fun NoteListContent(
     LazyGridNotes(
         contentPadding = PaddingValues(
             start = startWindowInsetsPadding() + 10.dp,
-            top = 15.dp,
+            top = 10.dp,
             end = endWindowInsetsPadding() + 10.dp,
             bottom = bottomWindowInsetsPadding() + 100.dp
         ),

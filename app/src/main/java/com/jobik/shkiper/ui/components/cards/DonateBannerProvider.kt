@@ -8,7 +8,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,14 +27,22 @@ import com.jobik.shkiper.navigation.Route
 import com.jobik.shkiper.ui.modifiers.bounceClick
 import com.jobik.shkiper.ui.theme.AppTheme
 import com.jobik.shkiper.util.SupportTheDeveloperBannerUtil
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
-fun DonateBannerProvider(navController: NavController) {
+fun DonateBannerProvider(isVisible: MutableState<Boolean>, navController: NavController) {
     val context = LocalContext.current
-    val isBannerNeeded =
-        rememberSaveable { mutableStateOf(SupportTheDeveloperBannerUtil.isBannerNeeded(context)) }
+    val scope = rememberCoroutineScope()
 
-    AnimatedVisibility(visible = isBannerNeeded.value) {
+    val isBannerNeeded = rememberSaveable { mutableStateOf(false) }
+
+    LaunchedEffect(Unit) {
+        isBannerNeeded.value = isVisible.value
+    }
+
+    AnimatedVisibility(modifier = Modifier.fillMaxWidth(), visible = isBannerNeeded.value) {
         Card(
             modifier = Modifier
                 .bounceClick(0.95f)
@@ -40,7 +51,11 @@ fun DonateBannerProvider(navController: NavController) {
                 .clickable {
                     SupportTheDeveloperBannerUtil.updateLastShowingDate(context)
                     navController.navigateToSecondary(Route.Purchases.route)
-                    isBannerNeeded.value = false
+                    changeBannerState(
+                        scope = scope,
+                        isBannerNeeded = isBannerNeeded,
+                        isVisible = isVisible
+                    )
                 },
             shape = MaterialTheme.shapes.medium,
             border = null,
@@ -51,7 +66,8 @@ fun DonateBannerProvider(navController: NavController) {
         ) {
             Row {
                 Column(
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier
+                        .weight(1f)
                         .padding(12.dp)
                 ) {
                     Text(
@@ -76,7 +92,11 @@ fun DonateBannerProvider(navController: NavController) {
                     IconButton(
                         onClick = {
                             SupportTheDeveloperBannerUtil.updateLastShowingDate(context)
-                            isBannerNeeded.value = false
+                            changeBannerState(
+                                scope = scope,
+                                isBannerNeeded = isBannerNeeded,
+                                isVisible = isVisible
+                            )
                         },
                         modifier = Modifier
                     ) {
@@ -89,5 +109,17 @@ fun DonateBannerProvider(navController: NavController) {
                 }
             }
         }
+    }
+}
+
+private fun changeBannerState(
+    scope: CoroutineScope,
+    isBannerNeeded: MutableState<Boolean>,
+    isVisible: MutableState<Boolean>
+) {
+    isBannerNeeded.value = false
+    scope.launch {
+        delay(500L)
+        isVisible.value = false
     }
 }

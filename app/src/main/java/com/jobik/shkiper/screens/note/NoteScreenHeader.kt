@@ -7,19 +7,29 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.outlined.*
+import androidx.compose.material.icons.outlined.Archive
+import androidx.compose.material.icons.outlined.History
+import androidx.compose.material.icons.outlined.NotificationAdd
+import androidx.compose.material.icons.outlined.PushPin
+import androidx.compose.material.icons.outlined.Unarchive
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.NotePosition
+import com.jobik.shkiper.helpers.IntentHelper
 import com.jobik.shkiper.navigation.NavigationHelpers.Companion.canNavigate
 import com.jobik.shkiper.ui.animation.AnimateVerticalSwitch
 import com.jobik.shkiper.ui.components.layouts.CustomTopAppBar
@@ -29,7 +39,13 @@ import com.jobik.shkiper.ui.theme.AppTheme
 import com.mohamedrejeb.richeditor.model.RichTextState
 
 @Composable
-fun NoteScreenHeader(navController: NavController, noteViewModel: NoteViewModel, richTextState: RichTextState) {
+fun NoteScreenHeader(
+    navController: NavController,
+    noteViewModel: NoteViewModel,
+    richTextState: RichTextState
+) {
+    val context = LocalContext.current
+
     val backgroundColorValue =
         if (noteViewModel.screenState.value.isTopAppBarHover || noteViewModel.screenState.value.isStyling) AppTheme.colors.secondaryContainer else AppTheme.colors.background
 
@@ -74,8 +90,13 @@ fun NoteScreenHeader(navController: NavController, noteViewModel: NoteViewModel,
                         iconDescription = R.string.GoBack,
                         modifier = Modifier.testTag("button_navigate_back"),
                         onClick = {
-                            if (navController.canNavigate())
-                                navController.popBackStack()
+                            if (navController.canNavigate()) {
+                                if (navController.previousBackStackEntry == null) {
+                                    IntentHelper().startAppActivity(context)
+                                } else {
+                                    navController.popBackStack()
+                                }
+                            }
                         }
                     ),
                     items =

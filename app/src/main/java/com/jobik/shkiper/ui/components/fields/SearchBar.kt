@@ -2,23 +2,44 @@ package com.jobik.shkiper.ui.components.fields
 
 import androidx.annotation.Keep
 import androidx.annotation.StringRes
-import androidx.compose.animation.*
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.expandHorizontally
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkHorizontally
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -33,9 +54,11 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.jobik.shkiper.R
-import com.jobik.shkiper.ui.helpers.*
 import com.jobik.shkiper.ui.helpers.Keyboard
+import com.jobik.shkiper.ui.helpers.endWindowInsetsPadding
 import com.jobik.shkiper.ui.helpers.keyboardAsState
+import com.jobik.shkiper.ui.helpers.startWindowInsetsPadding
+import com.jobik.shkiper.ui.helpers.topWindowInsetsPadding
 import com.jobik.shkiper.ui.theme.AppTheme
 
 data class SearchBarActionButton(
@@ -46,7 +69,7 @@ data class SearchBarActionButton(
 )
 
 @Keep
-private const val SearchBarHeight = 60
+private const val SearchBarHeight = 64
 
 @Composable
 fun getSearchBarHeight() = SearchBarHeight.dp + topWindowInsetsPadding()
@@ -67,9 +90,15 @@ fun SearchBar(
         if (isFocused.value) 0.dp else endWindowInsetsPadding() + 20.dp,
         label = "horizontalPaddings"
     )
+
     val topPadding by animateDpAsState(
         if (isFocused.value) 0.dp else topWindowInsetsPadding() + 10.dp,
         label = "topPadding"
+    )
+
+    val height by animateDpAsState(
+        if (isFocused.value) topWindowInsetsPadding() + SearchBarHeight.dp else SearchBarHeight.dp - 10.dp,
+        label = "height"
     )
 
     AnimatedVisibility(
@@ -78,10 +107,10 @@ fun SearchBar(
         exit = slideOutVertically { -it },
     ) {
         Row(
-            modifier = Modifier
-                .height(getSearchBarHeight())
+            modifier = Modifier.padding(top = topPadding)
+                .heightIn(max = height)
                 .padding(start = startPaddings, end = endPaddings)
-                .padding(top = topPadding),
+                ,
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
@@ -103,7 +132,7 @@ private fun RowScope.ActionButton(
     actionButton.let {
         if (it == null) return@let
         AnimatedVisibility(
-            modifier = Modifier.heightIn(max = 50.dp),
+            modifier = Modifier.heightIn(max = SearchBarHeight.dp),
             visible = !isFocused.value,
             enter = slideInHorizontally() { it / 2 } + expandHorizontally(
                 expandFrom = Alignment.Start,
@@ -196,12 +225,12 @@ private fun RowScope.SearchField(
             onTextChange = onChange,
             singleLine = true,
             placeholder = stringResource(R.string.Search),
-            textStyle = MaterialTheme.typography.bodyLarge.copy(color = AppTheme.colors.onSecondaryContainer),
+            textStyle = MaterialTheme.typography.titleMedium.copy(color = AppTheme.colors.onSecondaryContainer),
             keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Text,
-                imeAction = ImeAction.Done,
                 capitalization = KeyboardCapitalization.Sentences,
-                autoCorrect = true
+                autoCorrectEnabled = true,
+                keyboardType = KeyboardType.Text,
+                imeAction = ImeAction.Done
             ),
             keyboardActions = KeyboardActions(
                 onDone = {

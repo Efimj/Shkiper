@@ -2,7 +2,6 @@ package com.jobik.shkiper.screens.layout.NavigationBar
 
 import androidx.annotation.StringRes
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -33,19 +32,19 @@ data class DefaultNavigationValues(
 
 @Composable
 fun CustomBottomNavigationItem(properties: CustomBottomNavigationItem) {
-    val contentColorValue =
-        if (properties.isSelected) AppTheme.colors.onSecondaryContainer else AppTheme.colors.textSecondary
-    val contentColor =
-        animateColorAsState(targetValue = contentColorValue, label = "contentColor")
-
-    val backgroundColorValue =
-        if (properties.isSelected) AppTheme.colors.secondaryContainer else AppTheme.colors.background
-    val backgroundColor =
-        animateColorAsState(
-            targetValue = backgroundColorValue,
-            label = "backgroundColor",
-            animationSpec = tween(200)
+    val (contentColor, backgroundColor) = with(AppTheme.colors) {
+        val contentColor = animateColorAsState(
+            targetValue = if (properties.isSelected) onPrimary else onSecondaryContainer,
+            label = "contentColor"
         )
+
+        val backgroundColor = animateColorAsState(
+            targetValue = if (properties.isSelected) primary else secondaryContainer,
+            label = "backgroundColor",
+        )
+
+        contentColor to backgroundColor
+    }
 
     IconButton(
         modifier = Modifier
@@ -79,7 +78,7 @@ fun CustomBottomNavigation(items: List<CustomBottomNavigationItem>) {
                 .clickable(enabled = false) {}
                 .height(DefaultNavigationValues().containerHeight)
                 .clip(shape = CircleShape)
-                .background(AppTheme.colors.background)
+                .background(AppTheme.colors.secondaryContainer)
                 .padding(4.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(6.dp)
