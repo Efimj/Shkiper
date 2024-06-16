@@ -197,12 +197,12 @@ private fun RowScope.SearchField(
             onTextChange = onChange,
             singleLine = true,
             placeholder = stringResource(R.string.Search),
-            textStyle = MaterialTheme.typography.bodyLarge.copy(color = AppTheme.colors.onSecondaryContainer),
+            textStyle = MaterialTheme.typography.titleMedium.copy(color = AppTheme.colors.onSecondaryContainer),
             keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Text,
-                imeAction = ImeAction.Done,
                 capitalization = KeyboardCapitalization.Sentences,
-                autoCorrect = true
+                autoCorrectEnabled = true,
+                keyboardType = KeyboardType.Text,
+                imeAction = ImeAction.Done
             ),
             keyboardActions = KeyboardActions(
                 onDone = {
