@@ -2,23 +2,44 @@ package com.jobik.shkiper.ui.components.fields
 
 import androidx.annotation.Keep
 import androidx.annotation.StringRes
-import androidx.compose.animation.*
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.expandHorizontally
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkHorizontally
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -31,13 +52,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.max
 import com.jobik.shkiper.R
-import com.jobik.shkiper.ui.helpers.*
 import com.jobik.shkiper.ui.helpers.Keyboard
+import com.jobik.shkiper.ui.helpers.endWindowInsetsPadding
 import com.jobik.shkiper.ui.helpers.keyboardAsState
+import com.jobik.shkiper.ui.helpers.startWindowInsetsPadding
+import com.jobik.shkiper.ui.helpers.topWindowInsetsPadding
 import com.jobik.shkiper.ui.theme.AppTheme
 
 data class SearchBarActionButton(
@@ -75,16 +96,21 @@ fun SearchBar(
         label = "topPadding"
     )
 
+    val height by animateDpAsState(
+        if (isFocused.value) topWindowInsetsPadding() + SearchBarHeight.dp else SearchBarHeight.dp - 10.dp,
+        label = "height"
+    )
+
     AnimatedVisibility(
         visible = isVisible || isFocused.value,
         enter = slideInVertically { -it },
         exit = slideOutVertically { -it },
     ) {
         Row(
-            modifier = Modifier
-                .height(getSearchBarHeight())
+            modifier = Modifier.padding(top = topPadding)
+                .heightIn(max = height)
                 .padding(start = startPaddings, end = endPaddings)
-                .padding(top = topPadding),
+                ,
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
@@ -159,14 +185,8 @@ private fun RowScope.SearchField(
     )
     val focusRequester = remember { FocusRequester() }
 
-    val height by animateDpAsState(
-        if (isFocused.value) topWindowInsetsPadding() + SearchBarHeight.dp else SearchBarHeight.dp - 10.dp,
-        label = "height"
-    )
-
     Row(
         modifier = Modifier
-            .heightIn(max = height)
             .weight(1f)
             .clickable(
                 indication = null,
