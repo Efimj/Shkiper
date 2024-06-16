@@ -31,7 +31,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.max
 import com.jobik.shkiper.R
 import com.jobik.shkiper.ui.helpers.*
 import com.jobik.shkiper.ui.helpers.Keyboard
@@ -157,8 +159,14 @@ private fun RowScope.SearchField(
     )
     val focusRequester = remember { FocusRequester() }
 
+    val height by animateDpAsState(
+        if (isFocused.value) topWindowInsetsPadding() + SearchBarHeight.dp else SearchBarHeight.dp - 10.dp,
+        label = "height"
+    )
+
     Row(
         modifier = Modifier
+            .heightIn(max = height)
             .weight(1f)
             .clickable(
                 indication = null,
