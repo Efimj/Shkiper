@@ -27,11 +27,17 @@ import java.io.IOException
 class IntentHelper {
     fun startAppActivity(context: Context) {
         val startAppIntent = Intent(context, StartupActivity::class.java)
+        startAppIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         context.startActivity(startAppIntent)
         (context as Activity).finish()
     }
 
-    fun sendMailIntent(context: Context, mailList: List<String>, header: String, text: String = "") {
+    fun sendMailIntent(
+        context: Context,
+        mailList: List<String>,
+        header: String,
+        text: String = ""
+    ) {
         val intent = Intent(Intent.ACTION_SEND)
         intent.putExtra(Intent.EXTRA_EMAIL, mailList.toTypedArray())
         intent.putExtra(Intent.EXTRA_SUBJECT, header)
@@ -42,7 +48,12 @@ class IntentHelper {
             context.startActivity(intent)
         } catch (e: Exception) {
             intent.setPackage(null)
-            context.startActivity(Intent.createChooser(intent, context.getString(R.string.ChooseEmailClient)))
+            context.startActivity(
+                Intent.createChooser(
+                    intent,
+                    context.getString(R.string.ChooseEmailClient)
+                )
+            )
         }
     }
 
@@ -143,7 +154,11 @@ class IntentHelper {
         }
         val imagePath = File(context.getCacheDir(), "images")
         val newFile = File(imagePath, "image.${format.name}")
-        val contentUri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".file_provider", newFile)
+        val contentUri = FileProvider.getUriForFile(
+            context,
+            BuildConfig.APPLICATION_ID + ".file_provider",
+            newFile
+        )
 
         if (contentUri != null) {
             val shareIntent = Intent()
