@@ -1,5 +1,6 @@
 package com.jobik.shkiper.helpers
 
+import android.app.Activity
 import android.app.AlarmManager
 import android.content.Context
 import android.content.Intent
@@ -10,7 +11,6 @@ import android.os.Build
 import android.provider.Settings.*
 import android.util.Log
 import androidx.annotation.Keep
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.core.content.ContextCompat
@@ -23,9 +23,14 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 
-
 @Keep
 class IntentHelper {
+    fun startAppActivity(context: Context) {
+        val startAppIntent = Intent(context, StartupActivity::class.java)
+        context.startActivity(startAppIntent)
+        (context as Activity).finish()
+    }
+
     fun sendMailIntent(context: Context, mailList: List<String>, header: String, text: String = "") {
         val intent = Intent(Intent.ACTION_SEND)
         intent.putExtra(Intent.EXTRA_EMAIL, mailList.toTypedArray())
