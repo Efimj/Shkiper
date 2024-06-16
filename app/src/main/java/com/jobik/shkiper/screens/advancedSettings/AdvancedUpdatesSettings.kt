@@ -1,6 +1,5 @@
 package com.jobik.shkiper.screens.advancedSettings
 
-import android.app.Activity
 import android.content.Context
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.heightIn
@@ -17,11 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.google.android.play.core.appupdate.AppUpdateManagerFactory
-import com.google.android.play.core.appupdate.AppUpdateOptions
-import com.google.android.play.core.install.model.AppUpdateType
-import com.google.android.play.core.install.model.UpdateAvailability
 import com.jobik.shkiper.R
+import com.jobik.shkiper.services.inAppUpdates.InAppUpdate
 import com.jobik.shkiper.ui.components.buttons.CustomSwitch
 import com.jobik.shkiper.ui.components.cards.SettingsItem
 import com.jobik.shkiper.ui.components.cards.SettingsItemColors
@@ -55,29 +51,7 @@ private fun CheckUpdates() {
     LaunchedEffect(checkUpdate.value) {
         if (checkUpdate.value) {
             if (context.isInstalledFromPlayStore()) {
-                val appUpdateManager = AppUpdateManagerFactory.create(context)
-
-                val appUpdateInfoTask = appUpdateManager.appUpdateInfo
-
-                appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
-                    println(appUpdateInfo)
-                    if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
-                        appUpdateManager.startUpdateFlow(
-                            appUpdateInfo,
-                            context as Activity,
-                            AppUpdateOptions.defaultOptions(AppUpdateType.FLEXIBLE)
-                        )
-                    } else {
-                        scope.launch {
-                            SnackbarHostUtil.snackbarHostState.showSnackbar(
-                                SnackbarVisualsCustom(
-                                    message = context.getString(R.string.latest_version_installed),
-                                    icon = Icons.Outlined.CheckCircle
-                                )
-                            )
-                        }
-                    }
-                }
+                InAppUpdate(context = context, scope = scope).checkUpdate()
             } else {
                 scope.launch {
                     SnackbarHostUtil.snackbarHostState.showSnackbar(

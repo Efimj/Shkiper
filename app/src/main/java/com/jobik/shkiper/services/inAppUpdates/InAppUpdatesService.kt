@@ -4,7 +4,10 @@ import android.app.Activity
 import android.content.Context
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.IntentSenderRequest
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.CheckCircle
 import androidx.compose.material3.SnackbarDuration
+import com.google.android.play.core.appupdate.AppUpdateInfo
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.appupdate.AppUpdateOptions
@@ -18,6 +21,7 @@ import com.jobik.shkiper.R
 import com.jobik.shkiper.SharedPreferencesKeys
 import com.jobik.shkiper.util.SnackbarHostUtil
 import com.jobik.shkiper.util.SnackbarVisualsCustom
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -102,5 +106,72 @@ class InAppUpdatesService(val activity: Activity) {
         private var _isUpdatedChecked = false
         val isUpdatedChecked: Boolean
             get() = _isUpdatedChecked
+    }
+}
+
+class InAppUpdate(val context: Context, val scope: CoroutineScope) {
+    private val appUpdateManager = AppUpdateManagerFactory.create(context)
+    val appUpdateInfoTask = appUpdateManager.appUpdateInfo
+
+    private val listener = InstallStateUpdatedListener { state ->
+        if (state.installStatus() == InstallStatus.DOWNLOADED) {
+            scope.launch {
+                // After the update is downloaded, show a notification
+                // and request user confirmation to restart the app.
+                showUpdateSnackbar { unregisterUpdateStatusListener() }
+            }
+        }
+    }
+
+    private fun unregisterUpdateStatusListener() {
+        appUpdateManager.unregisterListener(listener)
+    }
+
+    private fun registerUpdateStatusListener() {
+        appUpdateManager.registerListener(listener)
+    }
+
+    fun checkUpdate() {
+        appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
+                startUpdate(appUpdateInfo)
+                registerUpdateStatusListener()
+            } else {
+                showLatestUpdateInstalledSnackbar()
+            }
+        }
+    }
+
+    private fun startUpdate(appUpdateInfo: AppUpdateInfo) {
+        appUpdateManager.startUpdateFlow(
+            appUpdateInfo,
+            context as Activity,
+            AppUpdateOptions.defaultOptions(AppUpdateType.FLEXIBLE)
+        )
+    }
+
+    private fun showLatestUpdateInstalledSnackbar() {
+        scope.launch {
+            SnackbarHostUtil.snackbarHostState.showSnackbar(
+                SnackbarVisualsCustom(
+                    message = context.getString(R.string.latest_version_installed),
+                    icon = Icons.Outlined.CheckCircle
+                )
+            )
+        }
+    }
+
+    private suspend fun showUpdateSnackbar(doAfter: () -> Unit) {
+        SnackbarHostUtil.snackbarHostState.showSnackbar(
+            SnackbarVisualsCustom(
+                message = context.getString(R.string.UpdateDownloaded),
+                actionLabel = context.getString(R.string.Restart),
+                duration = SnackbarDuration.Indefinite,
+                action = {
+                    appUpdateManager.completeUpdate()
+                    doAfter()
+                }
+            )
+        )
     }
 }
