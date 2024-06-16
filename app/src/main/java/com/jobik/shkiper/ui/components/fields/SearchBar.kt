@@ -67,6 +67,7 @@ fun SearchBar(
         if (isFocused.value) 0.dp else endWindowInsetsPadding() + 20.dp,
         label = "horizontalPaddings"
     )
+
     val topPadding by animateDpAsState(
         if (isFocused.value) 0.dp else topWindowInsetsPadding() + 10.dp,
         label = "topPadding"
@@ -103,7 +104,7 @@ private fun RowScope.ActionButton(
     actionButton.let {
         if (it == null) return@let
         AnimatedVisibility(
-            modifier = Modifier.heightIn(max = 50.dp),
+            modifier = Modifier.heightIn(max = SearchBarHeight.dp),
             visible = !isFocused.value,
             enter = slideInHorizontally() { it / 2 } + expandHorizontally(
                 expandFrom = Alignment.Start,
