@@ -46,7 +46,7 @@ data class SearchBarActionButton(
 )
 
 @Keep
-private const val SearchBarHeight = 60
+private const val SearchBarHeight = 64
 
 @Composable
 fun getSearchBarHeight() = SearchBarHeight.dp + topWindowInsetsPadding()

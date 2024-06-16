@@ -6,14 +6,18 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Description
 import androidx.compose.material.icons.outlined.Event
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -31,7 +35,9 @@ import com.jobik.shkiper.ui.helpers.endWindowInsetsPadding
 import com.jobik.shkiper.ui.helpers.startWindowInsetsPadding
 import com.jobik.shkiper.ui.modifiers.scrollConnectionToProvideVisibility
 import com.jobik.shkiper.ui.theme.AppTheme
+import com.jobik.shkiper.util.SupportTheDeveloperBannerUtil
 import com.jobik.shkiper.viewmodels.NotesViewModel
+import kotlinx.coroutines.delay
 
 @Composable
 fun NoteListScreenContent(
@@ -98,12 +104,16 @@ private fun NotesListContent(
     notesViewModel: NotesViewModel,
     navController: NavController,
 ) {
+    val context = LocalContext.current
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route ?: ""
 
     val pinnedNotes =
         remember(notesViewModel.screenState.value.notes) { notesViewModel.screenState.value.notes.filter { it.isPinned } }
     val unpinnedNotes =
         remember(notesViewModel.screenState.value.notes) { notesViewModel.screenState.value.notes.filterNot { it.isPinned } }
+
+    val showDonateBanner =
+        rememberSaveable { mutableStateOf(SupportTheDeveloperBannerUtil.isBannerNeeded(context)) }
 
     LazyGridNotes(
         contentPadding = PaddingValues(
@@ -116,8 +126,15 @@ private fun NotesListContent(
             .fillMaxSize()
             .testTag("notes_list"),
     ) {
-        item(span = StaggeredGridItemSpan.FullLine) {
-            DonateBannerProvider(navController = navController)
+        if (showDonateBanner.value) {
+            item(span = StaggeredGridItemSpan.FullLine) {
+                Box(modifier = Modifier.fillMaxWidth()) {
+                    DonateBannerProvider(
+                        isVisible = showDonateBanner,
+                        navController = navController
+                    )
+                }
+            }
         }
         noteTagsList(
             tags = notesViewModel.screenState.value.hashtags,
