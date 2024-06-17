@@ -18,7 +18,6 @@ import com.jobik.shkiper.screens.archive.ArchiveNotesScreen
 import com.jobik.shkiper.screens.basket.BasketNotesScreen
 import com.jobik.shkiper.screens.noteListScreen.NoteListScreen
 import com.jobik.shkiper.screens.note.NoteScreen
-import com.jobik.shkiper.screens.onboarding.OnBoardingScreen
 import com.jobik.shkiper.screens.purchase.PurchaseScreen
 import com.jobik.shkiper.screens.settings.SettingsScreen
 import com.jobik.shkiper.screens.statistics.StatisticsScreen
@@ -75,10 +74,6 @@ fun SetupAppScreenNavGraph(
         ) { NoteScreen(navController) }
 
         composable(
-            route = Route.Onboarding.route,
-        ) { OnBoardingScreen(navController) }
-
-        composable(
             route = Route.AdvancedSettings.route,
             enterTransition = { ScreenTransition().secondaryScreenEnterTransition() },
             exitTransition = { ScreenTransition().secondaryScreenExitTransition() }
@@ -113,11 +108,6 @@ private fun AnimatedContentTransitionScope<NavBackStackEntry>.mainScreenEnterTra
     val initial = initialState.destination.route?.substringBefore("/") ?: return null
     val target = targetState.destination.route?.substringBefore("/") ?: return null
 
-    // transition to Onboarding
-    if (initial == Route.Onboarding.route.substringBefore("/")) {
-        return null
-    }
-
     // transition after secondary screen
     if (RouteHelper().isSecondaryRoute(initial)) {
         return slideInHorizontally { -150 }
@@ -139,11 +129,6 @@ private fun AnimatedContentTransitionScope<NavBackStackEntry>.mainScreenEnterTra
 private fun AnimatedContentTransitionScope<NavBackStackEntry>.mainScreenExitTransition(): ExitTransition? {
     val initial = initialState.destination.route?.substringBefore("/") ?: return null
     val target = targetState.destination.route?.substringBefore("/") ?: return null
-
-    // transition to Onboarding
-    if (target == Route.Onboarding.route.substringBefore("/")) {
-        return null
-    }
 
     // transition before secondary screen
     if (RouteHelper().isSecondaryRoute(target)) {

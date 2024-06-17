@@ -35,6 +35,7 @@ import com.jobik.shkiper.ui.components.buttons.*
 import com.jobik.shkiper.ui.components.cards.SettingsItem
 import com.jobik.shkiper.ui.components.cards.ThemePreview
 import com.jobik.shkiper.ui.components.layouts.SettingsGroup
+import com.jobik.shkiper.ui.components.modals.onboarding.OnboardingDialog
 import com.jobik.shkiper.ui.helpers.allWindowInsetsPadding
 import com.jobik.shkiper.ui.modifiers.circularRotation
 import com.jobik.shkiper.ui.theme.AppTheme
@@ -133,11 +134,15 @@ private fun OtherSettings(navController: NavController) {
             title = stringResource(R.string.StatisticsPage),
             onClick = { navController.navigateToSecondary(Route.Statistics.route) }
         )
+        val isOnboarding = rememberSaveable { mutableStateOf(false) }
         SettingsItem(
             icon = Icons.Outlined.ViewCarousel,
             title = stringResource(R.string.OnboardingPage),
-            onClick = { navController.navigateToSecondary(Route.Onboarding.route) }
+            onClick = { isOnboarding.value = true }
         )
+        OnboardingDialog {
+            isOnboarding.value = false
+        }
     }
 }
 

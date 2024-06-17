@@ -1,4 +1,4 @@
-package com.jobik.shkiper.screens.onboarding
+package com.jobik.shkiper.ui.components.modals.onboarding
 
 import android.content.Context
 import android.util.Log
@@ -41,7 +41,7 @@ import com.jobik.shkiper.ui.theme.AppTheme
 import kotlinx.coroutines.launch
 
 @Composable
-fun OnBoardingScreen(navController: NavController) {
+fun OnBoardingScreen() {
     val scrollState = rememberScrollState()
 
     val pagerState = rememberPagerState() {
@@ -78,14 +78,13 @@ fun OnBoardingScreen(navController: NavController) {
                 .bottomWindowInsetsPadding()
                 .horizontalWindowInsetsPadding()
         ) {
-            ScreenFooter(navController, pagerState, scrollState)
+            ScreenFooter(pagerState, scrollState)
         }
     }
 }
 
 @Composable
 private fun ScreenFooter(
-    navController: NavController,
     pagerState: PagerState,
     scrollState: ScrollState
 ) {
@@ -158,7 +157,7 @@ private fun ScreenFooter(
             contentPadding = PaddingValues(horizontal = 15.dp),
             onClick = {
                 if (pagerState.currentPage == OnBoardingPage.PageList.Count - 1) {
-                    onFinished(context, navController)
+                    onFinished(context)
                 } else {
                     coroutineScope.launch {
                         pagerState.animateScrollToPage(pagerState.currentPage + 1)
@@ -205,7 +204,7 @@ private fun ScreenFooter(
 }
 
 
-fun onFinished(context: Context, navController: NavController) {
+fun onFinished(context: Context) {
     try {
         val sharedPreferences =
             context.getSharedPreferences(
@@ -218,15 +217,15 @@ fun onFinished(context: Context, navController: NavController) {
     } catch (e: Exception) {
         Log.i("onboarding - onFinished", e.toString())
     }
-    if (navController.previousBackStackEntry == null) {
-        navController.navigate(Route.NoteList.route){
-            popUpTo(Route.Onboarding.route) {
-                inclusive = true
-            }
-        }
-    } else {
-        navController.popBackStack()
-    }
+//    if (navController.previousBackStackEntry == null) {
+//        navController.navigate(Route.NoteList.route){
+//            popUpTo(Route.Onboarding.route) {
+//                inclusive = true
+//            }
+//        }
+//    } else {
+//        navController.popBackStack()
+//    }
 }
 
 @Composable

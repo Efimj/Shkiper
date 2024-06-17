@@ -10,8 +10,6 @@ const val Argument_Note_Position = "position"
 
 @Keep
 sealed class Route(val route: String) {
-
-    data object Onboarding : Route(route = "onboarding")
     data object NoteList : Route(route = "note_list/{$Argument_Note_Position}") {
         fun notePosition(position: String): String {
             return this.route.replace(oldValue = "{$Argument_Note_Position}", newValue = position)

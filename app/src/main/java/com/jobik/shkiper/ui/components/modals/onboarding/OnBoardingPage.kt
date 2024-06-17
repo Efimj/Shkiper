@@ -1,4 +1,4 @@
-package com.jobik.shkiper.screens.onboarding
+package com.jobik.shkiper.ui.components.modals.onboarding
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
