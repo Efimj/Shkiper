@@ -76,8 +76,6 @@ fun SetupAppScreenNavGraph(
 
         composable(
             route = Route.Onboarding.route,
-            enterTransition = { ScreenTransition().secondaryScreenEnterTransition() },
-            exitTransition = { ScreenTransition().secondaryScreenExitTransition() }
         ) { OnBoardingScreen(navController) }
 
         composable(
@@ -115,10 +113,10 @@ private fun AnimatedContentTransitionScope<NavBackStackEntry>.mainScreenEnterTra
     val initial = initialState.destination.route?.substringBefore("/") ?: return null
     val target = targetState.destination.route?.substringBefore("/") ?: return null
 
-//    // transition to note
-//    if (initial == Route.Note.route.substringBefore("/")) {
-//        return null
-//    }
+    // transition to Onboarding
+    if (initial == Route.Onboarding.route.substringBefore("/")) {
+        return null
+    }
 
     // transition after secondary screen
     if (RouteHelper().isSecondaryRoute(initial)) {
@@ -142,10 +140,10 @@ private fun AnimatedContentTransitionScope<NavBackStackEntry>.mainScreenExitTran
     val initial = initialState.destination.route?.substringBefore("/") ?: return null
     val target = targetState.destination.route?.substringBefore("/") ?: return null
 
-//    // transition to note
-//    if (target == Route.Note.route.substringBefore("/")) {
-//        return null
-//    }
+    // transition to Onboarding
+    if (target == Route.Onboarding.route.substringBefore("/")) {
+        return null
+    }
 
     // transition before secondary screen
     if (RouteHelper().isSecondaryRoute(target)) {

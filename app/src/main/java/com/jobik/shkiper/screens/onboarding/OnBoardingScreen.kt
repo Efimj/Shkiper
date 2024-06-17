@@ -33,7 +33,6 @@ import androidx.navigation.NavController
 import com.jobik.shkiper.R
 import com.jobik.shkiper.SharedPreferencesKeys
 import com.jobik.shkiper.SharedPreferencesKeys.OnboardingFinishedData
-import com.jobik.shkiper.navigation.NavigationHelpers.Companion.navigateToMain
 import com.jobik.shkiper.navigation.Route
 import com.jobik.shkiper.ui.helpers.allWindowInsetsPadding
 import com.jobik.shkiper.ui.helpers.bottomWindowInsetsPadding
@@ -84,9 +83,12 @@ fun OnBoardingScreen(navController: NavController) {
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun ScreenFooter(navController: NavController, pagerState: PagerState, scrollState: ScrollState) {
+private fun ScreenFooter(
+    navController: NavController,
+    pagerState: PagerState,
+    scrollState: ScrollState
+) {
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
 
@@ -168,9 +170,11 @@ private fun ScreenFooter(navController: NavController, pagerState: PagerState, s
                 targetState = pagerState.currentPage == OnBoardingPage.PageList.Count - 1,
                 transitionSpec = {
                     if (targetState > initialState) {
-                        (slideInHorizontally { height -> height } + fadeIn()).togetherWith(slideOutHorizontally { height -> -height } + fadeOut())
+                        (slideInHorizontally { height -> height } + fadeIn()).togetherWith(
+                            slideOutHorizontally { height -> -height } + fadeOut())
                     } else {
-                        (slideInHorizontally { height -> -height } + fadeIn()).togetherWith(slideOutHorizontally { height -> height } + fadeOut())
+                        (slideInHorizontally { height -> -height } + fadeIn()).togetherWith(
+                            slideOutHorizontally { height -> height } + fadeOut())
                     }.using(
                         SizeTransform(clip = false)
                     )
@@ -204,13 +208,25 @@ private fun ScreenFooter(navController: NavController, pagerState: PagerState, s
 fun onFinished(context: Context, navController: NavController) {
     try {
         val sharedPreferences =
-            context.getSharedPreferences(SharedPreferencesKeys.ApplicationStorageName, Context.MODE_PRIVATE)
-        sharedPreferences.edit().putString(SharedPreferencesKeys.OnboardingPageFinishedData, OnboardingFinishedData)
+            context.getSharedPreferences(
+                SharedPreferencesKeys.ApplicationStorageName,
+                Context.MODE_PRIVATE
+            )
+        sharedPreferences.edit()
+            .putString(SharedPreferencesKeys.OnboardingPageFinishedData, OnboardingFinishedData)
             .apply()
     } catch (e: Exception) {
         Log.i("onboarding - onFinished", e.toString())
     }
-    navController.popBackStack()
+    if (navController.previousBackStackEntry == null) {
+        navController.navigate(Route.NoteList.route){
+            popUpTo(Route.Onboarding.route) {
+                inclusive = true
+            }
+        }
+    } else {
+        navController.popBackStack()
+    }
 }
 
 @Composable
