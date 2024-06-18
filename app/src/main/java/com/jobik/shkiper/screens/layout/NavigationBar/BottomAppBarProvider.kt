@@ -105,6 +105,7 @@ fun BottomAppBarProvider(
     }
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 private fun CreateNoteFAN(
     noteCreated: (ObjectId) -> Unit,
@@ -121,31 +122,39 @@ private fun CreateNoteFAN(
     ) {
         Row {
             Spacer(modifier = Modifier.width(10.dp))
-            Surface(
-                shape = MaterialTheme.shapes.small,
-                shadowElevation = 1.dp,
-                color = Color.Transparent
-            ) {
-                Row(
-                    modifier = Modifier
-                        .height(DefaultNavigationValues().containerHeight)
-                        .aspectRatio(1f)
-                        .clip(shape = MaterialTheme.shapes.small)
-                        .background(AppTheme.colors.primary)
-                        .clickable {
-                            scope.launch {
-                                val noteId = viewModel.createNewNote()
-                                noteCreated(noteId)
+            SharedTransitionLayout {
+                AnimatedContent(targetState = false) { state ->
+                    if (state.not()) {
+                        Surface(
+                            shape = MaterialTheme.shapes.small,
+                            shadowElevation = 1.dp,
+                            color = Color.Transparent
+                        ) {
+                            Row(
+                                modifier = Modifier
+                                    .height(DefaultNavigationValues().containerHeight)
+                                    .aspectRatio(1f)
+                                    .clip(shape = MaterialTheme.shapes.small)
+                                    .background(AppTheme.colors.primary)
+                                    .clickable {
+                                        scope.launch {
+                                            val noteId = viewModel.createNewNote()
+                                            noteCreated(noteId)
+                                        }
+                                    },
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.Center
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Outlined.Edit,
+                                    contentDescription = stringResource(R.string.CreateNote),
+                                    tint = AppTheme.colors.onPrimary,
+                                )
                             }
-                        },
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.Edit,
-                        contentDescription = stringResource(R.string.CreateNote),
-                        tint = AppTheme.colors.onPrimary,
-                    )
+                        }
+                    }else{
+
+                    }
                 }
             }
         }

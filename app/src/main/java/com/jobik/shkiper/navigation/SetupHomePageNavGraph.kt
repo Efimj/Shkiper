@@ -71,7 +71,7 @@ fun SetupAppScreenNavGraph(
                 exitTransition = { ScreenTransition().secondaryScreenExitTransition() }
             ) {
                 NoteScreen(
-                    navController = navController,
+                    onBack = { navController.popBackStack() },
                     sharedTransitionScope = this@SharedTransitionLayout,
                     animatedVisibilityScope = this,
                 )

@@ -22,15 +22,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.NotePosition
-import com.jobik.shkiper.helpers.IntentHelper
-import com.jobik.shkiper.navigation.NavigationHelpers.Companion.canNavigate
 import com.jobik.shkiper.ui.animation.AnimateVerticalSwitch
 import com.jobik.shkiper.ui.components.layouts.CustomTopAppBar
 import com.jobik.shkiper.ui.components.layouts.RichTextHeaderToolBar
@@ -40,12 +36,10 @@ import com.mohamedrejeb.richeditor.model.RichTextState
 
 @Composable
 fun NoteScreenHeader(
-    navController: NavController,
+    onBack: () -> Unit,
     noteViewModel: NoteViewModel,
     richTextState: RichTextState
 ) {
-    val context = LocalContext.current
-
     val backgroundColorValue =
         if (noteViewModel.screenState.value.isTopAppBarHover || noteViewModel.screenState.value.isStyling) AppTheme.colors.secondaryContainer else AppTheme.colors.background
 
@@ -89,15 +83,7 @@ fun NoteScreenHeader(
                         icon = Icons.AutoMirrored.Filled.ArrowBack,
                         iconDescription = R.string.GoBack,
                         modifier = Modifier.testTag("button_navigate_back"),
-                        onClick = {
-                            if (navController.canNavigate()) {
-                                if (navController.previousBackStackEntry == null) {
-                                    IntentHelper().startAppActivity(context)
-                                } else {
-                                    navController.popBackStack()
-                                }
-                            }
-                        }
+                        onClick = { onBack() }
                     ),
                     items =
                     if (noteViewModel.screenState.value.notePosition == NotePosition.DELETE)

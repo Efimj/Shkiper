@@ -6,7 +6,17 @@ import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -16,10 +26,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Warning
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -33,11 +47,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.compose.currentBackStackEntryAsState
 import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.NotePosition
-import com.jobik.shkiper.navigation.Route
 import com.jobik.shkiper.ui.components.cards.SnackbarCard
 import com.jobik.shkiper.ui.components.fields.CustomDefaultTextField
 import com.jobik.shkiper.ui.components.fields.CustomRichTextEditor
@@ -58,24 +69,16 @@ import java.time.LocalDateTime
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun NoteScreenContent(
+    noteViewModel: NoteViewModel,
+    onBack: () -> Unit,
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
-    noteViewModel: NoteViewModel,
-    navController: NavController
 ) {
     RemoveIndicatorWhenKeyboardHidden(noteViewModel)
     val richTextState = rememberRichTextState()
     val bodyFieldFocusRequester = remember { FocusRequester() }
     val scrollState = rememberLazyListState()
-    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route ?: ""
     val linkListExpanded = remember { mutableStateOf(false) }
-
-    LaunchedEffect(currentRoute) {
-        if (currentRoute.substringBefore("/") != Route.Note.route.substringBefore("/")) {
-            noteViewModel.setTopAppBarHover(false)
-            noteViewModel.setBottomAppBarHover(false)
-        }
-    }
 
     SetRichTextDefaultStyles(richTextState)
     LaunchedEffect(Unit) {
@@ -89,8 +92,20 @@ fun NoteScreenContent(
     with(sharedTransitionScope) {
         Scaffold(
             containerColor = AppTheme.colors.background,
-            topBar = { NoteScreenHeader(navController, noteViewModel, richTextState) },
-            bottomBar = { NoteScreenFooter(navController, noteViewModel, richTextState) },
+            topBar = {
+                NoteScreenHeader(
+                    onBack = onBack,
+                    noteViewModel = noteViewModel,
+                    richTextState = richTextState
+                )
+            },
+            bottomBar = {
+                NoteScreenFooter(
+                    onBack = onBack,
+                    noteViewModel = noteViewModel,
+                    richTextState = richTextState
+                )
+            },
             contentWindowInsets = WindowInsets.ime,
             modifier = Modifier
                 .sharedElement(
@@ -298,7 +313,6 @@ private fun CheckAndDeleteNoteOnExit(
 }
 
 @Composable
-@OptIn(ExperimentalComposeUiApi::class)
 private fun HideKeyboardWhenLeaveScreen() {
     val keyboardController = LocalSoftwareKeyboardController.current
     DisposableEffect(Unit) {
