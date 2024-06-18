@@ -17,6 +17,11 @@ fun AnimatedContentTransitionScope<NavBackStackEntry>.mainScreenEnterTransition(
     val initial = initialState.destination.route?.substringBefore("/") ?: return null
     val target = targetState.destination.route?.substringBefore("/") ?: return null
 
+    // transition after Note screen
+    if (initial == Route.Note.route.substringBefore("/")) {
+        return null
+    }
+
     // transition after secondary screen
     if (RouteHelper().isSecondaryRoute(initial)) {
         return slideInHorizontally { -150 }
@@ -38,6 +43,11 @@ fun AnimatedContentTransitionScope<NavBackStackEntry>.mainScreenEnterTransition(
 fun AnimatedContentTransitionScope<NavBackStackEntry>.mainScreenExitTransition(): ExitTransition? {
     val initial = initialState.destination.route?.substringBefore("/") ?: return null
     val target = targetState.destination.route?.substringBefore("/") ?: return null
+
+    // transition before Note screen
+    if (target == Route.Note.route.substringBefore("/")) {
+        return null
+    }
 
     // transition before secondary screen
     if (RouteHelper().isSecondaryRoute(target)) {

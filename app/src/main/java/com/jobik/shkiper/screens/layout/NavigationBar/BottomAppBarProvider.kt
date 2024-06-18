@@ -31,17 +31,13 @@ import com.jobik.shkiper.navigation.RouteHelper
 import com.jobik.shkiper.ui.helpers.Keyboard
 import com.jobik.shkiper.ui.helpers.keyboardAsState
 import com.jobik.shkiper.ui.theme.AppTheme
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.mongodb.kbson.ObjectId
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun BottomAppBarProvider(
     noteCreated: (ObjectId) -> Unit,
     navController: NavHostController,
-    sharedTransitionScope: SharedTransitionScope,
-    animatedVisibilityScope: AnimatedVisibilityScope,
 ) {
     val localDensity = LocalDensity.current
     var containerHeight by remember { mutableStateOf(0.dp) }
@@ -103,21 +99,16 @@ fun BottomAppBarProvider(
                 CreateNoteFAN(
                     noteCreated = noteCreated,
                     navController = navController,
-                    sharedTransitionScope = sharedTransitionScope,
-                    animatedVisibilityScope = animatedVisibilityScope
                 )
             }
         }
     }
 }
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 private fun CreateNoteFAN(
     noteCreated: (ObjectId) -> Unit,
     navController: NavHostController,
-    sharedTransitionScope: SharedTransitionScope,
-    animatedVisibilityScope: AnimatedVisibilityScope,
     viewModel: BottomBarViewModel = hiltViewModel<BottomBarViewModel>(),
 ) {
     val currentRouteName = navController.currentBackStackEntryAsState().value?.destination?.route
@@ -128,42 +119,33 @@ private fun CreateNoteFAN(
         enter = slideInHorizontally() + expandHorizontally(clip = false) + fadeIn(),
         exit = slideOutHorizontally() + shrinkHorizontally(clip = false) + fadeOut(),
     ) {
-        with(sharedTransitionScope) {
-            Row {
-                Spacer(modifier = Modifier.width(10.dp))
-                Surface(
-                    modifier = Modifier.sharedElement(
-                        state = rememberSharedContentState(
-                            key = "note-background-${viewModel.screenState.value.createdNoteId}"
-                        ),
-                        animatedVisibilityScope = animatedVisibilityScope,
-                    ),
-                    shape = MaterialTheme.shapes.small,
-                    shadowElevation = 1.dp,
-                    color = Color.Transparent
+        Row {
+            Spacer(modifier = Modifier.width(10.dp))
+            Surface(
+                shape = MaterialTheme.shapes.small,
+                shadowElevation = 1.dp,
+                color = Color.Transparent
+            ) {
+                Row(
+                    modifier = Modifier
+                        .height(DefaultNavigationValues().containerHeight)
+                        .aspectRatio(1f)
+                        .clip(shape = MaterialTheme.shapes.small)
+                        .background(AppTheme.colors.primary)
+                        .clickable {
+                            scope.launch {
+                                val noteId = viewModel.createNewNote()
+                                noteCreated(noteId)
+                            }
+                        },
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
                 ) {
-                    Row(
-                        modifier = Modifier
-                            .height(DefaultNavigationValues().containerHeight)
-                            .aspectRatio(1f)
-                            .clip(shape = MaterialTheme.shapes.small)
-                            .background(AppTheme.colors.primary)
-                            .clickable {
-                                scope.launch {
-                                    val noteId = viewModel.createNewNote()
-                                    noteCreated(noteId)
-//                                    navController.navigateToMain(Route.Note.noteId(noteId.toHexString()))
-                                }
-                            },
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        Icon(
-                            imageVector = Icons.Outlined.Edit,
-                            contentDescription = stringResource(R.string.CreateNote),
-                            tint = AppTheme.colors.onPrimary,
-                        )
-                    }
+                    Icon(
+                        imageVector = Icons.Outlined.Edit,
+                        contentDescription = stringResource(R.string.CreateNote),
+                        tint = AppTheme.colors.onPrimary,
+                    )
                 }
             }
         }

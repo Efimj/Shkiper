@@ -34,7 +34,6 @@ import org.mongodb.kbson.ObjectId
 fun AppLayout(startDestination: String = Route.NoteList.route) {
     val navController = rememberNavController()
 
-    SharedTransitionLayout {
         Box(
             modifier = Modifier
                 .background(AppTheme.colors.background)
@@ -64,44 +63,28 @@ fun AppLayout(startDestination: String = Route.NoteList.route) {
 
             val createdNote = rememberSaveable { mutableStateOf<ObjectId?>(null) }
 
-            AnimatedContent(
-                targetState = createdNote.value
-            ) { it ->
-                Box(modifier = Modifier.fillMaxSize()) {
-                    if (it == null) {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .nestedScroll(connection)
-                        ) {
-                            SetupAppScreenNavGraph(
-                                navController = navController,
-                                startDestination = startDestination,
-                            )
-                        }
-                    } else {
-                        NoteScreen(
-                            navController = navController,
-                            sharedTransitionScope = this@SharedTransitionLayout,
-                            animatedVisibilityScope = this@AnimatedContent
-                        )
-                    }
-                    Box(
-                        modifier = Modifier.align(Alignment.BottomCenter),
-                    ) {
-                        BottomAppBarProvider(
-                            noteCreated = {
-                                createdNote.value = it;
-                                Startup.paramNoteId = it.toHexString()
-                            },
-                            navController = navController,
-                            sharedTransitionScope = this@SharedTransitionLayout,
-                            animatedVisibilityScope = this@AnimatedContent
-                        )
-                    }
-                }
+
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .nestedScroll(connection)
+            ) {
+                SetupAppScreenNavGraph(
+                    navController = navController,
+                    startDestination = startDestination,
+                )
+            }
+            Box(
+                modifier = Modifier.align(Alignment.BottomCenter),
+            ) {
+                BottomAppBarProvider(
+                    noteCreated = {
+                        createdNote.value = it;
+                        Startup.paramNoteId = it.toHexString()
+                    },
+                    navController = navController,
+                )
             }
             SnackbarProvider()
-        }
     }
 }
