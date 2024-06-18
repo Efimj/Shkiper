@@ -33,16 +33,22 @@ import com.jobik.shkiper.ui.helpers.keyboardAsState
 import com.jobik.shkiper.ui.theme.AppTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import org.mongodb.kbson.ObjectId
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun BoxScope.BottomAppBarProvider(
+fun BottomAppBarProvider(
+    noteCreated: (ObjectId) -> Unit,
     navController: NavHostController,
+    sharedTransitionScope: SharedTransitionScope,
+    animatedVisibilityScope: AnimatedVisibilityScope,
 ) {
     val localDensity = LocalDensity.current
     var containerHeight by remember { mutableStateOf(0.dp) }
     val currentRouteName = navController.currentBackStackEntryAsState().value?.destination?.route
     val currentRouteWithoutSecondaryRoutes =
-        (navController.currentBackStackEntryAsState().value?.destination?.route ?: "").substringBefore("/")
+        (navController.currentBackStackEntryAsState().value?.destination?.route
+            ?: "").substringBefore("/")
     val isSecondaryScreen = RouteHelper().isSecondaryRoute(currentRouteWithoutSecondaryRoutes)
 
     LaunchedEffect(currentRouteName) {
@@ -64,7 +70,6 @@ fun BoxScope.BottomAppBarProvider(
     }
 
     AnimatedVisibility(
-        modifier = Modifier.align(Alignment.BottomCenter),
         visible = AppNavigationBarState.isVisible.value,
         enter = slideInVertically { it },
         exit = slideOutVertically { it }
@@ -95,16 +100,25 @@ fun BoxScope.BottomAppBarProvider(
                         navController = navController
                     )
                 }
-                CreateNoteFAN(navController = navController)
+                CreateNoteFAN(
+                    noteCreated = noteCreated,
+                    navController = navController,
+                    sharedTransitionScope = sharedTransitionScope,
+                    animatedVisibilityScope = animatedVisibilityScope
+                )
             }
         }
     }
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-private fun RowScope.CreateNoteFAN(
+private fun CreateNoteFAN(
+    noteCreated: (ObjectId) -> Unit,
     navController: NavHostController,
-    viewModel: BottomBarViewModel = hiltViewModel<BottomBarViewModel>()
+    sharedTransitionScope: SharedTransitionScope,
+    animatedVisibilityScope: AnimatedVisibilityScope,
+    viewModel: BottomBarViewModel = hiltViewModel<BottomBarViewModel>(),
 ) {
     val currentRouteName = navController.currentBackStackEntryAsState().value?.destination?.route
     val scope = rememberCoroutineScope()
@@ -114,44 +128,45 @@ private fun RowScope.CreateNoteFAN(
         enter = slideInHorizontally() + expandHorizontally(clip = false) + fadeIn(),
         exit = slideOutHorizontally() + shrinkHorizontally(clip = false) + fadeOut(),
     ) {
-        Row {
-            Spacer(modifier = Modifier.width(10.dp))
-            Surface(shape = MaterialTheme.shapes.small, shadowElevation = 1.dp, color = Color.Transparent) {
-                Row(
-                    modifier = Modifier
-                        .height(DefaultNavigationValues().containerHeight)
-                        .aspectRatio(1f)
-                        .clip(shape = MaterialTheme.shapes.small)
-                        .background(AppTheme.colors.primary)
-                        .clickable {
-                            createNewNote(
-                                scope = scope,
-                                viewModel = viewModel,
-                                navController = navController
-                            )
-                        },
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
+        with(sharedTransitionScope) {
+            Row {
+                Spacer(modifier = Modifier.width(10.dp))
+                Surface(
+                    modifier = Modifier.sharedElement(
+                        state = rememberSharedContentState(
+                            key = "note-background-${viewModel.screenState.value.createdNoteId}"
+                        ),
+                        animatedVisibilityScope = animatedVisibilityScope,
+                    ),
+                    shape = MaterialTheme.shapes.small,
+                    shadowElevation = 1.dp,
+                    color = Color.Transparent
                 ) {
-                    Icon(
-                        imageVector = Icons.Outlined.Edit,
-                        contentDescription = stringResource(R.string.CreateNote),
-                        tint = AppTheme.colors.onPrimary,
-                    )
+                    Row(
+                        modifier = Modifier
+                            .height(DefaultNavigationValues().containerHeight)
+                            .aspectRatio(1f)
+                            .clip(shape = MaterialTheme.shapes.small)
+                            .background(AppTheme.colors.primary)
+                            .clickable {
+                                scope.launch {
+                                    val noteId = viewModel.createNewNote()
+                                    noteCreated(noteId)
+//                                    navController.navigateToMain(Route.Note.noteId(noteId.toHexString()))
+                                }
+                            },
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.Edit,
+                            contentDescription = stringResource(R.string.CreateNote),
+                            tint = AppTheme.colors.onPrimary,
+                        )
+                    }
                 }
             }
         }
-    }
-}
-
-private fun createNewNote(
-    scope: CoroutineScope,
-    viewModel: BottomBarViewModel,
-    navController: NavHostController
-) {
-    scope.launch {
-        val noteId = viewModel.createNewNote()
-        navController.navigateToMain(Route.Note.noteId(noteId.toHexString()))
     }
 }
 

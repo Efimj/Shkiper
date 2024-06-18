@@ -1,6 +1,9 @@
 package com.jobik.shkiper.ui.components.cards
 
 import android.os.Parcelable
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -45,6 +48,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.jobik.shkiper.R
+import com.jobik.shkiper.database.models.Note
 import com.jobik.shkiper.database.models.Reminder
 import com.jobik.shkiper.database.models.RepeatMode
 import com.jobik.shkiper.helpers.DateHelper
@@ -104,11 +108,11 @@ private fun updateNoteCardState(
     )
 }
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalSharedTransitionApi::class)
 @Composable
-fun NoteCard(
-    header: String? = null,
-    text: String? = null,
+fun SharedTransitionScope.NoteCard(
+    animatedVisibilityScope: AnimatedVisibilityScope,
+    note: Note,
     reminder: Reminder? = null,
     markedText: String? = null,
     selected: Boolean = false,
@@ -125,11 +129,11 @@ fun NoteCard(
 
     val cardState = rememberSaveable { mutableStateOf<NoteCardState?>(null) }
 
-    LaunchedEffect(header, text, reminder) {
+    LaunchedEffect(note.header, note.body, reminder) {
         val newCardState = updateNoteCardState(
             currentState = cardState.value,
-            header = header,
-            htmlText = text,
+            header = note.header,
+            htmlText = note.body,
             reminder = reminder
         )
         cardState.value = newCardState
@@ -137,6 +141,12 @@ fun NoteCard(
 
     Card(
         modifier = modifier
+            .sharedElement(
+                state = rememberSharedContentState(
+                    key = "note-background-${note._id}"
+                ),
+                animatedVisibilityScope = animatedVisibilityScope,
+            )
             .bounceClick()
             .fillMaxWidth()
             .clip(RoundedCornerShape(15.dp))

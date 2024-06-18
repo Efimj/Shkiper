@@ -100,24 +100,24 @@ private fun ScreenContent(
             tags = notesViewModel.screenState.value.hashtags,
             selected = notesViewModel.screenState.value.currentHashtag
         ) { notesViewModel.setCurrentHashtag(it) }
-        notesList(
-            notes = notesViewModel.screenState.value.notes,
-            reminders = notesViewModel.screenState.value.reminders,
-            marker = notesViewModel.screenState.value.searchText,
-            selected = notesViewModel.screenState.value.selectedNotes,
-            onClick = { note ->
-                notesViewModel.clickOnNote(
-                    note = note,
-                    currentRoute = currentRoute,
-                    navController = navController
-                )
-            },
-            onLongClick = { note ->
-                notesViewModel.toggleSelectedNoteCard(
-                    noteId = note._id
-                )
-            }
-        )
+//        notesList(
+//            notes = notesViewModel.screenState.value.notes,
+//            reminders = notesViewModel.screenState.value.reminders,
+//            marker = notesViewModel.screenState.value.searchText,
+//            selected = notesViewModel.screenState.value.selectedNotes,
+//            onClick = { note ->
+//                notesViewModel.clickOnNote(
+//                    note = note,
+//                    currentRoute = currentRoute,
+//                    navController = navController
+//                )
+//            },
+//            onLongClick = { note ->
+//                notesViewModel.toggleSelectedNoteCard(
+//                    noteId = note._id
+//                )
+//            }
+//        )
     }
     if (notesViewModel.screenState.value.isCreateReminderDialogShow) {
         if (notesViewModel.screenState.value.isCreateReminderDialogShow) {

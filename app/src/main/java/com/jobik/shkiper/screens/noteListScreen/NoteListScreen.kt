@@ -18,8 +18,13 @@ import com.jobik.shkiper.screens.noteListScreen.NoteListCalendarContent.ScreenCa
 import com.jobik.shkiper.screens.noteListScreen.NoteListScreenContent.NoteListScreenContent
 import com.jobik.shkiper.viewmodels.NotesViewModel
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun NoteListScreen(navController: NavController) {
+fun NoteListScreen(
+    navController: NavController,
+    sharedTransitionScope: SharedTransitionScope,
+    animatedVisibilityScope: AnimatedVisibilityScope
+) {
     val selectedPageNumber = rememberSaveable { mutableIntStateOf(1) }
     ReturnUserToMainContent(currentPage = selectedPageNumber)
 
@@ -57,6 +62,8 @@ fun NoteListScreen(navController: NavController) {
     ) { number ->
         if (number == 1) {
             NoteListScreenContent(
+                sharedTransitionScope = sharedTransitionScope,
+                animatedVisibilityScope = animatedVisibilityScope,
                 navController = navController,
                 viewModel = hiltViewModel<NotesViewModel>(),
                 onSlideNext = {

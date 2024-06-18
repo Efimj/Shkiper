@@ -113,18 +113,18 @@ private fun ScreenContent(
                 )
             }
         }
-        notesList(
-            notes = notesViewModel.screenState.value.notes,
-            reminders = notesViewModel.screenState.value.reminders,
-            marker = notesViewModel.screenState.value.searchText,
-            selected = notesViewModel.screenState.value.selectedNotes,
-            onClick = { note ->
-                notesViewModel.clickOnNote(note = note, currentRoute = currentRoute, navController = navController)
-            },
-            onLongClick = { note ->
-                notesViewModel.toggleSelectedNoteCard(noteId = note._id)
-            },
-        )
+//        notesList(
+//            notes = notesViewModel.screenState.value.notes,
+//            reminders = notesViewModel.screenState.value.reminders,
+//            marker = notesViewModel.screenState.value.searchText,
+//            selected = notesViewModel.screenState.value.selectedNotes,
+//            onClick = { note ->
+//                notesViewModel.clickOnNote(note = note, currentRoute = currentRoute, navController = navController)
+//            },
+//            onLongClick = { note ->
+//                notesViewModel.toggleSelectedNoteCard(noteId = note._id)
+//            },
+//        )
     }
 }
 

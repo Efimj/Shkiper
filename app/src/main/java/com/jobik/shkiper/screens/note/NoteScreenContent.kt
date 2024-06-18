@@ -1,6 +1,9 @@
 package com.jobik.shkiper.screens.note
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
@@ -52,8 +55,11 @@ import com.mohamedrejeb.richeditor.model.rememberRichTextState
 import java.time.Duration
 import java.time.LocalDateTime
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun NoteScreenContent(
+    sharedTransitionScope: SharedTransitionScope,
+    animatedVisibilityScope: AnimatedVisibilityScope,
     noteViewModel: NoteViewModel,
     navController: NavController
 ) {
@@ -80,108 +86,114 @@ fun NoteScreenContent(
             noteViewModel.updateNoteBody(richTextState.toHtml())
     }
     BackHandlerWithStylingState(noteViewModel)
-
-    Scaffold(
-        containerColor = AppTheme.colors.background,
-        topBar = { NoteScreenHeader(navController, noteViewModel, richTextState) },
-        bottomBar = { NoteScreenFooter(navController, noteViewModel, richTextState) },
-        contentWindowInsets = WindowInsets.ime,
-        modifier = Modifier
-            .fillMaxSize()
-            .imePadding(),
-    ) { contentPadding ->
-        Box(
-            Modifier
+    with(sharedTransitionScope) {
+        Scaffold(
+            containerColor = AppTheme.colors.background,
+            topBar = { NoteScreenHeader(navController, noteViewModel, richTextState) },
+            bottomBar = { NoteScreenFooter(navController, noteViewModel, richTextState) },
+            contentWindowInsets = WindowInsets.ime,
+            modifier = Modifier
+                .sharedElement(
+                    rememberSharedContentState(key = "note-background-${noteViewModel.screenState.value.noteId}"),
+                    animatedVisibilityScope,
+                )
                 .fillMaxSize()
-                .horizontalWindowInsetsPadding()
-                .padding(contentPadding)
-        ) {
-            LazyColumn(
-                state = scrollState,
-                modifier = Modifier
+                .imePadding(),
+        ) { contentPadding ->
+            Box(
+                Modifier
                     .fillMaxSize()
-                    .clickable(
-                        indication = null,
-                        interactionSource = remember { MutableInteractionSource() } // This is mandatory
-                    ) {
-                        bodyFieldFocusRequester.requestFocus()
-                    }
+                    .horizontalWindowInsetsPadding()
+                    .padding(contentPadding)
             ) {
-                val enabled = noteViewModel.screenState.value.notePosition != NotePosition.DELETE
-                item {
-                    CustomDefaultTextField(
-                        text = noteViewModel.screenState.value.noteHeader,
-                        onTextChange = { noteViewModel.updateNoteHeader(it) },
-                        placeholder = stringResource(R.string.Header),
-                        keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Text,
-                            imeAction = ImeAction.Next,
-                            capitalization = KeyboardCapitalization.Sentences,
-                            autoCorrect = true
-                        ),
-                        keyboardActions = KeyboardActions(
-                            onAny = {
-                                bodyFieldFocusRequester.requestFocus()
-                            }
-                        ),
-                        enabled = enabled,
-                        textStyle = MaterialTheme.typography.headlineSmall.copy(
-                            fontWeight = FontWeight.SemiBold,
-                        ),
-                        modifier = Modifier
-                            .testTag("note_header_input")
-                            .fillMaxSize()
-                            .padding(bottom = 6.dp, top = 4.dp)
-                            .padding(horizontal = 20.dp)
-                    )
-                }
-                item {
-                    CustomRichTextEditor(
-                        state = richTextState,
-                        placeholder = stringResource(R.string.Text),
-                        textStyle = MaterialTheme.typography.bodyMedium,
-                        enabled = enabled,
-                        minLines = 2,
-                        modifier = Modifier
-                            .testTag("note_body_input")
-                            .fillMaxWidth()
-                            .padding(bottom = 10.dp)
-                            .padding(horizontal = 20.dp)
-                            .focusRequester(bodyFieldFocusRequester)
-                            .onFocusChanged { state ->
-                                if (state.isFocused) {
-                                    noteViewModel.switchStylingEnabled(true)
-                                } else {
-                                    noteViewModel.switchStyling(false)
-                                    noteViewModel.switchStylingEnabled(false)
+                LazyColumn(
+                    state = scrollState,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clickable(
+                            indication = null,
+                            interactionSource = remember { MutableInteractionSource() } // This is mandatory
+                        ) {
+                            bodyFieldFocusRequester.requestFocus()
+                        }
+                ) {
+                    val enabled =
+                        noteViewModel.screenState.value.notePosition != NotePosition.DELETE
+                    item {
+                        CustomDefaultTextField(
+                            text = noteViewModel.screenState.value.noteHeader,
+                            onTextChange = { noteViewModel.updateNoteHeader(it) },
+                            placeholder = stringResource(R.string.Header),
+                            keyboardOptions = KeyboardOptions(
+                                keyboardType = KeyboardType.Text,
+                                imeAction = ImeAction.Next,
+                                capitalization = KeyboardCapitalization.Sentences,
+                                autoCorrect = true
+                            ),
+                            keyboardActions = KeyboardActions(
+                                onAny = {
+                                    bodyFieldFocusRequester.requestFocus()
                                 }
-                            }
-                    )
+                            ),
+                            enabled = enabled,
+                            textStyle = MaterialTheme.typography.headlineSmall.copy(
+                                fontWeight = FontWeight.SemiBold,
+                            ),
+                            modifier = Modifier
+                                .testTag("note_header_input")
+                                .fillMaxSize()
+                                .padding(bottom = 6.dp, top = 4.dp)
+                                .padding(horizontal = 20.dp)
+                        )
+                    }
+                    item {
+                        CustomRichTextEditor(
+                            state = richTextState,
+                            placeholder = stringResource(R.string.Text),
+                            textStyle = MaterialTheme.typography.bodyMedium,
+                            enabled = enabled,
+                            minLines = 2,
+                            modifier = Modifier
+                                .testTag("note_body_input")
+                                .fillMaxWidth()
+                                .padding(bottom = 10.dp)
+                                .padding(horizontal = 20.dp)
+                                .focusRequester(bodyFieldFocusRequester)
+                                .onFocusChanged { state ->
+                                    if (state.isFocused) {
+                                        noteViewModel.switchStylingEnabled(true)
+                                    } else {
+                                        noteViewModel.switchStyling(false)
+                                        noteViewModel.switchStylingEnabled(false)
+                                    }
+                                }
+                        )
+                    }
+                    item {
+                        TagEditor(
+                            enabled = enabled,
+                            modifier = Modifier
+                                .padding(bottom = 8.dp)
+                                .padding(horizontal = 20.dp),
+                            selectedTags = noteViewModel.screenState.value.hashtags,
+                            allTags = noteViewModel.screenState.value.allHashtags,
+                            onSave = noteViewModel::changeNoteHashtags
+                        )
+                    }
+                    item {
+                        LinkPreviewList(
+                            linkPreviewList = noteViewModel.screenState.value.linksMetaData,
+                            expanded = linkListExpanded,
+                            isLoading = noteViewModel.screenState.value.linksLoading,
+                            contentPadding = PaddingValues(horizontal = 20.dp)
+                        )
+                    }
+                    item {
+                        Spacer(Modifier.height(45.dp))
+                    }
                 }
-                item {
-                    TagEditor(
-                        enabled = enabled,
-                        modifier = Modifier
-                            .padding(bottom = 8.dp)
-                            .padding(horizontal = 20.dp),
-                        selectedTags = noteViewModel.screenState.value.hashtags,
-                        allTags = noteViewModel.screenState.value.allHashtags,
-                        onSave = noteViewModel::changeNoteHashtags
-                    )
-                }
-                item {
-                    LinkPreviewList(
-                        linkPreviewList = noteViewModel.screenState.value.linksMetaData,
-                        expanded = linkListExpanded,
-                        isLoading = noteViewModel.screenState.value.linksLoading,
-                        contentPadding = PaddingValues(horizontal = 20.dp)
-                    )
-                }
-                item {
-                    Spacer(Modifier.height(45.dp))
-                }
+                SnackbarWhenNoteDeleted(noteViewModel)
             }
-            SnackbarWhenNoteDeleted(noteViewModel)
         }
     }
 

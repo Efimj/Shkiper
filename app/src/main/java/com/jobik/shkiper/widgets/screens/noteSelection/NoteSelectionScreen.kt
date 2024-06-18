@@ -120,39 +120,39 @@ private fun ScreenContent(
             .testTag("notes_list"),
         gridState = lazyGridNotes
     ) {
-        noteTagsList(
-            tags = notesViewModel.screenState.value.hashtags,
-            selected = notesViewModel.screenState.value.currentHashtag
-        ) { notesViewModel.setCurrentHashtag(it) }
-        if (pinnedNotes.isNotEmpty()) {
-            notesListHeadline(headline = R.string.Pinned)
-            notesList(
-                notes = pinnedNotes,
-                reminders = notesViewModel.screenState.value.reminders,
-                marker = notesViewModel.screenState.value.searchText,
-                selected = if (notesViewModel.screenState.value.selectedNoteId != null) setOf(notesViewModel.screenState.value.selectedNoteId!!) else emptySet(),
-                onClick = { note ->
-                    notesViewModel.clickOnNote(note._id)
-                },
-                onLongClick = { note ->
-                    notesViewModel.clickOnNote(note._id)
-                },
-            )
-        }
-        if (unpinnedNotes.isNotEmpty()) {
-            notesListHeadline(headline = R.string.Other)
-            notesList(
-                notes = unpinnedNotes,
-                reminders = notesViewModel.screenState.value.reminders,
-                marker = notesViewModel.screenState.value.searchText,
-                selected = if (notesViewModel.screenState.value.selectedNoteId != null) setOf(notesViewModel.screenState.value.selectedNoteId!!) else emptySet(),
-                onClick = { note ->
-                    notesViewModel.clickOnNote(note._id)
-                },
-                onLongClick = { note ->
-                    notesViewModel.clickOnNote(note._id)
-                },
-            )
-        }
+//        noteTagsList(
+//            tags = notesViewModel.screenState.value.hashtags,
+//            selected = notesViewModel.screenState.value.currentHashtag
+//        ) { notesViewModel.setCurrentHashtag(it) }
+//        if (pinnedNotes.isNotEmpty()) {
+//            notesListHeadline(headline = R.string.Pinned)
+//            notesList(
+//                notes = pinnedNotes,
+//                reminders = notesViewModel.screenState.value.reminders,
+//                marker = notesViewModel.screenState.value.searchText,
+//                selected = if (notesViewModel.screenState.value.selectedNoteId != null) setOf(notesViewModel.screenState.value.selectedNoteId!!) else emptySet(),
+//                onClick = { note ->
+//                    notesViewModel.clickOnNote(note._id)
+//                },
+//                onLongClick = { note ->
+//                    notesViewModel.clickOnNote(note._id)
+//                },
+//            )
+//        }
+//        if (unpinnedNotes.isNotEmpty()) {
+//            notesListHeadline(headline = R.string.Other)
+//            notesList(
+//                notes = unpinnedNotes,
+//                reminders = notesViewModel.screenState.value.reminders,
+//                marker = notesViewModel.screenState.value.searchText,
+//                selected = if (notesViewModel.screenState.value.selectedNoteId != null) setOf(notesViewModel.screenState.value.selectedNoteId!!) else emptySet(),
+//                onClick = { note ->
+//                    notesViewModel.clickOnNote(note._id)
+//                },
+//                onLongClick = { note ->
+//                    notesViewModel.clickOnNote(note._id)
+//                },
+//            )
+//        }
     }
 }
