@@ -140,7 +140,7 @@ private fun OtherSettings(navController: NavController) {
             title = stringResource(R.string.OnboardingPage),
             onClick = { isOnboarding.value = true }
         )
-        OnboardingDialog {
+        OnboardingDialog(isVisible = isOnboarding.value) {
             isOnboarding.value = false
         }
     }

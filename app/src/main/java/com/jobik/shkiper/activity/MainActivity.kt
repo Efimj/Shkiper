@@ -89,9 +89,9 @@ open class MainActivity : ComponentActivity() {
                 darkTheme = ThemeUtil.isDarkMode.value ?: isSystemInDarkTheme(),
                 style = ThemeUtil.themeStyle.value ?: CustomThemeStyle.PastelPurple
             ) {
-                if (onboarding.value) {
-                    OnboardingDialog(onFinish = { onboarding.value = false })
-                }
+                OnboardingDialog(
+                    isVisible = onboarding.value,
+                    onFinish = { onboarding.value = false })
 
                 AppLayout(startDestination)
                 if (canShowOfferReview.value) {
@@ -161,7 +161,7 @@ open class MainActivity : ComponentActivity() {
             )
         val isOnboardingPageFinished =
             sharedPreferences.getString(SharedPreferencesKeys.OnboardingPageFinishedData, "")
-        return isOnboardingPageFinished == OnboardingFinishedData
+        return isOnboardingPageFinished != OnboardingFinishedData
     }
 
     private fun getNotificationRoute(): String? {
