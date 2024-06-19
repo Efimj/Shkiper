@@ -8,6 +8,8 @@ import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.ui.Modifier
 import com.jobik.shkiper.database.models.Note
 import com.jobik.shkiper.database.models.Reminder
+import com.jobik.shkiper.navigation.LocalNavAnimatedVisibilityScope
+import com.jobik.shkiper.navigation.LocalSharedTransitionScope
 import com.jobik.shkiper.ui.components.cards.NoteCard
 import com.jobik.shkiper.ui.helpers.rememberNextReminder
 import org.mongodb.kbson.ObjectId
@@ -20,10 +22,14 @@ fun LazyStaggeredGridScope.notesList(
     marker: String? = null,
     onClick: (Note) -> Unit,
     onLongClick: ((Note) -> Unit)? = null,
-    sharedTransitionScope: SharedTransitionScope,
-    animatedVisibilityScope: AnimatedVisibilityScope,
 ) {
     items(items = notes, key = { it._id.toHexString() }) { note ->
+        val sharedTransitionScope = LocalSharedTransitionScope.current
+            ?: throw IllegalStateException("No SharedElementScope found")
+
+        val animatedVisibilityScope = LocalNavAnimatedVisibilityScope.current
+            ?: throw IllegalStateException("No AnimatedVisibility found")
+
         with(sharedTransitionScope) {
             NoteCard(
                 animatedVisibilityScope = animatedVisibilityScope,

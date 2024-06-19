@@ -48,8 +48,6 @@ fun NoteListScreenContent(
     navController: NavController,
     viewModel: NotesViewModel,
     onSlideNext: () -> Unit,
-    animatedVisibilityScope: AnimatedVisibilityScope,
-    sharedTransitionScope: SharedTransitionScope,
 ) {
     val isSearchBarVisible = remember { mutableStateOf(true) }
 
@@ -71,8 +69,6 @@ fun NoteListScreenContent(
                 NotesListContent(
                     notesViewModel = viewModel,
                     navController = navController,
-                    sharedTransitionScope = sharedTransitionScope,
-                    animatedVisibilityScope = animatedVisibilityScope,
                 )
             }
         }
@@ -115,8 +111,6 @@ private fun BackHandlerIfSelectedNotes(notesViewModel: NotesViewModel) {
 private fun NotesListContent(
     notesViewModel: NotesViewModel,
     navController: NavController,
-    animatedVisibilityScope: AnimatedVisibilityScope,
-    sharedTransitionScope: SharedTransitionScope
 ) {
     val context = LocalContext.current
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route ?: ""
@@ -173,8 +167,6 @@ private fun NotesListContent(
                         noteId = note._id
                     )
                 },
-                sharedTransitionScope = sharedTransitionScope,
-                animatedVisibilityScope = animatedVisibilityScope,
             )
         }
         if (unpinnedNotes.isNotEmpty()) {
@@ -196,8 +188,6 @@ private fun NotesListContent(
                         noteId = note._id
                     )
                 },
-                sharedTransitionScope = sharedTransitionScope,
-                animatedVisibilityScope = animatedVisibilityScope,
             )
         }
     }

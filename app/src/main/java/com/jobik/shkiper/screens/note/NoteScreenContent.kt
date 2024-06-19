@@ -49,6 +49,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.NotePosition
+import com.jobik.shkiper.navigation.LocalNavAnimatedVisibilityScope
+import com.jobik.shkiper.navigation.LocalSharedTransitionScope
 import com.jobik.shkiper.ui.components.cards.SnackbarCard
 import com.jobik.shkiper.ui.components.fields.CustomDefaultTextField
 import com.jobik.shkiper.ui.components.fields.CustomRichTextEditor
@@ -71,8 +73,6 @@ import java.time.LocalDateTime
 fun NoteScreenContent(
     noteViewModel: NoteViewModel,
     onBack: () -> Unit,
-    sharedTransitionScope: SharedTransitionScope,
-    animatedVisibilityScope: AnimatedVisibilityScope,
 ) {
     RemoveIndicatorWhenKeyboardHidden(noteViewModel)
     val richTextState = rememberRichTextState()
@@ -89,6 +89,13 @@ fun NoteScreenContent(
             noteViewModel.updateNoteBody(richTextState.toHtml())
     }
     BackHandlerWithStylingState(noteViewModel)
+
+    val sharedTransitionScope = LocalSharedTransitionScope.current
+        ?: throw IllegalStateException("No SharedElementScope found")
+
+    val animatedVisibilityScope = LocalNavAnimatedVisibilityScope.current
+        ?: throw IllegalStateException("No AnimatedVisibility found")
+
     with(sharedTransitionScope) {
         Scaffold(
             containerColor = AppTheme.colors.background,

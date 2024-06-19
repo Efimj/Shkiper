@@ -13,8 +13,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 @Composable
 fun NoteScreen(
     onBack: () -> Unit,
-    sharedTransitionScope: SharedTransitionScope,
-    animatedVisibilityScope: AnimatedVisibilityScope,
     noteViewModel: NoteViewModel = hiltViewModel()
 ) {
     BackHandler(true) {
@@ -22,8 +20,6 @@ fun NoteScreen(
     }
 
     NoteScreenContent(
-        animatedVisibilityScope = animatedVisibilityScope,
-        sharedTransitionScope = sharedTransitionScope,
         noteViewModel = noteViewModel,
         onBack = onBack
     )
