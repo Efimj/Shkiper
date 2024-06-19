@@ -47,8 +47,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.NotePosition
-import com.jobik.shkiper.navigation.LocalNavAnimatedVisibilityScope
-import com.jobik.shkiper.navigation.LocalSharedTransitionScope
 import com.jobik.shkiper.ui.components.cards.SnackbarCard
 import com.jobik.shkiper.ui.components.fields.CustomDefaultTextField
 import com.jobik.shkiper.ui.components.fields.CustomRichTextEditor
@@ -56,6 +54,8 @@ import com.jobik.shkiper.ui.components.fields.TagEditor
 import com.jobik.shkiper.ui.components.layouts.LinkPreviewList
 import com.jobik.shkiper.ui.components.modals.ActionDialog
 import com.jobik.shkiper.ui.helpers.Keyboard
+import com.jobik.shkiper.ui.helpers.LocalNavAnimatedVisibilityScope
+import com.jobik.shkiper.ui.helpers.LocalSharedTransitionScope
 import com.jobik.shkiper.ui.helpers.SetRichTextDefaultStyles
 import com.jobik.shkiper.ui.helpers.horizontalWindowInsetsPadding
 import com.jobik.shkiper.ui.helpers.keyboardAsState

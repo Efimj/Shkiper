@@ -1,9 +1,7 @@
 package com.jobik.shkiper.ui.components.cards
 
 import android.os.Parcelable
-import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -53,6 +51,8 @@ import com.jobik.shkiper.database.models.Reminder
 import com.jobik.shkiper.database.models.RepeatMode
 import com.jobik.shkiper.helpers.DateHelper
 import com.jobik.shkiper.helpers.TextHelper.Companion.removeMarkdownStyles
+import com.jobik.shkiper.ui.helpers.LocalNavAnimatedVisibilityScope
+import com.jobik.shkiper.ui.helpers.LocalSharedTransitionScope
 import com.jobik.shkiper.ui.modifiers.bounceClick
 import com.jobik.shkiper.ui.theme.AppTheme
 import com.mohamedrejeb.richeditor.model.RichTextState
@@ -110,8 +110,7 @@ private fun updateNoteCardState(
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalSharedTransitionApi::class)
 @Composable
-fun SharedTransitionScope.NoteCard(
-    animatedVisibilityScope: AnimatedVisibilityScope,
+fun NoteCard(
     note: Note,
     reminder: Reminder? = null,
     markedText: String? = null,
@@ -138,51 +137,58 @@ fun SharedTransitionScope.NoteCard(
         )
         cardState.value = newCardState
     }
+    val sharedTransitionScope = LocalSharedTransitionScope.current
+        ?: throw IllegalStateException("No SharedElementScope found")
 
-    Card(
-        modifier = modifier
-            .sharedElement(
-                state = rememberSharedContentState(
-                    key = "note-background-${note._id}"
+    val animatedVisibilityScope = LocalNavAnimatedVisibilityScope.current
+        ?: throw IllegalStateException("No AnimatedVisibility found")
+
+    with(sharedTransitionScope) {
+        Card(
+            modifier = modifier
+                .sharedElement(
+                    state = rememberSharedContentState(
+                        key = "note-background-${note._id}"
+                    ),
+                    animatedVisibilityScope = animatedVisibilityScope,
+                )
+                .bounceClick()
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(15.dp))
+                .combinedClickable(
+                    onClick = onClick,
+                    onLongClick = onLongClick,
                 ),
-                animatedVisibilityScope = animatedVisibilityScope,
-            )
-            .bounceClick()
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(15.dp))
-            .combinedClickable(
-                onClick = onClick,
-                onLongClick = onLongClick,
+            shape = RoundedCornerShape(15.dp),
+            border = BorderStroke(2.dp, borderColor),
+            colors = CardDefaults.cardColors(
+                containerColor = AppTheme.colors.container,
+                contentColor = AppTheme.colors.text
             ),
-        shape = RoundedCornerShape(15.dp),
-        border = BorderStroke(2.dp, borderColor),
-        colors = CardDefaults.cardColors(
-            containerColor = AppTheme.colors.container,
-            contentColor = AppTheme.colors.text
-        ),
-    ) {
-        Column(
-            modifier = Modifier.padding(16.dp)
         ) {
-            if (cardState.value != null) {
-                if (markedText.isNullOrBlank()) {
-                    NoteContent(
-                        cardState = cardState.value!!,
-                        headerStyle = headerStyle,
-                        bodyStyle = bodyStyle
-                    )
-                } else {
-                    NoteAnnotatedContent(
-                        cardState = cardState.value!!,
-                        markedText = markedText,
-                        headerStyle = headerStyle,
-                        bodyStyle = bodyStyle
-                    )
+            Column(
+                modifier = Modifier.padding(16.dp)
+            ) {
+                if (cardState.value != null) {
+                    if (markedText.isNullOrBlank()) {
+                        NoteContent(
+                            cardState = cardState.value!!,
+                            headerStyle = headerStyle,
+                            bodyStyle = bodyStyle
+                        )
+                    } else {
+                        NoteAnnotatedContent(
+                            cardState = cardState.value!!,
+                            markedText = markedText,
+                            headerStyle = headerStyle,
+                            bodyStyle = bodyStyle
+                        )
+                    }
+                    if (cardState.value!!.header.isNullOrBlank() && cardState.value!!.body.isNullOrBlank()) {
+                        EmptyNoteContent(bodyStyle = bodyStyle)
+                    }
+                    ReminderInformation(cardState = cardState.value!!)
                 }
-                if (cardState.value!!.header.isNullOrBlank() && cardState.value!!.body.isNullOrBlank()) {
-                    EmptyNoteContent(bodyStyle = bodyStyle)
-                }
-                ReminderInformation(cardState = cardState.value!!)
             }
         }
     }

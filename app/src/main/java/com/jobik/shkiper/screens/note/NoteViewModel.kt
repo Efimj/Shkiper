@@ -383,20 +383,29 @@ class NoteViewModel @Inject constructor(
     }
 
     fun switchNotePinnedMode() {
-        _screenState.value = _screenState.value.copy(isPinned = !_screenState.value.isPinned)
-        if (_screenState.value.notePosition == NotePosition.ARCHIVE) {
-            val newPosition = NotePosition.MAIN
-            updateNote {
-                it.isPinned = this@NoteViewModel._screenState.value.isPinned
-                it.position = newPosition
-            }
-            _screenState.value = _screenState.value.copy(
-                notePosition = newPosition,
-                isGoBack = true,
-            )
-        } else {
-            updateNote {
-                it.isPinned = this@NoteViewModel._screenState.value.isPinned
+        val newPosition = NotePosition.MAIN
+        val notePosition = _screenState.value.notePosition
+        val newPinnedState = _screenState.value.isPinned.not()
+        _screenState.value = _screenState.value.copy(
+            isPinned = newPinnedState,
+            notePosition = newPosition,
+            isGoBack = true,
+            deletionDate = null,
+        )
+
+        viewModelScope.launch {
+            animationPause()
+            if (notePosition != NotePosition.MAIN) {
+                updateNote {
+                    it.isPinned = newPinnedState
+                    it.position = newPosition
+                    it.deletionDate = null
+                }
+            } else {
+                updateNote {
+                    it.isPinned = newPinnedState
+                    it.deletionDate = null
+                }
             }
         }
     }

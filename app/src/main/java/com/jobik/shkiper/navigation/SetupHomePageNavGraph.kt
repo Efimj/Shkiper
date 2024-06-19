@@ -3,7 +3,6 @@ package com.jobik.shkiper.navigation
 import androidx.compose.animation.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.semantics
@@ -22,11 +21,8 @@ import com.jobik.shkiper.screens.note.NoteScreen
 import com.jobik.shkiper.screens.purchase.PurchaseScreen
 import com.jobik.shkiper.screens.settings.SettingsScreen
 import com.jobik.shkiper.screens.statistics.StatisticsScreen
-
-val LocalNavAnimatedVisibilityScope = compositionLocalOf<AnimatedVisibilityScope?> { null }
-
-@OptIn(ExperimentalSharedTransitionApi::class)
-val LocalSharedTransitionScope = compositionLocalOf<SharedTransitionScope?> { null }
+import com.jobik.shkiper.ui.helpers.LocalNavAnimatedVisibilityScope
+import com.jobik.shkiper.ui.helpers.LocalSharedTransitionScope
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalSharedTransitionApi::class)
 @ExperimentalAnimationApi
