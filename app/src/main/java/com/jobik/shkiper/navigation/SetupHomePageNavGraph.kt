@@ -5,13 +5,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.jobik.shkiper.helpers.IntentHelper
+import com.jobik.shkiper.navigation.NavigationHelpers.Companion.navigateToMain
 import com.jobik.shkiper.screens.about.AboutNotepadScreen
 import com.jobik.shkiper.screens.advancedSettings.AdvancedSettings
 import com.jobik.shkiper.screens.archive.ArchiveNotesScreen
@@ -86,8 +90,14 @@ fun SetupAppScreenNavGraph(
                     exitTransition = { ScreenTransition().secondaryScreenExitTransition() }
                 ) {
                     CompositionLocalProvider(LocalNavAnimatedVisibilityScope provides this) {
+                        val context = LocalContext.current
                         NoteScreen(
-                            onBack = { navController.popBackStack() },
+                            onBack = {
+                                if (navController.previousBackStackEntry == null) {
+                                    IntentHelper().startAppActivity(context)
+                                }
+                                navController.popBackStack()
+                            },
                         )
                     }
                 }
