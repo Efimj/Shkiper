@@ -1,9 +1,7 @@
 package com.jobik.shkiper.screens.note
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
@@ -221,7 +219,7 @@ fun NoteScreenContent(
 
     SetFocusOnNoteBodyIfNoteNew(noteViewModel, richTextState, bodyFieldFocusRequester)
     NoteScreenShareComponent(noteViewModel, richTextState)
-    DeleteonDialog(noteViewModel)
+    DeletionDialog(noteViewModel)
     AndroidBarColorManager(scrollState, noteViewModel)
     HideKeyboardWhenLeaveScreen()
 }
@@ -272,7 +270,7 @@ private fun AndroidBarColorManager(
 }
 
 @Composable
-private fun DeleteonDialog(noteViewModel: NoteViewModel) {
+private fun DeletionDialog(noteViewModel: NoteViewModel) {
     if (noteViewModel.screenState.value.isDeleteDialogShow)
         ActionDialog(
             title = stringResource(R.string.DeleteForever),

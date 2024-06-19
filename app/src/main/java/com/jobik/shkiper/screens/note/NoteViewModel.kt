@@ -90,7 +90,7 @@ class NoteViewModel @Inject constructor(
         }
     }
 
-   private fun initializeNote(noteId: ObjectId) {
+    private fun initializeNote(noteId: ObjectId) {
         val note = noteRepository.getNote(noteId)
         if (note == null)
             _screenState.value = _screenState.value.copy(
@@ -434,16 +434,19 @@ class NoteViewModel @Inject constructor(
     }
 
     fun archiveNote() {
+        val newPosition = NotePosition.ARCHIVE
+        _screenState.value = _screenState.value.copy(
+            notePosition = newPosition,
+            isGoBack = true,
+        )
+
         viewModelScope.launch {
-            val newPosition = NotePosition.ARCHIVE
+            animationPause()
             noteRepository.updateNote(screenState.value.noteId) { updatedNote ->
                 updatedNote.position = newPosition
                 updatedNote.isPinned = false
             }
-            _screenState.value = _screenState.value.copy(
-                notePosition = newPosition,
-                isGoBack = true,
-            )
+
             // when returning, the snackbar turns off
 //            showSnackbar(
 //                message = application.applicationContext.getString(R.string.NoteArchived),
@@ -453,15 +456,18 @@ class NoteViewModel @Inject constructor(
     }
 
     fun unarchiveNote() {
+        val newPosition = NotePosition.MAIN
+        _screenState.value = _screenState.value.copy(
+            notePosition = newPosition,
+            isGoBack = true,
+        )
+
         viewModelScope.launch {
-            val newPosition = NotePosition.MAIN
+            animationPause()
             noteRepository.updateNote(screenState.value.noteId) { updatedNote ->
                 updatedNote.position = newPosition
             }
-            _screenState.value = _screenState.value.copy(
-                notePosition = newPosition,
-                isGoBack = true,
-            )
+
             // when returning, the snackbar turns off
 //            showSnackbar(
 //                message = application.applicationContext.getString(R.string.NoteUnarchived),
@@ -471,42 +477,55 @@ class NoteViewModel @Inject constructor(
     }
 
     fun moveToBasket() {
+        val newPosition = NotePosition.DELETE
+        _screenState.value = _screenState.value.copy(
+            notePosition = newPosition,
+            isPinned = false,
+            isGoBack = true,
+        )
+
         viewModelScope.launch {
-            val newPosition = NotePosition.DELETE
+            animationPause()
             noteRepository.updateNote(screenState.value.noteId) { updatedNote ->
                 updatedNote.position = newPosition
                 updatedNote.isPinned = false
                 updatedNote.deletionDate = LocalDateTime.now()
             }
-            _screenState.value = _screenState.value.copy(
-                notePosition = newPosition,
-                isPinned = false,
-                isGoBack = true,
-            )
         }
     }
 
     fun removeNoteFromBasket() {
+        val newPosition = NotePosition.MAIN
+        _screenState.value = _screenState.value.copy(
+            notePosition = newPosition,
+            isGoBack = true,
+        )
         viewModelScope.launch {
-            val newPosition = NotePosition.MAIN
+            animationPause() // for animation ended
             noteRepository.updateNote(screenState.value.noteId) { updatedNote ->
                 updatedNote.position = newPosition
                 updatedNote.deletionDate = null
             }
-            _screenState.value = _screenState.value.copy(
-                notePosition = newPosition,
-                isGoBack = true,
-            )
         }
     }
 
     fun deleteNote() {
+        _screenState.value = _screenState.value.copy(
+            isDeleteDialogShow = false,
+            isGoBack = true,
+        )
         viewModelScope.launch {
+            animationPause()
             noteRepository.deleteNote(screenState.value.noteId)
-            _screenState.value = _screenState.value.copy(
-                isGoBack = true,
-            )
+
         }
+    }
+
+    /**
+     * for shared animation ended
+     */
+    private suspend fun animationPause() {
+        delay(500)
     }
 
     /*******************

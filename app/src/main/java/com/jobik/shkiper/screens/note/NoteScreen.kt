@@ -1,15 +1,11 @@
 package com.jobik.shkiper.screens.note
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.animation.AnimatedVisibilityScope
-import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.hilt.navigation.compose.hiltViewModel
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun NoteScreen(
     onBack: () -> Unit,
