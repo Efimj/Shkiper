@@ -216,7 +216,6 @@ fun NoteScreenContent(
     NoteScreenShareComponent(noteViewModel, richTextState)
     DeleteonDialog(noteViewModel)
     AndroidBarColorManager(scrollState, noteViewModel)
-    CheckAndDeleteNoteOnExit(noteViewModel, richTextState)
     HideKeyboardWhenLeaveScreen()
 }
 
@@ -298,18 +297,6 @@ private fun BoxScope.SnackbarWhenNoteDeleted(noteViewModel: NoteViewModel) {
                 )
             )
         }
-}
-
-@Composable
-private fun CheckAndDeleteNoteOnExit(
-    noteViewModel: NoteViewModel,
-    richTextState: RichTextState
-) {
-    DisposableEffect(Unit) {
-        onDispose {
-            noteViewModel.deleteNoteIfEmpty(richTextState.annotatedString.toString())
-        }
-    }
 }
 
 @Composable

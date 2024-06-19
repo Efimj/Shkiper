@@ -90,7 +90,7 @@ class NoteViewModel @Inject constructor(
         }
     }
 
-    private fun initializeNote(noteId: ObjectId) {
+   private fun initializeNote(noteId: ObjectId) {
         val note = noteRepository.getNote(noteId)
         if (note == null)
             _screenState.value = _screenState.value.copy(
@@ -415,10 +415,12 @@ class NoteViewModel @Inject constructor(
         }
     }
 
-    fun deleteNoteIfEmpty(body: String) {
+    fun deleteNoteIfEmpty() {
         viewModelScope.launch {
-            if (_screenState.value.noteHeader.isEmpty() && body.isEmpty()) {
-                goBackScreen()
+            val header = _screenState.value.noteHeader
+            val body = RichTextState().setHtml(_screenState.value.noteBody).annotatedString.text
+
+            if (header.isEmpty() && body.isEmpty()) {
                 noteRepository.deleteNote(
                     _screenState.value.noteId,
                 )
