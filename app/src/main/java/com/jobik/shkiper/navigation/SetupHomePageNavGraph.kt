@@ -25,10 +25,11 @@ import com.jobik.shkiper.screens.statistics.StatisticsScreen
 @ExperimentalAnimationApi
 @Composable
 fun SetupAppScreenNavGraph(
+    modifier: Modifier = Modifier,
     navController: NavHostController,
     startDestination: String,
 ) {
-    SharedTransitionLayout {
+    SharedTransitionLayout(modifier = modifier) {
         NavHost(
             navController = navController,
             startDestination = startDestination,

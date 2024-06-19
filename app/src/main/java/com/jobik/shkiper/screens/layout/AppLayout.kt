@@ -21,7 +21,7 @@ import com.jobik.shkiper.screens.layout.NavigationBar.AppNavigationBarState
 import com.jobik.shkiper.screens.layout.NavigationBar.BottomAppBarProvider
 import com.jobik.shkiper.ui.theme.AppTheme
 
-@OptIn(ExperimentalSharedTransitionApi::class, ExperimentalAnimationApi::class)
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun AppLayout(startDestination: String = Route.NoteList.route) {
     val navController = rememberNavController()
@@ -52,23 +52,18 @@ fun AppLayout(startDestination: String = Route.NoteList.route) {
                 }
             }
         }
-        Box(
+
+        SetupAppScreenNavGraph(
             modifier = Modifier
                 .fillMaxSize()
-                .nestedScroll(connection)
-        ) {
-            SetupAppScreenNavGraph(
-                navController = navController,
-                startDestination = startDestination,
-            )
-        }
-        Box(
+                .nestedScroll(connection),
+            navController = navController,
+            startDestination = startDestination,
+        )
+        BottomAppBarProvider(
             modifier = Modifier.align(Alignment.BottomCenter),
-        ) {
-            BottomAppBarProvider(
-                navController = navController,
-            )
-        }
+            navController = navController,
+        )
         SnackbarProvider()
     }
 }

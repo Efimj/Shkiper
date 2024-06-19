@@ -1,9 +1,6 @@
 package com.jobik.shkiper.screens.layout.NavigationBar
 
-import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.animation.expandHorizontally
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -43,13 +40,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
@@ -61,20 +55,23 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.NotePosition
 import com.jobik.shkiper.navigation.NavigationHelpers.Companion.navigateToMain
+import com.jobik.shkiper.navigation.NavigationHelpers.Companion.navigateToSecondary
 import com.jobik.shkiper.navigation.Route
 import com.jobik.shkiper.navigation.RouteHelper
-import com.jobik.shkiper.screens.note.NoteScreen
-import com.jobik.shkiper.ui.components.modals.FullscreenPopup
 import com.jobik.shkiper.ui.helpers.Keyboard
 import com.jobik.shkiper.ui.helpers.keyboardAsState
+import com.jobik.shkiper.ui.modifiers.bounceClick
 import com.jobik.shkiper.ui.theme.AppTheme
-import com.jobik.shkiper.util.Startup
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
 fun BottomAppBarProvider(
+    modifier: Modifier = Modifier,
     navController: NavHostController,
+    viewModel: BottomBarViewModel = hiltViewModel<BottomBarViewModel>(),
 ) {
+    val scope = rememberCoroutineScope()
     val localDensity = LocalDensity.current
     var containerHeight by remember { mutableStateOf(0.dp) }
     val currentRouteName = navController.currentBackStackEntryAsState().value?.destination?.route
@@ -102,6 +99,7 @@ fun BottomAppBarProvider(
     }
 
     AnimatedVisibility(
+        modifier = modifier,
         visible = AppNavigationBarState.isVisible.value,
         enter = slideInVertically { it },
         exit = slideOutVertically { it }
@@ -133,82 +131,52 @@ fun BottomAppBarProvider(
                     )
                 }
                 CreateNoteFAN(
-                    navController = navController,
+                    isVisible = currentRouteName == Route.NoteList.route,
+                    onCreate = {
+                        scope.launch {
+                            val noteId = viewModel.createNewNote()
+                            delay(300)
+                            navController.navigateToSecondary(Route.Note.noteId(noteId.toHexString()))
+                        }
+                    },
                 )
             }
         }
     }
 }
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 private fun CreateNoteFAN(
-    navController: NavHostController,
-    viewModel: BottomBarViewModel = hiltViewModel<BottomBarViewModel>(),
+    isVisible: Boolean,
+    onCreate: () -> Unit,
 ) {
-    val currentRouteName = navController.currentBackStackEntryAsState().value?.destination?.route
-    val scope = rememberCoroutineScope()
-
     AnimatedVisibility(
-        visible = currentRouteName == Route.NoteList.route,
+        visible = isVisible,
         enter = slideInHorizontally() + expandHorizontally(clip = false) + fadeIn(),
         exit = slideOutHorizontally() + shrinkHorizontally(clip = false) + fadeOut(),
     ) {
         Row {
             Spacer(modifier = Modifier.width(10.dp))
-            SharedTransitionLayout {
-                var createReminderDialog by rememberSaveable { mutableStateOf(false) }
-
-                AnimatedContent(
-                    targetState = createReminderDialog,
-                    label = "creation note"
-                ) { state ->
-                    if (state.not()) {
-                        Surface(
-                            modifier = Modifier.sharedElement(
-                                state = rememberSharedContentState(
-                                    key = "note-background-${Startup.paramNoteId}"
-                                ),
-                                animatedVisibilityScope = this@AnimatedContent,
-                            ),
-                            shape = MaterialTheme.shapes.small,
-                            shadowElevation = 1.dp,
-                            color = Color.Transparent
-                        ) {
-                            Row(
-                                modifier = Modifier
-                                    .height(DefaultNavigationValues().containerHeight)
-                                    .aspectRatio(1f)
-                                    .clip(shape = MaterialTheme.shapes.small)
-                                    .background(AppTheme.colors.primary)
-                                    .clickable {
-                                        scope.launch {
-                                            val noteId = viewModel.createNewNote()
-                                            Startup.paramNoteId = noteId.toHexString()
-                                            createReminderDialog = true
-                                        }
-                                    },
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.Center
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Outlined.Edit,
-                                    contentDescription = stringResource(R.string.CreateNote),
-                                    tint = AppTheme.colors.onPrimary,
-                                )
-                            }
-                        }
-                    } else {
-                        FullscreenPopup(
-                            onDismiss = {}
-                        ) {
-                            NoteScreen(
-                                onBack = { createReminderDialog = false },
-                                sharedTransitionScope = this@SharedTransitionLayout,
-                                animatedVisibilityScope = this@AnimatedContent,
-                            )
-                        }
-                    }
+            Surface(
+                modifier = Modifier
+                    .bounceClick()
+                    .clickable { onCreate() }
+                    .height(DefaultNavigationValues().containerHeight)
+                    .aspectRatio(1f),
+                shape = MaterialTheme.shapes.small,
+                shadowElevation = 1.dp,
+                color = AppTheme.colors.primary,
+                contentColor = AppTheme.colors.onPrimary
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.Edit,
+                        contentDescription = stringResource(R.string.CreateNote),
+                        tint = AppTheme.colors.onPrimary,
+                    )
                 }
             }
         }
