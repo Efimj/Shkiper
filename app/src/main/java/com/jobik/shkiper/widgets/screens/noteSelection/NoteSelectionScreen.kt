@@ -58,64 +58,57 @@ fun NoteSelectionScreen(
             .fillMaxSize()
             .scrollConnectionToProvideVisibility(visible = isSearchBarVisible)
     ) {
-        SharedTransitionLayout() {
-            CompositionLocalProvider(
-                LocalSharedTransitionScope provides this
-            ) {
-                Crossfade(
-                    targetState = notesViewModel.screenState.value.isNotesInitialized && notesViewModel.screenState.value.notes.isEmpty(),
-                    label = "animation layouts screen"
-                ) { value ->
-                    if (value) {
-                        ScreenStub(
-                            title = R.string.EmptyNotesPageHeader,
-                            icon = Icons.Outlined.Description
-                        )
-                    } else {
-                        AnimatedVisibility(visible = true) {
-                            CompositionLocalProvider(LocalNavAnimatedVisibilityScope provides this) {
-                                ScreenContent(
-                                    lazyGridNotes = lazyGridNotes,
-                                    notesViewModel = notesViewModel
-                                )
-                            }
-                        }
-                    }
+        Crossfade(
+            targetState = notesViewModel.screenState.value.isNotesInitialized && notesViewModel.screenState.value.notes.isEmpty(),
+            label = "animation layouts screen"
+        ) { value ->
+            if (value) {
+                ScreenStub(
+                    title = R.string.EmptyNotesPageHeader,
+                    icon = Icons.Outlined.Description
+                )
+            } else {
+                AnimatedVisibility(visible = true) {
+                    ScreenContent(
+                        lazyGridNotes = lazyGridNotes,
+                        notesViewModel = notesViewModel
+                    )
                 }
             }
-            Box(modifier = Modifier) {
-                com.jobik.shkiper.ui.components.fields.SearchBar(
-                    isVisible = isSearchBarVisible.value,
-                    value = notesViewModel.screenState.value.searchText,
-                    onChange = notesViewModel::changeSearchText
-                )
-            }
-            Box(
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(35.dp)
-                    .endWindowInsetsPadding()
-                    .windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Bottom))
-            ) {
-                if (strictSelection) {
-                    AnimatedVisibility(
-                        notesViewModel.screenState.value.selectedNoteId != null,
-                        enter = fadeIn(),
-                        exit = fadeOut(),
-                    ) {
-                        FloatingActionButton(
-                            icon = Icons.Outlined.Done,
-                            notesViewModel.screenState.value.selectedNoteId != null
-                        ) {
-                            notesViewModel.getSelectedNote()?.let { selectNote(it) }
-                        }
-                    }
-                } else {
+        }
+
+        Box(modifier = Modifier) {
+            com.jobik.shkiper.ui.components.fields.SearchBar(
+                isVisible = isSearchBarVisible.value,
+                value = notesViewModel.screenState.value.searchText,
+                onChange = notesViewModel::changeSearchText
+            )
+        }
+        Box(
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(35.dp)
+                .endWindowInsetsPadding()
+                .windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Bottom))
+        ) {
+            if (strictSelection) {
+                AnimatedVisibility(
+                    notesViewModel.screenState.value.selectedNoteId != null,
+                    enter = fadeIn(),
+                    exit = fadeOut(),
+                ) {
                     FloatingActionButton(
-                        icon = if (notesViewModel.screenState.value.selectedNoteId == null) Icons.Outlined.Add else Icons.Outlined.Done,
+                        icon = Icons.Outlined.Done,
+                        notesViewModel.screenState.value.selectedNoteId != null
                     ) {
-                        selectNote(notesViewModel.getSelectedNote())
+                        notesViewModel.getSelectedNote()?.let { selectNote(it) }
                     }
+                }
+            } else {
+                FloatingActionButton(
+                    icon = if (notesViewModel.screenState.value.selectedNoteId == null) Icons.Outlined.Add else Icons.Outlined.Done,
+                ) {
+                    selectNote(notesViewModel.getSelectedNote())
                 }
             }
         }
