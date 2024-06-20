@@ -217,15 +217,6 @@ fun onFinished(context: Context) {
     } catch (e: Exception) {
         Log.i("onboarding - onFinished", e.toString())
     }
-//    if (navController.previousBackStackEntry == null) {
-//        navController.navigate(Route.NoteList.route){
-//            popUpTo(Route.Onboarding.route) {
-//                inclusive = true
-//            }
-//        }
-//    } else {
-//        navController.popBackStack()
-//    }
 }
 
 @Composable

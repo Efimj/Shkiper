@@ -6,7 +6,6 @@ import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
@@ -78,12 +77,7 @@ fun OnboardingDialog(isVisible: Boolean, onFinish: () -> Unit) {
                         contentPadding = PaddingValues(0.dp),
                         pageSize = PageSize.Fill,
                     ) {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .clickable { }) {
-
-                        }
+                        OnBoardingScreen()
                     }
                     BottomNavigation(pagerState = pagerState, onFinish)
                 }
