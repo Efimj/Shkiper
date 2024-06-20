@@ -136,21 +136,21 @@ private fun NoteListContent(
             selected = selectedTag,
             onSelect = selectTag
         )
-//        if (pinnedNotes.isNotEmpty()) {
-//            notesListHeadline(headline = R.string.Pinned)
-//            notesList(
-//                notes = pinnedNotes,
-//                reminders = reminders,
-//                onClick = clickOnNote,
-//            )
-//        }
-//        if (unpinnedNotes.isNotEmpty()) {
-//            notesListHeadline(headline = R.string.Other)
-//            notesList(
-//                notes = unpinnedNotes,
-//                reminders = reminders,
-//                onClick = clickOnNote,
-//            )
-//        }
+        if (pinnedNotes.isNotEmpty()) {
+            notesListHeadline(headline = R.string.Pinned)
+            notesList(
+                notes = pinnedNotes,
+                reminders = reminders,
+                onClick = clickOnNote,
+            )
+        }
+        if (unpinnedNotes.isNotEmpty()) {
+            notesListHeadline(headline = R.string.Other)
+            notesList(
+                notes = unpinnedNotes,
+                reminders = reminders,
+                onClick = clickOnNote,
+            )
+        }
     }
 }
