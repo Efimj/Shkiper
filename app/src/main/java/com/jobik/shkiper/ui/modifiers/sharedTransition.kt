@@ -41,7 +41,7 @@ fun Modifier.sharedNoteTransitionModifier(
             with(scope) {
                 Modifier
                     .skipToLookaheadSize()
-                    .sharedElement(
+                    .sharedBounds(
                         rememberSharedContentState(
                             key = NoteSharedElementKey(
                                 noteId = noteId,
