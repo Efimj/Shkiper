@@ -3,6 +3,8 @@ package com.jobik.shkiper.widgets.screens.noteSelection
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.*
@@ -13,6 +15,7 @@ import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Description
 import androidx.compose.material.icons.outlined.Done
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -25,6 +28,8 @@ import com.jobik.shkiper.database.models.Note
 import com.jobik.shkiper.ui.components.buttons.FloatingActionButton
 import com.jobik.shkiper.ui.components.fields.getSearchBarHeight
 import com.jobik.shkiper.ui.components.layouts.*
+import com.jobik.shkiper.ui.helpers.LocalNavAnimatedVisibilityScope
+import com.jobik.shkiper.ui.helpers.LocalSharedTransitionScope
 import com.jobik.shkiper.ui.helpers.bottomWindowInsetsPadding
 import com.jobik.shkiper.ui.helpers.endWindowInsetsPadding
 import com.jobik.shkiper.ui.helpers.startWindowInsetsPadding
@@ -57,11 +62,20 @@ fun NoteSelectionScreen(
             label = "animation layouts screen"
         ) { value ->
             if (value) {
-                ScreenStub(title = R.string.EmptyNotesPageHeader, icon = Icons.Outlined.Description)
+                ScreenStub(
+                    title = R.string.EmptyNotesPageHeader,
+                    icon = Icons.Outlined.Description
+                )
             } else {
-                ScreenContent(lazyGridNotes = lazyGridNotes, notesViewModel = notesViewModel)
+                AnimatedVisibility(visible = true) {
+                    ScreenContent(
+                        lazyGridNotes = lazyGridNotes,
+                        notesViewModel = notesViewModel
+                    )
+                }
             }
         }
+
         Box(modifier = Modifier) {
             com.jobik.shkiper.ui.components.fields.SearchBar(
                 isVisible = isSearchBarVisible.value,
@@ -130,7 +144,9 @@ private fun ScreenContent(
                 notes = pinnedNotes,
                 reminders = notesViewModel.screenState.value.reminders,
                 marker = notesViewModel.screenState.value.searchText,
-                selected = if (notesViewModel.screenState.value.selectedNoteId != null) setOf(notesViewModel.screenState.value.selectedNoteId!!) else emptySet(),
+                selected = if (notesViewModel.screenState.value.selectedNoteId != null) setOf(
+                    notesViewModel.screenState.value.selectedNoteId!!
+                ) else emptySet(),
                 onClick = { note ->
                     notesViewModel.clickOnNote(note._id)
                 },
@@ -145,7 +161,9 @@ private fun ScreenContent(
                 notes = unpinnedNotes,
                 reminders = notesViewModel.screenState.value.reminders,
                 marker = notesViewModel.screenState.value.searchText,
-                selected = if (notesViewModel.screenState.value.selectedNoteId != null) setOf(notesViewModel.screenState.value.selectedNoteId!!) else emptySet(),
+                selected = if (notesViewModel.screenState.value.selectedNoteId != null) setOf(
+                    notesViewModel.screenState.value.selectedNoteId!!
+                ) else emptySet(),
                 onClick = { note ->
                     notesViewModel.clickOnNote(note._id)
                 },

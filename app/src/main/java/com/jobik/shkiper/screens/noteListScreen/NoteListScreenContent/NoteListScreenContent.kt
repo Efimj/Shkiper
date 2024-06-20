@@ -1,7 +1,10 @@
 package com.jobik.shkiper.screens.noteListScreen.NoteListScreenContent
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -39,6 +42,7 @@ import com.jobik.shkiper.util.SupportTheDeveloperBannerUtil
 import com.jobik.shkiper.viewmodels.NotesViewModel
 import kotlinx.coroutines.delay
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun NoteListScreenContent(
     navController: NavController,
@@ -62,7 +66,10 @@ fun NoteListScreenContent(
             if (value) {
                 ScreenStub(title = R.string.EmptyNotesPageHeader, icon = Icons.Outlined.Description)
             } else {
-                NotesListContent(notesViewModel = viewModel, navController = navController)
+                NotesListContent(
+                    notesViewModel = viewModel,
+                    navController = navController,
+                )
             }
         }
         Box(modifier = Modifier) {
@@ -99,6 +106,7 @@ private fun BackHandlerIfSelectedNotes(notesViewModel: NotesViewModel) {
 }
 
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 private fun NotesListContent(
     notesViewModel: NotesViewModel,
@@ -158,7 +166,7 @@ private fun NotesListContent(
                     notesViewModel.toggleSelectedNoteCard(
                         noteId = note._id
                     )
-                }
+                },
             )
         }
         if (unpinnedNotes.isNotEmpty()) {
@@ -179,7 +187,7 @@ private fun NotesListContent(
                     notesViewModel.toggleSelectedNoteCard(
                         noteId = note._id
                     )
-                }
+                },
             )
         }
     }

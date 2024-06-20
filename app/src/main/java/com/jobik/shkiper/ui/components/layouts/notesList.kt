@@ -18,19 +18,18 @@ fun LazyStaggeredGridScope.notesList(
     onLongClick: ((Note) -> Unit)? = null,
 ) {
     items(items = notes, key = { it._id.toHexString() }) { note ->
-        NoteCard(
-            modifier = Modifier.animateItem(),
-            header = note.header,
-            text = note.body,
-            reminder = rememberNextReminder(reminders = reminders.filter { it.noteId == note._id }),
-            markedText = marker,
-            selected = note._id in selected,
-            onClick = { onClick(note) },
-            onLongClick = {
-                if (onLongClick != null) {
-                    onLongClick(note)
-                }
-            },
-        )
+            NoteCard(
+                note = note,
+                modifier = Modifier.animateItem(),
+                reminder = rememberNextReminder(reminders = reminders.filter { it.noteId == note._id }),
+                markedText = marker,
+                selected = note._id in selected,
+                onClick = { onClick(note) },
+                onLongClick = {
+                    if (onLongClick != null) {
+                        onLongClick(note)
+                    }
+                },
+            )
     }
 }

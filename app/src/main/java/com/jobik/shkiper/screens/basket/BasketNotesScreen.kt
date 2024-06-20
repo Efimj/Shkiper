@@ -2,13 +2,12 @@ package com.jobik.shkiper.screens.basket
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.Crossfade
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridState
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.outlined.*
@@ -28,7 +27,6 @@ import com.jobik.shkiper.ui.components.modals.ActionDialog
 import com.jobik.shkiper.ui.helpers.*
 import com.jobik.shkiper.ui.theme.AppTheme
 import com.jobik.shkiper.viewmodels.NotesViewModel
-
 
 @Composable
 fun BasketNotesScreen(navController: NavController, basketViewModel: NotesViewModel = hiltViewModel()) {
@@ -78,7 +76,6 @@ fun BasketNotesScreen(navController: NavController, basketViewModel: NotesViewMo
         )
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun ScreenContent(
     lazyGridNotes: LazyStaggeredGridState,
@@ -107,7 +104,7 @@ private fun ScreenContent(
                 Text(
                     text = stringResource(R.string.BasketPageHeader),
                     color = AppTheme.colors.textSecondary,
-                    style = MaterialTheme.typography.body1.copy(fontSize = 17.sp),
+                    style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.basicMarquee(),
                     maxLines = 1
                 )
