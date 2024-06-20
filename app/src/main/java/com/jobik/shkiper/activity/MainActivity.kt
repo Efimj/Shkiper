@@ -161,6 +161,6 @@ open class MainActivity : ComponentActivity() {
         val extras = intent.extras ?: return null
         val noteId = extras.getString(SharedPreferencesKeys.NoteIdExtra, null) ?: return null
         Startup.paramNoteId = noteId
-        return Route.Note.configure(id = noteId, sharedElementOrigin = "")
+        return Route.Note.configure(id = noteId, sharedElementOrigin = Route.NoteList.name)
     }
 }
