@@ -54,6 +54,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.NotePosition
+import com.jobik.shkiper.navigation.Argument_Shared_Origin
 import com.jobik.shkiper.navigation.NavigationHelpers.Companion.navigateToMain
 import com.jobik.shkiper.navigation.NavigationHelpers.Companion.navigateToSecondary
 import com.jobik.shkiper.navigation.Route
@@ -131,8 +132,6 @@ fun BottomAppBarProvider(
                         navController = navController
                     )
                 }
-                val sharedOrigin = LocalSharedElementKey.current
-
                 CreateNoteFAN(
                     isVisible = currentRouteName == Route.NoteList.value,
                     onCreate = {
@@ -142,7 +141,7 @@ fun BottomAppBarProvider(
                             navController.navigateToSecondary(
                                 Route.Note.configure(
                                     id = noteId.toHexString(),
-                                    sharedElementOrigin = sharedOrigin
+                                    sharedElementOrigin = Route.NoteList.name
                                 )
                             )
                         }
