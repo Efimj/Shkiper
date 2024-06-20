@@ -1,4 +1,4 @@
-package com.jobik.shkiper.screens.noteListScreen.NoteListCalendarContent
+package com.jobik.shkiper.screens.calendar
 
 import android.app.Application
 import androidx.compose.runtime.State

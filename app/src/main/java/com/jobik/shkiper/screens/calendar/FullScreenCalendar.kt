@@ -1,4 +1,4 @@
-package com.jobik.shkiper.screens.noteListScreen.NoteListCalendarContent
+package com.jobik.shkiper.screens.calendar
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background

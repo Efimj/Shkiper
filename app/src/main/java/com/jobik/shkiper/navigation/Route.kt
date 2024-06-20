@@ -35,7 +35,7 @@ sealed class Route(val route: String) {
             return this.route.replace(oldValue = "{$Argument_Note_Id}", newValue = id)
         }
     }
-
+    data object Calendar : Route(route = "calendar")
     data object AdvancedSettings : Route(route = "advanced_settings")
     data object Statistics : Route(route = "statistics")
     data object AboutNotepad : Route(route = "about_notepad")

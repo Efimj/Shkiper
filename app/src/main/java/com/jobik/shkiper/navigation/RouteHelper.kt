@@ -4,6 +4,7 @@ class RouteHelper {
     val NumberedRoutes = listOf(Route.NoteList, Route.Archive, Route.Basket, Route.Settings)
     val SecondaryRoutes = listOf(
         Route.Note,
+        Route.Calendar,
         Route.Statistics,
         Route.Purchases,
         Route.AboutNotepad,

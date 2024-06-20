@@ -20,6 +20,7 @@ import com.jobik.shkiper.screens.about.AboutNotepadScreen
 import com.jobik.shkiper.screens.advancedSettings.AdvancedSettings
 import com.jobik.shkiper.screens.archive.ArchiveNotesScreen
 import com.jobik.shkiper.screens.basket.BasketNotesScreen
+import com.jobik.shkiper.screens.calendar.CalendarScreen
 import com.jobik.shkiper.screens.note.NoteScreen
 import com.jobik.shkiper.screens.noteListScreen.NoteListScreen
 import com.jobik.shkiper.screens.purchase.PurchaseScreen
@@ -52,6 +53,18 @@ fun SetupAppScreenNavGraph(
                 ) {
                     CompositionLocalProvider(LocalNavAnimatedVisibilityScope provides this) {
                         NoteListScreen(
+                            navController = navController,
+                        )
+                    }
+                }
+
+                composable(
+                    route = Route.Calendar.route,
+                    enterTransition = { ScreenTransition().secondaryScreenEnterTransition() },
+                    exitTransition = { ScreenTransition().secondaryScreenExitTransition() }
+                ) {
+                    CompositionLocalProvider(LocalNavAnimatedVisibilityScope provides this) {
+                        CalendarScreen(
                             navController = navController,
                         )
                     }
