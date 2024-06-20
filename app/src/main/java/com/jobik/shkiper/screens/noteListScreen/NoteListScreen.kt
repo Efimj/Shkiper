@@ -2,7 +2,6 @@ package com.jobik.shkiper.screens.noteListScreen
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.Crossfade
-import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -22,7 +21,6 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.currentBackStackEntryAsState
 import com.jobik.shkiper.R
 import com.jobik.shkiper.navigation.NavigationHelpers.Companion.navigateToSecondary
 import com.jobik.shkiper.navigation.Route
@@ -33,6 +31,7 @@ import com.jobik.shkiper.ui.components.fields.getSearchBarHeight
 import com.jobik.shkiper.ui.components.layouts.*
 import com.jobik.shkiper.ui.components.modals.CreateReminderDialog
 import com.jobik.shkiper.ui.components.modals.ReminderDialogProperties
+import com.jobik.shkiper.ui.helpers.LocalSharedElementKey
 import com.jobik.shkiper.ui.helpers.bottomWindowInsetsPadding
 import com.jobik.shkiper.ui.helpers.endWindowInsetsPadding
 import com.jobik.shkiper.ui.helpers.startWindowInsetsPadding
@@ -77,7 +76,7 @@ fun NoteListScreen(
                     icon = Icons.Outlined.Event,
                     contentDescription = R.string.Reminders,
                     onClick = {
-                        navController.navigateToSecondary(Route.Calendar.route)
+                        navController.navigateToSecondary(Route.Calendar.value)
                     }
                 ),
                 onChange = viewModel::changeSearchText,
@@ -104,15 +103,13 @@ private fun BackHandlerIfSelectedNotes(notesViewModel: NotesViewModel) {
     )
 }
 
-
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 private fun NotesListContent(
     notesViewModel: NotesViewModel,
     navController: NavController,
 ) {
+    val sharedOrigin = LocalSharedElementKey.current
     val context = LocalContext.current
-    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route ?: ""
 
     val pinnedNotes =
         remember(notesViewModel.screenState.value.notes) { notesViewModel.screenState.value.notes.filter { it.isPinned } }
@@ -157,9 +154,14 @@ private fun NotesListContent(
                 onClick = { note ->
                     notesViewModel.clickOnNote(
                         note = note,
-                        currentRoute = currentRoute,
-                        navController = navController
-                    )
+                        onNavigate = {
+                            navController.navigateToSecondary(
+                                Route.Note.configure(
+                                    id = note._id.toHexString(),
+                                    sharedElementOrigin = sharedOrigin
+                                )
+                            )
+                        })
                 },
                 onLongClick = { note ->
                     notesViewModel.toggleSelectedNoteCard(
@@ -178,9 +180,14 @@ private fun NotesListContent(
                 onClick = { note ->
                     notesViewModel.clickOnNote(
                         note = note,
-                        currentRoute = currentRoute,
-                        navController = navController
-                    )
+                        onNavigate = {
+                            navController.navigateToSecondary(
+                                Route.Note.configure(
+                                    id = note._id.toHexString(),
+                                    sharedElementOrigin = sharedOrigin
+                                )
+                            )
+                        })
                 },
                 onLongClick = { note ->
                     notesViewModel.toggleSelectedNoteCard(

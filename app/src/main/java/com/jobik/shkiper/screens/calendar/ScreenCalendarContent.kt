@@ -19,6 +19,7 @@ import com.jobik.shkiper.database.models.Reminder
 import com.jobik.shkiper.screens.layout.NavigationBar.AppNavigationBarState
 import com.jobik.shkiper.ui.animation.AnimateVerticalSwitch
 import com.jobik.shkiper.ui.components.layouts.*
+import com.jobik.shkiper.ui.helpers.LocalSharedElementKey
 import com.jobik.shkiper.ui.helpers.bottomWindowInsetsPadding
 import com.jobik.shkiper.ui.helpers.endWindowInsetsPadding
 import com.jobik.shkiper.ui.helpers.startWindowInsetsPadding
@@ -91,13 +92,15 @@ private fun ScreenContent(
                     icon = Icons.Outlined.NotificationsNone
                 )
             else {
+                val sharedOrigin = LocalSharedElementKey.current
                 NoteListContent(
                     notes = viewModel.screenState.value.notes,
                     clickOnNote = { note ->
                         viewModel.clickOnNote(
                             note = note,
                             currentRoute = currentRoute,
-                            navController = navController
+                            navController = navController,
+                            origin = sharedOrigin
                         )
                     },
                     tags = viewModel.screenState.value.hashtags,

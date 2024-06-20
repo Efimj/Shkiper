@@ -7,6 +7,7 @@ import androidx.compose.ui.composed
 import com.jobik.shkiper.ui.components.cards.NoteSharedElementKey
 import com.jobik.shkiper.ui.components.cards.NoteSharedElementType
 import com.jobik.shkiper.ui.helpers.LocalNavAnimatedVisibilityScope
+import com.jobik.shkiper.ui.helpers.LocalSharedElementKey
 import com.jobik.shkiper.ui.helpers.LocalSharedTransitionScope
 
 @OptIn(ExperimentalSharedTransitionApi::class)
@@ -33,6 +34,7 @@ fun Modifier.sharedNoteTransitionModifier(
 ) = composed {
     val sharedTransitionScope = LocalSharedTransitionScope.current
     val animatedVisibilityScope = LocalNavAnimatedVisibilityScope.current
+    val sharedElementKey = LocalSharedElementKey.current
 
     val sharedTransitionModifier = sharedTransitionScope?.let { scope ->
         animatedVisibilityScope?.let { visibilityScope ->
@@ -43,6 +45,7 @@ fun Modifier.sharedNoteTransitionModifier(
                         rememberSharedContentState(
                             key = NoteSharedElementKey(
                                 noteId = noteId,
+                                origin = sharedElementKey,
                                 type = NoteSharedElementType.Bounds
                             )
                         ),

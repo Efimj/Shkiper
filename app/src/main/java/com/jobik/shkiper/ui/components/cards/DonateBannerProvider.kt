@@ -3,7 +3,6 @@ package com.jobik.shkiper.ui.components.cards
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.*
@@ -50,7 +49,7 @@ fun DonateBannerProvider(isVisible: MutableState<Boolean>, navController: NavCon
                 .clip(MaterialTheme.shapes.medium)
                 .clickable {
                     SupportTheDeveloperBannerUtil.updateLastShowingDate(context)
-                    navController.navigateToSecondary(Route.Purchases.route)
+                    navController.navigateToSecondary(Route.Purchases.value)
                     changeBannerState(
                         scope = scope,
                         isBannerNeeded = isBannerNeeded,

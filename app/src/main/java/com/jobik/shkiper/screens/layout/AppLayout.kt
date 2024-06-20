@@ -1,7 +1,6 @@
 package com.jobik.shkiper.screens.layout
 
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,7 +9,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -23,7 +21,7 @@ import com.jobik.shkiper.ui.theme.AppTheme
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun AppLayout(startDestination: String = Route.NoteList.route) {
+fun AppLayout(startDestination: String = Route.NoteList.value) {
     val navController = rememberNavController()
 
     Box(

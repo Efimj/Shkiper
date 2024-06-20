@@ -61,9 +61,11 @@ import java.time.format.DateTimeFormatter
 
 data class NoteSharedElementKey(
     val noteId: String,
-    val origin: String = "main",
+    val origin: String = NoteSharedOriginDefault,
     val type: NoteSharedElementType
 )
+
+const val NoteSharedOriginDefault = "default"
 
 enum class NoteSharedElementType {
     Bounds

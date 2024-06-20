@@ -238,13 +238,11 @@ class NotesViewModel @Inject constructor(
         }
     }
 
-    fun clickOnNote(note: Note, currentRoute: String, navController: NavController) {
+    fun clickOnNote(note: Note, onNavigate: () -> Unit) {
         if (_screenState.value.selectedNotes.isNotEmpty())
             toggleSelectedNoteCard(note._id)
         else {
-            if (currentRoute.substringBefore("/") != Route.Note.route.substringBefore("/")) {
-                navController.navigateToSecondary(Route.Note.noteId(note._id.toHexString()))
-            }
+            onNavigate()
         }
         updateBottomBar()
     }

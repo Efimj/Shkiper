@@ -74,7 +74,8 @@ class CalendarViewModel @Inject constructor(
     private fun getDatesWithIndicator(reminders: List<Reminder>) {
         val currentDate = LocalDate.now()
         val datesWithIndicator =
-            reminders.filter { it.repeat == RepeatMode.NONE && !it.date.isBefore(currentDate) }.map { it.date }
+            reminders.filter { it.repeat == RepeatMode.NONE && !it.date.isBefore(currentDate) }
+                .map { it.date }
         _screenState.value = screenState.value.copy(datesWithIndicator = datesWithIndicator.toSet())
     }
 
@@ -95,9 +96,15 @@ class CalendarViewModel @Inject constructor(
                 val targetReminderDate = DateHelper.nextDateWithRepeating(
                     notificationDate = LocalDateTime.of(it.date, it.time),
                     repeatMode = it.repeat,
-                    startingPoint = LocalDateTime.of(screenState.value.selectedDateRange.first, LocalTime.MIN)
+                    startingPoint = LocalDateTime.of(
+                        screenState.value.selectedDateRange.first,
+                        LocalTime.MIN
+                    )
                 ).toLocalDate()
-                isLocalDateInRange(date = targetReminderDate, range = _screenState.value.selectedDateRange)
+                isLocalDateInRange(
+                    date = targetReminderDate,
+                    range = _screenState.value.selectedDateRange
+                )
             }
 
         val sortedReminders = sortReminders(
@@ -128,7 +135,9 @@ class CalendarViewModel @Inject constructor(
     }
 
     private fun removeSelectedTagIfEmpty(selectedNotes: List<Note>) {
-        if (selectedNotes.isEmpty() && screenState.value.currentHashtag != null) setCurrentHashtag(null)
+        if (selectedNotes.isEmpty() && screenState.value.currentHashtag != null) setCurrentHashtag(
+            null
+        )
     }
 
     private fun selectNotesByTags(selectedNotes: List<Note>): List<Note> {
@@ -151,9 +160,19 @@ class CalendarViewModel @Inject constructor(
         return selectedNotes
     }
 
-    fun clickOnNote(note: Note, currentRoute: String, navController: NavController) {
-        if (currentRoute.substringBefore("/") != Route.Note.route.substringBefore("/")) {
-            navController.navigateToSecondary(Route.Note.noteId(note._id.toHexString()))
+    fun clickOnNote(
+        note: Note,
+        currentRoute: String,
+        navController: NavController,
+        origin: String
+    ) {
+        if (currentRoute.substringBefore("/") != Route.Note.value.substringBefore("/")) {
+            navController.navigateToSecondary(
+                Route.Note.configure(
+                    id = note._id.toHexString(),
+                    sharedElementOrigin = Route.Calendar.value
+                )
+            )
         }
     }
 
