@@ -51,9 +51,9 @@ import com.jobik.shkiper.database.models.Reminder
 import com.jobik.shkiper.database.models.RepeatMode
 import com.jobik.shkiper.helpers.DateHelper
 import com.jobik.shkiper.helpers.TextHelper.Companion.removeMarkdownStyles
-import com.jobik.shkiper.ui.helpers.LocalNavAnimatedVisibilityScope
-import com.jobik.shkiper.ui.helpers.LocalSharedTransitionScope
 import com.jobik.shkiper.ui.modifiers.bounceClick
+import com.jobik.shkiper.ui.modifiers.sharedNoteTransitionModifier
+import com.jobik.shkiper.ui.modifiers.skipToLookaheadSize
 import com.jobik.shkiper.ui.theme.AppTheme
 import com.mohamedrejeb.richeditor.model.RichTextState
 import kotlinx.parcelize.Parcelize
@@ -147,61 +147,46 @@ fun NoteCard(
         )
         cardState.value = newCardState
     }
-    val sharedTransitionScope = LocalSharedTransitionScope.current
-        ?: throw IllegalStateException("No SharedElementScope found")
 
-    val animatedVisibilityScope = LocalNavAnimatedVisibilityScope.current
-        ?: throw IllegalStateException("No AnimatedVisibility found")
-
-    with(sharedTransitionScope) {
-        Card(
-            modifier = modifier
-                .sharedElement(
-                     rememberSharedContentState(
-                        key = NoteSharedElementKey(
-                            noteId = note._id.toHexString(),
-                            type = NoteSharedElementType.Bounds
-                        )
-                    ),
-                    animatedVisibilityScope = animatedVisibilityScope,
-                )
-                .bounceClick()
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(15.dp))
-                .combinedClickable(
-                    onClick = onClick,
-                    onLongClick = onLongClick,
-                ),
-            shape = RoundedCornerShape(15.dp),
-            border = BorderStroke(2.dp, borderColor),
-            colors = CardDefaults.cardColors(
-                containerColor = AppTheme.colors.container,
-                contentColor = AppTheme.colors.text
+    Card(
+        modifier = modifier
+            .sharedNoteTransitionModifier(noteId = note._id.toHexString())
+            .bounceClick()
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(15.dp))
+            .combinedClickable(
+                onClick = onClick,
+                onLongClick = onLongClick,
             ),
+        shape = RoundedCornerShape(15.dp),
+        border = BorderStroke(2.dp, borderColor),
+        colors = CardDefaults.cardColors(
+            containerColor = AppTheme.colors.container,
+            contentColor = AppTheme.colors.text
+        ),
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp)
         ) {
-            Column(
-                modifier = Modifier.padding(16.dp)
-            ) {
-                if (cardState.value != null) {
-                    if (markedText.isNullOrBlank()) {
-                        NoteContent(
-                            cardState = cardState.value!!,
-                            headerStyle = headerStyle,
-                            bodyStyle = bodyStyle
-                        )
-                    } else {
-                        NoteAnnotatedContent(
-                            cardState = cardState.value!!,
-                            markedText = markedText,
-                            headerStyle = headerStyle,
-                            bodyStyle = bodyStyle
-                        )
-                    }
-                    if (cardState.value!!.header.isNullOrBlank() && cardState.value!!.body.isNullOrBlank()) {
-                        EmptyNoteContent(bodyStyle = bodyStyle)
-                    }
-                    ReminderInformation(cardState = cardState.value!!)
+            if (cardState.value != null) {
+                if (markedText.isNullOrBlank()) {
+                    NoteContent(
+                        cardState = cardState.value!!,
+                        headerStyle = headerStyle,
+                        bodyStyle = bodyStyle
+                    )
+                } else {
+                    NoteAnnotatedContent(
+                        cardState = cardState.value!!,
+                        markedText = markedText,
+                        headerStyle = headerStyle,
+                        bodyStyle = bodyStyle
+                    )
                 }
+                if (cardState.value!!.header.isNullOrBlank() && cardState.value!!.body.isNullOrBlank()) {
+                    EmptyNoteContent(bodyStyle = bodyStyle)
+                }
+                ReminderInformation(cardState = cardState.value!!)
             }
         }
     }
@@ -212,12 +197,14 @@ private fun ColumnScope.EmptyNoteContent(
     bodyStyle: TextStyle
 ) {
     Text(
+        modifier = Modifier
+            .skipToLookaheadSize()
+            .align(Alignment.CenterHorizontally),
         text = stringResource(R.string.EmptyNote),
         maxLines = 10,
         overflow = TextOverflow.Ellipsis,
         style = bodyStyle,
         color = AppTheme.colors.textSecondary,
-        modifier = Modifier.align(Alignment.CenterHorizontally)
     )
 }
 
@@ -251,6 +238,7 @@ private fun ReminderInformation(
             )
             Spacer(Modifier.width(4.dp))
             Text(
+                modifier = Modifier.skipToLookaheadSize(),
                 text = DateHelper.getLocalizedDate(cardState.reminderDate.toLocalDate()),
                 style = MaterialTheme.typography.bodySmall.copy(
                     textDecoration = if (isDateFuture) TextDecoration.None else TextDecoration.LineThrough
@@ -260,6 +248,7 @@ private fun ReminderInformation(
             Spacer(Modifier.width(4.dp))
             if (isDateFuture)
                 Text(
+                    modifier = Modifier.skipToLookaheadSize(),
                     text = cardState.reminderDate.toLocalTime()
                         .format(DateTimeFormatter.ofPattern("HH:mm")),
                     style = MaterialTheme.typography.bodySmall,
@@ -280,6 +269,7 @@ private fun NoteContent(
 
     if (!cardState.header.isNullOrBlank()) {
         Text(
+            modifier = Modifier.skipToLookaheadSize(),
             text = cardState.header,
             style = headerStyle,
             overflow = TextOverflow.Ellipsis,
@@ -294,6 +284,7 @@ private fun NoteContent(
         Spacer(modifier = Modifier.height(4.dp))
     if (!cardState.body.isNullOrBlank()) {
         Text(
+            modifier = Modifier.skipToLookaheadSize(),
             text = cardState.body,
             maxLines = maxBodyLines - headerLineCount,
             overflow = TextOverflow.Ellipsis,
@@ -315,6 +306,7 @@ private fun NoteAnnotatedContent(
 
     if (!cardState.header.isNullOrBlank()) {
         Text(
+            modifier = Modifier.skipToLookaheadSize(),
             text = buildAnnotatedString(
                 text = cardState.header,
                 substring = markedText,
@@ -334,6 +326,7 @@ private fun NoteAnnotatedContent(
         Spacer(modifier = Modifier.height(4.dp))
     if (!cardState.body.isNullOrBlank()) {
         Text(
+            modifier = Modifier.skipToLookaheadSize(),
             text = buildAnnotatedString(
                 text = cardState.body,
                 substring = markedText,
