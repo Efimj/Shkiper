@@ -4,6 +4,7 @@ class RouteHelper {
     val NumberedRoutes = listOf(Route.NoteList, Route.Archive, Route.Basket, Route.Settings)
     val SecondaryRoutes = listOf(
         Route.Note,
+        Route.Calendar,
         Route.Statistics,
         Route.Purchases,
         Route.AboutNotepad,
@@ -15,7 +16,7 @@ class RouteHelper {
      */
     fun getRouteNumber(route: String): Int? {
         NumberedRoutes.forEachIndexed { index, element ->
-            if (element.route.substringBefore("/") == route.substringBefore("/")) return index
+            if (element.value.substringBefore("/") == route.substringBefore("/")) return index
         }
         return null
     }
@@ -24,6 +25,6 @@ class RouteHelper {
      * This routes not show navigation button
      */
     fun isSecondaryRoute(route: String): Boolean {
-        return SecondaryRoutes.any { it.route.substringBefore("/") == route.substringBefore("/") }
+        return SecondaryRoutes.any { it.value.substringBefore("/") == route.substringBefore("/") }
     }
 }

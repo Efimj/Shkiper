@@ -1,95 +1,212 @@
 package com.jobik.shkiper.screens.noteListScreen
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.animation.*
-import androidx.compose.animation.core.tween
+import androidx.compose.animation.Crossfade
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Description
+import androidx.compose.material.icons.outlined.Event
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableIntState
-import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.jobik.shkiper.screens.layout.NavigationBar.AppNavigationBarState
-import com.jobik.shkiper.screens.noteListScreen.NoteListCalendarContent.CalendarViewModel
-import com.jobik.shkiper.screens.noteListScreen.NoteListCalendarContent.ScreenCalendarContent
-import com.jobik.shkiper.screens.noteListScreen.NoteListScreenContent.NoteListScreenContent
+import com.jobik.shkiper.R
+import com.jobik.shkiper.navigation.NavigationHelpers.Companion.navigateToSecondary
+import com.jobik.shkiper.navigation.Route
+import com.jobik.shkiper.ui.components.cards.DonateBannerProvider
+import com.jobik.shkiper.ui.components.fields.SearchBar
+import com.jobik.shkiper.ui.components.fields.SearchBarActionButton
+import com.jobik.shkiper.ui.components.fields.getSearchBarHeight
+import com.jobik.shkiper.ui.components.layouts.*
+import com.jobik.shkiper.ui.components.modals.CreateReminderDialog
+import com.jobik.shkiper.ui.components.modals.ReminderDialogProperties
+import com.jobik.shkiper.ui.helpers.LocalSharedElementKey
+import com.jobik.shkiper.ui.helpers.bottomWindowInsetsPadding
+import com.jobik.shkiper.ui.helpers.endWindowInsetsPadding
+import com.jobik.shkiper.ui.helpers.startWindowInsetsPadding
+import com.jobik.shkiper.ui.modifiers.scrollConnectionToProvideVisibility
+import com.jobik.shkiper.ui.theme.AppTheme
+import com.jobik.shkiper.util.SupportTheDeveloperBannerUtil
 import com.jobik.shkiper.viewmodels.NotesViewModel
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun NoteListScreen(
     navController: NavController,
+    viewModel: NotesViewModel = hiltViewModel(),
 ) {
-    val selectedPageNumber = rememberSaveable { mutableIntStateOf(1) }
-    ReturnUserToMainContent(currentPage = selectedPageNumber)
+    val isSearchBarVisible = remember { mutableStateOf(true) }
 
-    AnimatedContent(
-        modifier = Modifier.fillMaxSize(),
-        targetState = selectedPageNumber.intValue,
-        transitionSpec = {
-            val duration = 300
+    BackHandlerIfSelectedNotes(viewModel)
 
-            if (targetState > initialState) {
-                slideIntoContainer(
-                    towards = AnimatedContentTransitionScope.SlideDirection.Left,
-                    animationSpec = tween(duration),
-                ) togetherWith slideOutOfContainer(
-                    towards = AnimatedContentTransitionScope.SlideDirection.Right,
-                    animationSpec = tween(durationMillis = duration),
-                    targetOffset = { -150 }
-                )
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(AppTheme.colors.background)
+            .scrollConnectionToProvideVisibility(visible = isSearchBarVisible)
+    ) {
+        Crossfade(
+            targetState = viewModel.screenState.value.isNotesInitialized && viewModel.screenState.value.notes.isEmpty(),
+            label = "animation layouts screen"
+        ) { value ->
+            if (value) {
+                ScreenStub(title = R.string.EmptyNotesPageHeader, icon = Icons.Outlined.Description)
             } else {
-                slideIntoContainer(
-                    towards = AnimatedContentTransitionScope.SlideDirection.Left,
-                    animationSpec = tween(duration),
-                    initialOffset = { -150 }
-                ).togetherWith(
-                    slideOutOfContainer(
-                        towards = AnimatedContentTransitionScope.SlideDirection.Right,
-                        animationSpec = tween(duration),
-                    )
+                NotesListContent(
+                    notesViewModel = viewModel,
+                    navController = navController,
                 )
-            }.apply {
-                targetContentZIndex = targetState.toFloat()
             }
-        },
-        label = "MainPageAnimatedContent"
-    ) { number ->
-        if (number == 1) {
-            NoteListScreenContent(
-                navController = navController,
-                viewModel = hiltViewModel<NotesViewModel>(),
-                onSlideNext = {
-                    selectedPageNumber.intValue = 2
-                })
-        } else {
-            ScreenCalendarContent(
-                navController = navController,
-                viewModel = hiltViewModel<CalendarViewModel>(),
-                onSlideBack = {
-                    selectedPageNumber.intValue = 1
-                }
+        }
+        Box(modifier = Modifier) {
+            SearchBar(
+                isVisible = viewModel.screenState.value.selectedNotes.isEmpty() && isSearchBarVisible.value,
+                value = viewModel.screenState.value.searchText,
+                actionButton = SearchBarActionButton(
+                    icon = Icons.Outlined.Event,
+                    contentDescription = R.string.Reminders,
+                    onClick = {
+                        navController.navigateToSecondary(Route.Calendar.value)
+                    }
+                ),
+                onChange = viewModel::changeSearchText,
+            )
+            NoteListScreenActionBar(
+                isVisible = viewModel.screenState.value.selectedNotes.isNotEmpty(),
+                notesViewModel = viewModel
             )
         }
     }
 
-    LaunchedEffect(selectedPageNumber.intValue) {
-        if (selectedPageNumber.intValue > 1) {
-            AppNavigationBarState.hideWithLock()
-        } else {
-            AppNavigationBarState.showWithUnlock()
+    NoteListScreenReminderCheck(viewModel)
+    CreateReminderContent(viewModel)
+}
+
+@Composable
+private fun BackHandlerIfSelectedNotes(notesViewModel: NotesViewModel) {
+    /**
+     * When user select note
+     */
+    BackHandler(
+        enabled = notesViewModel.screenState.value.selectedNotes.isNotEmpty(), onBack =
+        notesViewModel::clearSelectedNote
+    )
+}
+
+@Composable
+private fun NotesListContent(
+    notesViewModel: NotesViewModel,
+    navController: NavController,
+) {
+    val sharedOrigin = LocalSharedElementKey.current
+    val context = LocalContext.current
+
+    val pinnedNotes =
+        remember(notesViewModel.screenState.value.notes) { notesViewModel.screenState.value.notes.filter { it.isPinned } }
+    val unpinnedNotes =
+        remember(notesViewModel.screenState.value.notes) { notesViewModel.screenState.value.notes.filterNot { it.isPinned } }
+
+    val showDonateBanner =
+        rememberSaveable { mutableStateOf(SupportTheDeveloperBannerUtil.isBannerNeeded(context)) }
+
+    LazyGridNotes(
+        contentPadding = PaddingValues(
+            start = 10.dp + startWindowInsetsPadding(),
+            top = getSearchBarHeight() + 10.dp,
+            end = 10.dp + endWindowInsetsPadding(),
+            bottom = 80.dp + bottomWindowInsetsPadding()
+        ),
+        modifier = Modifier
+            .fillMaxSize()
+            .testTag("notes_list"),
+    ) {
+        if (showDonateBanner.value) {
+            item(span = StaggeredGridItemSpan.FullLine) {
+                Box(modifier = Modifier.fillMaxWidth()) {
+                    DonateBannerProvider(
+                        isVisible = showDonateBanner,
+                        navController = navController
+                    )
+                }
+            }
+        }
+        noteTagsList(
+            tags = notesViewModel.screenState.value.hashtags,
+            selected = notesViewModel.screenState.value.currentHashtag
+        ) { notesViewModel.setCurrentHashtag(it) }
+        if (pinnedNotes.isNotEmpty()) {
+            notesListHeadline(headline = R.string.Pinned)
+            notesList(
+                notes = pinnedNotes,
+                reminders = notesViewModel.screenState.value.reminders,
+                marker = notesViewModel.screenState.value.searchText,
+                selected = notesViewModel.screenState.value.selectedNotes,
+                onClick = { note ->
+                    notesViewModel.clickOnNote(
+                        note = note,
+                        onNavigate = {
+                            navController.navigateToSecondary(
+                                Route.Note.configure(
+                                    id = note._id.toHexString(),
+                                    sharedElementOrigin = sharedOrigin
+                                )
+                            )
+                        })
+                },
+                onLongClick = { note ->
+                    notesViewModel.toggleSelectedNoteCard(
+                        noteId = note._id
+                    )
+                },
+            )
+        }
+        if (unpinnedNotes.isNotEmpty()) {
+            notesListHeadline(headline = R.string.Other)
+            notesList(
+                notes = unpinnedNotes,
+                reminders = notesViewModel.screenState.value.reminders,
+                marker = notesViewModel.screenState.value.searchText,
+                selected = notesViewModel.screenState.value.selectedNotes,
+                onClick = { note ->
+                    notesViewModel.clickOnNote(
+                        note = note,
+                        onNavigate = {
+                            navController.navigateToSecondary(
+                                Route.Note.configure(
+                                    id = note._id.toHexString(),
+                                    sharedElementOrigin = sharedOrigin
+                                )
+                            )
+                        })
+                },
+                onLongClick = { note ->
+                    notesViewModel.toggleSelectedNoteCard(
+                        noteId = note._id
+                    )
+                },
+            )
         }
     }
 }
 
 @Composable
-private fun ReturnUserToMainContent(
-    currentPage: MutableIntState
-) {
-    BackHandler(enabled = currentPage.intValue == 2) {
-        currentPage.intValue = 1
+private fun CreateReminderContent(notesViewModel: NotesViewModel) {
+    if (notesViewModel.screenState.value.isCreateReminderDialogShow) {
+        CreateReminderDialog(
+            reminderDialogProperties = ReminderDialogProperties(),
+            onGoBack = notesViewModel::switchReminderDialogShow,
+            onDelete = null,
+            onSave = notesViewModel::createReminder,
+        )
     }
 }

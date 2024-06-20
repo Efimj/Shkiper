@@ -1,4 +1,4 @@
-package com.jobik.shkiper.screens.noteListScreen.NoteListCalendarContent
+package com.jobik.shkiper.screens.calendar
 
 import androidx.compose.animation.*
 import androidx.compose.foundation.background
@@ -10,6 +10,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.jobik.shkiper.R
@@ -18,6 +19,7 @@ import com.jobik.shkiper.database.models.Reminder
 import com.jobik.shkiper.screens.layout.NavigationBar.AppNavigationBarState
 import com.jobik.shkiper.ui.animation.AnimateVerticalSwitch
 import com.jobik.shkiper.ui.components.layouts.*
+import com.jobik.shkiper.ui.helpers.LocalSharedElementKey
 import com.jobik.shkiper.ui.helpers.bottomWindowInsetsPadding
 import com.jobik.shkiper.ui.helpers.endWindowInsetsPadding
 import com.jobik.shkiper.ui.helpers.startWindowInsetsPadding
@@ -26,17 +28,16 @@ import kotlinx.coroutines.delay
 import me.onebone.toolbar.*
 
 @Composable
-fun ScreenCalendarContent(
+fun CalendarScreen(
     navController: NavController,
-    viewModel: CalendarViewModel,
-    onSlideBack: () -> Unit,
+    viewModel: CalendarViewModel = hiltViewModel(),
 ) {
     val collapsingToolbarScaffold = rememberCollapsingToolbarScaffoldState()
 
     HideNavigation()
 
     AnimateVerticalSwitch(
-        modifier = Modifier,
+        modifier = Modifier.background(AppTheme.colors.background),
         state = viewModel.screenState.value.fullScreenCalendarOpen.not(),
         topComponent = {
             FullScreenCalendar(viewModel)
@@ -44,7 +45,7 @@ fun ScreenCalendarContent(
         ScreenContent(
             collapsingToolbarScaffold = collapsingToolbarScaffold,
             viewModel = viewModel,
-            onSlideBack = onSlideBack,
+            onSlideBack = { navController.popBackStack() },
             navController = navController
         )
     }
@@ -91,13 +92,15 @@ private fun ScreenContent(
                     icon = Icons.Outlined.NotificationsNone
                 )
             else {
+                val sharedOrigin = LocalSharedElementKey.current
                 NoteListContent(
                     notes = viewModel.screenState.value.notes,
                     clickOnNote = { note ->
                         viewModel.clickOnNote(
                             note = note,
                             currentRoute = currentRoute,
-                            navController = navController
+                            navController = navController,
+                            origin = sharedOrigin
                         )
                     },
                     tags = viewModel.screenState.value.hashtags,

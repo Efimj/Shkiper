@@ -2,29 +2,22 @@ package com.jobik.shkiper.activity
 
 import android.app.Activity
 import android.content.Context
-import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.jobik.shkiper.NotepadApplication
 import com.jobik.shkiper.SharedPreferencesKeys
 import com.jobik.shkiper.SharedPreferencesKeys.OnboardingFinishedData
-import com.jobik.shkiper.database.models.NotePosition
 import com.jobik.shkiper.navigation.Route
 import com.jobik.shkiper.screens.layout.AppLayout
 import com.jobik.shkiper.services.billing.BillingService
@@ -35,7 +28,6 @@ import com.jobik.shkiper.services.statistics.StatisticsService
 import com.jobik.shkiper.ui.components.modals.OfferWriteReview
 import com.jobik.shkiper.ui.components.modals.onboarding.OnboardingDialog
 import com.jobik.shkiper.ui.helpers.SecureModeManager
-import com.jobik.shkiper.ui.theme.AppTheme
 import com.jobik.shkiper.ui.theme.CustomThemeStyle
 import com.jobik.shkiper.ui.theme.ShkiperTheme
 import com.jobik.shkiper.util.ContextUtils.adjustFontSize
@@ -150,7 +142,7 @@ open class MainActivity : ComponentActivity() {
         val route = getNotificationRoute()
         if (route != null)
             return route
-        return Route.NoteList.route
+        return Route.NoteList.value
     }
 
     private fun checkIsOnboarding(context: Context): Boolean {
@@ -169,6 +161,6 @@ open class MainActivity : ComponentActivity() {
         val extras = intent.extras ?: return null
         val noteId = extras.getString(SharedPreferencesKeys.NoteIdExtra, null) ?: return null
         Startup.paramNoteId = noteId
-        return Route.Note.noteId(noteId)
+        return Route.Note.configure(id = noteId, sharedElementOrigin = "")
     }
 }

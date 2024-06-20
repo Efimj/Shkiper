@@ -22,6 +22,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.jobik.shkiper.R
+import com.jobik.shkiper.navigation.NavigationHelpers.Companion.navigateToSecondary
+import com.jobik.shkiper.navigation.Route
 import com.jobik.shkiper.ui.components.layouts.*
 import com.jobik.shkiper.ui.components.modals.ActionDialog
 import com.jobik.shkiper.ui.helpers.*
@@ -29,8 +31,10 @@ import com.jobik.shkiper.ui.theme.AppTheme
 import com.jobik.shkiper.viewmodels.NotesViewModel
 
 @Composable
-fun BasketNotesScreen(navController: NavController, basketViewModel: NotesViewModel = hiltViewModel()) {
-    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route ?: ""
+fun BasketNotesScreen(
+    navController: NavController,
+    basketViewModel: NotesViewModel = hiltViewModel()
+) {
     val lazyGridNotes = rememberLazyStaggeredGridState()
 
     /**
@@ -47,12 +51,14 @@ fun BasketNotesScreen(navController: NavController, basketViewModel: NotesViewMo
             label = "animation layouts screen"
         ) { value ->
             if (value) {
-                ScreenStub(title = R.string.BasketNotesPageHeader, icon = Icons.Outlined.DeleteSweep)
+                ScreenStub(
+                    title = R.string.BasketNotesPageHeader,
+                    icon = Icons.Outlined.DeleteSweep
+                )
             } else {
                 ScreenContent(
                     lazyGridNotes = lazyGridNotes,
                     notesViewModel = basketViewModel,
-                    currentRoute = currentRoute,
                     navController = navController
                 )
             }
@@ -80,9 +86,10 @@ fun BasketNotesScreen(navController: NavController, basketViewModel: NotesViewMo
 private fun ScreenContent(
     lazyGridNotes: LazyStaggeredGridState,
     notesViewModel: NotesViewModel,
-    currentRoute: String,
     navController: NavController
 ) {
+    val sharedOrigin = LocalSharedElementKey.current
+
     LazyGridNotes(
         contentPadding = PaddingValues(
             start = 10.dp + startWindowInsetsPadding(),
@@ -116,7 +123,16 @@ private fun ScreenContent(
             marker = notesViewModel.screenState.value.searchText,
             selected = notesViewModel.screenState.value.selectedNotes,
             onClick = { note ->
-                notesViewModel.clickOnNote(note = note, currentRoute = currentRoute, navController = navController)
+                notesViewModel.clickOnNote(
+                    note = note,
+                    onNavigate = {
+                        navController.navigateToSecondary(
+                            Route.Note.configure(
+                                id = note._id.toHexString(),
+                                sharedElementOrigin = sharedOrigin
+                            )
+                        )
+                    })
             },
             onLongClick = { note ->
                 notesViewModel.toggleSelectedNoteCard(noteId = note._id)
