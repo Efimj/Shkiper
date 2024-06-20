@@ -60,6 +60,16 @@ import kotlinx.parcelize.Parcelize
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
+data class NoteSharedElementKey(
+    val noteId: String,
+    val origin: String = "main",
+    val type: NoteSharedElementType
+)
+
+enum class NoteSharedElementType {
+    Bounds
+}
+
 @Parcelize
 private data class NoteCardState(
     val header: String? = null,
@@ -147,8 +157,11 @@ fun NoteCard(
         Card(
             modifier = modifier
                 .sharedElement(
-                    state = rememberSharedContentState(
-                        key = "note-background-${note._id}"
+                     rememberSharedContentState(
+                        key = NoteSharedElementKey(
+                            noteId = note._id.toHexString(),
+                            type = NoteSharedElementType.Bounds
+                        )
                     ),
                     animatedVisibilityScope = animatedVisibilityScope,
                 )
@@ -195,14 +208,16 @@ fun NoteCard(
 }
 
 @Composable
-private fun ColumnScope.EmptyNoteContent(bodyStyle: TextStyle) {
+private fun ColumnScope.EmptyNoteContent(
+    bodyStyle: TextStyle
+) {
     Text(
         text = stringResource(R.string.EmptyNote),
         maxLines = 10,
         overflow = TextOverflow.Ellipsis,
         style = bodyStyle,
         color = AppTheme.colors.textSecondary,
-        modifier = Modifier.Companion.align(Alignment.CenterHorizontally)
+        modifier = Modifier.align(Alignment.CenterHorizontally)
     )
 }
 

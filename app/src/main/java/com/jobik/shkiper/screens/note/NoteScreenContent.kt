@@ -47,6 +47,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.NotePosition
+import com.jobik.shkiper.ui.components.cards.NoteSharedElementKey
+import com.jobik.shkiper.ui.components.cards.NoteSharedElementType
 import com.jobik.shkiper.ui.components.cards.SnackbarCard
 import com.jobik.shkiper.ui.components.fields.CustomDefaultTextField
 import com.jobik.shkiper.ui.components.fields.CustomRichTextEditor
@@ -96,6 +98,18 @@ fun NoteScreenContent(
 
     with(sharedTransitionScope) {
         Scaffold(
+            modifier = Modifier
+                .sharedElement(
+                    rememberSharedContentState(
+                        key = NoteSharedElementKey(
+                            noteId = noteViewModel.screenState.value.noteId.toHexString(),
+                            type = NoteSharedElementType.Bounds
+                        )
+                    ),
+                    animatedVisibilityScope = animatedVisibilityScope,
+                )
+                .fillMaxSize()
+                .imePadding(),
             containerColor = AppTheme.colors.background,
             topBar = {
                 NoteScreenHeader(
@@ -112,13 +126,6 @@ fun NoteScreenContent(
                 )
             },
             contentWindowInsets = WindowInsets.ime,
-            modifier = Modifier
-                .sharedElement(
-                    rememberSharedContentState(key = "note-background-${noteViewModel.screenState.value.noteId}"),
-                    animatedVisibilityScope,
-                )
-                .fillMaxSize()
-                .imePadding(),
         ) { contentPadding ->
             Box(
                 Modifier
@@ -141,6 +148,12 @@ fun NoteScreenContent(
                         noteViewModel.screenState.value.notePosition != NotePosition.DELETE
                     item {
                         CustomDefaultTextField(
+                            modifier = Modifier
+                                .testTag("note_header_input")
+                                .skipToLookaheadSize()
+                                .fillMaxSize()
+                                .padding(bottom = 6.dp, top = 4.dp)
+                                .padding(horizontal = 20.dp),
                             text = noteViewModel.screenState.value.noteHeader,
                             onTextChange = { noteViewModel.updateNoteHeader(it) },
                             placeholder = stringResource(R.string.Header),
@@ -159,22 +172,13 @@ fun NoteScreenContent(
                             textStyle = MaterialTheme.typography.headlineSmall.copy(
                                 fontWeight = FontWeight.SemiBold,
                             ),
-                            modifier = Modifier
-                                .testTag("note_header_input")
-                                .fillMaxSize()
-                                .padding(bottom = 6.dp, top = 4.dp)
-                                .padding(horizontal = 20.dp)
                         )
                     }
                     item {
                         CustomRichTextEditor(
-                            state = richTextState,
-                            placeholder = stringResource(R.string.Text),
-                            textStyle = MaterialTheme.typography.bodyMedium,
-                            enabled = enabled,
-                            minLines = 2,
                             modifier = Modifier
                                 .testTag("note_body_input")
+                                .skipToLookaheadSize()
                                 .fillMaxWidth()
                                 .padding(bottom = 10.dp)
                                 .padding(horizontal = 20.dp)
@@ -186,7 +190,12 @@ fun NoteScreenContent(
                                         noteViewModel.switchStyling(false)
                                         noteViewModel.switchStylingEnabled(false)
                                     }
-                                }
+                                },
+                            state = richTextState,
+                            placeholder = stringResource(R.string.Text),
+                            textStyle = MaterialTheme.typography.bodyMedium,
+                            enabled = enabled,
+                            minLines = 2,
                         )
                     }
                     item {
