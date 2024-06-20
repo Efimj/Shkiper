@@ -6,7 +6,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
 import com.jobik.shkiper.database.data.note.NoteMongoRepository
 import com.jobik.shkiper.database.data.reminder.ReminderMongoRepository
 import com.jobik.shkiper.database.models.Note
@@ -16,8 +15,6 @@ import com.jobik.shkiper.database.models.RepeatMode
 import com.jobik.shkiper.helpers.DateHelper
 import com.jobik.shkiper.helpers.DateHelper.Companion.isLocalDateInRange
 import com.jobik.shkiper.helpers.DateHelper.Companion.sortReminders
-import com.jobik.shkiper.navigation.NavigationHelpers.Companion.navigateToSecondary
-import com.jobik.shkiper.navigation.Route
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -28,6 +25,7 @@ import java.time.LocalTime
 import javax.inject.Inject
 
 data class CalendarScreenState(
+    val isNotesInitialized: Boolean = false,
     val notes: List<Note> = emptyList(),
     val reminders: List<Reminder> = emptyList(),
     val targetReminders: List<Reminder> = emptyList(),
@@ -131,7 +129,7 @@ class CalendarViewModel @Inject constructor(
         selectedNotes = selectNotesByTags(selectedNotes)
         removeSelectedTagIfEmpty(selectedNotes)
 
-        _screenState.value = _screenState.value.copy(notes = selectedNotes)
+        _screenState.value = _screenState.value.copy(notes = selectedNotes, isNotesInitialized = true)
     }
 
     private fun removeSelectedTagIfEmpty(selectedNotes: List<Note>) {
@@ -158,22 +156,6 @@ class CalendarViewModel @Inject constructor(
             }
 
         return selectedNotes
-    }
-
-    fun clickOnNote(
-        note: Note,
-        currentRoute: String,
-        navController: NavController,
-        origin: String
-    ) {
-        if (currentRoute.substringBefore("/") != Route.Note.value.substringBefore("/")) {
-            navController.navigateToSecondary(
-                Route.Note.configure(
-                    id = note._id.toHexString(),
-                    sharedElementOrigin = Route.Calendar.value
-                )
-            )
-        }
     }
 
     fun selectDate(date: LocalDate) {

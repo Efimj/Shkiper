@@ -16,6 +16,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.Note
 import com.jobik.shkiper.database.models.Reminder
+import com.jobik.shkiper.navigation.NavigationHelpers.Companion.navigateToSecondary
+import com.jobik.shkiper.navigation.Route
 import com.jobik.shkiper.screens.layout.NavigationBar.AppNavigationBarState
 import com.jobik.shkiper.ui.animation.AnimateVerticalSwitch
 import com.jobik.shkiper.ui.components.layouts.*
@@ -66,8 +68,6 @@ private fun ScreenContent(
     onSlideBack: () -> Unit,
     navController: NavController
 ) {
-    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route ?: ""
-
     CollapsingToolbarScaffold(
         modifier = Modifier
             .imePadding()
@@ -82,7 +82,7 @@ private fun ScreenContent(
         }
     ) {
         Crossfade(
-            targetState = viewModel.screenState.value.notes.isEmpty(),
+            targetState = viewModel.screenState.value.isNotesInitialized && viewModel.screenState.value.notes.isEmpty(),
             label = "animation layouts screen"
         ) { value ->
             if (value)
@@ -92,15 +92,14 @@ private fun ScreenContent(
                     icon = Icons.Outlined.NotificationsNone
                 )
             else {
-                val sharedOrigin = LocalSharedElementKey.current
                 NoteListContent(
                     notes = viewModel.screenState.value.notes,
                     clickOnNote = { note ->
-                        viewModel.clickOnNote(
-                            note = note,
-                            currentRoute = currentRoute,
-                            navController = navController,
-                            origin = sharedOrigin
+                        navController.navigateToSecondary(
+                            Route.Note.configure(
+                                id = note._id.toHexString(),
+                                sharedElementOrigin = Route.Calendar.name
+                            )
                         )
                     },
                     tags = viewModel.screenState.value.hashtags,
