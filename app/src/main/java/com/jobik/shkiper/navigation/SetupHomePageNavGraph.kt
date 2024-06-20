@@ -60,8 +60,8 @@ fun SetupAppScreenNavGraph(
 
                 composable(
                     route = Route.Calendar.route,
-                    enterTransition = { ScreenTransition().secondaryScreenEnterTransition() },
-                    exitTransition = { ScreenTransition().secondaryScreenExitTransition() }
+                    enterTransition = { secondaryToNoteEnterTransition() },
+                    exitTransition = { secondaryToNoteExitTransition() }
                 ) {
                     CompositionLocalProvider(LocalNavAnimatedVisibilityScope provides this) {
                         CalendarScreen(

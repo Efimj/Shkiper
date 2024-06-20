@@ -66,3 +66,25 @@ fun AnimatedContentTransitionScope<NavBackStackEntry>.mainScreenExitTransition()
 
     return null
 }
+
+fun AnimatedContentTransitionScope<NavBackStackEntry>.secondaryToNoteEnterTransition(): EnterTransition? {
+    val initial = initialState.destination.route?.substringBefore("/") ?: return null
+
+    // transition before Note screen
+    if (initial == Route.Note.route.substringBefore("/")) {
+        return null
+    }
+
+    return ScreenTransition().secondaryScreenEnterTransition()
+}
+
+fun AnimatedContentTransitionScope<NavBackStackEntry>.secondaryToNoteExitTransition(): ExitTransition? {
+    val target = targetState.destination.route?.substringBefore("/") ?: return null
+
+    // transition after Note screen
+    if (target == Route.Note.route.substringBefore("/")) {
+        return null
+    }
+
+    return ScreenTransition().secondaryScreenExitTransition()
+}
