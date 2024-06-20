@@ -1,7 +1,6 @@
 package com.jobik.shkiper.ui.components.cards
 
 import android.os.Parcelable
-import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -118,7 +117,7 @@ private fun updateNoteCardState(
     )
 }
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalSharedTransitionApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun NoteCard(
     note: Note,

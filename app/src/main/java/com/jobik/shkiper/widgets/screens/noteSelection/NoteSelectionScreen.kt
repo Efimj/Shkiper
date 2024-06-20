@@ -35,7 +35,6 @@ import com.jobik.shkiper.ui.helpers.endWindowInsetsPadding
 import com.jobik.shkiper.ui.helpers.startWindowInsetsPadding
 import com.jobik.shkiper.ui.modifiers.scrollConnectionToProvideVisibility
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun NoteSelectionScreen(
     notesViewModel: NoteSelectionViewModel = hiltViewModel(),

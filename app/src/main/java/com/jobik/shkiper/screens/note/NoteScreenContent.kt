@@ -1,7 +1,6 @@
 package com.jobik.shkiper.screens.note
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
@@ -47,8 +46,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.NotePosition
-import com.jobik.shkiper.ui.components.cards.NoteSharedElementKey
-import com.jobik.shkiper.ui.components.cards.NoteSharedElementType
 import com.jobik.shkiper.ui.components.cards.SnackbarCard
 import com.jobik.shkiper.ui.components.fields.CustomDefaultTextField
 import com.jobik.shkiper.ui.components.fields.CustomRichTextEditor
@@ -56,8 +53,6 @@ import com.jobik.shkiper.ui.components.fields.TagEditor
 import com.jobik.shkiper.ui.components.layouts.LinkPreviewList
 import com.jobik.shkiper.ui.components.modals.ActionDialog
 import com.jobik.shkiper.ui.helpers.Keyboard
-import com.jobik.shkiper.ui.helpers.LocalNavAnimatedVisibilityScope
-import com.jobik.shkiper.ui.helpers.LocalSharedTransitionScope
 import com.jobik.shkiper.ui.helpers.SetRichTextDefaultStyles
 import com.jobik.shkiper.ui.helpers.horizontalWindowInsetsPadding
 import com.jobik.shkiper.ui.helpers.keyboardAsState
@@ -70,7 +65,6 @@ import com.mohamedrejeb.richeditor.model.rememberRichTextState
 import java.time.Duration
 import java.time.LocalDateTime
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun NoteScreenContent(
     noteViewModel: NoteViewModel,
