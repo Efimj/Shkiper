@@ -102,7 +102,7 @@ fun SearchBar(
         label = "height"
     )
 
-    BackHandler(enabled = value.isNotBlank()) {
+    BackHandler(enabled = value.isNotBlank() && isFocused.value.not()) {
         onChange("")
     }
 
