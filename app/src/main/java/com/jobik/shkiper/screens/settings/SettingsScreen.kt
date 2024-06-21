@@ -6,17 +6,45 @@ import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DarkMode
-import androidx.compose.material.icons.outlined.*
-import androidx.compose.material.icons.rounded.*
-import androidx.compose.material3.SwitchDefaults
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.outlined.Done
+import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.outlined.Language
+import androidx.compose.material.icons.outlined.Loop
+import androidx.compose.material.icons.outlined.Palette
+import androidx.compose.material.icons.outlined.Stars
+import androidx.compose.material.icons.outlined.ViewCarousel
+import androidx.compose.material.icons.rounded.Contrast
+import androidx.compose.material.icons.rounded.DataUsage
+import androidx.compose.material.icons.rounded.Download
+import androidx.compose.material.icons.rounded.RocketLaunch
+import androidx.compose.material.icons.rounded.Tune
+import androidx.compose.material.icons.rounded.Upload
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,7 +59,10 @@ import com.jobik.shkiper.R
 import com.jobik.shkiper.navigation.NavigationHelpers.Companion.navigateToSecondary
 import com.jobik.shkiper.navigation.Screen
 import com.jobik.shkiper.services.backup.BackupService
-import com.jobik.shkiper.ui.components.buttons.*
+import com.jobik.shkiper.ui.components.buttons.CustomSwitch
+import com.jobik.shkiper.ui.components.buttons.DropDownButton
+import com.jobik.shkiper.ui.components.buttons.DropDownButtonSizeMode
+import com.jobik.shkiper.ui.components.buttons.DropDownItem
 import com.jobik.shkiper.ui.components.cards.SettingsItem
 import com.jobik.shkiper.ui.components.cards.ThemePreview
 import com.jobik.shkiper.ui.components.layouts.SettingsGroup
@@ -280,24 +311,7 @@ private fun ProgramSettings(navController: NavController, settingsViewModel: Set
         ) {
             CustomSwitch(
                 active = ThemeUtil.isDarkMode.value ?: false,
-                onClick = { settingsViewModel.toggleAppTheme() },
-                thumbContent = if (ThemeUtil.isDarkMode.value == true) {
-                    {
-                        Icon(
-                            imageVector = Icons.Outlined.LightMode,
-                            contentDescription = null,
-                            modifier = Modifier.size(SwitchDefaults.IconSize),
-                        )
-                    }
-                } else {
-                    {
-                        Icon(
-                            imageVector = Icons.Default.DarkMode,
-                            contentDescription = null,
-                            modifier = Modifier.size(SwitchDefaults.IconSize),
-                        )
-                    }
-                })
+                onClick = { settingsViewModel.toggleAppTheme() })
         }
         SettingsColorThemePicker(settingsViewModel)
         Spacer(Modifier.height(4.dp))
