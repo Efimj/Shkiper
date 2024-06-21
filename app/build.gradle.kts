@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.plugin.mpp.pm20.util.archivesName
-
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -8,6 +6,7 @@ plugins {
     id("com.google.dagger.hilt.android")
     id("io.realm.kotlin")
     id("kotlin-parcelize")
+    kotlin("plugin.serialization") version "1.9.24"
 }
 
 val javaVersion = JavaVersion.toVersion(libs.versions.jvmTarget.get())
@@ -30,7 +29,7 @@ android {
 
         signingConfig = signingConfigs.getByName("debug")
 
-        archivesName.set("shkiper-$versionName")
+//        archivesName.set("shkiper-$versionName")
     }
 
     buildTypes {
@@ -99,9 +98,6 @@ android {
 
 dependencies {
     coreLibraryDesugaring(libs.desugaring)
-
-//    implementation(projects.feature.androidWidgets)
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -118,6 +114,8 @@ dependencies {
     implementation(libs.androidx.foundation)
 
     implementation(libs.material)
+
+    implementation(libs.kotlinx.serialization.json)
 
     // Splash screen API (not work when android less than 12)
     implementation(libs.androidx.core.splashscreen)

@@ -7,6 +7,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.navigation.NavBackStackEntry
+import com.jobik.shkiper.navigation.RouteHelper.Companion.getScreen
 
 class ScreenTransition {
     fun secondaryScreenEnterTransition() = slideInHorizontally { it }
@@ -14,11 +15,11 @@ class ScreenTransition {
 }
 
 fun AnimatedContentTransitionScope<NavBackStackEntry>.mainScreenEnterTransition(): EnterTransition? {
-    val initial = initialState.destination.route?.substringBefore("/") ?: return null
-    val target = targetState.destination.route?.substringBefore("/") ?: return null
+    val initial: Screen = initialState.getScreen() ?: return null
+    val target: Screen = targetState.getScreen() ?: return null
 
     // transition after Note screen
-    if (initial == Screen.Note.value.substringBefore("/")) {
+    if (initial.name == Screen.Note("").name) {
         return null
     }
 
@@ -41,11 +42,11 @@ fun AnimatedContentTransitionScope<NavBackStackEntry>.mainScreenEnterTransition(
 }
 
 fun AnimatedContentTransitionScope<NavBackStackEntry>.mainScreenExitTransition(): ExitTransition? {
-    val initial = initialState.destination.route?.substringBefore("/") ?: return null
-    val target = targetState.destination.route?.substringBefore("/") ?: return null
+    val initial: Screen = initialState.getScreen() ?: return null
+    val target: Screen = targetState.getScreen() ?: return null
 
     // transition before Note screen
-    if (target == Screen.Note.value.substringBefore("/")) {
+    if (target.name == Screen.Note("").name) {
         return null
     }
 
@@ -68,10 +69,10 @@ fun AnimatedContentTransitionScope<NavBackStackEntry>.mainScreenExitTransition()
 }
 
 fun AnimatedContentTransitionScope<NavBackStackEntry>.secondaryToNoteEnterTransition(): EnterTransition? {
-    val initial = initialState.destination.route?.substringBefore("/") ?: return null
+    val initial: Screen = initialState.getScreen() ?: return null
 
     // transition before Note screen
-    if (initial == Screen.Note.value.substringBefore("/")) {
+    if (initial.name == Screen.Note("").name) {
         return null
     }
 
@@ -79,10 +80,10 @@ fun AnimatedContentTransitionScope<NavBackStackEntry>.secondaryToNoteEnterTransi
 }
 
 fun AnimatedContentTransitionScope<NavBackStackEntry>.secondaryToNoteExitTransition(): ExitTransition? {
-    val target = targetState.destination.route?.substringBefore("/") ?: return null
+    val target: Screen = targetState.getScreen() ?: return null
 
     // transition after Note screen
-    if (target == Screen.Note.value.substringBefore("/")) {
+    if (target.name == Screen.Note("").name) {
         return null
     }
 

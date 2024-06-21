@@ -3,6 +3,8 @@ package com.jobik.shkiper.navigation
 import android.util.Log
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination.Companion.hasRoute
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 
 class NavigationHelpers {
@@ -12,11 +14,7 @@ class NavigationHelpers {
             return this.currentBackStackEntry?.lifecycle?.currentState == Lifecycle.State.RESUMED
         }
 
-        fun NavController.checkIsDestinationCurrent(route: String): Boolean {
-            return currentDestination?.route?.substringBefore("/") == route.substringBefore("/")
-        }
-
-        fun NavController.navigateToMain(destination: String) = run {
+        fun NavController.navigateToMain(destination: Screen) = run {
             if (canNavigate().not()) return@run
             if (checkIsDestinationCurrent(destination)) return@run
             navigate(destination) {
@@ -38,7 +36,7 @@ class NavigationHelpers {
             }
         }
 
-        fun NavController.navigateToSecondary(destination: String) = run {
+        fun NavController.navigateToSecondary(destination: Screen) = run {
             if (canNavigate().not()) return@run
             if (checkIsDestinationCurrent(destination)) return@run
             navigate(destination) {
@@ -47,6 +45,13 @@ class NavigationHelpers {
                 launchSingleTop = true
                 // Restore state when reselecting a previously selected item
                 restoreState = true
+            }
+        }
+
+        private fun NavController.checkIsDestinationCurrent(destination: Screen): Boolean {
+            val backStackEntry = this.currentBackStackEntry ?: return false
+            return backStackEntry.destination.hierarchy.any {
+                it.hasRoute(destination::class)
             }
         }
     }

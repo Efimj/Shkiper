@@ -21,7 +21,7 @@ import com.jobik.shkiper.ui.theme.AppTheme
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun AppLayout(startDestination: String = Screen.NoteList.value) {
+fun AppLayout(startDestination: Screen) {
     val navController = rememberNavController()
 
     Box(

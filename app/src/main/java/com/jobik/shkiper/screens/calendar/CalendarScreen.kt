@@ -94,7 +94,7 @@ private fun ScreenContent(
                     notes = viewModel.screenState.value.notes,
                     clickOnNote = { note ->
                         navController.navigateToSecondary(
-                            Screen.Note.configure(
+                            Screen.Note(
                                 id = note._id.toHexString(),
                                 sharedElementOrigin = Screen.Calendar.name
                             )

@@ -49,8 +49,8 @@ kotlin = "1.9.24"
 hilt = "2.51.1"
 wheelpickercompose = "1.1.11"
 agpVersion = "8.4.1"
-kotlinVersion = "1.9.0"
 material = "1.13.0-alpha03"
+kotlinxSerializationJson = "1.6.3"
 
 [libraries]
 # Dependencies of the included build-logic
@@ -94,6 +94,7 @@ hilt = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 dagger-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt" }
 hilt-gradle = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hilt" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesCore" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 library-base = { module = "io.realm.kotlin:library-base", version.ref = "libraryBase" }
 realm-gradle-plugin = { module = "io.realm:realm-gradle-plugin", version.ref = "realmGradlePlugin" }
 richeditor-compose = { module = "com.mohamedrejeb.richeditor:richeditor-compose", version.ref = "richeditorCompose" }

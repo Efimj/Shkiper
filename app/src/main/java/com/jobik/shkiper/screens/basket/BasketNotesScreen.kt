@@ -125,7 +125,7 @@ private fun ScreenContent(
                     note = note,
                     onNavigate = {
                         navController.navigateToSecondary(
-                            Screen.Note.configure(
+                            Screen.Note(
                                 id = note._id.toHexString(),
                                 sharedElementOrigin = sharedOrigin
                             )

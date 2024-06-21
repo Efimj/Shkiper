@@ -3,6 +3,7 @@ package com.jobik.shkiper.viewmodels
 import android.app.Application
 import android.util.Log
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Undo
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -10,6 +11,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import com.jobik.shkiper.R
 import com.jobik.shkiper.database.data.note.NoteMongoRepository
 import com.jobik.shkiper.database.data.reminder.ReminderMongoRepository
@@ -18,7 +20,7 @@ import com.jobik.shkiper.database.models.NotePosition
 import com.jobik.shkiper.database.models.Reminder
 import com.jobik.shkiper.database.models.RepeatMode
 import com.jobik.shkiper.helpers.DateHelper
-import com.jobik.shkiper.navigation.Argument_Note_Position
+import com.jobik.shkiper.navigation.Screen
 import com.jobik.shkiper.screens.layout.NavigationBar.AppNavigationBarState
 import com.jobik.shkiper.util.SnackbarHostUtil
 import com.jobik.shkiper.util.SnackbarVisualsCustom
@@ -63,7 +65,7 @@ class NotesViewModel @Inject constructor(
 
     init {
         notePosition = try {
-            NotePosition.valueOf(savedStateHandle[Argument_Note_Position] ?: NotePosition.MAIN.name)
+            NotePosition.valueOf(savedStateHandle.toRoute<Screen>().name)
         } catch (e: Exception) {
             Log.i("savedStateHandle", "notePositionError", e)
             NotePosition.MAIN
@@ -229,7 +231,7 @@ class NotesViewModel @Inject constructor(
             clearSelectedNote()
             showSnackbar(
                 message = application.applicationContext.getString(R.string.NotesRestored),
-                icon = Icons.Default.Undo
+                icon = Icons.AutoMirrored.Filled.Undo
             )
             updateBottomBar()
         }

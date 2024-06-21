@@ -2,53 +2,40 @@ package com.jobik.shkiper.navigation
 
 import androidx.annotation.Keep
 import com.jobik.shkiper.ui.components.cards.NoteSharedOriginDefault
+import kotlinx.serialization.Serializable
 
 @Keep
-const val Argument_Shared_Origin = NoteSharedOriginDefault
+@Serializable
+sealed class Screen(val name: String) {
 
-@Keep
-const val Argument_Note_Id = "noteId"
+    @Serializable
+    data object NoteList : Screen(name = "NoteList")
 
-@Keep
-const val Argument_Note_Position = "position"
+    @Serializable
+    data object Archive : Screen(name = "Archive")
 
-@Keep
-sealed class Screen(val value: String) {
-    data object NoteList : Screen(value = "note_list/{$Argument_Note_Position}") {
-        fun notePosition(position: String): String {
-            return this.value.replace(oldValue = "{$Argument_Note_Position}", newValue = position)
-        }
-    }
+    @Serializable
+    data object Basket : Screen(name = "Basket")
 
-    data object Archive : Screen(value = "archive/{$Argument_Note_Position}") {
-        fun notePosition(position: String): String {
-            return this.value.replace(oldValue = "{$Argument_Note_Position}", newValue = position)
-        }
-    }
+    @Serializable
+    data object Settings : Screen(name = "Settings")
 
-    data object Basket : Screen(value = "basket/{$Argument_Note_Position}") {
-        fun notePosition(position: String): String {
-            return this.value.replace(oldValue = "{$Argument_Note_Position}", newValue = position)
-        }
-    }
+    @Serializable
+    data class Note(val id: String, val sharedElementOrigin: String = NoteSharedOriginDefault) :
+        Screen(name = "Note")
 
-    data object Settings : Screen(value = "settings")
+    @Serializable
+    data object Calendar : Screen(name = "Calendar")
 
-    data object Note : Screen(value = "note/{$Argument_Note_Id}/{$Argument_Shared_Origin}") {
-        fun configure(id: String, sharedElementOrigin: String): String {
-            return this.value.replace(oldValue = "{$Argument_Note_Id}", newValue = id)
-                .replace(oldValue = "{$Argument_Shared_Origin}", newValue = sharedElementOrigin)
-        }
-    }
+    @Serializable
+    data object AdvancedSettings : Screen(name = "AdvancedSettings")
 
-    data object Calendar : Screen(value = "calendar")
-    data object AdvancedSettings : Screen(value = "advanced_settings")
-    data object Statistics : Screen(value = "statistics")
-    data object AboutNotepad : Screen(value = "about_notepad")
-    data object Purchases : Screen(value = "purchases")
+    @Serializable
+    data object Statistics : Screen(name = "Statistics")
 
-    val name: String
-        get() {
-            return this.value.substringBefore("/")
-        }
+    @Serializable
+    data object AboutNotepad : Screen(name = "AboutNotepad")
+
+    @Serializable
+    data object Purchases : Screen(name = "Purchases")
 }

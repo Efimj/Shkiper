@@ -76,7 +76,7 @@ fun NoteListScreen(
                     icon = Icons.Outlined.Event,
                     contentDescription = R.string.Reminders,
                     onClick = {
-                        navController.navigateToSecondary(Screen.Calendar.value)
+                        navController.navigateToSecondary(Screen.Calendar)
                     }
                 ),
                 onChange = viewModel::changeSearchText,
@@ -156,7 +156,7 @@ private fun NotesListContent(
                         note = note,
                         onNavigate = {
                             navController.navigateToSecondary(
-                                Screen.Note.configure(
+                                Screen.Note(
                                     id = note._id.toHexString(),
                                     sharedElementOrigin = sharedOrigin
                                 )
@@ -182,7 +182,7 @@ private fun NotesListContent(
                         note = note,
                         onNavigate = {
                             navController.navigateToSecondary(
-                                Screen.Note.configure(
+                                Screen.Note(
                                     id = note._id.toHexString(),
                                     sharedElementOrigin = sharedOrigin
                                 )

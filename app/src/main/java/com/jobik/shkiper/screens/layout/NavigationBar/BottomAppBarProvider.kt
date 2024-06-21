@@ -50,14 +50,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavDestination.Companion.hasRoute
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.toRoute
 import com.jobik.shkiper.R
-import com.jobik.shkiper.database.models.NotePosition
 import com.jobik.shkiper.navigation.NavigationHelpers.Companion.navigateToMain
 import com.jobik.shkiper.navigation.NavigationHelpers.Companion.navigateToSecondary
 import com.jobik.shkiper.navigation.Screen
 import com.jobik.shkiper.navigation.RouteHelper
+import com.jobik.shkiper.navigation.RouteHelper.Companion.getScreen
 import com.jobik.shkiper.ui.helpers.Keyboard
 import com.jobik.shkiper.ui.helpers.keyboardAsState
 import com.jobik.shkiper.ui.modifiers.bounceClick
@@ -74,14 +77,12 @@ fun BottomAppBarProvider(
     val scope = rememberCoroutineScope()
     val localDensity = LocalDensity.current
     var containerHeight by remember { mutableStateOf(0.dp) }
-    val currentRouteName = navController.currentBackStackEntryAsState().value?.destination?.route
-    val currentRouteWithoutSecondaryRoutes =
-        (navController.currentBackStackEntryAsState().value?.destination?.route
-            ?: "").substringBefore("/")
-    val isSecondaryScreen = RouteHelper().isSecondaryRoute(currentRouteWithoutSecondaryRoutes)
+    val navBackStackEntry = navController.currentBackStackEntryAsState().value
+    val currentDestination = navBackStackEntry?.destination
 
-    LaunchedEffect(currentRouteName) {
-        if (isSecondaryScreen) {
+    LaunchedEffect(currentDestination) {
+        val currentScreen = navController.getScreen() ?: return@LaunchedEffect
+        if (RouteHelper().isSecondaryRoute(currentScreen)) {
             AppNavigationBarState.hideWithLock()
         } else {
             AppNavigationBarState.showWithUnlock()
@@ -131,13 +132,15 @@ fun BottomAppBarProvider(
                     )
                 }
                 CreateNoteFAN(
-                    isVisible = currentRouteName == Screen.NoteList.value,
+                    isVisible = currentDestination?.hierarchy?.any {
+                        it.hasRoute(Screen.NoteList::class)
+                    } == true,
                     onCreate = {
                         scope.launch {
                             val noteId = viewModel.createNewNote()
                             delay(300)
                             navController.navigateToSecondary(
-                                Screen.Note.configure(
+                                Screen.Note(
                                     id = noteId.toHexString(),
                                     sharedElementOrigin = Screen.NoteList.name
                                 )
@@ -192,36 +195,45 @@ private fun CreateNoteFAN(
 private fun Navigation(
     navController: NavHostController,
 ) {
-    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
+    val navBackStackEntry = navController.currentBackStackEntryAsState().value
+    val currentDestination = navBackStackEntry?.destination
 
     val navigationItems = listOf(
         CustomBottomNavigationItem(
             icon = Icons.Outlined.AutoAwesomeMosaic,
-            isSelected = currentRoute == Screen.NoteList.value,
+            isSelected = currentDestination?.hierarchy?.any {
+                it.hasRoute(Screen.NoteList::class)
+            } == true,
             description = R.string.Notes,
         ) {
-            navController.navigateToMain(destination = Screen.NoteList.notePosition(NotePosition.MAIN.name))
+            navController.navigateToMain(destination = Screen.NoteList)
         },
         CustomBottomNavigationItem(
             icon = Icons.Outlined.Archive,
-            isSelected = currentRoute == Screen.Archive.value,
+            isSelected = currentDestination?.hierarchy?.any {
+                it.hasRoute(Screen.Archive::class)
+            } == true,
             description = R.string.Archive,
         ) {
-            navController.navigateToMain(destination = Screen.Archive.notePosition(NotePosition.ARCHIVE.name))
+            navController.navigateToMain(destination = Screen.Archive)
         },
         CustomBottomNavigationItem(
             icon = Icons.Outlined.Delete,
-            isSelected = currentRoute == Screen.Basket.value,
+            isSelected = currentDestination?.hierarchy?.any {
+                it.hasRoute(Screen.Basket::class)
+            } == true,
             description = R.string.Basket,
         ) {
-            navController.navigateToMain(destination = Screen.Basket.notePosition(NotePosition.DELETE.name))
+            navController.navigateToMain(destination = Screen.Basket)
         },
         CustomBottomNavigationItem(
             icon = Icons.Outlined.Settings,
-            isSelected = currentRoute == Screen.Settings.value,
+            isSelected = currentDestination?.hierarchy?.any {
+                it.hasRoute(Screen.Settings::class)
+            } == true,
             description = R.string.Settings
         ) {
-            navController.navigateToMain(destination = Screen.Settings.value)
+            navController.navigateToMain(destination = Screen.Settings)
         },
     )
 

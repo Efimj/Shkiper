@@ -49,7 +49,7 @@ fun DonateBannerProvider(isVisible: MutableState<Boolean>, navController: NavCon
                 .clip(MaterialTheme.shapes.medium)
                 .clickable {
                     SupportTheDeveloperBannerUtil.updateLastShowingDate(context)
-                    navController.navigateToSecondary(Screen.Purchases.value)
+                    navController.navigateToSecondary(Screen.Purchases)
                     changeBannerState(
                         scope = scope,
                         isBannerNeeded = isBannerNeeded,

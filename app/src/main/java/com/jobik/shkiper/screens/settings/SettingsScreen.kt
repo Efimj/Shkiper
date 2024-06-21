@@ -116,7 +116,7 @@ private fun DevSupportSettings(
             modifier = Modifier.heightIn(min = 50.dp),
             icon = Icons.Rounded.RocketLaunch,
             title = stringResource(R.string.SupportDevelopment),
-            onClick = { navController.navigateToSecondary(Screen.Purchases.value) }
+            onClick = { navController.navigateToSecondary(Screen.Purchases) }
         )
     }
 }
@@ -127,12 +127,12 @@ private fun OtherSettings(navController: NavController) {
         SettingsItem(
             icon = Icons.Outlined.Info,
             title = stringResource(R.string.AboutNotepad),
-            onClick = { navController.navigateToSecondary(Screen.AboutNotepad.value) }
+            onClick = { navController.navigateToSecondary(Screen.AboutNotepad) }
         )
         SettingsItem(
             icon = Icons.Rounded.DataUsage,
             title = stringResource(R.string.StatisticsPage),
-            onClick = { navController.navigateToSecondary(Screen.Statistics.value) }
+            onClick = { navController.navigateToSecondary(Screen.Statistics) }
         )
         val isOnboarding = rememberSaveable { mutableStateOf(false) }
         SettingsItem(
@@ -305,7 +305,7 @@ private fun ProgramSettings(navController: NavController, settingsViewModel: Set
         SettingsItem(
             icon = Icons.Rounded.Tune,
             title = stringResource(R.string.advanced),
-            onClick = { navController.navigateToSecondary(Screen.AdvancedSettings.value) }
+            onClick = { navController.navigateToSecondary(Screen.AdvancedSettings) }
         )
     }
 }

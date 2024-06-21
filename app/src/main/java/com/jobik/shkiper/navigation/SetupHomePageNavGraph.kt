@@ -11,10 +11,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
+import androidx.navigation.toRoute
 import com.jobik.shkiper.helpers.IntentHelper
 import com.jobik.shkiper.screens.about.AboutNotepadScreen
 import com.jobik.shkiper.screens.advancedSettings.AdvancedSettings
@@ -36,7 +35,7 @@ import com.jobik.shkiper.ui.helpers.LocalSharedTransitionScope
 fun SetupAppScreenNavGraph(
     modifier: Modifier = Modifier,
     navController: NavHostController,
-    startDestination: String,
+    startDestination: Screen,
 ) {
     SharedTransitionLayout(modifier = modifier) {
         CompositionLocalProvider(
@@ -47,14 +46,13 @@ fun SetupAppScreenNavGraph(
                 startDestination = startDestination,
                 modifier = Modifier.semantics { testTagsAsResourceId = true }
             ) {
-                composable(
-                    route = Screen.NoteList.value,
+                composable<Screen.NoteList>(
                     enterTransition = { mainScreenEnterTransition() },
                     exitTransition = { mainScreenExitTransition() }
                 ) {
                     CompositionLocalProvider(
                         LocalNavAnimatedVisibilityScope provides this,
-                        LocalSharedElementKey provides Screen.NoteList.name
+                        LocalSharedElementKey provides Screen.NoteList.toString()
                     ) {
                         NoteListScreen(
                             navController = navController,
@@ -62,14 +60,13 @@ fun SetupAppScreenNavGraph(
                     }
                 }
 
-                composable(
-                    route = Screen.Calendar.value,
+                composable<Screen.Calendar>(
                     enterTransition = { secondaryToNoteEnterTransition() },
                     exitTransition = { secondaryToNoteExitTransition() }
                 ) {
                     CompositionLocalProvider(
                         LocalNavAnimatedVisibilityScope provides this,
-                        LocalSharedElementKey provides Screen.Calendar.name
+                        LocalSharedElementKey provides Screen.Calendar.toString()
                     ) {
                         CalendarScreen(
                             navController = navController,
@@ -77,51 +74,44 @@ fun SetupAppScreenNavGraph(
                     }
                 }
 
-                composable(
-                    route = Screen.Archive.value,
+                composable<Screen.Archive>(
                     enterTransition = { mainScreenEnterTransition() },
                     exitTransition = { mainScreenExitTransition() }
                 ) {
                     CompositionLocalProvider(
                         LocalNavAnimatedVisibilityScope provides this,
-                        LocalSharedElementKey provides Screen.Calendar.name
+                        LocalSharedElementKey provides Screen.Archive.toString()
                     ) {
                         ArchiveNotesScreen(navController)
                     }
                 }
 
-                composable(
-                    route = Screen.Basket.value,
+                composable<Screen.Basket>(
                     enterTransition = { mainScreenEnterTransition() },
                     exitTransition = { mainScreenExitTransition() },
                 ) {
                     CompositionLocalProvider(
                         LocalNavAnimatedVisibilityScope provides this,
-                        LocalSharedElementKey provides Screen.Calendar.name
+                        LocalSharedElementKey provides Screen.Basket.toString()
                     ) {
                         BasketNotesScreen(navController)
                     }
                 }
 
-                composable(
-                    route = Screen.Settings.value,
+                composable<Screen.Settings>(
                     enterTransition = { mainScreenEnterTransition() },
                     exitTransition = { mainScreenExitTransition() },
                 ) { SettingsScreen(navController) }
 
-                composable(
-                    route = Screen.Note.value,
-                    arguments = listOf(
-                        navArgument(Argument_Note_Id) { type = NavType.StringType },
-                        navArgument(Argument_Shared_Origin) { type = NavType.StringType }),
+                composable<Screen.Note>(
                     enterTransition = { ScreenTransition().secondaryScreenEnterTransition() },
                     exitTransition = { ScreenTransition().secondaryScreenExitTransition() }
                 ) {
+                    val noteScreenArgs: Screen.Note = it.toRoute()
+
                     CompositionLocalProvider(
                         LocalNavAnimatedVisibilityScope provides this,
-                        LocalSharedElementKey provides it.arguments?.getString(
-                            Argument_Shared_Origin
-                        ).toString()
+                        LocalSharedElementKey provides noteScreenArgs.sharedElementOrigin
                     ) {
                         val context = LocalContext.current
                         NoteScreen(
@@ -135,26 +125,22 @@ fun SetupAppScreenNavGraph(
                     }
                 }
 
-                composable(
-                    route = Screen.AdvancedSettings.value,
+                composable<Screen.AdvancedSettings>(
                     enterTransition = { ScreenTransition().secondaryScreenEnterTransition() },
                     exitTransition = { ScreenTransition().secondaryScreenExitTransition() }
                 ) { AdvancedSettings() }
 
-                composable(
-                    route = Screen.Statistics.value,
+                composable<Screen.Statistics>(
                     enterTransition = { ScreenTransition().secondaryScreenEnterTransition() },
                     exitTransition = { ScreenTransition().secondaryScreenExitTransition() }
                 ) { StatisticsScreen() }
 
-                composable(
-                    route = Screen.Purchases.value,
+                composable<Screen.Purchases>(
                     enterTransition = { ScreenTransition().secondaryScreenEnterTransition() },
                     exitTransition = { ScreenTransition().secondaryScreenExitTransition() }
                 ) { PurchaseScreen() }
 
-                composable(
-                    route = Screen.AboutNotepad.value,
+                composable<Screen.AboutNotepad>(
                     enterTransition = { ScreenTransition().secondaryScreenEnterTransition() },
                     exitTransition = { ScreenTransition().secondaryScreenExitTransition() }
                 ) { AboutNotepadScreen() }
