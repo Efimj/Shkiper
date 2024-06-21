@@ -18,7 +18,8 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.jobik.shkiper.NotepadApplication
 import com.jobik.shkiper.SharedPreferencesKeys
 import com.jobik.shkiper.SharedPreferencesKeys.OnboardingFinishedData
-import com.jobik.shkiper.navigation.Route
+import com.jobik.shkiper.database.models.NotePosition
+import com.jobik.shkiper.navigation.Screen
 import com.jobik.shkiper.screens.layout.AppLayout
 import com.jobik.shkiper.services.billing.BillingService
 import com.jobik.shkiper.services.inAppUpdates.InAppUpdatesService
@@ -31,7 +32,6 @@ import com.jobik.shkiper.ui.helpers.SecureModeManager
 import com.jobik.shkiper.ui.theme.CustomThemeStyle
 import com.jobik.shkiper.ui.theme.ShkiperTheme
 import com.jobik.shkiper.util.ContextUtils.adjustFontSize
-import com.jobik.shkiper.util.Startup
 import com.jobik.shkiper.util.ThemeUtil
 import com.jobik.shkiper.util.settings.SettingsManager
 import dagger.hilt.android.AndroidEntryPoint
@@ -138,11 +138,11 @@ open class MainActivity : ComponentActivity() {
         inAppUpdatesService.checkForDownloadedUpdate()
     }
 
-    private fun getStartDestination(): String {
+    private fun getStartDestination(): Screen {
         val route = getNotificationRoute()
         if (route != null)
             return route
-        return Route.NoteList.value
+        return Screen.NoteList
     }
 
     private fun checkIsOnboarding(context: Context): Boolean {
@@ -156,11 +156,10 @@ open class MainActivity : ComponentActivity() {
         return isOnboardingPageFinished != OnboardingFinishedData
     }
 
-    private fun getNotificationRoute(): String? {
+    private fun getNotificationRoute(): Screen? {
         // Retrieve the extras from the Intent
         val extras = intent.extras ?: return null
         val noteId = extras.getString(SharedPreferencesKeys.NoteIdExtra, null) ?: return null
-        Startup.paramNoteId = noteId
-        return Route.Note.configure(id = noteId, sharedElementOrigin = Route.NoteList.name)
+        return Screen.Note(id = noteId, sharedElementOrigin = Screen.NoteList.toString())
     }
 }

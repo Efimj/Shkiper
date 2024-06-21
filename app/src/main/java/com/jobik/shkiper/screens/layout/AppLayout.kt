@@ -13,7 +13,7 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.navigation.compose.rememberNavController
-import com.jobik.shkiper.navigation.Route
+import com.jobik.shkiper.navigation.Screen
 import com.jobik.shkiper.navigation.SetupAppScreenNavGraph
 import com.jobik.shkiper.screens.layout.NavigationBar.AppNavigationBarState
 import com.jobik.shkiper.screens.layout.NavigationBar.BottomAppBarProvider
@@ -21,7 +21,7 @@ import com.jobik.shkiper.ui.theme.AppTheme
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun AppLayout(startDestination: String = Route.NoteList.value) {
+fun AppLayout(startDestination: Screen) {
     val navController = rememberNavController()
 
     Box(
