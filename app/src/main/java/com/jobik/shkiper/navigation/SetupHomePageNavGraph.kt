@@ -15,6 +15,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.jobik.shkiper.helpers.IntentHelper
+import com.jobik.shkiper.navigation.NavigationHelpers.Companion.canNavigate
 import com.jobik.shkiper.screens.about.AboutNotepadScreen
 import com.jobik.shkiper.screens.advancedSettings.AdvancedSettings
 import com.jobik.shkiper.screens.archive.ArchiveNotesScreen
@@ -66,7 +67,7 @@ fun SetupAppScreenNavGraph(
                 ) {
                     CompositionLocalProvider(
                         LocalNavAnimatedVisibilityScope provides this,
-                        LocalSharedElementKey provides Screen.Calendar.toString()
+                        LocalSharedElementKey provides Screen.Calendar.name
                     ) {
                         CalendarScreen(
                             navController = navController,
@@ -119,7 +120,9 @@ fun SetupAppScreenNavGraph(
                                 if (navController.previousBackStackEntry == null) {
                                     IntentHelper().startAppActivity(context)
                                 }
-                                navController.popBackStack()
+                                if (navController.canNavigate()) {
+                                    navController.popBackStack()
+                                }
                             },
                         )
                     }

@@ -15,6 +15,7 @@ import androidx.navigation.NavController
 import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.Note
 import com.jobik.shkiper.database.models.Reminder
+import com.jobik.shkiper.navigation.NavigationHelpers.Companion.canNavigate
 import com.jobik.shkiper.navigation.NavigationHelpers.Companion.navigateToSecondary
 import com.jobik.shkiper.navigation.Screen
 import com.jobik.shkiper.screens.layout.NavigationBar.AppNavigationBarState
@@ -45,7 +46,11 @@ fun CalendarScreen(
         ScreenContent(
             collapsingToolbarScaffold = collapsingToolbarScaffold,
             viewModel = viewModel,
-            onSlideBack = { navController.popBackStack() },
+            onSlideBack = {
+                if (navController.canNavigate()) {
+                    navController.popBackStack()
+                }
+            },
             navController = navController
         )
     }
