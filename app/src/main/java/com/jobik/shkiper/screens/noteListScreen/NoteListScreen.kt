@@ -23,7 +23,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.jobik.shkiper.R
 import com.jobik.shkiper.navigation.NavigationHelpers.Companion.navigateToSecondary
-import com.jobik.shkiper.navigation.Route
+import com.jobik.shkiper.navigation.Screen
 import com.jobik.shkiper.ui.components.cards.DonateBannerProvider
 import com.jobik.shkiper.ui.components.fields.SearchBar
 import com.jobik.shkiper.ui.components.fields.SearchBarActionButton
@@ -76,7 +76,7 @@ fun NoteListScreen(
                     icon = Icons.Outlined.Event,
                     contentDescription = R.string.Reminders,
                     onClick = {
-                        navController.navigateToSecondary(Route.Calendar.value)
+                        navController.navigateToSecondary(Screen.Calendar.value)
                     }
                 ),
                 onChange = viewModel::changeSearchText,
@@ -156,7 +156,7 @@ private fun NotesListContent(
                         note = note,
                         onNavigate = {
                             navController.navigateToSecondary(
-                                Route.Note.configure(
+                                Screen.Note.configure(
                                     id = note._id.toHexString(),
                                     sharedElementOrigin = sharedOrigin
                                 )
@@ -182,7 +182,7 @@ private fun NotesListContent(
                         note = note,
                         onNavigate = {
                             navController.navigateToSecondary(
-                                Route.Note.configure(
+                                Screen.Note.configure(
                                     id = note._id.toHexString(),
                                     sharedElementOrigin = sharedOrigin
                                 )

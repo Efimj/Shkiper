@@ -29,7 +29,7 @@ import androidx.navigation.NavController
 import com.jobik.shkiper.NotepadApplication
 import com.jobik.shkiper.R
 import com.jobik.shkiper.navigation.NavigationHelpers.Companion.navigateToSecondary
-import com.jobik.shkiper.navigation.Route
+import com.jobik.shkiper.navigation.Screen
 import com.jobik.shkiper.services.backup.BackupService
 import com.jobik.shkiper.ui.components.buttons.*
 import com.jobik.shkiper.ui.components.cards.SettingsItem
@@ -116,7 +116,7 @@ private fun DevSupportSettings(
             modifier = Modifier.heightIn(min = 50.dp),
             icon = Icons.Rounded.RocketLaunch,
             title = stringResource(R.string.SupportDevelopment),
-            onClick = { navController.navigateToSecondary(Route.Purchases.value) }
+            onClick = { navController.navigateToSecondary(Screen.Purchases.value) }
         )
     }
 }
@@ -127,12 +127,12 @@ private fun OtherSettings(navController: NavController) {
         SettingsItem(
             icon = Icons.Outlined.Info,
             title = stringResource(R.string.AboutNotepad),
-            onClick = { navController.navigateToSecondary(Route.AboutNotepad.value) }
+            onClick = { navController.navigateToSecondary(Screen.AboutNotepad.value) }
         )
         SettingsItem(
             icon = Icons.Rounded.DataUsage,
             title = stringResource(R.string.StatisticsPage),
-            onClick = { navController.navigateToSecondary(Route.Statistics.value) }
+            onClick = { navController.navigateToSecondary(Screen.Statistics.value) }
         )
         val isOnboarding = rememberSaveable { mutableStateOf(false) }
         SettingsItem(
@@ -305,7 +305,7 @@ private fun ProgramSettings(navController: NavController, settingsViewModel: Set
         SettingsItem(
             icon = Icons.Rounded.Tune,
             title = stringResource(R.string.advanced),
-            onClick = { navController.navigateToSecondary(Route.AdvancedSettings.value) }
+            onClick = { navController.navigateToSecondary(Screen.AdvancedSettings.value) }
         )
     }
 }

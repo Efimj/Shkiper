@@ -18,7 +18,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.jobik.shkiper.NotepadApplication
 import com.jobik.shkiper.SharedPreferencesKeys
 import com.jobik.shkiper.SharedPreferencesKeys.OnboardingFinishedData
-import com.jobik.shkiper.navigation.Route
+import com.jobik.shkiper.navigation.Screen
 import com.jobik.shkiper.screens.layout.AppLayout
 import com.jobik.shkiper.services.billing.BillingService
 import com.jobik.shkiper.services.inAppUpdates.InAppUpdatesService
@@ -142,7 +142,7 @@ open class MainActivity : ComponentActivity() {
         val route = getNotificationRoute()
         if (route != null)
             return route
-        return Route.NoteList.value
+        return Screen.NoteList.value
     }
 
     private fun checkIsOnboarding(context: Context): Boolean {
@@ -161,6 +161,6 @@ open class MainActivity : ComponentActivity() {
         val extras = intent.extras ?: return null
         val noteId = extras.getString(SharedPreferencesKeys.NoteIdExtra, null) ?: return null
         Startup.paramNoteId = noteId
-        return Route.Note.configure(id = noteId, sharedElementOrigin = Route.NoteList.name)
+        return Screen.Note.configure(id = noteId, sharedElementOrigin = Screen.NoteList.name)
     }
 }

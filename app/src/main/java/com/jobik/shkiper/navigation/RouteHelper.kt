@@ -1,14 +1,14 @@
 package com.jobik.shkiper.navigation
 
 class RouteHelper {
-    val NumberedRoutes = listOf(Route.NoteList, Route.Archive, Route.Basket, Route.Settings)
+    val NumberedRoutes = listOf(Screen.NoteList, Screen.Archive, Screen.Basket, Screen.Settings)
     val SecondaryRoutes = listOf(
-        Route.Note,
-        Route.Calendar,
-        Route.Statistics,
-        Route.Purchases,
-        Route.AboutNotepad,
-        Route.AdvancedSettings
+        Screen.Note,
+        Screen.Calendar,
+        Screen.Statistics,
+        Screen.Purchases,
+        Screen.AboutNotepad,
+        Screen.AdvancedSettings
     )
 
     /**

@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.jobik.shkiper.R
 import com.jobik.shkiper.navigation.NavigationHelpers.Companion.navigateToSecondary
-import com.jobik.shkiper.navigation.Route
+import com.jobik.shkiper.navigation.Screen
 import com.jobik.shkiper.ui.modifiers.bounceClick
 import com.jobik.shkiper.ui.theme.AppTheme
 import com.jobik.shkiper.util.SupportTheDeveloperBannerUtil
@@ -49,7 +49,7 @@ fun DonateBannerProvider(isVisible: MutableState<Boolean>, navController: NavCon
                 .clip(MaterialTheme.shapes.medium)
                 .clickable {
                     SupportTheDeveloperBannerUtil.updateLastShowingDate(context)
-                    navController.navigateToSecondary(Route.Purchases.value)
+                    navController.navigateToSecondary(Screen.Purchases.value)
                     changeBannerState(
                         scope = scope,
                         isBannerNeeded = isBannerNeeded,

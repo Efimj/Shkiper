@@ -12,16 +12,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.currentBackStackEntryAsState
 import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.Note
 import com.jobik.shkiper.database.models.Reminder
 import com.jobik.shkiper.navigation.NavigationHelpers.Companion.navigateToSecondary
-import com.jobik.shkiper.navigation.Route
+import com.jobik.shkiper.navigation.Screen
 import com.jobik.shkiper.screens.layout.NavigationBar.AppNavigationBarState
 import com.jobik.shkiper.ui.animation.AnimateVerticalSwitch
 import com.jobik.shkiper.ui.components.layouts.*
-import com.jobik.shkiper.ui.helpers.LocalSharedElementKey
 import com.jobik.shkiper.ui.helpers.bottomWindowInsetsPadding
 import com.jobik.shkiper.ui.helpers.endWindowInsetsPadding
 import com.jobik.shkiper.ui.helpers.startWindowInsetsPadding
@@ -96,9 +94,9 @@ private fun ScreenContent(
                     notes = viewModel.screenState.value.notes,
                     clickOnNote = { note ->
                         navController.navigateToSecondary(
-                            Route.Note.configure(
+                            Screen.Note.configure(
                                 id = note._id.toHexString(),
-                                sharedElementOrigin = Route.Calendar.name
+                                sharedElementOrigin = Screen.Calendar.name
                             )
                         )
                     },

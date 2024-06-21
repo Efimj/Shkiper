@@ -17,13 +17,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.currentBackStackEntryAsState
 import com.jobik.shkiper.R
 import com.jobik.shkiper.navigation.NavigationHelpers.Companion.navigateToSecondary
-import com.jobik.shkiper.navigation.Route
+import com.jobik.shkiper.navigation.Screen
 import com.jobik.shkiper.ui.components.layouts.*
 import com.jobik.shkiper.ui.components.modals.ActionDialog
 import com.jobik.shkiper.ui.helpers.*
@@ -127,7 +125,7 @@ private fun ScreenContent(
                     note = note,
                     onNavigate = {
                         navController.navigateToSecondary(
-                            Route.Note.configure(
+                            Screen.Note.configure(
                                 id = note._id.toHexString(),
                                 sharedElementOrigin = sharedOrigin
                             )

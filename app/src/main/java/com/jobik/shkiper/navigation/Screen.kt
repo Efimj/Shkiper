@@ -13,39 +13,39 @@ const val Argument_Note_Id = "noteId"
 const val Argument_Note_Position = "position"
 
 @Keep
-sealed class Route(val value: String) {
-    data object NoteList : Route(value = "note_list/{$Argument_Note_Position}") {
+sealed class Screen(val value: String) {
+    data object NoteList : Screen(value = "note_list/{$Argument_Note_Position}") {
         fun notePosition(position: String): String {
             return this.value.replace(oldValue = "{$Argument_Note_Position}", newValue = position)
         }
     }
 
-    data object Archive : Route(value = "archive/{$Argument_Note_Position}") {
+    data object Archive : Screen(value = "archive/{$Argument_Note_Position}") {
         fun notePosition(position: String): String {
             return this.value.replace(oldValue = "{$Argument_Note_Position}", newValue = position)
         }
     }
 
-    data object Basket : Route(value = "basket/{$Argument_Note_Position}") {
+    data object Basket : Screen(value = "basket/{$Argument_Note_Position}") {
         fun notePosition(position: String): String {
             return this.value.replace(oldValue = "{$Argument_Note_Position}", newValue = position)
         }
     }
 
-    data object Settings : Route(value = "settings")
+    data object Settings : Screen(value = "settings")
 
-    data object Note : Route(value = "note/{$Argument_Note_Id}/{$Argument_Shared_Origin}") {
+    data object Note : Screen(value = "note/{$Argument_Note_Id}/{$Argument_Shared_Origin}") {
         fun configure(id: String, sharedElementOrigin: String): String {
             return this.value.replace(oldValue = "{$Argument_Note_Id}", newValue = id)
                 .replace(oldValue = "{$Argument_Shared_Origin}", newValue = sharedElementOrigin)
         }
     }
 
-    data object Calendar : Route(value = "calendar")
-    data object AdvancedSettings : Route(value = "advanced_settings")
-    data object Statistics : Route(value = "statistics")
-    data object AboutNotepad : Route(value = "about_notepad")
-    data object Purchases : Route(value = "purchases")
+    data object Calendar : Screen(value = "calendar")
+    data object AdvancedSettings : Screen(value = "advanced_settings")
+    data object Statistics : Screen(value = "statistics")
+    data object AboutNotepad : Screen(value = "about_notepad")
+    data object Purchases : Screen(value = "purchases")
 
     val name: String
         get() {

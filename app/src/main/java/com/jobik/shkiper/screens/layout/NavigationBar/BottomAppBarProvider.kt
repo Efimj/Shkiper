@@ -54,13 +54,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.NotePosition
-import com.jobik.shkiper.navigation.Argument_Shared_Origin
 import com.jobik.shkiper.navigation.NavigationHelpers.Companion.navigateToMain
 import com.jobik.shkiper.navigation.NavigationHelpers.Companion.navigateToSecondary
-import com.jobik.shkiper.navigation.Route
+import com.jobik.shkiper.navigation.Screen
 import com.jobik.shkiper.navigation.RouteHelper
 import com.jobik.shkiper.ui.helpers.Keyboard
-import com.jobik.shkiper.ui.helpers.LocalSharedElementKey
 import com.jobik.shkiper.ui.helpers.keyboardAsState
 import com.jobik.shkiper.ui.modifiers.bounceClick
 import com.jobik.shkiper.ui.theme.AppTheme
@@ -133,15 +131,15 @@ fun BottomAppBarProvider(
                     )
                 }
                 CreateNoteFAN(
-                    isVisible = currentRouteName == Route.NoteList.value,
+                    isVisible = currentRouteName == Screen.NoteList.value,
                     onCreate = {
                         scope.launch {
                             val noteId = viewModel.createNewNote()
                             delay(300)
                             navController.navigateToSecondary(
-                                Route.Note.configure(
+                                Screen.Note.configure(
                                     id = noteId.toHexString(),
-                                    sharedElementOrigin = Route.NoteList.name
+                                    sharedElementOrigin = Screen.NoteList.name
                                 )
                             )
                         }
@@ -199,31 +197,31 @@ private fun Navigation(
     val navigationItems = listOf(
         CustomBottomNavigationItem(
             icon = Icons.Outlined.AutoAwesomeMosaic,
-            isSelected = currentRoute == Route.NoteList.value,
+            isSelected = currentRoute == Screen.NoteList.value,
             description = R.string.Notes,
         ) {
-            navController.navigateToMain(destination = Route.NoteList.notePosition(NotePosition.MAIN.name))
+            navController.navigateToMain(destination = Screen.NoteList.notePosition(NotePosition.MAIN.name))
         },
         CustomBottomNavigationItem(
             icon = Icons.Outlined.Archive,
-            isSelected = currentRoute == Route.Archive.value,
+            isSelected = currentRoute == Screen.Archive.value,
             description = R.string.Archive,
         ) {
-            navController.navigateToMain(destination = Route.Archive.notePosition(NotePosition.ARCHIVE.name))
+            navController.navigateToMain(destination = Screen.Archive.notePosition(NotePosition.ARCHIVE.name))
         },
         CustomBottomNavigationItem(
             icon = Icons.Outlined.Delete,
-            isSelected = currentRoute == Route.Basket.value,
+            isSelected = currentRoute == Screen.Basket.value,
             description = R.string.Basket,
         ) {
-            navController.navigateToMain(destination = Route.Basket.notePosition(NotePosition.DELETE.name))
+            navController.navigateToMain(destination = Screen.Basket.notePosition(NotePosition.DELETE.name))
         },
         CustomBottomNavigationItem(
             icon = Icons.Outlined.Settings,
-            isSelected = currentRoute == Route.Settings.value,
+            isSelected = currentRoute == Screen.Settings.value,
             description = R.string.Settings
         ) {
-            navController.navigateToMain(destination = Route.Settings.value)
+            navController.navigateToMain(destination = Screen.Settings.value)
         },
     )
 
