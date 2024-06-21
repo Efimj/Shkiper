@@ -48,8 +48,8 @@ fun SetupAppScreenNavGraph(
                 modifier = Modifier.semantics { testTagsAsResourceId = true }
             ) {
                 composable<Screen.NoteList>(
-                    enterTransition = { mainScreenEnterTransition() },
-                    exitTransition = { mainScreenExitTransition() }
+                    enterTransition = { ScreenTransition().mainScreenEnterTransition(this) },
+                    exitTransition = { ScreenTransition().mainScreenExitTransition(this) }
                 ) {
                     CompositionLocalProvider(
                         LocalNavAnimatedVisibilityScope provides this,
@@ -62,8 +62,8 @@ fun SetupAppScreenNavGraph(
                 }
 
                 composable<Screen.Calendar>(
-                    enterTransition = { secondaryToNoteEnterTransition() },
-                    exitTransition = { secondaryToNoteExitTransition() }
+                    enterTransition = { ScreenTransition().secondaryToNoteEnterTransition(this) },
+                    exitTransition = { ScreenTransition().secondaryToNoteExitTransition(this) }
                 ) {
                     CompositionLocalProvider(
                         LocalNavAnimatedVisibilityScope provides this,
@@ -76,8 +76,8 @@ fun SetupAppScreenNavGraph(
                 }
 
                 composable<Screen.Archive>(
-                    enterTransition = { mainScreenEnterTransition() },
-                    exitTransition = { mainScreenExitTransition() }
+                    enterTransition = { ScreenTransition().mainScreenEnterTransition(this) },
+                    exitTransition = { ScreenTransition().mainScreenExitTransition(this) }
                 ) {
                     CompositionLocalProvider(
                         LocalNavAnimatedVisibilityScope provides this,
@@ -88,8 +88,8 @@ fun SetupAppScreenNavGraph(
                 }
 
                 composable<Screen.Basket>(
-                    enterTransition = { mainScreenEnterTransition() },
-                    exitTransition = { mainScreenExitTransition() },
+                    enterTransition = { ScreenTransition().mainScreenEnterTransition(this) },
+                    exitTransition = { ScreenTransition().mainScreenExitTransition(this) }
                 ) {
                     CompositionLocalProvider(
                         LocalNavAnimatedVisibilityScope provides this,
@@ -100,8 +100,8 @@ fun SetupAppScreenNavGraph(
                 }
 
                 composable<Screen.Settings>(
-                    enterTransition = { mainScreenEnterTransition() },
-                    exitTransition = { mainScreenExitTransition() },
+                    enterTransition = { ScreenTransition().mainScreenEnterTransition(this) },
+                    exitTransition = { ScreenTransition().mainScreenExitTransition(this) }
                 ) { SettingsScreen(navController) }
 
                 composable<Screen.Note>(
@@ -117,10 +117,10 @@ fun SetupAppScreenNavGraph(
                         val context = LocalContext.current
                         NoteScreen(
                             onBack = {
+                                if (navController.canNavigate().not()) return@NoteScreen
                                 if (navController.previousBackStackEntry == null) {
                                     IntentHelper().startAppActivity(context)
-                                }
-                                if (navController.canNavigate()) {
+                                } else {
                                     navController.popBackStack()
                                 }
                             },

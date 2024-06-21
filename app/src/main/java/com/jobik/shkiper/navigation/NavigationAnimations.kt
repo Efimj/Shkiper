@@ -11,81 +11,83 @@ import com.jobik.shkiper.navigation.RouteHelper.Companion.getScreen
 
 class ScreenTransition {
     fun secondaryScreenEnterTransition() = slideInHorizontally { it }
+
     fun secondaryScreenExitTransition() = slideOutHorizontally { it }
-}
 
-fun AnimatedContentTransitionScope<NavBackStackEntry>.mainScreenEnterTransition(): EnterTransition? {
-    val initial: Screen = initialState.getScreen() ?: return null
-    val target: Screen = targetState.getScreen() ?: return null
+    fun mainScreenEnterTransition(scope: AnimatedContentTransitionScope<NavBackStackEntry>): EnterTransition? {
+        val initial: Screen = scope.initialState.getScreen() ?: return null
+        val target: Screen = scope.targetState.getScreen() ?: return null
 
-    // transition after Note screen
-    if (initial.name == Screen.Note("").name) {
+        // transition after Note screen
+        if (initial.name == Screen.Note("").name) {
+            return null
+        }
+
+        // transition after secondary screen
+        if (RouteHelper().isSecondaryRoute(initial)) {
+            return slideInHorizontally()
+        }
+
+        // transition between main screens
+        val initiatorRouteNumber = RouteHelper().getRouteNumber(initial) ?: return null
+        val targetRouteNumber = RouteHelper().getRouteNumber(target) ?: return null
+
+        if (initiatorRouteNumber > targetRouteNumber) {
+            return slideInHorizontally { -it } + fadeIn()
+        } else if (initiatorRouteNumber < targetRouteNumber) {
+            return slideInHorizontally { it } + fadeIn()
+        }
+
         return null
     }
 
-    // transition after secondary screen
-    if (RouteHelper().isSecondaryRoute(initial)) {
-        return slideInHorizontally { -150 }
-    }
+    fun mainScreenExitTransition(scope: AnimatedContentTransitionScope<NavBackStackEntry>): ExitTransition? {
+        val initial: Screen = scope.initialState.getScreen() ?: return null
+        val target: Screen = scope.targetState.getScreen() ?: return null
 
-    // transition between main screens
-    val initiatorRouteNumber = RouteHelper().getRouteNumber(initial) ?: return null
-    val targetRouteNumber = RouteHelper().getRouteNumber(target) ?: return null
+        // transition before Note screen
+        if (target.name == Screen.Note("").name) {
+            return null
+        }
 
-    if (initiatorRouteNumber > targetRouteNumber) {
-        return slideInHorizontally { -it } + fadeIn()
-    } else if (initiatorRouteNumber < targetRouteNumber) {
-        return slideInHorizontally { it } + fadeIn()
-    }
+        // transition before secondary screen
+        if (RouteHelper().isSecondaryRoute(target)) {
+            return slideOutHorizontally()
+        }
 
-    return null
-}
+        // transition between main screens
+        val initiatorRouteNumber = RouteHelper().getRouteNumber(initial) ?: return null
+        val targetRouteNumber = RouteHelper().getRouteNumber(target) ?: return null
 
-fun AnimatedContentTransitionScope<NavBackStackEntry>.mainScreenExitTransition(): ExitTransition? {
-    val initial: Screen = initialState.getScreen() ?: return null
-    val target: Screen = targetState.getScreen() ?: return null
+        if (initiatorRouteNumber > targetRouteNumber) {
+            return slideOutHorizontally { it }
+        } else if (initiatorRouteNumber < targetRouteNumber) {
+            return slideOutHorizontally { -it }
+        }
 
-    // transition before Note screen
-    if (target.name == Screen.Note("").name) {
         return null
     }
 
-    // transition before secondary screen
-    if (RouteHelper().isSecondaryRoute(target)) {
-        return slideOutHorizontally { -150 }
+    fun secondaryToNoteEnterTransition(scope: AnimatedContentTransitionScope<NavBackStackEntry>): EnterTransition? {
+        val initial: Screen = scope.initialState.getScreen() ?: return null
+
+        // transition before Note screen
+        if (initial.name == Screen.Note("").name) {
+            return null
+        }
+
+        return ScreenTransition().secondaryScreenEnterTransition()
     }
 
-    // transition between main screens
-    val initiatorRouteNumber = RouteHelper().getRouteNumber(initial) ?: return null
-    val targetRouteNumber = RouteHelper().getRouteNumber(target) ?: return null
+    fun secondaryToNoteExitTransition(scope: AnimatedContentTransitionScope<NavBackStackEntry>): ExitTransition? {
+        val target: Screen = scope.targetState.getScreen() ?: return null
 
-    if (initiatorRouteNumber > targetRouteNumber) {
-        return slideOutHorizontally { it }
-    } else if (initiatorRouteNumber < targetRouteNumber) {
-        return slideOutHorizontally { -it }
+        // transition after Note screen
+        if (target.name == Screen.Note("").name) {
+            return null
+        }
+
+        return ScreenTransition().secondaryScreenExitTransition()
     }
-
-    return null
 }
 
-fun AnimatedContentTransitionScope<NavBackStackEntry>.secondaryToNoteEnterTransition(): EnterTransition? {
-    val initial: Screen = initialState.getScreen() ?: return null
-
-    // transition before Note screen
-    if (initial.name == Screen.Note("").name) {
-        return null
-    }
-
-    return ScreenTransition().secondaryScreenEnterTransition()
-}
-
-fun AnimatedContentTransitionScope<NavBackStackEntry>.secondaryToNoteExitTransition(): ExitTransition? {
-    val target: Screen = targetState.getScreen() ?: return null
-
-    // transition after Note screen
-    if (target.name == Screen.Note("").name) {
-        return null
-    }
-
-    return ScreenTransition().secondaryScreenExitTransition()
-}
