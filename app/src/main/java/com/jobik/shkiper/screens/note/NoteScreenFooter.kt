@@ -56,7 +56,7 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun NoteScreenFooter(onBack: () -> Unit, noteViewModel: NoteViewModel, richTextState: RichTextState) {
     val backgroundColor by animateColorAsState(
-        if (noteViewModel.screenState.value.isBottomAppBarHover || noteViewModel.screenState.value.isStyling) AppTheme.colors.secondaryContainer else AppTheme.colors.background,
+        if (noteViewModel.screenState.value.isBottomAppBarHover || noteViewModel.screenState.value.isStyling) AppTheme.colors.container else AppTheme.colors.background,
         label = "backgroundColor",
     )
 

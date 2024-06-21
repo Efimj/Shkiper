@@ -41,7 +41,7 @@ fun NoteScreenHeader(
     richTextState: RichTextState
 ) {
     val backgroundColorValue =
-        if (noteViewModel.screenState.value.isTopAppBarHover || noteViewModel.screenState.value.isStyling) AppTheme.colors.secondaryContainer else AppTheme.colors.background
+        if (noteViewModel.screenState.value.isTopAppBarHover || noteViewModel.screenState.value.isStyling) AppTheme.colors.container else AppTheme.colors.background
 
     val backgroundColor by animateColorAsState(
         backgroundColorValue, label = "backgroundColor",

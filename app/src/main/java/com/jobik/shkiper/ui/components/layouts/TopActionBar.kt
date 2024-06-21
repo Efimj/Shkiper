@@ -87,7 +87,7 @@ fun CustomTopAppBar(
                     Icon(
                         imageVector = navigation.icon,
                         contentDescription = stringResource(navigation.iconDescription),
-                        tint = if (navigation.isActive) AppTheme.colors.primary else contentColor,
+                        tint = if (navigation.isActive) AppTheme.colors.onSecondaryContainer else contentColor,
                     )
                 }
             },
@@ -100,7 +100,7 @@ fun CustomTopAppBar(
                         Icon(
                             imageVector = item.icon,
                             contentDescription = stringResource(item.iconDescription),
-                            tint = if (item.isActive) AppTheme.colors.primary else contentColor,
+                            tint = if (item.isActive) AppTheme.colors.onSecondaryContainer else contentColor,
                         )
                     }
                 }
