@@ -24,7 +24,6 @@ rootProject.name = "NotePadApp"
 
 include(":app")
 
-include(":benchmark")
 include(":feature:android-widgets")
 include(":core:helper")
 include(":core:domain")
