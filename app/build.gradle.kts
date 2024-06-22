@@ -9,6 +9,7 @@ plugins {
     id("io.realm.kotlin")
     id("kotlin-parcelize")
     kotlin("plugin.serialization") version "1.9.24"
+    alias(libs.plugins.baselineprofile)
 }
 
 val javaVersion = JavaVersion.toVersion(libs.versions.jvmTarget.get())
@@ -99,6 +100,8 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.profileinstaller)
+    "baselineProfile"(project(":baselineprofile"))
     coreLibraryDesugaring(libs.desugaring)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

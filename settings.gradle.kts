@@ -1,5 +1,8 @@
 @file:Suppress("UnstableApiUsage")
 
+include(":baselineprofile")
+
+
 pluginManagement {
     repositories {
         includeBuild("build-logic")
@@ -24,7 +27,6 @@ rootProject.name = "NotePadApp"
 
 include(":app")
 
-include(":benchmark")
 include(":feature:android-widgets")
 include(":core:helper")
 include(":core:domain")
