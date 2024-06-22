@@ -167,9 +167,9 @@ private fun CreateNoteFAN(
             Surface(
                 modifier = Modifier
                     .bounceClick()
-                    .clickable { onCreate() }
                     .height(DefaultNavigationValues().containerHeight)
-                    .aspectRatio(1f),
+                    .aspectRatio(1f)
+                    .clickable { onCreate() },
                 shape = MaterialTheme.shapes.small,
                 shadowElevation = 1.dp,
                 color = AppTheme.colors.primary,
