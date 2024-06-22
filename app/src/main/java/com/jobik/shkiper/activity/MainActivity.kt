@@ -160,6 +160,6 @@ open class MainActivity : ComponentActivity() {
         // Retrieve the extras from the Intent
         val extras = intent.extras ?: return null
         val noteId = extras.getString(SharedPreferencesKeys.NoteIdExtra, null) ?: return null
-        return Screen.Note(id = noteId, sharedElementOrigin = Screen.NoteList.toString())
+        return Screen.Note(id = noteId, sharedElementOrigin = Screen.NoteList.name)
     }
 }
