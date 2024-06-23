@@ -9,8 +9,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.DeleteSweep
 import androidx.compose.material.icons.outlined.Description
 import androidx.compose.material.icons.outlined.Event
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
@@ -23,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.jobik.shkiper.R
+import com.jobik.shkiper.database.models.NotePosition
 import com.jobik.shkiper.navigation.NavigationHelpers.Companion.navigateToSecondary
 import com.jobik.shkiper.navigation.Screen
 import com.jobik.shkiper.ui.components.cards.DonateBannerProvider
@@ -39,6 +42,8 @@ import com.jobik.shkiper.ui.helpers.endWindowInsetsPadding
 import com.jobik.shkiper.ui.helpers.startWindowInsetsPadding
 import com.jobik.shkiper.ui.modifiers.scrollConnectionToProvideVisibility
 import com.jobik.shkiper.ui.theme.AppTheme
+import com.jobik.shkiper.util.SnackbarHostUtil
+import com.jobik.shkiper.util.SnackbarVisualsCustom
 import com.jobik.shkiper.util.SupportTheDeveloperBannerUtil
 import com.jobik.shkiper.viewmodels.NotesViewModel
 
@@ -50,12 +55,8 @@ fun NoteList(
     val isSearchBarVisible = remember { mutableStateOf(true) }
 
     BackHandlerIfSelectedNotes(viewModel)
-
-    val notePosition = LocalNotePosition.current
-
-    LaunchedEffect(notePosition) {
-        viewModel.updateNotePosition(notePosition = notePosition)
-    }
+    UpdateNoteType(viewModel)
+    BasketSnackBar(viewModel)
 
     Box(
         modifier = Modifier
@@ -98,6 +99,32 @@ fun NoteList(
 
     NoteListScreenReminderCheck(viewModel)
     CreateReminderContent(viewModel)
+}
+
+@Composable
+private fun BasketSnackBar(viewModel: NotesViewModel) {
+    val context = LocalContext.current
+
+    LaunchedEffect(viewModel.screenState.value.currentNotes) {
+        if (viewModel.screenState.value.currentNotes == NotePosition.DELETE) {
+            SnackbarHostUtil.snackbarHostState.showSnackbar(
+                SnackbarVisualsCustom(
+                    message = context.getString(R.string.BasketPageHeader),
+                    icon = Icons.Outlined.DeleteSweep,
+                    duration = SnackbarDuration.Indefinite
+                )
+            )
+        }
+    }
+}
+
+@Composable
+private fun UpdateNoteType(viewModel: NotesViewModel) {
+    val notePosition = LocalNotePosition.current
+
+    LaunchedEffect(notePosition) {
+        viewModel.updateNotePosition(notePosition = notePosition)
+    }
 }
 
 @Composable
