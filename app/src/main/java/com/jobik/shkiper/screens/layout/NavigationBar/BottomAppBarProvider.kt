@@ -55,6 +55,7 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.jobik.shkiper.R
+import com.jobik.shkiper.navigation.NavigationHelpers.Companion.canNavigate
 import com.jobik.shkiper.navigation.NavigationHelpers.Companion.navigateToMain
 import com.jobik.shkiper.navigation.NavigationHelpers.Companion.navigateToSecondary
 import com.jobik.shkiper.navigation.Screen
@@ -135,6 +136,7 @@ fun BottomAppBarProvider(
                         it.hasRoute(Screen.NoteList::class)
                     } == true,
                     onCreate = {
+                        if (navController.canNavigate().not()) return@CreateNoteFAN
                         scope.launch {
                             val noteId = viewModel.createNewNote()
                             delay(300)
