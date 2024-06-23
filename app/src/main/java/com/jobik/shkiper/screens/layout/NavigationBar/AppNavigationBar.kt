@@ -71,11 +71,12 @@ fun CustomBottomNavigationItem(properties: CustomBottomNavigationItem) {
 @Composable
 fun CustomBottomNavigation(items: List<CustomBottomNavigationItem>) {
     val selectedIndex = items.indexOfFirst { it.isSelected }
-    val b = 50.dp.px
-    val c = 6.dp.px
+    val containerPaddings = 4.dp
+    val spacerBetween = 6.dp
+    val buttonWidth = DefaultNavigationValues().containerHeight.px - containerPaddings.px * 2
 
     val indicatorOffset by animateIntAsState(
-        targetValue = selectedIndex * (b + c),
+        targetValue = selectedIndex * (buttonWidth + spacerBetween.px),
         label = ""
     )
 
@@ -89,7 +90,7 @@ fun CustomBottomNavigation(items: List<CustomBottomNavigationItem>) {
                 .height(DefaultNavigationValues().containerHeight)
                 .clip(shape = CircleShape)
                 .background(AppTheme.colors.secondaryContainer)
-                .padding(4.dp),
+                .padding(containerPaddings),
         ) {
             // Background Indicator
             Box(
@@ -101,7 +102,7 @@ fun CustomBottomNavigation(items: List<CustomBottomNavigationItem>) {
             )
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(6.dp)
+                horizontalArrangement = Arrangement.spacedBy(spacerBetween)
             ) {
                 items.forEach {
                     CustomBottomNavigationItem(properties = it)
