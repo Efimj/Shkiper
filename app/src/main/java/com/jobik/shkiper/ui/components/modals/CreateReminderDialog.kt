@@ -167,7 +167,7 @@ fun CreateReminderDialog(
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(15.dp))
                 .background(AppTheme.colors.background)
-                .padding(vertical = 10.dp)
+                .padding(vertical = 20.dp)
         ) {
             DialogHeader(
                 page = pagerState.currentPage,
@@ -211,7 +211,7 @@ private fun DialogHeader(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 6.dp),
+            .padding(bottom = 6.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
