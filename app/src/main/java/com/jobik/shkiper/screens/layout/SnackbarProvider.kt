@@ -7,8 +7,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.jobik.shkiper.screens.layout.NavigationBar.AppNavigationBarState
-import com.jobik.shkiper.screens.layout.NavigationBar.DefaultNavigationValues
+import com.jobik.shkiper.screens.layout.navigation.AppNavigationBarState
+import com.jobik.shkiper.screens.layout.navigation.DefaultNavigationValues
 import com.jobik.shkiper.ui.components.cards.SnackbarCard
 import com.jobik.shkiper.util.SnackbarHostUtil
 import com.jobik.shkiper.util.SnackbarVisualsCustom

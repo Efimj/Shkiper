@@ -18,7 +18,7 @@ import com.jobik.shkiper.database.models.Reminder
 import com.jobik.shkiper.navigation.NavigationHelpers.Companion.canNavigate
 import com.jobik.shkiper.navigation.NavigationHelpers.Companion.navigateToSecondary
 import com.jobik.shkiper.navigation.Screen
-import com.jobik.shkiper.screens.layout.NavigationBar.AppNavigationBarState
+import com.jobik.shkiper.screens.layout.navigation.AppNavigationBarState
 import com.jobik.shkiper.ui.animation.AnimateVerticalSwitch
 import com.jobik.shkiper.ui.components.layouts.*
 import com.jobik.shkiper.ui.helpers.bottomWindowInsetsPadding

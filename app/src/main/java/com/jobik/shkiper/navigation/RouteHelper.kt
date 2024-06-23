@@ -6,7 +6,7 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 
 class RouteHelper {
-    val NumberedRoutes = listOf(Screen.NoteList, Screen.Archive, Screen.Basket, Screen.Settings)
+    val NumberedRoutes = listOf(Screen.NoteList, Screen.Settings)
     val SecondaryRoutes = listOf(
         Screen.Note(id = ""),
         Screen.Calendar,

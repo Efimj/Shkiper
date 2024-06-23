@@ -1,4 +1,4 @@
-package com.jobik.shkiper.screens.layout.NavigationBar
+package com.jobik.shkiper.screens.layout.navigation
 
 import androidx.annotation.StringRes
 import androidx.compose.animation.animateColorAsState

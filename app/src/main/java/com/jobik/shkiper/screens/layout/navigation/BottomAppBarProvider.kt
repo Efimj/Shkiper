@@ -1,4 +1,4 @@
-package com.jobik.shkiper.screens.layout.NavigationBar
+package com.jobik.shkiper.screens.layout.navigation
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandHorizontally
@@ -40,6 +40,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -54,13 +55,15 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.jobik.shkiper.R
+import com.jobik.shkiper.database.models.NotePosition
 import com.jobik.shkiper.navigation.NavigationHelpers.Companion.canNavigate
 import com.jobik.shkiper.navigation.NavigationHelpers.Companion.navigateToMain
 import com.jobik.shkiper.navigation.NavigationHelpers.Companion.navigateToSecondary
-import com.jobik.shkiper.navigation.Screen
 import com.jobik.shkiper.navigation.RouteHelper
 import com.jobik.shkiper.navigation.RouteHelper.Companion.getScreen
+import com.jobik.shkiper.navigation.Screen
 import com.jobik.shkiper.ui.helpers.Keyboard
 import com.jobik.shkiper.ui.helpers.keyboardAsState
 import com.jobik.shkiper.ui.modifiers.bounceClick
@@ -71,9 +74,11 @@ import kotlinx.coroutines.launch
 @Composable
 fun BottomAppBarProvider(
     modifier: Modifier = Modifier,
-    navController: NavHostController,
     viewModel: BottomBarViewModel = hiltViewModel<BottomBarViewModel>(),
+    content: @Composable (NavHostController, NotePosition) -> Unit,
 ) {
+    val navController = rememberNavController()
+
     val scope = rememberCoroutineScope()
     val localDensity = LocalDensity.current
     var containerHeight by remember { mutableStateOf(0.dp) }
@@ -99,55 +104,64 @@ fun BottomAppBarProvider(
         }
     }
 
-    AnimatedVisibility(
-        modifier = modifier,
-        visible = AppNavigationBarState.isVisible.value,
-        enter = slideInVertically { it },
-        exit = slideOutVertically { it }
-    ) {
-        Box(
-            modifier = Modifier
-                .onGloballyPositioned { coordinates ->
-                    // Set screen height using the LayoutCoordinates
-                    containerHeight = with(localDensity) { coordinates.size.height.toDp() }
-                }
-                .fillMaxWidth()
-                .background(
-                    Brush.verticalGradient(
-                        0F to AppTheme.colors.background.copy(alpha = 0.0F),
-                        0.8F to AppTheme.colors.background.copy(alpha = 1F)
-                    )
-                ),
-            contentAlignment = Alignment.BottomCenter
+    val notePosition = rememberSaveable { mutableStateOf(NotePosition.MAIN) }
+
+    Box {
+        content(navController, notePosition.value)
+        AnimatedVisibility(
+            modifier = modifier,
+            visible = AppNavigationBarState.isVisible.value,
+            enter = slideInVertically { it },
+            exit = slideOutVertically { it }
         ) {
-            Row(
+            Box(
                 modifier = Modifier
+                    .onGloballyPositioned { coordinates ->
+                        // Set screen height using the LayoutCoordinates
+                        containerHeight = with(localDensity) { coordinates.size.height.toDp() }
+                    }
                     .fillMaxWidth()
-                    .windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Bottom))
-                    .padding(bottom = 20.dp), horizontalArrangement = Arrangement.Center
+                    .background(
+                        Brush.verticalGradient(
+                            0F to AppTheme.colors.background.copy(alpha = 0.0F),
+                            0.8F to AppTheme.colors.background.copy(alpha = 1F)
+                        )
+                    ),
+                contentAlignment = Alignment.BottomCenter
             ) {
-                Box(modifier = Modifier.zIndex(2f)) {
-                    Navigation(
-                        navController = navController
-                    )
-                }
-                CreateNoteFAN(
-                    isVisible = currentDestination?.hierarchy?.any {
-                        it.hasRoute(Screen.NoteList::class)
-                    } == true,
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Bottom))
+                        .padding(bottom = 20.dp), horizontalArrangement = Arrangement.Center
                 ) {
-                    if (navController.canNavigate()
-                            .not() || viewModel.screenState.value.isCreating
-                    ) return@CreateNoteFAN
-                    scope.launch {
-                        viewModel.createNewNote {
-                            delay(300)
-                            navController.navigateToSecondary(
-                                Screen.Note(
-                                    id = it.toHexString(),
-                                    sharedElementOrigin = Screen.NoteList.name
+                    Box(modifier = Modifier.zIndex(2f)) {
+                        Navigation(
+                            navController = navController,
+                            notePosition = notePosition.value,
+                            onNotePositionChange = {
+                                notePosition.value = it
+                            }
+                        )
+                    }
+                    CreateNoteFAN(
+                        isVisible = currentDestination?.hierarchy?.any {
+                            it.hasRoute(Screen.NoteList::class)
+                        } == true,
+                    ) {
+                        if (navController.canNavigate()
+                                .not() || viewModel.screenState.value.isCreating
+                        ) return@CreateNoteFAN
+                        scope.launch {
+                            viewModel.createNewNote {
+                                delay(300)
+                                navController.navigateToSecondary(
+                                    Screen.Note(
+                                        id = it.toHexString(),
+                                        sharedElementOrigin = Screen.NoteList.name
+                                    )
                                 )
-                            )
+                            }
                         }
                     }
                 }
@@ -197,6 +211,8 @@ private fun CreateNoteFAN(
 @Composable
 private fun Navigation(
     navController: NavHostController,
+    notePosition: NotePosition,
+    onNotePositionChange: (NotePosition) -> Unit
 ) {
     val navBackStackEntry = navController.currentBackStackEntryAsState().value
     val currentDestination = navBackStackEntry?.destination
@@ -206,28 +222,31 @@ private fun Navigation(
             icon = Icons.Outlined.AutoAwesomeMosaic,
             isSelected = currentDestination?.hierarchy?.any {
                 it.hasRoute(Screen.NoteList::class)
-            } == true,
+            } == true && notePosition == NotePosition.MAIN,
             description = R.string.Notes,
         ) {
             navController.navigateToMain(destination = Screen.NoteList)
+            onNotePositionChange(NotePosition.MAIN)
         },
         CustomBottomNavigationItem(
             icon = Icons.Outlined.Archive,
             isSelected = currentDestination?.hierarchy?.any {
-                it.hasRoute(Screen.Archive::class)
-            } == true,
+                it.hasRoute(Screen.NoteList::class)
+            } == true && notePosition == NotePosition.ARCHIVE,
             description = R.string.Archive,
         ) {
-            navController.navigateToMain(destination = Screen.Archive)
+            navController.navigateToMain(destination = Screen.NoteList)
+            onNotePositionChange(NotePosition.ARCHIVE)
         },
         CustomBottomNavigationItem(
             icon = Icons.Outlined.Delete,
             isSelected = currentDestination?.hierarchy?.any {
-                it.hasRoute(Screen.Basket::class)
-            } == true,
+                it.hasRoute(Screen.NoteList::class)
+            } == true && notePosition == NotePosition.DELETE,
             description = R.string.Basket,
         ) {
-            navController.navigateToMain(destination = Screen.Basket)
+            navController.navigateToMain(destination = Screen.NoteList)
+            onNotePositionChange(NotePosition.DELETE)
         },
         CustomBottomNavigationItem(
             icon = Icons.Outlined.Settings,

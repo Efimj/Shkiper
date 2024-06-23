@@ -1,7 +1,6 @@
 package com.jobik.shkiper.viewmodels
 
 import android.app.Application
-import android.util.Log
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Undo
 import androidx.compose.material.icons.filled.*
@@ -11,7 +10,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.toRoute
 import com.jobik.shkiper.R
 import com.jobik.shkiper.database.data.note.NoteMongoRepository
 import com.jobik.shkiper.database.data.reminder.ReminderMongoRepository
@@ -20,8 +18,7 @@ import com.jobik.shkiper.database.models.NotePosition
 import com.jobik.shkiper.database.models.Reminder
 import com.jobik.shkiper.database.models.RepeatMode
 import com.jobik.shkiper.helpers.DateHelper
-import com.jobik.shkiper.navigation.Screen
-import com.jobik.shkiper.screens.layout.NavigationBar.AppNavigationBarState
+import com.jobik.shkiper.screens.layout.navigation.AppNavigationBarState
 import com.jobik.shkiper.util.SnackbarHostUtil
 import com.jobik.shkiper.util.SnackbarVisualsCustom
 import com.mohamedrejeb.richeditor.model.RichTextState
@@ -35,6 +32,7 @@ import java.time.temporal.ChronoUnit
 import javax.inject.Inject
 
 data class NotesScreenState(
+    val currentNotes: NotePosition = NotePosition.MAIN,
     val isNotesInitialized: Boolean = false,
     val notes: List<Note> = emptyList(),
     val searchText: String = "",
@@ -53,7 +51,6 @@ class NotesViewModel @Inject constructor(
     private val application: Application,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-    private val notePosition: NotePosition
     private val _screenState = mutableStateOf(NotesScreenState())
     val screenState: State<NotesScreenState> = _screenState
 
@@ -64,26 +61,33 @@ class NotesViewModel @Inject constructor(
     private var notesFlowJob: Job? = null
 
     init {
-        notePosition = try {
-            NotePosition.valueOf(savedStateHandle.toRoute<Screen>().name)
-        } catch (e: Exception) {
-            Log.i("savedStateHandle", "notePositionError", e)
-            NotePosition.MAIN
+        viewModelScope.launch(Dispatchers.IO) {
+            getHashtags()
+            getNotes()
+            getReminders()
+        }
+    }
+
+    fun updateNotePosition(notePosition: NotePosition) {
+        if (notePosition == screenState.value.currentNotes) return
+        if (notePosition == NotePosition.DELETE) {
+            deleteExpiredNotes()
         }
         viewModelScope.launch(Dispatchers.IO) {
             getHashtags()
             getNotes()
             getReminders()
-            if (notePosition == NotePosition.DELETE)
-                deleteExpiredNotes()
         }
+        _screenState.value = screenState.value.copy(
+            currentNotes = notePosition
+        )
     }
 
     private fun getNotes() {
         notesFlowJob?.cancel()
 
         notesFlowJob = viewModelScope.launch {
-            noteRepository.getNotesFlow(notePosition).collect() {
+            noteRepository.getNotesFlow(_screenState.value.currentNotes).collect() {
                 _screenState.value = _screenState.value.copy(notes = it, isNotesInitialized = true)
             }
         }
@@ -114,7 +118,7 @@ class NotesViewModel @Inject constructor(
 
     private suspend fun getNotesByText(newString: String) {
         _screenState.value = screenState.value.copy(currentHashtag = null)
-        noteRepository.getNotesFlow(notePosition).collect {
+        noteRepository.getNotesFlow(_screenState.value.currentNotes).collect {
             val notes = it.filter { note -> noteTextIsContains(note, newString) }
             _screenState.value = _screenState.value.copy(notes = notes)
         }
@@ -270,7 +274,7 @@ class NotesViewModel @Inject constructor(
 
     fun getHashtags() {
         viewModelScope.launch {
-            noteRepository.getHashtags(notePosition).collect() {
+            noteRepository.getHashtags(_screenState.value.currentNotes).collect() {
                 _screenState.value = screenState.value.copy(hashtags = it)
             }
         }
@@ -294,7 +298,7 @@ class NotesViewModel @Inject constructor(
         notesFlowJob?.cancel()
 
         notesFlowJob = viewModelScope.launch {
-            noteRepository.getNotesByHashtag(notePosition, hashtag).collect() {
+            noteRepository.getNotesByHashtag(_screenState.value.currentNotes, hashtag).collect() {
                 _screenState.value = _screenState.value.copy(notes = it)
                 if (it.isEmpty()) unsetSelectedHashtag()
             }

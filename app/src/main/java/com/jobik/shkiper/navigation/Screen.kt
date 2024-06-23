@@ -12,12 +12,6 @@ sealed class Screen(val name: String) {
     data object NoteList : Screen(name = "NoteList")
 
     @Serializable
-    data object Archive : Screen(name = "Archive")
-
-    @Serializable
-    data object Basket : Screen(name = "Basket")
-
-    @Serializable
     data object Settings : Screen(name = "Settings")
 
     @Serializable

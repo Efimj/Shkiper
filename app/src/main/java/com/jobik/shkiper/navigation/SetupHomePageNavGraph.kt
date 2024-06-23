@@ -75,30 +75,6 @@ fun SetupAppScreenNavGraph(
                     }
                 }
 
-                composable<Screen.Archive>(
-                    enterTransition = { ScreenTransition().mainScreenEnterTransition(this) },
-                    exitTransition = { ScreenTransition().mainScreenExitTransition(this) }
-                ) {
-                    CompositionLocalProvider(
-                        LocalNavAnimatedVisibilityScope provides this,
-                        LocalSharedElementKey provides Screen.Archive.toString()
-                    ) {
-                        ArchiveNotesScreen(navController)
-                    }
-                }
-
-                composable<Screen.Basket>(
-                    enterTransition = { ScreenTransition().mainScreenEnterTransition(this) },
-                    exitTransition = { ScreenTransition().mainScreenExitTransition(this) }
-                ) {
-                    CompositionLocalProvider(
-                        LocalNavAnimatedVisibilityScope provides this,
-                        LocalSharedElementKey provides Screen.Basket.toString()
-                    ) {
-                        BasketNotesScreen(navController)
-                    }
-                }
-
                 composable<Screen.Settings>(
                     enterTransition = { ScreenTransition().mainScreenEnterTransition(this) },
                     exitTransition = { ScreenTransition().mainScreenExitTransition(this) }

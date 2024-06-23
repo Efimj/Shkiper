@@ -1,4 +1,4 @@
-package com.jobik.shkiper.screens.layout.NavigationBar
+package com.jobik.shkiper.screens.layout.navigation
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State

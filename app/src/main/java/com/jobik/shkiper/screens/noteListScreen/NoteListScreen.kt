@@ -12,6 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Description
 import androidx.compose.material.icons.outlined.Event
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -31,6 +32,7 @@ import com.jobik.shkiper.ui.components.fields.getSearchBarHeight
 import com.jobik.shkiper.ui.components.layouts.*
 import com.jobik.shkiper.ui.components.modals.CreateReminderDialog
 import com.jobik.shkiper.ui.components.modals.ReminderDialogProperties
+import com.jobik.shkiper.ui.helpers.LocalNotePosition
 import com.jobik.shkiper.ui.helpers.LocalSharedElementKey
 import com.jobik.shkiper.ui.helpers.bottomWindowInsetsPadding
 import com.jobik.shkiper.ui.helpers.endWindowInsetsPadding
@@ -48,6 +50,12 @@ fun NoteListScreen(
     val isSearchBarVisible = remember { mutableStateOf(true) }
 
     BackHandlerIfSelectedNotes(viewModel)
+
+    val notePosition = LocalNotePosition.current
+
+    LaunchedEffect(notePosition) {
+        viewModel.updateNotePosition(notePosition = notePosition)
+    }
 
     Box(
         modifier = Modifier
