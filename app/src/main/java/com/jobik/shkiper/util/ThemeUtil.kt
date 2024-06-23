@@ -24,7 +24,7 @@ object ThemeUtil {
         }
 
     fun getColors(isDark: Boolean? = null, style: CustomThemeStyle? = null): CustomThemeColors {
-        val currentStyle = style ?: (themeStyle.value ?: CustomThemeStyle.PastelPurple)
+        val currentStyle = style ?: (themeStyle.value ?: CustomThemeStyle.MaterialDynamicColors)
         val currentIsDark = isDark ?: isDarkMode.value ?: true
 
         return currentStyle.getColors(currentIsDark)
@@ -52,7 +52,7 @@ object ThemeUtil {
     private fun setDefaultsStyles(context: Context) {
         isDarkMode.value =
             context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
-        themeStyle.value = CustomThemeStyle.PastelPurple
+        themeStyle.value = CustomThemeStyle.MaterialDynamicColors
     }
 
     fun saveThemeMode(context: Context, mode: Boolean, newThemeStyle: CustomThemeStyle) {

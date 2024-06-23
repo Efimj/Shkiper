@@ -53,7 +53,7 @@ private fun getThemeColors(
 fun NoteWidgetContent(prefs: Preferences) {
     ThemeUtil.restoreSavedTheme(LocalContext.current)
 
-    val userStyles = ThemeUtil.themeStyle.value ?: CustomThemeStyle.PastelPurple
+    val userStyles = ThemeUtil.themeStyle.value ?: CustomThemeStyle.MaterialDynamicColors
     val darkColors = getThemeColors(style = userStyles, darkTheme = true, LocalContext.current)
     val lightColors = getThemeColors(style = userStyles, darkTheme = false, LocalContext.current)
 

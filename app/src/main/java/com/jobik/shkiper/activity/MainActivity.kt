@@ -79,7 +79,7 @@ open class MainActivity : ComponentActivity() {
 
             ShkiperTheme(
                 darkTheme = ThemeUtil.isDarkMode.value ?: isSystemInDarkTheme(),
-                style = ThemeUtil.themeStyle.value ?: CustomThemeStyle.PastelPurple
+                style = ThemeUtil.themeStyle.value ?: CustomThemeStyle.MaterialDynamicColors
             ) {
                 OnboardingDialog(
                     isVisible = onboarding.value,

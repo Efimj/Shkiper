@@ -330,7 +330,7 @@ private fun SettingsColorThemePicker(settingsViewModel: SettingsViewModel) {
     val colorValues =
         if (isDarkMode == true) CustomThemeStyle.entries.map { it.dark } else CustomThemeStyle.entries.map { it.light }
     val colorValuesName = CustomThemeStyle.entries
-    val selectedThemeName = ThemeUtil.themeStyle.value?.name ?: CustomThemeStyle.PastelPurple.name
+    val selectedThemeName = ThemeUtil.themeStyle.value?.name ?: CustomThemeStyle.MaterialDynamicColors.name
     val context = LocalContext.current
 
     Column(

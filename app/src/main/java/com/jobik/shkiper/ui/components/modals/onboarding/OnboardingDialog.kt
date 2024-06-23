@@ -28,6 +28,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.jobik.shkiper.ui.components.layouts.VerticalIndicator
 import com.jobik.shkiper.ui.components.modals.FullscreenPopup
+import com.jobik.shkiper.ui.helpers.startWindowInsetsPadding
+import com.jobik.shkiper.ui.helpers.verticalWindowInsetsPadding
 import com.jobik.shkiper.ui.theme.AppTheme
 
 @Composable
@@ -77,7 +79,7 @@ fun OnboardingDialog(isVisible: Boolean, onFinish: () -> Unit) {
                         contentPadding = PaddingValues(0.dp),
                         pageSize = PageSize.Fill,
                     ) {
-                        OnBoardingScreen()
+//                        OnBoardingScreen()
                     }
                     BottomNavigation(pagerState = pagerState, onFinish)
                 }
@@ -106,7 +108,13 @@ private fun BoxScope.BottomNavigation(pagerState: PagerState, onFinish: () -> Un
 
 @Composable
 private fun BoxScope.IndicatorContent(pagerState: PagerState) {
-    Box(modifier = Modifier.align(Alignment.TopStart), contentAlignment = Alignment.CenterStart) {
+    Box(
+        modifier = Modifier
+            .verticalWindowInsetsPadding()
+            .startWindowInsetsPadding()
+            .align(Alignment.TopStart),
+        contentAlignment = Alignment.CenterStart
+    ) {
         Column(
             modifier = Modifier
                 .padding(top = 20.dp)
