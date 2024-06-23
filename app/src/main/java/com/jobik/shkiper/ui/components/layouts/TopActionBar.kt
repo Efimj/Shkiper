@@ -6,7 +6,7 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -65,7 +65,7 @@ fun CustomTopAppBar(
                     Text(
                         text = text,
                         overflow = TextOverflow.Ellipsis,
-                        style = MaterialTheme.typography.body1,
+                        style = MaterialTheme.typography.titleMedium,
                         maxLines = 1,
                         fontWeight = FontWeight.SemiBold,
                         fontSize = 18.sp
@@ -75,7 +75,7 @@ fun CustomTopAppBar(
                 if (counter != null)
                     Counter(
                         count = counter,
-                        style = MaterialTheme.typography.body1.copy(fontWeight = FontWeight.SemiBold),
+                        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
                         color = contentColor
                     )
             },
@@ -87,7 +87,7 @@ fun CustomTopAppBar(
                     Icon(
                         imageVector = navigation.icon,
                         contentDescription = stringResource(navigation.iconDescription),
-                        tint = if (navigation.isActive) AppTheme.colors.primary else contentColor,
+                        tint = if (navigation.isActive) AppTheme.colors.onSecondaryContainer else contentColor,
                     )
                 }
             },
@@ -100,7 +100,7 @@ fun CustomTopAppBar(
                         Icon(
                             imageVector = item.icon,
                             contentDescription = stringResource(item.iconDescription),
-                            tint = if (item.isActive) AppTheme.colors.primary else contentColor,
+                            tint = if (item.isActive) AppTheme.colors.onSecondaryContainer else contentColor,
                         )
                     }
                 }

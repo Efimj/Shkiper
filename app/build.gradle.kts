@@ -8,6 +8,8 @@ plugins {
     id("com.google.dagger.hilt.android")
     id("io.realm.kotlin")
     id("kotlin-parcelize")
+    kotlin("plugin.serialization") version "1.9.24"
+    alias(libs.plugins.baselineprofile)
 }
 
 val javaVersion = JavaVersion.toVersion(libs.versions.jvmTarget.get())
@@ -98,10 +100,9 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.profileinstaller)
+    "baselineProfile"(project(":baselineprofile"))
     coreLibraryDesugaring(libs.desugaring)
-
-//    implementation(projects.feature.androidWidgets)
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -118,6 +119,8 @@ dependencies {
     implementation(libs.androidx.foundation)
 
     implementation(libs.material)
+
+    implementation(libs.kotlinx.serialization.json)
 
     // Splash screen API (not work when android less than 12)
     implementation(libs.androidx.core.splashscreen)

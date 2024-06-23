@@ -1,5 +1,6 @@
 package com.jobik.shkiper.ui.components.fields
 
+import androidx.activity.compose.BackHandler
 import androidx.annotation.Keep
 import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
@@ -101,16 +102,20 @@ fun SearchBar(
         label = "height"
     )
 
+    BackHandler(enabled = value.isNotBlank() && isFocused.value.not()) {
+        onChange("")
+    }
+
     AnimatedVisibility(
         visible = isVisible || isFocused.value,
         enter = slideInVertically { -it },
         exit = slideOutVertically { -it },
     ) {
         Row(
-            modifier = Modifier.padding(top = topPadding)
+            modifier = Modifier
+                .padding(top = topPadding)
                 .heightIn(max = height)
-                .padding(start = startPaddings, end = endPaddings)
-                ,
+                .padding(start = startPaddings, end = endPaddings),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {

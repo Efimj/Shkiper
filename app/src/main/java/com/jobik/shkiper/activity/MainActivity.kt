@@ -2,29 +2,24 @@ package com.jobik.shkiper.activity
 
 import android.app.Activity
 import android.content.Context
-import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.jobik.shkiper.NotepadApplication
 import com.jobik.shkiper.SharedPreferencesKeys
 import com.jobik.shkiper.SharedPreferencesKeys.OnboardingFinishedData
 import com.jobik.shkiper.database.models.NotePosition
-import com.jobik.shkiper.navigation.Route
+import com.jobik.shkiper.navigation.Screen
 import com.jobik.shkiper.screens.layout.AppLayout
 import com.jobik.shkiper.services.billing.BillingService
 import com.jobik.shkiper.services.inAppUpdates.InAppUpdatesService
@@ -32,12 +27,11 @@ import com.jobik.shkiper.services.localization.LocaleHelper
 import com.jobik.shkiper.services.review.ReviewService
 import com.jobik.shkiper.services.statistics.StatisticsService
 import com.jobik.shkiper.ui.components.modals.OfferWriteReview
+import com.jobik.shkiper.ui.components.modals.onboarding.OnboardingDialog
 import com.jobik.shkiper.ui.helpers.SecureModeManager
-import com.jobik.shkiper.ui.theme.AppTheme
 import com.jobik.shkiper.ui.theme.CustomThemeStyle
 import com.jobik.shkiper.ui.theme.ShkiperTheme
 import com.jobik.shkiper.util.ContextUtils.adjustFontSize
-import com.jobik.shkiper.util.Startup
 import com.jobik.shkiper.util.ThemeUtil
 import com.jobik.shkiper.util.settings.SettingsManager
 import dagger.hilt.android.AndroidEntryPoint
@@ -78,6 +72,8 @@ open class MainActivity : ComponentActivity() {
         checkForUpdates()
 
         setContent {
+            val onboarding = rememberSaveable { mutableStateOf(checkIsOnboarding(this)) }
+
             SecureModeManager()
             UpdateStatistics()
 
@@ -85,9 +81,14 @@ open class MainActivity : ComponentActivity() {
                 darkTheme = ThemeUtil.isDarkMode.value ?: isSystemInDarkTheme(),
                 style = ThemeUtil.themeStyle.value ?: CustomThemeStyle.PastelPurple
             ) {
+                OnboardingDialog(
+                    isVisible = onboarding.value,
+                    onFinish = { onboarding.value = false })
+
                 AppLayout(startDestination)
-                if (canShowOfferReview.value)
+                if (canShowOfferReview.value) {
                     OfferWriteReview { canShowOfferReview.value = false }
+                }
             }
         }
     }
@@ -137,15 +138,14 @@ open class MainActivity : ComponentActivity() {
         inAppUpdatesService.checkForDownloadedUpdate()
     }
 
-    private fun getStartDestination(): String {
+    private fun getStartDestination(): Screen {
         val route = getNotificationRoute()
         if (route != null)
             return route
-        return getOnboardingRoute(applicationContext)
-            ?: Route.NoteList.route
+        return Screen.NoteList
     }
 
-    private fun getOnboardingRoute(context: Context): String? {
+    private fun checkIsOnboarding(context: Context): Boolean {
         val sharedPreferences =
             context.getSharedPreferences(
                 SharedPreferencesKeys.ApplicationStorageName,
@@ -153,14 +153,13 @@ open class MainActivity : ComponentActivity() {
             )
         val isOnboardingPageFinished =
             sharedPreferences.getString(SharedPreferencesKeys.OnboardingPageFinishedData, "")
-        return if (isOnboardingPageFinished == OnboardingFinishedData) null else Route.Onboarding.route
+        return isOnboardingPageFinished != OnboardingFinishedData
     }
 
-    private fun getNotificationRoute(): String? {
+    private fun getNotificationRoute(): Screen? {
         // Retrieve the extras from the Intent
         val extras = intent.extras ?: return null
         val noteId = extras.getString(SharedPreferencesKeys.NoteIdExtra, null) ?: return null
-        Startup.paramNoteId = noteId
-        return Route.Note.noteId(noteId)
+        return Screen.Note(id = noteId, sharedElementOrigin = Screen.NoteList.name)
     }
 }

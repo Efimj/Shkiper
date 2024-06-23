@@ -1,164 +1,127 @@
 package com.jobik.shkiper.navigation
 
-import androidx.compose.animation.*
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
-import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
+import androidx.navigation.toRoute
+import com.jobik.shkiper.helpers.IntentHelper
+import com.jobik.shkiper.navigation.NavigationHelpers.Companion.canNavigate
 import com.jobik.shkiper.screens.about.AboutNotepadScreen
 import com.jobik.shkiper.screens.advancedSettings.AdvancedSettings
-import com.jobik.shkiper.screens.archive.ArchiveNotesScreen
-import com.jobik.shkiper.screens.basket.BasketNotesScreen
-import com.jobik.shkiper.screens.noteListScreen.NoteListScreen
+import com.jobik.shkiper.screens.calendar.CalendarScreen
 import com.jobik.shkiper.screens.note.NoteScreen
-import com.jobik.shkiper.screens.onboarding.OnBoardingScreen
+import com.jobik.shkiper.screens.noteList.NoteList
 import com.jobik.shkiper.screens.purchase.PurchaseScreen
 import com.jobik.shkiper.screens.settings.SettingsScreen
 import com.jobik.shkiper.screens.statistics.StatisticsScreen
+import com.jobik.shkiper.ui.helpers.LocalNavAnimatedVisibilityScope
+import com.jobik.shkiper.ui.helpers.LocalSharedElementKey
+import com.jobik.shkiper.ui.helpers.LocalSharedTransitionScope
 
-@OptIn(ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class, ExperimentalSharedTransitionApi::class)
 @ExperimentalAnimationApi
 @Composable
 fun SetupAppScreenNavGraph(
+    modifier: Modifier = Modifier,
     navController: NavHostController,
-    startDestination: String
+    startDestination: Screen,
 ) {
-    NavHost(
-        navController = navController,
-        startDestination = startDestination,
-        modifier = Modifier.semantics { testTagsAsResourceId = true }
-    ) {
-        composable(
-            route = Route.NoteList.route,
-            enterTransition = { mainScreenEnterTransition() },
-            exitTransition = { mainScreenExitTransition() }
+    SharedTransitionLayout(modifier = modifier) {
+        CompositionLocalProvider(
+            LocalSharedTransitionScope provides this
         ) {
-            NoteListScreen(navController)
+            NavHost(
+                navController = navController,
+                startDestination = startDestination,
+                modifier = Modifier.semantics { testTagsAsResourceId = true }
+            ) {
+                composable<Screen.NoteList>(
+                    enterTransition = { ScreenTransition().mainScreenEnterTransition(this) },
+                    exitTransition = { ScreenTransition().mainScreenExitTransition(this) }
+                ) {
+                    CompositionLocalProvider(
+                        LocalNavAnimatedVisibilityScope provides this,
+                        LocalSharedElementKey provides Screen.NoteList.toString()
+                    ) {
+                        NoteList(
+                            navController = navController,
+                        )
+                    }
+                }
+
+                composable<Screen.Calendar>(
+                    enterTransition = { ScreenTransition().secondaryToNoteEnterTransition(this) },
+                    exitTransition = { ScreenTransition().secondaryToNoteExitTransition(this) }
+                ) {
+                    CompositionLocalProvider(
+                        LocalNavAnimatedVisibilityScope provides this,
+                        LocalSharedElementKey provides Screen.Calendar.name
+                    ) {
+                        CalendarScreen(
+                            navController = navController,
+                        )
+                    }
+                }
+
+                composable<Screen.Settings>(
+                    enterTransition = { ScreenTransition().mainScreenEnterTransition(this) },
+                    exitTransition = { ScreenTransition().mainScreenExitTransition(this) }
+                ) { SettingsScreen(navController) }
+
+                composable<Screen.Note>(
+                    enterTransition = { ScreenTransition().secondaryScreenEnterTransition() },
+                    exitTransition = { ScreenTransition().secondaryScreenExitTransition() }
+                ) {
+                    val noteScreenArgs: Screen.Note = it.toRoute()
+
+                    CompositionLocalProvider(
+                        LocalNavAnimatedVisibilityScope provides this,
+                        LocalSharedElementKey provides noteScreenArgs.sharedElementOrigin
+                    ) {
+                        val context = LocalContext.current
+                        NoteScreen(
+                            onBack = {
+                                if (navController.canNavigate().not()) return@NoteScreen
+                                if (navController.previousBackStackEntry == null) {
+                                    IntentHelper().startAppActivity(context)
+                                } else {
+                                    navController.popBackStack()
+                                }
+                            },
+                        )
+                    }
+                }
+
+                composable<Screen.AdvancedSettings>(
+                    enterTransition = { ScreenTransition().secondaryScreenEnterTransition() },
+                    exitTransition = { ScreenTransition().secondaryScreenExitTransition() }
+                ) { AdvancedSettings() }
+
+                composable<Screen.Statistics>(
+                    enterTransition = { ScreenTransition().secondaryScreenEnterTransition() },
+                    exitTransition = { ScreenTransition().secondaryScreenExitTransition() }
+                ) { StatisticsScreen() }
+
+                composable<Screen.Purchases>(
+                    enterTransition = { ScreenTransition().secondaryScreenEnterTransition() },
+                    exitTransition = { ScreenTransition().secondaryScreenExitTransition() }
+                ) { PurchaseScreen() }
+
+                composable<Screen.AboutNotepad>(
+                    enterTransition = { ScreenTransition().secondaryScreenEnterTransition() },
+                    exitTransition = { ScreenTransition().secondaryScreenExitTransition() }
+                ) { AboutNotepadScreen() }
+            }
         }
-
-        composable(
-            route = Route.Archive.route,
-            enterTransition = { mainScreenEnterTransition() },
-            exitTransition = { mainScreenExitTransition() }
-        ) {
-            ArchiveNotesScreen(navController)
-        }
-
-        composable(
-            route = Route.Basket.route,
-            enterTransition = { mainScreenEnterTransition() },
-            exitTransition = { mainScreenExitTransition() },
-        ) {
-            BasketNotesScreen(navController)
-        }
-
-        composable(
-            route = Route.Settings.route,
-            enterTransition = { mainScreenEnterTransition() },
-            exitTransition = { mainScreenExitTransition() },
-        ) {
-            SettingsScreen(navController)
-        }
-
-        composable(
-            route = Route.Note.route,
-            arguments = listOf(navArgument(Argument_Note_Id) { type = NavType.StringType }),
-            enterTransition = { ScreenTransition().secondaryScreenEnterTransition() },
-            exitTransition = { ScreenTransition().secondaryScreenExitTransition() }
-        ) { NoteScreen(navController) }
-
-        composable(
-            route = Route.Onboarding.route,
-        ) { OnBoardingScreen(navController) }
-
-        composable(
-            route = Route.AdvancedSettings.route,
-            enterTransition = { ScreenTransition().secondaryScreenEnterTransition() },
-            exitTransition = { ScreenTransition().secondaryScreenExitTransition() }
-        ) { AdvancedSettings() }
-
-        composable(
-            route = Route.Statistics.route,
-            enterTransition = { ScreenTransition().secondaryScreenEnterTransition() },
-            exitTransition = { ScreenTransition().secondaryScreenExitTransition() }
-        ) { StatisticsScreen() }
-
-        composable(
-            route = Route.Purchases.route,
-            enterTransition = { ScreenTransition().secondaryScreenEnterTransition() },
-            exitTransition = { ScreenTransition().secondaryScreenExitTransition() }
-        ) { PurchaseScreen() }
-
-        composable(
-            route = Route.AboutNotepad.route,
-            enterTransition = { ScreenTransition().secondaryScreenEnterTransition() },
-            exitTransition = { ScreenTransition().secondaryScreenExitTransition() }
-        ) { AboutNotepadScreen() }
     }
-}
-
-class ScreenTransition {
-    fun secondaryScreenEnterTransition() = slideInHorizontally { it }
-    fun secondaryScreenExitTransition() = slideOutHorizontally { it }
-}
-
-private fun AnimatedContentTransitionScope<NavBackStackEntry>.mainScreenEnterTransition(): EnterTransition? {
-    val initial = initialState.destination.route?.substringBefore("/") ?: return null
-    val target = targetState.destination.route?.substringBefore("/") ?: return null
-
-    // transition to Onboarding
-    if (initial == Route.Onboarding.route.substringBefore("/")) {
-        return null
-    }
-
-    // transition after secondary screen
-    if (RouteHelper().isSecondaryRoute(initial)) {
-        return slideInHorizontally { -150 }
-    }
-
-    // transition between main screens
-    val initiatorRouteNumber = RouteHelper().getRouteNumber(initial) ?: return null
-    val targetRouteNumber = RouteHelper().getRouteNumber(target) ?: return null
-
-    if (initiatorRouteNumber > targetRouteNumber) {
-        return slideInHorizontally { -it } + fadeIn()
-    } else if (initiatorRouteNumber < targetRouteNumber) {
-        return slideInHorizontally { it } + fadeIn()
-    }
-
-    return null
-}
-
-private fun AnimatedContentTransitionScope<NavBackStackEntry>.mainScreenExitTransition(): ExitTransition? {
-    val initial = initialState.destination.route?.substringBefore("/") ?: return null
-    val target = targetState.destination.route?.substringBefore("/") ?: return null
-
-    // transition to Onboarding
-    if (target == Route.Onboarding.route.substringBefore("/")) {
-        return null
-    }
-
-    // transition before secondary screen
-    if (RouteHelper().isSecondaryRoute(target)) {
-        return slideOutHorizontally { -150 }
-    }
-
-    // transition between main screens
-    val initiatorRouteNumber = RouteHelper().getRouteNumber(initial) ?: return null
-    val targetRouteNumber = RouteHelper().getRouteNumber(target) ?: return null
-
-    if (initiatorRouteNumber > targetRouteNumber) {
-        return slideOutHorizontally { it }
-    } else if (initiatorRouteNumber < targetRouteNumber) {
-        return slideOutHorizontally { -it }
-    }
-
-    return null
 }

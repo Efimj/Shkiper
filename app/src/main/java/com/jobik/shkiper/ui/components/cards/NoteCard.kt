@@ -45,16 +45,31 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.jobik.shkiper.R
+import com.jobik.shkiper.database.models.Note
 import com.jobik.shkiper.database.models.Reminder
 import com.jobik.shkiper.database.models.RepeatMode
 import com.jobik.shkiper.helpers.DateHelper
 import com.jobik.shkiper.helpers.TextHelper.Companion.removeMarkdownStyles
 import com.jobik.shkiper.ui.modifiers.bounceClick
+import com.jobik.shkiper.ui.modifiers.sharedNoteTransitionModifier
+import com.jobik.shkiper.ui.modifiers.skipToLookaheadSize
 import com.jobik.shkiper.ui.theme.AppTheme
 import com.mohamedrejeb.richeditor.model.RichTextState
 import kotlinx.parcelize.Parcelize
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+
+data class NoteSharedElementKey(
+    val noteId: String,
+    val origin: String = NoteSharedOriginDefault,
+    val type: NoteSharedElementType
+)
+
+const val NoteSharedOriginDefault = "default"
+
+enum class NoteSharedElementType {
+    Bounds
+}
 
 @Parcelize
 private data class NoteCardState(
@@ -107,8 +122,7 @@ private fun updateNoteCardState(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun NoteCard(
-    header: String? = null,
-    text: String? = null,
+    note: Note,
     reminder: Reminder? = null,
     markedText: String? = null,
     selected: Boolean = false,
@@ -125,11 +139,11 @@ fun NoteCard(
 
     val cardState = rememberSaveable { mutableStateOf<NoteCardState?>(null) }
 
-    LaunchedEffect(header, text, reminder) {
+    LaunchedEffect(note.header, note.body, reminder) {
         val newCardState = updateNoteCardState(
             currentState = cardState.value,
-            header = header,
-            htmlText = text,
+            header = note.header,
+            htmlText = note.body,
             reminder = reminder
         )
         cardState.value = newCardState
@@ -137,6 +151,7 @@ fun NoteCard(
 
     Card(
         modifier = modifier
+            .sharedNoteTransitionModifier(noteId = note._id.toHexString())
             .bounceClick()
             .fillMaxWidth()
             .clip(RoundedCornerShape(15.dp))
@@ -179,14 +194,18 @@ fun NoteCard(
 }
 
 @Composable
-private fun ColumnScope.EmptyNoteContent(bodyStyle: TextStyle) {
+private fun ColumnScope.EmptyNoteContent(
+    bodyStyle: TextStyle
+) {
     Text(
+        modifier = Modifier
+            .skipToLookaheadSize()
+            .align(Alignment.CenterHorizontally),
         text = stringResource(R.string.EmptyNote),
         maxLines = 10,
         overflow = TextOverflow.Ellipsis,
         style = bodyStyle,
         color = AppTheme.colors.textSecondary,
-        modifier = Modifier.Companion.align(Alignment.CenterHorizontally)
     )
 }
 
@@ -220,6 +239,7 @@ private fun ReminderInformation(
             )
             Spacer(Modifier.width(4.dp))
             Text(
+                modifier = Modifier.skipToLookaheadSize(),
                 text = DateHelper.getLocalizedDate(cardState.reminderDate.toLocalDate()),
                 style = MaterialTheme.typography.bodySmall.copy(
                     textDecoration = if (isDateFuture) TextDecoration.None else TextDecoration.LineThrough
@@ -229,6 +249,7 @@ private fun ReminderInformation(
             Spacer(Modifier.width(4.dp))
             if (isDateFuture)
                 Text(
+                    modifier = Modifier.skipToLookaheadSize(),
                     text = cardState.reminderDate.toLocalTime()
                         .format(DateTimeFormatter.ofPattern("HH:mm")),
                     style = MaterialTheme.typography.bodySmall,
@@ -249,6 +270,7 @@ private fun NoteContent(
 
     if (!cardState.header.isNullOrBlank()) {
         Text(
+            modifier = Modifier.skipToLookaheadSize(),
             text = cardState.header,
             style = headerStyle,
             overflow = TextOverflow.Ellipsis,
@@ -263,6 +285,7 @@ private fun NoteContent(
         Spacer(modifier = Modifier.height(4.dp))
     if (!cardState.body.isNullOrBlank()) {
         Text(
+            modifier = Modifier.skipToLookaheadSize(),
             text = cardState.body,
             maxLines = maxBodyLines - headerLineCount,
             overflow = TextOverflow.Ellipsis,
@@ -284,6 +307,7 @@ private fun NoteAnnotatedContent(
 
     if (!cardState.header.isNullOrBlank()) {
         Text(
+            modifier = Modifier.skipToLookaheadSize(),
             text = buildAnnotatedString(
                 text = cardState.header,
                 substring = markedText,
@@ -303,6 +327,7 @@ private fun NoteAnnotatedContent(
         Spacer(modifier = Modifier.height(4.dp))
     if (!cardState.body.isNullOrBlank()) {
         Text(
+            modifier = Modifier.skipToLookaheadSize(),
             text = buildAnnotatedString(
                 text = cardState.body,
                 substring = markedText,

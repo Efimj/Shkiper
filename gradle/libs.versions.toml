@@ -30,7 +30,7 @@ kotlinxCoroutinesCore = "1.8.1"
 libraryBase = "1.16.0"
 lifecycleRuntimeKtx = "2.8.0"
 materialIconsExtended = "1.6.7"
-navigationRuntimeKtx = "2.7.7"
+navigationRuntimeKtx = "2.8.0-beta03"
 realmGradlePlugin = "10.18.0"
 richeditorCompose = "1.0.0-rc05-k2"
 tedpermissionCoroutine = "3.3.0"
@@ -48,9 +48,12 @@ agp = "8.4.2"
 kotlin = "1.9.24"
 hilt = "2.51.1"
 wheelpickercompose = "1.1.11"
-agpVersion = "8.4.1"
-kotlinVersion = "1.9.0"
 material = "1.13.0-alpha03"
+kotlinxSerializationJson = "1.6.3"
+uiautomator = "2.3.0"
+benchmarkMacroJunit4 = "1.2.4"
+baselineprofile = "1.2.4"
+profileinstaller = "1.3.1"
 
 [libraries]
 # Dependencies of the included build-logic
@@ -94,6 +97,7 @@ hilt = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 dagger-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt" }
 hilt-gradle = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hilt" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesCore" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 library-base = { module = "io.realm.kotlin:library-base", version.ref = "libraryBase" }
 realm-gradle-plugin = { module = "io.realm:realm-gradle-plugin", version.ref = "realmGradlePlugin" }
 richeditor-compose = { module = "com.mohamedrejeb.richeditor:richeditor-compose", version.ref = "richeditorCompose" }
@@ -101,8 +105,15 @@ tedpermission-coroutine = { module = "io.github.ParkSangGwon:tedpermission-corou
 wheelpickercompose = { module = "com.github.commandiron:WheelPickerCompose", version.ref = "wheelpickercompose" }
 desugaring = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugaring" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+androidx-uiautomator = { group = "androidx.test.uiautomator", name = "uiautomator", version.ref = "uiautomator" }
+androidx-benchmark-macro-junit4 = { group = "androidx.benchmark", name = "benchmark-macro-junit4", version.ref = "benchmarkMacroJunit4" }
+androidx-profileinstaller = { group = "androidx.profileinstaller", name = "profileinstaller", version.ref = "profileinstaller" }
 
 [plugins]
 shkiper-library = { id = "efim.shkiper.library", version = "unspecified" }
 shkiper-hilt = { id = "efim.shkiper.hilt", version = "unspecified" }
 shkiper-compose = { id = "efim.shkiper.compose", version = "unspecified" }
+
+android-test = { id = "com.android.test", version.ref = "agp" }
+jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+baselineprofile = { id = "androidx.baselineprofile", version.ref = "baselineprofile" }
