@@ -34,7 +34,7 @@ fun AppLayout(startDestination: Screen) {
         ) { navController, notePosition ->
             ScreenContent(navController, startDestination, notePosition)
         }
-        SnackbarProvider()
+        SnackBarProvider()
     }
 }
 
