@@ -147,13 +147,14 @@ fun BottomAppBarProvider(
                     CreateNoteFAN(
                         isVisible = currentDestination?.hierarchy?.any {
                             it.hasRoute(Screen.NoteList::class)
-                        } == true,
+                        } == true && notePosition.value == NotePosition.MAIN,
                     ) {
                         if (navController.canNavigate()
                                 .not() || viewModel.screenState.value.isCreating
                         ) return@CreateNoteFAN
                         scope.launch {
                             viewModel.createNewNote {
+                                notePosition.value = NotePosition.MAIN
                                 delay(300)
                                 navController.navigateToSecondary(
                                     Screen.Note(
