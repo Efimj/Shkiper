@@ -14,7 +14,6 @@ import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.NotePosition
 import com.jobik.shkiper.ui.components.layouts.CustomTopAppBar
 import com.jobik.shkiper.ui.components.layouts.TopAppBarItem
-import com.jobik.shkiper.viewmodels.NotesViewModel
 
 @Composable
 fun NoteListScreenActionBar(

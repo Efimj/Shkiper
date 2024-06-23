@@ -48,7 +48,6 @@ import com.jobik.shkiper.ui.theme.AppTheme
 import com.jobik.shkiper.util.SnackbarHostUtil
 import com.jobik.shkiper.util.SnackbarVisualsCustom
 import com.jobik.shkiper.util.SupportTheDeveloperBannerUtil
-import com.jobik.shkiper.viewmodels.NotesViewModel
 
 @Composable
 fun NoteList(

@@ -18,7 +18,6 @@ import com.jobik.shkiper.helpers.areEXACTNotificationsEnabled
 import com.jobik.shkiper.helpers.areNotificationsEnabled
 import com.jobik.shkiper.services.notification.NotificationScheduler
 import com.jobik.shkiper.ui.components.modals.ActionDialog
-import com.jobik.shkiper.viewmodels.NotesViewModel
 
 @Composable
 fun NoteListScreenReminderCheck(notesViewModel: NotesViewModel) {
