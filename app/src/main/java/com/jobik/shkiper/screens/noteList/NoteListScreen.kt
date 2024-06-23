@@ -12,6 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.DeleteSweep
 import androidx.compose.material.icons.outlined.Description
 import androidx.compose.material.icons.outlined.Event
+import androidx.compose.material.icons.outlined.Warning
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -21,6 +22,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -33,6 +35,7 @@ import com.jobik.shkiper.ui.components.fields.SearchBar
 import com.jobik.shkiper.ui.components.fields.SearchBarActionButton
 import com.jobik.shkiper.ui.components.fields.getSearchBarHeight
 import com.jobik.shkiper.ui.components.layouts.*
+import com.jobik.shkiper.ui.components.modals.ActionDialog
 import com.jobik.shkiper.ui.components.modals.CreateReminderDialog
 import com.jobik.shkiper.ui.components.modals.ReminderDialogProperties
 import com.jobik.shkiper.ui.helpers.LocalNotePosition
@@ -57,6 +60,7 @@ fun NoteList(
     BackHandlerIfSelectedNotes(viewModel)
     UpdateNoteType(viewModel)
     BasketSnackBar(viewModel)
+    BasketDelitionDialog(viewModel)
 
     Box(
         modifier = Modifier
@@ -99,6 +103,19 @@ fun NoteList(
 
     NoteListScreenReminderCheck(viewModel)
     CreateReminderContent(viewModel)
+}
+
+@Composable
+private fun BasketDelitionDialog(viewModel: NotesViewModel) {
+    if (viewModel.screenState.value.isDeleteNotesDialogShow)
+        ActionDialog(
+            title = stringResource(R.string.DeleteSelectedNotesDialogText),
+            icon = Icons.Outlined.Warning,
+            confirmText = stringResource(R.string.Confirm),
+            onConfirm = viewModel::deleteSelectedNotes,
+            goBackText = stringResource(R.string.Cancel),
+            onGoBack = viewModel::switchDeleteDialogShow
+        )
 }
 
 @Composable
