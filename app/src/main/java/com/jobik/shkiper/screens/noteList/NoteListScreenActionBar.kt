@@ -38,13 +38,13 @@ fun NoteListScreenActionBar(
                 isActive = false,
                 icon = Icons.Outlined.Archive,
                 iconDescription = R.string.AddToArchive,
-                onClick = notesViewModel::archiveSelectedNotes
+                onClick = notesViewModel::switchArchiveNotes
             ),
             TopAppBarItem(
                 isActive = false,
                 icon = Icons.Outlined.Delete,
                 iconDescription = R.string.AddToBasket,
-                onClick = notesViewModel::moveSelectedNotesToBasket
+                onClick = notesViewModel::switchDeletionNotes
             ),
         )
 
@@ -65,13 +65,13 @@ fun NoteListScreenActionBar(
                 isActive = false,
                 icon = Icons.Outlined.Unarchive,
                 iconDescription = R.string.AddToArchive,
-                onClick = notesViewModel::unarchiveSelectedNotes
+                onClick = notesViewModel::switchArchiveNotes
             ),
             TopAppBarItem(
                 isActive = false,
                 icon = Icons.Outlined.Delete,
                 iconDescription = R.string.AddToBasket,
-                onClick = notesViewModel::moveSelectedNotesToBasket
+                onClick = notesViewModel::switchDeletionNotes
             ),
         )
 
@@ -80,7 +80,7 @@ fun NoteListScreenActionBar(
                 isActive = false,
                 icon = Icons.Outlined.History,
                 iconDescription = R.string.Restore,
-                onClick = notesViewModel::removeSelectedNotesFromBasket
+                onClick = notesViewModel::switchDeletionNotes
             ),
             TopAppBarItem(
                 isActive = false,

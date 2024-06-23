@@ -2,8 +2,11 @@ package com.jobik.shkiper.screens.noteList
 
 import android.app.Application
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.Undo
+import androidx.compose.material.icons.automirrored.outlined.Undo
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.outlined.Archive
+import androidx.compose.material.icons.outlined.DeleteSweep
+import androidx.compose.material.icons.outlined.Unarchive
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -179,62 +182,69 @@ class NotesViewModel @Inject constructor(
         }
     }
 
-    fun archiveSelectedNotes() {
+    fun switchArchiveNotes() {
+        val (newNotePosition, snackIcon, snackMessage) = when (screenState.value.currentNotes) {
+            NotePosition.MAIN -> Triple(
+                NotePosition.ARCHIVE,
+                Icons.Outlined.Archive,
+                application.applicationContext.getString(R.string.NotesArchived)
+            )
+
+            NotePosition.ARCHIVE -> Triple(
+                NotePosition.MAIN,
+                Icons.Outlined.Unarchive,
+                application.applicationContext.getString(R.string.NotesUnarchived)
+            )
+
+            NotePosition.DELETE -> return
+        }
+
         viewModelScope.launch {
             noteRepository.updateNote(screenState.value.selectedNotes.toList()) { updatedNote ->
-                updatedNote.position = NotePosition.ARCHIVE
+                updatedNote.position = newNotePosition
                 updatedNote.isPinned = false
             }
             clearSelectedNote()
             showSnackBar(
-                message = application.applicationContext.getString(R.string.NotesArchived),
-                icon = Icons.Default.Archive
+                message = snackMessage,
+                icon = snackIcon
             )
+        }.invokeOnCompletion {
             updateBottomBar()
         }
     }
 
-    fun unarchiveSelectedNotes() {
-        viewModelScope.launch {
-            noteRepository.updateNote(screenState.value.selectedNotes.toList()) { updatedNote ->
-                updatedNote.position = NotePosition.MAIN
-            }
-            clearSelectedNote()
-            showSnackBar(
-                message = application.applicationContext.getString(R.string.NotesUnarchived),
-                icon = Icons.Default.Unarchive
+    fun switchDeletionNotes() {
+        val (newNotePosition, snackIcon, snackMessage) = when (screenState.value.currentNotes) {
+            NotePosition.DELETE -> Triple(
+                NotePosition.MAIN,
+                Icons.AutoMirrored.Outlined.Undo,
+                application.applicationContext.getString(R.string.NotesRestored)
             )
-            updateBottomBar()
-        }
-    }
 
-    fun moveSelectedNotesToBasket() {
+            else -> Triple(
+                NotePosition.DELETE,
+                Icons.Outlined.DeleteSweep,
+                application.applicationContext.getString(R.string.NotesMovedToBasket)
+            )
+        }
+        val deletionDate = when (screenState.value.currentNotes) {
+            NotePosition.DELETE -> null
+            else -> LocalDateTime.now()
+        }
+
         viewModelScope.launch {
             noteRepository.updateNote(screenState.value.selectedNotes.toList()) { updatedNote ->
-                updatedNote.position = NotePosition.DELETE
+                updatedNote.position = newNotePosition
                 updatedNote.isPinned = false
-                updatedNote.deletionDate = LocalDateTime.now()
+                updatedNote.deletionDate = deletionDate
             }
             clearSelectedNote()
             showSnackBar(
-                message = application.applicationContext.getString(R.string.NotesMovedToBasket),
-                icon = Icons.Default.DeleteSweep
+                message = snackMessage,
+                icon = snackIcon
             )
-            updateBottomBar()
-        }
-    }
-
-    fun removeSelectedNotesFromBasket() {
-        viewModelScope.launch {
-            noteRepository.updateNote(screenState.value.selectedNotes.toList()) { updatedNote ->
-                updatedNote.position = NotePosition.MAIN
-                updatedNote.deletionDate = null
-            }
-            clearSelectedNote()
-            showSnackBar(
-                message = application.applicationContext.getString(R.string.NotesRestored),
-                icon = Icons.AutoMirrored.Filled.Undo
-            )
+        }.invokeOnCompletion {
             updateBottomBar()
         }
     }
