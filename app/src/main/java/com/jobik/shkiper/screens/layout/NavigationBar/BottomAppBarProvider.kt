@@ -135,20 +135,22 @@ fun BottomAppBarProvider(
                     isVisible = currentDestination?.hierarchy?.any {
                         it.hasRoute(Screen.NoteList::class)
                     } == true,
-                    onCreate = {
-                        if (navController.canNavigate().not()) return@CreateNoteFAN
-                        scope.launch {
-                            val noteId = viewModel.createNewNote()
+                ) {
+                    if (navController.canNavigate()
+                            .not() || viewModel.screenState.value.isCreating
+                    ) return@CreateNoteFAN
+                    scope.launch {
+                        viewModel.createNewNote {
                             delay(300)
                             navController.navigateToSecondary(
                                 Screen.Note(
-                                    id = noteId.toHexString(),
+                                    id = it.toHexString(),
                                     sharedElementOrigin = Screen.NoteList.name
                                 )
                             )
                         }
-                    },
-                )
+                    }
+                }
             }
         }
     }

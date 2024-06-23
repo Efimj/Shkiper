@@ -10,6 +10,7 @@ import org.mongodb.kbson.ObjectId
 import javax.inject.Inject
 
 data class BottomBarState(
+    val isCreating: Boolean = false,
     val createdNoteId: ObjectId? = null
 )
 
@@ -20,10 +21,13 @@ class BottomBarViewModel @Inject constructor(
     private val _screenState = mutableStateOf(BottomBarState())
     val screenState: State<BottomBarState> = _screenState
 
-    suspend fun createNewNote(): ObjectId {
+    suspend fun createNewNote(invokeOnCreate: suspend (ObjectId) -> Unit): ObjectId {
+        _screenState.value = _screenState.value.copy(isCreating = true)
         val newNote = Note()
         noteRepository.insertNote(newNote)
-        _screenState.value = _screenState.value.copy(createdNoteId = newNote._id)
+        invokeOnCreate(newNote._id)
+        _screenState.value =
+            _screenState.value.copy(createdNoteId = newNote._id, isCreating = false)
         return newNote._id
     }
 }
