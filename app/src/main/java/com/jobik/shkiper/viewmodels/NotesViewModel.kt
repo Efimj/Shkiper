@@ -7,7 +7,6 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jobik.shkiper.R
@@ -49,7 +48,6 @@ class NotesViewModel @Inject constructor(
     private val noteRepository: NoteMongoRepository,
     private val reminderRepository: ReminderMongoRepository,
     private val application: Application,
-    savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
     private val _screenState = mutableStateOf(NotesScreenState())
     val screenState: State<NotesScreenState> = _screenState
@@ -73,14 +71,14 @@ class NotesViewModel @Inject constructor(
         if (notePosition == NotePosition.DELETE) {
             deleteExpiredNotes()
         }
+        _screenState.value = NotesScreenState().copy(
+            currentNotes = notePosition
+        )
         viewModelScope.launch(Dispatchers.IO) {
             getHashtags()
             getNotes()
             getReminders()
         }
-        _screenState.value = screenState.value.copy(
-            currentNotes = notePosition
-        )
     }
 
     private fun getNotes() {
@@ -149,7 +147,7 @@ class NotesViewModel @Inject constructor(
         viewModelScope.launch {
             noteRepository.deleteNote(screenState.value.selectedNotes.toList())
             clearSelectedNote()
-            showSnackbar(
+            showSnackBar(
                 message = application.applicationContext.getString(R.string.NotesAreBeenDeleted),
                 icon = Icons.Default.DeleteForever
             )
@@ -188,7 +186,7 @@ class NotesViewModel @Inject constructor(
                 updatedNote.isPinned = false
             }
             clearSelectedNote()
-            showSnackbar(
+            showSnackBar(
                 message = application.applicationContext.getString(R.string.NotesArchived),
                 icon = Icons.Default.Archive
             )
@@ -202,7 +200,7 @@ class NotesViewModel @Inject constructor(
                 updatedNote.position = NotePosition.MAIN
             }
             clearSelectedNote()
-            showSnackbar(
+            showSnackBar(
                 message = application.applicationContext.getString(R.string.NotesUnarchived),
                 icon = Icons.Default.Unarchive
             )
@@ -218,7 +216,7 @@ class NotesViewModel @Inject constructor(
                 updatedNote.deletionDate = LocalDateTime.now()
             }
             clearSelectedNote()
-            showSnackbar(
+            showSnackBar(
                 message = application.applicationContext.getString(R.string.NotesMovedToBasket),
                 icon = Icons.Default.DeleteSweep
             )
@@ -233,7 +231,7 @@ class NotesViewModel @Inject constructor(
                 updatedNote.deletionDate = null
             }
             clearSelectedNote()
-            showSnackbar(
+            showSnackBar(
                 message = application.applicationContext.getString(R.string.NotesRestored),
                 icon = Icons.AutoMirrored.Filled.Undo
             )
@@ -338,7 +336,7 @@ class NotesViewModel @Inject constructor(
         }
     }
 
-    private suspend fun showSnackbar(message: String, icon: ImageVector?) {
+    private suspend fun showSnackBar(message: String, icon: ImageVector?) {
         SnackbarHostUtil.snackbarHostState.showSnackbar(
             SnackbarVisualsCustom(
                 message = message,
