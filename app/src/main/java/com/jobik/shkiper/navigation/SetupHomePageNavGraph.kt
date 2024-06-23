@@ -18,11 +18,9 @@ import com.jobik.shkiper.helpers.IntentHelper
 import com.jobik.shkiper.navigation.NavigationHelpers.Companion.canNavigate
 import com.jobik.shkiper.screens.about.AboutNotepadScreen
 import com.jobik.shkiper.screens.advancedSettings.AdvancedSettings
-import com.jobik.shkiper.screens.archive.ArchiveNotesScreen
-import com.jobik.shkiper.screens.basket.BasketNotesScreen
 import com.jobik.shkiper.screens.calendar.CalendarScreen
 import com.jobik.shkiper.screens.note.NoteScreen
-import com.jobik.shkiper.screens.noteListScreen.NoteListScreen
+import com.jobik.shkiper.screens.noteList.NoteList
 import com.jobik.shkiper.screens.purchase.PurchaseScreen
 import com.jobik.shkiper.screens.settings.SettingsScreen
 import com.jobik.shkiper.screens.statistics.StatisticsScreen
@@ -55,7 +53,7 @@ fun SetupAppScreenNavGraph(
                         LocalNavAnimatedVisibilityScope provides this,
                         LocalSharedElementKey provides Screen.NoteList.toString()
                     ) {
-                        NoteListScreen(
+                        NoteList(
                             navController = navController,
                         )
                     }

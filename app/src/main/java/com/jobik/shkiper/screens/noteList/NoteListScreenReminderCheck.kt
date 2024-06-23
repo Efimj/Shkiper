@@ -1,4 +1,4 @@
-package com.jobik.shkiper.screens.noteListScreen
+package com.jobik.shkiper.screens.noteList
 
 import android.content.Context
 import androidx.compose.material.icons.Icons

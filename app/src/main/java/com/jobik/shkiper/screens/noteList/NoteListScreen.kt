@@ -1,4 +1,4 @@
-package com.jobik.shkiper.screens.noteListScreen
+package com.jobik.shkiper.screens.noteList
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.Crossfade
@@ -43,7 +43,7 @@ import com.jobik.shkiper.util.SupportTheDeveloperBannerUtil
 import com.jobik.shkiper.viewmodels.NotesViewModel
 
 @Composable
-fun NoteListScreen(
+fun NoteList(
     navController: NavController,
     viewModel: NotesViewModel = hiltViewModel(),
 ) {
