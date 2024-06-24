@@ -31,7 +31,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -96,7 +95,9 @@ fun OnboardingDialog(isVisible: Boolean, onFinish: () -> Unit) {
                         contentPadding = PaddingValues(0.dp),
                         pageSize = PageSize.Fill,
                     ) {
-//                        OnBoardingScreen()
+                        when (it) {
+                            0 -> FirstOnboardingScreen()
+                        }
                     }
                     BottomNavigation(pagerState = pagerState, onFinish = onFinish)
                 }

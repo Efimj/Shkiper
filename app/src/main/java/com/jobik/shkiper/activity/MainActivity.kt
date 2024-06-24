@@ -3,6 +3,7 @@ package com.jobik.shkiper.activity
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -11,6 +12,7 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.platform.LocalContext
@@ -72,8 +74,6 @@ open class MainActivity : ComponentActivity() {
         checkForUpdates()
 
         setContent {
-            val onboarding = rememberSaveable { mutableStateOf(checkIsOnboarding(this)) }
-
             SecureModeManager()
             UpdateStatistics()
 
@@ -81,16 +81,40 @@ open class MainActivity : ComponentActivity() {
                 darkTheme = ThemeUtil.isDarkMode.value ?: isSystemInDarkTheme(),
                 style = ThemeUtil.themeStyle.value ?: CustomThemeStyle.MaterialDynamicColors
             ) {
-                OnboardingDialog(
-                    isVisible = onboarding.value,
-                    onFinish = { onboarding.value = false })
-
+                OnboardingProvider()
                 AppLayout(startDestination)
                 if (canShowOfferReview.value) {
                     OfferWriteReview { canShowOfferReview.value = false }
                 }
             }
         }
+    }
+
+    @Composable
+    private fun OnboardingProvider() {
+        val onboarding = rememberSaveable { mutableStateOf(checkIsOnboarding(this)) }
+
+        val context = LocalContext.current
+        OnboardingDialog(
+            isVisible = true,
+            onFinish = {
+                onboarding.value = false;
+                try {
+                    val sharedPreferences =
+                        context.getSharedPreferences(
+                            SharedPreferencesKeys.ApplicationStorageName,
+                            MODE_PRIVATE
+                        )
+                    sharedPreferences.edit()
+                        .putString(
+                            SharedPreferencesKeys.OnboardingPageFinishedData,
+                            OnboardingFinishedData
+                        )
+                        .apply()
+                } catch (e: Exception) {
+                    Log.i("onboarding - onFinished", e.toString())
+                }
+            })
     }
 
     @Composable
