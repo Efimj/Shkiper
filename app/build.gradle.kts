@@ -200,5 +200,4 @@ dependencies {
 
     // Konfetti to make confetti
     implementation (libs.konfetti.compose)
-
 }
