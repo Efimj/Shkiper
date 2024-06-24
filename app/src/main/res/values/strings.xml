@@ -38,7 +38,8 @@
     <string name="secure">Secure</string>
     <string name="secure_mode">Secure mode</string>
     <string name="secure_mode_description">Hides content, prohibits screen recording</string>
-    <string name="onb_title_1">Welcome to the</string>
+    <string name="onb_title_1">Welcome to the Shkiper!</string>
+    <string name="onb_description_1">New notepad application for your all notes and more</string>
     <string name="ApplicationColors">Colors</string>
     <string name="StatisticsPage">Statistics</string>
 

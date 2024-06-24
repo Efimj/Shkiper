@@ -1,6 +1,7 @@
 package com.jobik.shkiper.ui.components.modals.onboarding
 
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -16,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -33,8 +35,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.jobik.shkiper.R
+import com.jobik.shkiper.ui.components.cards.ThemePreview
 import com.jobik.shkiper.ui.helpers.verticalWindowInsetsPadding
 import com.jobik.shkiper.ui.theme.AppTheme
+import com.jobik.shkiper.ui.theme.CustomThemeStyle
+import com.jobik.shkiper.util.ThemeUtil
 import kotlinx.coroutines.delay
 import nl.dionsegijn.konfetti.compose.KonfettiView
 import nl.dionsegijn.konfetti.core.Angle
@@ -63,24 +68,67 @@ fun FirstOnboardingScreen() {
         )
     }
 
-    val icons = remember {
+    val isDarkTheme = ThemeUtil.isDarkMode.value == true
+    val iconsWithStrings = remember {
         listOf(
-            R.drawable.ic_classic_launcher,
-            R.drawable.ic_classic_white_launcher,
-            R.drawable.ic_love_launcher,
-            R.drawable.ic_rocket_launcher,
-            R.drawable.ic_night_launcher,
-            R.drawable.ic_money_launcher,
+            Pair(
+                R.drawable.ic_classic_launcher,
+                if (isDarkTheme) CustomThemeStyle.MaterialDynamicColors.dark.primary else CustomThemeStyle.MaterialDynamicColors.light.primary
+            ),
+            Pair(
+                R.drawable.ic_classic_white_launcher,
+                if (isDarkTheme) CustomThemeStyle.MaterialDynamicColors.dark.text else CustomThemeStyle.MaterialDynamicColors.light.text
+            ),
+            Pair(
+                R.drawable.ic_love_launcher,
+                if (isDarkTheme) CustomThemeStyle.PastelRed.dark.primary else CustomThemeStyle.PastelRed.light.primary
+            ),
+            Pair(
+                R.drawable.ic_rocket_launcher,
+                if (isDarkTheme) CustomThemeStyle.PastelOrange.dark.primary else CustomThemeStyle.PastelOrange.light.primary
+            ),
+            Pair(
+                R.drawable.ic_night_launcher,
+                if (isDarkTheme) CustomThemeStyle.PastelOrange.dark.textSecondary else CustomThemeStyle.PastelOrange.light.textSecondary
+            ),
+            Pair(
+                R.drawable.ic_money_launcher,
+                if (isDarkTheme) CustomThemeStyle.PastelGreen.dark.primary else CustomThemeStyle.PastelGreen.light.primary
+            )
         ).shuffled()
     }
 
+    val icons = iconsWithStrings.map { it.first }
+    val colors = iconsWithStrings.map { it.second }
+
+    val animationDelay = 500
+
     var index by remember { mutableIntStateOf(0) }
+    val color by animateColorAsState(
+        targetValue = colors[index],
+        animationSpec = tween(animationDelay)
+    )
 
     LaunchedEffect(Unit) {
         while (true) {
             delay(2000)
             index = (index + 1) % icons.size
-            println(index)
+        }
+    }
+
+    val fullText = stringResource(id = R.string.onb_title_1)
+    val targetWord = stringResource(id = R.string.app_name)
+
+    val annotatedString = buildAnnotatedString {
+        val startIndex = fullText.indexOf(targetWord)
+        if (startIndex != -1) {
+            append(fullText.substring(0, startIndex))
+            withStyle(style = SpanStyle(color = color)) {
+                append(targetWord)
+            }
+            append(fullText.substring(startIndex + targetWord.length))
+        } else {
+            append(fullText)
         }
     }
 
@@ -101,7 +149,7 @@ fun FirstOnboardingScreen() {
             Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.Center) {
                 Crossfade(
                     targetState = index,
-                    animationSpec = tween(500),
+                    animationSpec = tween(animationDelay),
                     label = "crossfade"
                 ) { index ->
                     Image(
@@ -112,10 +160,10 @@ fun FirstOnboardingScreen() {
                     )
                 }
             }
+
             Text(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                text = stringResource(id = R.string.onb_title_1),
+                modifier = Modifier.fillMaxWidth(),
+                text = annotatedString,
                 style = MaterialTheme.typography.displaySmall,
                 fontWeight = FontWeight.SemiBold,
                 textAlign = TextAlign.Start,
@@ -126,7 +174,7 @@ fun FirstOnboardingScreen() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 10.dp),
-                text = "New notepad application for your all notes and more",
+                text = stringResource(id = R.string.onb_description_1),
                 style = MaterialTheme.typography.bodyLarge,
                 textAlign = TextAlign.Start,
                 overflow = TextOverflow.Ellipsis,
