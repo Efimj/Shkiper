@@ -49,7 +49,12 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun OnboardingDialog(isVisible: Boolean, onFinish: () -> Unit) {
-    val pagerState = rememberPagerState { 3 }
+    val screens: List<@Composable () -> Unit> = listOf(
+        { FirstOnboardingScreen() },
+        { SecondOnboardingScreen() },
+    )
+
+    val pagerState = rememberPagerState { screens.size }
     val animationState = remember { MutableTransitionState(false) }
     val visible = remember { mutableStateOf(false) }
 
@@ -95,9 +100,7 @@ fun OnboardingDialog(isVisible: Boolean, onFinish: () -> Unit) {
                         contentPadding = PaddingValues(0.dp),
                         pageSize = PageSize.Fill,
                     ) {
-                        when (it) {
-                            0 -> FirstOnboardingScreen()
-                        }
+                        screens[it]()
                     }
                     BottomNavigation(pagerState = pagerState, onFinish = onFinish)
                 }

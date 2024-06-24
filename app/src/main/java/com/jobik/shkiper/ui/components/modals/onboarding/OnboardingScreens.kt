@@ -7,9 +7,13 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -21,8 +25,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.SpanStyle
@@ -31,6 +37,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.jobik.shkiper.R
 import com.jobik.shkiper.ui.helpers.verticalWindowInsetsPadding
@@ -45,6 +52,12 @@ import nl.dionsegijn.konfetti.core.Position
 import nl.dionsegijn.konfetti.core.Spread
 import nl.dionsegijn.konfetti.core.emitter.Emitter
 import java.util.concurrent.TimeUnit
+
+private fun Modifier.onboardingScreenPaddings() = this
+    .fillMaxSize()
+    .verticalWindowInsetsPadding()
+    .padding(bottom = 90.dp)
+    .padding(horizontal = 40.dp)
 
 @Composable
 fun FirstOnboardingScreen() {
@@ -135,11 +148,7 @@ fun FirstOnboardingScreen() {
             parties = rain(),
         )
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalWindowInsetsPadding()
-                .padding(bottom = 90.dp)
-                .padding(horizontal = 40.dp),
+            modifier = Modifier.onboardingScreenPaddings(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
@@ -178,5 +187,16 @@ fun FirstOnboardingScreen() {
                 color = AppTheme.colors.onSecondaryContainer,
             )
         }
+    }
+}
+
+@Composable
+fun SecondOnboardingScreen() {
+    Column(
+        modifier = Modifier.onboardingScreenPaddings(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+    ) {
+
     }
 }
