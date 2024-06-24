@@ -1,4 +1,5 @@
 [versions]
+konfettiCompose = "2.0.4"
 versionName = "1.8.6-alpha03"
 versionCode = "74"
 
@@ -87,6 +88,7 @@ composecollapsingtoolbar = { module = "com.github.GIGAMOLE:ComposeCollapsingTool
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
 junit = { module = "junit:junit", version.ref = "junit" }
+konfetti-compose = { module = "nl.dionsegijn:konfetti-compose", version.ref = "konfettiCompose" }
 kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 agp-gradle = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 androidx-material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
