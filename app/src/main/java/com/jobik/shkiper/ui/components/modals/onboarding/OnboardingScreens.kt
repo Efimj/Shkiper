@@ -58,8 +58,8 @@ fun FirstOnboardingScreen() {
                 angle = Angle.TOP,
                 spread = Spread.ROUND,
                 colors = listOf(0xfce18a, 0xff726d, 0xf4306d, 0xb48def),
-                emitter = Emitter(duration = 150, TimeUnit.DAYS).perSecond(20),
-                timeToLive = 3000,
+                emitter = Emitter(duration = 150, TimeUnit.DAYS).perSecond(25),
+                timeToLive = 2700,
                 position = Position.Relative(0.0, 0.0).between(Position.Relative(1.0, 0.0))
             )
         )
