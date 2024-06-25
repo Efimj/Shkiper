@@ -49,10 +49,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun OnboardingDialog(isVisible: Boolean, onFinish: () -> Unit) {
-    val screens: List<@Composable () -> Unit> = listOf(
-        { FirstOnboardingScreen() },
-        { SecondOnboardingScreen() },
-    )
+    val screens = remember { Onboardingscreens() }
 
     val pagerState = rememberPagerState { screens.size }
     val animationState = remember { MutableTransitionState(false) }

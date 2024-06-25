@@ -55,6 +55,12 @@ import nl.dionsegijn.konfetti.core.Spread
 import nl.dionsegijn.konfetti.core.emitter.Emitter
 import java.util.concurrent.TimeUnit
 
+fun Onboardingscreens(): List<@Composable () -> Unit> = listOf(
+    { FirstOnboardingScreen() },
+    { SecondOnboardingScreen() },
+    { ThirdOnboardingScreen() }
+)
+
 private fun Modifier.onboardingScreenPaddings() = this
     .fillMaxSize()
     .verticalWindowInsetsPadding()
@@ -62,7 +68,7 @@ private fun Modifier.onboardingScreenPaddings() = this
     .padding(horizontal = 40.dp)
 
 @Composable
-fun FirstOnboardingScreen() {
+private fun FirstOnboardingScreen() {
     fun rain(): List<Party> {
         return listOf(
             Party(
@@ -193,7 +199,26 @@ fun FirstOnboardingScreen() {
 }
 
 @Composable
-fun SecondOnboardingScreen() {
+private fun FeaturesPresentation(
+    feature: Triple<ImageVector, Int, Int>
+) {
+    AnimatedContent(
+        targetState = feature,
+        transitionSpec = {
+            (fadeIn(animationSpec = tween(500, 500)) + scaleIn(animationSpec = tween(500, 500)))
+                .togetherWith(fadeOut(animationSpec = tween(500)))
+        },
+    ) { feature ->
+        FeatureCard(
+            icon = feature.first,
+            title = stringResource(id = feature.second),
+            description = stringResource(id = feature.third)
+        )
+    }
+}
+
+@Composable
+private fun SecondOnboardingScreen() {
     val features = remember { splitIntoTriple(Features.shuffled()) }
     var currentFeatures by remember { mutableStateOf(Triple(0, 0, 0)) }
 
@@ -235,20 +260,21 @@ fun SecondOnboardingScreen() {
 }
 
 @Composable
-private fun FeaturesPresentation(
-    feature: Triple<ImageVector, Int, Int>
-) {
-    AnimatedContent(
-        targetState = feature,
-        transitionSpec = {
-            (fadeIn(animationSpec = tween(500, 500)) + scaleIn(animationSpec = tween(500, 500)))
-                .togetherWith(fadeOut(animationSpec = tween(500)))
-        },
-    ) { feature ->
-        FeatureCard(
-            icon = feature.first,
-            title = stringResource(id = feature.second),
-            description = stringResource(id = feature.third)
+private fun ThirdOnboardingScreen() {
+    Column(
+        modifier = Modifier.onboardingScreenPaddings(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+    ) {
+        Text(
+            modifier = Modifier.padding(bottom = 40.dp),
+            text = stringResource(id = R.string.onb_title_2),
+            style = MaterialTheme.typography.displaySmall,
+            fontWeight = FontWeight.SemiBold,
+            textAlign = TextAlign.Center,
+            color = AppTheme.colors.onSecondaryContainer,
+            overflow = TextOverflow.Ellipsis,
         )
+
     }
 }
