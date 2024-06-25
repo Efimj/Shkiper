@@ -54,3 +54,19 @@ fun Month.displayText(short: Boolean = true): String {
     val style = if (short) TextStyle.SHORT else TextStyle.FULL
     return getDisplayName(style, Locale.getDefault())
 }
+
+fun <T> splitIntoTriple(input: List<T>): Triple<List<T>, List<T>, List<T>> {
+    val list1 = mutableListOf<T>()
+    val list2 = mutableListOf<T>()
+    val list3 = mutableListOf<T>()
+
+    input.forEachIndexed { index, element ->
+        when (index % 3) {
+            0 -> list1.add(element)
+            1 -> list2.add(element)
+            2 -> list3.add(element)
+        }
+    }
+
+    return Triple(list1, list2, list3)
+}

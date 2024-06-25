@@ -48,9 +48,21 @@
     <string name="feature_title_1">Note widgets</string>
     <string name="feature_description_1">Any note can be added to the home screen of your device</string>
     <string name="feature_title_2">Reminders</string>
-    <string name="feature_description_2">You can set up several different reminders for one note at once</string>
+    <string name="feature_description_2">It\'s possible to set multiple reminders for a single note simultaneously</string>
     <string name="feature_title_3">Note styling</string>
     <string name="feature_description_3">Add style to your notes by changing font size, color, alignment</string>
+    <string name="feature_title_4">Calendar</string>
+    <string name="feature_description_4">Upcoming reminders are always visible in the calendar</string>
+    <string name="feature_title_5">Tags</string>
+    <string name="feature_description_5">Create tags for quick access to notes</string>
+    <string name="feature_title_6">Share</string>
+    <string name="feature_description_6">Share notes in all formats: text, HTML, Markdown, including images</string>
+    <string name="feature_title_7">Link preview</string>
+    <string name="feature_description_7">Preview allows quick access to links (can be disabled)</string>
+    <string name="feature_title_8">Statistics</string>
+    <string name="feature_description_8">You can view application usage statistics</string>
+    <string name="feature_title_9">Theming</string>
+    <string name="feature_description_9">Choose your favorite color combination for the app theme</string>
 
     <!--    Onboarding page   -->
     <string name="Back">Back</string>
