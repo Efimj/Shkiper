@@ -349,7 +349,7 @@ fun SecondOnboardingScreen() {
         Text(
             modifier = Modifier.padding(bottom = 40.dp),
             text = stringResource(id = R.string.onb_title_2),
-            style = MaterialTheme.typography.displayMedium,
+            style = MaterialTheme.typography.displaySmall,
             fontWeight = FontWeight.SemiBold,
             textAlign = TextAlign.Center,
             color = AppTheme.colors.onSecondaryContainer,
