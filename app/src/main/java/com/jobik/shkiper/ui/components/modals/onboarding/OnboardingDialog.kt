@@ -1,6 +1,5 @@
 package com.jobik.shkiper.ui.components.modals.onboarding
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateColorAsState
