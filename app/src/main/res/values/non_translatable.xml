@@ -7,6 +7,7 @@
     <string name="RakibHassanRahimLink" translatable="false">https://www.flaticon.com/authors/rakib-hassan-rahim</string>
     <string name="StickersLink" translatable="false">https://www.flaticon.com/authors/stickers?type=sticker</string>
     <string name="GameOfLifeLink" translatable="false">https://play.google.com/store/apps/details?id=com.jobik.gameoflife</string>
+    <string name="telegram_link" translatable="false">https://t.me/efim_mobile_projects</string>
 
     <!--    Languages   -->
     <string name="en" translatable="false">English</string>

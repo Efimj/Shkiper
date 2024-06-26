@@ -44,6 +44,7 @@
     <string name="onb_title_1">Welcome to the Shkiper!</string>
     <string name="onb_description_1">New notepad application for your all notes and more</string>
     <string name="onb_title_2">More than just a notepad!</string>
+    <string name="onb_title_3">Open source</string>
 
     <string name="feature_title_1">Note widgets</string>
     <string name="feature_description_1">Any note can be added to the home screen of your device</string>
@@ -263,6 +264,10 @@
     <string name="avocado">Avocado</string>
     <string name="blueberry">Blueberry</string>
     <string name="plum">Plum</string>
+    <string name="source_code">Source code</string>
+    <string name="source_code_description">Get the latest updates, discuss, issues and more</string>
+    <string name="telegram_chat">Telegram chat</string>
+    <string name="telegram_chat_description">Discuss the app and become part of the community</string>
 
 
 </resources>
