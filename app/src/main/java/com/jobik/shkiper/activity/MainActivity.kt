@@ -3,6 +3,7 @@ package com.jobik.shkiper.activity
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -18,7 +19,6 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.jobik.shkiper.NotepadApplication
 import com.jobik.shkiper.SharedPreferencesKeys
 import com.jobik.shkiper.SharedPreferencesKeys.OnboardingFinishedData
-import com.jobik.shkiper.database.models.NotePosition
 import com.jobik.shkiper.navigation.Screen
 import com.jobik.shkiper.screens.layout.AppLayout
 import com.jobik.shkiper.services.billing.BillingService
@@ -72,25 +72,47 @@ open class MainActivity : ComponentActivity() {
         checkForUpdates()
 
         setContent {
-            val onboarding = rememberSaveable { mutableStateOf(checkIsOnboarding(this)) }
-
             SecureModeManager()
             UpdateStatistics()
 
             ShkiperTheme(
                 darkTheme = ThemeUtil.isDarkMode.value ?: isSystemInDarkTheme(),
-                style = ThemeUtil.themeStyle.value ?: CustomThemeStyle.PastelPurple
+                style = ThemeUtil.themeStyle.value ?: CustomThemeStyle.MaterialDynamicColors
             ) {
-                OnboardingDialog(
-                    isVisible = onboarding.value,
-                    onFinish = { onboarding.value = false })
-
+                OnboardingProvider()
                 AppLayout(startDestination)
                 if (canShowOfferReview.value) {
                     OfferWriteReview { canShowOfferReview.value = false }
                 }
             }
         }
+    }
+
+    @Composable
+    private fun OnboardingProvider() {
+        val onboarding = rememberSaveable { mutableStateOf(checkIsOnboarding(this)) }
+
+        val context = LocalContext.current
+        OnboardingDialog(
+            isVisible = onboarding.value,
+            onFinish = {
+                onboarding.value = false;
+                try {
+                    val sharedPreferences =
+                        context.getSharedPreferences(
+                            SharedPreferencesKeys.ApplicationStorageName,
+                            MODE_PRIVATE
+                        )
+                    sharedPreferences.edit()
+                        .putString(
+                            SharedPreferencesKeys.OnboardingPageFinishedData,
+                            OnboardingFinishedData
+                        )
+                        .apply()
+                } catch (e: Exception) {
+                    Log.i("onboarding - onFinished", e.toString())
+                }
+            })
     }
 
     @Composable

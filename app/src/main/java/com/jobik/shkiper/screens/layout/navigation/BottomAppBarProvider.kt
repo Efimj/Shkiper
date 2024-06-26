@@ -1,5 +1,6 @@
 package com.jobik.shkiper.screens.layout.navigation
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandHorizontally
 import androidx.compose.animation.fadeIn
@@ -218,12 +219,18 @@ private fun Navigation(
     val navBackStackEntry = navController.currentBackStackEntryAsState().value
     val currentDestination = navBackStackEntry?.destination
 
+    val isNoteList = currentDestination?.hierarchy?.any {
+        it.hasRoute(Screen.NoteList::class)
+    } == true
+
+    BackHandler(enabled = isNoteList && notePosition != NotePosition.MAIN) {
+        onNotePositionChange(NotePosition.MAIN)
+    }
+
     val navigationItems = listOf(
         CustomBottomNavigationItem(
             icon = Icons.Outlined.AutoAwesomeMosaic,
-            isSelected = currentDestination?.hierarchy?.any {
-                it.hasRoute(Screen.NoteList::class)
-            } == true && notePosition == NotePosition.MAIN,
+            isSelected = isNoteList && notePosition == NotePosition.MAIN,
             description = R.string.Notes,
         ) {
             navController.navigateToMain(destination = Screen.NoteList)
@@ -231,9 +238,7 @@ private fun Navigation(
         },
         CustomBottomNavigationItem(
             icon = Icons.Outlined.Archive,
-            isSelected = currentDestination?.hierarchy?.any {
-                it.hasRoute(Screen.NoteList::class)
-            } == true && notePosition == NotePosition.ARCHIVE,
+            isSelected = isNoteList && notePosition == NotePosition.ARCHIVE,
             description = R.string.Archive,
         ) {
             navController.navigateToMain(destination = Screen.NoteList)
@@ -241,9 +246,7 @@ private fun Navigation(
         },
         CustomBottomNavigationItem(
             icon = Icons.Outlined.Delete,
-            isSelected = currentDestination?.hierarchy?.any {
-                it.hasRoute(Screen.NoteList::class)
-            } == true && notePosition == NotePosition.DELETE,
+            isSelected = isNoteList && notePosition == NotePosition.DELETE,
             description = R.string.Basket,
         ) {
             navController.navigateToMain(destination = Screen.NoteList)

@@ -197,4 +197,7 @@ dependencies {
     // implementation("me.onebone:toolbar-compose:2.3.5")
     // Compose collapsing toolbar (nonofficial)
     implementation(libs.composecollapsingtoolbar)
+
+    // Konfetti to make confetti
+    implementation (libs.konfetti.compose)
 }

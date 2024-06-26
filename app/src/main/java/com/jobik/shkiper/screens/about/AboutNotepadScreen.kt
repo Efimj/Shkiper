@@ -149,7 +149,7 @@ fun AboutNotepadScreen() {
                     .horizontalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.Start
             ) {
-                val link = stringResource(R.string.GameOfLifeLink)
+                val link = stringResource(R.string.game_of_life_link)
                 Card(
                     modifier = Modifier
                         .height(160.dp)

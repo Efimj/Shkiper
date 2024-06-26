@@ -2,8 +2,12 @@ package com.jobik.shkiper.screens.layout.navigation
 
 import androidx.annotation.StringRes
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateIntAsState
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -53,16 +57,16 @@ fun CustomBottomNavigationItem(properties: CustomBottomNavigationItem) {
         label = "contentColor"
     )
 
-    IconButton(
+    Box(
         modifier = Modifier
             .fillMaxHeight()
-            .aspectRatio(1f),
-        colors = IconButtonDefaults.iconButtonColors(
-            contentColor = contentColor.value,
-        ),
-        onClick = {
-            properties.onClick()
-        }
+            .aspectRatio(1f)
+            .clickable(
+                indication = null, // Remove ripple effect
+                interactionSource = remember { MutableInteractionSource() },
+                onClick = { properties.onClick() }
+            ),
+        contentAlignment = Alignment.Center
     ) {
         Icon(
             imageVector = properties.icon,
@@ -93,7 +97,11 @@ fun CustomBottomNavigation(items: List<CustomBottomNavigationItem>) {
 
     val indicatorOffset by animateIntAsState(
         targetValue = lastIndex * (buttonWidth + spacerBetween.px),
-        label = ""
+        animationSpec = spring(
+            dampingRatio = Spring.DampingRatioNoBouncy,
+            stiffness = Spring.StiffnessMediumLow
+        ),
+        label = "indicatorOffset"
     )
 
     Surface(

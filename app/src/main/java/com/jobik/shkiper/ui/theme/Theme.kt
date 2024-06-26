@@ -13,7 +13,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 @Composable
 fun ShkiperTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    style: CustomThemeStyle = CustomThemeStyle.PastelPurple,
+    style: CustomThemeStyle = CustomThemeStyle.MaterialDynamicColors,
     content: @Composable () -> Unit
 ) {
     val colors = getThemeColors(style = style, darkTheme = darkTheme)
