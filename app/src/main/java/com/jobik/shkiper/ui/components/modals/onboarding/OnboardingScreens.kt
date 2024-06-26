@@ -366,13 +366,19 @@ private fun ThirdOnboardingScreen() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
+        val firstTitleColor by
+        animateColorAsState(
+            targetValue = if (selected < 2) AppTheme.colors.onSecondaryContainer else AppTheme.colors.textSecondary,
+            tween(500)
+        )
+
         Text(
-            modifier = Modifier.padding(bottom = 30.dp),
+            modifier = Modifier.padding(bottom = 20.dp),
             text = stringResource(id = R.string.onb_title_3),
             style = MaterialTheme.typography.displaySmall,
             fontWeight = FontWeight.SemiBold,
             textAlign = TextAlign.Center,
-            color = AppTheme.colors.onSecondaryContainer,
+            color = firstTitleColor,
             overflow = TextOverflow.Ellipsis,
         )
         Column(verticalArrangement = Arrangement.spacedBy(15.dp)) {
@@ -393,13 +399,19 @@ private fun ThirdOnboardingScreen() {
                 uriHandler.openUri(context.getString(R.string.telegram_link))
             }
         }
+        val secondTitleColor by
+        animateColorAsState(
+            targetValue = if (selected == 2) AppTheme.colors.onSecondaryContainer else AppTheme.colors.textSecondary,
+            tween(500)
+        )
+
         Text(
-            modifier = Modifier.padding(top = 20.dp, bottom = 10.dp),
+            modifier = Modifier.padding(top = 30.dp, bottom = 10.dp),
             text = "Bonus",
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.SemiBold,
             textAlign = TextAlign.Center,
-            color = AppTheme.colors.textSecondary,
+            color = secondTitleColor,
             overflow = TextOverflow.Ellipsis,
         )
         MediaCard(
