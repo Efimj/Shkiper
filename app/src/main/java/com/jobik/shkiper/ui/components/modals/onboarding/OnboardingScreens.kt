@@ -191,7 +191,7 @@ private fun FirstOnboardingScreen() {
                 style = MaterialTheme.typography.displaySmall,
                 fontWeight = FontWeight.SemiBold,
                 textAlign = TextAlign.Start,
-                color = AppTheme.colors.primary,
+                color = AppTheme.colors.onSecondaryContainer,
                 overflow = TextOverflow.Ellipsis,
             )
             Text(
@@ -253,7 +253,7 @@ private fun SecondOnboardingScreen() {
         verticalArrangement = Arrangement.Center,
     ) {
         Text(
-            modifier = Modifier.padding(bottom = 40.dp),
+            modifier = Modifier.padding(bottom = 30.dp),
             text = stringResource(id = R.string.onb_title_2),
             style = MaterialTheme.typography.displaySmall,
             fontWeight = FontWeight.SemiBold,
@@ -318,7 +318,7 @@ private fun MediaCard(
             contentScale = ContentScale.FillHeight,
             colorFilter = ColorFilter.tint(iconColor)
         )
-        Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
+        Column(verticalArrangement = Arrangement.spacedBy(3.dp)) {
             Text(
                 modifier = Modifier.fillMaxWidth(),
                 text = title,
@@ -340,7 +340,7 @@ private fun MediaCard(
 
 @Composable
 private fun ThirdOnboardingScreen() {
-    val count = 2
+    val count = 3
     var selected by remember { mutableStateOf(0) }
     LaunchedEffect(Unit) {
         while (true) {
@@ -359,7 +359,7 @@ private fun ThirdOnboardingScreen() {
         verticalArrangement = Arrangement.Center,
     ) {
         Text(
-            modifier = Modifier.padding(bottom = 40.dp),
+            modifier = Modifier.padding(bottom = 30.dp),
             text = stringResource(id = R.string.onb_title_3),
             style = MaterialTheme.typography.displaySmall,
             fontWeight = FontWeight.SemiBold,
@@ -367,7 +367,7 @@ private fun ThirdOnboardingScreen() {
             color = AppTheme.colors.onSecondaryContainer,
             overflow = TextOverflow.Ellipsis,
         )
-        Column(verticalArrangement = Arrangement.spacedBy(20.dp)) {
+        Column(verticalArrangement = Arrangement.spacedBy(15.dp)) {
             MediaCard(
                 isHighlight = selected == 0,
                 image = R.drawable.ic_github,
@@ -384,6 +384,23 @@ private fun ThirdOnboardingScreen() {
             ) {
                 uriHandler.openUri(context.getString(R.string.telegram_link))
             }
+        }
+        Text(
+            modifier = Modifier.padding(top = 20.dp, bottom = 10.dp),
+            text = "Bonus",
+            style = MaterialTheme.typography.headlineMedium,
+            fontWeight = FontWeight.SemiBold,
+            textAlign = TextAlign.Center,
+            color = AppTheme.colors.textSecondary,
+            overflow = TextOverflow.Ellipsis,
+        )
+        MediaCard(
+            isHighlight = selected == 2,
+            image = R.drawable.ic_game_of_life,
+            title = stringResource(id = R.string.game_of_life),
+            description = stringResource(R.string.game_of_life_description)
+        ) {
+            uriHandler.openUri(context.getString(R.string.game_of_life_link))
         }
     }
 }

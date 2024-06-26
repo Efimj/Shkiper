@@ -268,6 +268,7 @@
     <string name="source_code_description">Get the latest updates, discuss, issues and more</string>
     <string name="telegram_chat">Telegram chat</string>
     <string name="telegram_chat_description">Discuss the app and become part of the community</string>
+    <string name="game_of_life_description">Cellular game of life made in material style</string>
 
 
 </resources>

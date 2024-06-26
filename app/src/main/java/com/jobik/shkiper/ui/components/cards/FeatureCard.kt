@@ -104,7 +104,7 @@ fun FeatureCard(icon: ImageVector, title: String, description: String) {
                 tint = AppTheme.colors.onSecondaryContainer
             )
         }
-        Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
+        Column(verticalArrangement = Arrangement.spacedBy(3.dp)) {
             Text(
                 modifier = Modifier.fillMaxWidth(),
                 text = title,
