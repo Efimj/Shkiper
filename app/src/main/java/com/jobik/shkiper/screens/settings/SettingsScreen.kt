@@ -3,6 +3,7 @@ package com.jobik.shkiper.screens.settings
 import android.app.Activity
 import android.content.Context
 import android.os.Build
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedContent
@@ -42,10 +43,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -165,14 +168,18 @@ private fun OtherSettings(navController: NavController) {
             title = stringResource(R.string.StatisticsPage),
             onClick = { navController.navigateToSecondary(Screen.Statistics) }
         )
-        val isOnboarding = rememberSaveable { mutableStateOf(false) }
+        var isOnboarding by rememberSaveable { mutableStateOf(false) }
+
         SettingsItem(
             icon = Icons.Outlined.ViewCarousel,
             title = stringResource(R.string.OnboardingPage),
-            onClick = { isOnboarding.value = true }
+            onClick = { isOnboarding = true }
         )
-        OnboardingDialog(isVisible = isOnboarding.value) {
-            isOnboarding.value = false
+        BackHandler(isOnboarding) {
+            isOnboarding = isOnboarding.not()
+        }
+        OnboardingDialog(isVisible = isOnboarding) {
+            isOnboarding = false
         }
     }
 }
@@ -330,7 +337,8 @@ private fun SettingsColorThemePicker(settingsViewModel: SettingsViewModel) {
     val colorValues =
         if (isDarkMode == true) CustomThemeStyle.entries.map { it.dark } else CustomThemeStyle.entries.map { it.light }
     val colorValuesName = CustomThemeStyle.entries
-    val selectedThemeName = ThemeUtil.themeStyle.value?.name ?: CustomThemeStyle.MaterialDynamicColors.name
+    val selectedThemeName =
+        ThemeUtil.themeStyle.value?.name ?: CustomThemeStyle.MaterialDynamicColors.name
     val context = LocalContext.current
 
     Column(

@@ -96,7 +96,7 @@ open class MainActivity : ComponentActivity() {
 
         val context = LocalContext.current
         OnboardingDialog(
-            isVisible = true,
+            isVisible = onboarding.value,
             onFinish = {
                 onboarding.value = false;
                 try {

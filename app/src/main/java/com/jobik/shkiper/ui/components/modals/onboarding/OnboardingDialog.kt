@@ -7,8 +7,10 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
-import androidx.compose.animation.scaleIn
-import androidx.compose.animation.scaleOut
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Box
@@ -48,10 +50,8 @@ import com.jobik.shkiper.ui.theme.AppTheme
 import kotlinx.coroutines.launch
 
 @Composable
-fun OnboardingDialog(isVisible: Boolean, onFinish: () -> Unit) {
+fun OnboardingDialog(isVisible: Boolean, onDismiss: (() -> Unit)? = null, onFinish: () -> Unit) {
     val screens = remember { Onboardingscreens() }
-
-    val pagerState = rememberPagerState { screens.size }
     val animationState = remember { MutableTransitionState(false) }
     val visible = remember { mutableStateOf(false) }
 
@@ -69,17 +69,16 @@ fun OnboardingDialog(isVisible: Boolean, onFinish: () -> Unit) {
     }
 
     if (visible.value) {
+        val pagerState = rememberPagerState { screens.size }
+
         FullscreenPopup(
-            onDismiss = {}
+            onDismiss = { onDismiss?.invoke() }
         ) {
-            BackHandler {
-                onFinish()
-            }
             AnimatedVisibility(
                 modifier = Modifier.fillMaxSize(),
                 visibleState = animationState,
-                enter = scaleIn(),
-                exit = scaleOut(),
+                enter = slideInHorizontally { -200 } + fadeIn(),
+                exit = slideOutHorizontally { -200 } + fadeOut(),
             ) {
                 Box(
                     modifier = Modifier
