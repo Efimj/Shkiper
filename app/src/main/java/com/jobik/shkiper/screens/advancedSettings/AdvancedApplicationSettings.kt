@@ -131,7 +131,7 @@ private fun FontScaleSettings() {
     val context = LocalContext.current
 
     val fontScale = remember {
-        mutableFloatStateOf(SettingsManager.presentation.fontScale)
+        mutableFloatStateOf(SettingsManager.settings.value.fontScale)
     }
 
     /**

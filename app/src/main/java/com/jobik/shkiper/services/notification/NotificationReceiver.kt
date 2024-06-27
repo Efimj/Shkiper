@@ -15,7 +15,9 @@ import com.jobik.shkiper.database.models.RepeatMode
 import com.jobik.shkiper.helpers.IntentHelper
 import com.jobik.shkiper.helpers.TextHelper
 import com.jobik.shkiper.services.statistics.StatisticsService
-import com.jobik.shkiper.util.ThemeUtil
+import com.jobik.shkiper.util.ContextUtils.isDarkModeEnabled
+import com.jobik.shkiper.util.settings.NightMode
+import com.jobik.shkiper.util.settings.SettingsManager
 import com.mohamedrejeb.richeditor.model.RichTextState
 import java.time.Instant
 import java.time.LocalDateTime
@@ -56,13 +58,25 @@ class NotificationReceiver : BroadcastReceiver() {
         val requestCode = intent.getIntExtra("requestCode", 0)
         val notification = NotificationStorage(context).getNotification(requestCode) ?: return
 
-        ThemeUtil.restoreSavedTheme(context)
-        val savedColors = ThemeUtil.getColors()
+        SettingsManager.init(context)
+        val savedColors = SettingsManager.settings.value.theme.getColors(
+            isDarkTheme =
+            when (SettingsManager.settings.value.nightMode) {
+                NightMode.Light -> false
+                NightMode.Dark -> true
+                else -> isDarkModeEnabled(context)
+            }
+        )
 
         // Create the TaskStackBuilder
         val mainPendingIntent: PendingIntent? = TaskStackBuilder.create(context).run {
             // Add the intent, which inflates the back stack
-            addNextIntentWithParentStack(IntentHelper().getStartActivityAndOpenNoteIntent(context, notification.noteId))
+            addNextIntentWithParentStack(
+                IntentHelper().getStartActivityAndOpenNoteIntent(
+                    context,
+                    notification.noteId
+                )
+            )
             // Get the PendingIntent containing the entire back stack
             getPendingIntent(
                 notification.requestCode,
@@ -91,7 +105,8 @@ class NotificationReceiver : BroadcastReceiver() {
                         .bigText(message)
                 )
 
-        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager =
+            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.notify(notification.notificationId, notificationBuilder.build())
 
         scheduleRepeatableNotification(notification, context)

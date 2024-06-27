@@ -18,10 +18,9 @@ import com.jobik.shkiper.database.models.Note
 import com.jobik.shkiper.helpers.TextHelper
 import com.jobik.shkiper.ui.helpers.SecureModeManager
 import com.jobik.shkiper.ui.theme.AppTheme
-import com.jobik.shkiper.ui.theme.CustomThemeStyle
 import com.jobik.shkiper.ui.theme.ShkiperTheme
 import com.jobik.shkiper.util.ContextUtils.adjustFontSize
-import com.jobik.shkiper.util.ThemeUtil
+import com.jobik.shkiper.util.settings.NightMode
 import com.jobik.shkiper.util.settings.SettingsManager
 import com.jobik.shkiper.widgets.WidgetKeys
 import com.jobik.shkiper.widgets.screens.noteSelection.NoteSelectionScreen
@@ -46,13 +45,16 @@ class ConfigWidgetActivity : AppCompatActivity() {
         adjustFontSize(SettingsManager.settings.value?.fontScale)
 
         setupActivity()
-        ThemeUtil.restoreSavedTheme(this)
         setContent {
             SecureModeManager()
 
             ShkiperTheme(
-                darkTheme = ThemeUtil.isDarkMode.value ?: isSystemInDarkTheme(),
-                style = ThemeUtil.themeStyle.value ?: CustomThemeStyle.MaterialDynamicColors
+                darkTheme = when (SettingsManager.settings.value.nightMode) {
+                    NightMode.Light -> false
+                    NightMode.Dark -> true
+                    else -> isSystemInDarkTheme()
+                },
+                style = SettingsManager.settings.value.theme
             ) {
                 Box(
                     Modifier
@@ -82,7 +84,8 @@ class ConfigWidgetActivity : AppCompatActivity() {
 
             prefs[WidgetKeys.Prefs.noteId] = note._id.toHexString()
             prefs[WidgetKeys.Prefs.noteHeader] = note.header
-            prefs[WidgetKeys.Prefs.noteBody] = TextHelper.removeMarkdownStyles(richBody.toMarkdown())
+            prefs[WidgetKeys.Prefs.noteBody] =
+                TextHelper.removeMarkdownStyles(richBody.toMarkdown())
             prefs[WidgetKeys.Prefs.noteLastUpdate] = note.updateDateString
         }
         NoteWidget().update(application.applicationContext, glanceId)

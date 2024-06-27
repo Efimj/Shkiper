@@ -5,23 +5,24 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.combinedClickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Link
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -32,7 +33,6 @@ import com.jobik.shkiper.ui.modifiers.bounceClick
 import com.jobik.shkiper.ui.theme.AppTheme
 import com.jobik.shkiper.util.SnackbarHostUtil
 import com.jobik.shkiper.util.SnackbarVisualsCustom
-import com.jobik.shkiper.util.ThemeUtil
 import kotlinx.coroutines.launch
 
 @Composable
@@ -87,12 +87,12 @@ fun LinkCard(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(20.dp)
         ) {
-            Image(
-                modifier = Modifier.height(60.dp),
-                painter = painterResource(if (ThemeUtil.isDarkMode.value == true) R.drawable.github_dark else R.drawable.github_light),
-                contentDescription = stringResource(id = R.string.Image),
-                contentScale = ContentScale.Fit,
-            )
+//            Image(
+//                modifier = Modifier.height(60.dp),
+//                painter = painterResource(if (ThemeUtil.isDarkMode.value == true) R.drawable.github_dark else R.drawable.github_light),
+//                contentDescription = stringResource(id = R.string.Image),
+//                contentScale = ContentScale.Fit,
+//            )
             Column(
                 verticalArrangement = Arrangement.spacedBy(3.dp, alignment = Alignment.CenterVertically)
             ) {
