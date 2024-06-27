@@ -102,7 +102,7 @@ private fun FirstOnboardingScreen() {
 
     val context = LocalContext.current
 
-    val isDarkTheme = when (SettingsManager.settings.value.nightMode) {
+    val isDarkTheme = when (SettingsManager.settings.nightMode) {
         NightMode.Light -> false
         NightMode.Dark -> true
         else -> isDarkModeEnabled(context)

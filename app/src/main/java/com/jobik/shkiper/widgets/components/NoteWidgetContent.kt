@@ -53,7 +53,7 @@ private fun getThemeColors(
 fun NoteWidgetContent(prefs: Preferences) {
     SettingsManager.init(LocalContext.current)
 
-    val userStyles = SettingsManager.settings.value.theme
+    val userStyles = SettingsManager.settings.theme
     val darkColors = getThemeColors(style = userStyles, darkTheme = true, LocalContext.current)
     val lightColors = getThemeColors(style = userStyles, darkTheme = false, LocalContext.current)
 

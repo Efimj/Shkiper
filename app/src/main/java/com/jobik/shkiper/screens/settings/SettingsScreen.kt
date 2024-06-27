@@ -322,7 +322,7 @@ private fun ProgramSettings(navController: NavController, settingsViewModel: Set
             onClick = { toggleNightMode(context = context, systemNightMode = systemNightMode) }
         ) {
             CustomSwitch(
-                active = when (SettingsManager.settings.value.nightMode) {
+                active = when (SettingsManager.settings.nightMode) {
                     NightMode.Light -> false
                     NightMode.Dark -> true
                     else -> isSystemInDarkTheme()
@@ -343,9 +343,9 @@ private fun ProgramSettings(navController: NavController, settingsViewModel: Set
 private fun toggleNightMode(context: Context, systemNightMode: Boolean) {
     SettingsManager.update(
         context = context,
-        settings = SettingsManager.settings.value.copy(
+        settings = SettingsManager.settings.copy(
             nightMode =
-            when (SettingsManager.settings.value.nightMode) {
+            when (SettingsManager.settings.nightMode) {
                 NightMode.Light -> NightMode.Dark
                 NightMode.Dark -> NightMode.Light
                 else -> if (systemNightMode) NightMode.Light else NightMode.Dark
@@ -356,7 +356,7 @@ private fun toggleNightMode(context: Context, systemNightMode: Boolean) {
 
 @Composable
 private fun SettingsColorThemePicker(settingsViewModel: SettingsViewModel) {
-    val isDarkMode = when (SettingsManager.settings.value.nightMode) {
+    val isDarkMode = when (SettingsManager.settings.nightMode) {
         NightMode.Light -> false
         NightMode.Dark -> true
         else -> isSystemInDarkTheme()
@@ -364,7 +364,7 @@ private fun SettingsColorThemePicker(settingsViewModel: SettingsViewModel) {
     val colorValues =
         if (isDarkMode) CustomThemeStyle.entries.map { it.dark } else CustomThemeStyle.entries.map { it.light }
     val colorValuesName = CustomThemeStyle.entries
-    val selectedThemeName = SettingsManager.settings.value.theme.name
+    val selectedThemeName = SettingsManager.settings.theme.name
     val context = LocalContext.current
 
     Column(
@@ -399,7 +399,7 @@ private fun SettingsColorThemePicker(settingsViewModel: SettingsViewModel) {
                 ) {
                     SettingsManager.update(
                         context = context,
-                        settings = SettingsManager.settings.value.copy(
+                        settings = SettingsManager.settings.copy(
                             theme = colorValuesName[theme]
                         )
                     )

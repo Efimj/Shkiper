@@ -55,7 +55,7 @@ open class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         installSplashScreen()
         super.onCreate(savedInstanceState)
-        adjustFontSize(SettingsManager.settings.value.fontScale)
+        adjustFontSize(SettingsManager.settings.fontScale)
         actionBar?.hide()
 
         // Billing APIs are all handled in the this lifecycle observer.
@@ -74,12 +74,12 @@ open class MainActivity : ComponentActivity() {
             UpdateStatistics()
 
             ShkiperTheme(
-                darkTheme = when (SettingsManager.settings.value.nightMode) {
+                darkTheme = when (SettingsManager.settings.nightMode) {
                     NightMode.Light -> false
                     NightMode.Dark -> true
                     else -> isSystemInDarkTheme()
                 },
-                style = SettingsManager.settings.value.theme
+                style = SettingsManager.settings.theme
             ) {
                 OnboardingProvider()
                 AppLayout(startDestination)
@@ -148,7 +148,7 @@ open class MainActivity : ComponentActivity() {
         }
 
     private fun checkForUpdates() {
-        val settings = SettingsManager.settings.value
+        val settings = SettingsManager.settings
         if (settings.checkUpdates.not()) return
 
         if (InAppUpdatesService.isUpdatedChecked) return

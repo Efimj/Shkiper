@@ -9,14 +9,18 @@ import com.jobik.shkiper.SharedPreferencesKeys.ApplicationStorageName
 
 object SettingsManager {
     private var _settings: MutableState<SettingsState> = mutableStateOf(SettingsState())
-    var settings: MutableState<SettingsState>
+    var state: MutableState<SettingsState>
         get() = _settings
         private set(value) {
             _settings = value
         }
 
+    val settings: SettingsState
+        get() = _settings.value
+
+
     fun init(context: Context) {
-        settings.value = restore(context = context)
+        state.value = restore(context = context)
     }
 
     fun update(context: Context, settings: SettingsState) {

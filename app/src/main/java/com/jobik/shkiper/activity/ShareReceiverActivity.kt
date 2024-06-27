@@ -42,17 +42,17 @@ class ShareReceiverActivity : AppCompatActivity() {
         actionBar?.hide()
 
         SettingsManager.init(this)
-        adjustFontSize(SettingsManager.settings.value.fontScale)
+        adjustFontSize(SettingsManager.settings.fontScale)
 
         setupActivity()
         setContent {
             ShkiperTheme(
-                darkTheme = when (SettingsManager.settings.value.nightMode) {
+                darkTheme = when (SettingsManager.settings.nightMode) {
                     NightMode.Light -> false
                     NightMode.Dark -> true
                     else -> isSystemInDarkTheme()
                 },
-                style = SettingsManager.settings.value.theme
+                style = SettingsManager.settings.theme
             ) {
                 Box(
                     Modifier

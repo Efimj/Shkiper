@@ -59,9 +59,9 @@ class NotificationReceiver : BroadcastReceiver() {
         val notification = NotificationStorage(context).getNotification(requestCode) ?: return
 
         SettingsManager.init(context)
-        val savedColors = SettingsManager.settings.value.theme.getColors(
+        val savedColors = SettingsManager.settings.theme.getColors(
             isDarkTheme =
-            when (SettingsManager.settings.value.nightMode) {
+            when (SettingsManager.settings.nightMode) {
                 NightMode.Light -> false
                 NightMode.Dark -> true
                 else -> isDarkModeEnabled(context)

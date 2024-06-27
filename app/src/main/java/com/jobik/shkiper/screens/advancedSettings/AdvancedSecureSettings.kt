@@ -23,7 +23,7 @@ fun AdvancedSecureSettings() {
 @Composable
 private fun SecureMode() {
     val context = LocalContext.current
-    val settings = SettingsManager.settings.value
+    val settings = SettingsManager.settings
 
     fun switchSecureMode(
         settings: SettingsState?,

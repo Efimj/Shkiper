@@ -86,7 +86,7 @@ private fun CheckUpdates() {
 
 @Composable
 private fun AutomaticCheckUpdates() {
-    val settings = SettingsManager.settings.value
+    val settings = SettingsManager.settings
     val context = LocalContext.current
 
     fun switchAutomaticUpdateCheck(
