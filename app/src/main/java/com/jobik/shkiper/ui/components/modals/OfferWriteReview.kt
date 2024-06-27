@@ -33,15 +33,7 @@ import kotlinx.coroutines.delay
 fun OfferWriteReview(
     onGoBack: () -> Unit,
 ) {
-    val timeHasPassed = rememberSaveable { mutableStateOf(false) }
-    LaunchedEffect(Unit) {
-        delay(3000)
-        timeHasPassed.value = true
-    }
-
-    val goBackFunDelay = { if (timeHasPassed.value) onGoBack() }
-
-    Dialog(goBackFunDelay, DialogProperties(true, dismissOnClickOutside = true)) {
+    Dialog(onGoBack, DialogProperties(true, dismissOnClickOutside = true)) {
         Column(
             Modifier.clip(RoundedCornerShape(15.dp)).background(AppTheme.colors.container)
         ) {
@@ -88,16 +80,15 @@ fun OfferWriteReview(
                     ) {
                         CustomButton(
                             text = stringResource(R.string.Cancel),
-                            onClick = goBackFunDelay,
+                            onClick = onGoBack,
                             properties = DefaultButtonProperties(
                                 buttonColors = ButtonDefaults.buttonColors(
                                     containerColor = Color.Transparent,
                                     disabledContainerColor = Color.Transparent
                                 ),
                                 border = null,
-                                textColor = if (timeHasPassed.value) AppTheme.colors.text else AppTheme.colors.textSecondary,
+                                textColor = AppTheme.colors.text,
                             ),
-                            enabled = timeHasPassed.value,
                             modifier = Modifier.fillMaxWidth()
                         )
                     }

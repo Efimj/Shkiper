@@ -15,6 +15,12 @@ abstract class Statistics {
 
 }
 
+enum class StatisticsType {
+    Long,
+    Boolean,
+    Date
+}
+
 @Keep
 data class LongStatistics(
     private var _value: ULong
@@ -71,26 +77,36 @@ data class StatisticsItem(
     val title: Int,
     @StringRes
     val description: Int,
-    private var statistics: Statistics
+    private val statistics: Statistics
 ) {
     @Composable
     fun getStringValue(): String {
         return when (statistics) {
-            is LongStatistics -> (statistics as LongStatistics).value.toString()
-            is BooleanStatistics -> stringResource(if ((statistics as BooleanStatistics).value) R.string.DoneEmoji else R.string.NotDoneEmoji)
-            is DateStatistics -> (statistics as DateStatistics).value.toString()
+            is LongStatistics -> statistics.value.toString()
+            is BooleanStatistics -> statistics.value.toString()
+            is DateStatistics -> statistics.value.toString()
             else -> throw UnsupportedOperationException("Unsupported type")
         }
     }
 
     fun increment() {
         when (statistics) {
-            is LongStatistics -> (statistics as LongStatistics).increment()
-            is BooleanStatistics -> (statistics as BooleanStatistics).increment()
-            is DateStatistics -> (statistics as DateStatistics).increment()
+            is LongStatistics -> statistics.increment()
+            is BooleanStatistics -> statistics.increment()
+            is DateStatistics -> statistics.increment()
             else -> throw UnsupportedOperationException("Unsupported type")
         }
     }
+
+    val type: StatisticsType
+        get() {
+            return when (statistics) {
+                is LongStatistics -> StatisticsType.Long
+                is BooleanStatistics -> StatisticsType.Boolean
+                is DateStatistics -> StatisticsType.Date
+                else -> throw UnsupportedOperationException("Unsupported type")
+            }
+        }
 }
 
 @Keep

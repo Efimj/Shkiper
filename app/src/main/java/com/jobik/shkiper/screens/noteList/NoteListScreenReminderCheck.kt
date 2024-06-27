@@ -31,11 +31,7 @@ fun NoteListScreenReminderCheck(notesViewModel: NotesViewModel) {
     }
 
     LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
-        if (checkIsNotificationEnabled(context = context)) {
-            reminderNeededDialog = false
-        } else {
-            reminderNeededDialog = true
-        }
+        reminderNeededDialog = !checkIsNotificationEnabled(context) && notesViewModel.screenState.value.reminders.isNotEmpty()
     }
 
     if (reminderNeededDialog)
