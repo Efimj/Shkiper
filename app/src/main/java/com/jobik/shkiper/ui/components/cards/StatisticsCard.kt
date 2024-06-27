@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.CheckCircle
@@ -38,7 +39,7 @@ fun StatisticsCard(statistic: StatisticsItem) {
             .fillMaxWidth()
             .clip(AppTheme.shapes.medium)
             .background(AppTheme.colors.container)
-            .padding(vertical = 10.dp, horizontal = 15.dp),
+            .padding(20.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(15.dp)
     ) {
@@ -58,7 +59,7 @@ fun StatisticsCard(statistic: StatisticsItem) {
             )
         }
 
-        val height by remember { mutableStateOf(50.dp) }
+        val height by remember { mutableStateOf(60.dp) }
 
         Box(
             modifier = Modifier
@@ -71,7 +72,7 @@ fun StatisticsCard(statistic: StatisticsItem) {
             when (statistic.type) {
                 StatisticsType.Boolean -> {
                     Icon(
-                        modifier = Modifier.padding(10.dp),
+                        modifier = Modifier.padding(10.dp).size(30.dp),
                         imageVector = if (statistic.getStringValue()
                                 .toBoolean()
                         ) Icons.Outlined.CheckCircle else Icons.Outlined.Close,
