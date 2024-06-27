@@ -99,7 +99,7 @@ fun StatisticsScreen() {
                 )
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(15.dp)
+                    verticalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
                     statistics.map { StatisticsCard(it) }
                 }
