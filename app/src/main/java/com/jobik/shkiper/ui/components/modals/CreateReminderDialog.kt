@@ -51,6 +51,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.CalendarMonth
+import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material.icons.outlined.Event
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.outlined.NotificationsOff
@@ -356,32 +357,28 @@ private fun FinishPage(
         Selector(icon = Icons.Outlined.Notifications) {
             NotificationIcon.entries.map {
                 val isSelected = reminderDialogState.value.icon.name == it.name
-                val borderColor by
-                animateColorAsState(targetValue = if (isSelected) AppTheme.colors.text else Color.Transparent)
+                val backgroundColor by
+                animateColorAsState(targetValue = if (isSelected) AppTheme.colors.primary else Color.Transparent)
+
+                val iconColor by
+                animateColorAsState(targetValue = if (isSelected) AppTheme.colors.onPrimary else AppTheme.colors.text)
 
                 Box(
                     modifier = Modifier
                         .size(40.dp)
-                        .border(
-                            BorderStroke(
-                                width = 2.dp,
-                                color = borderColor,
-                            ), shape = CircleShape
-                        )
-                        .padding(2.dp)
                         .clip(CircleShape)
+                        .background(backgroundColor)
                         .clickable {
                             reminderDialogState.value =
                                 reminderDialogState.value.copy(icon = it)
                         }
-                        .background(reminderDialogState.value.color.getColor(context))
-                        .padding(8.dp),
+                        .padding(4.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     Image(
                         painter = painterResource(it.getDrawable()),
                         contentDescription = null,
-                        colorFilter = ColorFilter.tint(AppTheme.colors.text)
+                        colorFilter = ColorFilter.tint(iconColor)
                     )
                 }
             }
@@ -389,25 +386,37 @@ private fun FinishPage(
         Selector(icon = Icons.Outlined.Palette) {
             NotificationColor.entries.map {
                 val isSelected = reminderDialogState.value.color.name == it.name
-                val borderColor by
-                animateColorAsState(targetValue = if (isSelected) AppTheme.colors.text else Color.Transparent)
 
                 Box(
                     modifier = Modifier
                         .size(40.dp)
-                        .border(
-                            BorderStroke(
-                                width = 2.dp,
-                                color = borderColor,
-                            ), shape = CircleShape
-                        )
-                        .padding(2.dp)
                         .clip(CircleShape)
                         .clickable {
                             reminderDialogState.value = reminderDialogState.value.copy(color = it)
                         }
-                        .background(it.getColor(context))
-                )
+                        .background(it.getColor(context)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    androidx.compose.animation.AnimatedVisibility(
+                        visible = isSelected,
+                        enter = fadeIn(),
+                        exit = fadeOut()
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .clip(CircleShape)
+                                .size(30.dp)
+                                .background(AppTheme.colors.primary),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(
+                                imageVector = Icons.Outlined.Check,
+                                contentDescription = null,
+                                tint = AppTheme.colors.onPrimary
+                            )
+                        }
+                    }
+                }
             }
         }
         Column(
@@ -478,7 +487,7 @@ private fun Selector(icon: ImageVector, content: @Composable () -> Unit) {
                 tint = AppTheme.colors.textSecondary
             )
         }
-        Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+        Row(horizontalArrangement = Arrangement.spacedBy(7.dp)) {
             content()
         }
     }
