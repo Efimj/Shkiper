@@ -21,6 +21,7 @@ import com.jobik.shkiper.database.models.Reminder
 import com.jobik.shkiper.database.models.RepeatMode
 import com.jobik.shkiper.helpers.DateHelper
 import com.jobik.shkiper.screens.layout.navigation.AppNavigationBarState
+import com.jobik.shkiper.ui.components.modals.ReminderDialogProperties
 import com.jobik.shkiper.util.SnackbarHostUtil
 import com.jobik.shkiper.util.SnackbarVisualsCustom
 import com.mohamedrejeb.richeditor.model.RichTextState
@@ -330,15 +331,17 @@ class NotesViewModel @Inject constructor(
             _screenState.value.copy(isCreateReminderDialogShow = !_screenState.value.isCreateReminderDialogShow)
     }
 
-    fun createReminder(date: LocalDate, time: LocalTime, repeatMode: RepeatMode) {
-        if (DateHelper.isFutureDateTime(date, time)) {
+    fun createReminder(props: ReminderDialogProperties) {
+        if (DateHelper.isFutureDateTime(props.date, props.time)) {
             viewModelScope.launch {
                 reminderRepository.createReminderForNotes(
                     noteRepository.getNotesFlow(screenState.value.selectedNotes.toList()),
                 ) { updatedReminder ->
-                    updatedReminder.date = date
-                    updatedReminder.time = time
-                    updatedReminder.repeat = repeatMode
+                    updatedReminder.date = props.date
+                    updatedReminder.time = props.time
+                    updatedReminder.repeat = props.repeatMode
+                    updatedReminder.icon = props.icon
+                    updatedReminder.color = props.color
                 }
             }
             switchReminderDialogShow()

@@ -406,12 +406,10 @@ private fun CreateReminderDialog(
                     }
                 }
             } else null,
-            onSave = { date, time, repeat ->
+            onSave = { props ->
                 noteViewModel.createOrUpdateReminder(
                     reminder = currentReminder.value,
-                    date = date,
-                    time = time,
-                    repeatMode = repeat
+                    props = props
                 )
                 clearCurrentReminder()
             },

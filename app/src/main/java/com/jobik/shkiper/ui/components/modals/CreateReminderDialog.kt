@@ -122,15 +122,14 @@ private enum class ReminderDialogPages(val value: Int) {
 data class ReminderDialogProperties(
     val date: LocalDate = LocalDate.now(),
     val time: LocalTime = LocalTime.now(),
-    val repeatMode: RepeatMode = RepeatMode.NONE
+    val repeatMode: RepeatMode = RepeatMode.NONE,
+    val icon: NotificationIcon = NotificationIcon.EVENT,
+    val color: NotificationColor = NotificationColor.MATERIAL,
 ) : Parcelable
 
 @Parcelize
 private data class ReminderDialogState(
-    val date: LocalDate = LocalDate.now(),
-    val time: LocalTime = LocalTime.now(),
-    val repeatMode: RepeatMode = RepeatMode.NONE,
-    val icon: NotificationIcon = NotificationIcon.EVENT,
+    val props: ReminderDialogProperties = ReminderDialogProperties(),
     val color: NotificationColor = NotificationColor.MATERIAL,
     val isNotificationEnabled: Boolean = false,
     val canSave: Boolean = false,
@@ -141,7 +140,7 @@ fun CreateReminderDialog(
     reminderDialogProperties: ReminderDialogProperties = ReminderDialogProperties(),
     onGoBack: () -> Unit,
     onDelete: (() -> Unit)? = null,
-    onSave: (date: LocalDate, time: LocalTime, repeatMode: RepeatMode) -> Unit,
+    onSave: (ReminderDialogProperties) -> Unit,
 ) {
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
@@ -156,9 +155,7 @@ fun CreateReminderDialog(
         rememberSaveable {
             mutableStateOf(
                 ReminderDialogState(
-                    date = reminderDialogProperties.date,
-                    time = reminderDialogProperties.time,
-                    repeatMode = reminderDialogProperties.repeatMode,
+                    props = reminderDialogProperties,
                     isNotificationEnabled = checkIsNotificationEnabled(context)
                 )
             )
@@ -214,11 +211,7 @@ fun CreateReminderDialog(
                 onGoBack = onGoBack,
                 onDelete = onDelete,
             ) {
-                onSave(
-                    reminderDialogState.value.date,
-                    reminderDialogState.value.time,
-                    reminderDialogState.value.repeatMode
-                )
+                onSave(reminderDialogState.value.props)
             }
         }
     }
@@ -272,7 +265,7 @@ private fun DialogHeader(
 
                 Row(modifier = Modifier.basicMarquee()) {
                     Text(
-                        text = DateHelper.getLocalizedDate(reminderDialogState.value.date),
+                        text = DateHelper.getLocalizedDate(reminderDialogState.value.props.date),
                         style = MaterialTheme.typography.headlineMedium,
                         color = dateTextColor.value,
                         fontWeight = FontWeight(dateFontWeight.value),
@@ -280,7 +273,11 @@ private fun DialogHeader(
                     )
                     Spacer(Modifier.width(8.dp))
                     Text(
-                        text = reminderDialogState.value.time.format(DateTimeFormatter.ofPattern("HH:mm")),
+                        text = reminderDialogState.value.props.time.format(
+                            DateTimeFormatter.ofPattern(
+                                "HH:mm"
+                            )
+                        ),
                         style = MaterialTheme.typography.headlineMedium,
                         color = timeTextColor.value,
                         fontWeight = FontWeight(timeFontWeight.value),
@@ -323,18 +320,18 @@ private fun FinishPage(
         RepeatMode.entries.map { DropDownItem(text = it.getLocalizedValue(context)) }
     val isExpanded = remember { mutableStateOf(false) }
     val isDatePast = DateHelper.isFutureDateTime(
-        date = reminderDialogState.value.date,
-        time = reminderDialogState.value.time
+        date = reminderDialogState.value.props.date,
+        time = reminderDialogState.value.props.time
     ).not()
 
     Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
         SettingsItem(
-            title = DateHelper.getLocalizedDate(reminderDialogState.value.date),
+            title = DateHelper.getLocalizedDate(reminderDialogState.value.props.date),
             icon = Icons.Outlined.Event,
             onClick = { goToPage(0) }
         )
         SettingsItem(
-            title = reminderDialogState.value.time.toString(),
+            title = reminderDialogState.value.props.time.toString(),
             icon = Icons.Outlined.Schedule,
             onClick = { goToPage(1) }
         )
@@ -342,13 +339,17 @@ private fun FinishPage(
             items = repeatModeList,
             expanded = isExpanded,
             stretchMode = DropDownButtonSizeMode.STRERCHBYBUTTONWIDTH,
-            selectedIndex = reminderDialogState.value.repeatMode.ordinal,
+            selectedIndex = reminderDialogState.value.props.repeatMode.ordinal,
             onChangedSelection = {
                 reminderDialogState.value =
-                    reminderDialogState.value.copy(repeatMode = RepeatMode.entries.toTypedArray()[it])
+                    reminderDialogState.value.copy(
+                        props = reminderDialogState.value.props.copy(
+                            repeatMode = RepeatMode.entries.toTypedArray()[it]
+                        )
+                    )
             }) {
             SettingsItem(
-                title = reminderDialogState.value.repeatMode.getLocalizedValue(context = context),
+                title = reminderDialogState.value.props.repeatMode.getLocalizedValue(context = context),
                 description = stringResource(R.string.Repeat),
                 icon = Icons.Outlined.Repeat,
                 onClick = { it() }
@@ -356,7 +357,7 @@ private fun FinishPage(
         }
         Selector(icon = Icons.Outlined.Notifications) {
             NotificationIcon.entries.map {
-                val isSelected = reminderDialogState.value.icon.name == it.name
+                val isSelected = reminderDialogState.value.props.icon.name == it.name
                 val backgroundColor by
                 animateColorAsState(targetValue = if (isSelected) AppTheme.colors.primary else Color.Transparent)
 
@@ -369,8 +370,9 @@ private fun FinishPage(
                         .clip(CircleShape)
                         .background(backgroundColor)
                         .clickable {
-                            reminderDialogState.value =
-                                reminderDialogState.value.copy(icon = it)
+                            reminderDialogState.value = reminderDialogState.value.copy(
+                                props = reminderDialogState.value.props.copy(icon = it)
+                            )
                         }
                         .padding(4.dp),
                     contentAlignment = Alignment.Center
@@ -472,6 +474,7 @@ private fun FinishPage(
 private fun Selector(icon: ImageVector, content: @Composable () -> Unit) {
     Row(
         modifier = Modifier
+            .padding(top = 5.dp)
             .heightIn(min = 50.dp)
             .horizontalScroll(rememberScrollState())
             .padding(horizontal = 20.dp),
@@ -504,8 +507,10 @@ private fun TimePickPage(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        CustomTimePicker(startTime = reminderDialogState.value.time) { newTime ->
-            reminderDialogState.value = reminderDialogState.value.copy(time = newTime)
+        CustomTimePicker(startTime = reminderDialogState.value.props.time) { newTime ->
+            reminderDialogState.value = reminderDialogState.value.copy(
+                props = reminderDialogState.value.props.copy(time = newTime)
+            )
         }
     }
 }
@@ -520,10 +525,12 @@ private fun DatePickPage(reminderDialogState: MutableState<ReminderDialogState>)
         verticalArrangement = Arrangement.Center
     ) {
         CustomDatePicker(
-            currentDate = reminderDialogState.value.date,
+            currentDate = reminderDialogState.value.props.date,
             contentHeightMode = ContentHeightMode.Wrap
         ) { day ->
-            reminderDialogState.value = reminderDialogState.value.copy(date = day.date)
+            reminderDialogState.value = reminderDialogState.value.copy(
+                props = reminderDialogState.value.props.copy(date = day.date)
+            )
         }
     }
 }
@@ -541,11 +548,11 @@ private fun DialogFooter(
     val isEnd = pagerState.currentPage == ReminderDialogPages.entries.size - 1
 
     val isFutureDate =
-        remember(reminderDialogState.value.date, reminderDialogState.value.time) {
+        remember(reminderDialogState.value.props.date, reminderDialogState.value.props.time) {
             mutableStateOf(
                 DateHelper.isFutureDateTime(
-                    date = reminderDialogState.value.date,
-                    time = reminderDialogState.value.time
+                    date = reminderDialogState.value.props.date,
+                    time = reminderDialogState.value.props.time
                 )
             )
         }
