@@ -90,7 +90,7 @@ class NotificationReceiver : BroadcastReceiver() {
 
         val notificationBuilder =
             NotificationCompat.Builder(context, notification.channel.channelId)
-                .setSmallIcon(R.drawable.ic_notification)
+//                .setSmallIcon(R.drawable.ic_notification)
                 .setAutoCancel(true)
                 .setColor(savedColors.primary.toArgb())
                 .setColorized(true)

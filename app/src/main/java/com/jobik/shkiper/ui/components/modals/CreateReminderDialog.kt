@@ -19,9 +19,16 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.scrollable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -30,19 +37,24 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PageSize
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.CalendarMonth
 import androidx.compose.material.icons.outlined.Event
+import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.outlined.NotificationsOff
+import androidx.compose.material.icons.outlined.Palette
 import androidx.compose.material.icons.outlined.Repeat
 import androidx.compose.material.icons.outlined.Schedule
 import androidx.compose.material3.Button
@@ -61,7 +73,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -72,6 +88,8 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import com.jobik.shkiper.R
+import com.jobik.shkiper.database.models.NotificationColor
+import com.jobik.shkiper.database.models.NotificationIcon
 import com.jobik.shkiper.database.models.RepeatMode
 import com.jobik.shkiper.helpers.DateHelper
 import com.jobik.shkiper.helpers.IntentHelper
@@ -111,6 +129,8 @@ private data class ReminderDialogState(
     val date: LocalDate = LocalDate.now(),
     val time: LocalTime = LocalTime.now(),
     val repeatMode: RepeatMode = RepeatMode.NONE,
+    val icon: NotificationIcon = NotificationIcon.EVENT,
+    val color: NotificationColor = NotificationColor.MATERIAL,
     val isNotificationEnabled: Boolean = false,
     val canSave: Boolean = false,
 ) : Parcelable
@@ -306,7 +326,7 @@ private fun FinishPage(
         time = reminderDialogState.value.time
     ).not()
 
-    Column {
+    Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
         SettingsItem(
             title = DateHelper.getLocalizedDate(reminderDialogState.value.date),
             icon = Icons.Outlined.Event,
@@ -332,6 +352,63 @@ private fun FinishPage(
                 icon = Icons.Outlined.Repeat,
                 onClick = { it() }
             )
+        }
+        Selector(icon = Icons.Outlined.Notifications) {
+            NotificationIcon.entries.map {
+                val isSelected = reminderDialogState.value.icon.name == it.name
+                val borderColor by
+                animateColorAsState(targetValue = if (isSelected) AppTheme.colors.text else Color.Transparent)
+
+                Box(
+                    modifier = Modifier
+                        .size(40.dp)
+                        .border(
+                            BorderStroke(
+                                width = 2.dp,
+                                color = borderColor,
+                            ), shape = CircleShape
+                        )
+                        .padding(2.dp)
+                        .clip(CircleShape)
+                        .clickable {
+                            reminderDialogState.value =
+                                reminderDialogState.value.copy(icon = it)
+                        }
+                        .background(reminderDialogState.value.color.getColor(context))
+                        .padding(8.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Image(
+                        painter = painterResource(it.getDrawable()),
+                        contentDescription = null,
+                        colorFilter = ColorFilter.tint(AppTheme.colors.text)
+                    )
+                }
+            }
+        }
+        Selector(icon = Icons.Outlined.Palette) {
+            NotificationColor.entries.map {
+                val isSelected = reminderDialogState.value.color.name == it.name
+                val borderColor by
+                animateColorAsState(targetValue = if (isSelected) AppTheme.colors.text else Color.Transparent)
+
+                Box(
+                    modifier = Modifier
+                        .size(40.dp)
+                        .border(
+                            BorderStroke(
+                                width = 2.dp,
+                                color = borderColor,
+                            ), shape = CircleShape
+                        )
+                        .padding(2.dp)
+                        .clip(CircleShape)
+                        .clickable {
+                            reminderDialogState.value = reminderDialogState.value.copy(color = it)
+                        }
+                        .background(it.getColor(context))
+                )
+            }
         }
         Column(
             modifier = Modifier
@@ -378,6 +455,31 @@ private fun FinishPage(
                     )
                 )
             }
+        }
+    }
+}
+
+@Composable
+private fun Selector(icon: ImageVector, content: @Composable () -> Unit) {
+    Row(
+        modifier = Modifier
+            .heightIn(min = 50.dp)
+            .horizontalScroll(rememberScrollState())
+            .padding(horizontal = 20.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Box(modifier = Modifier.padding(end = 20.dp)) {
+            Icon(
+                modifier = Modifier
+                    .size(24.dp)
+                    .fillMaxSize(),
+                imageVector = icon,
+                contentDescription = null,
+                tint = AppTheme.colors.textSecondary
+            )
+        }
+        Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+            content()
         }
     }
 }

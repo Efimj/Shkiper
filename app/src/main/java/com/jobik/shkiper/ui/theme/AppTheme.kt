@@ -1,10 +1,15 @@
 package com.jobik.shkiper.ui.theme
 
+import android.content.Context
+import android.os.Build
 import androidx.annotation.Keep
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.platform.LocalContext
+import androidx.glance.color.isNightMode
+import com.jobik.shkiper.util.ContextUtils.isDarkModeEnabled
 
 data class CustomThemeColors(
     val primary: Color,
@@ -32,6 +37,36 @@ object AppTheme {
     val shapes: CustomThemeShapes
         @Composable
         get() = LocalCustomThemeShapes.current
+}
+
+@Composable
+fun getThemeColors(
+    style: CustomThemeStyle,
+    darkTheme: Boolean
+): CustomThemeColors {
+    val colors = when {
+        style == CustomThemeStyle.MaterialDynamicColors && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ->
+            getDynamicColors(darkTheme = darkTheme, context = LocalContext.current)
+
+        darkTheme -> style.dark
+        else -> style.light
+    }
+    return colors
+}
+
+fun getThemeColors(
+    context: Context,
+    style: CustomThemeStyle,
+): CustomThemeColors {
+    val isDark = isDarkModeEnabled(context)
+    val colors = when {
+        style == CustomThemeStyle.MaterialDynamicColors && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ->
+            getDynamicColors(darkTheme = isDark, context = context)
+
+        isDark -> style.dark
+        else -> style.light
+    }
+    return colors
 }
 
 @Keep

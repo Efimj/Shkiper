@@ -30,7 +30,7 @@ object DatabaseModule {
             )
         )
             .compactOnLaunch()
-//            .schemaVersion(0)
+            .schemaVersion(3)
             .build()
         return Realm.open(config)
     }
