@@ -6,6 +6,7 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import androidx.annotation.Keep
 import androidx.annotation.StringRes
 import com.jobik.shkiper.R
@@ -20,7 +21,11 @@ import java.time.OffsetDateTime
 @Keep
 class NotificationScheduler(private val context: Context) {
     companion object {
-        enum class NotificationChannels(val channelId: String, @StringRes val channelName: Int, val importance: Int) {
+        enum class NotificationChannels(
+            val channelId: String,
+            @StringRes val channelName: Int,
+            val importance: Int
+        ) {
             NOTECHANNEL(
                 "NOTECHANNEL", R.string.Reminders, NotificationManager.IMPORTANCE_HIGH
             )
@@ -36,14 +41,24 @@ class NotificationScheduler(private val context: Context) {
         setNotification(notificationData.requestCode, notificationData.trigger)
     }
 
-    fun updateNotificationTime(requestId: Int, date: LocalDate, time: LocalTime, repeatMode: RepeatMode) {
+    fun updateNotificationTime(
+        requestId: Int,
+        date: LocalDate,
+        time: LocalTime,
+        repeatMode: RepeatMode
+    ) {
         val localDateTime = LocalDateTime.of(date, time)
         val trigger = localDateTime.toInstant(OffsetDateTime.now().offset).toEpochMilli()
         notificationStorage.updateNotificationTime(requestId, trigger, repeatMode)
         setNotification(requestId, trigger)
     }
 
-    fun updateNotificationData(noteId: String, title: String, message: String, schedule: Boolean = false) {
+    fun updateNotificationData(
+        noteId: String,
+        title: String,
+        message: String,
+        schedule: Boolean = false
+    ) {
         notificationStorage.updateNotificationData(noteId, title, message)
         if (schedule)
             notificationStorage.getNotificationsForNote(noteId).forEach { scheduleNotification(it) }
@@ -61,7 +76,13 @@ class NotificationScheduler(private val context: Context) {
         )
 
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, trigger, pendingIntent)
+        var canNotify = true
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            canNotify = alarmManager.canScheduleExactAlarms()
+        }
+        if (canNotify) {
+            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, trigger, pendingIntent)
+        }
     }
 
     fun deleteNotification(notification: NotificationData) {
@@ -81,7 +102,8 @@ class NotificationScheduler(private val context: Context) {
 
     fun cancelNotificationsForNote(noteId: String) {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val requestCodes = notificationStorage.getNotificationsForNote(noteId).map { it.requestCode }
+        val requestCodes =
+            notificationStorage.getNotificationsForNote(noteId).map { it.requestCode }
 
         requestCodes.forEach {
             val pendingIntent = PendingIntent.getBroadcast(
@@ -216,7 +238,11 @@ class NotificationScheduler(private val context: Context) {
 
     fun createNotificationChannel(channel: NotificationChannels, context: Context) {
         val createdChannel =
-            NotificationChannel(channel.channelId, context.getString(channel.channelName), channel.importance)
+            NotificationChannel(
+                channel.channelId,
+                context.getString(channel.channelName),
+                channel.importance
+            )
         notificationManager.createNotificationChannel(createdChannel)
     }
 }
