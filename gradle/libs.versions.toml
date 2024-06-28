@@ -1,7 +1,7 @@
 [versions]
 konfettiCompose = "2.0.4"
-versionName = "1.8.6-alpha03"
-versionCode = "74"
+versionName = "1.8.6-alpha04"
+versionCode = "75"
 
 accompanistSystemuicontroller = "0.32.0"
 activityCompose = "1.9.0"
