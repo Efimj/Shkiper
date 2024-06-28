@@ -7,8 +7,8 @@ import com.jobik.shkiper.database.models.Note
 import com.jobik.shkiper.database.models.Reminder
 import com.jobik.shkiper.database.models.RepeatMode
 import com.jobik.shkiper.helpers.DateHelper
-import com.jobik.shkiper.services.notification.NotificationData
 import com.jobik.shkiper.services.notification.NotificationScheduler
+import com.jobik.shkiper.services.notification.createNotificationData
 import com.jobik.shkiper.services.statistics.StatisticsService
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.realm.kotlin.Realm
@@ -51,7 +51,10 @@ class ReminderMongoRepositoryImpl(val realm: Realm, @ApplicationContext val cont
         updateStatisticsCreatedRemindersCount()
     }
 
-    override suspend fun insertOrUpdateReminders(reminders: List<Reminder>, updateStatistics: Boolean) {
+    override suspend fun insertOrUpdateReminders(
+        reminders: List<Reminder>,
+        updateStatistics: Boolean
+    ) {
         val noteMongoRepository = NoteMongoRepositoryImpl(realm, context)
         val notes = noteMongoRepository.getNotesFlow(reminders.map { it.noteId }.distinct())
         realm.write {
@@ -76,7 +79,11 @@ class ReminderMongoRepositoryImpl(val realm: Realm, @ApplicationContext val cont
         statisticsService.saveStatistics()
     }
 
-    override suspend fun updateReminder(reminderId: ObjectId, note: Note, updateParams: (Reminder) -> Unit) {
+    override suspend fun updateReminder(
+        reminderId: ObjectId,
+        note: Note,
+        updateParams: (Reminder) -> Unit
+    ) {
         realm.writeBlocking {
             try {
                 var reminder = getReminder(reminderId) ?: return@writeBlocking
@@ -174,13 +181,9 @@ class ReminderMongoRepositoryImpl(val realm: Realm, @ApplicationContext val cont
                     reminder.repeat
                 )
         }
-        val notificationData = NotificationData(
-            noteId = note._id.toHexString(),
-            notificationId = reminder._id.timestamp,
-            title = note.header,
-            message = note.body,
-            repeatMode = reminder.repeat,
-            requestCode = reminder._id.timestamp,
+        val notificationData = createNotificationData(
+            note = note,
+            reminder = reminder,
             trigger = reminderDateTime.toInstant(OffsetDateTime.now().offset).toEpochMilli()
         )
         notificationScheduler.scheduleNotification(notificationData)

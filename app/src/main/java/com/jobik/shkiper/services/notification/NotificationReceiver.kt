@@ -10,13 +10,10 @@ import android.content.Intent
 import androidx.annotation.Keep
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.app.NotificationCompat
-import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.RepeatMode
 import com.jobik.shkiper.helpers.IntentHelper
 import com.jobik.shkiper.helpers.TextHelper
 import com.jobik.shkiper.services.statistics.StatisticsService
-import com.jobik.shkiper.util.ContextUtils.isDarkModeEnabled
-import com.jobik.shkiper.util.settings.NightMode
 import com.jobik.shkiper.util.settings.SettingsManager
 import com.mohamedrejeb.richeditor.model.RichTextState
 import java.time.Instant
@@ -59,14 +56,6 @@ class NotificationReceiver : BroadcastReceiver() {
         val notification = NotificationStorage(context).getNotification(requestCode) ?: return
 
         SettingsManager.init(context)
-        val savedColors = SettingsManager.settings.theme.getColors(
-            isDarkTheme =
-            when (SettingsManager.settings.nightMode) {
-                NightMode.Light -> false
-                NightMode.Dark -> true
-                else -> isDarkModeEnabled(context)
-            }
-        )
 
         // Create the TaskStackBuilder
         val mainPendingIntent: PendingIntent? = TaskStackBuilder.create(context).run {
@@ -90,9 +79,9 @@ class NotificationReceiver : BroadcastReceiver() {
 
         val notificationBuilder =
             NotificationCompat.Builder(context, notification.channel.channelId)
-//                .setSmallIcon(R.drawable.ic_notification)
+                .setSmallIcon(notification.icon.getDrawable())
                 .setAutoCancel(true)
-                .setColor(savedColors.primary.toArgb())
+                .setColor(notification.color.getColor(context = context).toArgb())
                 .setColorized(true)
                 .setContentIntent(mainPendingIntent)
         if (notification.title.isNotBlank())

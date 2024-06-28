@@ -389,7 +389,9 @@ private fun CreateReminderDialog(
                     ReminderDialogProperties(
                         it.date,
                         it.time,
-                        it.repeat
+                        it.repeat,
+                        it.icon,
+                        it.color
                     )
                 } else {
                     ReminderDialogProperties()

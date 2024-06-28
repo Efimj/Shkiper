@@ -19,13 +19,10 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -76,7 +73,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -130,7 +126,6 @@ data class ReminderDialogProperties(
 @Parcelize
 private data class ReminderDialogState(
     val props: ReminderDialogProperties = ReminderDialogProperties(),
-    val color: NotificationColor = NotificationColor.MATERIAL,
     val isNotificationEnabled: Boolean = false,
     val canSave: Boolean = false,
 ) : Parcelable
@@ -387,14 +382,16 @@ private fun FinishPage(
         }
         Selector(icon = Icons.Outlined.Palette) {
             NotificationColor.entries.map {
-                val isSelected = reminderDialogState.value.color.name == it.name
+                val isSelected = reminderDialogState.value.props.color.name == it.name
 
                 Box(
                     modifier = Modifier
                         .size(40.dp)
                         .clip(CircleShape)
                         .clickable {
-                            reminderDialogState.value = reminderDialogState.value.copy(color = it)
+                            reminderDialogState.value = reminderDialogState.value.copy(
+                                props = reminderDialogState.value.props.copy(color = it)
+                            )
                         }
                         .background(it.getColor(context)),
                     contentAlignment = Alignment.Center
