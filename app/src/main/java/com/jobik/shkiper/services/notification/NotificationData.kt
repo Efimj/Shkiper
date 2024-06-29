@@ -6,8 +6,10 @@ import com.jobik.shkiper.database.models.NotificationColor
 import com.jobik.shkiper.database.models.NotificationIcon
 import com.jobik.shkiper.database.models.Reminder
 import com.jobik.shkiper.database.models.RepeatMode
+import kotlinx.serialization.Serializable
 
 @Keep
+@Serializable
 data class NotificationData(
     val noteId: String,
     val notificationId: Int,

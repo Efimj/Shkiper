@@ -5,16 +5,22 @@ import androidx.annotation.Keep
 import com.jobik.shkiper.SharedPreferencesKeys
 import com.jobik.shkiper.database.models.RepeatMode
 import com.google.gson.Gson
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 @Keep
 class NotificationStorage(context: Context) {
     private val gson = Gson()
     private val sharedPreferences =
-        context.getSharedPreferences(SharedPreferencesKeys.NotificationStorageName, Context.MODE_PRIVATE)
+        context.getSharedPreferences(
+            SharedPreferencesKeys.NotificationStorageName,
+            Context.MODE_PRIVATE
+        )
 
     fun getAll(): MutableList<NotificationData> {
-        val json = sharedPreferences.getString(SharedPreferencesKeys.NotificationListKey, "[]")
-        return gson.fromJson(json, Array<NotificationData>::class.java).toMutableList()
+        val string =
+            sharedPreferences.getString(SharedPreferencesKeys.NotificationListKey, "[]") ?: "[]"
+        return Json.decodeFromString<Array<NotificationData>>(string).toMutableList()
     }
 
     fun getNotification(requestId: Int): NotificationData? {
@@ -28,9 +34,11 @@ class NotificationStorage(context: Context) {
     }
 
     fun save(notifications: List<NotificationData>) {
-        val json = gson.toJson(notifications)
         val editor = sharedPreferences.edit()
-        editor.putString(SharedPreferencesKeys.NotificationListKey, json)
+        editor.putString(
+            SharedPreferencesKeys.NotificationListKey,
+            Json.encodeToString(notifications)
+        )
         editor.apply()
     }
 
@@ -42,7 +50,8 @@ class NotificationStorage(context: Context) {
 
     fun updateNotificationTime(requestId: Int, trigger: Long, repeatMode: RepeatMode) {
         val notifications = getAll()
-        val currentNotifications = notifications.filter { notification -> notification.requestCode == requestId }
+        val currentNotifications =
+            notifications.filter { notification -> notification.requestCode == requestId }
         val newNotification = currentNotifications.map {
             it.copy(
                 trigger = trigger,
@@ -54,7 +63,8 @@ class NotificationStorage(context: Context) {
 
     fun updateNotificationData(noteId: String, title: String, message: String) {
         val notifications = getAll()
-        val currentNotifications = notifications.filter { notification -> notification.noteId == noteId }
+        val currentNotifications =
+            notifications.filter { notification -> notification.noteId == noteId }
         val newNotification = currentNotifications.map {
             it.copy(
                 title = title,

@@ -139,13 +139,25 @@ class Reminder : RealmObject {
         }
 
     var icon: NotificationIcon
-        get() = NotificationIcon.valueOf(iconString)
+        get() {
+            return try {
+                NotificationIcon.valueOf(iconString)
+            } catch (e: Exception) {
+                return NotificationIcon.EVENT
+            }
+        }
         set(value) {
             iconString = value.name
         }
 
     var color: NotificationColor
-        get() = NotificationColor.valueOf(colorString)
+        get() {
+            return try {
+                NotificationColor.valueOf(colorString)
+            } catch (e: Exception) {
+                return NotificationColor.MATERIAL
+            }
+        }
         set(value) {
             colorString = value.name
         }
