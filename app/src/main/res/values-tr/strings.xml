@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--    Repeating   -->
+    <string name="none">Tekrarlamaz</string>
+    <string name="daily">Günlük</string>
+    <string name="weekly">Haftalık</string>
+    <string name="monthly">Aylık</string>
+    <string name="yearly">Yıllık</string>
+
+    <!--    Expressions   -->
+    <!--    settings page   -->
+    <string name="ChoseLocalization">Yerelleştirme</string>
+    <string name="AppDataPolitics">Verileriniz yalnızca cihazınızda saklanır. Uygulamanızın verilerini silmek, kalıcı veri kaybına yol açabilir. Bunu önlemek için, sıfırlama yapmadan önce veri dosyanızı kaydetmeyi unutmayın.</string>
+    <string name="Info">Bilgi</string>
+    <string name="Information">Bilgi</string>
+    <string name="Open">Aç</string>
+    <string name="OnboardingPage">Başlangıç</string>
+    <string name="Other">Diğer</string>
+    <string name="Connect">Bağlan</string>
+    <string name="CloudStorage">Bulut depolama</string>
+    <string name="Upload">Yükle</string>
+    <string name="UploadNotes">Notları yükle</string>
+    <string name="SaveAllNotesLocally">Tüm notları yerel olarak kaydet</string>
+    <string name="Save">Kaydet</string>
+    <string name="Backup">Yedekle</string>
+    <string name="ApplicationTheme">Tema</string>
+    <string name="LightTheme">Açık</string>
+    <string name="DarkTheme">Koyu</string>
+    <string name="Application">Uygulama</string>
+    <string name="application_icon">Uygulama simgesi</string>
+    <string name="font_scale">Yazı tipi ölçeği</string>
+    <string name="application_icon_changed">Uygulama simgesi değiştirildi</string>
+    <string name="updates">Güncellemeler</string>
+    <string name="check_update">Güncellemeleri kontrol et</string>
+    <string name="automatic_check">Otomatik kontrol</string>
+    <string name="suggests_updates">Güncelleme mevcutsa öner</string>
+    <string name="latest_version_installed">En son sürüm yüklü</string>
+    <string name="secure">Güvenli</string>
+    <string name="secure_mode">Güvenli mod</string>
+    <string name="secure_mode_description">İçeriği gizler, ekran kaydını engeller</string>
+    <string name="ApplicationColors">Renkler</string>
+    <string name="StatisticsPage">İstatistikler</string>
+
+    <string name="onb_title_1">Shkiper\'a Hoşgeldiniz!</string>
+    <string name="onb_description_1">Tüm notlarınız ve daha fazlası için yeni not defteri uygulaması</string>
+    <string name="onb_title_2">Sadece bir not defterinden fazlası!</string>
+    <string name="onb_title_3">Açık kaynak</string>
+
+    <string name="feature_title_1">Not widget\'ları</string>
+    <string name="feature_description_1">Herhangi bir not, cihazınızın ana ekranına eklenebilir</string>
+    <string name="feature_title_2">Hatırlatıcılar</string>
+    <string name="feature_description_2">Tek bir not için aynı anda birden fazla hatırlatıcı ayarlayabilirsiniz</string>
+    <string name="feature_title_3">Not biçimlendirme</string>
+    <string name="feature_description_3">Yazı tipi boyutunu, rengini ve hizalamasını değiştirerek notlarınıza stil ekleyin</string>
+    <string name="feature_title_4">Takvim</string>
+    <string name="feature_description_4">Yaklaşan hatırlatıcılar her zaman takvimde görünür</string>
+    <string name="feature_title_5">Etiketler</string>
+    <string name="feature_description_5">Notlara hızlı erişim için etiketler oluşturun</string>
+    <string name="feature_title_6">Paylaş</string>
+    <string name="feature_description_6">Notları tüm formatlarda paylaşın: metin, HTML, Markdown, resimler dahil</string>
+    <string name="feature_title_7">Bağlantı önizlemesi</string>
+    <string name="feature_description_7">Önizleme, bağlantılara hızlı erişim sağlar (devre dışı bırakılabilir)</string>
+    <string name="feature_title_8">İstatistikler</string>
+    <string name="feature_description_8">Uygulama kullanım istatistiklerini görüntüleyebilirsiniz</string>
+    <string name="feature_title_9">Tema oluşturma</string>
+    <string name="feature_description_9">Uygulama teması için en sevdiğiniz renk kombinasyonunu seçin</string>
+
+    <!--    Onboarding page   -->
+    <string name="Back">Geri</string>
+    <string name="Finish">Bitir</string>
+    <string name="Next">İleri</string>
+    <string name="PagerImage">Sayfa Görseli</string>
+    <string name="Tags">Etiketler</string>
+    <string name="TagsDescription">Etiketler, notlarınızı hızlıca filtrelemek için gereklidir, her nota birden fazla etiket eklenebilir.</string>
+    <string name="AppDescription">Hızlı, basit ve kullanışlı not defteri.</string>
+    <string name="Reminders">Hatırlatıcılar</string>
+    <string name="RemindersDescription">Hatırlatıcılar, belirli bir gün ve saatte önemli bir etkinlik için bildirim planlamanızı sağlar.</string>
+    <string name="Themes">Temalar</string>
+    <string name="ThemesDescription">En çok sevdiğiniz renk temasını seçin.</string>
+
+    <!--    Nate page   -->
+    <string name="Header">Başlık</string>
+    <string name="Text">Metin</string>
+    <string name="GoBack">Geri dön</string>
+    <string name="AttachNote">Not ekle</string>
+    <string name="AddToNotification">Bildirim ekle</string>
+    <string name="AddToArchive">Arşive ekle</string>
+    <string name="ChangedAt">Değiştirilme tarihi</string>
+    <string name="GoForward">İleri git</string>
+    <string name="AddToBasket">Sepete ekle</string>
+    <string name="ShareNote">Not paylaş</string>
+
+    <!--    NateList page   -->
+    <string name="Pinned">Sabitlenmiş</string>
+
+    <!--    Other components   -->
+    <string name="CreateNote">Not oluştur</string>
+    <string name="Hashtags">Etiketler</string>
+    <string name="Cancel">İptal</string>
+    <string name="HashtagExample">Etiket yazın, örn. Ev İş</string>
+    <string name="Delete">Sil</string>
+    <string name="Reminder">Hatırlatıcı</string>
+    <string name="Event">Etkinlik</string>
+    <string name="Schedule">Programla</string>
+    <string name="Repeat">Tekrarla</string>
+    <string name="ErrorDateMastBeFuture">Tarih gelecekte olmalı</string>
+    <string name="Menu">Menü</string>
+    <string name="Notes">Notlar</string>
+    <string name="Archive">Arşiv</string>
+    <string name="Basket">Sepet</string>
+    <string name="Settings">Ayarlar</string>
+    <string name="Clear">Temizle</string>
+    <string name="Search">Ara</string>
+    <string name="Links">Bağlantılar</string>
+    <string name="Hide">Gizle</string>
+    <string name="ShowAll">Hepsini göster</string>
+    <string name="Link">Bağlantı</string>
+    <string name="LinkCopied">Bağlantı kopyalandı</string>
+    <string name="LinkImage">Bağlantı resmi</string>
+    <string name="EmptyNote">Boş not</string>
+    <string name="Loading">Yükleniyor</string>
+    <string name="Statistics">İstatistikler</string>
+    <string name="StatisticsImage">İstatistik resmi</string>
+    <string name="Complete">Tamamlandı</string>
+    <string name="Uncompleted">Tamamlanmadı</string>
+    <string name="DoneEmoji">✔️</string>
+    <string name="NotDoneEmoji">➖</string>
+    <string name="Saving">Kaydediliyor</string>
+    <string name="BackupCreated">Yedek oluşturuldu</string>
+    <string name="BackupUploaded">Yedek yüklendi</string>
+    <string name="UnspecifiedErrorOccurred">Bilinmeyen bir hata oluştu</string>
+    <string name="CannotPerformedWithoutPermission">İzin olmadan gerçekleştirilemez</string>
+    <string name="EmptyNotesPageHeader">Eklediğiniz notlar burada görünecek.</string>
+    <string name="ArchiveNotesPageHeader">Arşivlenen notlar burada olacak.</string>
+    <string name="UnarchiveNotes">Notları arşivden çıkar</string>
+    <string name="BasketNotesPageHeader">Silinmiş notların sepeti.</string>
+    <string name="Restore">Geri yükle</string>
+    <string name="BasketPageHeader">Notlar 7 gün sonra sepetten kaldırılır.</string>
+    <string name="DeleteSelectedNotesDialogText">Seçilen notlar silinsin mi?</string>
+    <string name="DeleteNoteDialogText">Not silinsin mi?</string>
+    <string name="Confirm">Onayla</string>
+    <string name="NotesAreBeenDeleted">Notlar silindi</string>
+    <string name="NoteAreBeenDeleted">Not silindi</string>
+    <string name="NotesArchived">Notlar arşive taşındı</string>
+    <string name="NotesUnarchived">Notlar arşivden çıkarıldı</string>
+    <string name="NoteArchived">Not arşive taşındı</string>
+    <string name="NoteUnarchived">Not arşivden çıkarıldı</string>
+    <string name="NotesMovedToBasket">Notlar sepete taşındı</string>
+    <string name="NotesRestored">Notlar geri yüklendi</string>
+    <string name="DaysBeforeDeletingNote">Notun silinmesine kalan gün sayısı: </string>
+    <string name="DeleteForever">Kalıcı olarak silinsin mi?</string>
+    <string name="RateTheApp">Shkiper\'ı değerlendir</string>
+    <string name="Image">Resim</string>
+    <string name="OfferWriteReviewTitle">Shkiper\'ı beğendiniz mi?</string>
+    <string name="OfferWriteReviewDescription">Birkaç dakikanız varsa, lütfen Google Play Store\'da yorumunuzu bırakın.</string>
+    <string name="Restart">Yeniden başlat</string>
+    <string name="UpdateDownloaded">Güncelleme indirildi</string>
+    <string name="Add">Ekle</string>
+    <string name="SupportDevelopment">Geliştirmeyi destekle</string>
+    <string name="Donate">Bağış yap</string>
+    <string name="Show">Göster</string>
+    <string name="PurchaseScreenTitle">Her katkı önemlidir!</string>
+    <string name="PurchaseScreenDescription">Desteğiniz uygulamamızı geliştirmeye yardımcı olur. Katılın – bağış yapın ve Shkiper hikayesinin bir parçası olun!</string>
+    <string name="BuyMe">Beni satın al</string>
+    <string name="BuySubscription">Abonelik satın al</string>
+    <string name="ItemAlreadyOwned">Bu ürün zaten satın alınmış</string>
+    <string name="CheckInternetConnection">İnternet bağlantısını kontrol et</string>
+    <string name="CheckUpdatesGooglePlay">Google Play\'de güncellemeleri kontrol et</string>
+    <string name="Close">Kapat</string>
+    <string name="DonateBannerHeader">Shkiper\'ı beğendiniz mi?</string>
+    <string name="DonateBannerBody">Geliştiriciye bir kuruşla destek olun!</string>
+    <string name="AboutNotepad">Shkiper hakkında</string>
+    <string name="Support">Destek</string>
+    <string name="AboutAppDescription">Yarat, organize et, hatırla. Görevler, notlar ve hatırlatmalar için mükemmel arkadaşınız – basit, güzel ve her zaman elinizin altında.</string>
+    <string name="Contact">İletişim</string>
+    <string name="ChooseEmailClient">Bir e-posta istemcisi seçin:</string>
+    <string name="DevMailHeader">Hay Efim</string>
+
+    <!--    Statistics components   -->
+    <string name="Thinker">Düşünen</string>
+    <string name="ThinkerDescription">Shkiper açılış sayısı</string>
+    <string name="Creator">Yaratıcı</string>
+    <string name="CreatorDescription">Oluşturulan not sayısı</string>
+    <string name="Eternal">Dakiklik</string>
+    <string name="EternalDescription">Unutma? Hatırlatıcı oluştur. Oluşturulan hatırlatıcı sayısı</string>
+    <string name="Remembered">Her zaman güncel</string>
+    <string name="RememberedDescription">"Sevgilim, bir şey unuttun mu?" - "Hayır." Alınan bildirim sayısı</string>
+    <string name="FirstAppOpenDate">İlk açılış</string>
+    <string name="FirstAppOpenDateDescription">Shkiper\ın ilk açıldığı tarih</string>
+    <string name="Pioneer">Öncü</string>
+    <string name="PioneerDescription">01–01–2024\'ten önce uygulamayı yükle</string>
+    <string name="TruthSeeker">Gerçek arayan</string>
+    <string name="TruthSeekerDescription">Uygulama sayfasını aç</string>
+    <string name="NoteDestroyer">Not yıkıcı</string>
+    <string name="NoteDestroyerDescription">Seni doğurdum ve seni yok edeceğim! «Taras Bulba». Silinen not sayısı</string>
+
+    <string name="ThankForPurchase1">Uygulamamızı tercih ettiğiniz için teşekkür ederiz! Desteğiniz bizim için çok önemli.</string>
+    <string name="ThankForPurchase2">Desteğinizi ve uygulamamıza olan güveninizi takdir ediyoruz. Satın aldığınız için teşekkürler!</string>
+    <string name="ThankForPurchase3">Desteğiniz bizim için en büyük ödül. Uygulamamızda satın alma yaptığınız için teşekkür ederiz!</string>
+
+    <string name="Efim">Efim</string>
+    <string name="EfimDescription">Android/Web ve daha fazlası..</string>
+    <string name="Annually">Yıllık</string>
+    <string name="Monthly">Aylık</string>
+    <string name="Localizers">Yerelleştiriciler</string>
+    <string name="Icons">Simge</string>
+
+    <string name="Deleted">Silindi</string>
+    <string name="CreateWidget">Widget oluştur</string>
+    <string name="Share">Paylaş</string>
+    <string name="MyStatsInShkiper">Shkiper\'daki istatistiklerim</string>
+
+    <string name="TurnOnNotifications">Bildirimleri telefon ayarlarından açın</string>
+
+    <string name="InsertLink">Bağlantı ekle</string>
+    <string name="ShareText">Metin paylaş</string>
+    <string name="ShareImage">Resim paylaş</string>
+    <string name="ShareHTMLText">HTML metin olarak paylaş</string>
+    <string name="ShareMarkdownText">Markdown metin olarak paylaş</string>
+
+    <string name="NeededPermissionForNotifications">Bildirim almak için izinleri etkinleştirmek gerekiyor</string>
+    <string name="ImportantForRemindersWork">Hatırlatmaların çalışması için bu önemlidir</string>
+    <string name="Enable">Etkinleştir</string>
+    <string name="TextFormatting">Metin biçimlendirme</string>
+    <string name="TextFormattingDescription">Metne stil vererek yaratıcı vizyonunuzu ifade edin.</string>
+    <string name="StatisticsPageDescription">İstatistikler sıkıcı olmak zorunda değil; ilginç de olabilir!</string>
+    <string name="Widgets">Widget\'lar</string>
+    <string name="WidgetsDescription">Notu ana ekrana sabitleyerek her zaman görünür olmasını sağlayın.</string>
+    <string name="MadeWithLove">Beğendiniz mi?</string>
+    <string name="MadeWithLoveDescription">Arkadaşlarınıza uygulamayı anlatın veya geliştiriciye bir kuruşla destek olun.</string>
+    <string name="OpenSource">Açık Kaynak</string>
+    <string name="OpenSourceDescription">Shkiper açık kaynaklıdır ve tüm kod GitHub\'da yayınlanmıştır</string>
+
+    <string name="CreateReminder">Hatırlatıcı oluştur</string>
+    <string name="NoReminders">Hatırlatıcı yok</string>
+    <string name="DisableLinkPreviews">Bağlantı önizlemelerini devre dışı bırak</string>
+    <string name="EnableLinkPreviews">Bağlantı önizlemelerini etkinleştir</string>
+    <string name="Apply">Uygula</string>
+    <string name="SaveChanges">Değişiklikleri kaydet</string>
+    <string name="New">Yeni</string>
+    <string name="All">Tümü</string>
+    <string name="Selected">Seçilen</string>
+    <string name="EmptyTagsTitle">Etiketler henüz oluşturulmadı</string>
+
+    <string name="OtherMyApps">Diğer uygulamalarım</string>
+
+    <string name="advanced">Gelişmiş</string>
+    <string name="icon_already_selected">Simge zaten seçili!</string>
+
+    <string name="classic">Klasik</string>
+    <string name="classic_white">Beyaz</string>
+    <string name="material">Materyal</string>
+    <string name="love">Aşk</string>
+    <string name="rocket">Roket</string>
+    <string name="bank">Banka</string>
+    <string name="star">Yıldız</string>
+    <string name="night">Gece</string>
+    <string name="strawberry">Çilek</string>
+    <string name="mango">Mango</string>
+    <string name="avocado">Avokado</string>
+    <string name="blueberry">Yaban mersini</string>
+    <string name="plum">Erik</string>
+    <string name="source_code">Kaynak kodu</string>
+    <string name="source_code_description">En son güncellemeleri al, sorunları tartış ve daha fazlası</string>
+    <string name="telegram_chat">Telegram sohbeti</string>
+    <string name="telegram_chat_description">Uygulamayı tartışın ve topluluğun bir parçası olun</string>
+    <string name="game_of_life_description">Materyal tarzında yapılmış hücresel yaşam oyunu</string>
+    <string name="default_icon">Varsayılan simge</string>
+    <string name="default_color">Varsayılan renk</string>
+    <string name="notification_defaults">Bildirim varsayılanları</string>
+     
+</resources>
