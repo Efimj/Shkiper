@@ -1,5 +1,6 @@
 package com.jobik.shkiper.util
 
+import android.app.UiModeManager
 import android.content.Context
 import android.os.Build
 
@@ -31,5 +32,10 @@ object ContextUtils {
             return packageManager.getInstallerPackageName(packageName)
         }
         return null
+    }
+
+    fun isDarkModeEnabled(context: Context): Boolean {
+        val uiModeManager = context.getSystemService(Context.UI_MODE_SERVICE) as UiModeManager
+        return uiModeManager.nightMode == UiModeManager.MODE_NIGHT_YES
     }
 }

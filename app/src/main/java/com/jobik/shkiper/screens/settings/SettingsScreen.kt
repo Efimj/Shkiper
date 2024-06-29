@@ -8,6 +8,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -76,7 +77,8 @@ import com.jobik.shkiper.ui.theme.AppTheme
 import com.jobik.shkiper.ui.theme.CustomThemeColors
 import com.jobik.shkiper.ui.theme.CustomThemeStyle
 import com.jobik.shkiper.ui.theme.getDynamicColors
-import com.jobik.shkiper.util.ThemeUtil
+import com.jobik.shkiper.util.settings.NightMode
+import com.jobik.shkiper.util.settings.SettingsManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -310,15 +312,22 @@ private fun DelayedStateChange(
 
 @Composable
 private fun ProgramSettings(navController: NavController, settingsViewModel: SettingsViewModel) {
+    val context = LocalContext.current
+    val systemNightMode = isSystemInDarkTheme()
+
     SettingsGroup(header = stringResource(R.string.Application)) {
         SettingsItem(
             icon = Icons.Rounded.Contrast,
             title = stringResource(R.string.ApplicationTheme),
-            onClick = { settingsViewModel.toggleAppTheme() }
+            onClick = { toggleNightMode(context = context, systemNightMode = systemNightMode) }
         ) {
             CustomSwitch(
-                active = ThemeUtil.isDarkMode.value ?: false,
-                onClick = { settingsViewModel.toggleAppTheme() })
+                active = when (SettingsManager.settings.nightMode) {
+                    NightMode.Light -> false
+                    NightMode.Dark -> true
+                    else -> isSystemInDarkTheme()
+                },
+                onClick = { toggleNightMode(context = context, systemNightMode = systemNightMode) })
         }
         SettingsColorThemePicker(settingsViewModel)
         Spacer(Modifier.height(4.dp))
@@ -331,14 +340,31 @@ private fun ProgramSettings(navController: NavController, settingsViewModel: Set
     }
 }
 
+private fun toggleNightMode(context: Context, systemNightMode: Boolean) {
+    SettingsManager.update(
+        context = context,
+        settings = SettingsManager.settings.copy(
+            nightMode =
+            when (SettingsManager.settings.nightMode) {
+                NightMode.Light -> NightMode.Dark
+                NightMode.Dark -> NightMode.Light
+                else -> if (systemNightMode) NightMode.Light else NightMode.Dark
+            }
+        )
+    )
+}
+
 @Composable
 private fun SettingsColorThemePicker(settingsViewModel: SettingsViewModel) {
-    val isDarkMode = ThemeUtil.isDarkMode.value
+    val isDarkMode = when (SettingsManager.settings.nightMode) {
+        NightMode.Light -> false
+        NightMode.Dark -> true
+        else -> isSystemInDarkTheme()
+    }
     val colorValues =
-        if (isDarkMode == true) CustomThemeStyle.entries.map { it.dark } else CustomThemeStyle.entries.map { it.light }
+        if (isDarkMode) CustomThemeStyle.entries.map { it.dark } else CustomThemeStyle.entries.map { it.light }
     val colorValuesName = CustomThemeStyle.entries
-    val selectedThemeName =
-        ThemeUtil.themeStyle.value?.name ?: CustomThemeStyle.MaterialDynamicColors.name
+    val selectedThemeName = SettingsManager.settings.theme.name
     val context = LocalContext.current
 
     Column(
@@ -371,7 +397,12 @@ private fun SettingsColorThemePicker(settingsViewModel: SettingsViewModel) {
                     colors = colors,
                     selected = colorValuesName[theme].name == selectedThemeName
                 ) {
-                    settingsViewModel.selectColorTheme(theme = colorValuesName[theme])
+                    SettingsManager.update(
+                        context = context,
+                        settings = SettingsManager.settings.copy(
+                            theme = colorValuesName[theme]
+                        )
+                    )
                 }
             }
         }

@@ -29,10 +29,9 @@ import com.jobik.shkiper.services.statistics.StatisticsService
 import com.jobik.shkiper.ui.components.modals.OfferWriteReview
 import com.jobik.shkiper.ui.components.modals.onboarding.OnboardingDialog
 import com.jobik.shkiper.ui.helpers.SecureModeManager
-import com.jobik.shkiper.ui.theme.CustomThemeStyle
 import com.jobik.shkiper.ui.theme.ShkiperTheme
 import com.jobik.shkiper.util.ContextUtils.adjustFontSize
-import com.jobik.shkiper.util.ThemeUtil
+import com.jobik.shkiper.util.settings.NightMode
 import com.jobik.shkiper.util.settings.SettingsManager
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDate
@@ -56,7 +55,7 @@ open class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         installSplashScreen()
         super.onCreate(savedInstanceState)
-        adjustFontSize(SettingsManager.settings.value?.fontScale)
+        adjustFontSize(SettingsManager.settings.fontScale)
         actionBar?.hide()
 
         // Billing APIs are all handled in the this lifecycle observer.
@@ -64,7 +63,6 @@ open class MainActivity : ComponentActivity() {
         lifecycle.addObserver(billingClientLifecycle)
         inAppUpdatesService = InAppUpdatesService(this)
 
-        ThemeUtil.restoreSavedTheme(this)
         val startDestination = getStartDestination()
         val canShowOfferReview =
             mutableStateOf(ReviewService(applicationContext).needShowOfferReview())
@@ -76,8 +74,12 @@ open class MainActivity : ComponentActivity() {
             UpdateStatistics()
 
             ShkiperTheme(
-                darkTheme = ThemeUtil.isDarkMode.value ?: isSystemInDarkTheme(),
-                style = ThemeUtil.themeStyle.value ?: CustomThemeStyle.MaterialDynamicColors
+                darkTheme = when (SettingsManager.settings.nightMode) {
+                    NightMode.Light -> false
+                    NightMode.Dark -> true
+                    else -> isSystemInDarkTheme()
+                },
+                style = SettingsManager.settings.theme
             ) {
                 OnboardingProvider()
                 AppLayout(startDestination)
@@ -146,8 +148,8 @@ open class MainActivity : ComponentActivity() {
         }
 
     private fun checkForUpdates() {
-        val settings = SettingsManager.settings.value
-        if (settings == null || settings.checkUpdates.not()) return
+        val settings = SettingsManager.settings
+        if (settings.checkUpdates.not()) return
 
         if (InAppUpdatesService.isUpdatedChecked) return
         // Initialize the updateActivityResultLauncher.

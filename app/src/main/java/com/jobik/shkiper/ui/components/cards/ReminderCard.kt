@@ -1,26 +1,41 @@
 package com.jobik.shkiper.ui.components.cards
 
-import androidx.compose.animation.*
-import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Event
-import androidx.compose.material.icons.outlined.Repeat
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.basicMarquee
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.Reminder
 import com.jobik.shkiper.database.models.RepeatMode
 import com.jobik.shkiper.helpers.DateHelper
@@ -31,10 +46,18 @@ import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ReminderCard(reminder: Reminder, isSelected: Boolean, onClick: () -> Unit, onLongClick: () -> Unit) {
+fun ReminderCard(
+    reminder: Reminder,
+    isSelected: Boolean,
+    onClick: () -> Unit,
+    onLongClick: () -> Unit
+) {
     val context = LocalContext.current
     val nextReminderDate =
-        DateHelper.nextDateWithRepeating(LocalDateTime.of(reminder.date, reminder.time), reminder.repeat)
+        DateHelper.nextDateWithRepeating(
+            LocalDateTime.of(reminder.date, reminder.time),
+            reminder.repeat
+        )
     val isDateFuture = DateHelper.isFutureDateTime(nextReminderDate)
     val isRepeatable = reminder.repeat != RepeatMode.NONE
 
@@ -80,34 +103,41 @@ fun ReminderCard(reminder: Reminder, isSelected: Boolean, onClick: () -> Unit, o
         Row(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(15.dp),
+                .padding(vertical = 10.dp)
+                .heightIn(min = 40.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             Column(
+                modifier = Modifier.padding(horizontal = 20.dp),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Icon(
-                    imageVector = if (isRepeatable) Icons.Outlined.Repeat else Icons.Outlined.Event,
-                    contentDescription = stringResource(id = R.string.Repeat),
-                    modifier = Modifier.size(35.dp),
-                    tint = AppTheme.colors.textSecondary
+                Image(
+                    modifier = Modifier.size(28.dp),
+                    painter = painterResource(reminder.icon.getDrawable()),
+                    contentDescription = null,
+                    colorFilter = ColorFilter.tint(AppTheme.colors.textSecondary)
                 )
             }
             Column(
+                modifier = Modifier.padding(end = 20.dp),
                 horizontalAlignment = Alignment.Start,
                 verticalArrangement = Arrangement.Center
             ) {
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(15.dp, alignment = Alignment.CenterHorizontally),
+                    horizontalArrangement = Arrangement.spacedBy(
+                        20.dp,
+                        alignment = Alignment.CenterHorizontally
+                    ),
                     verticalAlignment = Alignment.Top
                 ) {
                     Text(
-                        text = nextReminderDate.toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")),
+                        text = nextReminderDate.toLocalTime()
+                            .format(DateTimeFormatter.ofPattern("HH:mm")),
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-                        style = MaterialTheme.typography.h6,
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.SemiBold,
                         color = contentColor,
                     )
                     Text(
@@ -117,7 +147,8 @@ fun ReminderCard(reminder: Reminder, isSelected: Boolean, onClick: () -> Unit, o
                         text = DateHelper.getLocalizedDate(nextReminderDate.toLocalDate()),
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-                        style = MaterialTheme.typography.h6,
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.SemiBold,
                         color = contentColor,
                     )
                 }
@@ -130,7 +161,7 @@ fun ReminderCard(reminder: Reminder, isSelected: Boolean, onClick: () -> Unit, o
                         text = reminder.repeat.getLocalizedValue(context = context),
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-                        style = MaterialTheme.typography.body2,
+                        style = MaterialTheme.typography.bodyMedium,
                         color = AppTheme.colors.textSecondary,
                     )
                 }

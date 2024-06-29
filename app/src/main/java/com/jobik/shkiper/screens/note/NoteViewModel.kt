@@ -20,6 +20,7 @@ import com.jobik.shkiper.helpers.DateHelper.Companion.sortReminders
 import com.jobik.shkiper.helpers.IntentHelper
 import com.jobik.shkiper.helpers.LinkHelper
 import com.jobik.shkiper.navigation.Screen
+import com.jobik.shkiper.ui.components.modals.ReminderDialogProperties
 import com.jobik.shkiper.util.SnackbarHostUtil
 import com.jobik.shkiper.util.SnackbarVisualsCustom
 import com.jobik.shkiper.widgets.handlers.handleNoteWidgetPin
@@ -548,17 +549,17 @@ class NoteViewModel @Inject constructor(
 
     fun createOrUpdateReminder(
         reminder: Reminder?,
-        date: LocalDate,
-        time: LocalTime,
-        repeatMode: RepeatMode
+        props: ReminderDialogProperties
     ) {
-        if (!DateHelper.isFutureDateTime(date, time)) return
+        if (!DateHelper.isFutureDateTime(props.date, props.time)) return
 
         viewModelScope.launch {
             val updateFunction: (Reminder) -> Unit = {
-                it.date = date
-                it.time = time
-                it.repeat = repeatMode
+                it.date = props.date
+                it.time = props.time
+                it.repeat = props.repeatMode
+                it.icon = props.icon
+                it.color = props.color
             }
 
             val note = noteRepository.getNote(_screenState.value.noteId) ?: return@launch

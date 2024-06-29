@@ -24,10 +24,8 @@ import com.jobik.shkiper.services.localization.LocaleHelper
 import com.jobik.shkiper.services.localization.Localization
 import com.jobik.shkiper.services.review.ReviewService
 import com.jobik.shkiper.services.statistics.StatisticsService
-import com.jobik.shkiper.ui.theme.CustomThemeStyle
 import com.jobik.shkiper.util.SnackbarHostUtil
 import com.jobik.shkiper.util.SnackbarVisualsCustom
-import com.jobik.shkiper.util.ThemeUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -49,26 +47,6 @@ class SettingsViewModel @Inject constructor(
 
     private val _settingsScreenState = mutableStateOf(SettingsScreenState())
     val settingsScreenState: State<SettingsScreenState> = _settingsScreenState
-
-    /*******************
-     * App theming
-     *******************/
-
-    fun toggleAppTheme() {
-        ThemeUtil.saveThemeMode(
-            context = application.applicationContext,
-            mode = !(ThemeUtil.isDarkMode.value ?: false),
-            newThemeStyle = ThemeUtil.themeStyle.value ?: CustomThemeStyle.MaterialDynamicColors
-        )
-    }
-
-    fun selectColorTheme(theme: CustomThemeStyle) {
-        ThemeUtil.saveThemeMode(
-            context = application.applicationContext,
-            mode = ThemeUtil.isDarkMode.value ?: false,
-            newThemeStyle = theme
-        )
-    }
 
     /*******************
      * App languages

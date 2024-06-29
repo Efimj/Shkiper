@@ -2,28 +2,25 @@ package com.jobik.shkiper.util.settings
 
 import android.content.Context
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import com.google.gson.Gson
 import com.jobik.shkiper.SharedPreferencesKeys.ApplicationSettings
 import com.jobik.shkiper.SharedPreferencesKeys.ApplicationStorageName
-import com.jobik.shkiper.SharedPreferencesKeys.ApplicationUiMode
 
 object SettingsManager {
-    private var _settings: MutableState<SettingsState?> = mutableStateOf(null)
-    var settings: MutableState<SettingsState?>
+    private var _settings: MutableState<SettingsState> = mutableStateOf(SettingsState())
+    var state: MutableState<SettingsState>
         get() = _settings
         private set(value) {
             _settings = value
         }
 
-    val presentation: SettingsState
-        get() {
-            return _settings.value ?: SettingsState()
-        }
+    val settings: SettingsState
+        get() = _settings.value
+
 
     fun init(context: Context) {
-        settings.value = restore(context = context)
+        state.value = restore(context = context)
     }
 
     fun update(context: Context, settings: SettingsState) {
@@ -32,9 +29,8 @@ object SettingsManager {
     }
 
     fun update(context: Context, settings: (SettingsState) -> Unit): Boolean {
-        val currentSettings = _settings.value ?: return false
-        val updatedSettings = currentSettings.apply {
-            settings(currentSettings)
+        val updatedSettings = _settings.value.apply {
+            settings(_settings.value)
         }
         updateState(updatedSettings)
         saveToSharedPreferences(settings = updatedSettings, context = context)

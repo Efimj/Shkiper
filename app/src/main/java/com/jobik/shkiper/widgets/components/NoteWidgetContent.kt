@@ -26,7 +26,7 @@ import com.jobik.shkiper.helpers.DateHelper
 import com.jobik.shkiper.ui.theme.CustomThemeColors
 import com.jobik.shkiper.ui.theme.CustomThemeStyle
 import com.jobik.shkiper.ui.theme.getDynamicColors
-import com.jobik.shkiper.util.ThemeUtil
+import com.jobik.shkiper.util.settings.SettingsManager
 import com.jobik.shkiper.widgets.WidgetKeys.Prefs.noteBody
 import com.jobik.shkiper.widgets.WidgetKeys.Prefs.noteHeader
 import com.jobik.shkiper.widgets.WidgetKeys.Prefs.noteId
@@ -51,9 +51,9 @@ private fun getThemeColors(
 
 @Composable
 fun NoteWidgetContent(prefs: Preferences) {
-    ThemeUtil.restoreSavedTheme(LocalContext.current)
+    SettingsManager.init(LocalContext.current)
 
-    val userStyles = ThemeUtil.themeStyle.value ?: CustomThemeStyle.MaterialDynamicColors
+    val userStyles = SettingsManager.settings.theme
     val darkColors = getThemeColors(style = userStyles, darkTheme = true, LocalContext.current)
     val lightColors = getThemeColors(style = userStyles, darkTheme = false, LocalContext.current)
 
@@ -67,7 +67,7 @@ fun NoteWidgetContent(prefs: Preferences) {
 
     Box(
         modifier = GlanceModifier
-            .background(ColorProvider(day = lightColors.container, night = darkColors.container))
+            .background(ColorProvider(day = lightColors.background, night = darkColors.background))
             .cornerRadius(12.dp)
             .appWidgetBackground()
     ) {
@@ -81,9 +81,13 @@ fun NoteWidgetContent(prefs: Preferences) {
             if (noteHeader.isNotEmpty()) item {
                 Text(
                     text = noteHeader,
-                    modifier = GlanceModifier.openNote(noteId).fillMaxWidth().padding(horizontal = contentPadding),
+                    modifier = GlanceModifier.openNote(noteId).fillMaxWidth()
+                        .padding(horizontal = contentPadding),
                     style = TextStyle(
-                        color = ColorProvider(day = lightColors.onSecondaryContainer, night = darkColors.onSecondaryContainer),
+                        color = ColorProvider(
+                            day = lightColors.onSecondaryContainer,
+                            night = darkColors.onSecondaryContainer
+                        ),
                         fontFamily = FontFamily("Roboto"),
                         fontSize = MaterialTheme.typography.titleMedium.fontSize,
                         fontWeight = FontWeight.Bold,
@@ -97,7 +101,8 @@ fun NoteWidgetContent(prefs: Preferences) {
             if (noteBody.isNotEmpty()) item {
                 Text(
                     text = noteBody,
-                    modifier = GlanceModifier.openNote(noteId).fillMaxWidth().padding(horizontal = contentPadding),
+                    modifier = GlanceModifier.openNote(noteId).fillMaxWidth()
+                        .padding(horizontal = contentPadding),
                     style = TextStyle(
                         color = ColorProvider(day = lightColors.text, night = darkColors.text),
                         fontFamily = FontFamily("Roboto"),
@@ -110,11 +115,15 @@ fun NoteWidgetContent(prefs: Preferences) {
             if (noteBody.isNotEmpty() && updatedDateString != null) item {
                 Text(
                     text = updatedDateString.toString(),
-                    modifier = GlanceModifier.openNote(noteId).fillMaxWidth().padding(end = contentPadding)
+                    modifier = GlanceModifier.openNote(noteId).fillMaxWidth()
+                        .padding(end = contentPadding)
                         .padding(top = 4.dp)
                         .fillMaxWidth(),
                     style = TextStyle(
-                        color = ColorProvider(day = lightColors.textSecondary, night = darkColors.textSecondary),
+                        color = ColorProvider(
+                            day = lightColors.textSecondary,
+                            night = darkColors.textSecondary
+                        ),
                         fontFamily = FontFamily("Roboto"),
                         fontSize = MaterialTheme.typography.bodySmall.fontSize,
                         fontWeight = FontWeight.Normal,

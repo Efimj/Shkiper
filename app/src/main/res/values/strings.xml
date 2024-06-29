@@ -269,6 +269,9 @@
     <string name="telegram_chat">Telegram chat</string>
     <string name="telegram_chat_description">Discuss the app and become part of the community</string>
     <string name="game_of_life_description">Cellular game of life made in material style</string>
+    <string name="default_icon">Default icon</string>
+    <string name="default_color">Default color</string>
+    <string name="notification_defaults">Notification defaults</string>
 
 
 </resources>

@@ -10,12 +10,11 @@ import android.content.Intent
 import androidx.annotation.Keep
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.app.NotificationCompat
-import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.RepeatMode
 import com.jobik.shkiper.helpers.IntentHelper
 import com.jobik.shkiper.helpers.TextHelper
 import com.jobik.shkiper.services.statistics.StatisticsService
-import com.jobik.shkiper.util.ThemeUtil
+import com.jobik.shkiper.util.settings.SettingsManager
 import com.mohamedrejeb.richeditor.model.RichTextState
 import java.time.Instant
 import java.time.LocalDateTime
@@ -56,13 +55,17 @@ class NotificationReceiver : BroadcastReceiver() {
         val requestCode = intent.getIntExtra("requestCode", 0)
         val notification = NotificationStorage(context).getNotification(requestCode) ?: return
 
-        ThemeUtil.restoreSavedTheme(context)
-        val savedColors = ThemeUtil.getColors()
+        SettingsManager.init(context)
 
         // Create the TaskStackBuilder
         val mainPendingIntent: PendingIntent? = TaskStackBuilder.create(context).run {
             // Add the intent, which inflates the back stack
-            addNextIntentWithParentStack(IntentHelper().getStartActivityAndOpenNoteIntent(context, notification.noteId))
+            addNextIntentWithParentStack(
+                IntentHelper().getStartActivityAndOpenNoteIntent(
+                    context,
+                    notification.noteId
+                )
+            )
             // Get the PendingIntent containing the entire back stack
             getPendingIntent(
                 notification.requestCode,
@@ -76,9 +79,9 @@ class NotificationReceiver : BroadcastReceiver() {
 
         val notificationBuilder =
             NotificationCompat.Builder(context, notification.channel.channelId)
-                .setSmallIcon(R.drawable.ic_notification)
+                .setSmallIcon(notification.icon.getDrawable())
                 .setAutoCancel(true)
-                .setColor(savedColors.primary.toArgb())
+                .setColor(notification.color.getColor(context = context).toArgb())
                 .setColorized(true)
                 .setContentIntent(mainPendingIntent)
         if (notification.title.isNotBlank())
@@ -91,7 +94,8 @@ class NotificationReceiver : BroadcastReceiver() {
                         .bigText(message)
                 )
 
-        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager =
+            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.notify(notification.notificationId, notificationBuilder.build())
 
         scheduleRepeatableNotification(notification, context)

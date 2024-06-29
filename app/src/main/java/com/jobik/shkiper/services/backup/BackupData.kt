@@ -3,6 +3,8 @@ package com.jobik.shkiper.services.backup
 import androidx.annotation.Keep
 import com.jobik.shkiper.database.models.Note
 import com.jobik.shkiper.database.models.NotePosition
+import com.jobik.shkiper.database.models.NotificationColor
+import com.jobik.shkiper.database.models.NotificationIcon
 import com.jobik.shkiper.database.models.Reminder
 import com.jobik.shkiper.database.models.RepeatMode
 import com.jobik.shkiper.services.statistics.StatisticsData
@@ -29,6 +31,7 @@ data class BackupData(
                     updateDateString = note.updateDateString
                     deletionDateString = note.deletionDateString
                     isPinned = note.isPinned
+                    linkPreviewEnabled = note.linkPreviewEnabled
                     positionString = note.positionString
                 }
                 realmNoteList.add(realmNote)
@@ -48,6 +51,7 @@ data class BackupData(
                     updateDateString = note.updateDateString,
                     deletionDateString = note.deletionDateString,
                     isPinned = note.isPinned,
+                    linkPreviewEnabled = note.linkPreviewEnabled,
                     positionString = note.positionString
                 )
                 newNoteList.add(noteBackup)
@@ -65,6 +69,8 @@ data class BackupData(
                     repeatString = reminder.repeatString
                     dateString = reminder.dateString
                     timeString = reminder.timeString
+                    iconString = reminder.iconString
+                    colorString = reminder.colorString
                 }
                 realmReminderList.add(realmReminder)
             }
@@ -80,6 +86,8 @@ data class BackupData(
                     repeatString = reminder.repeatString,
                     dateString = reminder.dateString,
                     timeString = reminder.timeString,
+                    iconString = reminder.iconString,
+                    colorString = reminder.colorString
                 )
                 newReminderList.add(reminderBackup)
             }
@@ -97,6 +105,7 @@ data class NoteBackup(
     val updateDateString: String = "",
     val deletionDateString: String? = null,
     val isPinned: Boolean = false,
+    val linkPreviewEnabled: Boolean = true,
     val positionString: String = NotePosition.MAIN.name,
 )
 
@@ -107,4 +116,6 @@ data class ReminderBackup(
     var repeatString: String = RepeatMode.NONE.name,
     var dateString: String = "",
     var timeString: String = "",
+    var iconString: String = NotificationIcon.EVENT.name,
+    var colorString: String = NotificationColor.MATERIAL.name
 )

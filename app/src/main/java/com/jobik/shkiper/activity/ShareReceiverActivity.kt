@@ -15,10 +15,9 @@ import com.jobik.shkiper.database.data.note.NoteMongoRepository
 import com.jobik.shkiper.database.models.Note
 import com.jobik.shkiper.helpers.IntentHelper
 import com.jobik.shkiper.ui.theme.AppTheme
-import com.jobik.shkiper.ui.theme.CustomThemeStyle
 import com.jobik.shkiper.ui.theme.ShkiperTheme
 import com.jobik.shkiper.util.ContextUtils.adjustFontSize
-import com.jobik.shkiper.util.ThemeUtil
+import com.jobik.shkiper.util.settings.NightMode
 import com.jobik.shkiper.util.settings.SettingsManager
 import com.jobik.shkiper.widgets.screens.noteSelection.NoteSelectionScreen
 import dagger.hilt.android.AndroidEntryPoint
@@ -43,14 +42,17 @@ class ShareReceiverActivity : AppCompatActivity() {
         actionBar?.hide()
 
         SettingsManager.init(this)
-        adjustFontSize(SettingsManager.settings.value?.fontScale)
+        adjustFontSize(SettingsManager.settings.fontScale)
 
         setupActivity()
-        ThemeUtil.restoreSavedTheme(this)
         setContent {
             ShkiperTheme(
-                darkTheme = ThemeUtil.isDarkMode.value ?: isSystemInDarkTheme(),
-                style = ThemeUtil.themeStyle.value ?: CustomThemeStyle.MaterialDynamicColors
+                darkTheme = when (SettingsManager.settings.nightMode) {
+                    NightMode.Light -> false
+                    NightMode.Dark -> true
+                    else -> isSystemInDarkTheme()
+                },
+                style = SettingsManager.settings.theme
             ) {
                 Box(
                     Modifier

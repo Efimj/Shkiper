@@ -9,7 +9,7 @@ import com.jobik.shkiper.util.settings.SettingsManager
 
 @Composable
 fun SecureModeManager(
-    enabled: Boolean = SettingsManager.settings.value?.secureMode ?: false
+    enabled: Boolean = SettingsManager.settings.secureMode ?: false
 ) {
     val context = LocalContext.current as ComponentActivity
 

@@ -57,7 +57,9 @@ import com.jobik.shkiper.ui.helpers.verticalWindowInsetsPadding
 import com.jobik.shkiper.ui.modifiers.bounceClick
 import com.jobik.shkiper.ui.theme.AppTheme
 import com.jobik.shkiper.ui.theme.CustomThemeStyle
-import com.jobik.shkiper.util.ThemeUtil
+import com.jobik.shkiper.util.ContextUtils.isDarkModeEnabled
+import com.jobik.shkiper.util.settings.NightMode
+import com.jobik.shkiper.util.settings.SettingsManager
 import kotlinx.coroutines.delay
 import nl.dionsegijn.konfetti.compose.KonfettiView
 import nl.dionsegijn.konfetti.core.Angle
@@ -98,7 +100,14 @@ private fun FirstOnboardingScreen() {
         )
     }
 
-    val isDarkTheme = ThemeUtil.isDarkMode.value == true
+    val context = LocalContext.current
+
+    val isDarkTheme = when (SettingsManager.settings.nightMode) {
+        NightMode.Light -> false
+        NightMode.Dark -> true
+        else -> isDarkModeEnabled(context)
+    }
+
     val iconsWithStrings = remember {
         listOf(
             Pair(
