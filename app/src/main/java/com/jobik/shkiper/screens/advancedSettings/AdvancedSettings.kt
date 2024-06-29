@@ -28,6 +28,7 @@ fun AdvancedSettings() {
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         AdvancedApplicationSettings()
+        AdvancedNotificationSettings()
         AdvancedSecureSettings()
         AdvancedUpdatesSettings()
     }

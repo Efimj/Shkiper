@@ -102,6 +102,7 @@ import com.jobik.shkiper.ui.components.cards.SettingsItemColors
 import com.jobik.shkiper.ui.components.fields.CustomDatePicker
 import com.jobik.shkiper.ui.components.fields.CustomTimePicker
 import com.jobik.shkiper.ui.theme.AppTheme
+import com.jobik.shkiper.util.settings.SettingsManager
 import com.kizitonwose.calendar.compose.ContentHeightMode
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
@@ -119,8 +120,8 @@ data class ReminderDialogProperties(
     val date: LocalDate = LocalDate.now(),
     val time: LocalTime = LocalTime.now(),
     val repeatMode: RepeatMode = RepeatMode.NONE,
-    val icon: NotificationIcon = NotificationIcon.EVENT,
-    val color: NotificationColor = NotificationColor.MATERIAL,
+    val icon: NotificationIcon = SettingsManager.settings.defaultNotificationIcon,
+    val color: NotificationColor = SettingsManager.settings.defaultNotificationColor,
 ) : Parcelable
 
 @Parcelize

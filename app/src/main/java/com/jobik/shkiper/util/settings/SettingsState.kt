@@ -1,6 +1,8 @@
 package com.jobik.shkiper.util.settings
 
 import androidx.annotation.Keep
+import com.jobik.shkiper.database.models.NotificationColor
+import com.jobik.shkiper.database.models.NotificationIcon
 import com.jobik.shkiper.ui.theme.CustomThemeStyle
 
 @Keep
@@ -16,5 +18,7 @@ data class SettingsState(
     val checkUpdates: Boolean = true,
     val secureMode: Boolean = false,
     val nightMode: NightMode = NightMode.System,
-    val theme: CustomThemeStyle = CustomThemeStyle.MaterialDynamicColors
+    val theme: CustomThemeStyle = CustomThemeStyle.MaterialDynamicColors,
+    val defaultNotificationIcon: NotificationIcon = NotificationIcon.EVENT,
+    val defaultNotificationColor: NotificationColor = NotificationColor.MATERIAL
 )

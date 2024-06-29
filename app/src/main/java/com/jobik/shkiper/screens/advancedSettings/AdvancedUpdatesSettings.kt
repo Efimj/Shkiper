@@ -90,15 +90,13 @@ private fun AutomaticCheckUpdates() {
     val context = LocalContext.current
 
     fun switchAutomaticUpdateCheck(
-        settings: SettingsState?,
+        settings: SettingsState,
         context: Context
     ) {
-        if (settings != null) {
-            SettingsManager.update(
-                context = context,
-                settings = settings.copy(checkUpdates = settings.checkUpdates.not())
-            )
-        }
+        SettingsManager.update(
+            context = context,
+            settings = settings.copy(checkUpdates = settings.checkUpdates.not())
+        )
     }
 
     SettingsItem(
@@ -108,7 +106,7 @@ private fun AutomaticCheckUpdates() {
         onClick = { switchAutomaticUpdateCheck(settings = settings, context = context) }
     ) {
         CustomSwitch(
-            active = settings?.checkUpdates ?: false,
+            active = settings.checkUpdates,
             onClick = {
                 switchAutomaticUpdateCheck(settings = settings, context = context)
             })
