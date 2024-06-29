@@ -429,7 +429,7 @@ private fun SettingsItemSelectLanguage(settingsViewModel: SettingsViewModel) {
     val coroutineScope = rememberCoroutineScope()
     val currentLanguage = NotepadApplication.currentLanguage
     val dropDownItems =
-        remember { settingsViewModel.getLocalizationList(context).map { DropDownItem(text = it) } }
+        remember { settingsViewModel.getLocalizationList(context).map { DropDownItem(text = it.name) } }
     val isExpanded = remember { mutableStateOf(false) }
 
     SettingsItem(
@@ -447,7 +447,7 @@ private fun SettingsItemSelectLanguage(settingsViewModel: SettingsViewModel) {
                 recreateActivity(context, coroutineScope)
             }) {
             Text(
-                text = currentLanguage.getLocalizedValue(context),
+                text = currentLanguage.getLocalizedValue(context).language,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 color = AppTheme.colors.primary,

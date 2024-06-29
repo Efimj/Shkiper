@@ -20,6 +20,7 @@ import com.jobik.shkiper.database.data.reminder.ReminderMongoRepository
 import com.jobik.shkiper.services.backup.BackupData
 import com.jobik.shkiper.services.backup.BackupService
 import com.jobik.shkiper.services.backup.BackupServiceResult
+import com.jobik.shkiper.services.localization.LocaleData
 import com.jobik.shkiper.services.localization.LocaleHelper
 import com.jobik.shkiper.services.localization.Localization
 import com.jobik.shkiper.services.review.ReviewService
@@ -52,8 +53,8 @@ class SettingsViewModel @Inject constructor(
      * App languages
      *******************/
 
-    fun getLocalizationList(localContext: Context): List<String> {
-        return Localization.values().filter { it.name != NotepadApplication.currentLanguage.name }
+    fun getLocalizationList(localContext: Context): List<LocaleData> {
+        return Localization.entries.filter { it.name != NotepadApplication.currentLanguage.name }
             .map { it.getLocalizedValue(localContext) }
     }
 

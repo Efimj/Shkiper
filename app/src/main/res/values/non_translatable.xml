@@ -21,7 +21,24 @@
     <string name="zh" translatable="false">简体中文</string>
     <string name="pt" translatable="false">Português</string>
     <string name="th" translatable="false">ไทย (Thai)</string>
+    <string name="tr" translatable="false">Türkçe</string>
     <string name="fr" translatable="false">Français</string>
     <string name="ja" translatable="false">日本語</string>
+
+    <string name="de_language" translatable="false">German</string>
+    <string name="en_language" translatable="false">English</string>
+    <string name="es_language" translatable="false">Spanish</string>
+    <string name="fr_language" translatable="false">French</string>
+    <string name="hi_language" translatable="false">Hindi</string>
+    <string name="in_language" translatable="false">Indonesian</string>
+    <string name="it_language" translatable="false">Italian</string>
+    <string name="ja_language" translatable="false">Japanese</string>
+    <string name="ko_language" translatable="false">Korean</string>
+    <string name="pt_language" translatable="false">Portuguese</string>
+    <string name="ru_language" translatable="false">Russian</string>
+    <string name="uk_language" translatable="false">Ukrainian</string>
+    <string name="zh_language" translatable="false">Chinese Simplified</string>
+    <string name="th_language" translatable="false">Thai</string>
+    <string name="tr_language" translatable="false">Turkish</string>
 
 </resources>
