@@ -404,8 +404,7 @@ private fun FinishPage(
                         Box(
                             modifier = Modifier
                                 .clip(CircleShape)
-                                .size(30.dp)
-                                .background(AppTheme.colors.primary),
+                                .size(30.dp),
                             contentAlignment = Alignment.Center
                         ) {
                             Icon(
@@ -472,7 +471,7 @@ private fun Selector(icon: ImageVector, content: @Composable () -> Unit) {
     Row(
         modifier = Modifier
             .padding(top = 5.dp)
-            .heightIn(min = 50.dp)
+            .heightIn(min = 54.dp)
             .horizontalScroll(rememberScrollState())
             .padding(horizontal = 20.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -567,6 +566,7 @@ private fun DialogFooter(
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .padding(top = 10.dp)
             .padding(horizontal = 20.dp)
             .height(50.dp),
         horizontalArrangement = Arrangement.spacedBy(
