@@ -23,6 +23,7 @@ enum class Localization(val localeKey: String) {
     TH("th"),
     TR("tr"),
     UK("uk"),
+    VI("vi"),
     ZH("zh");
 
     fun getLocalizedValue(context: Context): LocaleData {
@@ -85,6 +86,11 @@ enum class Localization(val localeKey: String) {
             UK.name -> LocaleData(
                 name = context.getString(R.string.uk),
                 language = context.getString(R.string.uk_language)
+            )
+
+            VI.name -> LocaleData(
+                name = context.getString(R.string.vi),
+                language = context.getString(R.string.vi_language)
             )
 
             ZH.name -> LocaleData(

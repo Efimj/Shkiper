@@ -11,19 +11,20 @@
     <string name="game_of_life_link" translatable="false">https://play.google.com/store/apps/details?id=com.jobik.gameoflife</string>
 
     <!--    Languages   -->
-    <string name="en" translatable="false">English</string>
-    <string name="uk" translatable="false">Українська</string>
-    <string name="ru" translatable="false">Русский</string>
-    <string name="de" translatable="false">Deutsch</string>
     <string name="in" translatable="false">Bahasa Indonesia</string>
+    <string name="de" translatable="false">Deutsch</string>
+    <string name="en" translatable="false">English</string>
     <string name="es" translatable="false">Español</string>
+    <string name="fr" translatable="false">Français</string>
     <string name="it" translatable="false">Italiano</string>
-    <string name="zh" translatable="false">简体中文</string>
+    <string name="ja" translatable="false">日本語</string>
     <string name="pt" translatable="false">Português</string>
+    <string name="ru" translatable="false">Русский</string>
     <string name="th" translatable="false">ไทย (Thai)</string>
     <string name="tr" translatable="false">Türkçe</string>
-    <string name="fr" translatable="false">Français</string>
-    <string name="ja" translatable="false">日本語</string>
+    <string name="uk" translatable="false">Українська</string>
+    <string name="vi" translatable="false">Tiếng Việt</string>
+    <string name="zh" translatable="false">简体中文</string>
 
     <string name="de_language" translatable="false">German</string>
     <string name="en_language" translatable="false">English</string>
@@ -36,9 +37,10 @@
     <string name="ko_language" translatable="false">Korean</string>
     <string name="pt_language" translatable="false">Portuguese</string>
     <string name="ru_language" translatable="false">Russian</string>
-    <string name="uk_language" translatable="false">Ukrainian</string>
-    <string name="zh_language" translatable="false">Chinese Simplified</string>
     <string name="th_language" translatable="false">Thai</string>
     <string name="tr_language" translatable="false">Turkish</string>
+    <string name="uk_language" translatable="false">Ukrainian</string>
+    <string name="vi_language" translatable="false">Vietnamese</string>
+    <string name="zh_language" translatable="false">Chinese Simplified</string>
 
 </resources>
