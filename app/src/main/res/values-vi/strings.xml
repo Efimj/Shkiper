@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--    Repeating   -->
+    <string name="none">Không lặp lại</string>
+    <string name="daily">Hàng ngày</string>
+    <string name="weekly">Hàng tuần</string>
+    <string name="monthly">Hàng tháng</string>
+    <string name="yearly">Hàng năm</string>
+
+    <!--    Expressions   -->
+    <!--    settings page   -->
+    <string name="ChoseLocalization">Bản địa hóa</string>
+    <string name="AppDataPolitics">Dữ liệu của bạn được lưu trữ độc quyền trên thiết bị của bạn. Xóa dữ liệu ứng dụng của bạn có thể dẫn đến mất dữ liệu vĩnh viễn. Để ngăn chặn điều này, hãy nhớ lưu tệp dữ liệu của bạn trước khi thực hiện đặt lại.</string>
+    <string name="Info">Th.tin</string>
+    <string name="Information">Thông tin</string>
+    <string name="Open">Mở</string>
+    <string name="OnboardingPage">Tham gia</string>
+    <string name="Other">Khác</string>
+    <string name="Connect">Kết nối</string>
+    <string name="CloudStorage">Lưu trữ đám mây</string>
+    <string name="Upload">Tải lên</string>
+    <string name="UploadNotes">Tải ghi chú lên</string>
+    <string name="SaveAllNotesLocally">Lưu tất cả ghi chú cục bộ</string>
+    <string name="Save">Lưu</string>
+    <string name="Backup">Sao lưu</string>
+    <string name="ApplicationTheme">Chủ đề</string>
+    <string name="LightTheme">Sáng</string>
+    <string name="DarkTheme">Tối</string>
+    <string name="Application">Ứng dụng</string>
+    <string name="application_icon">Biểu tượng ứng dụng</string>
+    <string name="font_scale">Tỷ lệ phông chữ</string>
+    <string name="application_icon_changed">Biểu tượng ứng dụng đã thay đổi</string>
+    <string name="updates">Cập nhật</string>
+    <string name="check_update">Kiểm tra cập nhật</string>
+    <string name="automatic_check">Kiểm tra tự động</string>
+    <string name="suggests_updates">Đề xuất cập nhật nếu có</string>
+    <string name="latest_version_installed">Đã cài đặt phiên bản mới nhất</string>
+    <string name="secure">Bảo mật</string>
+    <string name="secure_mode">Chế độ bảo mật</string>
+    <string name="secure_mode_description">Ẩn nội dung, cấm ghi màn hình</string>
+    <string name="ApplicationColors">Màu sắc</string>
+    <string name="StatisticsPage">Thống kê</string>
+
+    <string name="onb_title_1">Chào mừng đến với Shkiper!</string>
+    <string name="onb_description_1">Ứng dụng notepad mới cho tất cả các ghi chú của bạn và hơn thế nữa</string>
+    <string name="onb_title_2">Không chỉ là một cuốn sổ ghi chú!</string>
+    <string name="onb_title_3">Mã nguồn mở</string>
+
+    <string name="feature_title_1">Tiện ích ghi chú</string>
+    <string name="feature_description_1">Mọi ghi chú đều có thể được thêm vào màn hình chính của thiết bị của bạn</string>
+    <string name="feature_title_2">Lời nhắc</string>
+    <string name="feature_description_2">Có thể đặt đồng thời nhiều lời nhắc cho một ghi chú</string>
+    <string name="feature_title_3">Kiểu dáng ghi chú</string>
+    <string name="feature_description_3">Thêm phong cách cho ghi chú của bạn bằng cách thay đổi kích thước phông chữ, màu sắc, căn chỉnh</string>
+    <string name="feature_title_4">Lịch</string>
+    <string name="feature_description_4">Lời nhắc sắp tới luôn hiển thị trong lịch</string>
+    <string name="feature_title_5">Thẻ</string>
+    <string name="feature_description_5">Tạo thẻ để truy cập nhanh vào ghi chú</string>
+    <string name="feature_title_6">Chia sẻ</string>
+    <string name="feature_description_6">Chia sẻ ghi chú ở mọi định dạng: văn bản, HTML, Markdown, bao gồm cả hình ảnh</string>
+    <string name="feature_title_7">Xem trước liên kết</string>
+    <string name="feature_description_7">Xem trước cho phép truy cập nhanh vào các liên kết (có thể tắt)</string>
+    <string name="feature_title_8">Thống kê</string>
+    <string name="feature_description_8">Bạn có thể xem số liệu thống kê sử dụng ứng dụng</string>
+    <string name="feature_title_9">Chủ đề</string>
+    <string name="feature_description_9">Chọn sự kết hợp màu sắc yêu thích của bạn cho chủ đề ứng dụng</string>
+
+    <!--    Onboarding page   -->
+    <string name="Back">Quay lại</string>
+    <string name="Finish">Kết thúc</string>
+    <string name="Next">Tiếp theo</string>
+    <string name="PagerImage">Hình ảnh máy nhắn tin</string>
+    <string name="Tags">Thẻ</string>
+    <string name="TagsDescription">Cần có thẻ để lọc nhanh ghi chú của bạn, có thể thêm nhiều thẻ vào
+        mỗi ghi chú.
+    </string>
+    <string name="AppDescription">Sổ ghi chú nhanh chóng, đơn giản và tiện lợi.</string>
+    <string name="Reminders">Lời nhắc</string>
+    <string name="RemindersDescription">Lời nhắc cho phép bạn lên lịch thông báo cho một sự kiện quan trọng trên một
+        ngày và giờ được chỉ định, với khoảng thời gian đã chọn.
+    </string>
+    <string name="Themes">Chủ đề</string>
+    <string name="ThemesDescription">Chọn chủ đề màu sắc mà cá nhân bạn thích nhất.</string>
+
+    <!--    Nate page   -->
+    <string name="Header">Tiêu đề</string>
+    <string name="Text">Văn bản</string>
+    <string name="GoBack">Quay lại</string>
+    <string name="AttachNote">Đính kèm ghi chú</string>
+    <string name="AddToNotification">Thêm vào thông báo</string>
+    <string name="AddToArchive">Thêm vào kho lưu trữ</string>
+    <string name="ChangedAt">Đã thay đổi lúc</string>
+    <string name="GoForward">Tiến về phía trước</string>
+    <string name="AddToBasket">Thêm vào giỏ</string>
+    <string name="ShareNote">Chia sẻ ghi chú</string>
+
+    <!--    NateList page   -->
+    <string name="Pinned">Đã ghim</string>
+
+    <!--    Other components   -->
+    <string name="CreateNote">Tạo ghi chú</string>
+    <string name="Hashtags">Thẻ</string>
+    <string name="Cancel">Hủy</string>
+    <string name="HashtagExample">Viết thẻ, ví dụ Bài tập về nhà</string>
+    <string name="Delete">Xóa</string>
+    <string name="Reminder">Nhắc nhở</string>
+    <string name="Event">Sự kiện</string>
+    <string name="Schedule">Lịch trình</string>
+    <string name="Repeat">Lặp lại</string>
+    <string name="ErrorDateMastBeFuture">Ngày phải ở trong tương lai</string>
+    <string name="Menu">Trình đơn</string>
+    <string name="Notes">Ghi chú</string>
+    <string name="Archive">Lưu trữ</string>
+    <string name="Basket">Giỏ</string>
+    <string name="Settings">Thiết đặt</string>
+    <string name="Clear">Dọn sạch</string>
+    <string name="Search">Tìm kiếm</string>
+    <string name="Links">Liên kết</string>
+    <string name="Hide">Ẩn</string>
+    <string name="ShowAll">Hiển thị tất cả</string>
+    <string name="Link">Liên kết</string>
+    <string name="LinkCopied">Đã sao chép liên kết</string>
+    <string name="LinkImage">Liên kết hình ảnh</string>
+    <string name="EmptyNote">Ghi chú trống</string>
+    <string name="Loading">Đang tải</string>
+    <string name="Statistics">Thống kê</string>
+    <string name="StatisticsImage">Hình ảnh thống kê</string>
+    <string name="Complete">Đã hoàn thành</string>
+    <string name="Uncompleted">Chưa hoàn thành</string>
+    <string name="DoneEmoji">✔️</string>
+    <string name="NotDoneEmoji">➖</string>
+    <string name="Saving">Đang lưu</string>
+    <string name="BackupCreated">Đã tạo bản sao lưu</string>
+    <string name="BackupUploaded">Đã tải lên bản sao lưu</string>
+    <string name="UnspecifiedErrorOccurred">Đã xảy ra lỗi không xác định</string>
+    <string name="CannotPerformedWithoutPermission">Không thể thực hiện mà không có sự cho phép</string>
+    <string name="EmptyNotesPageHeader">Ghi chú bạn thêm sẽ xuất hiện ở đây.</string>
+    <string name="ArchiveNotesPageHeader">Các ghi chú đã lưu trữ sẽ ở đây.</string>
+    <string name="UnarchiveNotes">Hủy lưu trữ ghi chú</string>
+    <string name="BasketNotesPageHeader">Giỏ ghi chú đã xóa.</string>
+    <string name="Restore">Khôi phục</string>
+    <string name="BasketPageHeader">Ghi chú sẽ bị xóa khỏi giỏ sau 7 ngày.</string>
+    <string name="DeleteSelectedNotesDialogText">Xóa ghi chú đã chọn?</string>
+    <string name="DeleteNoteDialogText">Xóa ghi chú?</string>
+    <string name="Confirm">Xác nhận</string>
+    <string name="NotesAreBeenDeleted">Ghi chú đã bị xóa</string>
+    <string name="NoteAreBeenDeleted">Ghi chú đã bị xóa</string>
+    <string name="NotesArchived">Ghi chú đã được chuyển vào kho lưu trữ</string>
+    <string name="NotesUnarchived">Ghi chú đã được hủy lưu trữ</string>
+    <string name="NoteArchived">Ghi chú đã được chuyển vào kho lưu trữ</string>
+    <string name="NoteUnarchived">Ghi chú đã được hủy lưu trữ</string>
+    <string name="NotesMovedToBasket">Ghi chú đã được chuyển vào giỏ</string>
+    <string name="NotesRestored">Đã khôi phục ghi chú</string>
+    <string name="DaysBeforeDeletingNote">Số ngày trước khi xóa ghi chú: </string>
+    <string name="DeleteForever">Xóa vĩnh viễn?</string>
+    <string name="RateTheApp">Đánh giá Shkiper</string>
+    <string name="Image">Hình ảnh</string>
+    <string name="OfferWriteReviewTitle">Bạn có thích Shkiper không?</string>
+    <string name="OfferWriteReviewDescription">Nếu bạn còn vài phút, vui lòng để lại đánh giá của bạn trong Cửa hàng Google Play.</string>
+    <string name="Restart">Khởi động lại</string>
+    <string name="UpdateDownloaded">Đã tải xuống bản cập nhật</string>
+    <string name="Add">Thêm</string>
+    <string name="SupportDevelopment">Hỗ trợ phát triển</string>
+    <string name="Donate">Quyên góp</string>
+    <string name="Show">Hiện</string>
+    <string name="PurchaseScreenTitle">Mọi đóng góp đều quan trọng!</string>
+    <string name="PurchaseScreenDescription">Sự hỗ trợ của bạn giúp cải thiện ứng dụng của chúng tôi. Hãy tham gia cùng chúng tôi – quyên góp và trở thành một phần của câu chuyện Shkiper!</string>
+    <string name="BuyMe">Hãy mua cho tôi</string>
+    <string name="BuySubscription">Mua đăng ký</string>
+    <string name="ItemAlreadyOwned">Sản phẩm này đã được mua</string>
+    <string name="CheckInternetConnection">Kiểm tra kết nối internet</string>
+    <string name="CheckUpdatesGooglePlay">Kiểm tra cập nhật Google Play</string>
+    <string name="Close">Đóng</string>
+    <string name="DonateBannerHeader">Bạn có thích Shkiper không?</string>
+    <string name="DonateBannerBody">Hãy ủng hộ nhà phát triển bằng một coin!</string>
+    <string name="AboutNotepad">Về Shkiper</string>
+    <string name="Support">Hỗ trợ</string>
+    <string name="AboutAppDescription">Tạo, tổ chức, ghi nhớ. Người bạn đồng hành hoàn hảo của bạn cho các công việc, ghi chú và lời nhắc – đơn giản, đẹp mắt và luôn trong tầm tay.</string>
+    <string name="Contact">Liên hệ</string>
+    <string name="ChooseEmailClient">Chọn ứng dụng Email:</string>
+    <string name="DevMailHeader">Hay Efim</string>
+
+    <!--    Statistics components   -->
+    <string name="Thinker">Người suy nghĩ</string>
+    <string name="ThinkerDescription">Số lần mở Shkiper</string>
+    <string name="Creator">Người sáng tạo</string>
+    <string name="CreatorDescription">Số lượng ghi chú được tạo</string>
+    <string name="Eternal">Đúng giờ</string>
+    <string name="EternalDescription">Đừng quên nhé? Tạo một lời nhắc nhở. Số lượng lời nhắc được tạo</string>
+    <string name="Remembered">Luôn cập nhật</string>
+    <string name="RememberedDescription">\"Em yêu, em có quên gì không?\" - \"Không.\" Số lượng thông báo đã nhận được</string>
+    <string name="FirstAppOpenDate">Lần mở đầu tiên</string>
+    <string name="FirstAppOpenDateDescription">Ngày Shkiper được mở lần đầu tiên</string>
+    <string name="Pioneer">Tiên phong</string>
+    <string name="PioneerDescription">Cài đặt ứng dụng trước 01–01–2024</string>
+    <string name="TruthSeeker">Người tìm kiếm sự thật</string>
+    <string name="TruthSeekerDescription">Mở trang ứng dụng</string>
+    <string name="NoteDestroyer">Kẻ hủy diệt ghi chú</string>
+    <string name="NoteDestroyerDescription">Ta sinh ra ngươi và ta sẽ tiêu diệt ngươi! «Taras Bulba». Số ghi chú đã xóa</string>
+
+    <string name="ThankForPurchase1">Cảm ơn bạn đã chọn ứng dụng của chúng tôi! Sự hỗ trợ của bạn có ý nghĩa rất lớn đối với chúng tôi.</string>
+    <string name="ThankForPurchase2">Chúng tôi đánh giá cao sự hỗ trợ và tin tưởng của bạn vào ứng dụng của chúng tôi. Cảm ơn bạn đã mua hàng!</string>
+    <string name="ThankForPurchase3">Sự hỗ trợ của bạn là phần thưởng tốt nhất cho chúng tôi. Cảm ơn bạn đã mua hàng trong ứng dụng của chúng tôi!</string>
+
+    <string name="Efim">Efim</string>
+    <string name="EfimDescription">Android/Web và hơn thế nữa..</string>
+    <string name="Annually">Hàng năm</string>
+    <string name="Monthly">Hàng tháng</string>
+    <string name="Localizers">Người bản địa hóa</string>
+    <string name="Icons">Biểu tượng</string>
+
+    <string name="Deleted">Đã xóa</string>
+    <string name="CreateWidget">Tạo một tiện ích</string>
+    <string name="Share">Chia sẻ</string>
+    <string name="MyStatsInShkiper">Số liệu thống kê của tôi trong Shkiper</string>
+
+    <string name="TurnOnNotifications">Bật thông báo trong cài đặt điện thoại của bạn</string>
+
+    <string name="InsertLink">Chèn liên kết</string>
+    <string name="ShareText">Chia sẻ văn bản</string>
+    <string name="ShareImage">Chia sẻ hình ảnh</string>
+    <string name="ShareHTMLText">Chia sẻ dưới dạng văn bản HTML</string>
+    <string name="ShareMarkdownText">Chia sẻ dưới dạng văn bản đánh dấu</string>
+
+    <string name="NeededPermissionForNotifications">Cần thiết để cấp quyền nhận thông báo</string>
+    <string name="ImportantForRemindersWork">Điều này rất quan trọng để lời nhắc hoạt động</string>
+    <string name="Enable">Bật</string>
+    <string name="TextFormatting">Định dạng văn bản</string>
+    <string name="TextFormattingDescription">Thể hiện tầm nhìn sáng tạo của bạn bằng cách tạo cho văn bản một phong cách theo sở thích của bạn.</string>
+    <string name="StatisticsPageDescription">Thống kê không nhất thiết phải nhàm chán; nó cũng có thể thú vị đấy!</string>
+    <string name="Widgets">Tiện ích</string>
+    <string name="WidgetsDescription">Ghim ghi chú vào màn hình chính để luôn hiển thị.</string>
+    <string name="MadeWithLove">Thích chứ?</string>
+    <string name="MadeWithLoveDescription">Giới thiệu với bạn bè của bạn về ứng dụng hoặc ủng hộ nhà phát triển bằng một loại coin.</string>
+    <string name="OpenSource">Mã nguồn mở</string>
+    <string name="OpenSourceDescription">Shkiper là mã nguồn mở và toàn bộ mã được xuất bản trên GitHub</string>
+
+    <string name="CreateReminder">Tạo lời nhắc</string>
+    <string name="NoReminders">Không có lời nhắc nào</string>
+    <string name="DisableLinkPreviews">Tắt xem trước liên kết</string>
+    <string name="EnableLinkPreviews">Bật xem trước liên kết</string>
+    <string name="Apply">Áp dụng</string>
+    <string name="SaveChanges">Lưu thay đổi</string>
+    <string name="New">Mới</string>
+    <string name="All">Tất cả</string>
+    <string name="Selected">Đã chọn</string>
+    <string name="EmptyTagsTitle">Thẻ chưa được tạo</string>
+
+    <string name="OtherMyApps">Các ứng dụng khác của tôi</string>
+
+    <string name="advanced">Nâng cao</string>
+    <string name="icon_already_selected">Biểu tượng đã được chọn!</string>
+
+    <string name="classic">Cổ điển</string>
+    <string name="classic_white">Trắng</string>
+    <string name="material">Material</string>
+    <string name="love">Tình yêu</string>
+    <string name="rocket">Tên lửa</string>
+    <string name="bank">Ngân hàng</string>
+    <string name="star">Ngôi sao</string>
+    <string name="night">Đêm</string>
+    <string name="strawberry">Dâu tây</string>
+    <string name="mango">Xoài</string>
+    <string name="avocado">Quả bơ</string>
+    <string name="blueberry">Việt quất</string>
+    <string name="plum">Mận</string>
+    <string name="source_code">Mã nguồn</string>
+    <string name="source_code_description">Nhận thông tin cập nhật mới nhất, thảo luận, các vấn đề và hơn thế nữa</string>
+    <string name="telegram_chat">Trò chuyện Telegram</string>
+    <string name="telegram_chat_description">Thảo luận về ứng dụng và trở thành một phần của cộng đồng</string>
+    <string name="game_of_life_description">Trò chơi cuộc sống di động được làm theo phong cách material</string>
+    <string name="default_icon">Biểu tượng mặc định</string>
+    <string name="default_color">Màu mặc định</string>
+    <string name="notification_defaults">Mặc định thông báo</string>
+
+
+</resources>
