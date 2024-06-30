@@ -50,26 +50,6 @@ class SettingsViewModel @Inject constructor(
     val settingsScreenState: State<SettingsScreenState> = _settingsScreenState
 
     /*******************
-     * App languages
-     *******************/
-
-    fun getLocalizationList(localContext: Context): List<LocaleData> {
-        return Localization.entries.filter { it.name != NotepadApplication.currentLanguage.name }
-            .map { it.getLocalizedValue(localContext) }
-    }
-
-    fun selectLocalization(selectedIndex: Int) {
-        try {
-            val newLocalization: Localization =
-                Localization.values()
-                    .filter { it.name != NotepadApplication.currentLanguage.name }[selectedIndex]
-            LocaleHelper.setLocale(application.applicationContext, newLocalization)
-        } catch (e: Exception) {
-            Log.d("ChangeLocalizationError", e.message.toString())
-        }
-    }
-
-    /*******************
      * App backups
      *******************/
 

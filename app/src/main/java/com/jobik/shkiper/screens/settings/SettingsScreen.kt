@@ -3,10 +3,12 @@ package com.jobik.shkiper.screens.settings
 import android.app.Activity
 import android.content.Context
 import android.os.Build
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -14,15 +16,22 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Done
@@ -38,9 +47,14 @@ import androidx.compose.material.icons.rounded.Download
 import androidx.compose.material.icons.rounded.RocketLaunch
 import androidx.compose.material.icons.rounded.Tune
 import androidx.compose.material.icons.rounded.Upload
+import androidx.compose.material3.BottomSheetDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -52,8 +66,11 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -63,10 +80,10 @@ import com.jobik.shkiper.R
 import com.jobik.shkiper.navigation.NavigationHelpers.Companion.navigateToSecondary
 import com.jobik.shkiper.navigation.Screen
 import com.jobik.shkiper.services.backup.BackupService
+import com.jobik.shkiper.services.localization.LocaleData
+import com.jobik.shkiper.services.localization.LocaleHelper
+import com.jobik.shkiper.services.localization.Localization
 import com.jobik.shkiper.ui.components.buttons.CustomSwitch
-import com.jobik.shkiper.ui.components.buttons.DropDownButton
-import com.jobik.shkiper.ui.components.buttons.DropDownButtonSizeMode
-import com.jobik.shkiper.ui.components.buttons.DropDownItem
 import com.jobik.shkiper.ui.components.cards.SettingsItem
 import com.jobik.shkiper.ui.components.cards.ThemePreview
 import com.jobik.shkiper.ui.components.layouts.SettingsGroup
@@ -79,7 +96,6 @@ import com.jobik.shkiper.ui.theme.CustomThemeStyle
 import com.jobik.shkiper.ui.theme.getDynamicColors
 import com.jobik.shkiper.util.settings.NightMode
 import com.jobik.shkiper.util.settings.SettingsManager
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.enums.EnumEntries
@@ -331,7 +347,7 @@ private fun ProgramSettings(navController: NavController, settingsViewModel: Set
         }
         SettingsColorThemePicker(settingsViewModel)
         Spacer(Modifier.height(4.dp))
-        SettingsItemSelectLanguage(settingsViewModel = settingsViewModel)
+        SettingsItemSelectLanguage()
         SettingsItem(
             icon = Icons.Rounded.Tune,
             title = stringResource(R.string.advanced),
@@ -423,52 +439,170 @@ private fun getColors(
 }
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun SettingsItemSelectLanguage(settingsViewModel: SettingsViewModel) {
+private fun SettingsItemSelectLanguage() {
     val context = LocalContext.current
-    val coroutineScope = rememberCoroutineScope()
     val currentLanguage = NotepadApplication.currentLanguage
-    val dropDownItems =
-        remember { settingsViewModel.getLocalizationList(context).map { DropDownItem(text = it.name) } }
-    val isExpanded = remember { mutableStateOf(false) }
+    var isExpanded by remember { mutableStateOf(false) }
 
     SettingsItem(
         icon = Icons.Outlined.Language,
         title = stringResource(R.string.ChoseLocalization),
-        onClick = { isExpanded.value = true }
+        onClick = { isExpanded = true }
     ) {
-        DropDownButton(
-            items = dropDownItems,
-            selectedIndex = currentLanguage.ordinal,
-            expanded = isExpanded,
-            stretchMode = DropDownButtonSizeMode.STRERCHBYCONTENT,
-            onChangedSelection = {
-                settingsViewModel.selectLocalization(it)
-                recreateActivity(context, coroutineScope)
-            }) {
+        Column(
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.spacedBy(2.dp),
+            modifier = Modifier.padding(vertical = 6.dp)
+        ) {
             Text(
-                text = currentLanguage.getLocalizedValue(context).language,
+                text = currentLanguage.getLocalizedValue(context).name,
+                style = MaterialTheme.typography.titleMedium,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                color = AppTheme.colors.primary,
-                style = MaterialTheme.typography.titleMedium
+                color = AppTheme.colors.primary
             )
+            Text(
+                text = currentLanguage.getLocalizedValue(context).language,
+                style = MaterialTheme.typography.bodySmall,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                color = AppTheme.colors.textSecondary
+            )
+        }
+    }
+
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val scope = rememberCoroutineScope()
+
+    LaunchedEffect(isExpanded) {
+        if (!isExpanded) {
+            sheetState.hide()
+        }
+    }
+
+    if (isExpanded) {
+        val topInsets = WindowInsets.systemBars.only(WindowInsetsSides.Top)
+        val bottomInsets = WindowInsets.systemBars.only(WindowInsetsSides.Bottom)
+
+        ModalBottomSheet(
+            sheetState = sheetState,
+            dragHandle = null,
+            containerColor = Color.Transparent,
+            contentColor = AppTheme.colors.text,
+            windowInsets = WindowInsets.ime,
+            onDismissRequest = { isExpanded = false }
+        ) {
+            Spacer(modifier = Modifier.windowInsetsPadding(topInsets))
+            Column(
+                modifier = Modifier
+                    .clip(BottomSheetDefaults.ExpandedShape)
+                    .background(AppTheme.colors.background)
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 30.dp, vertical = 12.dp)
+                ) {
+                    Text(
+                        text = stringResource(R.string.language),
+                        style = MaterialTheme.typography.headlineSmall,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        fontWeight = FontWeight.SemiBold,
+                    )
+                }
+                Column(
+                    modifier = Modifier
+                        .verticalScroll(rememberScrollState())
+                        .windowInsetsPadding(bottomInsets)
+                        .padding(horizontal = 10.dp)
+                        .padding(vertical = 10.dp)
+                        .padding(bottom = 40.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Localization.entries.mapIndexed { index, locale ->
+                        LanguageItem(
+                            isSelected = currentLanguage.name == locale.name,
+                            locale = locale.getLocalizedValue(context),
+                            onClick = {
+                                scope
+                                    .launch {
+                                        sheetState.hide()
+                                    }
+                                    .invokeOnCompletion {
+                                        isExpanded = false
+                                        if (currentLanguage.name == locale.name) return@invokeOnCompletion
+
+                                        try {
+                                            LocaleHelper.setLocale(
+                                                context = context,
+                                                Localization.entries[index]
+                                            )
+                                        } catch (e: Exception) {
+                                            Log.d(
+                                                "ChangeLocalizationError",
+                                                e.message.toString()
+                                            )
+                                        }
+                                        (context as? Activity)?.recreate()
+                                    }
+                            }
+                        )
+                    }
+                }
+            }
         }
     }
 }
 
-private fun recreateActivity(context: Context, scope: CoroutineScope) {
-    /*******************
-     * If you remove the delay, an error will be generated
-     * ANR in com.example.notepadapp (com.example.notepadapp/.activity.MainActivity)
-     * PID: 16898
-     * Reason: Input dispatching timed out (Waiting because no window has focus but there is a focused application that may eventually add a window when it finishes starting up.)
-     * Load: 0.85 / 0.24 / 0.12
-     * possible problem drop down layout
-     *******************/
+@Composable
+private fun LanguageItem(
+    isSelected: Boolean = false,
+    locale: LocaleData,
+    onClick: () -> Unit,
+) {
+    val backgroundColorValue =
+        if (isSelected) AppTheme.colors.secondaryContainer else Color.Transparent
+    val backgroundColor by animateColorAsState(
+        targetValue = backgroundColorValue,
+        label = "backgroundColor"
+    )
 
-    scope.launch {
-        delay(150)
-        (context as? Activity)?.recreate()
+    val contentColorValue =
+        if (isSelected) AppTheme.colors.onSecondaryContainer else AppTheme.colors.text
+    val contentColor by animateColorAsState(
+        targetValue = contentColorValue,
+        label = "backgroundColor"
+    )
+
+    Surface(
+        color = backgroundColor,
+        contentColor = contentColor,
+        modifier = Modifier.fillMaxWidth(),
+        onClick = onClick,
+        shape = CircleShape,
+    ) {
+        Column(
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.spacedBy(2.dp),
+            modifier = Modifier.padding(horizontal = 20.dp, vertical = 6.dp)
+        ) {
+            Text(
+                text = locale.name,
+                style = MaterialTheme.typography.titleMedium,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                color = contentColor
+            )
+            Text(
+                text = locale.language,
+                style = MaterialTheme.typography.bodySmall,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                color = AppTheme.colors.textSecondary
+            )
+        }
     }
 }
