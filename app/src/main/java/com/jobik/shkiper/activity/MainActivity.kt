@@ -23,13 +23,13 @@ import com.jobik.shkiper.navigation.Screen
 import com.jobik.shkiper.screens.layout.AppLayout
 import com.jobik.shkiper.services.billing.BillingService
 import com.jobik.shkiper.services.inAppUpdates.InAppUpdatesService
-import com.jobik.shkiper.services.localization.LocaleHelper
 import com.jobik.shkiper.services.review.ReviewService
 import com.jobik.shkiper.services.statistics.StatisticsService
 import com.jobik.shkiper.ui.components.modals.OfferWriteReview
 import com.jobik.shkiper.ui.components.modals.onboarding.OnboardingDialog
 import com.jobik.shkiper.ui.helpers.SecureModeManager
 import com.jobik.shkiper.ui.theme.ShkiperTheme
+import com.jobik.shkiper.util.ContextUtils
 import com.jobik.shkiper.util.ContextUtils.adjustFontSize
 import com.jobik.shkiper.util.settings.NightMode
 import com.jobik.shkiper.util.settings.SettingsManager
@@ -47,7 +47,10 @@ open class MainActivity : ComponentActivity() {
 
     override fun attachBaseContext(newBase: Context) {
         super.attachBaseContext(
-            LocaleHelper.setLocale(newBase, NotepadApplication.currentLanguage)
+            ContextUtils.setLocale(
+                context = newBase,
+                language = SettingsManager.settings.localization
+            )
         )
     }
 

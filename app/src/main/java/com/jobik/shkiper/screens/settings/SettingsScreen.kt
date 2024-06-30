@@ -80,9 +80,6 @@ import com.jobik.shkiper.R
 import com.jobik.shkiper.navigation.NavigationHelpers.Companion.navigateToSecondary
 import com.jobik.shkiper.navigation.Screen
 import com.jobik.shkiper.services.backup.BackupService
-import com.jobik.shkiper.services.localization.LocaleData
-import com.jobik.shkiper.services.localization.LocaleHelper
-import com.jobik.shkiper.services.localization.Localization
 import com.jobik.shkiper.ui.components.buttons.CustomSwitch
 import com.jobik.shkiper.ui.components.cards.SettingsItem
 import com.jobik.shkiper.ui.components.cards.ThemePreview
@@ -94,8 +91,11 @@ import com.jobik.shkiper.ui.theme.AppTheme
 import com.jobik.shkiper.ui.theme.CustomThemeColors
 import com.jobik.shkiper.ui.theme.CustomThemeStyle
 import com.jobik.shkiper.ui.theme.getDynamicColors
+import com.jobik.shkiper.util.settings.LocaleData
+import com.jobik.shkiper.util.settings.Localization
 import com.jobik.shkiper.util.settings.NightMode
 import com.jobik.shkiper.util.settings.SettingsManager
+import com.jobik.shkiper.util.settings.SettingsManager.settings
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.enums.EnumEntries
@@ -443,7 +443,7 @@ private fun getColors(
 @Composable
 private fun SettingsItemSelectLanguage() {
     val context = LocalContext.current
-    val currentLanguage = NotepadApplication.currentLanguage
+    val currentLanguage = settings.localization
     var isExpanded by remember { mutableStateOf(false) }
 
     SettingsItem(
@@ -522,7 +522,7 @@ private fun SettingsItemSelectLanguage() {
                         .padding(bottom = 40.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Localization.entries.mapIndexed { index, locale ->
+                    Localization.entries.map { locale ->
                         LanguageItem(
                             isSelected = currentLanguage.name == locale.name,
                             locale = locale.getLocalizedValue(context),
@@ -536,9 +536,9 @@ private fun SettingsItemSelectLanguage() {
                                         if (currentLanguage.name == locale.name) return@invokeOnCompletion
 
                                         try {
-                                            LocaleHelper.setLocale(
+                                            SettingsManager.update(
                                                 context = context,
-                                                Localization.entries[index]
+                                                settings = settings.copy(localization = locale)
                                             )
                                         } catch (e: Exception) {
                                             Log.d(

@@ -1,4 +1,4 @@
-package com.jobik.shkiper.services.localization
+package com.jobik.shkiper.util.settings
 
 import android.content.Context
 import androidx.annotation.Keep
