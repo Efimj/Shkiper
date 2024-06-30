@@ -1,6 +1,7 @@
 package com.jobik.shkiper.widgets.config
 
 import android.appwidget.AppWidgetManager
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
@@ -19,6 +20,7 @@ import com.jobik.shkiper.helpers.TextHelper
 import com.jobik.shkiper.ui.helpers.SecureModeManager
 import com.jobik.shkiper.ui.theme.AppTheme
 import com.jobik.shkiper.ui.theme.ShkiperTheme
+import com.jobik.shkiper.util.ContextUtils
 import com.jobik.shkiper.util.ContextUtils.adjustFontSize
 import com.jobik.shkiper.util.settings.NightMode
 import com.jobik.shkiper.util.settings.SettingsManager
@@ -36,13 +38,22 @@ class ConfigWidgetActivity : AppCompatActivity() {
 
     private val result = Intent()
 
+    override fun attachBaseContext(base: Context) {
+        SettingsManager.init(base)
+        super.attachBaseContext(
+            ContextUtils.setLocale(
+                context = base,
+                language = SettingsManager.settings.localization
+            )
+        )
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         actionBar?.hide()
 
-        SettingsManager.init(this)
-        adjustFontSize(SettingsManager.settings?.fontScale)
+        adjustFontSize(SettingsManager.settings.fontScale)
 
         setupActivity()
         setContent {

@@ -3,6 +3,8 @@ package com.jobik.shkiper.util
 import android.app.UiModeManager
 import android.content.Context
 import android.os.Build
+import com.jobik.shkiper.util.settings.Localization
+import java.util.Locale
 
 object ContextUtils {
     fun Context.adjustFontSize(
@@ -37,5 +39,14 @@ object ContextUtils {
     fun isDarkModeEnabled(context: Context): Boolean {
         val uiModeManager = context.getSystemService(Context.UI_MODE_SERVICE) as UiModeManager
         return uiModeManager.nightMode == UiModeManager.MODE_NIGHT_YES
+    }
+
+    fun setLocale(context: Context, language: Localization): Context? {
+        val locale = Locale(language.localeKey)
+        Locale.setDefault(locale)
+        val configuration = context.resources.configuration
+        configuration.setLocale(locale)
+        configuration.setLayoutDirection(locale)
+        return context.createConfigurationContext(configuration)
     }
 }

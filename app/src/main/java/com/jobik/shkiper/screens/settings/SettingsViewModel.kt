@@ -1,9 +1,7 @@
 package com.jobik.shkiper.screens.settings
 
 import android.app.Application
-import android.content.Context
 import android.net.Uri
-import android.util.Log
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Error
@@ -13,15 +11,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jobik.shkiper.NotepadApplication
 import com.jobik.shkiper.R
 import com.jobik.shkiper.database.data.note.NoteMongoRepository
 import com.jobik.shkiper.database.data.reminder.ReminderMongoRepository
 import com.jobik.shkiper.services.backup.BackupData
 import com.jobik.shkiper.services.backup.BackupService
 import com.jobik.shkiper.services.backup.BackupServiceResult
-import com.jobik.shkiper.services.localization.LocaleHelper
-import com.jobik.shkiper.services.localization.Localization
 import com.jobik.shkiper.services.review.ReviewService
 import com.jobik.shkiper.services.statistics.StatisticsService
 import com.jobik.shkiper.util.SnackbarHostUtil
@@ -47,26 +42,6 @@ class SettingsViewModel @Inject constructor(
 
     private val _settingsScreenState = mutableStateOf(SettingsScreenState())
     val settingsScreenState: State<SettingsScreenState> = _settingsScreenState
-
-    /*******************
-     * App languages
-     *******************/
-
-    fun getLocalizationList(localContext: Context): List<String> {
-        return Localization.values().filter { it.name != NotepadApplication.currentLanguage.name }
-            .map { it.getLocalizedValue(localContext) }
-    }
-
-    fun selectLocalization(selectedIndex: Int) {
-        try {
-            val newLocalization: Localization =
-                Localization.values()
-                    .filter { it.name != NotepadApplication.currentLanguage.name }[selectedIndex]
-            LocaleHelper.setLocale(application.applicationContext, newLocalization)
-        } catch (e: Exception) {
-            Log.d("ChangeLocalizationError", e.message.toString())
-        }
-    }
 
     /*******************
      * App backups
