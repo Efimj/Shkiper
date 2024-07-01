@@ -322,9 +322,9 @@
 
     <string name="ThankForPurchase3">您的支持是对我们最好的回报。感谢您在我们的应用程序中购买！</string>
 
-    <string name="Efim">埃菲姆</string>
+    <string name="efim">埃菲姆</string>
 
-    <string name="EfimDescription">安卓/网络等等..</string>
+    <string name="efim_description">安卓/网络等等..</string>
 
     <string name="Annually">每年</string>
 
@@ -379,6 +379,6 @@
 
     <string name="EmptyTagsTitle">标签尚未创建</string>
 
-    <string name="OtherMyApps">我的其他应用</string>
+    <string name="other_my_apps">我的其他应用</string>
 
 </resources>

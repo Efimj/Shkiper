@@ -1,6 +1,5 @@
 package com.jobik.shkiper.screens.about
 
-import android.content.Context
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
@@ -8,6 +7,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
@@ -29,18 +28,19 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.max
 import com.jobik.shkiper.BuildConfig
 import com.jobik.shkiper.R
+import com.jobik.shkiper.helpers.IntentHelper
 import com.jobik.shkiper.services.statistics.StatisticsService
+import com.jobik.shkiper.ui.components.cards.MediaCard
 import com.jobik.shkiper.ui.helpers.allWindowInsetsPadding
 import com.jobik.shkiper.ui.theme.AppTheme
 import com.jobik.shkiper.ui.theme.CustomThemeStyle
@@ -67,14 +67,112 @@ fun AboutNotepadScreen() {
             .background(AppTheme.colors.background)
             .verticalScroll(rememberScrollState())
             .allWindowInsetsPadding()
-            .padding(top = 85.dp, bottom = 30.dp)
-            .padding(horizontal = 20.dp),
+            .padding(top = 85.dp, bottom = 50.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Header()
         Spacer(modifier = Modifier.height(30.dp))
-        Column {
+        MediaContent()
+    }
+}
 
+@Composable
+private fun MediaContent() {
+    val context = LocalContext.current
+
+    val count = 5
+    var selected by remember { mutableIntStateOf(0) }
+    LaunchedEffect(Unit) {
+        while (true) {
+            delay(2000)
+            selected = (selected + 1) % count
+        }
+    }
+
+    val uriHandler = LocalUriHandler.current
+
+    Column(
+        modifier = Modifier.padding(horizontal = 30.dp),
+        verticalArrangement = Arrangement.spacedBy(20.dp)
+    ) {
+        MediaGroup(headline = stringResource(R.string.community), selected = selected == 0) {
+            MediaCard(
+                isHighlight = selected == 0,
+                image = R.drawable.ic_telegram,
+                title = stringResource(R.string.telegram_chat),
+                description = stringResource(R.string.telegram_chat_description)
+            ) {
+                uriHandler.openUri(context.getString(R.string.telegram_link))
+            }
+        }
+        MediaGroup(headline = stringResource(R.string.development), selected = selected in 1..2) {
+            MediaCard(
+                isHighlight = selected == 1,
+                image = R.drawable.ic_github,
+                title = stringResource(R.string.source_code),
+                description = stringResource(R.string.source_code_description),
+            ) {
+                uriHandler.openUri(context.getString(R.string.shkiper_github_link))
+            }
+            MediaCard(
+                isHighlight = selected == 2,
+                image = R.drawable.ic_bug,
+                title = "Issue tracker",
+                description = "Send bug report and feature request here",
+            ) {
+                uriHandler.openUri(context.getString(R.string.github_issue_tracker_link))
+            }
+        }
+        MediaGroup(headline = stringResource(R.string.Contact), selected = selected == 3) {
+            MediaCard(
+                isHighlight = selected == 3,
+                image = R.drawable.ic_mail,
+                title = stringResource(R.string.efim),
+                description = stringResource(R.string.efim_description)
+            ) {
+                IntentHelper().sendMailIntent(
+                    context = context,
+                    mailList = listOf(context.getString(R.string.jetappdroid_link)),
+                )
+            }
+        }
+        MediaGroup(headline = stringResource(R.string.my_apps), selected = selected == 4) {
+            MediaCard(
+                isHighlight = selected == 4,
+                image = R.drawable.ic_game_of_life,
+                title = stringResource(R.string.game_of_life),
+                description = stringResource(R.string.game_of_life_description)
+            ) {
+                uriHandler.openUri(context.getString(R.string.game_of_life_link))
+            }
+        }
+    }
+}
+
+@Composable
+private fun MediaGroup(
+    modifier: Modifier = Modifier,
+    headline: String,
+    selected: Boolean,
+    content: @Composable ColumnScope.() -> Unit
+) {
+    Column(modifier = modifier) {
+        val color by
+        animateColorAsState(
+            targetValue = if (selected) AppTheme.colors.onSecondaryContainer else AppTheme.colors.textSecondary,
+            tween(500)
+        )
+        Text(
+            modifier = Modifier.padding(bottom = 5.dp),
+            text = headline,
+            style = MaterialTheme.typography.headlineSmall,
+            fontWeight = FontWeight.SemiBold,
+            textAlign = TextAlign.Start,
+            color = color,
+            overflow = TextOverflow.Ellipsis,
+        )
+        Column(verticalArrangement = Arrangement.spacedBy(15.dp)) {
+            content()
         }
     }
 }

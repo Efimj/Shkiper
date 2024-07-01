@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name" translatable="false">Shkiper</string>
-    <string name="jobik_link" translatable="false">jetappdroid@gmail.com</string>
+    <string name="jetappdroid_link" translatable="false">jetappdroid@gmail.com</string>
     <string name="shkiper_github_link" translatable="false">https://github.com/Efimj/Shkiper</string>
     <string name="github_issue_tracker_link" translatable="false">https://github.com/Efimj/Shkiper/issues</string>
     <string name="FreepikLink" translatable="false">https://www.flaticon.com/authors/freepik</string>

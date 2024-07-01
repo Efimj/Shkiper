@@ -202,8 +202,8 @@
     <string name="ThankForPurchase2">Chúng tôi đánh giá cao sự hỗ trợ và tin tưởng của bạn vào ứng dụng của chúng tôi. Cảm ơn bạn đã mua hàng!</string>
     <string name="ThankForPurchase3">Sự hỗ trợ của bạn là phần thưởng tốt nhất cho chúng tôi. Cảm ơn bạn đã mua hàng trong ứng dụng của chúng tôi!</string>
 
-    <string name="Efim">Efim</string>
-    <string name="EfimDescription">Android/Web và hơn thế nữa..</string>
+    <string name="efim">Efim</string>
+    <string name="efim_description">Android/Web và hơn thế nữa..</string>
     <string name="Annually">Hàng năm</string>
     <string name="Monthly">Hàng tháng</string>
     <string name="Localizers">Người bản địa hóa</string>
@@ -246,7 +246,7 @@
     <string name="Selected">Đã chọn</string>
     <string name="EmptyTagsTitle">Thẻ chưa được tạo</string>
 
-    <string name="OtherMyApps">Các ứng dụng khác của tôi</string>
+    <string name="other_my_apps">Các ứng dụng khác của tôi</string>
 
     <string name="advanced">Nâng cao</string>
     <string name="icon_already_selected">Biểu tượng đã được chọn!</string>

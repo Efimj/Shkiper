@@ -198,8 +198,8 @@
     <string name="ThankForPurchase2">Desteğinizi ve uygulamamıza olan güveninizi takdir ediyoruz. Satın aldığınız için teşekkürler!</string>
     <string name="ThankForPurchase3">Desteğiniz bizim için en büyük ödül. Uygulamamızda satın alma yaptığınız için teşekkür ederiz!</string>
 
-    <string name="Efim">Efim</string>
-    <string name="EfimDescription">Android/Web ve daha fazlası..</string>
+    <string name="efim">Efim</string>
+    <string name="efim_description">Android/Web ve daha fazlası..</string>
     <string name="Annually">Yıllık</string>
     <string name="Monthly">Aylık</string>
     <string name="Localizers">Yerelleştiriciler</string>
@@ -242,7 +242,7 @@
     <string name="Selected">Seçilen</string>
     <string name="EmptyTagsTitle">Etiketler henüz oluşturulmadı</string>
 
-    <string name="OtherMyApps">Diğer uygulamalarım</string>
+    <string name="other_my_apps">Diğer uygulamalarım</string>
 
     <string name="advanced">Gelişmiş</string>
     <string name="icon_already_selected">Simge zaten seçili!</string>
