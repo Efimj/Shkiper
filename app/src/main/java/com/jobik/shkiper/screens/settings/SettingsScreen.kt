@@ -361,7 +361,7 @@ private fun ProgramSettings(navController: NavController, settingsViewModel: Set
             onClick = { toggleNightMode(context = context, systemNightMode = systemNightMode) }
         ) {
             CustomSwitch(
-                active = when (SettingsManager.settings.nightMode) {
+                active = when (settings.nightMode) {
                     NightMode.Light -> false
                     NightMode.Dark -> true
                     else -> isSystemInDarkTheme()
@@ -382,9 +382,9 @@ private fun ProgramSettings(navController: NavController, settingsViewModel: Set
 private fun toggleNightMode(context: Context, systemNightMode: Boolean) {
     SettingsManager.update(
         context = context,
-        settings = SettingsManager.settings.copy(
+        settings = settings.copy(
             nightMode =
-            when (SettingsManager.settings.nightMode) {
+            when (settings.nightMode) {
                 NightMode.Light -> NightMode.Dark
                 NightMode.Dark -> NightMode.Light
                 else -> if (systemNightMode) NightMode.Light else NightMode.Dark
@@ -395,7 +395,7 @@ private fun toggleNightMode(context: Context, systemNightMode: Boolean) {
 
 @Composable
 private fun SettingsColorThemePicker(settingsViewModel: SettingsViewModel) {
-    val isDarkMode = when (SettingsManager.settings.nightMode) {
+    val isDarkMode = when (settings.nightMode) {
         NightMode.Light -> false
         NightMode.Dark -> true
         else -> isSystemInDarkTheme()
@@ -438,7 +438,7 @@ private fun SettingsColorThemePicker(settingsViewModel: SettingsViewModel) {
                 ) {
                     SettingsManager.update(
                         context = context,
-                        settings = SettingsManager.settings.copy(
+                        settings = settings.copy(
                             theme = colorValuesName[theme]
                         )
                     )
