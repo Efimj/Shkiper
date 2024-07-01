@@ -38,6 +38,7 @@ import androidx.compose.material.icons.outlined.Done
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.Loop
+import androidx.compose.material.icons.outlined.NewReleases
 import androidx.compose.material.icons.outlined.Palette
 import androidx.compose.material.icons.outlined.Stars
 import androidx.compose.material.icons.outlined.ViewCarousel
@@ -177,7 +178,7 @@ private fun DevSupportSettings(
 private fun OtherSettings(navController: NavController) {
     SettingsGroup(header = stringResource(R.string.Other)) {
         SettingsItem(
-            icon = Icons.Outlined.Info,
+            icon = Icons.Outlined.NewReleases,
             title = stringResource(R.string.AboutNotepad),
             onClick = { navController.navigateToSecondary(Screen.AboutNotepad) }
         )
