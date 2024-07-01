@@ -275,6 +275,8 @@
     <string name="language">Language</string>
     <string name="made_by_efim">Made by Efim 💜</string>
     <string name="bonus">Bonus</string>
+    <string name="community">Community</string>
+    <string name="development">Development</string>
 
 
 </resources>
