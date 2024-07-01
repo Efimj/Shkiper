@@ -44,7 +44,6 @@ import androidx.compose.material.icons.outlined.Palette
 import androidx.compose.material.icons.outlined.Source
 import androidx.compose.material.icons.outlined.Stars
 import androidx.compose.material.icons.outlined.ViewCarousel
-import androidx.compose.material.icons.rounded.BugReport
 import androidx.compose.material.icons.rounded.Contrast
 import androidx.compose.material.icons.rounded.DataUsage
 import androidx.compose.material.icons.rounded.Download
@@ -80,7 +79,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.jobik.shkiper.NotepadApplication
 import com.jobik.shkiper.R
 import com.jobik.shkiper.navigation.NavigationHelpers.Companion.navigateToSecondary
 import com.jobik.shkiper.navigation.Screen
@@ -479,7 +477,6 @@ private fun SettingsItemSelectLanguage() {
         Column(
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.spacedBy(2.dp),
-            modifier = Modifier.padding(vertical = 6.dp)
         ) {
             Text(
                 text = currentLanguage.getLocalizedValue(context).name,
