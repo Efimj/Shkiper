@@ -52,6 +52,7 @@ import androidx.compose.ui.unit.dp
 import com.jobik.shkiper.R
 import com.jobik.shkiper.ui.components.cards.FeatureCard
 import com.jobik.shkiper.ui.components.cards.Features
+import com.jobik.shkiper.ui.components.cards.MediaCard
 import com.jobik.shkiper.ui.helpers.splitIntoTriple
 import com.jobik.shkiper.ui.helpers.verticalWindowInsetsPadding
 import com.jobik.shkiper.ui.modifiers.bounceClick
@@ -280,80 +281,6 @@ private fun SecondOnboardingScreen() {
     }
 }
 
-@Composable
-private fun MediaCard(
-    isHighlight: Boolean = false,
-    @DrawableRes image: Int,
-    title: String,
-    description: String,
-    onClick: () -> Unit
-) {
-    val backgroundColor by
-    animateColorAsState(
-        targetValue = if (isHighlight) AppTheme.colors.secondaryContainer else AppTheme.colors.container,
-        tween(500)
-    )
-
-    val iconColor by
-    animateColorAsState(
-        targetValue = if (isHighlight) AppTheme.colors.onSecondaryContainer else AppTheme.colors.onSecondaryContainer,
-        tween(500)
-    )
-
-    val titleColor by
-    animateColorAsState(
-        targetValue = if (isHighlight) AppTheme.colors.onSecondaryContainer else AppTheme.colors.text,
-        tween(500)
-    )
-
-    val descriptionColor by
-    animateColorAsState(
-        targetValue = if (isHighlight) AppTheme.colors.textSecondary else AppTheme.colors.textSecondary,
-        tween(500)
-    )
-
-    val scale by animateFloatAsState(if (isHighlight) 1.05f else 1f, tween(500))
-
-    Row(
-        modifier = Modifier
-            .graphicsLayer {
-                scaleX = scale
-                scaleY = scale
-            }
-            .bounceClick()
-            .clip(AppTheme.shapes.large)
-            .background(backgroundColor)
-            .clickable { onClick() }
-            .padding(vertical = 10.dp, horizontal = 15.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(15.dp)
-    ) {
-        Image(
-            modifier = Modifier.size(50.dp),
-            painter = painterResource(id = image),
-            contentDescription = null,
-            contentScale = ContentScale.FillHeight,
-            colorFilter = ColorFilter.tint(iconColor)
-        )
-        Column(verticalArrangement = Arrangement.spacedBy(3.dp)) {
-            Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = title,
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.SemiBold,
-                color = titleColor,
-                overflow = TextOverflow.Ellipsis,
-            )
-            Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = description,
-                style = MaterialTheme.typography.bodyMedium,
-                color = descriptionColor,
-                overflow = TextOverflow.Ellipsis,
-            )
-        }
-    }
-}
 
 @Composable
 private fun ThirdOnboardingScreen() {
@@ -416,7 +343,7 @@ private fun ThirdOnboardingScreen() {
 
         Text(
             modifier = Modifier.padding(top = 30.dp, bottom = 10.dp),
-            text = "Bonus",
+            text = stringResource(R.string.bonus),
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.SemiBold,
             textAlign = TextAlign.Center,

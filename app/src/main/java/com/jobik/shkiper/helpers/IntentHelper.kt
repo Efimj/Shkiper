@@ -32,10 +32,11 @@ class IntentHelper {
         (context as Activity).finish()
     }
 
+    @Keep
     fun sendMailIntent(
         context: Context,
         mailList: List<String>,
-        header: String,
+        header: String = "",
         text: String = ""
     ) {
         val intent = Intent(Intent.ACTION_SEND)

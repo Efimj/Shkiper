@@ -34,11 +34,14 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.BugReport
 import androidx.compose.material.icons.outlined.Done
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.Loop
+import androidx.compose.material.icons.outlined.NewReleases
 import androidx.compose.material.icons.outlined.Palette
+import androidx.compose.material.icons.outlined.Source
 import androidx.compose.material.icons.outlined.Stars
 import androidx.compose.material.icons.outlined.ViewCarousel
 import androidx.compose.material.icons.rounded.Contrast
@@ -69,13 +72,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.jobik.shkiper.NotepadApplication
 import com.jobik.shkiper.R
 import com.jobik.shkiper.navigation.NavigationHelpers.Companion.navigateToSecondary
 import com.jobik.shkiper.navigation.Screen
@@ -118,6 +121,7 @@ fun SettingsScreen(
         Spacer(Modifier.height(75.dp))
         ProgramSettings(navController = navController, settingsViewModel = settingsViewModel)
         BackupSettings(settingsViewModel = settingsViewModel)
+        DevelopmentSettings()
         OtherSettings(navController = navController)
         DevSupportSettings(settingsViewModel = settingsViewModel, navController = navController)
         InformationSettings()
@@ -153,6 +157,25 @@ private fun InformationSettings() {
 }
 
 @Composable
+private fun DevelopmentSettings() {
+    val uriHandler = LocalUriHandler.current
+    val context = LocalContext.current
+
+    SettingsGroup(header = stringResource(R.string.development)) {
+        SettingsItem(
+            icon = Icons.Outlined.Source,
+            title = stringResource(R.string.source_code),
+            onClick = { uriHandler.openUri(context.getString(R.string.shkiper_github_link)) }
+        )
+        SettingsItem(
+            icon = Icons.Outlined.BugReport,
+            title = stringResource(R.string.issue_tracker),
+            onClick = { uriHandler.openUri(context.getString(R.string.github_issue_tracker_link)) }
+        )
+    }
+}
+
+@Composable
 private fun DevSupportSettings(
     settingsViewModel: SettingsViewModel,
     navController: NavController
@@ -177,7 +200,7 @@ private fun DevSupportSettings(
 private fun OtherSettings(navController: NavController) {
     SettingsGroup(header = stringResource(R.string.Other)) {
         SettingsItem(
-            icon = Icons.Outlined.Info,
+            icon = Icons.Outlined.NewReleases,
             title = stringResource(R.string.AboutNotepad),
             onClick = { navController.navigateToSecondary(Screen.AboutNotepad) }
         )
@@ -338,7 +361,7 @@ private fun ProgramSettings(navController: NavController, settingsViewModel: Set
             onClick = { toggleNightMode(context = context, systemNightMode = systemNightMode) }
         ) {
             CustomSwitch(
-                active = when (SettingsManager.settings.nightMode) {
+                active = when (settings.nightMode) {
                     NightMode.Light -> false
                     NightMode.Dark -> true
                     else -> isSystemInDarkTheme()
@@ -359,9 +382,9 @@ private fun ProgramSettings(navController: NavController, settingsViewModel: Set
 private fun toggleNightMode(context: Context, systemNightMode: Boolean) {
     SettingsManager.update(
         context = context,
-        settings = SettingsManager.settings.copy(
+        settings = settings.copy(
             nightMode =
-            when (SettingsManager.settings.nightMode) {
+            when (settings.nightMode) {
                 NightMode.Light -> NightMode.Dark
                 NightMode.Dark -> NightMode.Light
                 else -> if (systemNightMode) NightMode.Light else NightMode.Dark
@@ -372,7 +395,7 @@ private fun toggleNightMode(context: Context, systemNightMode: Boolean) {
 
 @Composable
 private fun SettingsColorThemePicker(settingsViewModel: SettingsViewModel) {
-    val isDarkMode = when (SettingsManager.settings.nightMode) {
+    val isDarkMode = when (settings.nightMode) {
         NightMode.Light -> false
         NightMode.Dark -> true
         else -> isSystemInDarkTheme()
@@ -415,7 +438,7 @@ private fun SettingsColorThemePicker(settingsViewModel: SettingsViewModel) {
                 ) {
                     SettingsManager.update(
                         context = context,
-                        settings = SettingsManager.settings.copy(
+                        settings = settings.copy(
                             theme = colorValuesName[theme]
                         )
                     )
@@ -454,7 +477,6 @@ private fun SettingsItemSelectLanguage() {
         Column(
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.spacedBy(2.dp),
-            modifier = Modifier.padding(vertical = 6.dp)
         ) {
             Text(
                 text = currentLanguage.getLocalizedValue(context).name,

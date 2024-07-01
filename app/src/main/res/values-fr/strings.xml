@@ -318,9 +318,9 @@
 
     <string name="ThankForPurchase3">Votre soutien est pour nous la meilleure récompense. Merci d\'avoir acheté dans notre application !</string>
 
-    <string name="Efim">Éfim</string>
+    <string name="efim">Éfim</string>
 
-    <string name="EfimDescription">Android/Web et plus encore.</string>
+    <string name="efim_description">Android/Web et plus encore.</string>
 
     <string name="Annually">Annuellement</string>
 
@@ -375,7 +375,7 @@
 
     <string name="EmptyTagsTitle">Balises pas encore créées</string>
 
-    <string name="OtherMyApps">Autres mes applications</string>
+    <string name="other_my_apps">Autres mes applications</string>
 
 
 </resources>

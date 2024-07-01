@@ -202,8 +202,8 @@
     <string name="ThankForPurchase2">We appreciate your support and trust in our app. Thanks for your purchase!</string>
     <string name="ThankForPurchase3">Your support is the best reward for us. Thank you for purchasing in our app!</string>
 
-    <string name="Efim">Efim</string>
-    <string name="EfimDescription">Android/Web and more..</string>
+    <string name="efim">Efim</string>
+    <string name="efim_description">Android specialist. Any suggestions, wishes, advice</string>
     <string name="Annually">Annually</string>
     <string name="Monthly">Monthly</string>
     <string name="Localizers">Localizers</string>
@@ -246,7 +246,7 @@
     <string name="Selected">Selected</string>
     <string name="EmptyTagsTitle">Tags not created yet</string>
 
-    <string name="OtherMyApps">Other my apps</string>
+    <string name="other_my_apps">Other my apps</string>
 
     <string name="advanced">Advanced</string>
     <string name="icon_already_selected">The icon is already selected!</string>
@@ -273,6 +273,13 @@
     <string name="default_color">Default color</string>
     <string name="notification_defaults">Notification defaults</string>
     <string name="language">Language</string>
+    <string name="made_by_efim">Made by Efim 💜</string>
+    <string name="bonus">Bonus</string>
+    <string name="community">Community</string>
+    <string name="development">Development</string>
+    <string name="my_apps">My apps</string>
+    <string name="bug_report">Send bug report and feature request here</string>
+    <string name="issue_tracker">Issue tracker</string>
 
 
 </resources>

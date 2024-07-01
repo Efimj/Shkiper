@@ -176,8 +176,8 @@
     <string name="ThankForPurchase3">Ваша поддержка — лучшая награда для нас. Спасибо за покупку в нашем приложении!
     </string>
 
-    <string name="Efim">Ефим</string>
-    <string name="EfimDescription">Android/Web и еще..</string>
+    <string name="efim">Ефим</string>
+    <string name="efim_description">Специалист по Android. Любые предложения, пожелания, советы</string>
     <string name="Annually">Ежегодно</string>
     <string name="Monthly">Ежемесячно</string>
     <string name="Localizers">Локализаторы</string>
@@ -219,6 +219,6 @@
     <string name="Selected">Выбранные</string>
     <string name="EmptyTagsTitle">Теги еще не созданы</string>
 
-    <string name="OtherMyApps">Другие мои приложения</string>
+    <string name="other_my_apps">Другие мои приложения</string>
 
 </resources>
