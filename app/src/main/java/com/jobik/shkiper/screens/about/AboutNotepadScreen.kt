@@ -1,39 +1,54 @@
 package com.jobik.shkiper.screens.about
 
-import android.annotation.SuppressLint
-import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
+import android.content.Context
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.max
 import com.jobik.shkiper.BuildConfig
 import com.jobik.shkiper.R
-import com.jobik.shkiper.helpers.IntentHelper
 import com.jobik.shkiper.services.statistics.StatisticsService
-import com.jobik.shkiper.ui.components.cards.LinkCard
-import com.jobik.shkiper.ui.components.cards.UserCard
-import com.jobik.shkiper.ui.components.cards.UserCardLink
-import com.jobik.shkiper.ui.components.layouts.ScreenWrapper
 import com.jobik.shkiper.ui.helpers.allWindowInsetsPadding
-import com.jobik.shkiper.ui.modifiers.bounceClick
 import com.jobik.shkiper.ui.theme.AppTheme
+import com.jobik.shkiper.ui.theme.CustomThemeStyle
+import com.jobik.shkiper.util.ContextUtils.isDarkModeEnabled
+import com.jobik.shkiper.util.settings.NightMode
+import com.jobik.shkiper.util.settings.SettingsManager
+import kotlinx.coroutines.delay
 
-@SuppressLint("Range")
 @Composable
 fun AboutNotepadScreen() {
     val context = LocalContext.current
@@ -46,179 +61,128 @@ fun AboutNotepadScreen() {
         statisticsService.saveStatistics()
     }
 
-    ScreenWrapper(
+    Column(
         modifier = Modifier
+            .fillMaxSize()
+            .background(AppTheme.colors.background)
             .verticalScroll(rememberScrollState())
             .allWindowInsetsPadding()
             .padding(top = 85.dp, bottom = 30.dp)
-            .padding(horizontal = 20.dp)
+            .padding(horizontal = 20.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Row(modifier = Modifier.height(IntrinsicSize.Min), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-            Column(
-                modifier = Modifier
-                    .fillMaxHeight(1f)
-                    .fillMaxWidth(.65f)
-                    .clip(AppTheme.shapes.medium)
-                    .background(AppTheme.colors.container)
-                    .padding(start = 20.dp, end = 20.dp, top = 10.dp, bottom = 15.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = stringResource(R.string.app_name),
-                    color = AppTheme.colors.primary,
-                    style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.SemiBold),
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.padding(bottom = 5.dp)
-                )
-                Text(
-                    text = stringResource(R.string.AboutAppDescription),
-                    color = AppTheme.colors.textSecondary,
-                    style = MaterialTheme.typography.bodyLarge,
-                    overflow = TextOverflow.Ellipsis,
-                    textAlign = TextAlign.Start,
-                )
-            }
-            Column(
-                modifier = Modifier
-                    .fillMaxHeight(1f)
-                    .fillMaxWidth(1.33f),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(10.dp)
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxHeight(.65f)
-                        .fillMaxWidth()
-                        .clip(AppTheme.shapes.medium)
-                        .background(AppTheme.colors.container)
-                        .padding(horizontal = 20.dp, vertical = 10.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    Image(
-                        modifier = Modifier.widthIn(max = 100.dp),
-                        painter = painterResource(id = R.drawable.ic_app),
-                        contentDescription = stringResource(R.string.Image),
-                        contentScale = ContentScale.Fit
-                    )
-                }
-                Column(
-                    modifier = Modifier
-                        .fillMaxHeight(1.35f)
-                        .fillMaxWidth()
-                        .clip(AppTheme.shapes.medium)
-                        .background(AppTheme.colors.container)
-                        .padding(vertical = 10.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    Text(
-                        modifier = Modifier.basicMarquee().padding(horizontal = 20.dp),
-                        text = BuildConfig.VERSION_NAME,
-                        color = AppTheme.colors.primary,
-                        style = MaterialTheme.typography.titleMedium,
-                        textAlign = TextAlign.Center,
-                        fontWeight = FontWeight.SemiBold,
-                        maxLines = 1
-                    )
-                }
-            }
+        Header()
+        Spacer(modifier = Modifier.height(30.dp))
+        Column {
+
         }
-        Spacer(modifier = Modifier.height(10.dp))
+    }
+}
 
-        val shkiperLink = stringResource(id = R.string.shkiper_github_link)
-        val onLinkCopiedText = stringResource(R.string.LinkCopied)
-        val linkTextLabel = stringResource(R.string.Link)
-        LinkCard(link = shkiperLink, linkTextLabel = linkTextLabel, onLinkCopiedText = onLinkCopiedText)
+@Composable
+private fun Header() {
+    val context = LocalContext.current
 
-        Spacer(modifier = Modifier.height(16.dp))
-        Column (modifier = Modifier.fillMaxWidth()){
-            Text(
-                text = stringResource(R.string.OtherMyApps),
-                color = AppTheme.colors.textSecondary,
-                style = MaterialTheme.typography.titleMedium,
-                overflow = TextOverflow.Ellipsis,
-                textAlign = TextAlign.Center,
-                fontWeight = FontWeight.SemiBold,
-                maxLines = 1,
-                modifier = Modifier.padding(bottom = 8.dp)
+    val isDarkTheme = when (SettingsManager.settings.nightMode) {
+        NightMode.Light -> false
+        NightMode.Dark -> true
+        else -> isDarkModeEnabled(context)
+    }
+
+    val iconsWithStrings = remember {
+        listOf(
+            Pair(
+                R.drawable.ic_classic_launcher,
+                if (isDarkTheme) CustomThemeStyle.MaterialDynamicColors.dark.primary else CustomThemeStyle.MaterialDynamicColors.light.primary
+            ),
+            Pair(
+                R.drawable.ic_classic_white_launcher,
+                if (isDarkTheme) CustomThemeStyle.MaterialDynamicColors.dark.text else CustomThemeStyle.MaterialDynamicColors.light.text
+            ),
+            Pair(
+                R.drawable.ic_love_launcher,
+                if (isDarkTheme) CustomThemeStyle.PastelRed.dark.primary else CustomThemeStyle.PastelRed.light.primary
+            ),
+            Pair(
+                R.drawable.ic_rocket_launcher,
+                if (isDarkTheme) CustomThemeStyle.PastelOrange.dark.primary else CustomThemeStyle.PastelOrange.light.primary
+            ),
+            Pair(
+                R.drawable.ic_night_launcher,
+                if (isDarkTheme) CustomThemeStyle.PastelOrange.dark.textSecondary else CustomThemeStyle.PastelOrange.light.textSecondary
+            ),
+            Pair(
+                R.drawable.ic_money_launcher,
+                if (isDarkTheme) CustomThemeStyle.PastelGreen.dark.primary else CustomThemeStyle.PastelGreen.light.primary
             )
-            Column(
-                modifier = Modifier
-                    .horizontalScroll(rememberScrollState()),
-                horizontalAlignment = Alignment.Start
-            ) {
-                val link = stringResource(R.string.game_of_life_link)
-                Card(
-                    modifier = Modifier
-                        .height(160.dp)
-                        .bounceClick()
-                        .clickable { IntentHelper().openBrowserIntent(context = context, link = link) },
-                    colors = CardDefaults.cardColors(containerColor = Color.Transparent)
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.game_of_life_banner),
-                        contentDescription = null,
-                        contentScale = ContentScale.Fit
-                    )
-                }
-            }
+        ).shuffled()
+    }
+
+    val icons = iconsWithStrings.map { it.first }
+    val colors = iconsWithStrings.map { it.second }
+
+    val animationDelay = 500
+
+    var index by remember { mutableIntStateOf(0) }
+    val color by animateColorAsState(
+        targetValue = colors[index],
+        animationSpec = tween(animationDelay)
+    )
+
+    LaunchedEffect(Unit) {
+        while (true) {
+            delay(2000)
+            index = (index + 1) % icons.size
         }
-        Spacer(modifier = Modifier.height(16.dp))
+    }
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(
+            space = 30.dp,
+            alignment = Alignment.CenterHorizontally
+        ),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Crossfade(
+            targetState = index,
+            animationSpec = tween(animationDelay),
+            label = "crossfade"
+        ) { index ->
+            Image(
+                modifier = Modifier.size(160.dp),
+                imageVector = ImageVector.vectorResource(id = icons[index]),
+                contentDescription = "icon",
+            )
+        }
         Column {
             Text(
-                text = stringResource(R.string.Contact),
-                color = AppTheme.colors.textSecondary,
-                style = MaterialTheme.typography.titleMedium,
-                overflow = TextOverflow.Ellipsis,
-                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(bottom = 5.dp),
+                text = stringResource(id = R.string.app_name),
+                style = MaterialTheme.typography.displayMedium,
                 fontWeight = FontWeight.SemiBold,
-                maxLines = 1,
-                modifier = Modifier.padding(bottom = 8.dp)
-            )
-            val email = stringResource(R.string.jobik_link)
-            val emailHeader = stringResource(R.string.DevMailHeader)
-            UserCard(
-                photo = R.drawable.photo_my_favorite_cat_2,
-                name = stringResource(R.string.Efim),
-                description = stringResource(R.string.EfimDescription),
-                onClick = { IntentHelper().sendMailIntent(context, listOf(email), emailHeader) },
-                links = listOf(
-                    UserCardLink(
-                        image = R.drawable.ic_gmail,
-                        description = stringResource(R.string.Image),
-                    ) { IntentHelper().sendMailIntent(context, listOf(email), emailHeader) }
-                )
-            )
-            Spacer(modifier = Modifier.height(6.dp))
-            Text(
-                text = stringResource(R.string.Icons),
-                color = AppTheme.colors.textSecondary,
-                style = MaterialTheme.typography.titleMedium,
-                overflow = TextOverflow.Ellipsis,
                 textAlign = TextAlign.Center,
-                fontWeight = FontWeight.SemiBold,
+                color = color,
                 maxLines = 1,
-                modifier = Modifier.padding(vertical = 8.dp)
+                overflow = TextOverflow.Ellipsis,
             )
-            Row(modifier = Modifier.horizontalScroll(rememberScrollState())) {
-                val rakibHassanRahimLink = stringResource(R.string.RakibHassanRahimLink)
-                UserCard(
-                    photo = R.drawable.rakib_hassan_rahim,
-                    onClick = { IntentHelper().openBrowserIntent(context, rakibHassanRahimLink) }
+            Column {
+                Text(
+                    text = stringResource(R.string.made_by_efim),
+                    style = MaterialTheme.typography.titleMedium,
+                    textAlign = TextAlign.Center,
+                    color = AppTheme.colors.textSecondary,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1,
+                    fontWeight = FontWeight.Normal
                 )
-                Spacer(modifier = Modifier.width(8.dp))
-                val freepikLink = stringResource(R.string.FreepikLink)
-                UserCard(
-                    photo = R.drawable.freepik,
-                    onClick = { IntentHelper().openBrowserIntent(context, freepikLink) }
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                val stickersLink = stringResource(R.string.StickersLink)
-                UserCard(
-                    photo = R.drawable.stickers_pack,
-                    onClick = { IntentHelper().openBrowserIntent(context, stickersLink) }
+                Text(
+                    text = BuildConfig.VERSION_NAME,
+                    style = MaterialTheme.typography.titleMedium,
+                    textAlign = TextAlign.Center,
+                    color = AppTheme.colors.textSecondary,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1,
+                    fontWeight = FontWeight.Normal
                 )
             }
         }

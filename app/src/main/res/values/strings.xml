@@ -273,6 +273,7 @@
     <string name="default_color">Default color</string>
     <string name="notification_defaults">Notification defaults</string>
     <string name="language">Language</string>
+    <string name="made_by_efim">Made by Efim 💜</string>
 
 
 </resources>
