@@ -117,8 +117,8 @@ private fun MediaContent() {
             MediaCard(
                 isHighlight = selected == 2,
                 image = R.drawable.ic_bug,
-                title = "Issue tracker",
-                description = "Send bug report and feature request here",
+                title = stringResource(R.string.issue_tracker),
+                description = stringResource(R.string.bug_report),
             ) {
                 uriHandler.openUri(context.getString(R.string.github_issue_tracker_link))
             }

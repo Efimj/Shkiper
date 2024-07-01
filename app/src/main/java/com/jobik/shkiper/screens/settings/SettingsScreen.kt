@@ -34,14 +34,17 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.BugReport
 import androidx.compose.material.icons.outlined.Done
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.Loop
 import androidx.compose.material.icons.outlined.NewReleases
 import androidx.compose.material.icons.outlined.Palette
+import androidx.compose.material.icons.outlined.Source
 import androidx.compose.material.icons.outlined.Stars
 import androidx.compose.material.icons.outlined.ViewCarousel
+import androidx.compose.material.icons.rounded.BugReport
 import androidx.compose.material.icons.rounded.Contrast
 import androidx.compose.material.icons.rounded.DataUsage
 import androidx.compose.material.icons.rounded.Download
@@ -70,6 +73,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -119,6 +123,7 @@ fun SettingsScreen(
         Spacer(Modifier.height(75.dp))
         ProgramSettings(navController = navController, settingsViewModel = settingsViewModel)
         BackupSettings(settingsViewModel = settingsViewModel)
+        DevelopmentSettings()
         OtherSettings(navController = navController)
         DevSupportSettings(settingsViewModel = settingsViewModel, navController = navController)
         InformationSettings()
@@ -150,6 +155,25 @@ private fun InformationSettings() {
                 modifier = Modifier.fillMaxWidth()
             )
         }
+    }
+}
+
+@Composable
+private fun DevelopmentSettings() {
+    val uriHandler = LocalUriHandler.current
+    val context = LocalContext.current
+
+    SettingsGroup(header = stringResource(R.string.development)) {
+        SettingsItem(
+            icon = Icons.Outlined.Source,
+            title = stringResource(R.string.source_code),
+            onClick = { uriHandler.openUri(context.getString(R.string.shkiper_github_link)) }
+        )
+        SettingsItem(
+            icon = Icons.Outlined.BugReport,
+            title = stringResource(R.string.issue_tracker),
+            onClick = { uriHandler.openUri(context.getString(R.string.github_issue_tracker_link)) }
+        )
     }
 }
 

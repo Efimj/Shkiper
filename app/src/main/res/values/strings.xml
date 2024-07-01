@@ -278,6 +278,8 @@
     <string name="community">Community</string>
     <string name="development">Development</string>
     <string name="my_apps">My apps</string>
+    <string name="bug_report">Send bug report and feature request here</string>
+    <string name="issue_tracker">Issue tracker</string>
 
 
 </resources>
