@@ -15,6 +15,8 @@ import androidx.compose.material.icons.outlined.SignalWifiOff
 import androidx.compose.material.icons.outlined.TaskAlt
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,17 +39,26 @@ import com.jobik.shkiper.ui.components.modals.ImageActionDialog
 import com.jobik.shkiper.ui.components.modals.ImageActionDialogButton
 import com.jobik.shkiper.ui.helpers.allWindowInsetsPadding
 import com.jobik.shkiper.ui.theme.AppTheme
+import com.jobik.shkiper.util.ContextUtils
 import kotlin.random.Random
 
 @Composable
 fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
     val context = LocalContext.current
-    val connectivityManager = remember { context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager }
-    val isNetworkActive =
-        remember { connectivityManager.activeNetworkInfo != null && connectivityManager.activeNetworkInfo!!.isConnected }
+    val hasInternetConnection by remember {
+        mutableStateOf(
+            ContextUtils.hasInternetConnection(
+                context
+            )
+        )
+    }
 
     if (purchaseViewModel.screenState.value.showGratitude) {
-        val stringResources = listOf(R.string.ThankForPurchase1, R.string.ThankForPurchase2, R.string.ThankForPurchase3)
+        val stringResources = listOf(
+            R.string.ThankForPurchase1,
+            R.string.ThankForPurchase2,
+            R.string.ThankForPurchase3
+        )
         ImageActionDialog(
             header = stringResource(stringResources[Random.nextInt(stringResources.size)]),
             onGoBack = {},
@@ -59,15 +70,25 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
         )
     }
 
-    if (!isNetworkActive)
-        ScreenStub(title = R.string.CheckInternetConnection, icon = Icons.Outlined.SignalWifiOff)
-    else if (purchaseViewModel.screenState.value.purchases.isEmpty() && purchaseViewModel.screenState.value.subscription != null)
-        ScreenStub(title = R.string.CheckUpdatesGooglePlay, icon = Icons.Default.Shop)
-    else
-        ScreenWrapper(modifier = Modifier
-            .verticalScroll(rememberScrollState())
-            .allWindowInsetsPadding()
-            .padding(top = 85.dp, bottom = 30.dp)) {
+    if (hasInternetConnection.not()) {
+        ScreenStub(
+            modifier = Modifier.background(AppTheme.colors.background),
+            title = R.string.CheckInternetConnection,
+            icon = Icons.Outlined.SignalWifiOff
+        )
+    } else if (purchaseViewModel.screenState.value.purchases.isEmpty() && purchaseViewModel.screenState.value.subscription != null) {
+        ScreenStub(
+            modifier = Modifier.background(AppTheme.colors.background),
+            title = R.string.CheckUpdatesGooglePlay,
+            icon = Icons.Default.Shop
+        )
+    } else
+        ScreenWrapper(
+            modifier = Modifier
+                .verticalScroll(rememberScrollState())
+                .allWindowInsetsPadding()
+                .padding(top = 85.dp, bottom = 30.dp)
+        ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -115,7 +136,9 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
                             ProductPurchaseCardContent(
                                 product = productDetails,
                                 imageRes = R.drawable.tea,
-                                isPurchased = purchaseViewModel.checkIsProductPurchased(productDetails.productId)
+                                isPurchased = purchaseViewModel.checkIsProductPurchased(
+                                    productDetails.productId
+                                )
                             )
                         },
                     purchaseViewModel.screenState.value.purchases.find { it.productId == AppProducts.SweetsForMyCat }
@@ -124,7 +147,9 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
                                 product = productDetails,
                                 imageRes = R.drawable.photo_my_favorite_cat_2,
                                 isHighlighted = true,
-                                isPurchased = purchaseViewModel.checkIsProductPurchased(productDetails.productId)
+                                isPurchased = purchaseViewModel.checkIsProductPurchased(
+                                    productDetails.productId
+                                )
                             )
                         },
                     purchaseViewModel.screenState.value.purchases.find { it.productId == AppProducts.GymMembership }
@@ -132,15 +157,19 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
                             ProductPurchaseCardContent(
                                 product = productDetails,
                                 imageRes = R.drawable.fitness,
-                                isPurchased = purchaseViewModel.checkIsProductPurchased(productDetails.productId)
+                                isPurchased = purchaseViewModel.checkIsProductPurchased(
+                                    productDetails.productId
+                                )
                             )
                         }
                 )
                 for (product in productList)
                     if (product != null)
-                        Box(modifier = Modifier
-                            .weight(1f)
-                            .padding(horizontal = 4.dp)) {
+                        Box(
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(horizontal = 4.dp)
+                        ) {
                             PurchaseCard(product) {
                                 purchaseViewModel.makePurchase(product.product, context as Activity)
                             }
@@ -178,9 +207,11 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
                 ) {
                     productDetails.subscriptionOfferDetails?.find { it.basePlanId == AppProducts.Monthly }
                         ?.let { subscriptionOffer ->
-                            Box(modifier = Modifier
-                                .weight(1f)
-                                .padding(horizontal = 4.dp)) {
+                            Box(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .padding(horizontal = 4.dp)
+                            ) {
                                 PurchaseCard(
                                     TitlePurchaseCardContent(
                                         titleRes = R.string.Monthly,
@@ -198,9 +229,11 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
                         }
                     productDetails.subscriptionOfferDetails?.find { it.basePlanId == AppProducts.Yearly }
                         ?.let { subscriptionOffer ->
-                            Box(modifier = Modifier
-                                .weight(1f)
-                                .padding(horizontal = 4.dp)) {
+                            Box(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .padding(horizontal = 4.dp)
+                            ) {
                                 PurchaseCard(
                                     TitlePurchaseCardContent(
                                         titleRes = R.string.Annually,
