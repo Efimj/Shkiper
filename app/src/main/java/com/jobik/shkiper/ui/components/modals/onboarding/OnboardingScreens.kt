@@ -343,7 +343,7 @@ private fun ThirdOnboardingScreen() {
 
         Text(
             modifier = Modifier.padding(top = 30.dp, bottom = 10.dp),
-            text = "Bonus",
+            text = stringResource(R.string.bonus),
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.SemiBold,
             textAlign = TextAlign.Center,
