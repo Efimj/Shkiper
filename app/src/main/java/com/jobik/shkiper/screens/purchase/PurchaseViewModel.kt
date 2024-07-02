@@ -23,7 +23,7 @@ import javax.inject.Inject
 
 data class PurchaseScreenState(
     val purchases: List<ProductDetails> = emptyList(),
-    val subscription: ProductDetails? = null,
+    val subscriptions: List<ProductDetails> = emptyList(),
     val showGratitude: Boolean = false,
 )
 
@@ -38,7 +38,7 @@ class PurchaseViewModel @Inject constructor(
     init {
         _screenState.value = _screenState.value.copy(
             purchases = billingClient.productDetails.value,
-            subscription = if (billingClient.subscriptionsDetails.value.isNotEmpty()) billingClient.subscriptionsDetails.value.first() else null,
+            subscriptions = billingClient.subscriptionsDetails.value,
         )
         billingClient.registerPurchaseCallback(this)
     }
@@ -91,7 +91,11 @@ class PurchaseViewModel @Inject constructor(
         subscriptionOfferDetails: SubscriptionOfferDetails,
         activity: Activity
     ) {
-        val billingResult = billingClient.makePurchaseSubscription(activity, productDetails, subscriptionOfferDetails)
+        val billingResult = billingClient.makePurchaseSubscription(
+            activity,
+            productDetails,
+            subscriptionOfferDetails
+        )
     }
 
     fun checkIsProductPurchased(productId: String): Boolean {

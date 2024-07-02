@@ -1,45 +1,58 @@
 package com.jobik.shkiper.screens.purchase
 
 import android.app.Activity
-import android.content.Context
-import android.net.ConnectivityManager
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.basicMarquee
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Shop
 import androidx.compose.material.icons.outlined.SignalWifiOff
-import androidx.compose.material.icons.outlined.TaskAlt
+import androidx.compose.material.icons.rounded.Verified
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.android.billingclient.api.ProductDetails
 import com.jobik.shkiper.R
 import com.jobik.shkiper.services.billing.AppProducts
-import com.jobik.shkiper.ui.components.cards.ProductPurchaseCardContent
-import com.jobik.shkiper.ui.components.cards.PurchaseCard
-import com.jobik.shkiper.ui.components.cards.TitlePurchaseCardContent
 import com.jobik.shkiper.ui.components.layouts.ScreenStub
-import com.jobik.shkiper.ui.components.layouts.ScreenWrapper
 import com.jobik.shkiper.ui.components.modals.ImageActionDialog
 import com.jobik.shkiper.ui.components.modals.ImageActionDialogButton
 import com.jobik.shkiper.ui.helpers.allWindowInsetsPadding
+import com.jobik.shkiper.ui.modifiers.bounceClick
 import com.jobik.shkiper.ui.theme.AppTheme
 import com.jobik.shkiper.util.ContextUtils
+import kotlinx.coroutines.delay
 import kotlin.random.Random
 
 @Composable
@@ -70,186 +83,310 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
         )
     }
 
-    if (hasInternetConnection.not()) {
-        ScreenStub(
-            modifier = Modifier.background(AppTheme.colors.background),
-            title = R.string.CheckInternetConnection,
-            icon = Icons.Outlined.SignalWifiOff
-        )
-    } else if (purchaseViewModel.screenState.value.purchases.isEmpty() && purchaseViewModel.screenState.value.subscription != null) {
-        ScreenStub(
-            modifier = Modifier.background(AppTheme.colors.background),
-            title = R.string.CheckUpdatesGooglePlay,
-            icon = Icons.Default.Shop
-        )
-    } else
-        ScreenWrapper(
-            modifier = Modifier
-                .verticalScroll(rememberScrollState())
-                .allWindowInsetsPadding()
-                .padding(top = 85.dp, bottom = 30.dp)
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 15.dp, start = 10.dp, end = 10.dp)
-                    .clip(AppTheme.shapes.large)
-                    .background(AppTheme.colors.container)
-                    .padding(start = 20.dp, end = 20.dp, top = 10.dp, bottom = 15.dp),
-            ) {
-                Text(
-                    stringResource(R.string.PurchaseScreenTitle),
-                    color = AppTheme.colors.text,
-                    style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .padding(bottom = 15.dp, top = 5.dp)
-                        .fillMaxWidth()
-                )
-                Text(
-                    text = stringResource(R.string.PurchaseScreenDescription),
-                    color = AppTheme.colors.textSecondary,
-                    fontSize = 16.sp,
-                    lineHeight = 24.sp,
-                    style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier.fillMaxWidth()
-                )
-            }
-            Text(
-                stringResource(R.string.BuyMe),
-                color = AppTheme.colors.textSecondary,
-                style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier
-                    .padding(horizontal = 10.dp)
-                    .padding(bottom = 5.dp)
-                    .fillMaxWidth()
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(AppTheme.colors.background),
+    ) {
+        if (hasInternetConnection.not()) {
+            ScreenStub(
+                title = R.string.CheckInternetConnection,
+                icon = Icons.Outlined.SignalWifiOff
             )
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 7.dp),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                val productList = listOf(
-                    purchaseViewModel.screenState.value.purchases.find { it.productId == AppProducts.CupOfTea }
-                        ?.let { productDetails ->
-                            ProductPurchaseCardContent(
-                                product = productDetails,
-                                imageRes = R.drawable.tea,
-                                isPurchased = purchaseViewModel.checkIsProductPurchased(
-                                    productDetails.productId
-                                )
-                            )
-                        },
-                    purchaseViewModel.screenState.value.purchases.find { it.productId == AppProducts.SweetsForMyCat }
-                        ?.let { productDetails ->
-                            ProductPurchaseCardContent(
-                                product = productDetails,
-                                imageRes = R.drawable.photo_my_favorite_cat_2,
-                                isHighlighted = true,
-                                isPurchased = purchaseViewModel.checkIsProductPurchased(
-                                    productDetails.productId
-                                )
-                            )
-                        },
-                    purchaseViewModel.screenState.value.purchases.find { it.productId == AppProducts.GymMembership }
-                        ?.let { productDetails ->
-                            ProductPurchaseCardContent(
-                                product = productDetails,
-                                imageRes = R.drawable.fitness,
-                                isPurchased = purchaseViewModel.checkIsProductPurchased(
-                                    productDetails.productId
-                                )
-                            )
-                        }
-                )
-                for (product in productList)
-                    if (product != null)
-                        Box(
-                            modifier = Modifier
-                                .weight(1f)
-                                .padding(horizontal = 4.dp)
-                        ) {
-                            PurchaseCard(product) {
-                                purchaseViewModel.makePurchase(product.product, context as Activity)
-                            }
-                        }
-            }
-            Spacer(Modifier.height(4.dp))
-            purchaseViewModel.screenState.value.subscription?.let { productDetails ->
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .padding(horizontal = 10.dp)
-                        .fillMaxWidth()
-                ) {
-                    Text(
-                        stringResource(R.string.BuySubscription),
-                        color = AppTheme.colors.textSecondary,
-                        style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier
-                            .padding(bottom = 5.dp)
-                            .padding(top = 15.dp)
-                    )
-                    Spacer(Modifier.width(8.dp))
-                    if (purchaseViewModel.checkIsProductPurchased(productDetails.productId))
-                        Icon(
-                            imageVector = Icons.Outlined.TaskAlt,
-                            contentDescription = null,
-                            tint = AppTheme.colors.primary,
+        } else {
+            ScreenContent(purchaseViewModel = purchaseViewModel)
+        }
+    }
+}
+
+@Composable
+private fun ScreenContent(purchaseViewModel: PurchaseViewModel) {
+    val context = LocalContext.current
+
+    var highlight by remember { mutableIntStateOf(0) }
+    val count = 4
+
+    LaunchedEffect(Unit) {
+        while (true) {
+            delay(2000)
+            highlight = (highlight + 1) % count
+        }
+    }
+
+    Column(
+        modifier = Modifier
+            .verticalScroll(rememberScrollState())
+            .allWindowInsetsPadding()
+            .padding(top = 85.dp, bottom = 40.dp)
+            .padding(horizontal = 10.dp),
+        verticalArrangement = Arrangement.spacedBy(20.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(AppTheme.shapes.large)
+                .background(AppTheme.colors.secondaryContainer)
+                .padding(20.dp),
+            verticalArrangement = Arrangement.spacedBy(5.dp)
+        ) {
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = stringResource(R.string.support_the_project),
+                color = AppTheme.colors.onSecondaryContainer,
+                maxLines = 1,
+                fontWeight = FontWeight.SemiBold,
+                overflow = TextOverflow.Ellipsis,
+                style = MaterialTheme.typography.headlineMedium
+            )
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = stringResource(R.string.support_project_description),
+                color = AppTheme.colors.onSecondaryContainer,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Normal
+            )
+        }
+        Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+            Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                purchaseViewModel.screenState.value.purchases.forEachIndexed { index, it ->
+                    ProductCard(
+                        modifier = Modifier.weight(1f),
+                        highlight = index == highlight,
+                        isBought = purchaseViewModel.checkIsProductPurchased(it.productId),
+                        product = it
+                    ) {
+                        purchaseViewModel.makePurchase(
+                            productDetails = it,
+                            activity = context as Activity
                         )
+                    }
                 }
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 7.dp),
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    productDetails.subscriptionOfferDetails?.find { it.basePlanId == AppProducts.Monthly }
-                        ?.let { subscriptionOffer ->
-                            Box(
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .padding(horizontal = 4.dp)
-                            ) {
-                                PurchaseCard(
-                                    TitlePurchaseCardContent(
-                                        titleRes = R.string.Monthly,
-                                        imageRes = R.drawable.one_month,
-                                        isPurchased = false
-                                    )
-                                ) {
-                                    purchaseViewModel.makePurchaseSubscription(
-                                        productDetails,
-                                        subscriptionOffer,
-                                        context as Activity
-                                    )
-                                }
-                            }
+            }
+            Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                val sub = purchaseViewModel.screenState.value.subscriptions.firstOrNull()
+
+                sub?.subscriptionOfferDetails?.forEachIndexed { index, subDetail ->
+                    subDetail?.let {
+                        SubscriptionCard(
+                            modifier = Modifier.weight(1f),
+                            highlight = index + 2 == highlight,
+                            product = subDetail
+                        ) {
+                            purchaseViewModel.makePurchaseSubscription(
+                                productDetails = sub,
+                                subscriptionOfferDetails = subDetail,
+                                activity = context as Activity
+                            )
                         }
-                    productDetails.subscriptionOfferDetails?.find { it.basePlanId == AppProducts.Yearly }
-                        ?.let { subscriptionOffer ->
-                            Box(
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .padding(horizontal = 4.dp)
-                            ) {
-                                PurchaseCard(
-                                    TitlePurchaseCardContent(
-                                        titleRes = R.string.Annually,
-                                        imageRes = R.drawable.full_year,
-                                        isPurchased = false
-                                    )
-                                ) {
-                                    purchaseViewModel.makePurchaseSubscription(
-                                        productDetails,
-                                        subscriptionOffer,
-                                        context as Activity
-                                    )
-                                }
-                            }
-                        }
+                    }
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun ProductCard(
+    modifier: Modifier = Modifier,
+    highlight: Boolean = false,
+    isBought: Boolean = false,
+    product: ProductDetails,
+    onClick: (ProductDetails) -> Unit
+) {
+    val type = stringResource(R.string.purchase)
+    val description = stringResource(R.string.support)
+    val price = product.oneTimePurchaseOfferDetails?.formattedPrice ?: ""
+
+    val backgroundColor by
+    animateColorAsState(
+        targetValue = if (highlight) AppTheme.colors.secondaryContainer else AppTheme.colors.container,
+        tween(500)
+    )
+
+    val titleColor by
+    animateColorAsState(
+        targetValue = if (highlight) AppTheme.colors.onSecondaryContainer else AppTheme.colors.text,
+        tween(500)
+    )
+
+    val scale by animateFloatAsState(if (highlight) 1.05f else 1f, tween(500))
+
+    Column(
+        modifier = modifier
+            .bounceClick()
+            .graphicsLayer {
+                scaleX = scale
+                scaleY = scale
+            }
+            .clip(AppTheme.shapes.medium)
+            .background(backgroundColor)
+            .clickable { onClick(product) }
+            .padding(15.dp),
+    ) {
+        Row {
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    modifier = Modifier
+                        .basicMarquee(),
+                    text = type,
+                    color = AppTheme.colors.textSecondary,
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.Normal,
+                    maxLines = 1
+                )
+                Text(
+                    modifier = Modifier
+                        .height(50.dp)
+                        .basicMarquee(),
+                    text = description,
+                    color = titleColor,
+                    style = MaterialTheme.typography.titleMedium,
+                    maxLines = 1
+                )
+            }
+            if (isBought) {
+                Box(
+                    modifier = Modifier
+                        .clip(CircleShape)
+                        .background(AppTheme.colors.primary)
+                        .padding(4.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Rounded.Verified,
+                        contentDescription = null,
+                        tint = AppTheme.colors.onPrimary
+                    )
+                }
+            }
+        }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(CircleShape)
+                .background(AppTheme.colors.primary)
+                .padding(10.dp),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                modifier = Modifier.basicMarquee(),
+                text = price,
+                color = AppTheme.colors.onPrimary,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Normal,
+                maxLines = 1
+            )
+        }
+    }
+}
+
+@Composable
+private fun SubscriptionCard(
+    modifier: Modifier = Modifier,
+    highlight: Boolean = false,
+    isBought: Boolean = false,
+    product: ProductDetails.SubscriptionOfferDetails,
+    onClick: (ProductDetails.SubscriptionOfferDetails) -> Unit
+) {
+    val type = stringResource(R.string.subscription)
+    val description = stringResource(R.string.ongoing_support)
+    val price = product.pricingPhases.pricingPhaseList.first().formattedPrice
+    val subPeriod = when (product.basePlanId) {
+        AppProducts.Yearly -> stringResource(R.string.yearly)
+        AppProducts.Monthly -> stringResource(R.string.monthly)
+        else -> ""
+    }
+
+    val backgroundColor by
+    animateColorAsState(
+        targetValue = if (highlight) AppTheme.colors.secondaryContainer else AppTheme.colors.container,
+        tween(500)
+    )
+
+    val titleColor by
+    animateColorAsState(
+        targetValue = if (highlight) AppTheme.colors.onSecondaryContainer else AppTheme.colors.text,
+        tween(500)
+    )
+
+    val scale by animateFloatAsState(if (highlight) 1.05f else 1f, tween(500))
+
+    Column(
+        modifier = modifier
+            .bounceClick()
+            .graphicsLayer {
+                scaleX = scale
+                scaleY = scale
+            }
+            .clip(AppTheme.shapes.medium)
+            .background(backgroundColor)
+            .clickable { onClick(product) }
+            .padding(15.dp),
+    ) {
+        Row {
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .basicMarquee(),
+                    text = type,
+                    color = AppTheme.colors.textSecondary,
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.Normal,
+                    maxLines = 1
+                )
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .basicMarquee(),
+                    text = description,
+                    color = titleColor,
+                    style = MaterialTheme.typography.titleMedium,
+                    maxLines = 1
+                )
+                Text(
+                    modifier = Modifier
+                        .height(50.dp)
+                        .fillMaxWidth()
+                        .basicMarquee(),
+                    text = subPeriod,
+                    color = titleColor,
+                    style = MaterialTheme.typography.titleMedium,
+                    maxLines = 1
+                )
+            }
+//            if (isBought) {
+//                Box(
+//                    modifier = Modifier
+//                        .clip(CircleShape)
+//                        .background(AppTheme.colors.primary)
+//                        .padding(4.dp)
+//                ) {
+//                    Icon(
+//                        imageVector = Icons.Rounded.Verified,
+//                        contentDescription = null,
+//                        tint = AppTheme.colors.onPrimary
+//                    )
+//                }
+//            }
+        }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(CircleShape)
+                .background(AppTheme.colors.primary)
+                .padding(10.dp),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                modifier = Modifier.basicMarquee(),
+                text = price,
+                color = AppTheme.colors.onPrimary,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Normal,
+                maxLines = 1
+            )
+        }
+    }
 }
