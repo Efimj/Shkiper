@@ -381,4 +381,148 @@
 
     <string name="other_my_apps">我的其他应用</string>
 
+    <string name="advanced">先进的</string>
+
+    <string name="icon_already_selected">该图标已被选中！</string>
+
+    <string name="classic">经典的</string>
+
+    <string name="classic_white">白色的</string>
+
+    <string name="material">材料</string>
+
+    <string name="love">爱</string>
+
+    <string name="rocket">火箭</string>
+
+    <string name="bank">银行</string>
+
+    <string name="star">星星</string>
+
+    <string name="night">夜晚</string>
+
+    <string name="strawberry">草莓</string>
+
+    <string name="mango">芒果</string>
+
+    <string name="avocado">牛油果</string>
+
+    <string name="blueberry">蓝莓</string>
+
+    <string name="plum">李子</string>
+
+    <string name="source_code">源代码</string>
+
+    <string name="source_code_description">获取最新更新、讨论、问题等</string>
+
+    <string name="telegram_chat">电报聊天</string>
+
+    <string name="telegram_chat_description">讨论应用程序并成为社区的一部分</string>
+
+    <string name="game_of_life_description">采用 Material 风格制作的细胞生命游戏</string>
+
+    <string name="default_icon">默认图标</string>
+
+    <string name="default_color">默认颜色</string>
+
+    <string name="notification_defaults">通知默认值</string>
+
+    <string name="language">语言</string>
+
+    <string name="made_by_efim">由 Efim &#128156;? 制作</string>
+
+    <string name="bonus">奖金</string>
+
+    <string name="community">社区</string>
+
+    <string name="development">发展</string>
+
+    <string name="my_apps">我的应用程序</string>
+
+    <string name="bug_report">在此处发送错误报告和功能请求</string>
+
+    <string name="issue_tracker">问题追踪器</string>
+
+    <string name="support_the_project">支持该项目</string>
+
+    <string name="support_project_description">感谢您对该项目的关注！支持在其发展中发挥着关键作用，并使其能够继续致力于新的想法和改进</string>
+
+    <string name="purchase">购买</string>
+
+    <string name="subscription">订阅</string>
+
+    <string name="ongoing_support">持续支持</string>
+
+    <string name="thank_you">谢谢&#128156;?</string>
+
+    <string name="copied_to_clipboard">已复制到剪贴板</string>
+
+    <string name="application_icon">应用程序图标</string>
+
+    <string name="font_scale">字体比例</string>
+
+    <string name="application_icon_changed">应用程序图标已更改</string>
+
+    <string name="updates">更新</string>
+
+    <string name="check_update">检查更新</string>
+
+    <string name="automatic_check">自动检查</string>
+
+    <string name="suggests_updates">建议更新（如果有）</string>
+
+    <string name="latest_version_installed">安装最新版本</string>
+
+    <string name="secure">安全的</string>
+
+    <string name="secure_mode">安全模式</string>
+
+    <string name="secure_mode_description">隐藏内容，禁止屏幕录制</string>
+
+    <string name="onb_title_1">欢迎来到 Shkiper！</string>
+
+    <string name="onb_description_1">全新记事本应用程序，用于记录您的所有笔记及更多内容</string>
+
+    <string name="onb_title_2">不仅仅是一个记事本！</string>
+
+    <string name="onb_title_3">开源</string>
+
+    <string name="feature_title_1">笔记小部件</string>
+
+    <string name="feature_description_1">任何笔记都可以添加到设备主屏幕</string>
+
+    <string name="feature_title_2">提醒</string>
+
+    <string name="feature_description_2">可以同时为单个笔记设置多个提醒</string>
+
+    <string name="feature_title_3">笔记样式</string>
+
+    <string name="feature_description_3">通过更改字体大小、颜色、对齐方式为您的笔记添加样式</string>
+
+    <string name="feature_title_4">日历</string>
+
+    <string name="feature_description_4">即将到来的提醒始终显示在日历中</string>
+
+    <string name="feature_title_5">标签</string>
+
+    <string name="feature_description_5">创建标签以便快速访问笔记</string>
+
+    <string name="feature_title_6">分享</string>
+
+    <string name="feature_description_6">以所有格式共享笔记：文本、HTML、Markdown，包括图像</string>
+
+    <string name="feature_title_7">链接预览</string>
+
+    <string name="feature_description_7">预览允许快速访问链接（可以禁用）</string>
+
+    <string name="feature_title_8">统计数据</string>
+
+    <string name="feature_description_8">您可以查看应用程序使用情况统计信息</string>
+
+    <string name="feature_title_9">主题</string>
+
+    <string name="feature_description_9">为应用主题选择您喜欢的颜色组合</string>
+
+
+
 </resources>

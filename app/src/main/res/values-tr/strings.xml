@@ -268,5 +268,35 @@
     <string name="default_icon">Varsayılan simge</string>
     <string name="default_color">Varsayılan renk</string>
     <string name="notification_defaults">Bildirim varsayılanları</string>
-     
+
+    <string name="language">Dil</string>
+
+    <string name="made_by_efim">Efim tarafından yapılmıştır &#128156;</string>
+
+    <string name="bonus">Bonus</string>
+
+    <string name="community">Toplum</string>
+
+    <string name="development">Gelişim</string>
+
+    <string name="my_apps">Benim uygulamalarım</string>
+
+    <string name="bug_report">Hata raporunu ve özellik isteğini buraya gönderin</string>
+
+    <string name="issue_tracker">Sorun izleyici</string>
+
+    <string name="support_the_project">Projeyi destekleyin</string>
+
+    <string name="support_project_description">Projeye gösterdiğiniz ilgi için teşekkür ederiz! Destek, geliştirilmesinde önemli bir rol oynar ve yeni fikirler ve iyileştirmeler üzerinde çalışmaya devam etmesine olanak tanır.</string>
+
+    <string name="purchase">Satın almak</string>
+
+    <string name="subscription">Abonelik</string>
+
+    <string name="ongoing_support">Devam eden destek</string>
+
+    <string name="thank_you">Teşekkür ederim &#128156;</string>
+
+    <string name="copied_to_clipboard">Panoya kopyalandı</string>
+
 </resources>

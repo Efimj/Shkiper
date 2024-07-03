@@ -377,5 +377,147 @@
 
     <string name="other_my_apps">Autres mes applications</string>
 
+    <string name="advanced">Avancé</string>
+
+    <string name="icon_already_selected">L\'icône est déjà sélectionnée !</string>
+
+    <string name="classic">Classique</string>
+
+    <string name="classic_white">Blanc</string>
+
+    <string name="material">Matériel</string>
+
+    <string name="love">Amour</string>
+
+    <string name="rocket">Fusée</string>
+
+    <string name="bank">Banque</string>
+
+    <string name="star">Étoile</string>
+
+    <string name="night">Nuit</string>
+
+    <string name="strawberry">Fraise</string>
+
+    <string name="mango">mangue</string>
+
+    <string name="avocado">Avocat</string>
+
+    <string name="blueberry">Myrtille</string>
+
+    <string name="plum">Prune</string>
+
+    <string name="source_code">Code source</string>
+
+    <string name="source_code_description">Recevez les dernières mises à jour, discutez, problèmes et plus encore</string>
+
+    <string name="telegram_chat">Chat par télégramme</string>
+
+    <string name="telegram_chat_description">Discutez de l\'application et faites partie de la communauté</string>
+
+    <string name="game_of_life_description">Jeu de vie cellulaire réalisé dans un style matériel</string>
+
+    <string name="default_icon">Icône par défaut</string>
+
+    <string name="default_color">Couleur par défaut</string>
+
+    <string name="notification_defaults">Paramètres de notification par défaut</string>
+
+    <string name="language">Langue</string>
+
+    <string name="made_by_efim">Réalisé par Efim &#128156;</string>
+
+    <string name="bonus">Prime</string>
+
+    <string name="community">Communauté</string>
+
+    <string name="development">Développement</string>
+
+    <string name="my_apps">Mes applications</string>
+
+    <string name="bug_report">Envoyez le rapport de bug et la demande de fonctionnalité ici</string>
+
+    <string name="issue_tracker">Traqueur d\'incidents</string>
+
+    <string name="support_the_project">Soutenir le projet</string>
+
+    <string name="support_project_description">Merci de votre intérêt pour le projet ! Le support joue un rôle clé dans son développement et lui permet de continuer à travailler sur de nouvelles idées et améliorations.</string>
+
+    <string name="purchase">Achat</string>
+
+    <string name="subscription">Abonnement</string>
+
+    <string name="ongoing_support">Support en cours</string>
+
+    <string name="thank_you">Merci &#128156;</string>
+
+    <string name="copied_to_clipboard">Copié dans le presse-papier</string>
+
+    <string name="application_icon">Icône d\'application</string>
+
+    <string name="font_scale">Échelle de police</string>
+
+    <string name="application_icon_changed">L\'icône de l\'application a changé</string>
+
+    <string name="updates">Mises à jour</string>
+
+    <string name="check_update">Vérifier la mise à jour</string>
+
+    <string name="automatic_check">Vérification automatique</string>
+
+    <string name="suggests_updates">Suggère des mises à jour si disponibles</string>
+
+    <string name="latest_version_installed">Dernière version installée</string>
+
+    <string name="secure">Sécurisé</string>
+
+    <string name="secure_mode">Mode sécurisé</string>
+
+    <string name="secure_mode_description">Masque le contenu, interdit l\'enregistrement d\'écran</string>
+
+    <string name="onb_title_1">Bienvenue au Shkiper!</string>
+
+    <string name="onb_description_1">Nouvelle application de bloc-notes pour toutes vos notes et plus encore</string>
+
+    <string name="onb_title_2">Bien plus qu\'un simple bloc-notes !</string>
+
+    <string name="onb_title_3">Open source</string>
+
+    <string name="feature_title_1">Widgets de notes</string>
+
+    <string name="feature_description_1">N\'importe quelle note peut être ajoutée à l\'écran d\'accueil de votre appareil</string>
+
+    <string name="feature_title_2">Rappels</string>
+
+    <string name="feature_description_2">Il est possible de définir plusieurs rappels pour une seule note simultanément</string>
+
+    <string name="feature_title_3">Remarque sur le style</string>
+
+    <string name="feature_description_3">Ajoutez du style à vos notes en modifiant la taille de la police, la couleur et l\'alignement</string>
+
+    <string name="feature_title_4">Calendrier</string>
+
+    <string name="feature_description_4">Les rappels à venir sont toujours visibles dans le calendrier</string>
+
+    <string name="feature_title_5">Mots clés</string>
+
+    <string name="feature_description_5">Créez des balises pour un accès rapide aux notes</string>
+
+    <string name="feature_title_6">Partager</string>
+
+    <string name="feature_description_6">Partagez des notes dans tous les formats: texte, HTML, Markdown, y compris les images</string>
+
+    <string name="feature_title_7">Aperçu du lien</string>
+
+    <string name="feature_description_7">L\'aperçu permet un accès rapide aux liens (peut être désactivé)</string>
+
+    <string name="feature_title_8">Statistiques</string>
+
+    <string name="feature_description_8">Vous pouvez afficher les statistiques d\'utilisation des applications</string>
+
+    <string name="feature_title_9">Thématisation</string>
+
+    <string name="feature_description_9">Choisissez votre combinaison de couleurs préférée pour le thème de l\'application</string>
+
 
 </resources>

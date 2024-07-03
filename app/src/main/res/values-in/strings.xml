@@ -377,5 +377,146 @@
 
     <string name="other_my_apps">Aplikasi saya lainnya</string>
 
+    <string name="advanced">Canggih</string>
+
+    <string name="icon_already_selected">Ikon sudah dipilih!</string>
+
+    <string name="classic">Klasik</string>
+
+    <string name="classic_white">Putih</string>
+
+    <string name="material">Bahan</string>
+
+    <string name="love">Cinta</string>
+
+    <string name="rocket">Roket</string>
+
+    <string name="bank">Bank</string>
+
+    <string name="star">Bintang</string>
+
+    <string name="night">Malam</string>
+
+    <string name="strawberry">Stroberi</string>
+
+    <string name="mango">buah mangga</string>
+
+    <string name="avocado">Alpukat</string>
+
+    <string name="blueberry">blueberry</string>
+
+    <string name="plum">Prem</string>
+
+    <string name="source_code">Kode sumber</string>
+
+    <string name="source_code_description">Dapatkan pembaruan terkini, diskusi, masalah, dan lainnya</string>
+
+    <string name="telegram_chat">Obrolan telegram</string>
+
+    <string name="telegram_chat_description">Diskusikan aplikasi dan jadilah bagian dari komunitas</string>
+
+    <string name="game_of_life_description">Permainan kehidupan seluler dibuat dengan gaya material</string>
+
+    <string name="default_icon">Ikon bawaan</string>
+
+    <string name="default_color">Warna bawaan</string>
+
+    <string name="notification_defaults">Default notifikasi</string>
+
+    <string name="language">Bahasa</string>
+
+    <string name="made_by_efim">Dibuat oleh Efim &#128156;</string>
+
+    <string name="bonus">Bonusnya</string>
+
+    <string name="community">Masyarakat</string>
+
+    <string name="development">Perkembangan</string>
+
+    <string name="my_apps">Aplikasi saya</string>
+
+    <string name="bug_report">Kirim laporan bug dan permintaan fitur di sini</string>
+
+    <string name="issue_tracker">Pelacak masalah</string>
+
+    <string name="support_the_project">Dukung proyek ini</string>
+
+    <string name="support_project_description">Terima kasih atas minat Anda pada proyek ini! Dukungan memainkan peran penting dalam pengembangannya dan memungkinkannya untuk terus mengerjakan ide-ide baru dan perbaikan</string>
+
+    <string name="purchase">Pembelian</string>
+
+    <string name="subscription">Berlangganan</string>
+
+    <string name="ongoing_support">Dukungan berkelanjutan</string>
+
+    <string name="thank_you">Terima kasih &#128156;</string>
+
+    <string name="copied_to_clipboard">Disalin ke papan klip</string>
+
+    <string name="application_icon">Ikon aplikasi</string>
+
+    <string name="font_scale">Skala font</string>
+
+    <string name="application_icon_changed">Ikon aplikasi berubah</string>
+
+    <string name="updates">Pembaruan</string>
+
+    <string name="check_update">Cek pembaruan</string>
+
+    <string name="automatic_check">Pemeriksaan otomatis</string>
+
+    <string name="suggests_updates">Menyarankan pembaruan jika tersedia</string>
+
+    <string name="latest_version_installed">Versi terbaru diinstal</string>
+
+    <string name="secure">Aman</string>
+
+    <string name="secure_mode">Modus aman</string>
+
+    <string name="secure_mode_description">Menyembunyikan konten, melarang perekaman layar</string>
+
+    <string name="onb_title_1">Selamat datang di Shkiper!</string>
+
+    <string name="onb_description_1">Aplikasi notepad baru untuk semua catatan Anda dan banyak lagi</string>
+
+    <string name="onb_title_2">Lebih dari sekedar buku catatan!</string>
+
+    <string name="onb_title_3">Sumber terbuka</string>
+
+    <string name="feature_title_1">Widget catatan</string>
+
+    <string name="feature_description_1">Catatan apa pun dapat ditambahkan ke layar beranda perangkat Anda</string>
+
+    <string name="feature_title_2">Pengingat</string>
+
+    <string name="feature_description_2">Anda dapat menyetel beberapa pengingat untuk satu catatan secara bersamaan</string>
+
+    <string name="feature_title_3">Perhatikan gaya</string>
+
+    <string name="feature_description_3">Tambahkan gaya pada catatan Anda dengan mengubah ukuran font, warna, perataan</string>
+
+    <string name="feature_title_4">Kalender</string>
+
+    <string name="feature_description_4">Pengingat yang akan datang selalu terlihat di kalender</string>
+
+    <string name="feature_title_5">Tag</string>
+
+    <string name="feature_description_5">Buat tag untuk akses cepat ke catatan</string>
+
+    <string name="feature_title_6">Membagikan</string>
+
+    <string name="feature_description_6">Bagikan catatan dalam semua format: teks, HTML, Penurunan harga, termasuk gambar</string>
+
+    <string name="feature_title_7">Pratinjau tautan</string>
+
+    <string name="feature_description_7">Pratinjau memungkinkan akses cepat ke tautan (dapat dinonaktifkan)</string>
+
+    <string name="feature_title_8">Statistik</string>
+
+    <string name="feature_description_8">Anda dapat melihat statistik penggunaan aplikasi</string>
+
+    <string name="feature_title_9">Tema</string>
+
+    <string name="feature_description_9">Pilih kombinasi warna favorit Anda untuk tema aplikasi</string>
 
 </resources>

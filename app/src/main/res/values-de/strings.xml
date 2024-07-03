@@ -389,5 +389,146 @@
 
     <string name="other_my_apps">Andere meine Apps</string>
 
+    <string name="advanced">Fortschrittlich</string>
+
+    <string name="icon_already_selected">Das Symbol ist bereits ausgewählt!</string>
+
+    <string name="classic">Klassisch</string>
+
+    <string name="classic_white">Weiß</string>
+
+    <string name="material">Material</string>
+
+    <string name="love">Liebe</string>
+
+    <string name="rocket">Rakete</string>
+
+    <string name="bank">Bank</string>
+
+    <string name="star">Stern</string>
+
+    <string name="night">Nacht</string>
+
+    <string name="strawberry">Erdbeere</string>
+
+    <string name="mango">Mango</string>
+
+    <string name="avocado">Avocado</string>
+
+    <string name="blueberry">Blaubeere</string>
+
+    <string name="plum">Pflaume</string>
+
+    <string name="source_code">Quellcode</string>
+
+    <string name="source_code_description">Erhalten Sie die neuesten Updates, Diskussionen, Probleme und mehr</string>
+
+    <string name="telegram_chat">Telegramm-Chat</string>
+
+    <string name="telegram_chat_description">Diskutieren Sie über die App und werden Sie Teil der Community</string>
+
+    <string name="game_of_life_description">Zelluläres Lebensspiel im Materialstil</string>
+
+    <string name="default_icon">Standardsymbol</string>
+
+    <string name="default_color">Standardfarbe</string>
+
+    <string name="notification_defaults">Standardbenachrichtigungen</string>
+
+    <string name="language">Sprache</string>
+
+    <string name="made_by_efim">Hergestellt von Efim &#128156;</string>
+
+    <string name="bonus">Bonus</string>
+
+    <string name="community">Gemeinschaft</string>
+
+    <string name="development">Entwicklung</string>
+
+    <string name="my_apps">Meine Applikationen</string>
+
+    <string name="bug_report">Senden Sie Fehlerberichte und Funktionsanfragen hier</string>
+
+    <string name="issue_tracker">Problemverfolgung</string>
+
+    <string name="support_the_project">Unterstütze das Projekt</string>
+
+    <string name="support_project_description">Vielen Dank für Ihr Interesse an dem Projekt! Der Support spielt bei der Entwicklung eine Schlüsselrolle und ermöglicht es, kontinuierlich an neuen Ideen und Verbesserungen zu arbeiten.</string>
+
+    <string name="purchase">Kaufen</string>
+
+    <string name="subscription">Abonnement</string>
+
+    <string name="ongoing_support">Fortlaufende Unterstützung</string>
+
+    <string name="thank_you">Dankeschön &#128156;</string>
+
+    <string name="copied_to_clipboard">In die Zwischenablage kopiert</string>
+
+    <string name="application_icon">Anwendungssymbol</string>
+
+    <string name="font_scale">Schriftskala</string>
+
+    <string name="application_icon_changed">Anwendungssymbol geändert</string>
+
+    <string name="updates">Aktualisierung</string>
+
+    <string name="check_update">Aktualisierung überprüfen</string>
+
+    <string name="automatic_check">Automatische Prüfung</string>
+
+    <string name="suggests_updates">Schlägt Updates vor, falls verfügbar</string>
+
+    <string name="latest_version_installed">Neuste Version installiert</string>
+
+    <string name="secure">Sicher</string>
+
+    <string name="secure_mode">Sicherer Modus</string>
+
+    <string name="secure_mode_description">Verbirgt Inhalte, untersagt die Bildschirmaufzeichnung</string>
+
+    <string name="onb_title_1">Willkommen im Shkiper!</string>
+
+    <string name="onb_description_1">Neue Notizblock-Anwendung für alle Ihre Notizen und mehr</string>
+
+    <string name="onb_title_2">Mehr als nur ein Notizblock!</string>
+
+    <string name="onb_title_3">Open Source</string>
+
+    <string name="feature_title_1">Notiz-Widgets</string>
+
+    <string name="feature_description_1">Jede Notiz kann zum Startbildschirm Ihres Geräts hinzugefügt werden</string>
+
+    <string name="feature_title_2">Erinnerung</string>
+
+    <string name="feature_description_2">Es ist möglich, mehrere Erinnerungen für eine einzelne Notiz gleichzeitig festzulegen</string>
+
+    <string name="feature_title_3">Stil der Notiz</string>
+
+    <string name="feature_description_3">Verleihen Sie Ihren Notizen Stil, indem Sie Schriftgröße, Farbe und Ausrichtung ändern</string>
+
+    <string name="feature_title_4">Kalender</string>
+
+    <string name="feature_description_4">Anstehende Erinnerungen sind immer im Kalender sichtbar</string>
+
+    <string name="feature_title_5">Stichworte</string>
+
+    <string name="feature_description_5">Erstellen Sie Tags für den schnellen Zugriff auf Notizen</string>
+
+    <string name="feature_title_6">Aktie</string>
+
+    <string name="feature_description_6">Teilen Sie Notizen in allen Formaten: Text, HTML, Markdown, einschließlich Bilder</string>
+
+    <string name="feature_title_7">Linkvorschau</string>
+
+    <string name="feature_description_7">Vorschau ermöglicht schnellen Zugriff auf Links (kann deaktiviert werden)</string>
+
+    <string name="feature_title_8">Statistiken</string>
+
+    <string name="feature_description_8">Sie können Statistiken zur Anwendungsnutzung anzeigen</string>
+
+    <string name="feature_title_9">Themen</string>
+
+    <string name="feature_description_9">Wählen Sie Ihre bevorzugte Farbkombination für das App-Design</string>
 
 </resources>

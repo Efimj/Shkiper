@@ -273,5 +273,34 @@
     <string name="default_color">Màu mặc định</string>
     <string name="notification_defaults">Mặc định thông báo</string>
 
+    <string name="language">Ngôn ngữ</string>
+
+    <string name="made_by_efim">Được thực hiện bởi Efim &#128156;</string>
+
+    <string name="bonus">Thưởng</string>
+
+    <string name="community">Cộng đồng</string>
+
+    <string name="development">Phát triển</string>
+
+    <string name="my_apps">Những ứng dụng của tôi</string>
+
+    <string name="bug_report">Gửi báo cáo lỗi và yêu cầu tính năng tại đây</string>
+
+    <string name="issue_tracker">Người tìm bệnh</string>
+
+    <string name="support_the_project">Hỗ trợ dự án</string>
+
+    <string name="support_project_description">Cảm ơn bạn đã quan tâm đến dự án! Hỗ trợ đóng một vai trò quan trọng trong sự phát triển của nó và cho phép nó tiếp tục thực hiện các ý tưởng và cải tiến mới</string>
+
+    <string name="purchase">Mua</string>
+
+    <string name="subscription">Đăng ký</string>
+
+    <string name="ongoing_support">Đang hỗ trợ</string>
+
+    <string name="thank_you">Cảm ơn bạn &#128156;</string>
+
+    <string name="copied_to_clipboard">Sao chép vào clipboard</string>
 
 </resources>
