@@ -2,6 +2,8 @@ package com.jobik.shkiper.util
 
 import android.app.UiModeManager
 import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Build
 import com.jobik.shkiper.util.settings.Localization
 import java.util.Locale
@@ -48,5 +50,14 @@ object ContextUtils {
         configuration.setLocale(locale)
         configuration.setLayoutDirection(locale)
         return context.createConfigurationContext(configuration)
+    }
+
+    fun hasInternetConnection(context: Context): Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork = connectivityManager.activeNetwork ?: return false
+        val networkCapabilities =
+            connectivityManager.getNetworkCapabilities(activeNetwork) ?: return false
+        return networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
     }
 }

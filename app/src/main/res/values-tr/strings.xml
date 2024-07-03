@@ -170,7 +170,7 @@
     <string name="DonateBannerHeader">Shkiper\'ı beğendiniz mi?</string>
     <string name="DonateBannerBody">Geliştiriciye bir kuruşla destek olun!</string>
     <string name="AboutNotepad">Shkiper hakkında</string>
-    <string name="Support">Destek</string>
+    <string name="support">Destek</string>
     <string name="AboutAppDescription">Yarat, organize et, hatırla. Görevler, notlar ve hatırlatmalar için mükemmel arkadaşınız – basit, güzel ve her zaman elinizin altında.</string>
     <string name="Contact">İletişim</string>
     <string name="ChooseEmailClient">Bir e-posta istemcisi seçin:</string>

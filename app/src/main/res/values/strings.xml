@@ -174,7 +174,7 @@
     <string name="DonateBannerHeader">Did you like the Shkiper?</string>
     <string name="DonateBannerBody">Support the developer with a coin!</string>
     <string name="AboutNotepad">About Shkiper</string>
-    <string name="Support">Support</string>
+    <string name="support">Support</string>
     <string name="AboutAppDescription">Create, organize, remember. Your perfect companion for tasks, notes, and reminders – simple, beautiful, and always at hand.</string>
     <string name="Contact">Contact</string>
     <string name="ChooseEmailClient">Choose an Email client:</string>
@@ -280,6 +280,13 @@
     <string name="my_apps">My apps</string>
     <string name="bug_report">Send bug report and feature request here</string>
     <string name="issue_tracker">Issue tracker</string>
+    <string name="support_the_project">Support the project</string>
+    <string name="support_project_description">Thank you for your interest in the project! Support plays a key role in its development and allows it to continue working on new ideas and improvements</string>
+    <string name="purchase">Purchase</string>
+    <string name="subscription">Subscription</string>
+    <string name="ongoing_support">Ongoing support</string>
+    <string name="thank_you">Thank you 💜</string>
+    <string name="copied_to_clipboard">Copied to clipboard</string>
 
 
 </resources>

@@ -180,7 +180,7 @@ private fun DevSupportSettings(
     settingsViewModel: SettingsViewModel,
     navController: NavController
 ) {
-    SettingsGroup(header = stringResource(R.string.Support), accent = true) {
+    SettingsGroup(header = stringResource(R.string.support), accent = true) {
         SettingsItem(
             modifier = Modifier.heightIn(min = 50.dp),
             icon = Icons.Outlined.Stars,
