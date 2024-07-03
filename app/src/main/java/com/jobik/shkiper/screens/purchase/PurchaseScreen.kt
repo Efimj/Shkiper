@@ -226,7 +226,7 @@ private fun Congratulations(purchaseViewModel: PurchaseViewModel) {
                                 color = AppTheme.colors.onSecondaryContainer,
                                 fontWeight = FontWeight.SemiBold,
                                 overflow = TextOverflow.Ellipsis,
-                                style = MaterialTheme.typography.titleLarge
+                                style = MaterialTheme.typography.titleMedium
                             )
                         }
                         androidx.compose.animation.AnimatedVisibility(
@@ -463,7 +463,7 @@ private fun CryptoWalletCard(
             contentDescription = null,
             contentScale = ContentScale.FillHeight,
         )
-        Column(verticalArrangement = Arrangement.spacedBy(3.dp)) {
+        Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
             Text(
                 modifier = Modifier.fillMaxWidth(),
                 text = walletName,
@@ -483,7 +483,7 @@ private fun CryptoWalletCard(
         Icon(
             imageVector = Icons.Outlined.CopyAll,
             contentDescription = null,
-            tint = AppTheme.colors.onPrimary
+            tint = AppTheme.colors.textSecondary
         )
     }
 }
