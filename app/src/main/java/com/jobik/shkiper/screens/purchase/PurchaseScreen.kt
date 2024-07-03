@@ -1,14 +1,13 @@
 package com.jobik.shkiper.screens.purchase
 
 import android.app.Activity
+import android.content.Context
 import androidx.activity.compose.BackHandler
+import androidx.annotation.DrawableRes
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.MutableTransitionState
-import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
@@ -18,6 +17,7 @@ import androidx.compose.animation.scaleOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.clickable
@@ -36,10 +36,10 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.CopyAll
 import androidx.compose.material.icons.outlined.SignalWifiOff
 import androidx.compose.material.icons.outlined.VolunteerActivism
 import androidx.compose.material.icons.rounded.Verified
-import androidx.compose.material.icons.rounded.VolunteerActivism
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -51,6 +51,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -58,8 +59,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.ClipboardManager
+import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -73,6 +80,9 @@ import com.jobik.shkiper.ui.helpers.allWindowInsetsPadding
 import com.jobik.shkiper.ui.modifiers.bounceClick
 import com.jobik.shkiper.ui.theme.AppTheme
 import com.jobik.shkiper.util.ContextUtils
+import com.jobik.shkiper.util.SnackbarHostUtil
+import com.jobik.shkiper.util.SnackbarVisualsCustom
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import nl.dionsegijn.konfetti.compose.KonfettiView
@@ -82,7 +92,6 @@ import nl.dionsegijn.konfetti.core.Position
 import nl.dionsegijn.konfetti.core.Spread
 import nl.dionsegijn.konfetti.core.emitter.Emitter
 import java.util.concurrent.TimeUnit
-import kotlin.random.Random
 
 @Composable
 fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
@@ -258,7 +267,7 @@ private fun ScreenContent(purchaseViewModel: PurchaseViewModel) {
     val context = LocalContext.current
 
     var highlight by remember { mutableIntStateOf(0) }
-    val count = 4
+    val count = 7
 
     LaunchedEffect(Unit) {
         while (true) {
@@ -336,6 +345,146 @@ private fun ScreenContent(purchaseViewModel: PurchaseViewModel) {
                 }
             }
         }
+
+        val clipboardManager = LocalClipboardManager.current
+        val scope = rememberCoroutineScope()
+
+        Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+            CryptoWalletCard(
+                isHighlight = highlight == 4,
+                image = R.drawable.ic_btc,
+                walletName = stringResource(id = R.string.btc),
+                walletAddress = stringResource(id = R.string.wallet_address_btc)
+            ) {
+                copyToClipboard(
+                    clipboardManager = clipboardManager,
+                    context = context,
+                    scope = scope,
+                    walletAddress = context.getString(R.string.wallet_address_btc),
+                    walletName = context.getString(R.string.btc)
+                )
+            }
+            CryptoWalletCard(
+                isHighlight = highlight == 5,
+                image = R.drawable.ic_eth,
+                walletName = stringResource(id = R.string.eth),
+                walletAddress = stringResource(id = R.string.wallet_address_eth)
+            ) {
+                copyToClipboard(
+                    clipboardManager = clipboardManager,
+                    context = context,
+                    scope = scope,
+                    walletAddress = context.getString(R.string.wallet_address_eth),
+                    walletName = context.getString(R.string.eth)
+                )
+            }
+            CryptoWalletCard(
+                isHighlight = highlight == 6,
+                image = R.drawable.ic_usdt,
+                walletName = stringResource(id = R.string.usdt),
+                walletAddress = stringResource(id = R.string.wallet_address_usdt)
+            ) {
+                copyToClipboard(
+                    clipboardManager = clipboardManager,
+                    context = context,
+                    scope = scope,
+                    walletAddress = context.getString(R.string.wallet_address_usdt),
+                    walletName = context.getString(R.string.usdt)
+                )
+            }
+        }
+    }
+}
+
+private fun copyToClipboard(
+    clipboardManager: ClipboardManager,
+    context: Context,
+    scope: CoroutineScope,
+    walletName: String,
+    walletAddress: String,
+    icon: ImageVector = Icons.Outlined.CopyAll
+) {
+    clipboardManager.setText(AnnotatedString(walletAddress))
+    scope.launch {
+        SnackbarHostUtil.snackbarHostState.showSnackbar(
+            SnackbarVisualsCustom(
+                message = context.getString(R.string.copied_to_clipboard) + " " + walletName,
+                icon = icon
+            )
+        )
+    }
+}
+
+@Composable
+private fun CryptoWalletCard(
+    isHighlight: Boolean = false,
+    @DrawableRes image: Int,
+    walletName: String,
+    walletAddress: String,
+    onClick: () -> Unit
+) {
+    val backgroundColor by
+    animateColorAsState(
+        targetValue = if (isHighlight) AppTheme.colors.secondaryContainer else AppTheme.colors.container,
+        tween(500)
+    )
+
+    val titleColor by
+    animateColorAsState(
+        targetValue = if (isHighlight) AppTheme.colors.onSecondaryContainer else AppTheme.colors.text,
+        tween(500)
+    )
+
+    val descriptionColor by
+    animateColorAsState(
+        targetValue = if (isHighlight) AppTheme.colors.textSecondary else AppTheme.colors.textSecondary,
+        tween(500)
+    )
+
+    val scale by animateFloatAsState(if (isHighlight) 1.05f else 1f, tween(500))
+
+    Row(
+        modifier = Modifier
+            .graphicsLayer {
+                scaleX = scale
+                scaleY = scale
+            }
+            .bounceClick()
+            .clip(AppTheme.shapes.large)
+            .background(backgroundColor)
+            .clickable { onClick() }
+            .padding(vertical = 10.dp, horizontal = 15.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(15.dp)
+    ) {
+        Image(
+            modifier = Modifier.size(50.dp),
+            painter = painterResource(id = image),
+            contentDescription = null,
+            contentScale = ContentScale.FillHeight,
+        )
+        Column(verticalArrangement = Arrangement.spacedBy(3.dp)) {
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = walletName,
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.SemiBold,
+                color = titleColor,
+                overflow = TextOverflow.Ellipsis,
+            )
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = walletAddress,
+                style = MaterialTheme.typography.bodyMedium,
+                color = descriptionColor,
+                overflow = TextOverflow.Ellipsis,
+            )
+        }
+        Icon(
+            imageVector = Icons.Outlined.CopyAll,
+            contentDescription = null,
+            tint = AppTheme.colors.onPrimary
+        )
     }
 }
 

@@ -286,6 +286,7 @@
     <string name="subscription">Subscription</string>
     <string name="ongoing_support">Ongoing support</string>
     <string name="thank_you">Thank you 💜</string>
+    <string name="copied_to_clipboard">Copied to clipboard</string>
 
 
 </resources>

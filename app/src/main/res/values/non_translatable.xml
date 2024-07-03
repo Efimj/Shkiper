@@ -11,6 +11,15 @@
     <string name="game_of_life" translatable="false">Game of Life</string>
     <string name="game_of_life_link" translatable="false">https://play.google.com/store/apps/details?id=com.jobik.gameoflife</string>
 
+    <!--  crypto wallets  -->
+    <string name="btc" translatable="false">BTC</string>
+    <string name="eth" translatable="false">ETH</string>
+    <string name="usdt" translatable="false">USDT</string>
+
+    <string name="wallet_address_btc" translatable="false">1BwYb44bZK3KcUF6aNPv5gVUFVYNgYMtat</string>
+    <string name="wallet_address_eth" translatable="false">0x3ac216afc303c9928f4ef1d610a37994f9f2b8c2</string>
+    <string name="wallet_address_usdt" translatable="false">TF9XMK8Vkx5VVTuANWoaMxV4nB4s6NWerd</string>
+
     <!--    Languages   -->
     <string name="in" translatable="false">Bahasa Indonesia</string>
     <string name="de" translatable="false">Deutsch</string>
