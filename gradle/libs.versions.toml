@@ -1,6 +1,6 @@
 [versions]
-versionName = "1.8.6-beta01"
-versionCode = "78"
+versionName = "1.8.6-rc01"
+versionCode = "79"
 
 accompanistSystemuicontroller = "0.32.0"
 activityCompose = "1.9.0"
