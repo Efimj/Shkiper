@@ -1,7 +1,10 @@
-<h1 align="center">
-    <img src="./assets/icon-app.png"  width="25" />
-    Shkiper
-</h1>
+[//]: # (<h1 align="center">)
+
+[//]: # (    <img src="./assets/icon-app.png"  width="25" />)
+
+[//]: # (    Shkiper)
+
+[//]: # (</h1>)
 <div align="center"> 
  <img src="./assets/banner.png" width="1920"/>
 </div> 
