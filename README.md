@@ -8,7 +8,7 @@
 
 ## Description
 
-<img src="./assets/phones.png" align="right" width="250" />
+<img src="./assets/ic_night_launcher.png" align="right" width="130" />
 
 The skipper is designed to make your life easier and organize your daily activities. Take notes, schedule reminders with
 flexible repeat modes (daily, weekly, monthly, yearly) and don't forget important events.
@@ -54,5 +54,6 @@ flexible repeat modes (daily, weekly, monthly, yearly) and don't forget importan
 
 Support it by joining __[stargazers](https://github.com/Efimj/Shkiper/stargazers)__ for this repository. ⭐ <br>
 
+
 <a href="https://www.buymeacoffee.com/efim" target="_blank">Also, support me
-with<img align="right"  src="https://cdn.buymeacoffee.com/buttons/v2/default-violet.png" alt="Buy Me A Coffee" height="41" width="174"></a>
+with<img align="right"  src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" height="41" width="174"></a>
