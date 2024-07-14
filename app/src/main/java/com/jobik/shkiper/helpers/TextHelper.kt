@@ -6,8 +6,8 @@ import androidx.annotation.Keep
 class TextHelper {
     companion object{
         fun removeMarkdownStyles(input: String): String {
-            // Remove emphasis (italics and bold)
-            var output = input.replace(Regex("[*]{1,2}|[_]{1,2}"), "")
+            // Remove emphasis (italics, strikethrough and bold)
+            var output = input.replace(Regex("[*]{1,2}|[_]{1,2}|[~]{1,2}"), "")
 
             // Remove inline code
             output = output.replace(Regex("`{1,2}"), "")

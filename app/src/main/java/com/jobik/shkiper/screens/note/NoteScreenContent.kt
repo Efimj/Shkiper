@@ -138,10 +138,10 @@ fun NoteScreenContent(
                         onTextChange = { noteViewModel.updateNoteHeader(it) },
                         placeholder = stringResource(R.string.Header),
                         keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Text,
-                            imeAction = ImeAction.Next,
                             capitalization = KeyboardCapitalization.Sentences,
-                            autoCorrect = true
+                            autoCorrectEnabled = true,
+                            keyboardType = KeyboardType.Text,
+                            imeAction = ImeAction.Next
                         ),
                         keyboardActions = KeyboardActions(
                             onAny = {
