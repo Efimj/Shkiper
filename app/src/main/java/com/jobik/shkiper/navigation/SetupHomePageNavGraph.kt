@@ -16,6 +16,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.jobik.shkiper.helpers.IntentHelper
 import com.jobik.shkiper.navigation.NavigationHelpers.Companion.canNavigate
+import com.jobik.shkiper.navigation.NavigationHelpers.Companion.navigateToMain
 import com.jobik.shkiper.screens.about.AboutNotepadScreen
 import com.jobik.shkiper.screens.advancedSettings.AdvancedSettings
 import com.jobik.shkiper.screens.calendar.CalendarScreen
@@ -88,12 +89,15 @@ fun SetupAppScreenNavGraph(
                         LocalNavAnimatedVisibilityScope provides this,
                         LocalSharedElementKey provides noteScreenArgs.sharedElementOrigin
                     ) {
-                        val context = LocalContext.current
                         NoteScreen(
                             onBack = {
                                 if (navController.canNavigate().not()) return@NoteScreen
                                 if (navController.previousBackStackEntry == null) {
-                                    IntentHelper().startAppActivity(context)
+                                    navController.navigate(Screen.NoteList) {
+                                        popUpTo<Screen.Note> {
+                                            inclusive = true
+                                        }
+                                    }
                                 } else {
                                     navController.popBackStack()
                                 }

@@ -14,7 +14,6 @@ import com.jobik.shkiper.database.data.reminder.ReminderMongoRepository
 import com.jobik.shkiper.database.models.Note
 import com.jobik.shkiper.database.models.NotePosition
 import com.jobik.shkiper.database.models.Reminder
-import com.jobik.shkiper.database.models.RepeatMode
 import com.jobik.shkiper.helpers.DateHelper
 import com.jobik.shkiper.helpers.DateHelper.Companion.sortReminders
 import com.jobik.shkiper.helpers.IntentHelper
@@ -27,12 +26,16 @@ import com.jobik.shkiper.widgets.handlers.handleNoteWidgetPin
 import com.mohamedrejeb.richeditor.model.RichTextState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.realm.kotlin.ext.realmSetOf
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.mongodb.kbson.ObjectId
-import java.time.LocalDate
 import java.time.LocalDateTime
-import java.time.LocalTime
-import java.util.*
+import java.util.Timer
+import java.util.TimerTask
 import javax.inject.Inject
 
 data class NoteScreenState(
@@ -207,7 +210,7 @@ class NoteViewModel @Inject constructor(
             override fun run() {
                 fetchLinkMetaData()
             }
-        }, 300L)
+        }, 1500L)
     }
 
     private fun fetchLinkMetaData() {
@@ -453,12 +456,6 @@ class NoteViewModel @Inject constructor(
                 updatedNote.position = newPosition
                 updatedNote.isPinned = false
             }
-
-            // when returning, the snackbar turns off
-//            showSnackbar(
-//                message = application.applicationContext.getString(R.string.NoteArchived),
-//                icon = Icons.Default.Archive
-//            )
         }
     }
 
@@ -474,12 +471,6 @@ class NoteViewModel @Inject constructor(
             noteRepository.updateNote(screenState.value.noteId) { updatedNote ->
                 updatedNote.position = newPosition
             }
-
-            // when returning, the snackbar turns off
-//            showSnackbar(
-//                message = application.applicationContext.getString(R.string.NoteUnarchived),
-//                icon = Icons.Default.Unarchive
-//            )
         }
     }
 
