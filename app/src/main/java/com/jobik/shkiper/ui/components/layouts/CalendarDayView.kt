@@ -37,7 +37,10 @@ fun CalendarDayView(day: CalendarDay, currentDate: LocalDate, onClick: (Calendar
         day.date == dateNow -> AppTheme.colors.border
         else -> Color.Transparent
     }
-    val borderColor by animateColorAsState(targetValue = targetBorderColorValue, label = "borderColor")
+    val borderColor by animateColorAsState(
+        targetValue = targetBorderColorValue,
+        label = "borderColor"
+    )
 
     if (day.position == DayPosition.MonthDate)
         Box(
@@ -78,18 +81,18 @@ fun CalendarDayView(
     day: CalendarDay,
     isSelected: Boolean,
     showIndicator: Boolean = false,
+    enabled: Boolean = !day.date.isBefore(LocalDate.now()),
     rangeStyle: CalendarDayViewRangeStyle? = null,
     onClick: (CalendarDay) -> Unit
 ) {
     val dateNow = LocalDate.now()
-    val isDateCurrentOrFuture = !day.date.isBefore(dateNow)
 
     if (day.position == DayPosition.MonthDate)
         CalendarDayContent(
             modifier = modifier,
             isToday = dateNow.isEqual(day.date),
             isSelected = isSelected,
-            enabled = isDateCurrentOrFuture,
+            enabled = enabled,
             onClick = { onClick(day) },
             day = day.date,
             rangeStyle = rangeStyle,
@@ -104,17 +107,17 @@ fun CalendarDayView(
     isSelected: Boolean,
     showIndicator: Boolean = false,
     rangeStyle: CalendarDayViewRangeStyle? = null,
+    enabled: Boolean = !day.date.isBefore(LocalDate.now()),
     onClick: (WeekDay) -> Unit
 ) {
     val dateNow = LocalDate.now()
-    val isDateCurrentOrFuture = !day.date.isBefore(dateNow)
 
     if (day.position == WeekDayPosition.RangeDate)
         CalendarDayContent(
             modifier = modifier,
             isToday = dateNow.isEqual(day.date),
             isSelected = isSelected,
-            enabled = isDateCurrentOrFuture,
+            enabled = enabled,
             onClick = { onClick(day) },
             day = day.date,
             rangeStyle = rangeStyle,
@@ -141,20 +144,29 @@ private fun CalendarDayContent(
         enabled -> AppTheme.colors.text
         else -> AppTheme.colors.textSecondary
     }
-    val contentColor by animateColorAsState(targetValue = targetContentColorValue, label = "contentColor")
+    val contentColor by animateColorAsState(
+        targetValue = targetContentColorValue,
+        label = "contentColor"
+    )
 
     val targetBackgroundColorValue = when {
         isSelected -> AppTheme.colors.primary
         else -> Color.Transparent
     }
-    val backgroundColor by animateColorAsState(targetValue = targetBackgroundColorValue, label = "backgroundColor")
+    val backgroundColor by animateColorAsState(
+        targetValue = targetBackgroundColorValue,
+        label = "backgroundColor"
+    )
 
     val targetBorderColorValue = when {
         isSelected -> AppTheme.colors.primary
         isToday -> AppTheme.colors.border
         else -> Color.Transparent
     }
-    val borderColor by animateColorAsState(targetValue = targetBorderColorValue, label = "borderColor")
+    val borderColor by animateColorAsState(
+        targetValue = targetBorderColorValue,
+        label = "borderColor"
+    )
 
     val boxBackground by animateColorAsState(
         targetValue = if (rangeStyle == null) Color.Transparent else AppTheme.colors.primary.copy(
@@ -164,8 +176,16 @@ private fun CalendarDayContent(
 
     val boxShape = when (rangeStyle) {
         CalendarDayViewRangeStyle.Rounded -> RoundedCornerShape(size = 12.dp)
-        CalendarDayViewRangeStyle.LeftRound -> RoundedCornerShape(topStart = 12.dp, bottomStart = 12.dp)
-        CalendarDayViewRangeStyle.RightRound -> RoundedCornerShape(topEnd = 12.dp, bottomEnd = 12.dp)
+        CalendarDayViewRangeStyle.LeftRound -> RoundedCornerShape(
+            topStart = 12.dp,
+            bottomStart = 12.dp
+        )
+
+        CalendarDayViewRangeStyle.RightRound -> RoundedCornerShape(
+            topEnd = 12.dp,
+            bottomEnd = 12.dp
+        )
+
         else -> RectangleShape
     }
 

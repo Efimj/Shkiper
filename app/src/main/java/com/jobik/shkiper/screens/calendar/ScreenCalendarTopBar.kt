@@ -35,14 +35,14 @@ fun ScreenCalendarTopBar(
     val adjacentMonths = 500L
     val currentDate = remember { LocalDate.now() }
     val currentMonth = remember(currentDate) { currentDate.yearMonth }
-    val startMonth = remember(currentDate) { currentMonth }
+    val startMonth = remember(currentDate) { currentMonth.minusMonths(adjacentMonths) }
     val endMonth = remember(currentDate) { currentMonth.plusMonths(adjacentMonths) }
     val daysOfWeek = remember { daysOfWeek() }
 
     val weekState = rememberWeekCalendarState(
         startDate = startMonth.atStartOfMonth(),
         endDate = endMonth.atEndOfMonth(),
-        firstVisibleWeekDate = currentDate,
+        firstVisibleWeekDate = viewModel.screenState.value.selectedDateRange.first,
         firstDayOfWeek = daysOfWeek.first(),
     )
 
@@ -82,7 +82,10 @@ fun ScreenCalendarTopBar(
             dayContent = { day ->
                 val inRange = remember(viewModel.screenState.value.selectedDateRange) {
                     mutableStateOf(
-                        inRange(date = day.date, range = viewModel.screenState.value.selectedDateRange)
+                        inRange(
+                            date = day.date,
+                            range = viewModel.screenState.value.selectedDateRange
+                        )
                     )
                 }
 
@@ -94,6 +97,7 @@ fun ScreenCalendarTopBar(
                         .height(60.dp)
                         .padding(4.dp),
                     day = day,
+                    enabled = true,
                     rangeStyle = inRange.value,
                     isSelected = viewModel.screenState.value.selectedDateRange.first == day.date || viewModel.screenState.value.selectedDateRange.second == day.date,
                     showIndicator = day.date in viewModel.screenState.value.datesWithIndicator,
@@ -105,7 +109,10 @@ fun ScreenCalendarTopBar(
     }
 }
 
-private fun inRange(date: LocalDate, range: Pair<LocalDate, LocalDate>): CalendarDayViewRangeStyle? {
+private fun inRange(
+    date: LocalDate,
+    range: Pair<LocalDate, LocalDate>
+): CalendarDayViewRangeStyle? {
     if (date !in range.first..range.second) return null
     if (range.first == range.second) return null
     return CalendarDayViewRangeStyle.Rounded

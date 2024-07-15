@@ -3,8 +3,8 @@ package com.jobik.shkiper.screens.calendar
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.DateRange
 import androidx.compose.material3.Button
@@ -38,13 +38,13 @@ import java.util.*
 @Composable
 fun FullScreenCalendar(viewModel: CalendarViewModel) {
     val currentMonth = remember { LocalDate.now().yearMonth }
-    val startMonth = remember { currentMonth }
+    val startMonth = remember { currentMonth.minusMonths(200) }
     val endMonth = remember { currentMonth.plusMonths(200) }
     val daysOfWeek = remember { daysOfWeek() }
     val state = rememberCalendarState(
         startMonth = startMonth,
         endMonth = endMonth,
-        firstVisibleMonth = currentMonth,
+        firstVisibleMonth = viewModel.screenState.value.selectedDateRange.first.yearMonth,
         firstDayOfWeek = daysOfWeek.first(),
         outDateStyle = OutDateStyle.EndOfRow
     )
@@ -103,7 +103,7 @@ fun FullScreenCalendar(viewModel: CalendarViewModel) {
                     Spacer(modifier = Modifier.width(10.dp))
                     Text(
                         text = stringResource(R.string.Apply),
-                        style = MaterialTheme.typography.body1,
+                        style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.colors.onPrimary,
                         maxLines = 1,
@@ -129,6 +129,7 @@ private fun DayContent(
     CalendarDayView(
         modifier = Modifier.padding(vertical = 4.dp),
         day = day,
+        enabled = true,
         isSelected = viewModel.screenState.value.selectedDateRange.first == day.date || viewModel.screenState.value.selectedDateRange.second == day.date,
         showIndicator = day.date in viewModel.screenState.value.datesWithIndicator,
         rangeStyle = inRange.value
@@ -140,7 +141,10 @@ private fun DayContent(
     }
 }
 
-private fun inRange(date: LocalDate, range: Pair<LocalDate, LocalDate>): CalendarDayViewRangeStyle? {
+private fun inRange(
+    date: LocalDate,
+    range: Pair<LocalDate, LocalDate>
+): CalendarDayViewRangeStyle? {
     if (date !in range.first..range.second) return null
     if (range.first == range.second) return null
 
@@ -191,7 +195,7 @@ private fun MonthHeader(month: CalendarMonth) {
             textAlign = TextAlign.Center,
             text = month.yearMonth.displayText(),
             color = AppTheme.colors.text,
-            style = MaterialTheme.typography.h6,
+            style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.SemiBold,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
@@ -212,7 +216,7 @@ private fun Header(daysOfWeek: List<DayOfWeek>) {
                 textAlign = TextAlign.Center,
                 text = dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.getDefault()),
                 color = AppTheme.colors.textSecondary,
-                style = MaterialTheme.typography.body1,
+                style = MaterialTheme.typography.bodyMedium,
                 maxLines = 1,
                 overflow = TextOverflow.Clip,
                 fontWeight = FontWeight.SemiBold
