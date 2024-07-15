@@ -58,12 +58,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.ClipboardManager
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
@@ -310,6 +312,14 @@ private fun ScreenContent(purchaseViewModel: PurchaseViewModel) {
             )
         }
         Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = stringResource(R.string.high_taxes),
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.Normal,
+                color = AppTheme.colors.textSecondary,
+                overflow = TextOverflow.Ellipsis,
+            )
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                 purchaseViewModel.screenState.value.purchases.forEachIndexed { index, it ->
                     ProductCard(
@@ -350,47 +360,40 @@ private fun ScreenContent(purchaseViewModel: PurchaseViewModel) {
         val scope = rememberCoroutineScope()
 
         Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-            CryptoWalletCard(
-                isHighlight = highlight == 4,
-                image = R.drawable.ic_btc,
-                walletName = stringResource(id = R.string.btc),
-                walletAddress = stringResource(id = R.string.wallet_address_btc)
-            ) {
-                copyToClipboard(
-                    clipboardManager = clipboardManager,
-                    context = context,
-                    scope = scope,
-                    walletAddress = context.getString(R.string.wallet_address_btc),
-                    walletName = context.getString(R.string.btc)
-                )
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = stringResource(R.string.minimal_taxes),
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.Normal,
+                color = AppTheme.colors.textSecondary,
+                overflow = TextOverflow.Ellipsis,
+            )
+
+            val walletCards = listOf(
+                Triple(R.drawable.ic_btc, R.string.btc, R.string.wallet_address_btc),
+                Triple(R.drawable.ic_eth, R.string.eth, R.string.wallet_address_eth),
+                Triple(R.drawable.ic_usdt, R.string.usdt, R.string.wallet_address_usdt)
+            )
+
+            Box(modifier = Modifier.padding(bottom = 6.dp)) {
+                BuyMeACoffeeCard(isHighlight = highlight == 4)
             }
-            CryptoWalletCard(
-                isHighlight = highlight == 5,
-                image = R.drawable.ic_eth,
-                walletName = stringResource(id = R.string.eth),
-                walletAddress = stringResource(id = R.string.wallet_address_eth)
-            ) {
-                copyToClipboard(
-                    clipboardManager = clipboardManager,
-                    context = context,
-                    scope = scope,
-                    walletAddress = context.getString(R.string.wallet_address_eth),
-                    walletName = context.getString(R.string.eth)
-                )
-            }
-            CryptoWalletCard(
-                isHighlight = highlight == 6,
-                image = R.drawable.ic_usdt,
-                walletName = stringResource(id = R.string.usdt),
-                walletAddress = stringResource(id = R.string.wallet_address_usdt)
-            ) {
-                copyToClipboard(
-                    clipboardManager = clipboardManager,
-                    context = context,
-                    scope = scope,
-                    walletAddress = context.getString(R.string.wallet_address_usdt),
-                    walletName = context.getString(R.string.usdt)
-                )
+
+            walletCards.forEachIndexed { index, wallet ->
+                CryptoWalletCard(
+                    isHighlight = highlight == index + 5,
+                    image = wallet.first,
+                    walletName = stringResource(id = wallet.second),
+                    walletAddress = stringResource(id = wallet.third)
+                ) {
+                    copyToClipboard(
+                        clipboardManager = clipboardManager,
+                        context = context,
+                        scope = scope,
+                        walletAddress = context.getString(wallet.third),
+                        walletName = context.getString(wallet.second)
+                    )
+                }
             }
         }
     }
@@ -412,6 +415,58 @@ private fun copyToClipboard(
                 icon = icon
             )
         )
+    }
+}
+
+@Composable
+private fun BuyMeACoffeeCard(
+    isHighlight: Boolean = false
+) {
+    val context = LocalContext.current
+    val uriHandler = LocalUriHandler.current
+
+    val scale by animateFloatAsState(if (isHighlight) 1.05f else 1f, tween(500))
+
+    Row(
+        modifier = Modifier
+            .graphicsLayer {
+                scaleX = scale
+                scaleY = scale
+            }
+            .bounceClick()
+            .clip(AppTheme.shapes.large)
+            .background(Color(0xFFF7D600))
+            .clickable {
+                uriHandler.openUri(context.getString(R.string.buy_me_a_coffee_link))
+            }
+            .padding(vertical = 10.dp, horizontal = 15.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(15.dp)
+    ) {
+        Image(
+            modifier = Modifier.size(50.dp),
+            painter = painterResource(id = R.drawable.ic_buy_me_a_coffee),
+            contentDescription = null,
+            contentScale = ContentScale.FillHeight,
+            colorFilter = ColorFilter.tint(Color.Black)
+        )
+        Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = stringResource(R.string.buy_me_a_coffee),
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.SemiBold,
+                color = Color.Black,
+                overflow = TextOverflow.Ellipsis,
+            )
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = stringResource(R.string.support_buy_me_a_coffee_description),
+                style = MaterialTheme.typography.bodyMedium,
+                color = Color.Black,
+                overflow = TextOverflow.Ellipsis,
+            )
+        }
     }
 }
 

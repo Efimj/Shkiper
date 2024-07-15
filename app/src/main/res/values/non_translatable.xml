@@ -5,6 +5,7 @@
     <string name="shkiper_github_link" translatable="false">https://github.com/Efimj/Shkiper</string>
     <string name="github_issue_tracker_link" translatable="false">https://github.com/Efimj/Shkiper/issues</string>
     <string name="telegram_link" translatable="false">https://t.me/efim_mobile_projects</string>
+    <string name="buy_me_a_coffee_link" translatable="false">https://buymeacoffee.com/efim</string>
     <string name="game_of_life" translatable="false">Game of Life</string>
     <string name="game_of_life_link" translatable="false">https://play.google.com/store/apps/details?id=com.jobik.gameoflife</string>
 
