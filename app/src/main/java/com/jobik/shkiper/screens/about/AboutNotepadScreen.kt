@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -27,6 +28,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
@@ -42,6 +44,9 @@ import com.jobik.shkiper.helpers.IntentHelper
 import com.jobik.shkiper.services.statistics.StatisticsService
 import com.jobik.shkiper.ui.components.cards.MediaCard
 import com.jobik.shkiper.ui.helpers.allWindowInsetsPadding
+import com.jobik.shkiper.ui.helpers.bottomWindowInsetsPadding
+import com.jobik.shkiper.ui.helpers.horizontalWindowInsetsPadding
+import com.jobik.shkiper.ui.helpers.topWindowInsetsPadding
 import com.jobik.shkiper.ui.theme.AppTheme
 import com.jobik.shkiper.ui.theme.CustomThemeStyle
 import com.jobik.shkiper.util.ContextUtils.isDarkModeEnabled
@@ -66,12 +71,10 @@ fun AboutNotepadScreen() {
             .fillMaxSize()
             .background(AppTheme.colors.background)
             .verticalScroll(rememberScrollState())
-            .allWindowInsetsPadding()
-            .padding(top = 85.dp, bottom = 50.dp),
+            .horizontalWindowInsetsPadding(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Header()
-        Spacer(modifier = Modifier.height(30.dp))
         MediaContent()
     }
 }
@@ -92,7 +95,10 @@ private fun MediaContent() {
     val uriHandler = LocalUriHandler.current
 
     Column(
-        modifier = Modifier.padding(horizontal = 30.dp),
+        modifier = Modifier
+            .bottomWindowInsetsPadding()
+            .padding(top = 20.dp, bottom = 30.dp)
+            .padding(horizontal = 30.dp),
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
         MediaGroup(headline = stringResource(R.string.community), selected = selected == 0) {
@@ -234,12 +240,17 @@ private fun Header() {
         }
     }
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(bottomStart = 20.dp, bottomEnd = 20.dp))
+            .background(AppTheme.colors.container)
+            .topWindowInsetsPadding()
+            .padding(vertical = 30.dp),
         horizontalArrangement = Arrangement.spacedBy(
             space = 30.dp,
             alignment = Alignment.CenterHorizontally
         ),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.Top
     ) {
         Crossfade(
             targetState = index,
@@ -247,7 +258,7 @@ private fun Header() {
             label = "crossfade"
         ) { index ->
             Image(
-                modifier = Modifier.size(160.dp),
+                modifier = Modifier.size(100.dp),
                 imageVector = ImageVector.vectorResource(id = icons[index]),
                 contentDescription = "icon",
             )
@@ -268,7 +279,7 @@ private fun Header() {
                     text = stringResource(R.string.made_by_efim),
                     style = MaterialTheme.typography.titleMedium,
                     textAlign = TextAlign.Center,
-                    color = AppTheme.colors.textSecondary,
+                    color = AppTheme.colors.text,
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1,
                     fontWeight = FontWeight.Normal
@@ -277,7 +288,7 @@ private fun Header() {
                     text = BuildConfig.VERSION_NAME,
                     style = MaterialTheme.typography.titleMedium,
                     textAlign = TextAlign.Center,
-                    color = AppTheme.colors.textSecondary,
+                    color = AppTheme.colors.text,
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1,
                     fontWeight = FontWeight.Normal
