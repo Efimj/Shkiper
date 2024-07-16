@@ -15,6 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.glance.appwidget.GlanceAppWidgetManager
 import androidx.glance.appwidget.state.updateAppWidgetState
 import androidx.lifecycle.lifecycleScope
+import com.jobik.shkiper.crash.CrashActivity
+import com.jobik.shkiper.crash.GlobalExceptionHandler
 import com.jobik.shkiper.database.models.Note
 import com.jobik.shkiper.helpers.TextHelper
 import com.jobik.shkiper.ui.helpers.SecureModeManager
@@ -52,6 +54,10 @@ class ConfigWidgetActivity : AppCompatActivity() {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         actionBar?.hide()
+        GlobalExceptionHandler.initialize(
+            applicationContext = applicationContext,
+            activityToBeLaunched = CrashActivity::class.java,
+        )
 
         adjustFontSize(SettingsManager.settings.fontScale)
 

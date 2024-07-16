@@ -55,6 +55,7 @@ uiautomator = "2.3.0"
 benchmarkMacroJunit4 = "1.2.4"
 baselineprofile = "1.2.4"
 profileinstaller = "1.3.1"
+activity = "1.8.0"
 
 [libraries]
 # Dependencies of the included build-logic
@@ -110,6 +111,7 @@ material = { group = "com.google.android.material", name = "material", version.r
 androidx-uiautomator = { group = "androidx.test.uiautomator", name = "uiautomator", version.ref = "uiautomator" }
 androidx-benchmark-macro-junit4 = { group = "androidx.benchmark", name = "benchmark-macro-junit4", version.ref = "benchmarkMacroJunit4" }
 androidx-profileinstaller = { group = "androidx.profileinstaller", name = "profileinstaller", version.ref = "profileinstaller" }
+androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 
 [plugins]
 shkiper-library = { id = "efim.shkiper.library", version = "unspecified" }

@@ -11,6 +11,8 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
+import com.jobik.shkiper.crash.CrashActivity
+import com.jobik.shkiper.crash.GlobalExceptionHandler
 import com.jobik.shkiper.database.data.note.NoteMongoRepository
 import com.jobik.shkiper.database.models.Note
 import com.jobik.shkiper.helpers.IntentHelper
@@ -40,6 +42,10 @@ class ShareReceiverActivity : AppCompatActivity() {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         actionBar?.hide()
+        GlobalExceptionHandler.initialize(
+            applicationContext = applicationContext,
+            activityToBeLaunched = CrashActivity::class.java,
+        )
 
         SettingsManager.init(this)
         adjustFontSize(SettingsManager.settings.fontScale)

@@ -19,6 +19,8 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.jobik.shkiper.NotepadApplication
 import com.jobik.shkiper.SharedPreferencesKeys
 import com.jobik.shkiper.SharedPreferencesKeys.OnboardingFinishedData
+import com.jobik.shkiper.crash.CrashActivity
+import com.jobik.shkiper.crash.GlobalExceptionHandler
 import com.jobik.shkiper.navigation.Screen
 import com.jobik.shkiper.screens.layout.AppLayout
 import com.jobik.shkiper.services.billing.BillingService
@@ -58,8 +60,12 @@ open class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         installSplashScreen()
         super.onCreate(savedInstanceState)
-        adjustFontSize(SettingsManager.settings.fontScale)
         actionBar?.hide()
+        adjustFontSize(SettingsManager.settings.fontScale)
+        GlobalExceptionHandler.initialize(
+            applicationContext = applicationContext,
+            activityToBeLaunched = CrashActivity::class.java,
+        )
 
         // Billing APIs are all handled in the this lifecycle observer.
         billingClientLifecycle = (application as NotepadApplication).billingClientLifecycle
