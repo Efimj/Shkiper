@@ -269,7 +269,7 @@ private fun ScreenContent(purchaseViewModel: PurchaseViewModel) {
     val context = LocalContext.current
 
     var highlight by remember { mutableIntStateOf(0) }
-    val count = 7
+    val count = 8
 
     LaunchedEffect(Unit) {
         while (true) {
