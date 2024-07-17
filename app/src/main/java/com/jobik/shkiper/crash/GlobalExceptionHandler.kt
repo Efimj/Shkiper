@@ -37,7 +37,6 @@ class GlobalExceptionHandler<T : CrashHandler> private constructor(
     )
 
     companion object {
-
         fun <T : CrashHandler> initialize(
             applicationContext: Context,
             activityToBeLaunched: Class<T>,

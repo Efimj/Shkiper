@@ -26,10 +26,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Application"
         tools:targetApi="tiramisu">
-        <activity
-            android:name=".crash.CrashActivity"
-            android:process=":error_activity" />
-
         <profileable
             android:shell="true"
             tools:targetApi="34" /> <!-- provider for share image -->
@@ -69,7 +65,10 @@
                 <action android:name="android.intent.action.TIME_SET" />
                 <action android:name="android.app.action.SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED" />
             </intent-filter>
-        </receiver> <!-- share receiver activity -->
+        </receiver>
+        <!-- crash activity -->
+        <activity android:name=".crash.CrashActivity" />
+        <!-- share receiver activity -->
         <activity
             android:name=".activity.ShareReceiverActivity"
             android:exported="true">
@@ -80,7 +79,8 @@
 
                 <data android:mimeType="text/plain" />
             </intent-filter>
-        </activity> <!-- widget config activity -->
+        </activity>
+        <!-- widget config activity -->
         <activity
             android:name=".widgets.config.ConfigWidgetActivity"
             android:imeOptions="actionSend|flagNoEnterAction"
@@ -96,7 +96,8 @@
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
-        </activity> <!-- moin activity -->
+        </activity>
+        <!-- moin activity -->
         <activity
             android:name=".activity.MainActivity"
             android:enabled="true"
