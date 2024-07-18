@@ -287,5 +287,9 @@
     <string name="high_taxes">High taxes</string>
     <string name="support_buy_me_a_coffee_description">Support using the Buy me a Coffee service</string>
     <string name="buy_me_a_coffee">Buy me a coffee</string>
+    <string name="restart">Restart</string>
+    <string name="crash_detected">Crash detected</string>
+    <string name="crash_detect_description">Something caused an error. You can contact me below for a quick resolution</string>
+    <string name="issue">Issue</string>
 
 </resources>
