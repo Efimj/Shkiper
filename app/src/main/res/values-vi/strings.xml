@@ -303,4 +303,20 @@
 
     <string name="copied_to_clipboard">Sao chép vào clipboard</string>
 
+    <string name="minimal_taxes">Thuế tối thiểu</string>
+
+    <string name="high_taxes">Thuế cao</string>
+
+    <string name="support_buy_me_a_coffee_description">Hỗ trợ sử dụng dịch vụ Mua cà phê cho tôi</string>
+
+    <string name="buy_me_a_coffee">Mua cho tôi một ly cà phê</string>
+
+    <string name="restart">Khởi động lại</string>
+
+    <string name="crash_detected">Đã phát hiện sự cố</string>
+
+    <string name="crash_detect_description">Đã xảy ra lỗi. Bạn có thể liên hệ với tôi bên dưới để được giải quyết nhanh chóng</string>
+
+    <string name="issue">Vấn đề</string>
+
 </resources>

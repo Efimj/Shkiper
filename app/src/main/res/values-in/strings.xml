@@ -519,4 +519,20 @@
 
     <string name="feature_description_9">Pilih kombinasi warna favorit Anda untuk tema aplikasi</string>
 
+    <string name="minimal_taxes">Pajak minimal</string>
+
+    <string name="high_taxes">Pajak yang tinggi</string>
+
+    <string name="support_buy_me_a_coffee_description">Dukungan menggunakan layanan Belikan saya Kopi</string>
+
+    <string name="buy_me_a_coffee">Belikan aku kopi</string>
+
+    <string name="restart">Mengulang kembali</string>
+
+    <string name="crash_detected">Kerusakan terdeteksi</string>
+
+    <string name="crash_detect_description">Sesuatu menyebabkan kesalahan. Anda dapat menghubungi saya di bawah untuk penyelesaian cepat</string>
+
+    <string name="issue">Masalah</string>
+
 </resources>

@@ -519,4 +519,20 @@
 
     <string name="feature_description_9">เลือกการผสมสีที่คุณชื่นชอบสำหรับธีมแอป</string>
 
+    <string name="minimal_taxes">ภาษีขั้นต่ำ</string>
+
+    <string name="high_taxes">ภาษีสูง</string>
+
+    <string name="support_buy_me_a_coffee_description">สนับสนุนการใช้บริการ Buy me a Coffee</string>
+
+    <string name="buy_me_a_coffee">ซื้อกาแฟให้ฉันหน่อย</string>
+
+    <string name="restart">เริ่มต้นใหม่</string>
+
+    <string name="crash_detected">ตรวจพบข้อขัดข้อง</string>
+
+    <string name="crash_detect_description">มีบางอย่างทำให้เกิดข้อผิดพลาด คุณสามารถติดต่อฉันด้านล่างเพื่อแก้ไขปัญหาอย่างรวดเร็ว</string>
+
+    <string name="issue">ปัญหา</string>
+
 </resources>

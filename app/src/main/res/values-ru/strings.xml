@@ -292,5 +292,12 @@
     <string name="feature_description_8">Вы можете просмотреть статистику использования приложения</string>
     <string name="feature_title_9">Темы</string>
     <string name="feature_description_9">Выберите любимую комбинацию цветов для темы приложения</string>
-
+    <string name="minimal_taxes">Минимальные налоги</string>
+    <string name="high_taxes">Высокие налоги</string>
+    <string name="support_buy_me_a_coffee_description">Поддержка с помощью сервиса «Купи мне кофе»</string>
+    <string name="buy_me_a_coffee">Купи мне кофе</string>
+    <string name="restart">Перезапустить</string>
+    <string name="crash_detected">Обнаружен сбой</string>
+    <string name="crash_detect_description">Что-то вызвало ошибку. Вы можете связаться со мной ниже для быстрого решения</string>
+    <string name="issue">Проблема</string>
 </resources>

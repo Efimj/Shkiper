@@ -518,5 +518,20 @@
 
     <string name="AboutAppDescription">作成して、整理して、記憶する。タスク、メモ、リマインダーに最適なコンパニオン - シンプルで美しく、いつでも手元にあります。</string>
 
+    <string name="minimal_taxes">最小限の税金</string>
+
+    <string name="high_taxes">高い税金</string>
+
+    <string name="support_buy_me_a_coffee_description">「Buy me a Coffee」サービスの使用サポート</string>
+
+    <string name="buy_me_a_coffee">コーヒーを買って</string>
+
+    <string name="restart">再起動</string>
+
+    <string name="crash_detected">クラッシュを検出しました</string>
+
+    <string name="crash_detect_description">何らかの原因でエラーが発生しました。迅速な解決のために下記までご連絡ください</string>
+
+    <string name="issue">問題</string>
 
 </resources>

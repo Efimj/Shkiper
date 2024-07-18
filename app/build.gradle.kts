@@ -101,6 +101,7 @@ android {
 
 dependencies {
     implementation(libs.androidx.profileinstaller)
+    implementation(libs.androidx.activity)
     "baselineProfile"(project(":baselineprofile"))
     coreLibraryDesugaring(libs.desugaring)
     implementation(libs.androidx.core.ktx)
