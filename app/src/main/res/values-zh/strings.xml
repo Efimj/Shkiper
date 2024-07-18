@@ -523,6 +523,20 @@
 
     <string name="feature_description_9">为应用主题选择您喜欢的颜色组合</string>
 
+    <string name="minimal_taxes">最低税收</string>
 
+    <string name="high_taxes">高税收</string>
+
+    <string name="support_buy_me_a_coffee_description">支持使用 Buy me a Coffee 服务</string>
+
+    <string name="buy_me_a_coffee">给我买杯咖啡</string>
+
+    <string name="restart">重新开始</string>
+
+    <string name="crash_detected">检测到碰撞</string>
+
+    <string name="crash_detect_description">某些原因导致错误。您可以通过以下方式联系我以获得快速解决方案</string>
+
+    <string name="issue">问题</string>
 
 </resources>

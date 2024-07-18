@@ -519,5 +519,20 @@
 
     <string name="feature_description_9">Scegli la tua combinazione di colori preferita per il tema dell\'app</string>
 
+    <string name="minimal_taxes">Tasse minime</string>
+
+    <string name="high_taxes">Tasse elevate</string>
+
+    <string name="support_buy_me_a_coffee_description">Supporto all\'utilizzo del servizio Comprami un Caffè</string>
+
+    <string name="buy_me_a_coffee">Offrimi un caffè</string>
+
+    <string name="restart">Ricomincia</string>
+
+    <string name="crash_detected">Rilevato incidente</string>
+
+    <string name="crash_detect_description">Qualcosa ha causato un errore. Puoi contattarmi qui sotto per una rapida risoluzione</string>
+
+    <string name="issue">Problema</string>
 
 </resources>

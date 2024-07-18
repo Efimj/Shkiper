@@ -299,4 +299,20 @@
 
     <string name="copied_to_clipboard">Panoya kopyalandı</string>
 
+    <string name="minimal_taxes">Asgari vergiler</string>
+
+    <string name="high_taxes">Yüksek vergiler</string>
+
+    <string name="support_buy_me_a_coffee_description">Bana bir Kahve Satın Al hizmetini kullanma desteği</string>
+
+    <string name="buy_me_a_coffee">Bana bir kahve al</string>
+
+    <string name="restart">Tekrar başlat</string>
+
+    <string name="crash_detected">Kilitlenme algılandı</string>
+
+    <string name="crash_detect_description">Bir şey hataya neden oldu. Hızlı bir çözüm için aşağıdan benimle iletişime geçebilirsiniz.</string>
+
+    <string name="issue">Sorun</string>
+
 </resources>

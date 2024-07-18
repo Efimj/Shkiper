@@ -286,5 +286,13 @@
     <string name="feature_description_8">Ви можете переглянути статистику використання програми</string>
     <string name="feature_title_9">Оформлення тем</string>
     <string name="feature_description_9">Виберіть свою улюблену комбінацію кольорів для теми програми</string>
+    <string name="minimal_taxes">Мінімальні податки</string>
+    <string name="high_taxes">Високі податки</string>
+    <string name="support_buy_me_a_coffee_description">Підтримка за допомогою використання служби "Купи мені каву"</string>
+    <string name="buy_me_a_coffee">Купи мені каву</string>
+    <string name="restart">Перезапустити</string>
+    <string name="crash_detected">Виявлено збій</string>
+    <string name="crash_detect_description">Щось спричинило помилку. Ви можете зв’язатися зі мною нижче для швидкого вирішення</string>
+    <string name="issue">Проблема</string>
 
 </resources>
