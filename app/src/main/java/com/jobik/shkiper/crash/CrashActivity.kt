@@ -111,14 +111,16 @@ class CrashActivity : CrashHandler() {
                 val clipboardManager = LocalClipboardManager.current
                 val context = LocalContext.current
 
-                Box(modifier = Modifier.fillMaxSize()) {
+                Box(modifier = Modifier
+                    .fillMaxSize()
+                    .background(AppTheme.colors.background)
+                ) {
                     Column(
                         modifier = Modifier
                             .verticalScroll(rememberScrollState())
                             .padding(bottom = 100.dp)
                             .allWindowInsetsPadding()
-                            .fillMaxSize()
-                            .background(AppTheme.colors.background),
+                            .fillMaxSize(),
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         Spacer(modifier = Modifier.height(40.dp))
