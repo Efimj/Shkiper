@@ -294,5 +294,6 @@
     <string name="crash_detected">Виявлено збій</string>
     <string name="crash_detect_description">Щось спричинило помилку. Ви можете зв’язатися зі мною нижче для швидкого вирішення</string>
     <string name="issue">Проблема</string>
+    <string name="System">Cистема</string>
 
 </resources>

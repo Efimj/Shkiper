@@ -45,8 +45,10 @@ import androidx.compose.material.icons.outlined.Source
 import androidx.compose.material.icons.outlined.Stars
 import androidx.compose.material.icons.outlined.ViewCarousel
 import androidx.compose.material.icons.rounded.Contrast
+import androidx.compose.material.icons.rounded.DarkMode
 import androidx.compose.material.icons.rounded.DataUsage
 import androidx.compose.material.icons.rounded.Download
+import androidx.compose.material.icons.rounded.LightMode
 import androidx.compose.material.icons.rounded.RocketLaunch
 import androidx.compose.material.icons.rounded.Tune
 import androidx.compose.material.icons.rounded.Upload
@@ -83,7 +85,6 @@ import com.jobik.shkiper.R
 import com.jobik.shkiper.navigation.NavigationHelpers.Companion.navigateToSecondary
 import com.jobik.shkiper.navigation.Screen
 import com.jobik.shkiper.services.backup.BackupService
-import com.jobik.shkiper.ui.components.buttons.CustomSwitch
 import com.jobik.shkiper.ui.components.cards.SettingsItem
 import com.jobik.shkiper.ui.components.cards.ThemePreview
 import com.jobik.shkiper.ui.components.layouts.SettingsGroup
@@ -352,22 +353,23 @@ private fun DelayedStateChange(
 @Composable
 private fun ProgramSettings(navController: NavController, settingsViewModel: SettingsViewModel) {
     val context = LocalContext.current
-    val systemNightMode = isSystemInDarkTheme()
+    val nightMode = settings.nightMode
+    val localizedThemeName = when(settings.nightMode) {
+        NightMode.Light -> R.string.LightTheme
+        NightMode.Dark -> R.string.DarkTheme
+        NightMode.System -> R.string.System
+    }
 
     SettingsGroup(header = stringResource(R.string.Application)) {
         SettingsItem(
-            icon = Icons.Rounded.Contrast,
-            title = stringResource(R.string.ApplicationTheme),
-            onClick = { toggleNightMode(context = context, systemNightMode = systemNightMode) }
-        ) {
-            CustomSwitch(
-                active = when (settings.nightMode) {
-                    NightMode.Light -> false
-                    NightMode.Dark -> true
-                    else -> isSystemInDarkTheme()
-                },
-                onClick = { toggleNightMode(context = context, systemNightMode = systemNightMode) })
-        }
+            icon = when (settings.nightMode) {
+                NightMode.Light -> Icons.Rounded.LightMode
+                NightMode.Dark -> Icons.Rounded.DarkMode
+                NightMode.System -> Icons.Rounded.Contrast
+            },
+            title = stringResource(R.string.ApplicationTheme) + " (" + stringResource(localizedThemeName) + ")",
+            onClick = { toggleNightMode(context = context, nightMode = nightMode) }
+        )
         SettingsColorThemePicker(settingsViewModel)
         Spacer(Modifier.height(4.dp))
         SettingsItemSelectLanguage()
@@ -379,16 +381,21 @@ private fun ProgramSettings(navController: NavController, settingsViewModel: Set
     }
 }
 
-private fun toggleNightMode(context: Context, systemNightMode: Boolean) {
+private fun toggleNightMode(context: Context, nightMode: NightMode) {
     SettingsManager.update(
         context = context,
         settings = settings.copy(
-            nightMode =
-            when (settings.nightMode) {
-                NightMode.Light -> NightMode.Dark
-                NightMode.Dark -> NightMode.Light
-                else -> if (systemNightMode) NightMode.Light else NightMode.Dark
-            }
+           nightMode = when (nightMode) {
+               NightMode.System -> {
+                   NightMode.Light
+               }
+               NightMode.Light -> {
+                   NightMode.Dark
+               }
+               else -> {
+                   NightMode.System
+               }
+           }
         )
     )
 }

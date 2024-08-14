@@ -314,5 +314,6 @@
     <string name="crash_detect_description">Bir şey hataya neden oldu. Hızlı bir çözüm için aşağıdan benimle iletişime geçebilirsiniz.</string>
 
     <string name="issue">Sorun</string>
+    <string name="System">Sistem</string>
 
 </resources>

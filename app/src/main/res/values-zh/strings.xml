@@ -538,5 +538,6 @@
     <string name="crash_detect_description">某些原因导致错误。您可以通过以下方式联系我以获得快速解决方案</string>
 
     <string name="issue">问题</string>
+    <string name="System">系统</string>
 
 </resources>
