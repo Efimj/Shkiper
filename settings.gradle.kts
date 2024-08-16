@@ -2,7 +2,6 @@
 
 include(":baselineprofile")
 
-
 pluginManagement {
     repositories {
         includeBuild("build-logic")
@@ -23,7 +22,7 @@ dependencyResolutionManagement {
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
-rootProject.name = "NotePadApp"
+rootProject.name = "Shkiper"
 
 include(":app")
 
