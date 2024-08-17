@@ -197,7 +197,7 @@
 
     <string name="Restore">Ristabilire</string>
 
-    <string name="BasketPageHeader">Le banconote vengono rimosse dal carrello dopo 7 giorni.</string>
+    <string name="BasketPageHeader">Le note vengono rimosse dal carrello dopo 7 giorni.</string>
 
     <string name="DeleteSelectedNotesDialogText">Eliminare le note selezionate?</string>
 
