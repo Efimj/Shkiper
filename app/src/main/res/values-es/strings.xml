@@ -534,5 +534,6 @@
     <string name="crash_detect_description">Algo provocó un error. Puedes contactarme a continuación para una resolución rápida.</string>
 
     <string name="issue">Asunto</string>
+    <string name="System">Sistema</string>
 
 </resources>

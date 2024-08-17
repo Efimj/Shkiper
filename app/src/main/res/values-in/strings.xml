@@ -534,5 +534,6 @@
     <string name="crash_detect_description">Sesuatu menyebabkan kesalahan. Anda dapat menghubungi saya di bawah untuk penyelesaian cepat</string>
 
     <string name="issue">Masalah</string>
+    <string name="System">Sistem</string>
 
 </resources>
