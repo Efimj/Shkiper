@@ -354,7 +354,7 @@ private fun DelayedStateChange(
 private fun ProgramSettings(navController: NavController, settingsViewModel: SettingsViewModel) {
     val context = LocalContext.current
     val nightMode = settings.nightMode
-    val localizedThemeName = when(settings.nightMode) {
+    val localizedThemeName = when (settings.nightMode) {
         NightMode.Light -> R.string.LightTheme
         NightMode.Dark -> R.string.DarkTheme
         NightMode.System -> R.string.System
@@ -367,8 +367,19 @@ private fun ProgramSettings(navController: NavController, settingsViewModel: Set
                 NightMode.Dark -> Icons.Rounded.DarkMode
                 NightMode.System -> Icons.Rounded.Contrast
             },
-            title = stringResource(R.string.ApplicationTheme) + " (" + stringResource(localizedThemeName) + ")",
-            onClick = { toggleNightMode(context = context, nightMode = nightMode) }
+            title = stringResource(R.string.ApplicationTheme),
+            onClick = { toggleNightMode(context = context, nightMode = nightMode) },
+            action = {
+                AnimatedContent(targetState = stringResource(localizedThemeName)) {
+                    Text(
+                        text = it,
+                        style = MaterialTheme.typography.titleMedium,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        color = AppTheme.colors.primary
+                    )
+                }
+            }
         )
         SettingsColorThemePicker(settingsViewModel)
         Spacer(Modifier.height(4.dp))
@@ -385,17 +396,19 @@ private fun toggleNightMode(context: Context, nightMode: NightMode) {
     SettingsManager.update(
         context = context,
         settings = settings.copy(
-           nightMode = when (nightMode) {
-               NightMode.System -> {
-                   NightMode.Light
-               }
-               NightMode.Light -> {
-                   NightMode.Dark
-               }
-               else -> {
-                   NightMode.System
-               }
-           }
+            nightMode = when (nightMode) {
+                NightMode.System -> {
+                    NightMode.Light
+                }
+
+                NightMode.Light -> {
+                    NightMode.Dark
+                }
+
+                else -> {
+                    NightMode.System
+                }
+            }
         )
     )
 }

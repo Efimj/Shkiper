@@ -1,8 +1,4 @@
 buildscript {
-    val composeVersion by extra("1.5.4")
-    val accompanistVersion by extra("0.32.0")
-    val hiltVersion by extra("2.46")
-
     dependencies {
         classpath(libs.hilt.gradle)
         classpath(libs.realm.gradle.plugin)
