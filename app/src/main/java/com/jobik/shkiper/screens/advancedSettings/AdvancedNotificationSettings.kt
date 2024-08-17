@@ -15,6 +15,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Check
@@ -37,6 +39,7 @@ import com.jobik.shkiper.database.models.NotificationColor
 import com.jobik.shkiper.database.models.NotificationIcon
 import com.jobik.shkiper.ui.components.cards.SettingsItem
 import com.jobik.shkiper.ui.components.layouts.SettingsGroup
+import com.jobik.shkiper.ui.modifiers.fadingEdges
 import com.jobik.shkiper.ui.theme.AppTheme
 import com.jobik.shkiper.util.settings.SettingsManager
 
@@ -60,8 +63,13 @@ private fun ReminderIcon() {
         onClick = { }
     ) {}
     Row(modifier = Modifier.fillMaxWidth()) {
+        val scroll = rememberLazyListState()
+
         LazyRow(
-            modifier = Modifier.padding(bottom = 20.dp),
+            state = scroll,
+            modifier = Modifier
+                .padding(bottom = 20.dp)
+                .fadingEdges(scroll),
             contentPadding = PaddingValues(horizontal = 20.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
@@ -106,8 +114,13 @@ private fun ReminderColor() {
     val settings = SettingsManager.settings
 
     Row(modifier = Modifier.fillMaxWidth()) {
+        val scroll = rememberLazyListState()
+
         LazyRow(
-            modifier = Modifier.padding(bottom = 15.dp),
+            state = scroll,
+            modifier = Modifier
+                .padding(bottom = 15.dp)
+                .fadingEdges(scroll),
             contentPadding = PaddingValues(horizontal = 20.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {

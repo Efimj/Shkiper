@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import com.jobik.shkiper.ui.components.buttons.HashtagButton
+import com.jobik.shkiper.ui.modifiers.fadingEdges
 
 fun LazyStaggeredGridScope.noteTagsList(
     tags: Set<String>,
@@ -21,12 +22,15 @@ fun LazyStaggeredGridScope.noteTagsList(
 ) {
     if (tags.isNotEmpty()) {
         item(span = StaggeredGridItemSpan.FullLine) {
+            val scroll = rememberLazyListState()
+
             LazyRow(
                 modifier = Modifier
                     .animateItem()
                     .wrapContentSize(unbounded = true)
+                    .fadingEdges(scrollableState = scroll)
                     .width(LocalConfiguration.current.screenWidthDp.dp),
-                state = rememberLazyListState(),
+                state = scroll,
                 contentPadding = PaddingValues(10.dp, 0.dp, 10.dp, 0.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {

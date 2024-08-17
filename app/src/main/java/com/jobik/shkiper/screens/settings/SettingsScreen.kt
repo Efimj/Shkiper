@@ -28,6 +28,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
@@ -91,6 +92,7 @@ import com.jobik.shkiper.ui.components.layouts.SettingsGroup
 import com.jobik.shkiper.ui.components.modals.onboarding.OnboardingDialog
 import com.jobik.shkiper.ui.helpers.allWindowInsetsPadding
 import com.jobik.shkiper.ui.modifiers.circularRotation
+import com.jobik.shkiper.ui.modifiers.fadingEdges
 import com.jobik.shkiper.ui.theme.AppTheme
 import com.jobik.shkiper.ui.theme.CustomThemeColors
 import com.jobik.shkiper.ui.theme.CustomThemeStyle
@@ -435,8 +437,10 @@ private fun SettingsColorThemePicker(settingsViewModel: SettingsViewModel) {
             title = stringResource(R.string.ApplicationColors),
             icon = Icons.Outlined.Palette
         )
+        val scroll = rememberLazyListState()
         LazyRow(
-            state = rememberLazyListState(),
+            modifier = Modifier.fadingEdges(scroll),
+            state = scroll,
             contentPadding = PaddingValues(horizontal = 20.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
@@ -555,9 +559,11 @@ private fun SettingsItemSelectLanguage() {
                         fontWeight = FontWeight.SemiBold,
                     )
                 }
+                val scroll = rememberScrollState()
                 Column(
                     modifier = Modifier
-                        .verticalScroll(rememberScrollState())
+                        .fadingEdges(scrollableState = scroll, isVertical = true)
+                        .verticalScroll(scroll)
                         .windowInsetsPadding(bottomInsets)
                         .padding(horizontal = 10.dp)
                         .padding(vertical = 10.dp)

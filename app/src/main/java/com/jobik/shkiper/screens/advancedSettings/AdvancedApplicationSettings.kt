@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.TextFields
 import androidx.compose.material.icons.outlined.TouchApp
@@ -29,6 +30,7 @@ import com.jobik.shkiper.ui.components.cards.AppIcon
 import com.jobik.shkiper.ui.components.cards.SettingsItem
 import com.jobik.shkiper.ui.components.fields.CustomSlider
 import com.jobik.shkiper.ui.components.layouts.SettingsGroup
+import com.jobik.shkiper.ui.modifiers.fadingEdges
 import com.jobik.shkiper.ui.theme.AppTheme
 import com.jobik.shkiper.util.LauncherIcon
 import com.jobik.shkiper.util.LauncherIcon.LauncherActivity
@@ -41,7 +43,7 @@ import java.util.Locale
 import kotlin.math.roundToInt
 
 @Composable
-fun AdvancedApplicationSettings(){
+fun AdvancedApplicationSettings() {
     SettingsGroup(header = stringResource(R.string.Application)) {
         AppIconSelector()
         FontScaleSettings()
@@ -63,8 +65,13 @@ private fun AppIconSelector() {
             icon = Icons.Outlined.TouchApp,
             title = stringResource(R.string.application_icon)
         )
+        val scroll = rememberLazyListState()
+
         LazyRow(
-            modifier = Modifier.padding(bottom = 10.dp),
+            state = scroll,
+            modifier = Modifier
+                .padding(bottom = 10.dp)
+                .fadingEdges(scroll),
             contentPadding = PaddingValues(horizontal = 20.dp),
             horizontalArrangement = Arrangement.spacedBy(20.dp)
         ) {
