@@ -201,4 +201,7 @@ dependencies {
 
     // Konfetti to make confetti
     implementation (libs.konfetti.compose)
+
+    // for shadow on scrollable lists
+    implementation (libs.fadingEdges)
 }

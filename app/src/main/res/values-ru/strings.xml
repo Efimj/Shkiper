@@ -300,4 +300,5 @@
     <string name="crash_detected">Обнаружен сбой</string>
     <string name="crash_detect_description">Что-то вызвало ошибку. Вы можете связаться со мной ниже для быстрого решения</string>
     <string name="issue">Проблема</string>
+    <string name="System">Cистема</string>
 </resources>

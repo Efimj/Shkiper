@@ -435,7 +435,7 @@ private fun BuyMeACoffeeCard(
             }
             .bounceClick()
             .clip(AppTheme.shapes.large)
-            .background(Color(0xFFF7D600))
+            .background(Color(0xFFFFDE08))
             .clickable {
                 uriHandler.openUri(context.getString(R.string.buy_me_a_coffee_link))
             }

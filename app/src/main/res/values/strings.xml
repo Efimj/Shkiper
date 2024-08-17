@@ -291,5 +291,6 @@
     <string name="crash_detected">Crash detected</string>
     <string name="crash_detect_description">Something caused an error. You can contact me below for a quick resolution</string>
     <string name="issue">Issue</string>
+    <string name="System">System</string>
 
 </resources>

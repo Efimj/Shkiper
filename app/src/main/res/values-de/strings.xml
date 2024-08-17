@@ -546,5 +546,6 @@
     <string name="crash_detect_description">Etwas hat einen Fehler verursacht. Sie können mich unten für eine schnelle Lösung kontaktieren</string>
 
     <string name="issue">Ausgabe</string>
+    <string name="System">System</string>
 
 </resources>

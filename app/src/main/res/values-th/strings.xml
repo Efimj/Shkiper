@@ -534,5 +534,6 @@
     <string name="crash_detect_description">มีบางอย่างทำให้เกิดข้อผิดพลาด คุณสามารถติดต่อฉันด้านล่างเพื่อแก้ไขปัญหาอย่างรวดเร็ว</string>
 
     <string name="issue">ปัญหา</string>
+    <string name="System">ระบบ</string>
 
 </resources>
