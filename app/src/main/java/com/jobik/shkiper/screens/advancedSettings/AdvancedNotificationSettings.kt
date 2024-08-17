@@ -1,6 +1,7 @@
 package com.jobik.shkiper.screens.advancedSettings
 
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
@@ -16,18 +17,17 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material.icons.outlined.Notifications
-import androidx.compose.material.icons.outlined.Palette
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
@@ -126,10 +126,12 @@ private fun ReminderColor() {
         ) {
             items(items = NotificationColor.entries, key = { it.name }) { color ->
                 val isSelected = settings.defaultNotificationColor.name == color.name
+                val scale by animateFloatAsState(if (isSelected) 1f else .8f)
 
                 Box(
                     modifier = Modifier
                         .size(50.dp)
+                        .scale(scale)
                         .clip(CircleShape)
                         .clickable {
                             SettingsManager.update(

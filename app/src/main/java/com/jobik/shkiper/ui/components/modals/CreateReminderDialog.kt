@@ -7,6 +7,7 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.animation.expandHorizontally
 import androidx.compose.animation.expandVertically
@@ -70,6 +71,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -101,6 +103,7 @@ import com.jobik.shkiper.ui.components.cards.SettingsItem
 import com.jobik.shkiper.ui.components.cards.SettingsItemColors
 import com.jobik.shkiper.ui.components.fields.CustomDatePicker
 import com.jobik.shkiper.ui.components.fields.CustomTimePicker
+import com.jobik.shkiper.ui.modifiers.fadingEdges
 import com.jobik.shkiper.ui.theme.AppTheme
 import com.jobik.shkiper.util.settings.SettingsManager
 import com.kizitonwose.calendar.compose.ContentHeightMode
@@ -384,10 +387,12 @@ private fun FinishPage(
         Selector(icon = Icons.Outlined.Palette) {
             NotificationColor.entries.map {
                 val isSelected = reminderDialogState.value.props.color.name == it.name
+                val scale by animateFloatAsState(if (isSelected) 1f else .8f)
 
                 Box(
                     modifier = Modifier
                         .size(40.dp)
+                        .scale(scale)
                         .clip(CircleShape)
                         .clickable {
                             reminderDialogState.value = reminderDialogState.value.copy(
@@ -469,11 +474,14 @@ private fun FinishPage(
 
 @Composable
 private fun Selector(icon: ImageVector, content: @Composable () -> Unit) {
+    val scroll = rememberScrollState()
+
     Row(
         modifier = Modifier
             .padding(top = 5.dp)
             .heightIn(min = 54.dp)
-            .horizontalScroll(rememberScrollState())
+            .fadingEdges(scroll)
+            .horizontalScroll(scroll)
             .padding(horizontal = 20.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
