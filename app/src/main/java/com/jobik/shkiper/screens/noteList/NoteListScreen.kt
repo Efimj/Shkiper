@@ -6,7 +6,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.DeleteSweep
@@ -16,9 +15,11 @@ import androidx.compose.material.icons.outlined.Warning
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
@@ -34,7 +35,11 @@ import com.jobik.shkiper.ui.components.cards.DonateBannerProvider
 import com.jobik.shkiper.ui.components.fields.SearchBar
 import com.jobik.shkiper.ui.components.fields.SearchBarActionButton
 import com.jobik.shkiper.ui.components.fields.getSearchBarHeight
-import com.jobik.shkiper.ui.components.layouts.*
+import com.jobik.shkiper.ui.components.layouts.LazyGridNotes
+import com.jobik.shkiper.ui.components.layouts.ScreenStub
+import com.jobik.shkiper.ui.components.layouts.noteTagsList
+import com.jobik.shkiper.ui.components.layouts.notesList
+import com.jobik.shkiper.ui.components.layouts.notesListHeadline
 import com.jobik.shkiper.ui.components.modals.ActionDialog
 import com.jobik.shkiper.ui.components.modals.CreateReminderDialog
 import com.jobik.shkiper.ui.components.modals.ReminderDialogProperties
@@ -47,7 +52,10 @@ import com.jobik.shkiper.ui.modifiers.scrollConnectionToProvideVisibility
 import com.jobik.shkiper.ui.theme.AppTheme
 import com.jobik.shkiper.util.SnackbarHostUtil
 import com.jobik.shkiper.util.SnackbarVisualsCustom
-import com.jobik.shkiper.util.SupportTheDeveloperBannerUtil
+import com.jobik.shkiper.util.settings.SettingsHandler.checkIsDonateBannerNeeded
+import com.jobik.shkiper.util.settings.SettingsManager
+import com.jobik.shkiper.util.settings.SettingsManager.settings
+import java.time.LocalDateTime
 
 @Composable
 fun NoteList(
@@ -167,8 +175,9 @@ private fun NotesListContent(
     val unpinnedNotes =
         remember(notesViewModel.screenState.value.notes) { notesViewModel.screenState.value.notes.filterNot { it.isPinned } }
 
-    val showDonateBanner =
-        rememberSaveable { mutableStateOf(SupportTheDeveloperBannerUtil.isBannerNeeded(context)) }
+    var showDonateBanner by rememberSaveable {
+        mutableStateOf(checkIsDonateBannerNeeded(settings))
+    }
 
     LazyGridNotes(
         contentPadding = PaddingValues(
@@ -181,14 +190,25 @@ private fun NotesListContent(
             .fillMaxSize()
             .testTag("notes_list"),
     ) {
-        if (showDonateBanner.value) {
+        if (showDonateBanner) {
             item(span = StaggeredGridItemSpan.FullLine) {
-                Box(modifier = Modifier.fillMaxWidth()) {
-                    DonateBannerProvider(
-                        isVisible = showDonateBanner,
-                        navController = navController
-                    )
-                }
+                DonateBannerProvider(
+                    onClick = {
+                        SettingsManager.update(
+                            context = context,
+                            settings = settings.copy(lastShowingDonateBanner = LocalDateTime.now())
+                        )
+                        navController.navigateToSecondary(Screen.Purchases)
+                        showDonateBanner = false
+                    },
+                    onDismiss = {
+                        SettingsManager.update(
+                            context = context,
+                            settings = settings.copy(lastShowingDonateBanner = LocalDateTime.now())
+                        )
+                        showDonateBanner = false
+                    },
+                )
             }
         }
         noteTagsList(

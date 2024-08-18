@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import com.google.gson.Gson
 import com.jobik.shkiper.SharedPreferencesKeys.ApplicationSettings
 import com.jobik.shkiper.SharedPreferencesKeys.ApplicationStorageName
+import java.time.LocalDateTime
 
 object SettingsManager {
     private var _settings: MutableState<SettingsState> = mutableStateOf(SettingsState())
@@ -20,7 +21,18 @@ object SettingsManager {
 
 
     fun init(context: Context) {
-        state.value = restore(context = context)
+        state.value = initializeFirstCreation(context)
+    }
+
+    private fun initializeFirstCreation(context: Context): SettingsState {
+        val restored = restore(context = context)
+        return if (restored.firstAppOpening == null) {
+            val newState = restored.copy(firstAppOpening = LocalDateTime.now())
+            update(context, newState)
+            newState
+        } else {
+            restored
+        }
     }
 
     fun update(context: Context, settings: SettingsState) {
