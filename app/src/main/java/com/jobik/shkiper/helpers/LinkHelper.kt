@@ -1,49 +1,69 @@
 package com.jobik.shkiper.helpers
 
-import android.util.Log
-import androidx.annotation.Keep
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.jsoup.Jsoup
 
-@Keep
-class LinkHelper {
-    fun findLinks(text: String): Set<String> {
-        val regex = Regex("""\b(?:https?://|www\.)\S+\b""")
+object LinkUtils {
+    fun parseLinks(text: String): Set<String> {
+        val regex = Regex("""\b(?:https?://|www\.|http?://)\S+\b""")
         val matches = regex.findAll(text)
         return matches.map { it.value }.toSet()
     }
+}
 
-    data class LinkPreview(
-        var title: String? = null,
-        var description: String? = null,
-        var img: String? = null,
-        var url: String? = null,
-        var link: String? = null,
-    )
+data class LinkPreview(
+    val title: String? = null,
+    val description: String? = null,
+    val img: String? = null,
+    val url: String? = null,
+    val link: String? = null,
+) {
+    fun isEmpty(): Boolean {
+        return title.isNullOrBlank() && description.isNullOrBlank() && img.isNullOrBlank()
+    }
+}
 
-    suspend fun getOpenGraphData(link: String): LinkPreview {
-        val linkPreview = LinkPreview(link = link)
-        try {
-            val response = Jsoup.connect(link).execute()
-            val docs = response.parse().getElementsByTag("meta")
-            for (element in docs) {
-                when {
-                    element.attr("property").equals("og:image") -> {
-                        linkPreview.img = element.attr("content")
+suspend fun LinkPreview(
+    link: String
+): LinkPreview = withContext(Dispatchers.Default) {
+    var image: String? = null
+    var title: String? = null
+    var description: String? = null
+    var url: String? = null
+
+    runCatching {
+        Jsoup
+            .connect(link)
+            .execute()
+            .parse()
+            .getElementsByTag("meta")
+            .forEach { element ->
+                when (element.attr("property")) {
+                    "og:image" -> {
+                        image = element.attr("content")
                     }
-                    element.attr("property").equals("og:title") -> {
-                        linkPreview.title = element.attr("content")
+
+                    "og:title" -> {
+                        title = element.attr("content")
                     }
-                    element.attr("property").equals("og:description") -> {
-                        linkPreview.description = element.attr("content")
+
+                    "og:description" -> {
+                        description = element.attr("content")
                     }
-                    element.attr("property").equals("og:url") -> {
-                        linkPreview.url = element.attr("content")
+
+                    "og:url" -> {
+                        url = element.attr("content")
                     }
                 }
             }
-        } catch (e: Exception) {
-            Log.e("getOpenGraphData", "Error occurred", e)
-        }
-        return linkPreview
     }
+
+    LinkPreview(
+        link = link,
+        img = image,
+        title = title,
+        description = description,
+        url = url
+    )
 }

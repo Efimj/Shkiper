@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.KeyboardArrowDown
@@ -31,13 +32,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.jobik.shkiper.R
-import com.jobik.shkiper.helpers.LinkHelper
+import com.jobik.shkiper.helpers.LinkPreview
 import com.jobik.shkiper.ui.components.cards.LinkPreviewCard
 import com.jobik.shkiper.ui.theme.AppTheme
 
 @Composable
 fun LinkPreviewList(
-    linkPreviewList: Set<LinkHelper.LinkPreview>,
+    linkPreviewList: Set<LinkPreview>,
     expanded: MutableState<Boolean>,
     isLoading: Boolean,
     contentPadding: PaddingValues
@@ -54,22 +55,25 @@ fun LinkPreviewList(
             .padding(contentPadding)
             .animateContentSize()
     ) {
-//        AnimatedVisibility(visible = isLoading) {
-//            Row(
-//                verticalAlignment = Alignment.CenterVertically,
-//                modifier = Modifier.padding(bottom = 8.dp)
-//            ) {
-//                CircularProgressIndicator()
+        AnimatedVisibility(visible = isLoading) {
+            Row(
+                modifier = Modifier
+                    .padding(vertical = 20.dp)
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
+            ) {
+                CircularProgressIndicator(modifier = Modifier.size(30.dp), color = AppTheme.colors.primary)
 //                Spacer(Modifier.width(10.dp))
 //                Text(
 //                    text = stringResource(R.string.Loading),
 //                    maxLines = 1,
 //                    overflow = TextOverflow.Ellipsis,
-//                    style = MaterialTheme.typography.bodyMedium,
+//                    style = MaterialTheme.typography.titleMedium,
 //                    color = AppTheme.colors.textSecondary,
 //                )
-//            }
-//        }
+            }
+        }
         AnimatedVisibility(
             modifier = Modifier.fillMaxWidth(),
             visible = isLoading.not() && linkPreviewList.isNotEmpty()

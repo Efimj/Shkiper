@@ -29,7 +29,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.jobik.shkiper.helpers.LinkHelper
 import com.jobik.shkiper.ui.helpers.MultipleEventsCutter
 import com.jobik.shkiper.ui.helpers.get
 import com.jobik.shkiper.ui.modifiers.bounceClick
@@ -38,11 +37,12 @@ import com.jobik.shkiper.util.SnackbarVisualsCustom
 import kotlinx.coroutines.launch
 import com.jobik.shkiper.R
 import com.jobik.shkiper.helpers.IntentHelper
+import com.jobik.shkiper.helpers.LinkPreview
 import com.jobik.shkiper.ui.theme.AppTheme
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun LinkPreviewCard(openGraphData: LinkHelper.LinkPreview) {
+fun LinkPreviewCard(openGraphData: LinkPreview) {
     val clipboardManager = LocalContext.current.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
     val isImageError = remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()

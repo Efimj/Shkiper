@@ -17,7 +17,8 @@ import com.jobik.shkiper.database.models.Reminder
 import com.jobik.shkiper.helpers.DateHelper
 import com.jobik.shkiper.helpers.DateHelper.Companion.sortReminders
 import com.jobik.shkiper.helpers.IntentHelper
-import com.jobik.shkiper.helpers.LinkHelper
+import com.jobik.shkiper.helpers.LinkPreview
+import com.jobik.shkiper.helpers.LinkUtils
 import com.jobik.shkiper.navigation.Screen
 import com.jobik.shkiper.ui.components.modals.ReminderDialogProperties
 import com.jobik.shkiper.util.SnackbarHostUtil
@@ -59,7 +60,7 @@ data class NoteScreenState(
     val deletionDate: LocalDateTime? = LocalDateTime.now(),
 
     val linksLoading: Boolean = false,
-    val linksMetaData: Set<LinkHelper.LinkPreview> = emptySet(),
+    val linksMetaData: Set<LinkPreview> = emptySet(),
     val intermediateStates: List<NoteViewModel.IntermediateState> = listOf(
         NoteViewModel.IntermediateState(noteHeader, noteBody)
     ),
@@ -169,10 +170,10 @@ class NoteViewModel @Inject constructor(
      * Note links handler
      *******************/
 
-    private var _allLinksMetaData = emptySet<LinkHelper.LinkPreview>()
+    private var _allLinksMetaData = emptySet<LinkPreview>()
     private var linkRefreshTimer: Timer? = null
 
-    private var allLinksMetaData: Set<LinkHelper.LinkPreview>
+    private var allLinksMetaData: Set<LinkPreview>
         get() = _allLinksMetaData
         set(value) {
             _allLinksMetaData = value
@@ -218,17 +219,22 @@ class NoteViewModel @Inject constructor(
             viewModelScope.launch(Dispatchers.IO) {
                 val richTextState = RichTextState()
                 richTextState.setHtml(_screenState.value.noteBody)
-                val links = LinkHelper().findLinks(richTextState.toMarkdown())
+                val links = LinkUtils.parseLinks(richTextState.toMarkdown())
 
                 allLinksMetaData = allLinksMetaData.filter { it.link in links }.toSet()
 
-                val newLinkData = mutableListOf<LinkHelper.LinkPreview>()
-                val deferredList = mutableListOf<Deferred<LinkHelper.LinkPreview>>()
+                val newLinkData = mutableListOf<LinkPreview>()
+                val deferredList = mutableListOf<Deferred<LinkPreview>>()
 
                 for (link in links) {
                     if (allLinksMetaData.any { it.link == link }) continue
                     val deferred = async(Dispatchers.IO) {
-                        LinkHelper().getOpenGraphData(link)
+                        val linkPreview = LinkPreview(link)
+                        if (linkPreview.isEmpty()) {
+                            LinkPreview(link = link, description = link)
+                        } else {
+                            linkPreview
+                        }
                     }
                     deferredList.add(deferred)
                 }
@@ -240,20 +246,17 @@ class NoteViewModel @Inject constructor(
                 allLinksMetaData = allLinksMetaData.plus(newLinkData)
             }
         } else {
-            viewModelScope.launch(Dispatchers.IO) {
-                val richTextState = RichTextState()
-                richTextState.setHtml(_screenState.value.noteBody)
-                val links = LinkHelper().findLinks(richTextState.toMarkdown())
+            val richTextState = RichTextState()
+            richTextState.setHtml(_screenState.value.noteBody)
+            val links = LinkUtils.parseLinks(richTextState.toMarkdown())
 
-                allLinksMetaData =
-                    links.map { link -> LinkHelper.LinkPreview(link = link, description = link) }
-                        .toSet()
-            }
+            allLinksMetaData =
+                links.map { link -> LinkPreview(link = link, description = link) }.toSet()
         }
         _screenState.value = _screenState.value.copy(linksLoading = false)
     }
 
-    fun getCorrectLinks(): Set<LinkHelper.LinkPreview> {
+    fun getCorrectLinks(): Set<LinkPreview> {
         return allLinksMetaData.filterNot { it.title.isNullOrEmpty() && it.description.isNullOrEmpty() && it.img.isNullOrEmpty() }
             .toSet()
     }
