@@ -28,7 +28,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
@@ -183,12 +182,17 @@ private fun DevSupportSettings(
     settingsViewModel: SettingsViewModel,
     navController: NavController
 ) {
+    val context = LocalContext.current
+    val uriHandler = LocalUriHandler.current
+
     SettingsGroup(header = stringResource(R.string.support), accent = true) {
         SettingsItem(
             modifier = Modifier.heightIn(min = 50.dp),
             icon = Icons.Outlined.Stars,
             title = stringResource(R.string.RateTheApp),
-            onClick = { settingsViewModel.rateTheApp() }
+            onClick = {
+                uriHandler.openUri(context.getString(R.string.shkiper_google_play_link))
+            }
         )
         SettingsItem(
             modifier = Modifier.heightIn(min = 50.dp),

@@ -12,12 +12,9 @@ object SharedPreferencesKeys {
     // Application storage
     const val ApplicationStorageName = "ApplicationStorageName"
     const val ApplicationSettings = "ApplicationSettings"
-    const val ApplicationUiMode = "ApplicationUiMode"
     const val OnboardingFinishedData = "2"
     const val OnboardingPageFinishedData = "OnboardingPageFinishedData"
     const val CountOfferReview = "CountOfferReview"
     const val LastDateReviewOffer = "LastDateReviewOffer"
-    const val Localization = "Localization"
     const val Statistics = "Statistics"
-    const val LastBannerSupportDeveloperShowingDate = "LastBannerSupportDeveloperShowingDate"
 }

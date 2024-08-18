@@ -12,8 +12,10 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.jobik.shkiper.NotepadApplication
@@ -25,7 +27,6 @@ import com.jobik.shkiper.navigation.Screen
 import com.jobik.shkiper.screens.layout.AppLayout
 import com.jobik.shkiper.services.billing.BillingService
 import com.jobik.shkiper.services.inAppUpdates.InAppUpdatesService
-import com.jobik.shkiper.services.review.ReviewService
 import com.jobik.shkiper.services.statistics.StatisticsService
 import com.jobik.shkiper.ui.components.modals.OfferWriteReview
 import com.jobik.shkiper.ui.components.modals.onboarding.OnboardingDialog
@@ -34,7 +35,9 @@ import com.jobik.shkiper.ui.theme.ShkiperTheme
 import com.jobik.shkiper.util.ContextUtils
 import com.jobik.shkiper.util.ContextUtils.adjustFontSize
 import com.jobik.shkiper.util.settings.NightMode
+import com.jobik.shkiper.util.settings.SettingsHandler
 import com.jobik.shkiper.util.settings.SettingsManager
+import com.jobik.shkiper.util.settings.SettingsManager.settings
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDate
 
@@ -73,8 +76,7 @@ open class MainActivity : ComponentActivity() {
         inAppUpdatesService = InAppUpdatesService(this)
 
         val startDestination = getStartDestination()
-        val canShowOfferReview =
-            mutableStateOf(ReviewService(applicationContext).needShowOfferReview())
+        var canShowOfferReview by mutableStateOf(SettingsHandler.checkIsRateBannerNeeded(settings))
 
         checkForUpdates()
 
@@ -92,8 +94,8 @@ open class MainActivity : ComponentActivity() {
             ) {
                 OnboardingProvider()
                 AppLayout(startDestination)
-                if (canShowOfferReview.value) {
-                    OfferWriteReview { canShowOfferReview.value = false }
+                if (canShowOfferReview) {
+                    OfferWriteReview { canShowOfferReview = false }
                 }
             }
         }

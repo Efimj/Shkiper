@@ -16,30 +16,37 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.jobik.shkiper.R
-import com.jobik.shkiper.services.review.ReviewService
 import com.jobik.shkiper.ui.components.buttons.ButtonStyle
 import com.jobik.shkiper.ui.components.buttons.CustomButton
 import com.jobik.shkiper.ui.components.buttons.DefaultButtonProperties
 import com.jobik.shkiper.ui.theme.AppTheme
-import kotlinx.coroutines.delay
 
 @Composable
 fun OfferWriteReview(
     onGoBack: () -> Unit,
 ) {
+    val context = LocalContext.current
+    val uriHandler = LocalUriHandler.current
+
     Dialog(onGoBack, DialogProperties(true, dismissOnClickOutside = true)) {
         Column(
-            Modifier.clip(RoundedCornerShape(15.dp)).background(AppTheme.colors.container)
+            Modifier
+                .clip(RoundedCornerShape(15.dp))
+                .background(AppTheme.colors.container)
         ) {
             Row(
-                modifier = Modifier.fillMaxWidth().height(160.dp)
-                    .padding(top = 20.dp).padding(horizontal = 20.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(160.dp)
+                    .padding(top = 20.dp)
+                    .padding(horizontal = 20.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
@@ -52,7 +59,9 @@ fun OfferWriteReview(
                 )
             }
             Column(
-                modifier = Modifier.padding(top = 10.dp).padding(horizontal = 20.dp),
+                modifier = Modifier
+                    .padding(top = 10.dp)
+                    .padding(horizontal = 20.dp),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -98,10 +107,12 @@ fun OfferWriteReview(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.Center
                     ) {
-                        val context = LocalContext.current
                         CustomButton(
                             text = stringResource(R.string.RateTheApp),
-                            onClick = { ReviewService(context).openRateScreen(); onGoBack() },
+                            onClick = {
+                                uriHandler.openUri(context.getString(R.string.shkiper_google_play_link))
+                                onGoBack()
+                            },
                             style = ButtonStyle.Filled,
                             modifier = Modifier.fillMaxWidth()
                         )

@@ -27,18 +27,28 @@ data class SettingsState(
     val defaultNotificationColor: NotificationColor = NotificationColor.MATERIAL,
     val localization: Localization = SettingsHandler.defaultLocalization(),
     val lastShowingDonateBanner: LocalDateTime = SettingsHandler.defaultLastShowingDonateBanner(),
+    val lastShowingRateBanner: LocalDateTime = SettingsHandler.defaultLastShowingRateBanner(),
 )
 
 object SettingsHandler {
     const val DaysBeetwinShowingDonateBanner = 12L
+    const val DaysBeetwinShowingRateBanner = 16L
 
     fun checkIsDonateBannerNeeded(settingsState: SettingsState): Boolean {
         val duration = Duration.between(settingsState.lastShowingDonateBanner, LocalDateTime.now())
         return duration.toDays() >= DaysBeetwinShowingDonateBanner
     }
 
+    fun checkIsRateBannerNeeded(settingsState: SettingsState): Boolean {
+        val duration = Duration.between(settingsState.lastShowingRateBanner, LocalDateTime.now())
+        return duration.toDays() >= DaysBeetwinShowingRateBanner
+    }
+
     fun defaultLastShowingDonateBanner(): LocalDateTime = LocalDateTime.now()
         .minusDays(DaysBeetwinShowingDonateBanner - 1)
+
+    fun defaultLastShowingRateBanner(): LocalDateTime = LocalDateTime.now()
+        .minusDays(DaysBeetwinShowingRateBanner - 1)
 
     fun defaultLocalization() = Localization.entries.find {
         (Locale.getDefault().language.equals(

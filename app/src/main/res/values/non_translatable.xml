@@ -3,6 +3,7 @@
     <string name="app_name" translatable="false">Shkiper</string>
     <string name="jetappdroid_link" translatable="false">jetappdroid@gmail.com</string>
     <string name="shkiper_github_link" translatable="false">https://github.com/Efimj/Shkiper</string>
+    <string name="shkiper_google_play_link" translatable="false">https://play.google.com/store/apps/details?id=com.jobik.shkiper</string>
     <string name="github_issue_tracker_link" translatable="false">https://github.com/Efimj/Shkiper/issues</string>
     <string name="telegram_link" translatable="false">https://t.me/efim_mobile_projects</string>
     <string name="buy_me_a_coffee_link" translatable="false">https://buymeacoffee.com/efim</string>

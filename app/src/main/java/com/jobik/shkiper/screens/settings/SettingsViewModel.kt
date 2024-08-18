@@ -17,7 +17,6 @@ import com.jobik.shkiper.database.data.reminder.ReminderMongoRepository
 import com.jobik.shkiper.services.backup.BackupData
 import com.jobik.shkiper.services.backup.BackupService
 import com.jobik.shkiper.services.backup.BackupServiceResult
-import com.jobik.shkiper.services.review.ReviewService
 import com.jobik.shkiper.services.statistics.StatisticsService
 import com.jobik.shkiper.util.SnackbarHostUtil
 import com.jobik.shkiper.util.SnackbarVisualsCustom
@@ -132,13 +131,5 @@ class SettingsViewModel @Inject constructor(
                 _settingsScreenState.value.isGoogleDriveBackupUploading ||
                 _settingsScreenState.value.isGoogleDriveBackupUpSaving ||
                 _settingsScreenState.value.isLocalBackupSaving
-    }
-
-    /*******************
-     * App Rate
-     *******************/
-
-    fun rateTheApp() {
-        ReviewService(application.applicationContext).openRateScreen()
     }
 }
