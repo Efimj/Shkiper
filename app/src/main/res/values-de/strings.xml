@@ -187,7 +187,7 @@
 
     <string name="CannotPerformedWithoutPermission">Ohne Genehmigung nicht durchführbar</string>
 
-    <string name="EmptyNotesPageHeader">Von Ihnen hinzugefügte Notizen werden hier angezeigt.</string>
+    <string name="empty_notes_stub_description">Von Ihnen hinzugefügte Notizen werden hier angezeigt.</string>
 
     <string name="ArchiveNotesPageHeader">Archivierte Notizen finden Sie hier.</string>
 

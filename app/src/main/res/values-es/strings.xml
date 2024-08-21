@@ -187,7 +187,7 @@
 
     <string name="CannotPerformedWithoutPermission">No se puede realizar sin permiso.</string>
 
-    <string name="EmptyNotesPageHeader">Las notas que agregue aparecen aquí.</string>
+    <string name="empty_notes_stub_description">Las notas que agregue aparecen aquí.</string>
 
     <string name="ArchiveNotesPageHeader">Las notas archivadas estarán aquí.</string>
 

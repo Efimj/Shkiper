@@ -101,7 +101,7 @@
     <string name="BackupUploaded">Резервна копія завантажена</string>
     <string name="UnspecifiedErrorOccurred">Виникла невизначена помилка</string>
     <string name="CannotPerformedWithoutPermission">Не можна виконати операцію без дозволу</string>
-    <string name="EmptyNotesPageHeader">Тут будуть ваші нотатки.</string>
+    <string name="empty_notes_stub_description">Тут будуть ваші нотатки.</string>
     <string name="ArchiveNotesPageHeader">Заархівовані нотатки будуть тут.</string>
     <string name="UnarchiveNotes">Розархівувати нотатки</string>
     <string name="BasketNotesPageHeader">Кошик видалених нотаток.</string>

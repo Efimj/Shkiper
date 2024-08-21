@@ -134,7 +134,7 @@
     <string name="BackupUploaded">Đã tải lên bản sao lưu</string>
     <string name="UnspecifiedErrorOccurred">Đã xảy ra lỗi không xác định</string>
     <string name="CannotPerformedWithoutPermission">Không thể thực hiện mà không có sự cho phép</string>
-    <string name="EmptyNotesPageHeader">Ghi chú bạn thêm sẽ xuất hiện ở đây.</string>
+    <string name="empty_notes_stub_description">Ghi chú bạn thêm sẽ xuất hiện ở đây.</string>
     <string name="ArchiveNotesPageHeader">Các ghi chú đã lưu trữ sẽ ở đây.</string>
     <string name="UnarchiveNotes">Hủy lưu trữ ghi chú</string>
     <string name="BasketNotesPageHeader">Giỏ ghi chú đã xóa.</string>

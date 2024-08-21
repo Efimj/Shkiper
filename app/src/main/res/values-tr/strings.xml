@@ -130,7 +130,7 @@
     <string name="BackupUploaded">Yedek yüklendi</string>
     <string name="UnspecifiedErrorOccurred">Bilinmeyen bir hata oluştu</string>
     <string name="CannotPerformedWithoutPermission">İzin olmadan gerçekleştirilemez</string>
-    <string name="EmptyNotesPageHeader">Eklediğiniz notlar burada görünecek.</string>
+    <string name="empty_notes_stub_description">Eklediğiniz notlar burada görünecek.</string>
     <string name="ArchiveNotesPageHeader">Arşivlenen notlar burada olacak.</string>
     <string name="UnarchiveNotes">Notları arşivden çıkar</string>
     <string name="BasketNotesPageHeader">Silinmiş notların sepeti.</string>

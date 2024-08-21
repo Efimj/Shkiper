@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.DeleteSweep
-import androidx.compose.material.icons.outlined.Description
 import androidx.compose.material.icons.outlined.Event
 import androidx.compose.material.icons.outlined.Warning
 import androidx.compose.material3.SnackbarDuration
@@ -80,7 +79,19 @@ fun NoteList(
             label = "animation layouts screen"
         ) { value ->
             if (value) {
-                ScreenStub(title = R.string.EmptyNotesPageHeader, icon = Icons.Outlined.Description)
+                ScreenStub(
+                    icon = when (viewModel.screenState.value.currentNotes) {
+                        NotePosition.MAIN -> R.drawable.note_stack
+                        NotePosition.ARCHIVE -> R.drawable.inbox
+                        NotePosition.DELETE -> R.drawable.delete
+                    },
+                    title = when (viewModel.screenState.value.currentNotes) {
+                        NotePosition.MAIN -> R.string.Notes
+                        NotePosition.ARCHIVE -> R.string.Archive
+                        NotePosition.DELETE -> R.string.Basket
+                    },
+                    description = R.string.empty_notes_stub_description,
+                )
             } else {
                 NotesListContent(
                     notesViewModel = viewModel,

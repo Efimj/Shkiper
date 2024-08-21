@@ -189,7 +189,7 @@
 
     <string name="CannotPerformedWithoutPermission">未经许可不得进行</string>
 
-    <string name="EmptyNotesPageHeader">您添加的注释将显示在此处。</string>
+    <string name="empty_notes_stub_description">您添加的注释将显示在此处。</string>
 
     <string name="ArchiveNotesPageHeader">存档的笔记将位于此处。</string>
 

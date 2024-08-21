@@ -100,7 +100,7 @@
     <string name="BackupUploaded">Резервная копия загружена</string>
     <string name="UnspecifiedErrorOccurred">Возникла неопределенная ошибка</string>
     <string name="CannotPerformedWithoutPermission">Нельзя выполнить операцию без разрешения</string>
-    <string name="EmptyNotesPageHeader">Тут будут ваши заметки.</string>
+    <string name="empty_notes_stub_description">Тут будут ваши заметки.</string>
     <string name="ArchiveNotesPageHeader">Архивные заметки будут здесь.</string>
     <string name="UnarchiveNotes">Разархивировать заметки</string>
     <string name="BasketNotesPageHeader">Корзина удаленных заметок.</string>

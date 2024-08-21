@@ -187,7 +187,7 @@
 
     <string name="CannotPerformedWithoutPermission">ไม่สามารถทำได้โดยไม่ได้รับอนุญาต</string>
 
-    <string name="EmptyNotesPageHeader">บันทึกย่อที่คุณเพิ่มจะปรากฏที่นี่</string>
+    <string name="empty_notes_stub_description">บันทึกย่อที่คุณเพิ่มจะปรากฏที่นี่</string>
 
     <string name="ArchiveNotesPageHeader">บันทึกย่อที่เก็บถาวรจะอยู่ที่นี่</string>
 

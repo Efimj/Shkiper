@@ -187,7 +187,7 @@
 
     <string name="CannotPerformedWithoutPermission">許可なく実行することはできません</string>
 
-    <string name="EmptyNotesPageHeader">追加したメモがここに表示されます。</string>
+    <string name="empty_notes_stub_description">追加したメモがここに表示されます。</string>
 
     <string name="ArchiveNotesPageHeader">アーカイブされたメモはここにあります。</string>
 
