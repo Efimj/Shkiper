@@ -1,5 +1,6 @@
 package com.jobik.shkiper.ui.components.layouts
 
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Arrangement
@@ -14,8 +15,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -28,7 +27,7 @@ import com.jobik.shkiper.ui.theme.AppTheme
 @Composable
 fun ScreenStub(
     modifier: Modifier = Modifier,
-    icon: Any,
+    @DrawableRes icon: Int,
     @StringRes title: Int,
     @StringRes description: Int? = null,
 ) {
@@ -48,14 +47,10 @@ fun ScreenStub(
 }
 
 @Composable
-private fun StubIcon(icon: Any) {
+private fun StubIcon(@DrawableRes icon: Int) {
     AnimatedContent(icon) {
         Icon(
-            painter = when (it) {
-                is ImageVector -> rememberVectorPainter(it)
-                is Int -> painterResource(it)
-                else -> throw IllegalArgumentException("Unsupported icon type")
-            },
+            painter = painterResource(it),
             contentDescription = null,
             tint = AppTheme.colors.primary,
             modifier = Modifier.size(60.dp)

@@ -5,12 +5,19 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridState
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
-import androidx.compose.material.icons.outlined.Description
 import androidx.compose.material.icons.outlined.Done
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -24,7 +31,11 @@ import com.jobik.shkiper.R
 import com.jobik.shkiper.database.models.Note
 import com.jobik.shkiper.ui.components.buttons.FloatingActionButton
 import com.jobik.shkiper.ui.components.fields.getSearchBarHeight
-import com.jobik.shkiper.ui.components.layouts.*
+import com.jobik.shkiper.ui.components.layouts.LazyGridNotes
+import com.jobik.shkiper.ui.components.layouts.ScreenStub
+import com.jobik.shkiper.ui.components.layouts.noteTagsList
+import com.jobik.shkiper.ui.components.layouts.notesList
+import com.jobik.shkiper.ui.components.layouts.notesListHeadline
 import com.jobik.shkiper.ui.helpers.bottomWindowInsetsPadding
 import com.jobik.shkiper.ui.helpers.endWindowInsetsPadding
 import com.jobik.shkiper.ui.helpers.startWindowInsetsPadding
@@ -58,8 +69,9 @@ fun NoteSelectionScreen(
         ) { value ->
             if (value) {
                 ScreenStub(
-                    title = R.string.empty_notes_stub_description,
-                    icon = Icons.Outlined.Description
+                    icon = R.drawable.note_stack,
+                    title = R.string.Notes,
+                    description = R.string.empty_notes_stub_description,
                 )
             } else {
                 AnimatedVisibility(visible = true) {

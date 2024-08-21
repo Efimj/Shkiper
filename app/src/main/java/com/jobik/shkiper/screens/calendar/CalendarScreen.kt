@@ -3,8 +3,6 @@ package com.jobik.shkiper.screens.calendar
 import androidx.compose.animation.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.NotificationsNone
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -91,8 +89,9 @@ private fun ScreenContent(
             if (value)
                 ScreenStub(
                     modifier = Modifier.heightIn(max = 350.dp),
+                    icon = R.drawable.calendar_today,
                     title = R.string.NoReminders,
-                    icon = Icons.Outlined.NotificationsNone
+                    description = R.string.reminders_stub_description,
                 )
             else {
                 NoteListContent(

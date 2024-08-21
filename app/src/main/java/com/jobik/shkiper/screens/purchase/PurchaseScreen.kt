@@ -114,8 +114,8 @@ fun PurchaseScreen(purchaseViewModel: PurchaseViewModel = hiltViewModel()) {
     ) {
         if (hasInternetConnection.not()) {
             ScreenStub(
+                icon = R.drawable.wifi_off,
                 title = R.string.CheckInternetConnection,
-                icon = Icons.Outlined.SignalWifiOff
             )
         } else {
             ScreenContent(purchaseViewModel = purchaseViewModel)
