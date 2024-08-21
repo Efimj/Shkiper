@@ -55,25 +55,25 @@ fun LinkPreviewList(
             .padding(contentPadding)
             .animateContentSize()
     ) {
-        AnimatedVisibility(visible = isLoading) {
-            Row(
-                modifier = Modifier
-                    .padding(vertical = 20.dp)
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center,
-            ) {
-                CircularProgressIndicator(modifier = Modifier.size(30.dp), color = AppTheme.colors.primary)
-//                Spacer(Modifier.width(10.dp))
-//                Text(
-//                    text = stringResource(R.string.Loading),
-//                    maxLines = 1,
-//                    overflow = TextOverflow.Ellipsis,
-//                    style = MaterialTheme.typography.titleMedium,
-//                    color = AppTheme.colors.textSecondary,
-//                )
-            }
-        }
+//        AnimatedVisibility(visible = isLoading) {
+//            Row(
+//                modifier = Modifier
+//                    .padding(vertical = 20.dp)
+//                    .fillMaxWidth(),
+//                verticalAlignment = Alignment.CenterVertically,
+//                horizontalArrangement = Arrangement.Center,
+//            ) {
+//                CircularProgressIndicator(modifier = Modifier.size(30.dp), color = AppTheme.colors.primary)
+////                Spacer(Modifier.width(10.dp))
+////                Text(
+////                    text = stringResource(R.string.Loading),
+////                    maxLines = 1,
+////                    overflow = TextOverflow.Ellipsis,
+////                    style = MaterialTheme.typography.titleMedium,
+////                    color = AppTheme.colors.textSecondary,
+////                )
+//            }
+//        }
         AnimatedVisibility(
             modifier = Modifier.fillMaxWidth(),
             visible = isLoading.not() && linkPreviewList.isNotEmpty()
