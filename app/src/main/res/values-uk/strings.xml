@@ -74,7 +74,7 @@
     <string name="Event">Подія</string>
     <string name="Schedule">Розклад</string>
     <string name="Repeat">Повторити</string>
-    <string name="ErrorDateMastBeFuture">Дата має бути в майбутньому</string>
+    <string name="ErrorDateMustBeFuture">Дата має бути в майбутньому</string>
     <string name="Menu">Меню</string>
     <string name="Notes">Нотатки</string>
     <string name="Archive">Архів</string>

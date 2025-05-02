@@ -16,3 +16,5 @@
 .cxx
 local.properties
 /.idea/
+.vscode/
+build-logic/convention/bin/

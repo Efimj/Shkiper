@@ -73,7 +73,7 @@
     <string name="Event">Событие</string>
     <string name="Schedule">Расписание</string>
     <string name="Repeat">Повторить</string>
-    <string name="ErrorDateMastBeFuture">Дата должна быть в будущем</string>
+    <string name="ErrorDateMustBeFuture">Дата должна быть в будущем</string>
     <string name="Menu">Меню</string>
     <string name="Notes">Заметки</string>
     <string name="Archive">Архив</string>

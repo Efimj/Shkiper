@@ -133,7 +133,7 @@
 
     <string name="Repeat">Mengulang</string>
 
-    <string name="ErrorDateMastBeFuture">Tanggalnya harus di masa depan</string>
+    <string name="ErrorDateMustBeFuture">Tanggalnya harus di masa depan</string>
 
     <string name="Menu">Menu</string>
 

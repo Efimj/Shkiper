@@ -103,7 +103,7 @@
     <string name="Event">Etkinlik</string>
     <string name="Schedule">Programla</string>
     <string name="Repeat">Tekrarla</string>
-    <string name="ErrorDateMastBeFuture">Tarih gelecekte olmalı</string>
+    <string name="ErrorDateMustBeFuture">Tarih gelecekte olmalı</string>
     <string name="Menu">Menü</string>
     <string name="Notes">Notlar</string>
     <string name="Archive">Arşiv</string>
