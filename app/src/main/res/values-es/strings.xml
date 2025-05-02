@@ -133,7 +133,7 @@
 
     <string name="Repeat">Repetir</string>
 
-    <string name="ErrorDateMastBeFuture">La fecha debe ser en el futuro.</string>
+    <string name="ErrorDateMustBeFuture">La fecha debe ser en el futuro.</string>
 
     <string name="Menu">Menú</string>
 

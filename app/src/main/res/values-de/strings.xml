@@ -133,7 +133,7 @@
 
     <string name="Repeat">Wiederholen</string>
 
-    <string name="ErrorDateMastBeFuture">Das Datum muss in der Zukunft liegen</string>
+    <string name="ErrorDateMustBeFuture">Das Datum muss in der Zukunft liegen</string>
 
     <string name="Menu">Speisekarte</string>
 

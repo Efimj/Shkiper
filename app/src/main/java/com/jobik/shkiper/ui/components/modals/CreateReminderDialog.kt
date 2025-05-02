@@ -435,7 +435,7 @@ private fun FinishPage(
                 exit = slideOutVertically { it / 2 } + shrinkVertically(shrinkTowards = Alignment.Top) + fadeOut()
             ) {
                 SettingsItem(
-                    title = stringResource(R.string.ErrorDateMastBeFuture),
+                    title = stringResource(R.string.ErrorDateMustBeFuture),
                     icon = Icons.Outlined.CalendarMonth,
                     onClick = { goToPage(0) },
                     colors = SettingsItemColors(

@@ -107,7 +107,7 @@
     <string name="Event">Sự kiện</string>
     <string name="Schedule">Lịch trình</string>
     <string name="Repeat">Lặp lại</string>
-    <string name="ErrorDateMastBeFuture">Ngày phải ở trong tương lai</string>
+    <string name="ErrorDateMustBeFuture">Ngày phải ở trong tương lai</string>
     <string name="Menu">Trình đơn</string>
     <string name="Notes">Ghi chú</string>
     <string name="Archive">Lưu trữ</string>

@@ -133,7 +133,7 @@
 
     <string name="Repeat">ทำซ้ำ</string>
 
-    <string name="ErrorDateMastBeFuture">วันที่จะต้องอยู่ในอนาคต</string>
+    <string name="ErrorDateMustBeFuture">วันที่จะต้องอยู่ในอนาคต</string>
 
     <string name="Menu">เมนู</string>
 
